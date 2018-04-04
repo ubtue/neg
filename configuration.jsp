@@ -2,8 +2,8 @@
   String sqlDriver  = "com.mysql.jdbc.Driver";
 
   String sqlURL  = "jdbc:mysql://localhost:3306/neg_final";
-  String sqlUser = "root";
-  String sqlPassword = "r00t@r";
+  String sqlUser = "neg";
+  String sqlPassword = "pcqXCB!)763";
 
   String sqlURLnew  = sqlURL  ;
   String sqlUserNew = sqlUser ;
