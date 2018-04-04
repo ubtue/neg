@@ -1,3 +1,4 @@
 .svn/
-bin/
-build/
+/bin/
+/build/
+.DS_Store
