@@ -1,0 +1,48 @@
+/* Put this inside a @media qualifier so Netscape 4 ignores it */
+@media screen, print {
+	/* Turn off list bullets */
+	ul.mktree  li { list-style: none; }
+	/* Control how "spaced out" the tree is */
+	ul.mktree, ul.mktree ul , ul.mktree li { margin-left:0px; padding:0px; }
+    ul.mktree ul { margin-left: 10px; }
+	/* Provide space for our own "bullet" inside the LI */
+	ul.mktree  li           .bullet { padding-left: 15px; }
+	/* Show "bullets" in the links, depending on the class of the LI that the link's in */
+/*
+	ul.mktree  li.liOpen    .bullet { cursor: pointer; background: url(../../minus.gif)  center left no-repeat; }
+	ul.mktree  li.liClosed  .bullet { cursor: pointer; background: url(../../plus.gif)   center left no-repeat; }
+	ul.mktree  li.liBullet  .bullet { cursor: default; background: url(../../bullet.gif) center left no-repeat; }
+*/
+	ul.mktree  li.liOpen    .bullet { cursor: pointer; background: url(images/minus.gif)  center left no-repeat; background-size: 14px; }
+	ul.mktree  li.liClosed  .bullet { cursor: pointer; background: url(images/plus.gif)   center left no-repeat; background-size: 14px; }
+	ul.mktree  li.liBullet  .bullet { cursor: default; background: url(../../bullet.gif) center left no-repeat; }
+	/* Sublists are visible or not based on class of parent LI */
+	ul.mktree  li.liOpen    ul { display: block; }
+	ul.mktree  li.liClosed  ul { display: none; }
+
+    ul.mktree { }
+    ul.mktree > li{ margin-bottom: 40px; padding: 5px; }
+    ul.mktree li ul li { padding-top: 10px; }
+
+
+    ul.mktree li:nth-child(1n){ background: #f4f4f4; }
+
+	/* Resultlist-search
+	******************************
+	*/
+    .resultlist { width: 1000px; margin: 20px 0; }
+    .resultlist tr:nth-child(1) { background: #ababab; }
+    .resultlist .uneven { background: #e3e3e3; }
+    .resultlist .even { background: #cccccc; }
+    .resultlist th { text-align: left; font-weight: 700; }
+    .resultlist td { }
+    .resultlist td, .resultlist th { padding: 10px 5px; }
+
+
+	/* Format menu items differently depending on what level of the tree they are in */
+	/* Uncomment this if you want your fonts to decrease in size the deeper they are in the tree */
+/*
+	ul.mktree  li ul li { font-size: 90% }
+*/
+
+}

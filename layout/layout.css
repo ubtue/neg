@@ -1,0 +1,268 @@
+body {
+  font-family:		sans-serif;
+  background-color:	#FFFFFF;
+  background:		#FFFFFF;
+}
+
+body.popup {
+  font-family:		sans-serif;
+  font-size:	medium;
+  background-color:	#CCEEFF;
+  background:		#CCEEFF;
+}
+
+#main a{
+  font-size:	small;
+}
+
+#navigation {
+  background-color:	#003399;
+  color:		#FFFFFF;
+  height:		100%;
+  position:		absolute;
+  top:			101px;
+  left:			0px;
+  padding-left:		10px;
+  padding-top:		10px;
+  width:		150px;
+}
+
+#navigation a {
+  color:		#FFFFFF;
+  text-decoration:	none;
+}
+
+#image {
+  background-color:	#003399;
+  width:		150px;
+  height:		75px;
+  position:		absolute;
+  top:			0px;
+  left:			0px;
+  padding-top:	25px;
+}
+
+#form {
+  background-color:	#FFFFFF;
+  background:		#FFFFFF;
+  position:		absolute;
+  top:			101px;
+  left:			151px;
+  padding:		10px;
+  height:		100%;
+  min-width:		800px;
+}
+
+#titel {
+  background-color:	#003399;
+  color:		#FFFFFF;
+  position:		absolute;
+  top:			0px;
+  left:			151px;
+  height:		100px;
+  padding-left:		10px;
+  vertical-align:	middle;
+  padding-right:	10px;
+  min-width:		800px;
+}
+
+#titel h1 {
+  color:		#FFFFFF;
+  vertical-align:	middle;
+  font-size:		18pt;
+}
+
+
+
+#main {
+  border:		1px solid #666;
+  clear:		both;
+  background:		#CCEEFF;
+  padding-top:		1em;
+  padding-bottom:	1em;
+  width:		100%;
+ }
+
+#header {
+  position:		relative;
+  width:		100%;
+  height:		3em;
+  width:		45em; /* a width is required for Opera, older Mozilla browsers, and Konqueror browsers */
+}
+
+#header ul#primary {
+  margin:		0;
+  padding:		0;
+  position:		absolute;
+  bottom:		-1px;
+  width:		45em; /* a width is required for Opera, older Mozilla browsers, and Konqueror browsers */
+}
+
+#header ul#primary li  {
+  display:		inline;
+  list-style:		none;
+}
+
+#header ul#primary a,#header ul#primary span,#header ul#primary a.current {
+  width:		8em;
+  display:		block;
+  float:		left;
+  padding:		4px 0;
+  margin:		1px 2px 0 0;
+  text-align:		center;
+  font-family:		sans-serif;
+  font-size:		85%;
+  text-decoration:	none;
+  color:		#333;
+}
+
+#header ul#primary span,#header ul#primary a.current,#header ul#primary a.current:hover {
+  border:		1px solid #666;
+  border-bottom:	none;
+  background:		#cceeff;
+  padding-bottom:	6px;
+  margin-top:		0;
+}
+
+#header ul#primary a {
+  background:		#003399;
+  border:		1px solid #AAA;
+  border-bottom:	none;
+  color:		#FFFFFF;
+}
+
+#header ul#primary a:hover {
+  margin-top:		0;
+  border-color:		#666;
+  background:		#3366cc;
+  padding-bottom:	5px;
+}
+
+#tab1 {
+  visibility:		visible;
+  position:		absolute;
+  width:		45em;
+}
+
+#tab2 {
+  visibility:		hidden;
+  position:		absolute;
+  width:		45em;
+}
+
+#tab3 {
+  visibility:		hidden;
+  position:		absolute;
+  width:		45em;
+}
+
+#tab4 {
+  visibility:		hidden;
+  position:		absolute;
+  width:		45em;
+}
+
+#tab5 {
+  visibility:		hidden;
+  position:		absolute;
+  width:		45em;
+}
+
+#tab6 {
+  visibility:		hidden;
+  position:		absolute;
+  width:		45em;
+}
+
+#tab7 {
+  visibility:		hidden;
+  position:		absolute;
+  width:		45em;
+}
+
+#tab8 {
+  visibility:		hidden;
+  position:		absolute;
+  width:		45em;
+}
+
+th {
+  text-align:		left;
+  font-style:		italic;
+}
+
+h2 {
+  text-align:		left;
+  font-style:		italic;
+  font-weight:		bold;
+  font-size:		12pt;
+}
+
+h1.login {
+  text-align:		left;
+  font-weight:		bold;
+  font-size:		24pt;
+  text-align:		center;
+}
+h2.login {
+  text-align:		left;
+  font-style:		italic;
+  font-weight:		bold;
+  font-size:		14pt;
+  text-align:		center;
+}
+
+table.resultlist {
+  border-spacing:	2px;
+  font-size:		10pt;
+}
+
+tr.even {
+  background-color:	#CCCCCC;
+}
+
+tr.uneven {
+  background-color:	#AAAAAA;
+}
+
+th.resultlist {
+  color:		#FFFFFF;
+  background-color:	#003399;
+  padding-left:		5px;
+  padding-right:	5px;
+  border:		1px solid;
+  border-color:		#000000;
+}
+
+th.resultlist img {
+  border:		none;
+}
+
+th.resultlist a {
+  color:		white;
+  text-decoration:	none;
+}
+
+
+td.resultlist {
+  padding-left:		5px;
+  padding-right:	5px;
+}
+
+p.resultlistnavigation {
+  fonz-size:		10pt;
+}
+
+select {
+  max-width:		450px;
+}
+
+table.date {
+  background-color:	#CCEEFF;;
+  border:		1px solid;
+  width: 		45em;
+}
+
+th.date {
+  border-bottom:	1px solid;
+}
