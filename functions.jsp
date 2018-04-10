@@ -73,7 +73,7 @@ Vector calcCenturies(int von, int bis){
 
 String DBtoHTML(String s) {
   if(s==null) return s;
-  s = s.replace("&", "&amp;");
+ // s = s.replace("&", "&amp;");
   s = s.replace("<", "&lt;");
   s = s.replace(">", "&gt;");
   s = s.replace("\"", "&quot;");
