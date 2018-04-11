@@ -1309,8 +1309,8 @@
         
                 %>
            <script type="text/javascript">
-   var array = document.getElementsByTagName("li");
-   for(var j=0; i< array.length; j++){
+   var array = document.getElementById("complete").getElementsByTagName("li");
+   for(var j=0; j< array.length; j++){
        var ul =   array[j].getElementsByTagName("ul")[0].previousSibling;
        var li =     array[j].getElementsByTagName("li");
       var count = 0;
