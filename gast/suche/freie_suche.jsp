@@ -1108,7 +1108,8 @@
         }
         boolean even = false;
                 header += "</tr>";
-        out.print("<ul class=\"mktree\" id=\"complete\">");
+        out.print("<p id='result-loading'>Suchergebnis l\u00E4dt...</p>");
+        out.print("<ul class=\"mktree\" id=\"complete\" style='display:none'>");
         
             
             if(orderSize == 0) out.print("<table class=\"resultlist\">"+header+"<tr>");
@@ -1308,20 +1309,33 @@
         out.print("</ul>");
         
                 %>
-           <script type="text/javascript">
-   var array = document.getElementById("complete").getElementsByTagName("li");
-   for(var j=0; j< array.length; j++){
-       var ul =   array[j].getElementsByTagName("ul")[0].previousSibling;
-       var li =     array[j].getElementsByTagName("li");
-      var count = 0;
-       if(li.length<1)
-          count = (array[j].getElementsByTagName("table")[0].rows.length-2);
-       else 
-          count = ul.nextSibling.childNodes.length;
-       if(count==1)ul.data=ul.data + "("+ count + " Eintrag)";
-       else ul.data=ul.data + "("+ count + " Eintr\u00E4ge)";
-   }
-   </script>
+<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded", function(e) {
+		var result_list = document.getElementById("complete");
+		try {
+			var array = result_list.getElementsByTagName("li");
+			for(var j = 0; j < array.length; j++) {
+				var ul = array[j].getElementsByTagName("ul")[0].previousSibling;
+				var li = array[j].getElementsByTagName("li");
+				var count = 0;
+				if(li.length < 1)
+					count = (array[j].getElementsByTagName("table")[0].rows.length - 2);
+				else 
+			       count = ul.nextSibling.childNodes.length;
+			    if(count == 1)
+			    	ul.data = ul.data + "("+ count + " Eintrag)";
+			    else
+			    	ul.data = ul.data + "("+ count + " Eintr\u00E4ge)";
+			}
+		}
+		catch(ex) {
+		}
+		finally {
+			result_list.style.display = "block";
+			document.getElementById("result-loading").style.display = "none";
+		}
+	});
+</script>
         <%
       }
       }catch(Exception ex){out.println(ex.toString());}
