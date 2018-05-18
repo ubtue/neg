@@ -15,7 +15,7 @@
 
 <%
   String query = request.getParameter("query");
-
+  
      Connection cn = null;
     Statement  st = null;
     ResultSet  rs = null;
@@ -50,8 +50,24 @@
 
 
        }
-
-
+       
+       //>> Fix #3
+	   	query = query.trim();
+		String query_like = query;
+		// if query in double quotes, use verbatim, otherwise replace spaces with % wildcards
+    	if(query_like.startsWith("\"") && query_like.endsWith("\"")) {
+    		// remove quotes beginning and end
+    		query_like = query_like.substring(1, query_like.length() - 1);
+    	}
+    	else {
+    		query_like = query.replaceAll("\\s+", "%");
+    		if(!query_like.startsWith("%"))
+    			query_like = "%" + query_like;
+    		if(!query_like.endsWith("%"))
+    			query_like = query_like + "%";
+    	}
+    	out.println("<script>console.log('Using query term: " + query_like.replaceAll("'", "\\'") + "')</script>");
+       //<<
 
             out.println("<div id=\"level_function\"> <div class=\"open_next_level\" onClick=\"expandNextLevel('complete')\">Weitere Ebene aufklappen</div>");
       out.print("<div class=\"close_prev_level\" onClick=\"collapseNextLevel('complete')\">Weitere Ebene zuklappen</div></div>");
@@ -104,7 +120,7 @@
 				   "quelle.BisJahrhundert, e2.Belegform, e2.ID, e2.VonTag, e2.VonMonat, "+
 				   "e2.VonJahr, e2.VonJahrhundert, e2.BisTag, e2.BisMonat, e2.BisJahr, "+
 				   "e2.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS "+
-				   "quelleBerJahr FROM (select * from einzelbeleg where Belegform LIKE '"+query+"') as e1 LEFT OUTER JOIN einzelbeleg_hatnamenkommentar ehk1 ON "+
+				   "quelleBerJahr FROM (select * from einzelbeleg where Belegform LIKE '"+query_like+"') as e1 LEFT OUTER JOIN einzelbeleg_hatnamenkommentar ehk1 ON "+
 				   "ehk1.EinzelbelegID=e1.ID LEFT OUTER JOIN namenkommentar ON "+
 				   "namenkommentar.ID=ehk1.NamenkommentarID LEFT OUTER JOIN einzelbeleg_hatnamenkommentar ehk2 "+
 				   "ON namenkommentar.ID=ehk2.NamenkommentarID "+
@@ -180,7 +196,7 @@
 				   "quelle.BisJahrhundert, e2.Belegform, e2.ID, e2.VonTag, e2.VonMonat, "+
 				   "e2.VonJahr, e2.VonJahrhundert, e2.BisTag, e2.BisMonat, e2.BisJahr, "+
 				   "e2.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS "+
-				   "quelleBerJahr FROM (select * from einzelbeleg where Belegform LIKE '"+query+"') as e1 LEFT OUTER JOIN einzelbeleg_hatmghlemma ehk1 ON "+
+				   "quelleBerJahr FROM (select * from einzelbeleg where Belegform LIKE '"+query_like+"') as e1 LEFT OUTER JOIN einzelbeleg_hatmghlemma ehk1 ON "+
 				   "ehk1.EinzelbelegID=e1.ID LEFT OUTER JOIN mgh_lemma ON "+
 				   "mgh_lemma.ID=ehk1.MGHLemmaID LEFT OUTER JOIN einzelbeleg_hatmghlemma ehk2 "+
 				   "ON mgh_lemma.ID=ehk2.MGHLemmaID "+
@@ -262,7 +278,7 @@
        "e2.ID, e2.VonTag, e2.VonMonat, e2.VonJahr, e2.VonJahrhundert, "+
        "e2.BisTag, e2.BisMonat, e2.BisJahr, e2.BisJahrhundert, "+
        "VON_JAHR_JHDT(e2.VonJahr, e2.VonJahrhundert, e2.BisJahrhundert) AS einzelbelegBerJahr "+
-       "FROM (select * from person where person.Standardname LIKE '"+query+"') as person "+
+       "FROM (select * from person where person.Standardname LIKE '"+query_like+"') as person "+
        "LEFT OUTER JOIN einzelbeleg_hatperson eh2 ON eh2.PersonID=person.ID "+
        "LEFT OUTER JOIN einzelbeleg e2 ON e2.ID=eh2.EinzelbelegID "+
        "LEFT OUTER JOIN quelle ON e2.QuelleID=quelle.ID "+
@@ -293,7 +309,7 @@
 
       String [] orderV3 = {"quelle.Bezeichnung"};
 
-       sql = "SELECT DISTINCT quelle.Bezeichnung, quelle.ID, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr FROM quelle WHERE (quelle.Bezeichnung LIKE '"+query+"' and quelle.zuVeroeffentlichen='1') ORDER BY quelle.Bezeichnung ASC ,VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC ";
+       sql = "SELECT DISTINCT quelle.Bezeichnung, quelle.ID, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr FROM quelle WHERE (quelle.Bezeichnung LIKE '"+query_like+"' and quelle.zuVeroeffentlichen='1') ORDER BY quelle.Bezeichnung ASC ,VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC ";
 //	out.println(sql);
 
       rs = st.executeQuery(sql);
@@ -353,7 +369,7 @@
 				   "quelle.BisJahrhundert, e2.Belegform, e2.ID, e2.VonTag, e2.VonMonat, "+
 				   "e2.VonJahr, e2.VonJahrhundert, e2.BisTag, e2.BisMonat, e2.BisJahr, "+
 				   "e2.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS "+
-				   "quelleBerJahr FROM (select * from einzelbeleg where Belegform LIKE '"+query+"') as e2 "+
+				   "quelleBerJahr FROM (select * from einzelbeleg where Belegform LIKE '"+query_like+"') as e2 "+
 				   "LEFT OUTER JOIN quelle ON "+
 				   "e2.QuelleID=quelle.ID LEFT OUTER JOIN edition ON e2.EditionID=edition.ID WHERE "+
 				   "(quelle.zuVeroeffentlichen='1') ORDER BY e2.Belegform ASC, (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, "+
