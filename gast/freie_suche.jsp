@@ -50,8 +50,18 @@ function CheckAll(index, check, praefix) {
   }
 }
 </script>
+<style>
+	.truncate-hint, .truncate-hint a {
+		font-size: small !important;
+	}
+</style>
     <script type="text/javascript">
     $(function() { // when document has loaded
+    	
+    	// replace [help] with link to help >>
+    	var p = $('.truncate-hint');
+    	p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='hilfe.jsp'>$1</a>"));
+    	// <<
 
         var i = 4; // check how many input exists on the document and add 1 for the add command to work
         $('a#add').click(function() { // when you click the add link
@@ -146,6 +156,12 @@ function CheckAll(index, check, praefix) {
 
 <!-- ##### SUCHFELDER ##### -->
         <div id="tab-1">
+          <span class="truncate-hint">
+          	<jsp:include page="../inc.erzeugeBeschriftung.jsp">
+            	<jsp:param name="Formular" value="freie_suche"/>
+                <jsp:param name="Textfeld" value="TruncateHint"/>
+			</jsp:include>
+          </span>
           <span class="move"> Schritt 1 von 3 </span>
           <div class="clear"> </div>
             <table>

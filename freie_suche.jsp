@@ -34,9 +34,17 @@
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <!-->link rel="stylesheet" href="/resources/demos/style.css" /-->
+<style>
+	#truncate-hint {
+		font-size: small;
+		right: 0;
+	    position: absolute;
+	    width: 240px;
+	}
+</style>
 <script>
 $(function() {
-$( document ).tooltip();
+	$( document ).tooltip();
 });
 </script>
     
@@ -49,6 +57,11 @@ $( document ).tooltip();
     <script type="text/javascript">
     $(function() { // when document has loaded  
       
+    	// replace [help] with link to help >>
+    	var p = $('#truncate-hint');
+    	p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='gast/hilfe.jsp'>$1</a>"));
+    	// <<
+    	
         var i = 4; // check how many input exists on the document and add 1 for the add command to work  
         $('a#add').click(function() { // when you click the add link
         if(i<15){
@@ -151,6 +164,12 @@ $( document ).tooltip();
             </ul>
           </div>
           <div id="main">
+            <p id="truncate-hint">
+            	<jsp:include page="inc.erzeugeBeschriftung.jsp">
+                	<jsp:param name="Formular" value="freie_suche"/>
+                	<jsp:param name="Textfeld" value="TruncateHint"/>
+              	</jsp:include>
+            </p>
             <h3>
               <jsp:include page="inc.erzeugeBeschriftung.jsp">
                 <jsp:param name="Formular" value="freie_suche"/>
