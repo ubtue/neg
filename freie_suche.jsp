@@ -30,9 +30,9 @@
         <jsp:param name="Textfeld" value="Titel"/>
       </jsp:include>
     </TITLE>
-     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <!-->link rel="stylesheet" href="/resources/demos/style.css" /-->
 <style>
 	#truncate-hint {
@@ -52,7 +52,7 @@ $(function() {
     <script src="javascript/funktionen.js" type="text/javascript"></script>
             <link rel="stylesheet" type="text/css" href="layout/jquery.autocomplete.css" />
     <script type="text/javascript"
-            src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+            src="//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script src="javascript/jquery.autocomplete.js"></script>
     <script type="text/javascript">
     $(function() { // when document has loaded  

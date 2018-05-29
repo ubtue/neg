@@ -53,7 +53,7 @@
       
       
 //      out.println("<script type=\"text/javascript\">");
-//      out.println("location.replace('http://'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+"+id+");");
+//      out.println("location.replace(window.location.protocol+'//'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+"+id+");");
 //      out.println("</script>");
     }
     catch (Exception e) {

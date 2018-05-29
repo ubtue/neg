@@ -31,9 +31,9 @@ function admin_copy(name) {
 }
 
 /*
- *   @param typ          Typ des Popups (search für Suche oder addselect)
+ *   @param typ          Typ des Popups (search fï¿½r Suche oder addselect)
  *   @param parent       Link zum "Elternfenster" des Popups
- *   @param table        Name der Tabelle in der Gesucht oder Eingefügt werden soll (Bei Selektionen ab _)
+ *   @param table        Name der Tabelle in der Gesucht oder Eingefï¿½gt werden soll (Bei Selektionen ab _)
  *   @param destination  Name des Textfelds / der Selektion wo das Ergebnis hingeschrieben werden soll
  *   @param attribut     Attribut, nach dem gesucht werden soll (nur Suche)
  */
@@ -129,8 +129,8 @@ function generiereZitierweiseLit() {
   ziel.value = zw;
 }
 
-// Diese Methode ändert die Angezeigte URL ins Format "?ID=..:"
+// Diese Methode ï¿½ndert die Angezeigte URL ins Format "?ID=..:"
 function urlRewrite(id) {
   if(location.search.length == 0)
-    location.replace('http://'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+id);
+    location.replace(window.location.protocol+'//'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+id);
 }
