@@ -58,10 +58,12 @@
 			throw new Exception("<b>Bitte geben Sie mindestens 3 Zeichen als Suchtext an.</b>");
 
 		String query_like = query;
+		boolean is_exact_query = false;
 		// if query in double quotes, use verbatim, otherwise replace spaces with % wildcards
     	if(query_like.startsWith("\"") && query_like.endsWith("\"")) {
     		// remove quotes beginning and end
     		query_like = query_like.substring(1, query_like.length() - 1);
+    		is_exact_query = true;
     	}
     	else {
     		query_like = query.replaceAll("\\s+", "%");
@@ -282,7 +284,8 @@
        "e2.ID, e2.VonTag, e2.VonMonat, e2.VonJahr, e2.VonJahrhundert, "+
        "e2.BisTag, e2.BisMonat, e2.BisJahr, e2.BisJahrhundert, "+
        "VON_JAHR_JHDT(e2.VonJahr, e2.VonJahrhundert, e2.BisJahrhundert) AS einzelbelegBerJahr "+
-       "FROM (select * from person where person.Standardname LIKE '"+query_like+"') as person "+
+       "FROM (SELECT * FROM person WHERE person.Standardname LIKE '" + query_like + "' "+
+       		 "OR person.ID IN (SELECT personID FROM person_variante WHERE Variante LIKE '" + query_like + "')) as person "+
        "LEFT OUTER JOIN einzelbeleg_hatperson eh2 ON eh2.PersonID=person.ID "+
        "LEFT OUTER JOIN einzelbeleg e2 ON e2.ID=eh2.EinzelbelegID "+
        "LEFT OUTER JOIN quelle ON e2.QuelleID=quelle.ID "+
@@ -296,7 +299,9 @@
 
       if(rs.isBeforeFirst()){
      found = true;
-      out.print("<li  style=\"width:100%;float:left\" class=\"liOpen\" style=\"margin-top:20pt;font-size:large\">\""+query+"\" entspricht dem Namen folgender Personen<ul>");
+      out.print("<li  style=\"width:100%;float:left\" class=\"liOpen\" style=\"margin-top:20pt;font-size:large\">\""+query+"\" "+
+     	(is_exact_query ? "entspricht dem Namen oder einer Namensvariante folgender Personen" : "kommt im Namen oder einer Namensvariante folgender Personen vor") +
+     	" <ul>");
       test(out, headlines, fieldNames, rs, orderV2, order, "EB Jahr", false);
 
        out.println("</ul></li>");
