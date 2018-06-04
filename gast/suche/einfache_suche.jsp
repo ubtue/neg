@@ -53,6 +53,10 @@
        
        //>> Fix #3
 	   	query = query.trim();
+
+		if(query.length() < 3)
+			throw new Exception("<b>Bitte geben Sie mindestens 3 Zeichen als Suchtext an.</b>");
+
 		String query_like = query;
 		// if query in double quotes, use verbatim, otherwise replace spaces with % wildcards
     	if(query_like.startsWith("\"") && query_like.endsWith("\"")) {
@@ -419,7 +423,7 @@
 
        }
           catch (Exception e) {
-      out.println(e);
+      out.println(e.getMessage());
     }
     finally {
       try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
