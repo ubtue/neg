@@ -256,7 +256,7 @@ String getLabel(String formular, String datenfeld, String textfeld, Statement st
 }
 
 String format(String text, String feld){
-	if(!feld.endsWith("PLemma")) return text;
+	if(!feld.endsWith("PLemma") && !feld.endsWith("MGHLemma")) return text;
 	
 	String lemma = text;
 	lemma = lemma.replaceAll("@-e1", "&#x01E3;");
