@@ -13,11 +13,11 @@
         rs = st.executeQuery("SELECT "+zielAttribut+" FROM "+zielTabelle+" WHERE ID=\""+id+"\"");
         if ( rs.next() && rs.getString(zielAttribut) != null) {
           if(!isReadOnly) out.print("value=\""+DBtoHTML(rs.getString(zielAttribut))+"\" ");
-          else out.println(DBtoHTML(rs.getString(zielAttribut)));
+          else out.println(DBtoHTML(format(rs.getString(zielAttribut), isKlarlemma? "Klarlemma" : "")));
         }
         else if (def!=null){
           if(!isReadOnly)out.print("value=\""+def+"\" ");
-          else out.println(def);
+          else out.println(format(def, isKlarlemma? "Klarlemma" : ""));
         }
       }
       if (zielAttribut != null) {

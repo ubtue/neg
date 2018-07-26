@@ -317,6 +317,7 @@
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="mgh_lemma" />
 				<jsp:param name="Datenfeld" value="MGHLemma" />
+				<jsp:param name="Klarlemma" value="yes"/>
 				<jsp:param name="size" value="25" />
 			    <jsp:param name="Readonly" value="yes" />
 			  </jsp:include>
