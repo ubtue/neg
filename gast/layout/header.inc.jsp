@@ -35,7 +35,7 @@
 			</p>
 -->
 
-			<p><a href="hilfe.jsp"> <strong> Hilfe </strong></a>|<a href="../logout.jsp"> <strong> Interner Bereich </strong> </a></p>
+			<p><a href="hilfe.jsp"><strong>Hilfe</strong></a> | <a href="../logout.jsp?go=intern"><strong>Interner Bereich</strong></a></p>
 		</div>
 		<div class="clear"></div>
 	</div>
