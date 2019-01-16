@@ -27,7 +27,7 @@
             </p>
         </div>
         <div id="footer-contact">
-            <p> <span>Normen et Gens</span>
+            <p> <span>Nomen et Gens</span>
                 <span>Seminar f&uuml;r mittelalterliche Geschichte</span>
                 <span>Eberhard Karls Universit&auml;t T&uuml;bingen</span>
                 </p>
