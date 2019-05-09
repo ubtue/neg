@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (session != null) {
     String sprache = (String) session.getAttribute("Sprache");
     session.invalidate();

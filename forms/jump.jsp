@@ -1,4 +1,4 @@
-<%@ include file="../configuration.jsp" %>
+﻿<%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
 <%@ page import="java.sql.Connection" isThreadSafe="false" %>
@@ -43,7 +43,7 @@
       <option value="-1">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
           <jsp:param name="Formular" value="jump"/>
-          <jsp:param name="Textfeld" value="zur�ck"/>
+          <jsp:param name="Textfeld" value="zurück"/>
         </jsp:include>
       </option>
       <option value="0">

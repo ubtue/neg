@@ -1,4 +1,4 @@
-<%@ page import="java.io.File" isThreadSafe="false" %>
+﻿<%@ page import="java.io.File" isThreadSafe="false" %>
 <%@ page import="java.io.FileNotFoundException" isThreadSafe="false" %>
 <%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
@@ -132,7 +132,7 @@
         <td><a href="doimport.jsp?operation=boundtogroups">ausf&uuml;hren</a></td>
       </tr>
       <tr>
-        <td>verwendete Edition bei Einzelbelegen aus Quellen f�r die nur diese Edition existiert festlegen</td>
+        <td>verwendete Edition bei Einzelbelegen aus Quellen für die nur diese Edition existiert festlegen</td>
         <td><a href="doimport.jsp?operation=editions">ausf&uuml;hren</a></td>
       </tr>
       <tr>

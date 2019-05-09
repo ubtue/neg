@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (tabelle.equals("selektion_literaturtyp")) {
     Connection cn = null;
     Statement st = null;

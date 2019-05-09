@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -27,7 +27,7 @@
 				 		background-image: url(img/de.gif); height: 14px; width: 22px;">
 				<input type="submit" name="language" alt="English" title="English" value="gb" style="border:#000 1px solid;
 						background-image: url(img/gb.gif); height: 14px; width: 22px;">
-				<input type="submit" name="language" alt="Francáis" title="Francáis" value="fr" style="border:#fff 1px solid;
+				<input type="submit" name="language" alt="FrancÃ¡is" title="FrancÃ¡is" value="fr" style="border:#fff 1px solid;
 						background-image: url(img/fr.gif); height: 14px; width: 22px;">
 				<input type="submit" name="language" alt="Latein" title="Latein" value="la" style="border:#fff 1px solid;
 						background-image: url(img/la.gif); height: 14px; width: 22px;">

@@ -1,4 +1,4 @@
-<%
+﻿<%
   boolean andereSelektion = false;
   String quelltabelle = "";
   String zieltabelle = "";

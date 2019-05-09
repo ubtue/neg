@@ -1,4 +1,4 @@
-<%
+ï»¿<%
 
 //	out.println(orderV[0]);
 
@@ -66,7 +66,7 @@
       st = cn.createStatement();
 
 	  if(fields.size()==0){
-	  	out.println("Bitte wählen Sie mind. ein Ausgabefeld aus (Schritt 2).");
+	  	out.println("Bitte wÃ¤hlen Sie mind. ein Ausgabefeld aus (Schritt 2).");
 	  	return;
 	  }
 
@@ -99,7 +99,7 @@
         out.println("<tr>");
         for (int i=0; i<headlines.size(); i++) {
           out.println("<th class=\"resultlist\">");
-          // Link für Seite erzeugen
+          // Link fÃ¼r Seite erzeugen
           String direction = "";
           if (order.contains(fieldNames.get(i))) {
             direction = order.substring(order.indexOf(fieldNames.get(i)+" ")+fieldNames.get(i).length()+1, min(order.length(), order.indexOf(fieldNames.get(i)+" ")+fieldNames.get(i).length()+5));
@@ -227,7 +227,7 @@
         out.println("<p class=\"resultlistnavigation\" align=\"center\">");
         int pages = (linecount / pageLimit)+1;
         for (int i=0; i< pages; i++) {
-          // Link für Seite erzeugen
+          // Link fÃ¼r Seite erzeugen
           String parameter = "?pageoffset="+i;
           for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements(); ) {
             String paramName = e.nextElement();
@@ -235,7 +235,7 @@
               parameter += "&"+paramName+"="+urlEncode(request.getParameter(paramName));
           }
 
-          // Link zur ersten Seite anzeigen falls nötig
+          // Link zur ersten Seite anzeigen falls nÃ¶tig
           if (i ==  0 && i <= pageoffset - 10) {
             out.println("<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;...&nbsp;");
           }
@@ -250,7 +250,7 @@
               out.println("</b>");
             }
           }
-          // Link zur letzten Seite anzeigen falls nötig
+          // Link zur letzten Seite anzeigen falls nÃ¶tig
           if (i ==  pages-1 && i >= pageoffset + 10) {
             out.println("...&nbsp;<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;");
           }

@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (tabelle.startsWith("handschrift")) {
     String limit = " ";
     if (tabelle.equals("handschrift")) {

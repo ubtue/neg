@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("hidden") && !array) {
     try {
       Class.forName( sqlDriver );

@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("date") && !array) {
     out.println("<table>\n");
     out.println("<tr>\n");

@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -36,7 +36,7 @@
 
   Vector<String> headlines = new Vector<String> ();
 
-  // Welche Grund-Tabellen (Einzelbeleg / Person / Namenkommentar) werden benötigt...
+  // Welche Grund-Tabellen (Einzelbeleg / Person / Namenkommentar) werden benÃ¶tigt...
   boolean einzelbeleg = false;
   boolean person = false;
   boolean namenkommentar = false;
@@ -849,7 +849,7 @@
            zeitraum = Integer.parseInt(request.getParameter("order"+i+"zeit"));
         }catch(Exception ex){
         }
-          order += " (VON_JAHR_JHDT(einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisJahrhundert) DIV "+ zeitraum + "), VON_JAHR_JHDT(einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisJahrhundert)"; // Richtung wird später angefügt
+          order += " (VON_JAHR_JHDT(einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisJahrhundert) DIV "+ zeitraum + "), VON_JAHR_JHDT(einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisJahrhundert)"; // Richtung wird spÃ¤ter angefÃ¼gt
         einzelbeleg = true;
         
       //  if (request.getParameter("Ausgabe_Einzelbeleg_Datierung") == null || !request.getParameter("Ausgabe_Einzelbeleg_Datierung").equals("on")) {
@@ -866,7 +866,7 @@
            zeitraum = Integer.parseInt(request.getParameter("order"+i+"zeit"));
         }catch(Exception ex){
         }
-        order += " (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) DIV "+ zeitraum + "), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert)"; // Richtung wird später angefügt
+        order += " (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) DIV "+ zeitraum + "), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert)"; // Richtung wird spÃ¤ter angefÃ¼gt
         einzelbeleg = true;
         
      //   if (request.getParameter("Ausgabe_Quelle_Datierung") == null || !request.getParameter("Ausgabe_Quelle_Datierung").equals("on")) {
@@ -972,7 +972,7 @@
       }
     }
 
-    // Zählfelder
+    // ZÃ¤hlfelder
     String countString = "";
     if (count.size() > 0) {
       countString += "count(DISTINCT " + count.firstElement() + ")";
@@ -1077,7 +1077,7 @@
         for (int i=0; i<headlines.size(); i++) {
         if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") ||fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))){
           header += "<th>";
-          // Link für Seite erzeugen
+          // Link fÃ¼r Seite erzeugen
           String direction = "";
           if (order.contains(fieldNames.get(i))) {
             direction = order.substring(order.indexOf(fieldNames.get(i)+" ")+fieldNames.get(i).length()+1, min(order.length(), order.indexOf(fieldNames.get(i)+" ")+fieldNames.get(i).length()+5));
@@ -1525,7 +1525,7 @@
         out.println("<p class=\"resultlistnavigation\" align=\"center\">");
         int pages = (linecount / pageLimit)+1;
         for (int i=0; i< pages; i++) {
-          // Link für Seite erzeugen
+          // Link fÃ¼r Seite erzeugen
           String parameter = "?pageoffset="+i;
           for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements(); ) {
             String paramName = e.nextElement();
@@ -1533,7 +1533,7 @@
               parameter += "&"+paramName+"="+urlEncode(request.getParameter(paramName));
           }
 
-          // Link zur ersten Seite anzeigen falls nötig
+          // Link zur ersten Seite anzeigen falls nÃ¶tig
           if (i ==  0 && i <= pageoffset - 10) {
             out.println("<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;...&nbsp;");
           }
@@ -1548,7 +1548,7 @@
               out.println("</b>");
             }
           }
-          // Link zur letzten Seite anzeigen falls nötig
+          // Link zur letzten Seite anzeigen falls nÃ¶tig
           if (i ==  pages-1 && i >= pageoffset + 10) {
             out.println("...&nbsp;<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;");
           }

@@ -1,4 +1,4 @@
-<%--
+﻿<%--
   Comment to this file see:
   http://www.Torsten-Horn.de/techdocs/jsp-upload.htm
 
@@ -17,7 +17,7 @@
   //   MyJavaServer.com :  sUploadDir = "/~torstenhorn/upload/";
   final String sUploadDir = "/upload/";
   final String sErrMsg
-    = "<h2>Fehler: Keine g�ltige Bilddatei (JPG, PNG, GIF)!</h2>";
+    = "<h2>Fehler: Keine gültige Bilddatei (JPG, PNG, GIF)!</h2>";
 
   String readAndShowImage( HttpServletRequest request )
   throws FileNotFoundException, IOException

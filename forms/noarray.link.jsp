@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.startsWith("link") && !array) {
         String[] fields = feldtyp.substring(feldtyp.lastIndexOf('(')+1, feldtyp.lastIndexOf(')')).split(",");
     try {

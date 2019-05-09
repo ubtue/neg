@@ -1,4 +1,4 @@
-
+﻿
 <%
 	if (feldtyp.equals("combined") && array) {
 	    int count=0;

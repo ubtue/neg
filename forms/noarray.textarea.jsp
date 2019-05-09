@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("textarea") && !array) {
     try {
       Class.forName( sqlDriver );

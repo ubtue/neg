@@ -1,4 +1,4 @@
-<%
+﻿<%
   String sqlDriver  = "com.mysql.jdbc.Driver";
 
   String sqlURL  = "";
@@ -15,7 +15,7 @@
 
 
 
-  int pageLimit = 30;		// Wichtig f�r Abfragen
+  int pageLimit = 30;		// Wichtig für Abfragen
   int sessionTimeout = 60*60;
 
   int numberSize = 5;		// Anzahl der Nummerierungsstellen in PKZ, Belegnummer, etc.

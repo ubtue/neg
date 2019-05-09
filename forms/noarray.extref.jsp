@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("extref") && !array) {
     try {
       if (Integer.parseInt(id) > 0) {

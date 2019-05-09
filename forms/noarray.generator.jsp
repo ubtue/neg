@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("generator") && !array) {
     try {
       Class.forName( sqlDriver );

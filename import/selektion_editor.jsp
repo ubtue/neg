@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (tabelle.equals("selektion_editor")) {
     Connection oldDB = null;
     Connection newDB = null;

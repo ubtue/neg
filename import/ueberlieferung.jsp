@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (tabelle.equals("ueberlieferung_edition")) {
     Connection oldDB = null;
     Connection newDB = null;

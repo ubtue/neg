@@ -1,4 +1,4 @@
-<html>
+ï»¿<html>
 <body>
 
 <%@ page import = "java.sql.*" isThreadSafe="false" %>
@@ -31,7 +31,7 @@ Benutzer     <input type="text"     name="prmUsr"   value='<%= sUsr   %>' size=6
 Kennwort     <input type="password" name="prmPwd"   value='<%= sPwd   %>' size=60><br>
 Tabellenname <input type="text"     name="prmTab"   value='<%= sTable %>' size=60><br>
 SQL-Kommando <input type="text"     name="prmSql"   value='<%= sSql   %>' size=60>
-             (nach Änderung anderer Parameter muss SQL-Kommando gelöscht werden)<br>
+             (nach Ã„nderung anderer Parameter muss SQL-Kommando gelÃ¶scht werden)<br>
              <input type="submit" name="submit" value="Datenbanktabelle anzeigen">
 </pre></form>
 

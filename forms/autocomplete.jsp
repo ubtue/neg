@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("autocomplete")) {
   
   out.println("<input type=\"text\" style=\"width: 250px\" id=\""+datenfeld+"\" name=\""+datenfeld+"\" "+(size>0?"size=\""+size+"\" ":""));

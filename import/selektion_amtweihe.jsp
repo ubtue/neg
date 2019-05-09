@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (tabelle.equals("selektion_amtweihe")) {
     Connection cn = null;
     Connection cn2 = null;

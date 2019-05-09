@@ -1,4 +1,4 @@
-
+﻿
 <%@ page import="java.math.BigInteger" isThreadSafe="false"%>
 <%@ page import="java.security.MessageDigest" isThreadSafe="false"%>
 <%@ page import="java.sql.Connection" isThreadSafe="false"%>
@@ -41,7 +41,7 @@
       out.println(neu + ":::" + alt  + "<br>");
       
       if(neu.equals(alt)){
-      out.println("<p>Auswahl kann nicht mit sich selbst zusammengef�hrt werden.</p>");
+      out.println("<p>Auswahl kann nicht mit sich selbst zusammengeführt werden.</p>");
       out.println("<a href=\"administration.jsp\">zur&uuml;ck zur Administration</a>");
       
       }

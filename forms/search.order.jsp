@@ -1,4 +1,4 @@
-<%@ include file="../configuration.jsp" %>
+﻿<%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
 <%@ page import="java.sql.Connection" isThreadSafe="false" %>
@@ -46,7 +46,7 @@
       <jsp:param name="Formular" value="freie_suche"/>
       <jsp:param name="Textfeld" value="SortierungDESC"/>
     </jsp:include>
-    <br>Zeitraum (nur f�r Datierung): <input type="text" name="<%= zeitraum %>" />     
+    <br>Zeitraum (nur für Datierung): <input type="text" name="<%= zeitraum %>" />     
     
     
 <%

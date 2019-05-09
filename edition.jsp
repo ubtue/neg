@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+ï»¿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -336,7 +336,7 @@
 		<jsp:param name="Formular" value="quelle" />
 		<jsp:param name="Textfeld" value="TabUeberlieferung" />
 	</jsp:include> </a></li>
-<!-- TAB BÄNDE & QUELLEN
+<!-- TAB BÃ„NDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                   <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -403,7 +403,7 @@
 		<jsp:param name="Formular" value="quelle" />
 		<jsp:param name="Textfeld" value="TabUeberlieferung" />
 	</jsp:include> </span></li>
-<!-- TAB BÄNDE & QUELLEN
+<!-- TAB BÃ„NDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                   <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -546,7 +546,7 @@
 		<jsp:param name="Formular" value="quelle" />
 		<jsp:param name="Textfeld" value="TabUeberlieferung" />
 	</jsp:include> </a></li>
-<!-- TAB BÄNDE & QUELLEN
+<!-- TAB BÃ„NDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab4');">
                   <jsp:include page="inc.erzeugeBeschriftung.jsp">

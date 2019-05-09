@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("checkbox") && !array) {
     out.print("<input name=\""+datenfeld+"\" ");
     out.print("type=\"checkbox\"");

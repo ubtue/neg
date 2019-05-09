@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("note") && !array) {
     try {
       Class.forName( sqlDriver );

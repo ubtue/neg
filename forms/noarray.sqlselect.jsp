@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("sqlselect") && !array) {
     String sql = "";
     if (datenfeld.equals("Edition")) {

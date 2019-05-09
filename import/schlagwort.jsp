@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (tabelle.startsWith("schlagwort")) {
     String quelltabelle = "";
     String zieltabelle = "";

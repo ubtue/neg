@@ -1,4 +1,4 @@
-<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
+ï»¿<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
 <%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
@@ -158,7 +158,7 @@
         st = cn.createStatement();
         rs = st.executeQuery("SELECT *  FROM selektion_"+request.getParameter("Tabelle") +" where Bezeichnung='"+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"'");
         if(rs.next() && rs.getString("Bezeichnung").equals(request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"))){
-            out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"exisitiert bereits, benutzen Sie bitte die Funktion 'zusammenführen' um beide Auswahl zusammenzuführen.</p>");
+            out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"exisitiert bereits, benutzen Sie bitte die Funktion 'zusammenfÃ¼hren' um beide Auswahl zusammenzufÃ¼hren.</p>");
             out.println("<a href=\"administration.jsp\">zur&uuml;ck</a>");
         }
         else{
@@ -187,7 +187,7 @@
       st2 = cn.createStatement();
       
       if(request.getParameter("Feld_neu").equals(request.getParameter("Feld_alt"))){
-      out.println("<p>Auswahl kann nicht mit sich selbst zusammengeführt werden.</p>");
+      out.println("<p>Auswahl kann nicht mit sich selbst zusammengefÃ¼hrt werden.</p>");
       out.println("<a href=\"administration.jsp\">zur&uuml;ck zur Administration</a>");
       
       }
@@ -203,7 +203,7 @@
                       + " WHERE ID="+request.getParameter("Feld_alt"));
       st2.executeBatch();
       out.println("<p>Auswahl erfolgreich zusammengef&uuml;hrt.</p>");
-      out.println("<a href=\"admin.auswahlfelder.jsp?Formular=zusammenfuehren&Tabelle="+request.getParameter("Tabelle")+"\">Weitere Elemente zusammenführen</a>");
+      out.println("<a href=\"admin.auswahlfelder.jsp?Formular=zusammenfuehren&Tabelle="+request.getParameter("Tabelle")+"\">Weitere Elemente zusammenfÃ¼hren</a>");
       out.println("<a href=\"administration.jsp\">zur&uuml;ck zur Administration</a>");
       }
     }

@@ -1,4 +1,4 @@
-<%@ page import="java.sql.*" isThreadSafe="false"%>
+﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
 
 <%@ include file="configuration.jsp"%>
 

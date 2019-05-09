@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (true) {
     // Bedigungen
     String conditionsString = "";

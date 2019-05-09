@@ -1,4 +1,4 @@
-<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
+ï»¿<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
 <%@ page import="java.util.Vector" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
@@ -79,37 +79,37 @@ String DBtoHTML(String s) {
   s = s.replace("\"", "&quot;");
   s = s.replace("\'", "&#039;");
  
-  s = s.replace("ä", "&auml;");
-  s = s.replace("ö", "&ouml;");
-  s = s.replace("ü", "&uuml;");
-  s = s.replace("Ä", "&Auml;");
-  s = s.replace("Ö", "&Ouml;");
-  s = s.replace("Ü", "&Uuml;");
-  s = s.replace("ß", "&szlig;");
+  s = s.replace("Ã¤", "&auml;");
+  s = s.replace("Ã¶", "&ouml;");
+  s = s.replace("Ã¼", "&uuml;");
+  s = s.replace("Ã„", "&Auml;");
+  s = s.replace("Ã–", "&Ouml;");
+  s = s.replace("Ãœ", "&Uuml;");
+  s = s.replace("ÃŸ", "&szlig;");
 
-  s = s.replace("°", "&deg;");
+  s = s.replace("Â°", "&deg;");
 
-  s = s.replace("´", "&acute;");
+  s = s.replace("Â´", "&acute;");
   s = s.replace("`", "&grave;");
   s = s.replace("^", "&circ;");
 
-  s = s.replace("á", "&aacute;");
-  s = s.replace("é", "&eacute;");
-  s = s.replace("í", "&iacute;");
-  s = s.replace("ó", "&oacute;");
-  s = s.replace("ú", "&uacute;");
+  s = s.replace("Ã¡", "&aacute;");
+  s = s.replace("Ã©", "&eacute;");
+  s = s.replace("Ã­", "&iacute;");
+  s = s.replace("Ã³", "&oacute;");
+  s = s.replace("Ãº", "&uacute;");
 
-  s = s.replace("à", "&agrave;");
-  s = s.replace("è", "&egrave;");
-  s = s.replace("ì", "&igrave;");
-  s = s.replace("ò", "&ograve;");
-  s = s.replace("ù", "&ugrave;");
+  s = s.replace("Ã ", "&agrave;");
+  s = s.replace("Ã¨", "&egrave;");
+  s = s.replace("Ã¬", "&igrave;");
+  s = s.replace("Ã²", "&ograve;");
+  s = s.replace("Ã¹", "&ugrave;");
 
-  s = s.replace("â", "&acirc;");
-  s = s.replace("ê", "&ecirc;");
-  s = s.replace("î", "&icirc;");
-  s = s.replace("ô", "&ocirc;");
-  s = s.replace("û", "&ucirc;");
+  s = s.replace("Ã¢", "&acirc;");
+  s = s.replace("Ãª", "&ecirc;");
+  s = s.replace("Ã®", "&icirc;");
+  s = s.replace("Ã´", "&ocirc;");
+  s = s.replace("Ã»", "&ucirc;");
 
   return s;
 }
@@ -121,37 +121,37 @@ String HTMLtoDB(String s) {
   s = s.replace("&quot;", "\"");
   s = s.replace("&#039;", "\'");
  
-  s = s.replace("&auml;", "ä");
-  s = s.replace("&ouml;", "ö");
-  s = s.replace("&uuml;", "ü");
-  s = s.replace("&Auml;", "Ä");
-  s = s.replace("&Ouml;", "Ö");
-  s = s.replace("&Uuml;", "Ü");
-  s = s.replace("&szlig;", "ß");
+  s = s.replace("&auml;", "Ã¤");
+  s = s.replace("&ouml;", "Ã¶");
+  s = s.replace("&uuml;", "Ã¼");
+  s = s.replace("&Auml;", "Ã„");
+  s = s.replace("&Ouml;", "Ã–");
+  s = s.replace("&Uuml;", "Ãœ");
+  s = s.replace("&szlig;", "ÃŸ");
 
-  s = s.replace("&deg;", "°");
+  s = s.replace("&deg;", "Â°");
 
-  s = s.replace("&acute;", "´");
+  s = s.replace("&acute;", "Â´");
   s = s.replace("&grave;", "`");
   s = s.replace("&circ;", "^");
 
-  s = s.replace("&aacute;", "á");
-  s = s.replace("&eacute;", "é");
-  s = s.replace("&iacute;", "í");
-  s = s.replace("&oacute;", "ó");
-  s = s.replace("&uacute;", "ú");
+  s = s.replace("&aacute;", "Ã¡");
+  s = s.replace("&eacute;", "Ã©");
+  s = s.replace("&iacute;", "Ã­");
+  s = s.replace("&oacute;", "Ã³");
+  s = s.replace("&uacute;", "Ãº");
 
-  s = s.replace("&agrave;", "à");
-  s = s.replace("&egrave;", "è");
-  s = s.replace("&igrave;", "ì");
-  s = s.replace("&ograve;", "ò");
-  s = s.replace("&ugrave;", "ù");
+  s = s.replace("&agrave;", "Ã ");
+  s = s.replace("&egrave;", "Ã¨");
+  s = s.replace("&igrave;", "Ã¬");
+  s = s.replace("&ograve;", "Ã²");
+  s = s.replace("&ugrave;", "Ã¹");
 
-  s = s.replace("&acirc;", "â");
-  s = s.replace("&ecirc;", "ê");
-  s = s.replace("&icirc;", "î");
-  s = s.replace("&ocirc;", "ô");
-  s = s.replace("&ucirc;", "û");
+  s = s.replace("&acirc;", "Ã¢");
+  s = s.replace("&ecirc;", "Ãª");
+  s = s.replace("&icirc;", "Ã®");
+  s = s.replace("&ocirc;", "Ã´");
+  s = s.replace("&ucirc;", "Ã»");
 
   return s;
 }

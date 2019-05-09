@@ -1,4 +1,4 @@
-<%@ include file="../configuration.jsp" %>
+﻿<%@ include file="../configuration.jsp" %>
 
 <%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>

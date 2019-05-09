@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false"%>
+﻿<%@ page import="java.sql.Connection" isThreadSafe="false"%>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.sql.SQLException" isThreadSafe="false"%>
@@ -703,7 +703,7 @@
 <div id="main">
 <form method="post" action="suchergebnis.jsp"><input
 	type="hidden" name="form" value="favorit" />
-<p>Testweise gibt es hier eine f�r die Philologen Interessante Liste
+<p>Testweise gibt es hier eine für die Philologen Interessante Liste
 zu <a href="person.jsp?ID=21812">dieser Person</a></p>
 <p><input type="reset" value="abbrechen" />&nbsp;&nbsp;<input
 	type="submit" value="Suchen" /></p>

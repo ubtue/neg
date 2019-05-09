@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -696,7 +696,7 @@ function CheckAll(index, check, praefix) {
             <div class="clear"> </div>
 <!--
            <p align="right">
-               <a href="#" id="add">Weitere Gruppierung hinzufügen</a>
+               <a href="#" id="add">Weitere Gruppierung hinzufÃ¼gen</a>
               <input type="reset">
               <input type="submit">
 

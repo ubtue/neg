@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("textfield") && array) {
     try {
       Class.forName( sqlDriver );

@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+ï»¿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -39,8 +39,8 @@
           <li><a href="ohneVerknuepfung.jsp?form=namenkommentar.jsp&dbForm=namenkommentar&zwischentabelle=einzelbeleg_hatnamenkommentar&attribut=PLemma&zwAttribut=namenkommentarID">Namen ohne Belege</a></li>
           <li><a href="ohneVerknuepfung.jsp?form=person.jsp&dbForm=person&zwischentabelle=einzelbeleg_hatperson&attribut=Standardname&zwAttribut=personID">Person ohne Belege</a></li>
           <li><a href="ohneVerknuepfung.jsp?form=quelle.jsp&dbForm=quelle&zwischentabelle=quelle_inedition&attribut=Bezeichnung&zwAttribut=QuelleID">Quelle ohne Edition</a></li>
-          <li><a href="ohneVerknuepfung.jsp?form=quelle.jsp&dbForm=quelle&zwischentabelle=handschrift_ueberlieferung&attribut=Bezeichnung&zwAttribut=QuelleID">Quelle ohne Überlieferung</a></li>
-          <li><a href="ohneVerknuepfung.jsp?form=handschrift.jsp&dbForm=handschrift&zwischentabelle=handschrift_ueberlieferung&attribut=Bibliothekssignatur&zwAttribut=HandschriftID">Textzeugen ohne Überlieferung</a></li>
+          <li><a href="ohneVerknuepfung.jsp?form=quelle.jsp&dbForm=quelle&zwischentabelle=handschrift_ueberlieferung&attribut=Bezeichnung&zwAttribut=QuelleID">Quelle ohne Ãœberlieferung</a></li>
+          <li><a href="ohneVerknuepfung.jsp?form=handschrift.jsp&dbForm=handschrift&zwischentabelle=handschrift_ueberlieferung&attribut=Bibliothekssignatur&zwAttribut=HandschriftID">Textzeugen ohne Ãœberlieferung</a></li>
           <!--li><a href="http://localhost:8080/NeG_final/ohneVerknuepfung.jsp?form=handschrift.jsp&dbForm=handschrift&zwischentabelle=einzelbeleg_textkritik&attribut=Bibliothekssignatur&zwAttribut=HandschriftID">Textkritik ohne Belege</a></li-->
        </ul>
        

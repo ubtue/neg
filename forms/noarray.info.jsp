@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (readonly!=null && readonly.equals("yes") && !array) {
     try {
       Class.forName( sqlDriver );

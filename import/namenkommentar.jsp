@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (tabelle.equals("namenkommentar")) {
     Connection cn = null;
     Statement st = null;

@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("addselectandtext") && array) {
     Statement st2 = null;
     ResultSet rs2 = null;

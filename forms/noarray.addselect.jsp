@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("addselect") && !array) {
     try {
       Class.forName( sqlDriver );

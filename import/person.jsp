@@ -1,4 +1,4 @@
-<%
+﻿<%
 
   if (tabelle.startsWith("person")) {
   String limit = ""; // LIMIT 20000, 10000";

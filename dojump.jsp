@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false"%>
+﻿<%@ page import="java.sql.Connection" isThreadSafe="false"%>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.sql.SQLException" isThreadSafe="false"%>
@@ -64,7 +64,7 @@
 		}
 
 		Connection cn = null;
-		Statement st = null; // f�r Anfrage an Datenbank-Mapping
+		Statement st = null; // für Anfrage an Datenbank-Mapping
 		ResultSet rs = null;
 		int akt = -1;
 

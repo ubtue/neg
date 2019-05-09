@@ -1,4 +1,4 @@
-<%@ page import="java.sql.*" isThreadSafe="false"%>
+﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
 
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp"%>
@@ -21,7 +21,7 @@
       String login = "Gast";
       String password = "gast";
 
-      // Passwort verschlüsseln
+      // Passwort verschlÃ¼sseln
       MessageDigest m = MessageDigest.getInstance("MD5");
       m.update(password.getBytes(), 0, password.length());
       String passwordMD5 = (new BigInteger(1, m.digest()).toString(16));
@@ -33,7 +33,7 @@
         rs = st.executeQuery("SELECT ID, Login, GruppeID, IstAdmin, Sprache, IstGast FROM benutzer WHERE Login='"+login+"' AND Password ='"+passwordMD5+"'");
 
         if (rs.next()) {
-          // Falls Session vorhanden, löschen
+          // Falls Session vorhanden, lÃ¶schen
           if (session != null) {
             session.invalidate();
           }

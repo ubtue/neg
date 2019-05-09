@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (tabelle.startsWith("einzelbeleg")) {
   String limit = ""; // LIMIT 50000, 10000";
 

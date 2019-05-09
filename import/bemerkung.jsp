@@ -1,4 +1,4 @@
-<%
+﻿<%
   String quelltabelle = "";
   String quellbemerkung = "";
   String quellID = "";

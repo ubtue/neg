@@ -1,4 +1,4 @@
-<%
+﻿<%
 
   if (tabelle.startsWith("edition")) {
 

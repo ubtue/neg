@@ -1,4 +1,4 @@
-<%@page import="java.io.File"%>
+﻿<%@page import="java.io.File"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.net.URL"%>
 <%@page import="java.io.*"%>
@@ -51,7 +51,7 @@ if(ServletFileUpload.isMultipartContent(request)) {
 
     // Parse the request
     FileItemIterator iter = upload.getItemIterator(request);
-    out.println("Übertragung gestartet...");
+    out.println("Ãœbertragung gestartet...");
 
     while (iter.hasNext()) {
 

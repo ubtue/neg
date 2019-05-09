@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -33,7 +33,7 @@ document.open();
   String formular = request.getParameter("form");
 
  /* out.println("<center>");
-  out.println("<a href=\"?form="+formular+"&Belegform="+request.getParameter("Belegform")+"&limit="+(limit+5)+"\">N�chste "+offset+" Lemmata</a>");
+  out.println("<a href=\"?form="+formular+"&Belegform="+request.getParameter("Belegform")+"&limit="+(limit+5)+"\">Nächste "+offset+" Lemmata</a>");
   out.println("</center>");
 */
       out.println("<table class=\"date\">\n");

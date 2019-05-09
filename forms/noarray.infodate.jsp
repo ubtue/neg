@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("infodate") && !array) {
     try {
       Class.forName( sqlDriver );

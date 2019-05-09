@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+ï»¿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -98,7 +98,7 @@ $(function() {
     out.print(" &nbsp;");
     out.print(" <input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"DESC\" />");
  	out.print("absteigend");
-    out.print("<br>Zeitraum (nur für Datierung): <input type=\"text\" name=\"order'+i+'zeit\" />  ");
+    out.print("<br>Zeitraum (nur fÃ¼r Datierung): <input type=\"text\" name=\"order'+i+'zeit\" />  ");
     
     }
     catch(Exception ex){ex.printStackTrace();}   
@@ -1038,7 +1038,7 @@ $(function() {
               </tbody>
             </table>
            <p align="right">
-               <a href="#" id="add">Weitere Gruppierung hinzufügen</a>  
+               <a href="#" id="add">Weitere Gruppierung hinzufÃ¼gen</a>  
             </p>
             <p align="right">
               <a href="javascript:onoff('tab4','tab3');">

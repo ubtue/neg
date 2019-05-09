@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (tabelle.startsWith("urkunde")) {
     Connection cn = null;
     Statement st = null;

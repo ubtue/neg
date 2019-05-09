@@ -1,4 +1,4 @@
-<%
+﻿<%
   if (feldtyp.equals("infogroup") && !array) {
     try {
       Class.forName( sqlDriver );

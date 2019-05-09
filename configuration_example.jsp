@@ -1,25 +1,25 @@
-<%
+ï»¿<%
   String sqlDriver  = "com.mysql.jdbc.Driver";
 
-// Zugangsdaten für die NEUE Datenbank (nur für Import)
+// Zugangsdaten fÃ¼r die NEUE Datenbank (nur fÃ¼r Import)
   String sqlURLNew  = "jdbc:mysql://localhost:3306/neg";
   String sqlUserNew = "";
   String sqlPasswordNew = "";
 
-// Zugangsdaten für die ALTE Datenbank (nur für Import)
+// Zugangsdaten fÃ¼r die ALTE Datenbank (nur fÃ¼r Import)
   String sqlURLOld  = "jdbc:mysql://localhost:3306/neg";
   String sqlUserOld = "";
   String sqlPasswordOld = ";
 
-// Zugangsdaten für die Datenbank (nur für die Anwendung)
+// Zugangsdaten fÃ¼r die Datenbank (nur fÃ¼r die Anwendung)
   String sqlURL  = "jdbc:mysql://localhost:3306/neg";
   String sqlUser = "";
   String sqlPassword = "";
 
-// Speicherort der Datei "tabellen.txt" (nur für Import)
+// Speicherort der Datei "tabellen.txt" (nur fÃ¼r Import)
   String tblFile = "E:/tabellen.txt";
 
-  int pageLimit = 30;		// Wichtig für Abfragen
+  int pageLimit = 30;		// Wichtig fÃ¼r Abfragen
   int sessionTimeout = 60*60;
 
   int numberSize = 5;		// Anzahl der Nummerierungsstellen in PKZ, Belegnummer, etc.

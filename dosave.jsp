@@ -1,4 +1,4 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+ï»¿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -17,13 +17,13 @@
 
 
     Connection cn = null;
-    Statement st = null; // für Anfrage an Datenbank-Mapping
+    Statement st = null; // fÃ¼r Anfrage an Datenbank-Mapping
     ResultSet rs = null;
 
-    Statement st2 = null; // für Anfrage an Datenbank
+    Statement st2 = null; // fÃ¼r Anfrage an Datenbank
     ResultSet rs2 = null;
 
-    Statement st3 = null; // für UPDATE / INSERT Anweisung
+    Statement st3 = null; // fÃ¼r UPDATE / INSERT Anweisung
 
     String debug = "debug";
 
@@ -72,7 +72,7 @@
           if(rs.getInt("array") == 0) {
             rs2 = st2.executeQuery("SELECT "+rs.getString("ZielAttribut")+" FROM "+rs.getString("Zieltabelle")+" WHERE ID='"+id+"';");
 
-            // Datensatz ändern
+            // Datensatz Ã¤ndern
             if (rs2.next() && (
                  (rs2.getString(rs.getString("Zielattribut")) != null && !rs2.getString(rs.getString("Zielattribut")).equals(DBtoDB(request.getParameter(rs.getString("Datenfeld")))))
                 ||
@@ -85,17 +85,25 @@
                st3.execute("UPDATE "+rs.getString("Zieltabelle")
                           +" SET "+rs.getString("Zielattribut")+"='"+DBtoDB(request.getParameter(rs.getString("Datenfeld")))+"'"
                           +" WHERE ID='"+id+"';");
-
-            } // ENDE Datensatz ändern
+                /*String prepSql = "UPDATE " + rs.getString("Zieltabelle") +
+                        " SET " + rs.getString("Zielattribut") + " = ?" +
+                		" WHERE ID = ?;";
+                java.sql.PreparedStatement st4 = cn.prepareStatement(prepSql);
+                st4.setString(1, request.getParameter(rs.getString("Datenfeld")));
+                st4.setInt(2, id);
+                st4.execute();
+                System.out.println(prepSql);
+				System.out.println("VALUE = " + request.getParameter(rs.getString("Datenfeld")));*/
+            } // ENDE Datensatz Ã¤ndern
 
           } // ENDE kein Array
 
           // ARRAY
           else if(rs.getInt("array") == 1) {
             for (int i=0; request.getParameter(rs.getString("Datenfeld")+"["+i+"]")!=null; i++) {
-              // Prüfen, ob aktueller Eintrag bereits vorhanden
+              // PrÃ¼fen, ob aktueller Eintrag bereits vorhanden
               if (request.getParameter(rs.getString("Datenfeld")+"["+i+"]_entryid") != null) {
-                // Prüfen, ob Datensatz geändert wurde
+                // PrÃ¼fen, ob Datensatz geÃ¤ndert wurde
                 rs2 = st2.executeQuery("SELECT ID, "+rs.getString("ZielAttribut")
                                        +" FROM "+rs.getString("ZielTabelle")
                                        +" WHERE ID = "+request.getParameter(rs.getString("Datenfeld")+"["+i+"]_entryid")+";");
@@ -110,7 +118,7 @@
               }
 
               else {
-                // Wenn etwas eingetragen ist, in die Datenbank einfügen
+                // Wenn etwas eingetragen ist, in die Datenbank einfÃ¼gen
                 if (request.getParameter(rs.getString("Datenfeld")+"["+i+"]") != null && !request.getParameter(rs.getString("Datenfeld")+"["+i+"]").equals("") && !request.getParameter(rs.getString("Datenfeld")+"["+i+"]").equals("-1")) {
                   String sql = "INSERT INTO "+rs.getString("Zieltabelle")
                                +" ("+rs.getString("FormularAttribut")+", "+rs.getString("Zielattribut")+")"
@@ -136,14 +144,14 @@
               st3.execute("UPDATE "+rs.getString("Zieltabelle")
                           +" SET "+rs.getString("Zielattribut")+"='"+checkbox+"'"
                           +" WHERE ID='"+id+"';");
-            } // ENDE Datensatz ändern
+            } // ENDE Datensatz Ã¤ndern
           } // ENDE kein Array
         } //ENDE checkbox
 
         // Datum
         else if (rs.getString("Feldtyp").equals("date")) {
        //  out.println("DATE");
-          // Datensatz geändert?
+          // Datensatz geÃ¤ndert?
           String[] zielattributArray = {""};
           String[] combinedFeldnamenArray = {""};
 
@@ -221,18 +229,18 @@
             cond = " AND GruppeID IS NULL AND BenutzerID = "+session.getAttribute("BenutzerID")+";";
           }
 
-          // Datensatz ändern
+          // Datensatz Ã¤ndern
           rs2 = st2.executeQuery("SELECT "+rs.getString("ZielAttribut")+" FROM "+rs.getString("Zieltabelle")+" WHERE "+rs.getString("Formularattribut")+"='"+id+"'"+cond);
           if (rs2.next() && request.getParameter(rs.getString("Datenfeld")) != null) {
             if (request.getParameter(rs.getString("Datenfeld")).equals("")) {
               st3.execute("DELETE FROM "+rs.getString("Zieltabelle")+" WHERE "+rs.getString("Formularattribut")+"='"+id+"'"+cond);
-            } // ENDE löschen
+            } // ENDE lÃ¶schen
             else if(!request.getParameter(rs.getString("Datenfeld")).equals("") &&  !DBtoDB(request.getParameter(rs.getString("Datenfeld"))).equals(rs2.getString(rs.getString("ZielAttribut")))) {
               st3.execute ("UPDATE "+rs.getString("Zieltabelle")
                           +" SET "+rs.getString("Zielattribut")+"='"+DBtoDB(request.getParameter(rs.getString("Datenfeld")))+"'"
                           +" WHERE "+rs.getString("FormularAttribut")+"='"+id+"'"+cond);
-            } // ENDE ändern
-          } // ENDE Datensatz ändern
+            } // ENDE Ã¤ndern
+          } // ENDE Datensatz Ã¤ndern
 
           // Datensatz neu
           else if (request.getParameter(rs.getString("Datenfeld")) != null && !request.getParameter(rs.getString("Datenfeld")).equals("")) {
@@ -284,10 +292,10 @@
 
           for (int i=0; request.getParameter(combinedFeldnamenArray[0]+"["+i+"]")!=null; i++) {
 
-            // Datensatz ändern
+            // Datensatz Ã¤ndern
             if (request.getParameter(rs.getString("Datenfeld").toLowerCase()+"["+i+"]_entryid") != null) {
               boolean aenderung = false;
-                        			out.println("Überprüfe Zeile "+i+" (text/select)");
+                        			out.println("ÃœberprÃ¼fe Zeile "+i+" (text/select)");
  
               rs2 = st2.executeQuery("SELECT * FROM "+rs.getString("Zieltabelle")+" WHERE ID='"+request.getParameter(rs.getString("Datenfeld").toLowerCase()+"["+i+"]_entryid")+"';");
               if (rs2.next()) {
@@ -322,7 +330,7 @@
                        
                         
                        {
-						out.println("Änderung in Zeile "+i+" (text/select)");
+						out.println("Ã„nderung in Zeile "+i+" (text/select)");
                       aenderung = true;
                     }
                   }

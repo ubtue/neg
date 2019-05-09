@@ -1,7 +1,8 @@
-<%
+﻿<%
+  request.setCharacterEncoding("UTF-8");
   String sqlDriver  = "com.mysql.jdbc.Driver";
 
-  String sqlURL  = "jdbc:mysql://localhost:3306/neg_final";
+  String sqlURL  = "jdbc:mysql://localhost:3306/neg_final?characterEncoding=utf8";
   String sqlUser = "neg";
   String sqlPassword = "pcqXCB!)763";
 
@@ -15,7 +16,7 @@
 
 
 
-  int pageLimit = 30;		// Wichtig f�r Abfragen
+  int pageLimit = 30;		// Wichtig für Abfragen
   int sessionTimeout = 60*60;
 
   int numberSize = 5;		// Anzahl der Nummerierungsstellen in PKZ, Belegnummer, etc.
