@@ -1,12 +1,14 @@
 ﻿<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
 <%@ page import="java.util.Vector" isThreadSafe="false" %>
+<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.util.StringTokenizer" isThreadSafe="false"%>
-
+<%@ page import="java.util.regex.Matcher" isThreadSafe="false"%>
+<%@ page import="java.util.regex.Pattern" isThreadSafe="false"%>
 
 <%!
 
@@ -294,5 +296,41 @@ String format(String text, String feld){
 	if(lemma.startsWith("&#x016B;")) lemma = "&#x016A;"+ lemma.substring(8); 
 	
 	return lemma;
+}
+
+String getdMGHUrl(Connection cn, String einzelbelegID) {
+	String dmghUrl = "";
+	Statement st = null;
+	ResultSet rs = null;
+	  try {
+		  st = cn.createStatement();
+		  rs = st.executeQuery(
+			  "select b.editionseite seite, e.bandnummer band, d.bezeichnung url " +
+			  "from einzelbeleg b, edition e, selektion_dmghband d " +
+			  "where b.editionid = e.id " +
+			  "and d.id > 0 " +
+			  "and e.dmghbandid = d.id " +
+			  "and b.id = " + einzelbelegID 
+		  );
+		  if(rs.next()) {
+			  String seiteZeile = rs.getString("seite").trim();
+			  Pattern p = Pattern.compile("^[^\\d]*(?<seite>\\d+)[^\\d]*(?<zeile>\\d+[^-]*)?(?<rest>.*?)$");
+			  Matcher m = p.matcher(seiteZeile);
+			  m.find();
+			  String seite = m.group("seite").replaceAll("^0+", "");
+			  String band = rs.getString("band").trim().replace("/", ",").replace("II", "2").replace("I", "1");
+			  String url = rs.getString("url");
+			  dmghUrl = String.format("http://www.mgh.de/dmgh/resolving/%s_%s_S._%s",
+					  url, band, seite);
+		  }
+	  }
+	  catch(Exception e) {
+		  // fall through
+	  }
+	  finally {
+		  try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
+	      try { if( null != st ) st.close(); } catch( Exception ex ) {}
+	  }
+	 return dmghUrl;
 }
 %>
