@@ -1,4 +1,4 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -279,7 +279,23 @@
                   <jsp:param name="Datenfeld" value="Band"/>
                 </jsp:include>
               </td>
-            </tr>            <tr>
+            </tr>
+            <tr>
+              <td width="200">
+                <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                  <jsp:param name="Formular" value="edition"/>
+                  <jsp:param name="Datenfeld" value="dMGHBand"/>
+                </jsp:include>
+              </td>
+              <td width="450">
+                <jsp:include page="inc.erzeugeFormular.jsp">
+                  <jsp:param name="ID" value="<%= id %>"/>
+                  <jsp:param name="Formular" value="edition"/>
+                  <jsp:param name="Datenfeld" value="dMGHBand"/>
+                </jsp:include>
+              </td>
+            </tr>
+            <tr>
               <td width="200">
                 <jsp:include page="inc.erzeugeBeschriftung.jsp">
                   <jsp:param name="Formular" value="edition"/>
