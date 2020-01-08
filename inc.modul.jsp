@@ -389,7 +389,7 @@
 </jsp:include>
 <%
 	out.println("</a></td>");
-					out.println("<td>" + rs.getString("e.Belegform")
+					out.println("<td>" + getBelegformLinked(cn, rs.getString("e.ID"), rs.getString("e.Belegform"))
 							+ "</td>");
 
 					String vonTag = rs.getString("e.VonTag");

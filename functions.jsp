@@ -298,8 +298,9 @@ String format(String text, String feld){
 	return lemma;
 }
 
-String getdMGHUrl(Connection cn, String einzelbelegID) {
+String[] getdMGHUrl(Connection cn, String einzelbelegID) {
 	String dmghUrl = "";
+	String linkinfo = "";
 	Statement st = null;
 	ResultSet rs = null;
 	  try {
@@ -318,10 +319,13 @@ String getdMGHUrl(Connection cn, String einzelbelegID) {
 			  Matcher m = p.matcher(seiteZeile);
 			  m.find();
 			  String seite = m.group("seite").replaceAll("^0+", "");
+			  String zeile = m.group("zeile").replaceAll("^0+", "");
 			  String band = rs.getString("band").trim().replace("/", ",").replace("II", "2").replace("I", "1");
 			  String url = rs.getString("url");
 			  dmghUrl = String.format("http://www.mgh.de/dmgh/resolving/%s_%s_S._%s",
 					  url, band, seite);
+			  linkinfo = String.format("%s %s, S. %s, Zeile %s", 
+					  url.replace("_", " "), band, seite, zeile);
 		  }
 	  }
 	  catch(Exception e) {
@@ -331,6 +335,16 @@ String getdMGHUrl(Connection cn, String einzelbelegID) {
 		  try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
 	      try { if( null != st ) st.close(); } catch( Exception ex ) {}
 	  }
-	 return dmghUrl;
+	 return new String[] {
+		dmghUrl,
+		linkinfo		
+	 };
+}
+
+String getBelegformLinked(Connection cn, String einzelbelegID, String belegform) {
+	String[] dmghUrl = getdMGHUrl(cn, einzelbelegID);
+	if(dmghUrl[0].isEmpty())
+		return belegform;
+	return String.format("<a href='%s' title='%s'>%s</a>", dmghUrl[0], dmghUrl[1], belegform); 
 }
 %>

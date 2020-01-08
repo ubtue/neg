@@ -18,10 +18,7 @@
           else {
         	  String belegformHtml = DBtoHTML(format(rs.getString(zielAttribut), isKlarlemma? "Klarlemma" : ""));
         	  if(formular.equals("einzelbeleg") && datenfeld.equals("Belegform")) {
-	        	  String dmghUrl = getdMGHUrl(cn, id);
-	        	  if(!dmghUrl.isEmpty()) {
-	        		  belegformHtml = "<a href='" + dmghUrl + "'>" + belegformHtml + "</a>";
-	        	  }
+	        	  belegformHtml = getBelegformLinked(cn, id, belegformHtml);
           	  }
         	  out.println(belegformHtml);
           }
