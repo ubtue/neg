@@ -12,8 +12,16 @@
      
         rs = st.executeQuery("SELECT "+zielAttribut+" FROM "+zielTabelle+" WHERE ID=\""+id+"\"");
         if ( rs.next() && rs.getString(zielAttribut) != null) {
-          if(!isReadOnly) out.print("value=\""+DBtoHTML(rs.getString(zielAttribut))+"\" ");
-          else out.println(DBtoHTML(format(rs.getString(zielAttribut), isKlarlemma? "Klarlemma" : "")));
+          if(!isReadOnly) {
+        	  out.print("value=\""+DBtoHTML(rs.getString(zielAttribut))+"\" ");
+          }
+          else {
+        	  String belegformHtml = DBtoHTML(format(rs.getString(zielAttribut), isKlarlemma? "Klarlemma" : ""));
+        	  if(formular.equals("einzelbeleg") && datenfeld.equals("Belegform")) {
+	        	  belegformHtml = getBelegformLinked(cn, id, belegformHtml);
+          	  }
+        	  out.println(belegformHtml);
+          }
         }
         else if (def!=null){
           if(!isReadOnly)out.print("value=\""+def+"\" ");
