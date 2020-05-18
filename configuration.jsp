@@ -2,23 +2,27 @@
   request.setCharacterEncoding("UTF-8");
   String sqlDriver  = "com.mysql.jdbc.Driver";
 
-  String sqlURL  = "jdbc:mysql://localhost:3306/neg_final?characterEncoding=utf8";
-  String sqlUser = "neg";
-  String sqlPassword = "pcqXCB!)763";
+  // Zugangsdaten für die Datenbank (nur für die Anwendung) => siehe tomcat
+  javax.naming.InitialContext initialContext = new javax.naming.InitialContext();
+  String sqlURL = (String)initialContext.lookup("java:comp/env/sqlURL");
+  String sqlUser = (String)initialContext.lookup("java:comp/env/sqlUser");
+  String sqlPassword = (String)initialContext.lookup("java:comp/env/sqlPassword");
 
-  String sqlURLnew  = sqlURL  ;
-  String sqlUserNew = sqlUser ;
-  String sqlPasswordNew = sqlPassword ;
+  // Zugangsdaten für die NEUE Datenbank (nur für den Import)
+  String sqlURLnew  = sqlURL;
+  String sqlUserNew = sqlUser;
+  String sqlPasswordNew = sqlPassword;
 
-  String sqlURLold  = sqlURL  ;
-  String sqlUserOld = sqlUser ;
-  String sqlPasswordOld = sqlPassword ;
+  // Zugangsdaten für die ALTE Datenbank (nur für den Import)
+  String sqlURLold  = sqlURL;
+  String sqlUserOld = sqlUser;
+  String sqlPasswordOld = sqlPassword;
 
-
+  // Speicherort der Datei "tabellen.txt" (nur für den Import)
+  String tblFile = "E:/tabellen.txt";
 
   int pageLimit = 30;		// Wichtig für Abfragen
   int sessionTimeout = 60*60;
-
   int numberSize = 5;		// Anzahl der Nummerierungsstellen in PKZ, Belegnummer, etc.
 
   String txt_search = "<img src=\"layout/icons/search2.gif\" border=\"0\" alt=\"suchen\" title=\"suchen\">";  // "suchen";
