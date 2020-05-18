@@ -5,13 +5,13 @@ Prerequisites:
   - find /etc/tomcat<n> (might also be /usr/share/tomcat)
   - conf/web.xml
     - Find this servlet <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
-    - Add parameter <init-param><param-name>strictQuoteEscaping</param-name><param-value>false</param-value></init-param>
+    - Add parameter `<init-param><param-name>strictQuoteEscaping</param-name><param-value>false</param-value></init-param>`
   - Catalina/localhost/neg.xml (needs to be created)
 ```
 <Context>
-    <Environment name="sqlURL" value="jdbc:mysql://localhost:3306/neg?characterEncoding=utf8" type="java.lang.String">
-    <Environment name="sqlUser" value="neg" type="java.lang.String">
-    <Environment name="sqlPassword" value="neg" type="java.lang.String">
+    <Environment name="sqlURL" value="jdbc:mysql://localhost:3306/neg?characterEncoding=utf8" type="java.lang.String"/>
+    <Environment name="sqlUser" value="neg" type="java.lang.String"/>
+    <Environment name="sqlPassword" value="neg" type="java.lang.String"/>
 </Context>
 ```
 - Java >= 1.8.0_77
@@ -22,9 +22,7 @@ Prerequisites:
   - sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 
 Build:
-- cd /var/lib/tomcat/webapps/neg
 - jar -cvf neg.war .
-
-Deployment:
-- http://localhost:8080/manager/html
+- Deploy 1st time using http://localhost:8080/manager/html
+- Update copying neg.war to /var/lib/tomcat/webapps/ and reload via manager (see above)
 
