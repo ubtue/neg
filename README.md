@@ -9,9 +9,9 @@ Prerequisites:
   - Catalina/localhost/neg.xml (needs to be created)
 ```
 <Context>
-    <Environment name="sqlURL" value="jdbc:mysql://localhost:3306/neg?characterEncoding=utf8" type="java.lang.String">
-    <Environment name="sqlUser" value="neg" type="java.lang.String">
-    <Environment name="sqlPassword" value="neg" type="java.lang.String">
+    <Environment name="sqlURL" value="jdbc:mysql://localhost:3306/neg?characterEncoding=utf8" type="java.lang.String"/>
+    <Environment name="sqlUser" value="neg" type="java.lang.String"/>
+    <Environment name="sqlPassword" value="neg" type="java.lang.String"/>
 </Context>
 ```
 - Java >= 1.8.0_77
