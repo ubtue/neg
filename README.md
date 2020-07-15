@@ -25,6 +25,10 @@ Prerequisites:
   - character-set-server=utf8
   - group_concat_max_len = 100000000
   - sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+  - (please note that NO_AUTO_CREATE_USER has been deprecated & can be omitted in newer SQL Versions)
+  - If you use MariaDB, also use the following settings to avoid performance problems, especially in search queries (this works for MyISAM but should be tested again when migrating to InnoDB):
+    - optimizer_switch="derived_merge=off,derived_with_keys=off"
+    - see also: https://stackoverflow.com/questions/35889706/mariadb-running-a-left-join-query-100-times-slower-than-mysql
 
 Build:
 - jar -cvf neg.war .
