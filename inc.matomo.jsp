@@ -8,10 +8,10 @@
             <script>
                 var _paq = window._paq || [];
                 /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+                _paq.push(['setCustomVariable','1','FrontendType','<%=frontendType%>', 'page']);
+                _paq.push(['disableCookies']);
                 _paq.push(['trackPageView']);
                 _paq.push(['enableLinkTracking']);
-                _paq.push(['disableCookies']);
-                _paq.push(['setCustomVariable','1','FrontendType','<%=frontendType%>']);
                 (function () {
                     var u = "<%=matomoURL%>";
                     _paq.push(['setTrackerUrl', u + 'piwik.php']);
