@@ -35,3 +35,6 @@ Build:
 - Deploy 1st time using http://localhost:8080/manager/html
 - Update copying neg.war to /var/lib/tomcat/webapps/ and reload via manager (see above)
 
+Production:
+- https://wiki.owasp.org/index.php/Securing_tomcat
+
