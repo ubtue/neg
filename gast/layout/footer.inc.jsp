@@ -40,4 +40,7 @@
 	    <div class="clear"> </div>
     </div>
 
-<%@ include file="../../inc.matomo.jsp" %>
+
+<jsp:include page="../../inc.matomo.jsp">
+  <jsp:param name="frontendType" value="Frontend" />
+</jsp:include>

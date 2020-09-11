@@ -1,6 +1,8 @@
-﻿<%
+﻿<%@ include file="configuration.jsp" %>
+<%
     String matomoURL = (String)initialContext.lookup("java:comp/env/matomoURL");
     String matomoSiteId = (String)initialContext.lookup("java:comp/env/matomoSiteId");
+    String frontendType = request.getParameter("frontendType");
     if (!"".equals(matomoURL) && !"".equals(matomoSiteId)) {
         %>
             <script>
@@ -9,6 +11,7 @@
                 _paq.push(['trackPageView']);
                 _paq.push(['enableLinkTracking']);
                 _paq.push(['disableCookies']);
+                _paq.push(['setCustomVariable','1','FrontendType','<%=frontendType%>']);
                 (function () {
                     var u = "<%=matomoURL%>";
                     _paq.push(['setTrackerUrl', u + 'piwik.php']);
