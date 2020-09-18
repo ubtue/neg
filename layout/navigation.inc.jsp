@@ -109,7 +109,7 @@
       && ((Boolean) session.getAttribute("Administrator")).booleanValue()
      ) {
 %>
-  
+
   <br>
   <hr>
   <a href="administration.jsp">
@@ -122,7 +122,7 @@
   <hr>
    <a href="gast/edit.jsp" target="_blank">
     Hilfe bearbeiten
-  </a> 
+  </a>
   <%
   }
   %>
@@ -177,3 +177,8 @@
       <jsp:param name="title" value="<%= request.getParameter("title") %>"/>
     </jsp:include>
 </div>
+
+
+<jsp:include page="../inc.matomo.jsp">
+  <jsp:param name="frontendType" value="Backend" />
+</jsp:include>
