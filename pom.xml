@@ -63,6 +63,8 @@
                 <version>2.3</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <warName>neg</warName>
+                    <outputDirectory>/var/lib/tomcat9/webapps</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>

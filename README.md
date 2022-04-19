@@ -1,7 +1,8 @@
 # NeG - Nomen et Gens
 
 Prerequisites:
-- Tomcat >= 7
+- System
+  - Tomcat 9 / Ubuntu (for automated build process). WAR-file should work with Tomcat >= 7.
   - find /etc/tomcat<n> (might also be /usr/share/tomcat)
   - conf/web.xml
     - Find this servlet <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
