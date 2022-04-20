@@ -27,8 +27,9 @@ public class Benutzer {
     @Column(name = "IstAdmin")
     private boolean IstAdmin;
 
-    @Column(name = "GruppeID")
-    private int GruppeID;
+    @OneToOne(targetEntity = BenutzerGruppe.class)
+    @JoinColumn(name = "GruppeID", referencedColumnName="ID")
+    private BenutzerGruppe Gruppe;
 
     @Column(name = "Sprache")
     private String Sprache;
@@ -66,8 +67,8 @@ public class Benutzer {
         return IstAdmin;
     }
 
-    public int getGruppeID() {
-        return GruppeID;
+    public BenutzerGruppe getGruppe() {
+        return Gruppe;
     }
 
     public String getSprache() {

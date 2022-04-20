@@ -32,7 +32,7 @@
       out.println("<td>" + DBtoHTML(benutzer.getVorname()) + "</td>");
       out.println("<td>" + DBtoHTML(benutzer.getLogin()) + "</td>");
       out.println("<td>" + DBtoHTML(benutzer.getEMail()) + "</td>");
-      out.println("<td>" + (benutzer.getGruppeID() > 0 ? DBtoHTML(BenutzerController.getGruppeBezeichnung(benutzer.getGruppeID())) : "&nbsp;") + "</td>");
+      out.println("<td>" + (benutzer.getGruppe() != null ? DBtoHTML(benutzer.getGruppe().getBezeichnung()) : "&nbsp;") + "</td>");
       out.println("<td>" + (benutzer.isAdmin() ? "JA" : "&nbsp;") +"</td>");
       out.println("<td>" + DBtoHTML(benutzer.getSprache()) + "</td>");
       out.println("<td><a href=\"einstellungen.jsp?ID=" + Integer.toString(benutzer.getID()) +"\">&auml;ndern</a></td>");
