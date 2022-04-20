@@ -1,7 +1,8 @@
 # NeG - Nomen et Gens
 
 Prerequisites:
-- Tomcat >= 7
+- System
+  - Tomcat 9 / Ubuntu (for automated build process). WAR-file should work with Tomcat >= 7.
   - find /etc/tomcat<n> (might also be /usr/share/tomcat)
   - conf/web.xml
     - Find this servlet <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
@@ -31,9 +32,9 @@ Prerequisites:
     - see also: https://stackoverflow.com/questions/35889706/mariadb-running-a-left-join-query-100-times-slower-than-mysql
 
 Build:
-- jar -cvf neg.war .
+- Use build-function in netbeans (.war file see target/ dir)
 - Deploy 1st time using http://localhost:8080/manager/html
-- Update copying neg.war to /var/lib/tomcat/webapps/ and reload via manager (see above)
+- Update copying neg.war to /var/lib/tomcat/webapps/ and removing the old unpacked neg/ subdirectory
 
 Production:
 - https://wiki.owasp.org/index.php/Securing_tomcat
