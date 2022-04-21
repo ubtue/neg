@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.controller;
 
 import java.util.Properties;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -44,5 +45,11 @@ public class AbstractBase {
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
         return sessionFactory;
+    }
+
+    // For now, we open a new session each time this method is called.
+    // Later, we might try to use a static session similar to the static SessionFactory.
+    protected static Session getSession() throws Exception {
+        return getSessionFactory().openSession();
     }
 }
