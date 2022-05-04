@@ -1,4 +1,4 @@
-package de.uni_tuebingen.ub.nppm.controller;
+package de.uni_tuebingen.ub.nppm.db;
 
 import java.util.Properties;
 import org.hibernate.Session;
@@ -36,6 +36,8 @@ public class AbstractBase {
             settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
             configuration.setProperties(settings);
+
+            // TODO: Add all model classes dynamically
             configuration.addAnnotatedClass(Benutzer.class);
             configuration.addAnnotatedClass(BenutzerGruppe.class);
 

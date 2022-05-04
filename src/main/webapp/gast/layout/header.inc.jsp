@@ -17,7 +17,7 @@
 <div id="page">
 	<div id="header">
 		<div id="header-left">
-			<a href="startseite.jsp"> <%=de.uni_tuebingen.ub.nppm.Common.getWebsiteName()%> </a>
+			<a href="startseite.jsp"> Nomen et Gens </a>
 		</div>
 		<div id="header-right">
 <!--
