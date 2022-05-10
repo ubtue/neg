@@ -34,10 +34,16 @@ public class AbstractBase {
             settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLMyISAMDialect");
             settings.put(Environment.SHOW_SQL, "true");
             settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+            settings.put(Environment.HBM2DDL_AUTO,"validate");
 
             configuration.setProperties(settings);
             configuration.addAnnotatedClass(Benutzer.class);
             configuration.addAnnotatedClass(BenutzerGruppe.class);
+            
+            configuration.addAnnotatedClass(Edition.class);
+            configuration.addAnnotatedClass(EditionBand.class);
+            configuration.addAnnotatedClass(EditionBestand.class);
+            configuration.addAnnotatedClass(EditionHatEditor.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
