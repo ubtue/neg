@@ -16,4 +16,29 @@ public class EditionHatEditor {
 
     @Column(name = "EditorID")
     private int editor;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Edition getEdition() {
+        return edition;
+    }
+
+    public void setEdition(Edition edition) {
+        this.edition = edition;
+    }
+
+    public int getEditor() {
+        return editor;
+    }
+
+    public void setEditor(int editor) {
+        this.editor = editor;
+    }
+    
 }

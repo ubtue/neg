@@ -22,4 +22,45 @@ public class EditionBand {
 
     @Column(name = "Standard")
     private int standard;  
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Edition getEdition() {
+        return edition;
+    }
+
+    public void setEdition(Edition edition) {
+        this.edition = edition;
+    }
+
+    public String getBandNummer() {
+        return bandNummer;
+    }
+
+    public void setBandNummer(String bandNummer) {
+        this.bandNummer = bandNummer;
+    }
+
+    public String getJahr() {
+        return jahr;
+    }
+
+    public void setJahr(String jahr) {
+        this.jahr = jahr;
+    }
+
+    public int getStandard() {
+        return standard;
+    }
+
+    public void setStandard(int standard) {
+        this.standard = standard;
+    }
+    
 }
