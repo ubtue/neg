@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "benutzer_gruppe")
 public class BenutzerGruppe {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "ID")
     private int ID;
 

@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "benutzer")
 public class Benutzer {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "ID")
     private int ID;
 
@@ -37,10 +37,10 @@ public class Benutzer {
     @Column(name = "IstGast")
     private boolean IstGast;
 
-    @Column(name = "IstAktiv")
+    @Column(name = "IstAktiv", columnDefinition = "TINYINT")
     private boolean IstAktiv;
 
-    @Column(name = "IstReadOnly")
+    @Column(name = "IstReadOnly", columnDefinition = "TINYINT")
     private boolean IstReadOnly;
 
     public int getID() {
