@@ -7,7 +7,7 @@ package de.uni_tuebingen.ub.nppm.controller.test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import de.uni_tuebingen.ub.nppm.controller.EditionController;
+import de.uni_tuebingen.ub.nppm.db.EditionDB;
 
 /**
  *
@@ -19,7 +19,7 @@ public class EditionControllerTest {
     @DisplayName("List Edition Entities")   
     void testList() {
         try{
-            assertFalse(EditionController.getList().isEmpty(),"List is empty");  
+            assertFalse(EditionDB.getList().isEmpty(),"List is empty");  
         }catch(Exception e){
             fail(e.getLocalizedMessage());
         }

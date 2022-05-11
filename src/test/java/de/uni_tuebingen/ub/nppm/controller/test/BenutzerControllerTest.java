@@ -7,7 +7,7 @@ package de.uni_tuebingen.ub.nppm.controller.test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import de.uni_tuebingen.ub.nppm.controller.BenutzerController;
+import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 
 /**
  *
@@ -19,7 +19,7 @@ public class BenutzerControllerTest {
     @DisplayName("List active Users")   
     void testListActiveUsers() {
         try{
-            assertFalse(BenutzerController.getListAktiv().isEmpty(),"List is empty");  
+            assertFalse(BenutzerDB.getListAktiv().isEmpty(),"List is empty");  
         }catch(Exception e){
             fail(e.getLocalizedMessage());
         }
@@ -29,7 +29,7 @@ public class BenutzerControllerTest {
     @DisplayName("List inactive Users")   
     void testListInactiveUsers() {
         try{
-            assertFalse(BenutzerController.getListInaktiv().isEmpty(),"List is empty");  
+            assertFalse(BenutzerDB.getListInaktiv().isEmpty(),"List is empty");  
         }catch(Exception e){
             fail(e.getLocalizedMessage());
         }
