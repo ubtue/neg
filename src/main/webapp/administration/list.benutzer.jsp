@@ -3,7 +3,7 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.controller.BenutzerController" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.BenutzerDB" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.model.Benutzer" isThreadSafe="false" %>
 
 <%@ include file="../configuration.jsp" %>
@@ -48,12 +48,12 @@
   out.println("<ul class=\"mktree\" id=\"complete\">");
 
   out.println("  <li class=\"liOpen\" style=\"font-size:large\"><b>Aktive Benutzer</b>");
-  List listeAktiv = BenutzerController.getListAktiv();
+  List listeAktiv = BenutzerDB.getListAktiv();
   renderTable(out, listeAktiv);
   out.println("  </li>");
 
   out.println("  <li class=\"liClosed\"  style=\"font-size:large\"><b>Inaktive Benutzer</b>");
-  List listeInaktiv = BenutzerController.getListInaktiv();
+  List listeInaktiv = BenutzerDB.getListInaktiv();
   renderTable(out, listeInaktiv);
   out.println("  </li>");
 

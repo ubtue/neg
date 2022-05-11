@@ -1,4 +1,4 @@
-package de.uni_tuebingen.ub.nppm.controller;
+package de.uni_tuebingen.ub.nppm.db;
 
 import java.util.List;
 import org.hibernate.Session;
@@ -7,7 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-public class EditionController extends AbstractBase {
+public class EditionDB extends AbstractBase {
 
     public static List getList() throws Exception {
         Session session = getSession();
