@@ -13,7 +13,7 @@ import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
  *
  * @author julian
  */
-public class BenutzerControllerTest {
+public class BenutzerDBTest {
     
     @Test                                               
     @DisplayName("List active Users")   

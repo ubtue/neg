@@ -13,7 +13,7 @@ import de.uni_tuebingen.ub.nppm.db.EditionDB;
  *
  * @author julian
  */
-public class EditionControllerTest {
+public class EditionDBTest {
     
     @Test                                               
     @DisplayName("List Edition Entities")   
