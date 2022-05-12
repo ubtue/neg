@@ -17,8 +17,9 @@ public class EditionBestand {
     @Column(name = "Signatur", length=255)
     private String signatur;
 
-    @Column(name = "BKZ")
-    private int bkz;  
+    @OneToOne(targetEntity = SelektionBkz.class)
+    @JoinColumn(name = "BKZ", referencedColumnName="ID")
+    private SelektionBkz bkz;  
 
     public int getId() {
         return id;
@@ -44,11 +45,11 @@ public class EditionBestand {
         this.signatur = signatur;
     }
 
-    public int getBkz() {
+    public SelektionBkz getBkz() {
         return bkz;
     }
 
-    public void setBkz(int bkz) {
+    public void setBkz(SelektionBkz bkz) {
         this.bkz = bkz;
     }
     

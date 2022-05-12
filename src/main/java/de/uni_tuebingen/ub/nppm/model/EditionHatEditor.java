@@ -14,8 +14,9 @@ public class EditionHatEditor {
     @JoinColumn(name = "EditionID", referencedColumnName="ID")
     private Edition edition;
 
-    @Column(name = "EditorID")
-    private int editor;
+    @OneToOne(targetEntity = SelektionEditor.class)
+    @JoinColumn(name = "EditorID", referencedColumnName="ID")
+    private SelektionEditor editor;
 
     public int getId() {
         return id;
@@ -33,11 +34,11 @@ public class EditionHatEditor {
         this.edition = edition;
     }
 
-    public int getEditor() {
+    public SelektionEditor getEditor() {
         return editor;
     }
 
-    public void setEditor(int editor) {
+    public void setEditor(SelektionEditor editor) {
         this.editor = editor;
     }
     

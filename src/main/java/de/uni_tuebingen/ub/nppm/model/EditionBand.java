@@ -20,8 +20,8 @@ public class EditionBand {
     @Column(name = "Jahr", length=255)
     private String jahr;
 
-    @Column(name = "Standard")
-    private int standard;  
+    @Column(name = "Standard", columnDefinition="INTEGER DEFAULT NULL")
+    private Boolean standard;  
 
     public int getId() {
         return id;
@@ -55,11 +55,11 @@ public class EditionBand {
         this.jahr = jahr;
     }
 
-    public int getStandard() {
+    public Boolean getStandard() {
         return standard;
     }
 
-    public void setStandard(int standard) {
+    public void setStandard(Boolean standard) {
         this.standard = standard;
     }
     
