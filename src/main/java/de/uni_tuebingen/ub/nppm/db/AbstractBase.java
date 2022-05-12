@@ -46,6 +46,8 @@ public class AbstractBase {
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
             configuration.addAnnotatedClass(EditionHatEditor.class);
+            
+            configuration.addAnnotatedClass(SelektionOrt.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();

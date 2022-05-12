@@ -22,8 +22,9 @@ public class Edition {
     @Column(name = "Zitierweise", length=255)
     private String zitierweise;
 
-    @Column(name = "OrtID")
-    private Integer ort;
+    @OneToOne(targetEntity = SelektionOrt.class)
+    @JoinColumn(name = "OrtID", referencedColumnName="ID")
+    private SelektionOrt ort;
     
     @Column(name = "ReiheID")
     private Integer reihe;
@@ -31,8 +32,8 @@ public class Edition {
     @Column(name = "SammelbandID")
     private Integer sammelband;
 
-    @Column(name = "Verbindlich")
-    private Integer verbindlich;
+    @Column(name = "Verbindlich", columnDefinition="INTEGER DEFAULT NULL")
+    private Boolean verbindlich;
     
     @Column(name = "BearbeitungsstatusID")
     private Integer bearbeitungsstatus;
@@ -98,11 +99,11 @@ public class Edition {
         this.zitierweise = zitierweise;
     }
 
-    public Integer getOrt() {
+    public SelektionOrt getOrt() {
         return ort;
     }
 
-    public void setOrt(Integer ort) {
+    public void setOrt(SelektionOrt ort) {
         this.ort = ort;
     }
 
@@ -122,11 +123,11 @@ public class Edition {
         this.sammelband = sammelband;
     }
 
-    public Integer getVerbindlich() {
+    public Boolean getVerbindlich() {
         return verbindlich;
     }
 
-    public void setVerbindlich(Integer verbindlich) {
+    public void setVerbindlich(Boolean verbindlich) {
         this.verbindlich = verbindlich;
     }
 
