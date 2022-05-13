@@ -19,6 +19,17 @@ public class SelektionEditor {
     @Column(name = "Vorname", length = 50)
     private String vorname;
     
+    @ManyToMany(mappedBy = "editors")
+    private Set<Edition> editions = new HashSet<>();
+
+    public Set<Edition> getEditions() {
+        return editions;
+    }
+
+    public void setEditions(Set<Edition> editions) {
+        this.editions = editions;
+    }
+    
     public int getId() {
         return id;
     }

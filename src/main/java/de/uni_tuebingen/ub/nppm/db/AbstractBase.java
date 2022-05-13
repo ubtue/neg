@@ -45,7 +45,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(Edition.class);
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
-            configuration.addAnnotatedClass(EditionHatEditor.class);
             
             configuration.addAnnotatedClass(SelektionOrt.class);
             configuration.addAnnotatedClass(SelektionReihe.class);

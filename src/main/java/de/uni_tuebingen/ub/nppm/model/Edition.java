@@ -70,6 +70,23 @@ public class Edition {
     @OneToOne(targetEntity = SelektionDmghBand.class)
     @JoinColumn(name = "dMGHBandID", referencedColumnName="ID")
     private SelektionDmghBand dMGHBand; 
+    
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "edition_hateditor", 
+        joinColumns = { @JoinColumn(name = "EditionID") }, 
+        inverseJoinColumns = { @JoinColumn(name = "EditorID") }
+    )
+    List<SelektionEditor> editors = new ArrayList<>();
+
+    public List<SelektionEditor> getEditors() {
+        return editors;
+    }
+
+    public void setEditors(List<SelektionEditor> editors) {
+        this.editors = editors;
+    }
+        
 
     public Integer getId() {
         return id;
