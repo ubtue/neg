@@ -6,6 +6,12 @@ import java.util.*;
 @Entity
 @Table(name = "edition")
 public class Edition {
+    
+    public enum Bearbeitungsstatus{
+        NICHT_BEARBEITET,
+        BEARBEITET
+    }
+    
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
@@ -22,41 +28,65 @@ public class Edition {
     @Column(name = "Zitierweise", length=255)
     private String zitierweise;
 
-    @Column(name = "OrtID")
-    private Integer ort;
+    @OneToOne(targetEntity = SelektionOrt.class)
+    @JoinColumn(name = "OrtID", referencedColumnName="ID")
+    private SelektionOrt ort;
     
-    @Column(name = "ReiheID")
-    private Integer reihe;
+    @OneToOne(targetEntity = SelektionReihe.class)
+    @JoinColumn(name = "ReiheID", referencedColumnName="ID")
+    private SelektionReihe reihe;
     
-    @Column(name = "SammelbandID")
-    private Integer sammelband;
+    @OneToOne(targetEntity = SelektionSammelband.class)
+    @JoinColumn(name = "SammelbandID", referencedColumnName="ID")
+    private SelektionSammelband sammelband;
 
-    @Column(name = "Verbindlich")
-    private Integer verbindlich;
+    @Column(name = "Verbindlich", columnDefinition="INTEGER DEFAULT NULL")
+    private Boolean verbindlich;
     
     @Column(name = "BearbeitungsstatusID")
-    private Integer bearbeitungsstatus;
+    private Bearbeitungsstatus bearbeitungsstatus;
     
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
     
-    @Column(name = "LetzteAenderungVon")
-    private Integer letzteAenderungVon;
+    @OneToOne(targetEntity = Benutzer.class)
+    @JoinColumn(name = "LetzteAenderungVon", referencedColumnName="ID")
+    private Benutzer letzteAenderungVon;
     
     @Column(name = "Erstellt")
     private Date erstellt;
     
-    @Column(name = "ErstelltVon")
-    private Integer erstelltVon;
+    @OneToOne(targetEntity = Benutzer.class)
+    @JoinColumn(name = "ErstelltVon", referencedColumnName="ID")
+    private Benutzer erstelltVon;
     
-    @Column(name = "GehoertGruppe")
-    private Integer gehoertGruppe;
+    @OneToOne(targetEntity = BenutzerGruppe.class)
+    @JoinColumn(name = "GehoertGruppe", referencedColumnName="ID")
+    private BenutzerGruppe gehoertGruppe;
     
     @Column(name = "BandNummer", length=100)
     private String bandNummer;
     
-    @Column(name = "dMGHBandID")
-    private Integer dMGHBand; 
+    @OneToOne(targetEntity = SelektionDmghBand.class)
+    @JoinColumn(name = "dMGHBandID", referencedColumnName="ID")
+    private SelektionDmghBand dMGHBand; 
+    
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "edition_hateditor", 
+        joinColumns = { @JoinColumn(name = "EditionID") }, 
+        inverseJoinColumns = { @JoinColumn(name = "EditorID") }
+    )
+    List<SelektionEditor> editors = new ArrayList<>();
+
+    public List<SelektionEditor> getEditors() {
+        return editors;
+    }
+
+    public void setEditors(List<SelektionEditor> editors) {
+        this.editors = editors;
+    }
+        
 
     public Integer getId() {
         return id;
@@ -98,43 +128,43 @@ public class Edition {
         this.zitierweise = zitierweise;
     }
 
-    public Integer getOrt() {
+    public SelektionOrt getOrt() {
         return ort;
     }
 
-    public void setOrt(Integer ort) {
+    public void setOrt(SelektionOrt ort) {
         this.ort = ort;
     }
 
-    public Integer getReihe() {
+    public SelektionReihe getReihe() {
         return reihe;
     }
 
-    public void setReihe(Integer reihe) {
+    public void setReihe(SelektionReihe reihe) {
         this.reihe = reihe;
     }
 
-    public Integer getSammelband() {
+    public SelektionSammelband getSammelband() {
         return sammelband;
     }
 
-    public void setSammelband(Integer sammelband) {
+    public void setSammelband(SelektionSammelband sammelband) {
         this.sammelband = sammelband;
     }
 
-    public Integer getVerbindlich() {
+    public Boolean getVerbindlich() {
         return verbindlich;
     }
 
-    public void setVerbindlich(Integer verbindlich) {
+    public void setVerbindlich(Boolean verbindlich) {
         this.verbindlich = verbindlich;
     }
 
-    public Integer getBearbeitungsstatus() {
+    public Bearbeitungsstatus getBearbeitungsstatus() {
         return bearbeitungsstatus;
     }
 
-    public void setBearbeitungsstatus(Integer bearbeitungsstatus) {
+    public void setBearbeitungsstatus(Bearbeitungsstatus bearbeitungsstatus) {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 
@@ -146,11 +176,11 @@ public class Edition {
         this.letzteAenderung = letzteAenderung;
     }
 
-    public Integer getLetzteAenderungVon() {
+    public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
-    public void setLetzteAenderungVon(Integer letzteAenderungVon) {
+    public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
@@ -162,19 +192,19 @@ public class Edition {
         this.erstellt = erstellt;
     }
 
-    public Integer getErstelltVon() {
+    public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
-    public void setErstelltVon(Integer erstelltVon) {
+    public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }
 
-    public Integer getGehoertGruppe() {
+    public BenutzerGruppe getGehoertGruppe() {
         return gehoertGruppe;
     }
 
-    public void setGehoertGruppe(Integer gehoertGruppe) {
+    public void setGehoertGruppe(BenutzerGruppe gehoertGruppe) {
         this.gehoertGruppe = gehoertGruppe;
     }
 
@@ -186,11 +216,11 @@ public class Edition {
         this.bandNummer = bandNummer;
     }
 
-    public Integer getdMGHBand() {
+    public SelektionDmghBand getdMGHBand() {
         return dMGHBand;
     }
 
-    public void setdMGHBand(Integer dMGHBand) {
+    public void setdMGHBand(SelektionDmghBand dMGHBand) {
         this.dMGHBand = dMGHBand;
     }
     

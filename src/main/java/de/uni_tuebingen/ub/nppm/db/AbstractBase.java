@@ -45,8 +45,14 @@ public class AbstractBase {
             configuration.addAnnotatedClass(Edition.class);
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
-            configuration.addAnnotatedClass(EditionHatEditor.class);
-
+            
+            configuration.addAnnotatedClass(SelektionOrt.class);
+            configuration.addAnnotatedClass(SelektionReihe.class);
+            configuration.addAnnotatedClass(SelektionSammelband.class);
+            configuration.addAnnotatedClass(SelektionDmghBand.class);
+            configuration.addAnnotatedClass(SelektionBkz.class);
+            configuration.addAnnotatedClass(SelektionEditor.class);
+            
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
