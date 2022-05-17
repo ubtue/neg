@@ -6,7 +6,7 @@ import java.util.*;
 @Entity
 @Table(name = "selektion_sw_arealgens")
 public class SelektionSwArealGens {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 

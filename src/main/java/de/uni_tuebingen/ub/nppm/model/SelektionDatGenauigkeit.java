@@ -6,7 +6,7 @@ import java.util.*;
 @Entity
 @Table(name = "selektion_datgenauigkeit")
 public class SelektionDatGenauigkeit {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 
