@@ -34,13 +34,25 @@ public class AbstractBase {
             settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLMyISAMDialect");
             settings.put(Environment.SHOW_SQL, "true");
             settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+            settings.put(Environment.HBM2DDL_AUTO,"validate");
 
             configuration.setProperties(settings);
 
             // TODO: Add all model classes dynamically
             configuration.addAnnotatedClass(Benutzer.class);
             configuration.addAnnotatedClass(BenutzerGruppe.class);
-
+            
+            configuration.addAnnotatedClass(Edition.class);
+            configuration.addAnnotatedClass(EditionBand.class);
+            configuration.addAnnotatedClass(EditionBestand.class);
+            
+            configuration.addAnnotatedClass(SelektionOrt.class);
+            configuration.addAnnotatedClass(SelektionReihe.class);
+            configuration.addAnnotatedClass(SelektionSammelband.class);
+            configuration.addAnnotatedClass(SelektionDmghBand.class);
+            configuration.addAnnotatedClass(SelektionBkz.class);
+            configuration.addAnnotatedClass(SelektionEditor.class);
+            
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
