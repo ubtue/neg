@@ -25,10 +25,6 @@ public class EditionBestand {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Edition getEdition() {
         return edition;
     }
