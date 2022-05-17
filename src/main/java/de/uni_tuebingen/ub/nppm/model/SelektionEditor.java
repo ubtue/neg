@@ -53,7 +53,7 @@ public class SelektionEditor {
         this.bezeichnung = bezeichnung;
     }
     
-        public String getNachname() {
+    public String getNachname() {
         return nachname;
     }
 
