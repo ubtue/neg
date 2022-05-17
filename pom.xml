@@ -58,6 +58,18 @@
             <version>5.7.2</version>
             <scope>test</scope>
         </dependency>
+        <!-- Spring MVC Dependency -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.1.0.RELEASE</version>
+        </dependency>
+        <!-- Spring ORM -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>5.1.0.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -108,7 +120,7 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <warName>neg</warName>
-                    <outputDirectory>/var/lib/tomcat9/webapps</outputDirectory>
+                    <outputDirectory>/opt/tomcat/apache-tomcat-9.0.62/webapps</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
