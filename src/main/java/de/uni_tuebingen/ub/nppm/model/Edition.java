@@ -82,11 +82,21 @@ public class Edition {
     public List<SelektionEditor> getEditors() {
         return editors;
     }
-
-    public void setEditors(List<SelektionEditor> editors) {
-        this.editors = editors;
+    
+    public void addEditor(SelektionEditor editor){
+        this.getEditors().add(editor);
     }
-        
+      
+    public void removeEditor(int id){
+        for (int i = 0; i < this.getEditors().size(); ) {
+            SelektionEditor editor = this.getEditors().get(i);
+            if(editor.getId() != null && editor.getId() == id){
+                this.getEditors().remove(i);
+            }else{
+                i++;
+            }
+        }
+    }
 
     public Integer getId() {
         return id;
