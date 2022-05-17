@@ -8,7 +8,7 @@ import java.util.*;
 public class SelektionEditor {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int id;
+    private Integer id;
 
     @Column(name = "Bezeichnung", length = 255)
     private String bezeichnung;
@@ -20,22 +20,29 @@ public class SelektionEditor {
     private String vorname;
     
     @ManyToMany(mappedBy = "editors")
-    private Set<Edition> editions = new HashSet<>();
+    private List<Edition> editions = new ArrayList<>();
 
-    public Set<Edition> getEditions() {
+    public List<Edition> getEditions() {
         return editions;
     }
 
-    public void setEditions(Set<Edition> editions) {
-        this.editions = editions;
+    public void addEdition(Edition edition){
+        this.getEditions().add(edition);
+    }
+      
+    public void removeEdition(int id){
+        for (int i = 0; i < this.getEditions().size(); ) {
+            Edition edition = this.getEditions().get(i);
+            if(edition.getId() != null && edition.getId() == id){
+                this.getEditions().remove(i);
+            }else{
+                i++;
+            }
+        }
     }
     
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getBezeichnung() {
@@ -46,7 +53,7 @@ public class SelektionEditor {
         this.bezeichnung = bezeichnung;
     }
     
-        public String getNachname() {
+    public String getNachname() {
         return nachname;
     }
 

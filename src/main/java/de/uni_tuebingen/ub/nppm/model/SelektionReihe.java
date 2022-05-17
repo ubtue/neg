@@ -8,17 +8,13 @@ import java.util.*;
 public class SelektionReihe {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int id;
+    private Integer id;
 
     @Column(name = "Bezeichnung", length = 255)
     private String bezeichnung;
 
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getBezeichnung() {

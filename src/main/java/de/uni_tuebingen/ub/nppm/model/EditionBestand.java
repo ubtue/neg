@@ -8,7 +8,7 @@ import java.util.*;
 public class EditionBestand {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int id;
+    private Integer id;
 
     @OneToOne(targetEntity = Edition.class)
     @JoinColumn(name = "EditionID", referencedColumnName="ID")
@@ -21,12 +21,8 @@ public class EditionBestand {
     @JoinColumn(name = "BKZ", referencedColumnName="ID")
     private SelektionBkz bkz;  
 
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Edition getEdition() {

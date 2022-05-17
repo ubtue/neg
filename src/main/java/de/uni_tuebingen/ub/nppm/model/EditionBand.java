@@ -8,7 +8,7 @@ import java.util.*;
 public class EditionBand {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int id;
+    private Integer id;
 
     @OneToOne(targetEntity = Edition.class)
     @JoinColumn(name = "EditionID", referencedColumnName="ID")
@@ -23,12 +23,8 @@ public class EditionBand {
     @Column(name = "Standard", columnDefinition="INTEGER DEFAULT NULL")
     private Boolean standard;  
 
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Edition getEdition() {
