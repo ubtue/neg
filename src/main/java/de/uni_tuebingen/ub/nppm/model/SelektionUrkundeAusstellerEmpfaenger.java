@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "selektion_urkundehatausstellerempfaenger")
-public class SelektionUrkundeHatAusstellerEmpfaenger {
+@Table(name = "selektion_urkundeausstellerempfaenger")
+public class SelektionUrkundeAusstellerEmpfaenger {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
