@@ -45,7 +45,35 @@ public class AbstractBase {
             configuration.addAnnotatedClass(Edition.class);
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
-            
+
+            configuration.addAnnotatedClass(SelektionAmtStandWeihe.class);
+            configuration.addAnnotatedClass(SelektionAmtWeihe.class);
+            configuration.addAnnotatedClass(SelektionAreal.class);
+            configuration.addAnnotatedClass(SelektionAutor.class);
+            configuration.addAnnotatedClass(SelektionBearbeitungsstatus.class);
+            configuration.addAnnotatedClass(SelektionBewertung.class);
+            configuration.addAnnotatedClass(SelektionDatGenauigkeit.class);
+            configuration.addAnnotatedClass(SelektionEchtheit.class);
+            configuration.addAnnotatedClass(SelektionEthnie.class);
+            configuration.addAnnotatedClass(SelektionEthnienErhalt.class);
+            configuration.addAnnotatedClass(SelektionFunktion.class);
+            configuration.addAnnotatedClass(SelektionGeschlecht.class);
+            configuration.addAnnotatedClass(SelektionGrammatikgeschlecht.class);
+            configuration.addAnnotatedClass(SelektionJaNein.class);
+            configuration.addAnnotatedClass(SelektionKasus.class);
+            configuration.addAnnotatedClass(SelektionLebendVerstorben.class);
+            configuration.addAnnotatedClass(SelektionLiteraturtyp.class);
+            configuration.addAnnotatedClass(SelektionQuellengattung.class);
+            configuration.addAnnotatedClass(SelektionStand.class);
+            configuration.addAnnotatedClass(SelektionSwArealGens.class);
+            configuration.addAnnotatedClass(SelektionSwMorphologie.class);
+            configuration.addAnnotatedClass(SelektionSwMotivation.class);
+            configuration.addAnnotatedClass(SelektionSwNamenElemente.class);
+            configuration.addAnnotatedClass(SelektionSwNamenlexikon.class);
+            configuration.addAnnotatedClass(SelektionSwPhongraph.class);
+            configuration.addAnnotatedClass(SelektionSwSprachherkunft.class);
+            configuration.addAnnotatedClass(SelektionUrkundeAusstellerEmpfaenger.class);
+            configuration.addAnnotatedClass(SelektionVerwandtschaftsgrad.class);
             configuration.addAnnotatedClass(SelektionOrt.class);
             configuration.addAnnotatedClass(SelektionReihe.class);
             configuration.addAnnotatedClass(SelektionSammelband.class);
