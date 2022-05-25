@@ -5,13 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "edition")
-public class Edition {
-    
-    public enum Bearbeitungsstatus{
-        NICHT_BEARBEITET,
-        BEARBEITET
-    }
-    
+public class Edition {    
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
@@ -44,7 +38,7 @@ public class Edition {
     private Boolean verbindlich;
     
     @Column(name = "BearbeitungsstatusID")
-    private Bearbeitungsstatus bearbeitungsstatus;
+    private BearbeitungsstatusEnum.Bearbeitungsstatus bearbeitungsstatus;
     
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
@@ -166,11 +160,11 @@ public class Edition {
         this.verbindlich = verbindlich;
     }
 
-    public Bearbeitungsstatus getBearbeitungsstatus() {
+    public BearbeitungsstatusEnum.Bearbeitungsstatus getBearbeitungsstatus() {
         return bearbeitungsstatus;
     }
 
-    public void setBearbeitungsstatus(Bearbeitungsstatus bearbeitungsstatus) {
+    public void setBearbeitungsstatus(BearbeitungsstatusEnum.Bearbeitungsstatus bearbeitungsstatus) {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 
