@@ -81,6 +81,14 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SelektionBkz.class);
             configuration.addAnnotatedClass(SelektionEditor.class);
             
+            configuration.addAnnotatedClass(Literatur.class);
+            configuration.addAnnotatedClass(LiteraturAutor.class);
+            configuration.addAnnotatedClass(LiteraturHerausgeber.class);
+            configuration.addAnnotatedClass(LiteraturSwArealgens.class);
+            configuration.addAnnotatedClass(LiteraturSwMorphologie.class);
+            configuration.addAnnotatedClass(LiteraturSwNamenelemente.class);
+            configuration.addAnnotatedClass(LiteraturSwPhongraph.class);
+            
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
