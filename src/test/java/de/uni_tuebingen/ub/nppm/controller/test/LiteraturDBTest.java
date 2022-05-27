@@ -19,10 +19,8 @@ public class LiteraturDBTest {
     @DisplayName("List Literatur Entities")   
     void testList() {
         try{
-            LiteraturDB.getList();
-            //assertFalse(LiteraturDB.getList().isEmpty(),"List is empty");  
+            assertFalse(LiteraturDB.getList().isEmpty(),"List is empty");  
         }catch(Exception e){
-            e.printStackTrace();
             fail(e.getLocalizedMessage());
         }
     }
