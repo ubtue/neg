@@ -62,8 +62,9 @@ public class Literatur {
     @JoinColumn(name = "GehoertGruppe", referencedColumnName="ID")
     private BenutzerGruppe gehoertGruppe;
     
-    @Column(name = "inLitID")
-    private Integer inLitID;
+    @OneToOne(targetEntity = Literatur.class)
+    @JoinColumn(name = "inLitID", referencedColumnName="ID")
+    private Literatur inLit;
     
     @Column(name = "inBand", length=45)
     private String inBand;
@@ -206,12 +207,12 @@ public class Literatur {
         this.gehoertGruppe = gehoertGruppe;
     }
 
-    public int getInLitID() {
-        return inLitID;
+    public Literatur getInLit() {
+        return inLit;
     }
 
-    public void setInLitID(Integer inLitID) {
-        this.inLitID = inLitID;
+    public void setInLit(Literatur inLit) {
+        this.inLit = inLit;
     }
 
     public String getInBand() {
