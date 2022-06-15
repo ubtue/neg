@@ -80,7 +80,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SelektionDmghBand.class);
             configuration.addAnnotatedClass(SelektionBkz.class);
             configuration.addAnnotatedClass(SelektionEditor.class);
-            
+
             configuration.addAnnotatedClass(Literatur.class);
             configuration.addAnnotatedClass(LiteraturAutor.class);
             configuration.addAnnotatedClass(LiteraturHerausgeber.class);
@@ -88,7 +88,11 @@ public class AbstractBase {
             configuration.addAnnotatedClass(LiteraturSwMorphologie.class);
             configuration.addAnnotatedClass(LiteraturSwNamenelemente.class);
             configuration.addAnnotatedClass(LiteraturSwPhongraph.class);
-            
+
+            configuration.addAnnotatedClass(MghLemma.class);
+            configuration.addAnnotatedClass(MghLemmaBearbeiter.class);
+            configuration.addAnnotatedClass(MghLemmaKorrektor.class);
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
