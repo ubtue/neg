@@ -35,8 +35,9 @@ public class Literatur {
     @Column(name = "Reihe", length=255)
     private String reihe;
 
-    @Column(name = "BearbeitungsstatusID")
-    private Integer bearbeitungsstatus;
+    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+    @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName="ID")
+    private SelektionBearbeitungsstatus bearbeitungsstatus;
 
     @Column(name = "Kurzzitierweise", length=255)
     private String kurzzitierweise;
@@ -143,11 +144,11 @@ public class Literatur {
         this.reihe = reihe;
     }
 
-    public Integer getBearbeitungsstatus() {
+    public SelektionBearbeitungsstatus getBearbeitungsstatus() {
         return bearbeitungsstatus;
     }
 
-    public void setBearbeitungsstatus(Integer bearbeitungsstatus) {
+    public void setBearbeitungsstatus(SelektionBearbeitungsstatus bearbeitungsstatus) {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 

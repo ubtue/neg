@@ -37,8 +37,9 @@ public class Edition {
     @Column(name = "Verbindlich", columnDefinition="INTEGER DEFAULT NULL")
     private Boolean verbindlich;
     
-    @Column(name = "BearbeitungsstatusID")
-    private BearbeitungsstatusEnum.Bearbeitungsstatus bearbeitungsstatus;
+    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+    @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName="ID")
+    private SelektionBearbeitungsstatus bearbeitungsstatus;
     
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
@@ -160,11 +161,11 @@ public class Edition {
         this.verbindlich = verbindlich;
     }
 
-    public BearbeitungsstatusEnum.Bearbeitungsstatus getBearbeitungsstatus() {
+    public SelektionBearbeitungsstatus getBearbeitungsstatus() {
         return bearbeitungsstatus;
     }
 
-    public void setBearbeitungsstatus(BearbeitungsstatusEnum.Bearbeitungsstatus bearbeitungsstatus) {
+    public void setBearbeitungsstatus(SelektionBearbeitungsstatus bearbeitungsstatus) {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 
