@@ -92,6 +92,10 @@ public class AbstractBase {
             configuration.addAnnotatedClass(MghLemma.class);
             configuration.addAnnotatedClass(MghLemmaBearbeiter.class);
             configuration.addAnnotatedClass(MghLemmaKorrektor.class);
+            
+            configuration.addAnnotatedClass(NamenKommentar.class);
+            configuration.addAnnotatedClass(NamenKommentarBearbeiter.class);
+            configuration.addAnnotatedClass(NamenKommentarKorrektor.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
