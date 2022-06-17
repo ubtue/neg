@@ -96,6 +96,13 @@ public class AbstractBase {
             configuration.addAnnotatedClass(NamenKommentar.class);
             configuration.addAnnotatedClass(NamenKommentarBearbeiter.class);
             configuration.addAnnotatedClass(NamenKommentarKorrektor.class);
+            
+            configuration.addAnnotatedClass(SchlagwortArealgens.class);
+            configuration.addAnnotatedClass(SchlagwortMorphologie.class);
+            configuration.addAnnotatedClass(SchlagwortMotivation.class);
+            configuration.addAnnotatedClass(SchlagwortNamenLexikon.class);
+            configuration.addAnnotatedClass(SchlagwortPhongraph.class);
+            configuration.addAnnotatedClass(SchlagwortSprachherkunft.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
