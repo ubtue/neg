@@ -3,29 +3,31 @@ package de.uni_tuebingen.ub.nppm.controller.test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
+import de.uni_tuebingen.ub.nppm.db.*;
 
 /**
  *
  * @author julian
  */
-public class BenutzerDBTest {
+public class NamenKommentartDBTest {
     
     @Test
-    @DisplayName("List active Users")
-    void testListActiveUsers() {
+    @DisplayName("List Namenkommentar Entities")
+    void testList() {
         try {
-            assertFalse(BenutzerDB.getListAktiv().isEmpty(), "List is empty");
+            NamenKommentarDB.getList();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-    }
 
-    @Test
-    @DisplayName("List inactive Users")
-    void testListInactiveUsers() {
         try {
-            assertFalse(BenutzerDB.getListInaktiv().isEmpty(), "List is empty");
+            NamenKommentarDB.getListKorrektor();
+        } catch (Exception e) {
+            fail(e.getLocalizedMessage());
+        }
+
+        try {
+            NamenKommentarDB.getListBearbeiter();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

@@ -5,13 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "edition")
-public class Edition {
-    
-    public enum Bearbeitungsstatus{
-        NICHT_BEARBEITET,
-        BEARBEITET
-    }
-    
+public class Edition {    
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
@@ -43,8 +37,9 @@ public class Edition {
     @Column(name = "Verbindlich", columnDefinition="INTEGER DEFAULT NULL")
     private Boolean verbindlich;
     
-    @Column(name = "BearbeitungsstatusID")
-    private Bearbeitungsstatus bearbeitungsstatus;
+    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+    @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName="ID")
+    private SelektionBearbeitungsstatus bearbeitungsstatus;
     
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
@@ -166,11 +161,11 @@ public class Edition {
         this.verbindlich = verbindlich;
     }
 
-    public Bearbeitungsstatus getBearbeitungsstatus() {
+    public SelektionBearbeitungsstatus getBearbeitungsstatus() {
         return bearbeitungsstatus;
     }
 
-    public void setBearbeitungsstatus(Bearbeitungsstatus bearbeitungsstatus) {
+    public void setBearbeitungsstatus(SelektionBearbeitungsstatus bearbeitungsstatus) {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 
