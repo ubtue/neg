@@ -11,12 +11,12 @@ import de.uni_tuebingen.ub.nppm.db.LiteraturDB;
  */
 public class LiteraturDBTest {
     
-    @Test                                               
-    @DisplayName("List Literatur Entities")   
+    @Test
+    @DisplayName("List Literatur Entities")
     void testList() {
-        try{
-            assertFalse(LiteraturDB.getList().isEmpty(),"List is empty");  
-        }catch(Exception e){
+        try {
+            assertFalse(LiteraturDB.getList().isEmpty(), "List is empty");
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
     }

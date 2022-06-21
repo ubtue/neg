@@ -14,34 +14,34 @@ public class SchlagwortDBTest {
     @Test                                               
     @DisplayName("List Schlagwort Entities")   
     void testList() {
-        try{
+        try {
             SchlagwortDB.getListArealgens();
-        }catch(Exception e){
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        try{
+        try {
             SchlagwortDB.getListMorphologie();
-        }catch(Exception e){
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        try{
+        try {
             SchlagwortDB.getListMotivation();
-        }catch(Exception e){
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        try{
+        try {
             SchlagwortDB.getListNamenLexikon();
-        }catch(Exception e){
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        try{
+        try {
             SchlagwortDB.getListPhongraph();
-        }catch(Exception e){
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        try{
+        try {
             SchlagwortDB.getListSprachherkunft();
-        }catch(Exception e){
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
     }

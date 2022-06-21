@@ -11,24 +11,24 @@ import de.uni_tuebingen.ub.nppm.db.*;
  */
 public class MghLemmaDBTest {
     
-    @Test                                               
-    @DisplayName("List MghLemma Entities")   
+    @Test
+    @DisplayName("List MghLemma Entities")
     void testList() {
-        try{
-            MghLemmaDB.getList();  
-        }catch(Exception e){
+        try {
+            MghLemmaDB.getList();
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        
-        try{
-            MghLemmaDB.getListKorrektor();  
-        }catch(Exception e){
+
+        try {
+            MghLemmaDB.getListKorrektor();
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        
-        try{
-            MghLemmaDB.getListBearbeiter();  
-        }catch(Exception e){
+
+        try {
+            MghLemmaDB.getListBearbeiter();
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
     }

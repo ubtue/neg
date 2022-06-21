@@ -11,12 +11,12 @@ import de.uni_tuebingen.ub.nppm.db.EditionDB;
  */
 public class EditionDBTest {
     
-    @Test                                               
-    @DisplayName("List Edition Entities")   
+    @Test
+    @DisplayName("List Edition Entities")
     void testList() {
-        try{
-            assertFalse(EditionDB.getList().isEmpty(),"List is empty");  
-        }catch(Exception e){
+        try {
+            assertFalse(EditionDB.getList().isEmpty(), "List is empty");
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
     }

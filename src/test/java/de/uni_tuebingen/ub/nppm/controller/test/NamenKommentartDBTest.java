@@ -11,24 +11,24 @@ import de.uni_tuebingen.ub.nppm.db.*;
  */
 public class NamenKommentartDBTest {
     
-    @Test                                               
-    @DisplayName("List Namenkommentar Entities")   
+    @Test
+    @DisplayName("List Namenkommentar Entities")
     void testList() {
-        try{
-            NamenKommentarDB.getList();  
-        }catch(Exception e){
+        try {
+            NamenKommentarDB.getList();
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        
-        try{
-            NamenKommentarDB.getListKorrektor();  
-        }catch(Exception e){
+
+        try {
+            NamenKommentarDB.getListKorrektor();
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        
-        try{
-            NamenKommentarDB.getListBearbeiter();  
-        }catch(Exception e){
+
+        try {
+            NamenKommentarDB.getListBearbeiter();
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
     }

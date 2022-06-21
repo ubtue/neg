@@ -11,22 +11,22 @@ import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
  */
 public class BenutzerDBTest {
     
-    @Test                                               
-    @DisplayName("List active Users")   
+    @Test
+    @DisplayName("List active Users")
     void testListActiveUsers() {
-        try{
-            assertFalse(BenutzerDB.getListAktiv().isEmpty(),"List is empty");  
-        }catch(Exception e){
+        try {
+            assertFalse(BenutzerDB.getListAktiv().isEmpty(), "List is empty");
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
     }
-    
-    @Test                                               
-    @DisplayName("List inactive Users")   
+
+    @Test
+    @DisplayName("List inactive Users")
     void testListInactiveUsers() {
-        try{
-            assertFalse(BenutzerDB.getListInaktiv().isEmpty(),"List is empty");  
-        }catch(Exception e){
+        try {
+            assertFalse(BenutzerDB.getListInaktiv().isEmpty(), "List is empty");
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
     }
