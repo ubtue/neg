@@ -12,12 +12,12 @@ import org.junit.jupiter.api.BeforeEach;
  * @author julian
  */
 public class EditionDBTest extends DBTest {
-    
+
     @BeforeEach
     void init() throws Exception {
         EditionDB.setInitialContext(super.getTestContext());
     }
-    
+
     @Test
     @DisplayName("List Edition Entities")
     void testList() {

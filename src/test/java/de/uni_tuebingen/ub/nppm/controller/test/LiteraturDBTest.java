@@ -12,12 +12,12 @@ import org.junit.jupiter.api.BeforeEach;
  * @author julian
  */
 public class LiteraturDBTest extends DBTest {
-    
+
     @BeforeEach
     void init() throws Exception {
         LiteraturDB.setInitialContext(super.getTestContext());
     }
-    
+
     @Test
     @DisplayName("List Literatur Entities")
     void testList() {

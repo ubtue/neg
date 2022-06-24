@@ -12,12 +12,12 @@ import org.junit.jupiter.api.BeforeEach;
  * @author julian
  */
 public class MghLemmaDBTest extends DBTest {
-    
+
     @BeforeEach
     void init() throws Exception {
         MghLemmaDB.setInitialContext(super.getTestContext());
     }
-    
+
     @Test
     @DisplayName("List MghLemma Entities")
     void testList() {

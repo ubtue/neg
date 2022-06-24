@@ -12,12 +12,12 @@ import org.junit.jupiter.api.BeforeEach;
  * @author julian
  */
 public class NamenKommentartDBTest extends DBTest {
-    
+
     @BeforeEach
     void init() throws Exception {
         NamenKommentarDB.setInitialContext(super.getTestContext());
     }
-    
+
     @Test
     @DisplayName("List Namenkommentar Entities")
     void testList() {
