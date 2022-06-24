@@ -61,6 +61,11 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/test/java/de/uni_tuebingen/ub/nppm/test/resources/</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.bsc.maven</groupId>

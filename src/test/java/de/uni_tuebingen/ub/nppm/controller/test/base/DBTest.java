@@ -8,19 +8,20 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
+import de.uni_tuebingen.ub.nppm.test.util.Properties;
 
 public abstract class DBTest {
-
-    public static final String PATH = "/var/lib/tomcat9/conf/Catalina/localhost/neg.xml";
 
     //Return Custom Context for Testing Environment
     protected javax.naming.InitialContext getTestContext() throws Exception {
 
+        Properties prop = new Properties();
+        prop.load();
         CustomInitialContext ctx = new CustomInitialContext();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(new File(PATH));
+        Document document = builder.parse(new File(prop.getPathNegFile()));
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         Node valUrl = (Node) xPath.compile("//Environment[@name='sqlURL']").evaluate(document, XPathConstants.NODE);
