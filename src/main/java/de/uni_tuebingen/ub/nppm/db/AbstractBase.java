@@ -116,6 +116,10 @@ public class AbstractBase {
             
             configuration.addAnnotatedClass(Handschrift.class);
             configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
+            
+            configuration.addAnnotatedClass(Urkunde.class);
+            configuration.addAnnotatedClass(UrkundeBetreff.class);
+            configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
