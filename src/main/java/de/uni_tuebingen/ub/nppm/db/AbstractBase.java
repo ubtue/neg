@@ -12,7 +12,13 @@ import de.uni_tuebingen.ub.nppm.model.*;
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
-
+    
+    protected static javax.naming.InitialContext initialContext =  null;
+    
+    public static void setInitialContext(javax.naming.InitialContext ctx){
+        initialContext = ctx;
+    }
+    
     // Example taken from: https://www.javaguides.net/2019/08/hibernate-5-one-to-many-mapping-annotation-example.html
     protected static SessionFactory getSessionFactory() throws Exception {
         if (sessionFactory == null) {
@@ -23,12 +29,13 @@ public class AbstractBase {
             Properties settings = new Properties();
 
             // Get settings from tomcat config
-            javax.naming.InitialContext initialContext = new javax.naming.InitialContext();
+            if(initialContext == null)
+                initialContext = new javax.naming.InitialContext();
             settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
             settings.put(Environment.URL, (String)initialContext.lookup("java:comp/env/sqlURL"));
             settings.put(Environment.USER, (String)initialContext.lookup("java:comp/env/sqlUser"));
             settings.put(Environment.PASS, (String)initialContext.lookup("java:comp/env/sqlPassword"));
-
+            
             // This must be changed when migrating to InnoDB
             //settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
             settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLMyISAMDialect");
@@ -80,7 +87,30 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SelektionDmghBand.class);
             configuration.addAnnotatedClass(SelektionBkz.class);
             configuration.addAnnotatedClass(SelektionEditor.class);
+
+            configuration.addAnnotatedClass(Literatur.class);
+            configuration.addAnnotatedClass(LiteraturAutor.class);
+            configuration.addAnnotatedClass(LiteraturHerausgeber.class);
+            configuration.addAnnotatedClass(LiteraturSwArealgens.class);
+            configuration.addAnnotatedClass(LiteraturSwMorphologie.class);
+            configuration.addAnnotatedClass(LiteraturSwNamenelemente.class);
+            configuration.addAnnotatedClass(LiteraturSwPhongraph.class);
+
+            configuration.addAnnotatedClass(MghLemma.class);
+            configuration.addAnnotatedClass(MghLemmaBearbeiter.class);
+            configuration.addAnnotatedClass(MghLemmaKorrektor.class);
             
+            configuration.addAnnotatedClass(NamenKommentar.class);
+            configuration.addAnnotatedClass(NamenKommentarBearbeiter.class);
+            configuration.addAnnotatedClass(NamenKommentarKorrektor.class);
+            
+            configuration.addAnnotatedClass(SchlagwortArealgens.class);
+            configuration.addAnnotatedClass(SchlagwortMorphologie.class);
+            configuration.addAnnotatedClass(SchlagwortMotivation.class);
+            configuration.addAnnotatedClass(SchlagwortNamenLexikon.class);
+            configuration.addAnnotatedClass(SchlagwortPhongraph.class);
+            configuration.addAnnotatedClass(SchlagwortSprachherkunft.class);
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
