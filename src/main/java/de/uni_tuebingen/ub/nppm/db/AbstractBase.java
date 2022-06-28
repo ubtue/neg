@@ -113,6 +113,9 @@ public class AbstractBase {
             
             configuration.addAnnotatedClass(Quelle.class);
             configuration.addAnnotatedClass(QuelleInEdition.class);
+            
+            configuration.addAnnotatedClass(Handschrift.class);
+            configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
