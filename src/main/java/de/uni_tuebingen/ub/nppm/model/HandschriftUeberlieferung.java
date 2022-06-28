@@ -1,0 +1,359 @@
+package de.uni_tuebingen.ub.nppm.model;
+
+import javax.persistence.*;
+import java.util.*;
+
+@Entity
+@Table(name = "handschrift_ueberlieferung")
+public class HandschriftUeberlieferung {    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Integer id;
+    
+    @OneToOne(targetEntity = Quelle.class)
+    @JoinColumn(name = "QuelleID", referencedColumnName="ID")
+    private Quelle quelle;
+
+    @Column(name = "Sigle", length=255)
+    private String sigle;
+
+    @Column(name = "Bibliothekssignatur", length=255)
+    private String bibliothekssignatur;
+    
+    @Column(name = "VonTag")
+    private Integer vonTag;
+    
+    @Column(name = "VonMonat")
+    private Integer vonMonat;
+    
+    @Column(name = "VonJahr")
+    private Integer vonJahr;
+    
+    @Column(name = "VonJahrhundert", length=5)
+    private String vonJahrhundert;
+    
+    @Column(name = "BisTag")
+    private Integer bisTag;
+    
+    @Column(name = "BisMonat")
+    private Integer bisMonat;
+    
+    @Column(name = "BisJahr")
+    private Integer bisJahr;
+    
+    @Column(name = "BisJahrhundert", length=5)
+    private String bisJahrhundert;
+    
+    @Column(name = "GenauigkeitVonTag")
+    private Integer genauigkeitVonTag;
+    
+    @Column(name = "GenauigkeitVonMonat")
+    private Integer genauigkeitVonMonat;
+    
+    @Column(name = "GenauigkeitVonJahr")
+    private Integer genauigkeitVonJahr;
+    
+    @Column(name = "GenauigkeitVonJahrhundert")
+    private Integer genauigkeitVonJahrhundert;
+    
+    @OneToOne(targetEntity = SelektionOrt.class)
+    @JoinColumn(name = "Schriftheimat", referencedColumnName="ID")
+    private SelektionOrt schriftheimat;
+    
+    @Column(name = "UeberlieferungDatierung", length = 255)
+    private String ueberlieferungDatierung;
+
+    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+    @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
+    private SelektionBearbeitungsstatus bearbeitungsstatus;
+    
+    @Column(name = "LetzteAenderung")
+    private Date letzteAenderung;
+    
+    @OneToOne(targetEntity = Benutzer.class)
+    @JoinColumn(name = "LetzteAenderungVon", referencedColumnName="ID")
+    private Benutzer letzteAenderungVon;
+    
+    @Column(name = "Erstellt")
+    private Date erstellt;
+    
+    @OneToOne(targetEntity = Benutzer.class)
+    @JoinColumn(name = "ErstelltVon", referencedColumnName="ID")
+    private Benutzer erstelltVon;
+    
+    @OneToOne(targetEntity = BenutzerGruppe.class)
+    @JoinColumn(name = "GehoertGruppe", referencedColumnName="ID")
+    private BenutzerGruppe gehoertGruppe;
+    
+    @OneToOne(targetEntity = Handschrift.class)
+    @JoinColumn(name = "HandschriftID", referencedColumnName = "ID")
+    private Handschrift handschrift;
+    
+    @OneToOne(targetEntity = SelektionOrt.class)
+    @JoinColumn(name = "Bibliotheksheimat", referencedColumnName="ID")
+    private SelektionOrt bibliotheksheimat;
+    
+    @Column(name = "GenauigkeitBisTag")
+    private Integer genauigkeitBisTag;
+    
+    @Column(name = "GenauigkeitBisMonat")
+    private Integer genauigkeitBisMonat;
+    
+    @Column(name = "GenauigkeitBisJahr")
+    private Integer genauigkeitBisJahr;
+    
+    @Column(name = "GenauigkeitBisJahrhundert")
+    private Integer genauigkeitBisJahrhundert;
+    
+    @OneToOne(targetEntity = Edition.class)
+    @JoinColumn(name = "EditionID", referencedColumnName = "ID")
+    private Edition edition;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Quelle getQuelle() {
+        return quelle;
+    }
+
+    public void setQuelle(Quelle quelle) {
+        this.quelle = quelle;
+    }
+
+    public String getSigle() {
+        return sigle;
+    }
+
+    public void setSigle(String sigle) {
+        this.sigle = sigle;
+    }
+
+    public String getBibliothekssignatur() {
+        return bibliothekssignatur;
+    }
+
+    public void setBibliothekssignatur(String bibliothekssignatur) {
+        this.bibliothekssignatur = bibliothekssignatur;
+    }
+
+    public Integer getVonTag() {
+        return vonTag;
+    }
+
+    public void setVonTag(Integer vonTag) {
+        this.vonTag = vonTag;
+    }
+
+    public Integer getVonMonat() {
+        return vonMonat;
+    }
+
+    public void setVonMonat(Integer vonMonat) {
+        this.vonMonat = vonMonat;
+    }
+
+    public Integer getVonJahr() {
+        return vonJahr;
+    }
+
+    public void setVonJahr(Integer vonJahr) {
+        this.vonJahr = vonJahr;
+    }
+
+    public String getVonJahrhundert() {
+        return vonJahrhundert;
+    }
+
+    public void setVonJahrhundert(String vonJahrhundert) {
+        this.vonJahrhundert = vonJahrhundert;
+    }
+
+    public Integer getBisTag() {
+        return bisTag;
+    }
+
+    public void setBisTag(Integer bisTag) {
+        this.bisTag = bisTag;
+    }
+
+    public Integer getBisMonat() {
+        return bisMonat;
+    }
+
+    public void setBisMonat(Integer bisMonat) {
+        this.bisMonat = bisMonat;
+    }
+
+    public Integer getBisJahr() {
+        return bisJahr;
+    }
+
+    public void setBisJahr(Integer bisJahr) {
+        this.bisJahr = bisJahr;
+    }
+
+    public String getBisJahrhundert() {
+        return bisJahrhundert;
+    }
+
+    public void setBisJahrhundert(String bisJahrhundert) {
+        this.bisJahrhundert = bisJahrhundert;
+    }
+
+    public Integer getGenauigkeitVonTag() {
+        return genauigkeitVonTag;
+    }
+
+    public void setGenauigkeitVonTag(Integer genauigkeitVonTag) {
+        this.genauigkeitVonTag = genauigkeitVonTag;
+    }
+
+    public Integer getGenauigkeitVonMonat() {
+        return genauigkeitVonMonat;
+    }
+
+    public void setGenauigkeitVonMonat(Integer genauigkeitVonMonat) {
+        this.genauigkeitVonMonat = genauigkeitVonMonat;
+    }
+
+    public Integer getGenauigkeitVonJahr() {
+        return genauigkeitVonJahr;
+    }
+
+    public void setGenauigkeitVonJahr(Integer genauigkeitVonJahr) {
+        this.genauigkeitVonJahr = genauigkeitVonJahr;
+    }
+
+    public Integer getGenauigkeitVonJahrhundert() {
+        return genauigkeitVonJahrhundert;
+    }
+
+    public void setGenauigkeitVonJahrhundert(Integer genauigkeitVonJahrhundert) {
+        this.genauigkeitVonJahrhundert = genauigkeitVonJahrhundert;
+    }
+
+    public SelektionOrt getSchriftheimat() {
+        return schriftheimat;
+    }
+
+    public void setSchriftheimat(SelektionOrt schriftheimat) {
+        this.schriftheimat = schriftheimat;
+    }
+
+    public String getUeberlieferungDatierung() {
+        return ueberlieferungDatierung;
+    }
+
+    public void setUeberlieferungDatierung(String ueberlieferungDatierung) {
+        this.ueberlieferungDatierung = ueberlieferungDatierung;
+    }
+
+    public SelektionBearbeitungsstatus getBearbeitungsstatus() {
+        return bearbeitungsstatus;
+    }
+
+    public void setBearbeitungsstatus(SelektionBearbeitungsstatus bearbeitungsstatus) {
+        this.bearbeitungsstatus = bearbeitungsstatus;
+    }
+
+    public Date getLetzteAenderung() {
+        return letzteAenderung;
+    }
+
+    public void setLetzteAenderung(Date letzteAenderung) {
+        this.letzteAenderung = letzteAenderung;
+    }
+
+    public Benutzer getLetzteAenderungVon() {
+        return letzteAenderungVon;
+    }
+
+    public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
+        this.letzteAenderungVon = letzteAenderungVon;
+    }
+
+    public Date getErstellt() {
+        return erstellt;
+    }
+
+    public void setErstellt(Date erstellt) {
+        this.erstellt = erstellt;
+    }
+
+    public Benutzer getErstelltVon() {
+        return erstelltVon;
+    }
+
+    public void setErstelltVon(Benutzer erstelltVon) {
+        this.erstelltVon = erstelltVon;
+    }
+
+    public BenutzerGruppe getGehoertGruppe() {
+        return gehoertGruppe;
+    }
+
+    public void setGehoertGruppe(BenutzerGruppe gehoertGruppe) {
+        this.gehoertGruppe = gehoertGruppe;
+    }
+
+    public Handschrift getHandschrift() {
+        return handschrift;
+    }
+
+    public void setHandschrift(Handschrift handschrift) {
+        this.handschrift = handschrift;
+    }
+
+    public SelektionOrt getBibliotheksheimat() {
+        return bibliotheksheimat;
+    }
+
+    public void setBibliotheksheimat(SelektionOrt bibliotheksheimat) {
+        this.bibliotheksheimat = bibliotheksheimat;
+    }
+
+    public Integer getGenauigkeitBisTag() {
+        return genauigkeitBisTag;
+    }
+
+    public void setGenauigkeitBisTag(Integer genauigkeitBisTag) {
+        this.genauigkeitBisTag = genauigkeitBisTag;
+    }
+
+    public Integer getGenauigkeitBisMonat() {
+        return genauigkeitBisMonat;
+    }
+
+    public void setGenauigkeitBisMonat(Integer genauigkeitBisMonat) {
+        this.genauigkeitBisMonat = genauigkeitBisMonat;
+    }
+
+    public Integer getGenauigkeitBisJahr() {
+        return genauigkeitBisJahr;
+    }
+
+    public void setGenauigkeitBisJahr(Integer genauigkeitBisJahr) {
+        this.genauigkeitBisJahr = genauigkeitBisJahr;
+    }
+
+    public Integer getGenauigkeitBisJahrhundert() {
+        return genauigkeitBisJahrhundert;
+    }
+
+    public void setGenauigkeitBisJahrhundert(Integer genauigkeitBisJahrhundert) {
+        this.genauigkeitBisJahrhundert = genauigkeitBisJahrhundert;
+    }
+
+    public Edition getEdition() {
+        return edition;
+    }
+
+    public void setEdition(Edition edition) {
+        this.edition = edition;
+    }
+
+   
+    
+}
