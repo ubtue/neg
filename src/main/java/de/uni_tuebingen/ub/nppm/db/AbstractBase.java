@@ -110,6 +110,9 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SchlagwortNamenLexikon.class);
             configuration.addAnnotatedClass(SchlagwortPhongraph.class);
             configuration.addAnnotatedClass(SchlagwortSprachherkunft.class);
+            
+            configuration.addAnnotatedClass(Quelle.class);
+            configuration.addAnnotatedClass(QuelleInEdition.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
