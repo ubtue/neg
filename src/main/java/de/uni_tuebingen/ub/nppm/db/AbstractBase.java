@@ -12,7 +12,13 @@ import de.uni_tuebingen.ub.nppm.model.*;
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
-
+    
+    protected static javax.naming.InitialContext initialContext =  null;
+    
+    public static void setInitialContext(javax.naming.InitialContext ctx){
+        initialContext = ctx;
+    }
+    
     // Example taken from: https://www.javaguides.net/2019/08/hibernate-5-one-to-many-mapping-annotation-example.html
     protected static SessionFactory getSessionFactory() throws Exception {
         if (sessionFactory == null) {
@@ -23,12 +29,13 @@ public class AbstractBase {
             Properties settings = new Properties();
 
             // Get settings from tomcat config
-            javax.naming.InitialContext initialContext = new javax.naming.InitialContext();
+            if(initialContext == null)
+                initialContext = new javax.naming.InitialContext();
             settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
             settings.put(Environment.URL, (String)initialContext.lookup("java:comp/env/sqlURL"));
             settings.put(Environment.USER, (String)initialContext.lookup("java:comp/env/sqlUser"));
             settings.put(Environment.PASS, (String)initialContext.lookup("java:comp/env/sqlPassword"));
-
+            
             // This must be changed when migrating to InnoDB
             //settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
             settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLMyISAMDialect");
