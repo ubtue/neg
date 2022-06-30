@@ -120,6 +120,11 @@ public class AbstractBase {
             configuration.addAnnotatedClass(Urkunde.class);
             configuration.addAnnotatedClass(UrkundeBetreff.class);
             configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
+            
+            configuration.addAnnotatedClass(Person.class);
+            configuration.addAnnotatedClass(PersonAmtStandWeihe.class);
+            configuration.addAnnotatedClass(PersonQuiet.class);
+            configuration.addAnnotatedClass(PersonVariante.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
