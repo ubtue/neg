@@ -73,6 +73,16 @@ public class Edition {
         inverseJoinColumns = { @JoinColumn(name = "EditorID") }
     )
     List<SelektionEditor> editors = new ArrayList<>();
+    
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "quelle_inedition",
+            joinColumns = {
+                @JoinColumn(name = "EditionID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "QuelleID")}
+    )
+    List<Quelle> quellen = new ArrayList<>();
 
     public List<SelektionEditor> getEditors() {
         return editors;
@@ -88,6 +98,25 @@ public class Edition {
             if(editor.getId() != null && editor.getId() == id){
                 this.getEditors().remove(i);
             }else{
+                i++;
+            }
+        }
+    }
+    
+    public List<Quelle> getQuellen() {
+        return quellen;
+    }
+
+    public void addQuelle(Quelle q) {
+        this.getQuellen().add(q);
+    }
+
+    public void removeQuelle(int id) {
+        for (int i = 0; i < this.getQuellen().size();) {
+            Quelle w = this.getQuellen().get(i);
+            if (w.getId() != null && w.getId() == id) {
+                this.getQuellen().remove(i);
+            } else {
                 i++;
             }
         }

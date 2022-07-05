@@ -35,6 +35,7 @@ Build:
 - Use build-function in netbeans (.war file see target/ dir)
 - Deploy 1st time using http://localhost:8080/manager/html
 - Update copying neg.war to /var/lib/tomcat/webapps/ and removing the old unpacked neg/ subdirectory
+- Make sure the file /var/lib/tomcat9/conf/Catalina/localhost/neg.xml exists
 
 Production:
 - https://wiki.owasp.org/index.php/Securing_tomcat
