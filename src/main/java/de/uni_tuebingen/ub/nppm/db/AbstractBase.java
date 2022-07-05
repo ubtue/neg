@@ -112,7 +112,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SchlagwortSprachherkunft.class);
             
             configuration.addAnnotatedClass(Quelle.class);
-            configuration.addAnnotatedClass(QuelleInEdition.class);
+            configuration.addAnnotatedClass(QuelleInEdition_MM.class);
             
             configuration.addAnnotatedClass(Handschrift.class);
             configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
@@ -122,7 +122,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
             
             configuration.addAnnotatedClass(Person.class);
-            configuration.addAnnotatedClass(PersonAmtStandWeihe.class);
+            configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
             configuration.addAnnotatedClass(PersonQuiet.class);
             configuration.addAnnotatedClass(PersonVariante.class);
 

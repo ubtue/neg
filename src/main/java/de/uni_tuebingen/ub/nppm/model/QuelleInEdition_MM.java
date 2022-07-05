@@ -5,7 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "quelle_inedition")
-public class QuelleInEdition {
+public class QuelleInEdition_MM {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")

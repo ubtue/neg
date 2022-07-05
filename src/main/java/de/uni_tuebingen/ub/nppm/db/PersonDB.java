@@ -21,8 +21,8 @@ public class PersonDB extends AbstractBase {
     public static List getListPersonAmtStandWeihe() throws Exception {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<PersonAmtStandWeihe> criteria = builder.createQuery(PersonAmtStandWeihe.class);
-        Root lit = criteria.from(PersonAmtStandWeihe.class);
+        CriteriaQuery<PersonAmtStandWeihe_MM> criteria = builder.createQuery(PersonAmtStandWeihe_MM.class);
+        Root lit = criteria.from(PersonAmtStandWeihe_MM.class);
         criteria.select(lit);
         return session.createQuery(criteria).getResultList();
     }
