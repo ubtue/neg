@@ -125,7 +125,7 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <warName>neg</warName>
-                    <outputDirectory>/opt/tomcat/apache-tomcat-9.0.62/webapps</outputDirectory>
+                    <outputDirectory>/var/lib/tomcat9/webapps</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
