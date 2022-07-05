@@ -110,6 +110,21 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SchlagwortNamenLexikon.class);
             configuration.addAnnotatedClass(SchlagwortPhongraph.class);
             configuration.addAnnotatedClass(SchlagwortSprachherkunft.class);
+            
+            configuration.addAnnotatedClass(Quelle.class);
+            configuration.addAnnotatedClass(QuelleInEdition_MM.class);
+            
+            configuration.addAnnotatedClass(Handschrift.class);
+            configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
+            
+            configuration.addAnnotatedClass(Urkunde.class);
+            configuration.addAnnotatedClass(UrkundeBetreff.class);
+            configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
+            
+            configuration.addAnnotatedClass(Person.class);
+            configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
+            configuration.addAnnotatedClass(PersonQuiet.class);
+            configuration.addAnnotatedClass(PersonVariante.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();

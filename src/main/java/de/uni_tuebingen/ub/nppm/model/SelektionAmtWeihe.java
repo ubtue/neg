@@ -6,12 +6,17 @@ import java.util.*;
 @Entity
 @Table(name = "selektion_amtweihe")
 public class SelektionAmtWeihe {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "Bezeichnung", length=255)
+    @Column(name = "Bezeichnung", length = 255)
     private String bezeichnung;
+
+    @ManyToMany(mappedBy = "amtStandWeihe")
+    private List<Person> personen = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -23,5 +28,24 @@ public class SelektionAmtWeihe {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+
+    public List<Person> getPersonen() {
+        return this.personen;
+    }
+
+    public void addPerson(Person person) {
+        this.getPersonen().add(person);
+    }
+
+    public void removePerson(int id) {
+        for (int i = 0; i < this.getPersonen().size();) {
+            Person person = this.getPersonen().get(i);
+            if (person.getId() != null && person.getId() == id) {
+                this.getPersonen().remove(i);
+            } else {
+                i++;
+            }
+        }
     }
 }
