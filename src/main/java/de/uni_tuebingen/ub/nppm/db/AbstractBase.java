@@ -130,6 +130,10 @@ public class AbstractBase {
             configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
             configuration.addAnnotatedClass(PersonQuiet.class);
             configuration.addAnnotatedClass(PersonVariante.class);
+            
+            configuration.addAnnotatedClass(Einzelbeleg.class);
+            configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
+            configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
