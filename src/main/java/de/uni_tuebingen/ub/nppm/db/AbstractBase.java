@@ -135,6 +135,12 @@ public class AbstractBase {
             configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
             configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
 
+            configuration.addAnnotatedClass(DatenbankFilter.class);
+            configuration.addAnnotatedClass(DatenbankMapping.class);
+            configuration.addAnnotatedClass(DatenbankSelektion.class);
+            configuration.addAnnotatedClass(DatenbankSprache.class);
+            configuration.addAnnotatedClass(DatenbankTexte.class);
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
