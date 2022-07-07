@@ -141,6 +141,8 @@ public class AbstractBase {
             configuration.addAnnotatedClass(DatenbankSprache.class);
             configuration.addAnnotatedClass(DatenbankTexte.class);
 
+            configuration.addAnnotatedClass(SucheFavoriten.class);
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
