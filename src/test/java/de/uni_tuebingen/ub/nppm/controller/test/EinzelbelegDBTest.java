@@ -19,20 +19,20 @@ public class EinzelbelegDBTest extends DBTest {
     void testList() {
         // TODO: The test fails because of the inconsistency of the database
         
-        /*try {
-            EinzelbelegDB.getList();
+        try {
+            //EinzelbelegDB.getList();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            EinzelbelegDB.getListFunktion();
+            //EinzelbelegDB.getListFunktion();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            EinzelbelegDB.getListTextKritik();
+            //EinzelbelegDB.getListTextKritik();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
-        }*/
+        }
     }
 }

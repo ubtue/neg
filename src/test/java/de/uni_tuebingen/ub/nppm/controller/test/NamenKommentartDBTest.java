@@ -29,8 +29,7 @@ public class NamenKommentartDBTest extends DBTest {
         }
 
         try {
-            // TODO: The test fails because of inconsistency of the database
-            //NamenKommentarDB.getListKorrektor();
+            NamenKommentarDB.getListKorrektor();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

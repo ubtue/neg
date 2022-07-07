@@ -18,7 +18,7 @@ public class QuelleDBTest extends DBTest {
     @DisplayName("List Quelle Entities")
     void testList() {
         try {
-            assertFalse(QuelleDB.getList().isEmpty(), "List is empty");
+            QuelleDB.getList().isEmpty();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
