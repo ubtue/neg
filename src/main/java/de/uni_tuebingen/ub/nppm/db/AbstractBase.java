@@ -58,7 +58,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
 
-            configuration.addAnnotatedClass(SelektionAmtStandWeihe.class);
             configuration.addAnnotatedClass(SelektionAmtWeihe.class);
             configuration.addAnnotatedClass(SelektionAreal.class);
             configuration.addAnnotatedClass(SelektionAutor.class);

@@ -247,7 +247,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "AmtWeiheID")}
     )
-    List<SelektionAmtStandWeihe> amtStandWeihe = new ArrayList<>();
+    List<SelektionAmtWeihe> amtStandWeihe = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -577,7 +577,7 @@ public class Einzelbeleg {
         return mghLemmaKorrigiert;
     }
 
-    public List<SelektionAmtStandWeihe> getAmtStandWeihe() {
+    public List<SelektionAmtWeihe> getAmtStandWeihe() {
         return amtStandWeihe;
     }
 
