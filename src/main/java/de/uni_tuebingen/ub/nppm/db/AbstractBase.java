@@ -142,6 +142,8 @@ public class AbstractBase {
             configuration.addAnnotatedClass(DatenbankTexte.class);
 
             configuration.addAnnotatedClass(SucheFavoriten.class);
+            
+            configuration.addAnnotatedClass(Bemerkung.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
