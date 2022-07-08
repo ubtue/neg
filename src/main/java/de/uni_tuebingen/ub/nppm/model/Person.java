@@ -84,7 +84,7 @@ public class Person {
             inverseJoinColumns = {
                 @JoinColumn(name = "AmtWeiheID")}
     )
-    List<SelektionAmtStandWeihe> amtStandWeihe = new ArrayList<>();
+    List<SelektionAmtWeihe> amtStandWeihe = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -121,6 +121,9 @@ public class Person {
                 @JoinColumn(name = "EthnienerhaltID")}
     )
     List<SelektionEthnienErhalt> ethnieErhalt = new ArrayList<>();
+    
+    @ManyToMany(mappedBy = "person")
+    private List<Einzelbeleg> einzelbeleg = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -258,7 +261,7 @@ public class Person {
         return stand;
     }
 
-    public List<SelektionAmtStandWeihe> getAmtStandWeihe() {
+    public List<SelektionAmtWeihe> getAmtStandWeihe() {
         return amtStandWeihe;
     }
 
@@ -282,6 +285,14 @@ public class Person {
         return ethnieErhalt;
     }
     
+    public List<Einzelbeleg> getEinzelbeleg() {
+        return einzelbeleg;
+    }
+
+    public void setEinzelbeleg(List<Einzelbeleg> einzelbeleg) {
+        this.einzelbeleg = einzelbeleg;
+    }
+    
     public void addStand(SelektionStand s) {
         this.getStand().add(s);
     }
@@ -297,13 +308,13 @@ public class Person {
         }
     }
 
-    public void addAmtStandWeihe(SelektionAmtStandWeihe s) {
+    public void addAmtStandWeihe(SelektionAmtWeihe s) {
         this.getAmtStandWeihe().add(s);
     }
 
     public void removeAmtStandWeihe(int id) {
         for (int i = 0; i < this.getAmtStandWeihe().size();) {
-            SelektionAmtStandWeihe s = this.getAmtStandWeihe().get(i);
+            SelektionAmtWeihe s = this.getAmtStandWeihe().get(i);
             if (s.getId() != null && s.getId() == id) {
                 this.getAmtStandWeihe().remove(i);
             } else {
@@ -381,6 +392,21 @@ public class Person {
             SelektionEthnienErhalt s = this.getEthnieErhalt().get(i);
             if (s.getId() != null && s.getId() == id) {
                 this.getEthnieErhalt().remove(i);
+            } else {
+                i++;
+            }
+        }
+    }
+    
+    public void addEinzelbeleg(Einzelbeleg beleg) {
+        this.getEinzelbeleg().add(beleg);
+    }
+
+    public void removeEinzelbeleg(int id) {
+        for (int i = 0; i < this.getEinzelbeleg().size();) {
+            Einzelbeleg beleg = this.getEinzelbeleg().get(i);
+            if (beleg.getId() != null && beleg.getId() == id) {
+                this.getEinzelbeleg().remove(i);
             } else {
                 i++;
             }

@@ -22,13 +22,13 @@ public class PersonDBTest extends DBTest {
     @DisplayName("List Person Entities")
     void testList() {
         // TODO: The tests fails because of the inconsistency of the database
-        /*try {
+        try {
             PersonDB.getListPerson();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            PersonDB.getListPersonAmtStandWeihe();
+            //PersonDB.getListPersonAmtStandWeihe();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
@@ -41,6 +41,6 @@ public class PersonDBTest extends DBTest {
             PersonDB.getListPersonVariante();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
-        }*/
+        }
     }
 }

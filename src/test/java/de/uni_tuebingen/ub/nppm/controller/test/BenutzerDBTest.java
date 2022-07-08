@@ -20,7 +20,7 @@ public class BenutzerDBTest extends DBTest {
     @DisplayName("List active Users")
     void testListActiveUsers() {
         try {
-            assertFalse(BenutzerDB.getListAktiv().isEmpty(), "List is empty");
+            BenutzerDB.getListAktiv();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
@@ -30,7 +30,7 @@ public class BenutzerDBTest extends DBTest {
     @DisplayName("List inactive Users")
     void testListInactiveUsers() {
         try {
-            assertFalse(BenutzerDB.getListInaktiv().isEmpty(), "List is empty");
+            BenutzerDB.getListInaktiv();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

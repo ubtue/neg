@@ -58,7 +58,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
 
-            configuration.addAnnotatedClass(SelektionAmtStandWeihe.class);
             configuration.addAnnotatedClass(SelektionAmtWeihe.class);
             configuration.addAnnotatedClass(SelektionAreal.class);
             configuration.addAnnotatedClass(SelektionAutor.class);
@@ -131,6 +130,20 @@ public class AbstractBase {
             configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
             configuration.addAnnotatedClass(PersonQuiet.class);
             configuration.addAnnotatedClass(PersonVariante.class);
+            
+            configuration.addAnnotatedClass(Einzelbeleg.class);
+            configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
+            configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
+
+            configuration.addAnnotatedClass(DatenbankFilter.class);
+            configuration.addAnnotatedClass(DatenbankMapping.class);
+            configuration.addAnnotatedClass(DatenbankSelektion.class);
+            configuration.addAnnotatedClass(DatenbankSprache.class);
+            configuration.addAnnotatedClass(DatenbankTexte.class);
+
+            configuration.addAnnotatedClass(SucheFavoriten.class);
+            
+            configuration.addAnnotatedClass(Bemerkung.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();

@@ -23,7 +23,7 @@ public class LiteraturDBTest extends DBTest {
     void testList() {
         try {
             // TODO: The test fails because of inconsistency of the database
-            //assertFalse(LiteraturDB.getList().isEmpty(), "List is empty");
+            //LiteraturDB.getList();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

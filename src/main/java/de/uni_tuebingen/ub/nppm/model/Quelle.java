@@ -51,17 +51,21 @@ public class Quelle {
     @Column(name = "BisJahrhundert", length=5)
     private String bisJahrhundert;
     
-    @Column(name = "GenauigkeitVonTag")
-    private Integer genauigkeitVonTag;
+    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @JoinColumn(name = "GenauigkeitVonTag", referencedColumnName="ID")
+    private SelektionDatGenauigkeit genauigkeitVonTag;
     
-    @Column(name = "GenauigkeitVonMonat")
-    private Integer genauigkeitVonMonat;
+    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @JoinColumn(name = "GenauigkeitVonMonat", referencedColumnName="ID")
+    private SelektionDatGenauigkeit genauigkeitVonMonat;
     
-    @Column(name = "GenauigkeitVonJahr")
-    private Integer genauigkeitVonJahr;
+    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @JoinColumn(name = "GenauigkeitVonJahr", referencedColumnName="ID")
+    private SelektionDatGenauigkeit genauigkeitVonJahr;
     
-    @Column(name = "GenauigkeitVonJahrhundert")
-    private Integer genauigkeitVonJahrhundert;
+    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @JoinColumn(name = "GenauigkeitVonJahrhundert", referencedColumnName="ID")
+    private SelektionDatGenauigkeit genauigkeitVonJahrhundert;
     
     @Column(name = "DatierungUngewiss" , columnDefinition="BIT DEFAULT NULL")
     private Boolean datierungUngewiss;
@@ -220,35 +224,35 @@ public class Quelle {
         this.bisJahrhundert = bisJahrhundert;
     }
 
-    public Integer getGenauigkeitVonTag() {
+    public SelektionDatGenauigkeit getGenauigkeitVonTag() {
         return genauigkeitVonTag;
     }
 
-    public void setGenauigkeitVonTag(Integer genauigkeitVonTag) {
+    public void setGenauigkeitVonTag(SelektionDatGenauigkeit genauigkeitVonTag) {
         this.genauigkeitVonTag = genauigkeitVonTag;
     }
 
-    public Integer getGenauigkeitVonMonat() {
+    public SelektionDatGenauigkeit getGenauigkeitVonMonat() {
         return genauigkeitVonMonat;
     }
 
-    public void setGenauigkeitVonMonat(Integer genauigkeitVonMonat) {
+    public void setGenauigkeitVonMonat(SelektionDatGenauigkeit genauigkeitVonMonat) {
         this.genauigkeitVonMonat = genauigkeitVonMonat;
     }
 
-    public Integer getGenauigkeitVonJahr() {
+    public SelektionDatGenauigkeit getGenauigkeitVonJahr() {
         return genauigkeitVonJahr;
     }
 
-    public void setGenauigkeitVonJahr(Integer genauigkeitVonJahr) {
+    public void setGenauigkeitVonJahr(SelektionDatGenauigkeit genauigkeitVonJahr) {
         this.genauigkeitVonJahr = genauigkeitVonJahr;
     }
 
-    public Integer getGenauigkeitVonJahrhundert() {
+    public SelektionDatGenauigkeit getGenauigkeitVonJahrhundert() {
         return genauigkeitVonJahrhundert;
     }
 
-    public void setGenauigkeitVonJahrhundert(Integer genauigkeitVonJahrhundert) {
+    public void setGenauigkeitVonJahrhundert(SelektionDatGenauigkeit genauigkeitVonJahrhundert) {
         this.genauigkeitVonJahrhundert = genauigkeitVonJahrhundert;
     }
 

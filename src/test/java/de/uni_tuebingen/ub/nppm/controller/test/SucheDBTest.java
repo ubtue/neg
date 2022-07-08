@@ -4,21 +4,21 @@ import de.uni_tuebingen.ub.nppm.controller.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import de.uni_tuebingen.ub.nppm.db.HandschriftDB;
+import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
 
-public class HandschriftDBTest extends DBTest {
+public class SucheDBTest extends DBTest {
 
     @BeforeEach
     void init() throws Exception {
-        HandschriftDB.setInitialContext(super.getTestContext());
+        SucheDB.setInitialContext(super.getTestContext());
     }
 
     @Test
-    @DisplayName("List Handschrift Entities")
+    @DisplayName("List Suche Entities")
     void testList() {
         try {
-            HandschriftDB.getList();
+            SucheDB.getFavoriten();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
