@@ -9,6 +9,11 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 import de.uni_tuebingen.ub.nppm.model.*;
+import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
@@ -110,6 +115,21 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SchlagwortNamenLexikon.class);
             configuration.addAnnotatedClass(SchlagwortPhongraph.class);
             configuration.addAnnotatedClass(SchlagwortSprachherkunft.class);
+            
+            configuration.addAnnotatedClass(Quelle.class);
+            configuration.addAnnotatedClass(QuelleInEdition_MM.class);
+            
+            configuration.addAnnotatedClass(Handschrift.class);
+            configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
+            
+            configuration.addAnnotatedClass(Urkunde.class);
+            configuration.addAnnotatedClass(UrkundeBetreff.class);
+            configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
+            
+            configuration.addAnnotatedClass(Person.class);
+            configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
+            configuration.addAnnotatedClass(PersonQuiet.class);
+            configuration.addAnnotatedClass(PersonVariante.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
@@ -123,5 +143,20 @@ public class AbstractBase {
     // Later, we might try to use a static session similar to the static SessionFactory.
     protected static Session getSession() throws Exception {
         return getSessionFactory().openSession();
+    }
+
+    protected static List getList(Class c, CriteriaQuery criteria) throws Exception {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        if(criteria == null){
+            criteria = builder.createQuery(c);
+        }
+        Root root = criteria.from(c);
+        criteria.select(root);
+        return session.createQuery(criteria).getResultList();
+    }
+
+    protected static List getList(Class c) throws Exception {
+        return getList(c, null);
     }
 }

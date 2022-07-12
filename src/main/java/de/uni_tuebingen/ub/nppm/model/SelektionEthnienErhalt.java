@@ -12,6 +12,9 @@ public class SelektionEthnienErhalt {
 
     @Column(name = "Bezeichnung", length=255)
     private String bezeichnung;
+    
+    @ManyToMany(mappedBy = "ethnieErhalt")
+    private List<Person> personen = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -23,5 +26,24 @@ public class SelektionEthnienErhalt {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+    
+    public List<Person> getPersonen() {
+        return this.personen;
+    }
+
+    public void addPerson(Person person) {
+        this.getPersonen().add(person);
+    }
+
+    public void removePerson(int id) {
+        for (int i = 0; i < this.getPersonen().size();) {
+            Person person = this.getPersonen().get(i);
+            if (person.getId() != null && person.getId() == id) {
+                this.getPersonen().remove(i);
+            } else {
+                i++;
+            }
+        }
     }
 }
