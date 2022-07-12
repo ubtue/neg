@@ -1,6 +1,6 @@
-package de.uni_tuebingen.ub.nppm.controller.test;
+package de.uni_tuebingen.ub.nppm.db.test;
 
-import de.uni_tuebingen.ub.nppm.controller.test.base.DBTest;
+import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,34 +11,45 @@ import org.junit.jupiter.api.BeforeEach;
  *
  * @author julian
  */
-public class PersonDBTest extends DBTest {
+public class SchlagwortDBTest extends DBTest {
 
     @BeforeEach
     void init() throws Exception {
-        PersonDB.setInitialContext(super.getTestContext());
+        SchlagwortDB.setInitialContext(super.getTestContext());
     }
 
     @Test
-    @DisplayName("List Person Entities")
+    @DisplayName("List Schlagwort Entities")
     void testList() {
         // TODO: The tests fails because of the inconsistency of the database
+        
         try {
-            PersonDB.getListPerson();
+            //SchlagwortDB.getListArealgens();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            //PersonDB.getListPersonAmtStandWeihe();
+            //SchlagwortDB.getListMorphologie();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            PersonDB.getListPersonQuiet();
+            SchlagwortDB.getListMotivation();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            PersonDB.getListPersonVariante();
+            //SchlagwortDB.getListNamenLexikon();
+        } catch (Exception e) {
+            fail(e.getLocalizedMessage());
+        }
+        try {
+            //SchlagwortDB.getListPhongraph();
+        } catch (Exception e) {
+            fail(e.getLocalizedMessage());
+        }
+        try {
+            //SchlagwortDB.getListSprachherkunft();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

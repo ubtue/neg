@@ -1,13 +1,13 @@
-package de.uni_tuebingen.ub.nppm.controller.test;
+package de.uni_tuebingen.ub.nppm.db.test;
 
-import de.uni_tuebingen.ub.nppm.controller.test.base.DBTest;
+import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
 
-public class BemerkungDBTest extends DBTest {
+public class SucheDBTest extends DBTest {
 
     @BeforeEach
     void init() throws Exception {
@@ -15,11 +15,10 @@ public class BemerkungDBTest extends DBTest {
     }
 
     @Test
-    @DisplayName("List Bemerkung Entities")
+    @DisplayName("List Suche Entities")
     void testList() {
         try {
-            // TODO: The test fails because of the inconsistency of the database
-            //BemerkungDB.getList();
+            SucheDB.getFavoriten();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

@@ -1,6 +1,6 @@
-package de.uni_tuebingen.ub.nppm.controller.test;
+package de.uni_tuebingen.ub.nppm.db.test;
 
-import de.uni_tuebingen.ub.nppm.controller.test.base.DBTest;
+import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

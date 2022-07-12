@@ -1,41 +1,36 @@
-package de.uni_tuebingen.ub.nppm.controller.test;
+package de.uni_tuebingen.ub.nppm.db.test;
 
-import de.uni_tuebingen.ub.nppm.controller.test.base.DBTest;
+import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
 
-/**
- *
- * @author julian
- */
-public class MghLemmaDBTest extends DBTest {
+public class EinzelbelegDBTest extends DBTest {
 
     @BeforeEach
     void init() throws Exception {
-        MghLemmaDB.setInitialContext(super.getTestContext());
+        EinzelbelegDB.setInitialContext(super.getTestContext());
     }
 
     @Test
-    @DisplayName("List MghLemma Entities")
+    @DisplayName("List Einzelbeleg Entities")
     void testList() {
+        // TODO: The test fails because of the inconsistency of the database
+        
         try {
-            // TODO: The test fails because of the inconsistency of the database
-            //MghLemmaDB.getList();
+            //EinzelbelegDB.getList();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-
         try {
-            MghLemmaDB.getListKorrektor();
+            //EinzelbelegDB.getListFunktion();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-
         try {
-            MghLemmaDB.getListBearbeiter();
+            //EinzelbelegDB.getListTextKritik();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
