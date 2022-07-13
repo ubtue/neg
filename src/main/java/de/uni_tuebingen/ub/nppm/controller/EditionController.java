@@ -23,9 +23,10 @@ public class EditionController {
 
     @GetMapping("/list")
     public String listEditions(Model theModel) {
-        List < Edition > editions = editionService.listEditions();
+        //TODO Clean up Edition Table
+        /*List < Edition > editions = editionService.listEditions();
 
-        theModel.addAttribute("editions", editions);
+        theModel.addAttribute("editions", editions);*/
 
         return "list-edition";
     }
