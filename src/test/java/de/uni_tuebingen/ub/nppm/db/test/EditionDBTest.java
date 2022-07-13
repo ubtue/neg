@@ -4,7 +4,7 @@ import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import de.uni_tuebingen.ub.nppm.db.EditionDB;
+import de.uni_tuebingen.ub.nppm.db.EditionDAOImpl;
 import org.junit.jupiter.api.BeforeEach;
 
 /**
@@ -15,7 +15,7 @@ public class EditionDBTest extends DBTest {
 
     @BeforeEach
     void init() throws Exception {
-        EditionDB.setInitialContext(super.getTestContext());
+        EditionDAOImpl.setInitialContext(super.getTestContext());
     }
 
     @Test
