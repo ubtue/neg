@@ -4,8 +4,10 @@ import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import de.uni_tuebingen.ub.nppm.db.EditionDAOImpl;
+import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
@@ -13,9 +15,13 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public class EditionDBTest extends DBTest {
 
+    private ApplicationContext c = new AnnotationConfigApplicationContext(EditionDAOImpl.class);
+    private EditionDAO dao = null;
+   
     @BeforeEach
     void init() throws Exception {
-        EditionDAOImpl.setInitialContext(super.getTestContext());
+        dao = c.getBean(EditionDAOImpl.class);
+        ((EditionDAOImpl)dao).setInitialContext(super.getTestContext());
     }
 
     @Test
@@ -23,7 +29,7 @@ public class EditionDBTest extends DBTest {
     void testList() {
         try {
             // TODO: The test fails because of inconsistency of the database
-            //EditionDB.getList();
+            // dao.listEditions();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
