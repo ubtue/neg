@@ -38,10 +38,6 @@ public class Bemerkung {
     @JoinColumn(name = "MGHLemmaID", referencedColumnName = "ID")
     private MghLemma mghLemma;
 
-    @ManyToOne(targetEntity = Literatur.class)
-    @JoinColumn(name = "LiteraturID", referencedColumnName = "ID")
-    private Literatur literatur;
-
     @ManyToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GruppeID", referencedColumnName = "ID")
     private BenutzerGruppe gruppe;
@@ -108,14 +104,6 @@ public class Bemerkung {
 
     public void setMghLemma(MghLemma mghLemma) {
         this.mghLemma = mghLemma;
-    }
-
-    public Literatur getLiteratur() {
-        return literatur;
-    }
-
-    public void setLiteratur(Literatur literatur) {
-        this.literatur = literatur;
     }
 
     public BenutzerGruppe getGruppe() {

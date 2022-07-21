@@ -92,14 +92,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SelektionBkz.class);
             configuration.addAnnotatedClass(SelektionEditor.class);
 
-            configuration.addAnnotatedClass(Literatur.class);
-            configuration.addAnnotatedClass(LiteraturAutor.class);
-            configuration.addAnnotatedClass(LiteraturHerausgeber.class);
-            configuration.addAnnotatedClass(LiteraturSwArealgens.class);
-            configuration.addAnnotatedClass(LiteraturSwMorphologie.class);
-            configuration.addAnnotatedClass(LiteraturSwNamenelemente.class);
-            configuration.addAnnotatedClass(LiteraturSwPhongraph.class);
-
             configuration.addAnnotatedClass(MghLemma.class);
             configuration.addAnnotatedClass(MghLemmaBearbeiter.class);
             configuration.addAnnotatedClass(MghLemmaKorrektor.class);
