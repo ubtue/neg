@@ -38,9 +38,6 @@
         else if ( request.getParameter("form").equals("namenkommentar") ) {
           %><%@ include file="suche/namenkommentar.jsp" %><%
         }
-        else if ( request.getParameter("form").equals("literatur") ) {
-          %><%@ include file="suche/literatur.jsp" %><%
-        }
       %>
     </div>
   </BODY>
