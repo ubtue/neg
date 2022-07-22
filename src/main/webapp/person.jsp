@@ -252,28 +252,6 @@
 				<jsp:param name="Datenfeld" value="Personenkommentar" />
 			</jsp:include></td>
 		</tr>
-		<tr>
-			<td width="200"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-				<jsp:param name="Formular" value="person" />
-				<jsp:param name="Datenfeld" value="CMRef" />
-			</jsp:include></td>
-			<td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="person" />
-				<jsp:param name="Datenfeld" value="CMRef" />
-			</jsp:include></td>
-		</tr>
-		<tr>
-			<td width="200"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-				<jsp:param name="Formular" value="person" />
-				<jsp:param name="Datenfeld" value="CMLink" />
-			</jsp:include></td>
-			<td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="person" />
-				<jsp:param name="Datenfeld" value="CMLink" />
-			</jsp:include></td>
-		</tr>
 		<jsp:include page="inc.modul.jsp">
 	<jsp:param name="ID" value="<%= id %>" />
 	<jsp:param name="Formular" value="person" />
