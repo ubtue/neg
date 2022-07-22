@@ -63,9 +63,6 @@ public class Person {
     @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
 
-    @Column(name = "CMRef", length = 255)
-    private String cmRef;
-
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "person_hatstand",
@@ -248,15 +245,7 @@ public class Person {
     public void setGehoertGruppe(BenutzerGruppe gehoertGruppe) {
         this.gehoertGruppe = gehoertGruppe;
     }
-
-    public String getCmRef() {
-        return cmRef;
-    }
-
-    public void setCmRef(String cmRef) {
-        this.cmRef = cmRef;
-    }
-
+    
     public List<SelektionStand> getStand() {
         return stand;
     }
