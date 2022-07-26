@@ -73,7 +73,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SelektionJaNein.class);
             configuration.addAnnotatedClass(SelektionKasus.class);
             configuration.addAnnotatedClass(SelektionLebendVerstorben.class);
-            configuration.addAnnotatedClass(SelektionLiteraturtyp.class);
             configuration.addAnnotatedClass(SelektionQuellengattung.class);
             configuration.addAnnotatedClass(SelektionStand.class);
             configuration.addAnnotatedClass(SelektionUrkundeAusstellerEmpfaenger.class);
