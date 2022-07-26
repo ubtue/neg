@@ -36,9 +36,6 @@ public class Person {
     @Column(name = "KommentarAreal", columnDefinition = "LONGTEXT")
     private String kommentarAreal;
 
-    @Column(name = "PersonenkommentarDatei", length = 255)
-    private String personenkommentarDatei;
-
     @Column(name = "Identifizierungsproblem", columnDefinition = "LONGTEXT")
     private String identifizierungsproblem;
 
@@ -180,14 +177,6 @@ public class Person {
 
     public void setKommentarAreal(String kommentarAreal) {
         this.kommentarAreal = kommentarAreal;
-    }
-
-    public String getPersonenkommentarDatei() {
-        return personenkommentarDatei;
-    }
-
-    public void setPersonenkommentarDatei(String personenkommentarDatei) {
-        this.personenkommentarDatei = personenkommentarDatei;
     }
 
     public String getIdentifizierungsproblem() {
