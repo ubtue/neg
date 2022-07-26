@@ -253,23 +253,6 @@
 				<jsp:param name="Readonly" value="yes" />
 			 </jsp:include>
             </td>
-		</tr>
-		<tr>
-			<th>
-              <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="person" />
-                <jsp:param name="Datenfeld" value="Personenkommentar" />
-              </jsp:include>
-			</th>
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
-                <jsp:param name="ID" value="<%= id %>" />
-                <jsp:param name="Formular" value="person" />
-                <jsp:param name="Datenfeld" value="Personenkommentar" />
-                <jsp:param name="Readonly" value="yes" />
-              </jsp:include>
-          </td>
-		</tr>
 		<tr>
 			<th>
               <jsp:include page="../inc.erzeugeBeschriftung.jsp">
