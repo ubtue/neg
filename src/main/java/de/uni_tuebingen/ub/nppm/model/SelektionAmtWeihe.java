@@ -19,7 +19,7 @@ public class SelektionAmtWeihe {
     private List<Person> personen = new ArrayList<>();
 
     @ManyToMany(mappedBy = "amtWeihe")
-    private List<Einzelbeleg> einzelbeleg = new ArrayList<>();
+    private List<Einzelbeleg> einzelbelege = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -33,8 +33,8 @@ public class SelektionAmtWeihe {
         this.bezeichnung = bezeichnung;
     }
 
-    public List<Einzelbeleg> getEinzelbeleg() {
-        return this.einzelbeleg;
+    public List<Einzelbeleg> getEinzelbelege() {
+        return this.einzelbelege;
     }
 
     public List<Person> getPersonen() {
@@ -56,15 +56,15 @@ public class SelektionAmtWeihe {
         }
     }
     
-    public void addEinzelbeleg(Einzelbeleg person) {
-        this.getEinzelbeleg().add(person);
+    public void addEinzelbeleg(Einzelbeleg einzelbeleg) {
+        this.getEinzelbelege().add(einzelbeleg);
     }
 
     public void removeEinzelbeleg(int id) {
-        for (int i = 0; i < this.getEinzelbeleg().size();) {
-            Einzelbeleg beleg = this.getEinzelbeleg().get(i);
+        for (int i = 0; i < this.getEinzelbelege().size();) {
+            Einzelbeleg beleg = this.getEinzelbelege().get(i);
             if (beleg.getId() != null && beleg.getId() == id) {
-                this.getEinzelbeleg().remove(i);
+                this.getEinzelbelege().remove(i);
             } else {
                 i++;
             }
