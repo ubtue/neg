@@ -11,10 +11,10 @@ public class DatenbankSprache {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "Sprache", length = 255)
+    @Column(name = "Sprache", length = 45)
     private String Sprache;
 
-    @Column(name = "Kuerzel", length = 255)
+    @Column(name = "Kuerzel", length = 3)
     private String Kuerzel;
 
     public Integer getId() {
