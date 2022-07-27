@@ -15,10 +15,10 @@ public class SelektionAmtWeihe {
     @Column(name = "Bezeichnung", length = 255)
     private String bezeichnung;
 
-    @ManyToMany(mappedBy = "amtStandWeihe")
+    @ManyToMany(mappedBy = "amtWeihe")
     private List<Person> personen = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "amtStandWeihe")
+    @ManyToMany(mappedBy = "amtWeihe")
     private List<Einzelbeleg> einzelbeleg = new ArrayList<>();
 
     public Integer getId() {

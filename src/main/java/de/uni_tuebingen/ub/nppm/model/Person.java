@@ -78,7 +78,7 @@ public class Person {
             inverseJoinColumns = {
                 @JoinColumn(name = "AmtWeiheID")}
     )
-    List<SelektionAmtWeihe> amtStandWeihe = new ArrayList<>();
+    List<SelektionAmtWeihe> amtWeihe = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -239,8 +239,8 @@ public class Person {
         return stand;
     }
 
-    public List<SelektionAmtWeihe> getAmtStandWeihe() {
-        return amtStandWeihe;
+    public List<SelektionAmtWeihe> getAmtWeihe() {
+        return amtWeihe;
     }
 
     public List<SelektionAreal> getAreal() {
@@ -286,15 +286,15 @@ public class Person {
         }
     }
 
-    public void addAmtStandWeihe(SelektionAmtWeihe s) {
-        this.getAmtStandWeihe().add(s);
+    public void addAmtWeihe(SelektionAmtWeihe s) {
+        this.getAmtWeihe().add(s);
     }
 
-    public void removeAmtStandWeihe(int id) {
-        for (int i = 0; i < this.getAmtStandWeihe().size();) {
-            SelektionAmtWeihe s = this.getAmtStandWeihe().get(i);
+    public void removeAmtWeihe(int id) {
+        for (int i = 0; i < this.getAmtWeihe().size();) {
+            SelektionAmtWeihe s = this.getAmtWeihe().get(i);
             if (s.getId() != null && s.getId() == id) {
-                this.getAmtStandWeihe().remove(i);
+                this.getAmtWeihe().remove(i);
             } else {
                 i++;
             }
