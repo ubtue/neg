@@ -239,7 +239,7 @@ public class Einzelbeleg {
     @Column(name = "MGHLemmaKorrigiert", columnDefinition = "BIT DEFAULT NULL")
     private Boolean mghLemmaKorrigiert;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatamtweihe",
             joinColumns = {
@@ -249,7 +249,7 @@ public class Einzelbeleg {
     )
     List<SelektionAmtWeihe> amtStandWeihe = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatareal",
             joinColumns = {
@@ -259,7 +259,7 @@ public class Einzelbeleg {
     )
     List<SelektionAreal> areal = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatfunktion",
             joinColumns = {
@@ -269,7 +269,7 @@ public class Einzelbeleg {
     )
     List<SelektionFunktion> funktion = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatmghlemma",
             joinColumns = {
@@ -279,7 +279,7 @@ public class Einzelbeleg {
     )
     List<MghLemma> mghLemma = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatnamenkommentar",
             joinColumns = {
@@ -289,7 +289,7 @@ public class Einzelbeleg {
     )
     List<NamenKommentar> namenKommentar = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatperson",
             joinColumns = {
@@ -299,7 +299,7 @@ public class Einzelbeleg {
     )
     List<Person> person = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatstand",
             joinColumns = {
