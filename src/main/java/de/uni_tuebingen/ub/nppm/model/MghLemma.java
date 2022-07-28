@@ -1,12 +1,15 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -43,6 +46,9 @@ public class MghLemma {
     @OneToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
+    
+    @ManyToMany(mappedBy = "mghLemma")
+    private List<Einzelbeleg> einzelbeleg = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -103,6 +109,24 @@ public class MghLemma {
     public void setGehoertGruppe(BenutzerGruppe gehoertGruppe) {
         this.gehoertGruppe = gehoertGruppe;
     }
+
+    public List<Einzelbeleg> getEinzelbeleg() {
+        return einzelbeleg;
+    }
     
+    public void addEinzelbeleg(Einzelbeleg person) {
+        this.getEinzelbeleg().add(person);
+    }
+
+    public void removeEinzelbeleg(int id) {
+        for (int i = 0; i < this.getEinzelbeleg().size();) {
+            Einzelbeleg beleg = this.getEinzelbeleg().get(i);
+            if (beleg.getId() != null && beleg.getId() == id) {
+                this.getEinzelbeleg().remove(i);
+            } else {
+                i++;
+            }
+        }
+    }
     
 }

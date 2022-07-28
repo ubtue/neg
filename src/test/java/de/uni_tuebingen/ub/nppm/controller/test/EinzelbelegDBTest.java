@@ -7,36 +7,30 @@ import org.junit.jupiter.api.Test;
 import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
 
-/**
- *
- * @author julian
- */
-public class NamenKommentartDBTest extends DBTest {
+public class EinzelbelegDBTest extends DBTest {
 
     @BeforeEach
     void init() throws Exception {
-        NamenKommentarDB.setInitialContext(super.getTestContext());
+        EinzelbelegDB.setInitialContext(super.getTestContext());
     }
 
     @Test
-    @DisplayName("List Namenkommentar Entities")
+    @DisplayName("List Einzelbeleg Entities")
     void testList() {
+        // TODO: The test fails because of the inconsistency of the database
+        
         try {
-            // TODO: The test fails because of inconsistency of the database
-            //NamenKommentarDB.getList();
+            //EinzelbelegDB.getList();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-
         try {
-            NamenKommentarDB.getListKorrektor();
+            //EinzelbelegDB.getListFunktion();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-
         try {
-            // TODO: The test fails because of inconsistency of the database
-            //NamenKommentarDB.getListBearbeiter();
+            //EinzelbelegDB.getListTextKritik();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

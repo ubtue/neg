@@ -313,7 +313,7 @@
         for (int i = 1; rs.next(); i++) {
           st2.addBatch("INSERT INTO person (ID, PKZ, Standardname, Geschlecht,"
                         +" Fiktiv, BearbeitungsstatusID, KommentarEthnie, KommentarAreal,"
-                        +" PersonenkommentarDatei, Identifizierungsproblem, Ort,"
+                        +"  Identifizierungsproblem, Ort,"
                         +" LetzteAenderung, LetzteAenderungVon, Erstellt, ErstelltVon)"
                         +" VALUES ("+rs.getInt   ("P_ID"                      )+", "
                                    +(rs.getString("p_pkz"                     )==null?"\"\"":"'"+DBtoDB(rs.getString("p_pkz"                     ))+"'")+", "
@@ -323,7 +323,6 @@
                                    +(rs.getInt   ("p_bearbeitet"              )==-1?3:1)+", "
                                    +(rs.getString("p_Ethnie"                  )==null?"NULL":"'"+DBtoDB(rs.getString("p_Ethnie"                  ))+"'")+", "
                                    +(rs.getString("p_Ort"                     )==null?"NULL":"'"+DBtoDB(rs.getString("p_Ort"                     ))+"'")+", "
-                                   +(rs.getString("p_KomFileName"             )==null?"NULL":"'"+DBtoDB(rs.getString("p_KomFileName"             ))+"'")+", "
                                    +(rs.getString("p_Identifizierungsprobleme")==null?"NULL":"'"+DBtoDB(rs.getString("p_Identifizierungsprobleme"))+"'")+", "
                                    +(rs.getString("p_Ort"                     )==null?"NULL":"'"+DBtoDB(rs.getString("p_Ort"                     ))+"'")+", "
                                    +(rs.getString("LastChx"                   )==null?"NULL":"'"+DBtoDB(rs.getString("LastChx"                   ))+"'")+", "

@@ -23,7 +23,7 @@ public class EditionDBTest extends DBTest {
     void testList() {
         try {
             // TODO: The test fails because of inconsistency of the database
-            //assertFalse(EditionDB.getList().isEmpty(), "List is empty");
+            //EditionDB.getList();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
