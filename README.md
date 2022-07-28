@@ -1,5 +1,7 @@
 # NeG - Nomen et Gens
 
+You can also have a look at the installation example in the docker subdirectory.
+
 Prerequisites:
 - System
   - Tomcat 9 / Ubuntu (for automated build process). WAR-file should work with Tomcat >= 7.
@@ -30,6 +32,24 @@ Prerequisites:
   - If you use MariaDB, also use the following settings to avoid performance problems, especially in search queries (this works for MyISAM but should be tested again when migrating to InnoDB):
     - optimizer_switch="derived_merge=off,derived_with_keys=off"
     - see also: https://stackoverflow.com/questions/35889706/mariadb-running-a-left-join-query-100-times-slower-than-mysql
+
+For servers (ZDV):
+- MySQL
+    - Make sure you change the db user passwords to something safe.
+    - if you want to install neg-dmp on a separate machine and access the mysql db in this instance,
+      you also have to change the host for the user and prevent it to be bound to localhost (e.g. disable bind-address and mysqlx-bind-address in mysqld.cnf).
+- Tomcat
+    - if tomcat installation fails, contact ZDV admin (workaround for default group 100).
+    - change tomcat ports to 80+443
+    - instead of Catalina/localhost/neg.xml:
+        - move settings to server.xml Host section to avoid access via /neg in url.
+        - Also add these attributes to <Context path="" docBase="neg" debug="0" reloadable="true"></Context>
+    - don't forget the SSL certificate
+    - make sure you use the correct matomoSiteId
+- Firewall
+    - adjust firewall scripts, see /zdv-system/scripts/ipt
+- Backup
+    - for backups, make sure bacula is installed correctly and there is also a mysqldump cronjob
 
 Build:
 - Use build-function in netbeans (.war file see target/ dir)
