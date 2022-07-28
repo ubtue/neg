@@ -58,7 +58,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
 
-            configuration.addAnnotatedClass(SelektionAmtStandWeihe.class);
             configuration.addAnnotatedClass(SelektionAmtWeihe.class);
             configuration.addAnnotatedClass(SelektionAreal.class);
             configuration.addAnnotatedClass(SelektionAutor.class);
@@ -74,16 +73,8 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SelektionJaNein.class);
             configuration.addAnnotatedClass(SelektionKasus.class);
             configuration.addAnnotatedClass(SelektionLebendVerstorben.class);
-            configuration.addAnnotatedClass(SelektionLiteraturtyp.class);
             configuration.addAnnotatedClass(SelektionQuellengattung.class);
             configuration.addAnnotatedClass(SelektionStand.class);
-            configuration.addAnnotatedClass(SelektionSwArealGens.class);
-            configuration.addAnnotatedClass(SelektionSwMorphologie.class);
-            configuration.addAnnotatedClass(SelektionSwMotivation.class);
-            configuration.addAnnotatedClass(SelektionSwNamenElemente.class);
-            configuration.addAnnotatedClass(SelektionSwNamenlexikon.class);
-            configuration.addAnnotatedClass(SelektionSwPhongraph.class);
-            configuration.addAnnotatedClass(SelektionSwSprachherkunft.class);
             configuration.addAnnotatedClass(SelektionUrkundeAusstellerEmpfaenger.class);
             configuration.addAnnotatedClass(SelektionVerwandtschaftsgrad.class);
             configuration.addAnnotatedClass(SelektionOrt.class);
@@ -93,14 +84,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SelektionBkz.class);
             configuration.addAnnotatedClass(SelektionEditor.class);
 
-            configuration.addAnnotatedClass(Literatur.class);
-            configuration.addAnnotatedClass(LiteraturAutor.class);
-            configuration.addAnnotatedClass(LiteraturHerausgeber.class);
-            configuration.addAnnotatedClass(LiteraturSwArealgens.class);
-            configuration.addAnnotatedClass(LiteraturSwMorphologie.class);
-            configuration.addAnnotatedClass(LiteraturSwNamenelemente.class);
-            configuration.addAnnotatedClass(LiteraturSwPhongraph.class);
-
             configuration.addAnnotatedClass(MghLemma.class);
             configuration.addAnnotatedClass(MghLemmaBearbeiter.class);
             configuration.addAnnotatedClass(MghLemmaKorrektor.class);
@@ -108,13 +91,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(NamenKommentar.class);
             configuration.addAnnotatedClass(NamenKommentarBearbeiter.class);
             configuration.addAnnotatedClass(NamenKommentarKorrektor.class);
-            
-            configuration.addAnnotatedClass(SchlagwortArealgens.class);
-            configuration.addAnnotatedClass(SchlagwortMorphologie.class);
-            configuration.addAnnotatedClass(SchlagwortMotivation.class);
-            configuration.addAnnotatedClass(SchlagwortNamenLexikon.class);
-            configuration.addAnnotatedClass(SchlagwortPhongraph.class);
-            configuration.addAnnotatedClass(SchlagwortSprachherkunft.class);
             
             configuration.addAnnotatedClass(Quelle.class);
             configuration.addAnnotatedClass(QuelleInEdition_MM.class);
@@ -130,6 +106,20 @@ public class AbstractBase {
             configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
             configuration.addAnnotatedClass(PersonQuiet.class);
             configuration.addAnnotatedClass(PersonVariante.class);
+            
+            configuration.addAnnotatedClass(Einzelbeleg.class);
+            configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
+            configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
+
+            configuration.addAnnotatedClass(DatenbankFilter.class);
+            configuration.addAnnotatedClass(DatenbankMapping.class);
+            configuration.addAnnotatedClass(DatenbankSelektion.class);
+            configuration.addAnnotatedClass(DatenbankSprache.class);
+            configuration.addAnnotatedClass(DatenbankTexte.class);
+
+            configuration.addAnnotatedClass(SucheFavoriten.class);
+            
+            configuration.addAnnotatedClass(Bemerkung.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();

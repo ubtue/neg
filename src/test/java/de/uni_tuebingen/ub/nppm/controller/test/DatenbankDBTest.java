@@ -11,47 +11,40 @@ import org.junit.jupiter.api.BeforeEach;
  *
  * @author julian
  */
-public class SchlagwortDBTest extends DBTest {
+public class DatenbankDBTest extends DBTest {
 
     @BeforeEach
     void init() throws Exception {
-        SchlagwortDB.setInitialContext(super.getTestContext());
+        DatenbankDB.setInitialContext(super.getTestContext());
     }
 
     @Test
-    @DisplayName("List Schlagwort Entities")
+    @DisplayName("List Datenbank Entities")
     void testList() {
-        // TODO: The tests fails because of the inconsistency of the database
-        /*
         try {
-            SchlagwortDB.getListArealgens();
+            DatenbankDB.getListFilter();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            SchlagwortDB.getListMorphologie();
+            DatenbankDB.getListMapping();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            SchlagwortDB.getListMotivation();
+            DatenbankDB.getListSelektion();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            SchlagwortDB.getListNamenLexikon();
+            DatenbankDB.getListSprache();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            SchlagwortDB.getListPhongraph();
+            DatenbankDB.getListTexte();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
-        try {
-            SchlagwortDB.getListSprachherkunft();
-        } catch (Exception e) {
-            fail(e.getLocalizedMessage());
-        }*/
     }
 }
