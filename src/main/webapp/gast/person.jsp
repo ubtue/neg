@@ -253,6 +253,7 @@
 				<jsp:param name="Readonly" value="yes" />
 			 </jsp:include>
             </td>
+                </tr>
 		<tr>
 			<th>
               <jsp:include page="../inc.erzeugeBeschriftung.jsp">
