@@ -66,7 +66,7 @@ public class Edition {
     @JoinColumn(name = "dMGHBandID", referencedColumnName="ID")
     private SelektionDmghBand dMGHBand; 
     
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
         name = "edition_hateditor", 
         joinColumns = { @JoinColumn(name = "EditionID") }, 
@@ -74,7 +74,7 @@ public class Edition {
     )
     List<SelektionEditor> editors = new ArrayList<>();
     
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "quelle_inedition",
             joinColumns = {
