@@ -14,6 +14,7 @@ RUN apt-get --yes install mysql-server openjdk-11-jre tomcat9
 RUN echo "collation-server = utf8_unicode_ci" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 RUN echo "character-set-server = utf8" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 RUN echo "group_concat_max_len = 100000000" >> /etc/mysql/mysql.conf.d/mysqld.cnf
+RUN echo "log_bin_trust_function_creators = 1" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 RUN echo "sql_mode = STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 
 # MySQL DB + user
