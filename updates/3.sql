@@ -17,3 +17,4 @@ DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_motivation';
 DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_namenelemente';
 DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_namenlexikon';
 DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_phongraph';
+DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_sprachherkunft';
