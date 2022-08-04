@@ -27,10 +27,7 @@
   <BODY class="popup">
 <%
   if (!ServletFileUpload.isMultipartContent(request) && request.getParameter("action") == null && request.getParameter("table") != null && request.getParameter("ID")!= null) {
-    if (request.getParameter("table").equals("person")) {
-      out.println("<h2>Personenkommentar hochladen</h2>");
-    }
-    else if (request.getParameter("table").equals("namenkommentar")) {
+    if (request.getParameter("table").equals("namenkommentar")) {
       out.println("<h2>Namenkommentar hochladen</h2>");
     }
     else if (request.getParameter("table").equals("quelle") && request.getParameter("attribute").equals("QuellenKommentarDatei")) {

@@ -69,30 +69,6 @@
       conditions.add("literatur_autor.Nachname LIKE \""+request.getParameter("AutorNachname")+"\"");
     }
 
-    if (!request.getParameter("SW_Namenelemente").equals("-99")) {
-      tables.add("literatur_sw_namenelemente");
-      conditions.add("literatur_sw_namenelemente.literaturID = literatur.ID");
-      conditions.add("literatur_sw_namenelemente.Schlagwort = \""+request.getParameter("SW_Namenelemente")+"\"");
-    }
-
-    if (!request.getParameter("SW_PhonGraph").equals("-99")) {
-      tables.add("literatur_sw_phongraph");
-      conditions.add("literatur_sw_phongraph.literaturID = literatur.ID");
-      conditions.add("literatur_sw_phongraph.Schlagwort = \""+request.getParameter("SW_PhonGraph")+"\"");
-    }
-
-    if (!request.getParameter("SW_Morphologie").equals("-99")) {
-      tables.add("literatur_sw_morphologie");
-      conditions.add("literatur_sw_morphologie.literaturID = literatur.ID");
-      conditions.add("literatur_sw_morphologie.Schlagwort = \""+request.getParameter("SW_Morphologie")+"\"");
-    }
-
-    if (!request.getParameter("SW_ArealGens").equals("-99")) {
-      tables.add("literatur_sw_arealgens");
-      conditions.add("literatur_sw_arealgens.literaturID = literatur.ID");
-      conditions.add("literatur_sw_arealgens.Schlagwort = \""+request.getParameter("SW_ArealGens")+"\"");
-    }
-
     // Ausgabfelder
     fields.add("literatur.ID ID");
     fieldNames.add("ID");

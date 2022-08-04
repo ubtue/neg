@@ -36,9 +36,6 @@ public class Person {
     @Column(name = "KommentarAreal", columnDefinition = "LONGTEXT")
     private String kommentarAreal;
 
-    @Column(name = "PersonenkommentarDatei", length = 255)
-    private String personenkommentarDatei;
-
     @Column(name = "Identifizierungsproblem", columnDefinition = "LONGTEXT")
     private String identifizierungsproblem;
 
@@ -63,10 +60,7 @@ public class Person {
     @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
 
-    @Column(name = "CMRef", length = 255)
-    private String cmRef;
-
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "person_hatstand",
             joinColumns = {
@@ -76,7 +70,7 @@ public class Person {
     )
     List<SelektionStand> stand = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "person_hatamtstandweihe",
             joinColumns = {
@@ -84,9 +78,9 @@ public class Person {
             inverseJoinColumns = {
                 @JoinColumn(name = "AmtWeiheID")}
     )
-    List<SelektionAmtWeihe> amtStandWeihe = new ArrayList<>();
+    List<SelektionAmtWeihe> amtWeihe = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "person_hatareal",
             joinColumns = {
@@ -96,13 +90,13 @@ public class Person {
     )
     List<SelektionAreal> areal = new ArrayList<>();
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     private List<PersonQuiet> quiet = new ArrayList<>();
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     private List<PersonVariante> variante = new ArrayList<>();
     
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "person_hatethnie",
             joinColumns = {
@@ -112,7 +106,7 @@ public class Person {
     )
     List<SelektionEthnie> ethnie = new ArrayList<>();
     
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "person_hatethnie",
             joinColumns = {
@@ -185,14 +179,6 @@ public class Person {
         this.kommentarAreal = kommentarAreal;
     }
 
-    public String getPersonenkommentarDatei() {
-        return personenkommentarDatei;
-    }
-
-    public void setPersonenkommentarDatei(String personenkommentarDatei) {
-        this.personenkommentarDatei = personenkommentarDatei;
-    }
-
     public String getIdentifizierungsproblem() {
         return identifizierungsproblem;
     }
@@ -248,21 +234,13 @@ public class Person {
     public void setGehoertGruppe(BenutzerGruppe gehoertGruppe) {
         this.gehoertGruppe = gehoertGruppe;
     }
-
-    public String getCmRef() {
-        return cmRef;
-    }
-
-    public void setCmRef(String cmRef) {
-        this.cmRef = cmRef;
-    }
-
+    
     public List<SelektionStand> getStand() {
         return stand;
     }
 
-    public List<SelektionAmtWeihe> getAmtStandWeihe() {
-        return amtStandWeihe;
+    public List<SelektionAmtWeihe> getAmtWeihe() {
+        return amtWeihe;
     }
 
     public List<SelektionAreal> getAreal() {
@@ -308,15 +286,15 @@ public class Person {
         }
     }
 
-    public void addAmtStandWeihe(SelektionAmtWeihe s) {
-        this.getAmtStandWeihe().add(s);
+    public void addAmtWeihe(SelektionAmtWeihe s) {
+        this.getAmtWeihe().add(s);
     }
 
-    public void removeAmtStandWeihe(int id) {
-        for (int i = 0; i < this.getAmtStandWeihe().size();) {
-            SelektionAmtWeihe s = this.getAmtStandWeihe().get(i);
+    public void removeAmtWeihe(int id) {
+        for (int i = 0; i < this.getAmtWeihe().size();) {
+            SelektionAmtWeihe s = this.getAmtWeihe().get(i);
             if (s.getId() != null && s.getId() == id) {
-                this.getAmtStandWeihe().remove(i);
+                this.getAmtWeihe().remove(i);
             } else {
                 i++;
             }

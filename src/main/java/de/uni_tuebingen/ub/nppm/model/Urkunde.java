@@ -17,7 +17,7 @@ public class Urkunde {
     @Column(name = "Actumort", length = 255)
     private String actumort;
     
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
         name = "urkunde_hataussteller", 
         joinColumns = { @JoinColumn(name = "AusstellerID") }, 
@@ -25,7 +25,7 @@ public class Urkunde {
     )
     private List<SelektionUrkundeAusstellerEmpfaenger> aussteller = new ArrayList<SelektionUrkundeAusstellerEmpfaenger>();;
     
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
         name = "urkunde_hatempfaenger", 
         joinColumns = { @JoinColumn(name = "EmpfaengerID") }, 

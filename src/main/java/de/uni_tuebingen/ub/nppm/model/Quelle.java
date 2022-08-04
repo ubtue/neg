@@ -110,9 +110,6 @@ public class Quelle {
     @Column(name = "ZuVeroeffentlichen" , columnDefinition="TINYINT(1) DEFAULT NULL")
     private Integer zuVeroeffentlichen;
     
-    @Column(name = "CMRef", length=255)
-    private String cmRef; 
-    
     @ManyToMany(mappedBy = "quellen")
     private List<Edition> editions = new ArrayList<>();
 
@@ -350,14 +347,6 @@ public class Quelle {
 
     public void setZuVeroeffentlichen(Integer zuVeroeffentlichen) {
         this.zuVeroeffentlichen = zuVeroeffentlichen;
-    }
-
-    public String getCmRef() {
-        return cmRef;
-    }
-
-    public void setCmRef(String cmRef) {
-        this.cmRef = cmRef;
     }
 
     public List<Edition> getEditions() {

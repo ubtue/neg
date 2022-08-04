@@ -101,7 +101,7 @@ strong { font-weight: 700; }
     #header-left img { width: 340px; height: auto; }
 
 	#header-right { float: right; }
-	#header-right p, #header-right a { text-align: right; font-size: 12px; color: #252525; color: ; }
+	#header-right p, #header-right a { text-align: right; font-size: 12px; color: #252525; }
 	#header-right form { text-align: right; }
 	#header-right input[type="submit"] { cursor: pointer; }
 
@@ -121,7 +121,7 @@ strong { font-weight: 700; }
 -o-transition: all 0.5s ease;
 transition: all 0.5s ease; }
 .menu li a:hover { color: #fff; text-decoration: none; background: #323232; }
-//.menu li:hover { background: #fff; }
+/*    //.menu li:hover { background: #fff; } */
 
 .test { color: #fff; background: #323232; }
 
@@ -227,7 +227,7 @@ right: 350px; top: 10px; display: none; }
 	.content-table tr td p {  }
 
     .content-table .id-bg { *background: #f2d1a3; }
-    //.content-table tr:hover { background: #bfbfbf; }
+    /*    //.content-table tr:hover { background: #bfbfbf; }   */
 
 		/* Einzelbelege
 		******************************
@@ -282,7 +282,7 @@ right: 350px; top: 10px; display: none; }
     #erweiterte-suche { margin-bottom: 40px; }
     #erweiterte-suche a { text-decoration: none; font-size: 18px; }
 
-    //#search-buttons { display: inline-block; margin: 0; padding: 0; }
+    /*    //#search-buttons { display: inline-block; margin: 0; padding: 0; } */
     #tabs { position: relative; bottom: -1px; }
     #tabs li { float: left; }
     #tabs li a { background: #525252; color: #fff; padding: 5px 4px; margin-right: 5px; border-bottom: none; display: inline-block; border: 1px solid #d6d6d6; border-bottom: none;
@@ -336,7 +336,7 @@ right: 350px; top: 10px; display: none; }
 /* Footer
 ******************************
 */
-//#footer-wrap { width: 100%; background: #464646; min-width: 1100px; }
+/*    //#footer-wrap { width: 100%; background: #464646; min-width: 1100px; }   */
 #footer { background: #808080; *margin-left: 50px; *margin: 0 auto; *width: 1100px; padding: 20px; text-align: center; font-family: 'Alegreya Sans SC', sans-serif; }
 #footer p, #footer a { color: #ffffff; font-size: 18px; }
 #footer p {  line-height: 26px; color: #ffffff; }

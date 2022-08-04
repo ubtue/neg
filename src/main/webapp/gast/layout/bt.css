@@ -1,4 +1,4 @@
-.tooltip{ width: 300px; color:#fff; font-size: 14px; font-family: font-family: 'Open Sans', sans-serif; text-decoration:none; line-height: 18px; *border: 1px solid #000; *border-left: none; }
+.tooltip{ width: 300px; color:#fff; font-size: 14px; font-family: 'Open Sans', sans-serif; text-decoration:none; line-height: 18px; *border: 1px solid #000; *border-left: none; }
 
 .tooltip span.top{ padding: 15px 8px 15px 25px; background: rgba(0, 0, 0, 0.7) url(images/bt.gif) no-repeat; background-size: 15px;
 background-position: 0px 7px; }

@@ -1768,48 +1768,5 @@ firstEdition = true;
 			}
 		}
 
-	} else if (formular.equals("literatur")) {
-		if (modul.equals("aufsaetze")) {
-			Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT distinct Literatur.id, Literatur.Kurzzitierweise from Literatur, Literatur_Autor where inLitID="
-								+ id
-								+ " and Literatur.ID=Literatur_Autor.literaturID order by Nachname,Jahr");
-				out.println("<ul>");
-				while (rs.next()) {
-					out.println("<li><a href=literatur.jsp?ID="
-							+ rs.getString("id") + ">"
-							+ rs.getString("Kurzzitierweise")
-							+ "</a></li>");
-				}
-				out.println("</ul>");
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-
-		}
 	}
 %>

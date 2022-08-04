@@ -466,33 +466,6 @@
 		<td width="450"><input type="text" size="50" name="Namenelement"
 			disabled /></td>
 	</tr>
-	<tr>
-		<th width="200">Motivation</th>
-		<td width="450"><input type="text" size="50" name="SW_Motivation" /></td>
-	</tr>
-	<tr>
-		<th width="200">Sprachl. Herkunft</th>
-		<td width="450"><input type="text" size="50"
-			name="SW_SprachHerkunft" /></td>
-	</tr>
-	<tr>
-		<th width="200">Phono / Graph</th>
-		<td width="450"><input type="text" size="50" name="SW_PhonGraph" /></td>
-	</tr>
-	<tr>
-		<th width="200">Morphologie</th>
-		<td width="450"><input type="text" size="50"
-			name="SW_Morphologie" /></td>
-	</tr>
-	<tr>
-		<th width="200">Namen / Elem.</th>
-		<td width="450"><input type="text" size="50"
-			name="SW_Namenelement" /></td>
-	</tr>
-	<tr>
-		<th width="200">Areal / Gens</th>
-		<td width="450"><input type="text" size="50" name="SW_ArealGens" /></td>
-	</tr>
 </table>
 <br>
 <h2>Ausgabefelder</h2>
@@ -590,43 +563,6 @@
 			name="HerausgeberVorname" /> <input type="text" size="25"
 			name="HerausgeberNachname" /></td>
 	</tr>
-	<tr>
-		<th width="200">Schlagwort 1</th>
-		<td width="450"><input type="text" size="50" name="SW_1" disabled /></td>
-	</tr>
-	<tr>
-		<th width="200">Schlagwort 2</th>
-		<td width="450"><input type="text" size="50" name="SW_2" disabled /></td>
-	</tr>
-	<tr>
-		<th width="200">Namen / Element</th>
-		<td width="450"><jsp:include page="inc.suchformular.jsp">
-			<jsp:param name="Formular" value="selektion_sw_namenelemente" />
-			<jsp:param name="Datenfeld" value="SW_Namenelemente" />
-		</jsp:include></td>
-	</tr>
-	<tr>
-		<th width="200">Phono / Graph</th>
-		<td width="450"><jsp:include page="inc.suchformular.jsp">
-			<jsp:param name="Formular" value="selektion_sw_phongraph" />
-			<jsp:param name="Datenfeld" value="SW_PhonGraph" />
-		</jsp:include></td>
-	</tr>
-	<tr>
-		<th width="200">Morphologie</th>
-		<td width="450"><jsp:include page="inc.suchformular.jsp">
-			<jsp:param name="Formular" value="selektion_sw_morphologie" />
-			<jsp:param name="Datenfeld" value="SW_Morphologie" />
-		</jsp:include></td>
-	</tr>
-	<tr>
-		<th width="200">Areal / Gens</th>
-		<td width="450"><jsp:include page="inc.suchformular.jsp">
-			<jsp:param name="Formular" value="selektion_sw_arealgens" />
-			<jsp:param name="Datenfeld" value="SW_ArealGens" />
-		</jsp:include></td>
-	</tr>
-
 </table>
 <br>
 <h2>Ausgabefelder</h2>

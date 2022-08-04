@@ -30,12 +30,10 @@
     <%@ include file="import/edition.jsp" %>
     <%@ include file="import/einzelbeleg.jsp" %>
     <%@ include file="import/handschrift.jsp" %>
-    <%@ include file="import/literatur.jsp" %>
     <%@ include file="import/namenkommentar.jsp" %>
     <%@ include file="import/person.jsp" %>
     <%@ include file="import/quelle.jsp" %>
 
-    <%@ include file="import/schlagwort.jsp" %>
     <%@ include file="import/selektion.jsp" %>
     <%@ include file="import/selektion_amtweihe.jsp" %>
     <%@ include file="import/selektion_areal.jsp" %>
