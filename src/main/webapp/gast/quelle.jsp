@@ -177,7 +177,7 @@
     <jsp:include page="layout/header.inc.jsp">
         <jsp:param name="current" value="quelle" />
     </jsp:include>
-<!--      <jsp:include page="layout/image.inc.html" />-->
+<!--      <jsp:include page="layout/image.inc.jsp" />-->
       <jsp:include page="layout/titel.inc.jsp">
         <jsp:param name="title" value="Quelle" />
         <jsp:param name="ID" value="<%= id %>" />

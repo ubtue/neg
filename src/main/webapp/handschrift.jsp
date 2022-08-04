@@ -139,7 +139,7 @@
 <BODY
 	onLoad="javascript:onoff('tab2','tab1'); onoff('tab1','tab2');urlRewrite(<%=id%>);">
 <FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
-<jsp:include page="layout/image.inc.html" /> <jsp:include
+<jsp:include page="layout/image.inc.jsp" /> <jsp:include
 	page="layout/titel.inc.jsp">
 	<jsp:param name="formTitle" value="Textzeugen" />
 	<jsp:param name="title" value="Handschrift" />

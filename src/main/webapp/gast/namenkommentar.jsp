@@ -281,7 +281,7 @@
 <jsp:include page="layout/header.inc.jsp">
     <jsp:param name="current" value="namenkommentar" />
 </jsp:include>
-<!--<jsp:include page="layout/image.inc.html" />-->
+<!--<jsp:include page="layout/image.inc.jsp" />-->
 <jsp:include page="layout/titel.inc.jsp">
 	<jsp:param name="title" value="namenkommentar" />
 	<jsp:param name="ID" value="<%= id %>" />

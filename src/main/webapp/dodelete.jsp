@@ -19,8 +19,8 @@
 
   <BODY>
     <jsp:include page="layout/navigation.inc.jsp" />
-    <jsp:include page="layout/image.inc.html" />
-    <jsp:include page="layout/titel.suche.html" />
+    <jsp:include page="layout/image.inc.jsp" />
+    <jsp:include page="layout/titel.suche.jsp" />
     <div id="form">
       <h2>L&ouml;schen</h2>
 <%

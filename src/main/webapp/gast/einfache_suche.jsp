@@ -39,8 +39,8 @@
       <FORM method="POST">
 
 
-    <jsp:include page="layout/image.inc.html" />
-    <jsp:include page="layout/titel.suche.html" />
+    <jsp:include page="layout/image.inc.jsp" />
+    <jsp:include page="layout/titel.suche.jsp" />
 </FORM>
     <FORM method="POST" action="einfaches_ergebnis.jsp">
       <input type="hidden" name="form" value="einfache_suche">

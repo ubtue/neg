@@ -72,7 +72,7 @@
 
   <BODY>
     <jsp:include page="layout/navigation.inc.jsp" />
-    <jsp:include page="layout/image.inc.html" />
+    <jsp:include page="layout/image.inc.jsp" />
     <jsp:include page="layout/titel.einstellungen.jsp" />
     <div id="form">
 

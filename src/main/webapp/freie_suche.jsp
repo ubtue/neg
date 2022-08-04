@@ -118,8 +118,8 @@ $(function() {
 
 
     <jsp:include page="layout/navigation.inc.jsp" />
-    <jsp:include page="layout/image.inc.html" />
-    <jsp:include page="layout/titel.suche.html" />
+    <jsp:include page="layout/image.inc.jsp" />
+    <jsp:include page="layout/titel.suche.jsp" />
 
     <FORM method="POST" action="suchergebnis.jsp">
       <input type="hidden" name="form" value="freie_suche">

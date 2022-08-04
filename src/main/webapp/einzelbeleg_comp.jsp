@@ -70,7 +70,7 @@
 
 <BODY>
 <FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
-<jsp:include page="layout/image.inc.html" /> <jsp:include
+<jsp:include page="layout/image.inc.jsp" /> <jsp:include
 	page="layout/titel.inc.jsp">
 	<jsp:param name="title" value="Einzelbeleg" />
 	<jsp:param name="ID" value="<%= id %>" />
