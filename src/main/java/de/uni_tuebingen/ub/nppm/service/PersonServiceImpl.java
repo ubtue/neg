@@ -49,16 +49,19 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public List<PersonAmtStandWeihe_MM> listPersonAmtStandWeihe() {
         return personDB.getListPersonAmtStandWeihe();
     }
 
     @Override
+    @Transactional
     public List<PersonQuiet> listPersonQuiet() {
         return personDB.getListPersonQuiet();
     }
 
     @Override
+    @Transactional
     public List<PersonVariante> listPersonVariante() {
         return personDB.getListPersonVariante();
     }
