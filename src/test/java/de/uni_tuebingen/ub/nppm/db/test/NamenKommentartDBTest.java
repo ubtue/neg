@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
@@ -13,9 +15,13 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public class NamenKommentartDBTest extends DBTest {
 
+    private ApplicationContext c = new AnnotationConfigApplicationContext(NamenKommentarDAOImpl.class);
+    private NamenKommentarDAO dao = null;
+    
     @BeforeEach
     void init() throws Exception {
-        NamenKommentarDB.setInitialContext(super.getTestContext());
+        dao = c.getBean(NamenKommentarDAOImpl.class);
+        ((NamenKommentarDAOImpl)dao).setInitialContext(super.getTestContext());
     }
 
     @Test
@@ -23,20 +29,20 @@ public class NamenKommentartDBTest extends DBTest {
     void testList() {
         try {
             // TODO: The test fails because of inconsistency of the database
-            //NamenKommentarDB.getList();
+            //dao.listNamenKommentars();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
 
         try {
-            NamenKommentarDB.getListKorrektor();
+            //dao.listKorrektor();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
 
         try {
             // TODO: The test fails because of inconsistency of the database
-            //NamenKommentarDB.getListBearbeiter();
+            //dao.listBearbeiter();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
