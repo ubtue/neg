@@ -22,12 +22,39 @@ public class EditionController {
     private EditionService editionService;
 
     @GetMapping("/list")
-    public String listEditions(Model theModel) {
-        //TODO Clean up Edition Table
+    public String listEditions() {
+        //TODO Run Update Script to clean Edition Table first
         /*List < Edition > editions = editionService.listEditions();
 
         theModel.addAttribute("editions", editions);*/
 
-        return "list-edition";
+        return "edition/list-edition";
+    }
+
+    @GetMapping("/showForm")
+    public String showFormForAdd(Model model) {
+        Edition edition = new Edition();
+        model.addAttribute("edition", edition);
+        return "edition/edition-form";
+    }
+
+    @PostMapping("/saveEdition")
+    public String addEdition(@ModelAttribute("edition") Edition edition) {
+        editionService.addEdition(edition);
+        return "redirect:/edition/list";
+    }
+
+    @GetMapping("/updateForm")
+    public String showFormForUpdate(@RequestParam("editionId") int id,
+            Model model) {
+        Edition edition = editionService.getEditionById(id);
+        model.addAttribute("edition", edition);
+        return "edition/edition-form";
+    }
+
+    @GetMapping("/remove")
+    public String removeEdition(@RequestParam("editionId") int id) {
+        editionService.removeEdition(id);
+        return "redirect:/edition/list";
     }
 }
