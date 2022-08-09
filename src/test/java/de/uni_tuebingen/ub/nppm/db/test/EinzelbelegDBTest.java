@@ -6,12 +6,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class EinzelbelegDBTest extends DBTest {
 
+    private ApplicationContext c = new AnnotationConfigApplicationContext(EinzelbelegDAOImpl.class);
+    private EinzelbelegDAO dao = null;
+    
     @BeforeEach
     void init() throws Exception {
-        EinzelbelegDB.setInitialContext(super.getTestContext());
+        dao = c.getBean(EinzelbelegDAOImpl.class);
+        ((EinzelbelegDAOImpl)dao).setInitialContext(super.getTestContext());
     }
 
     @Test
@@ -20,17 +26,17 @@ public class EinzelbelegDBTest extends DBTest {
         // TODO: The test fails because of the inconsistency of the database
         
         try {
-            //EinzelbelegDB.getList();
+            //dao.listEinzelbelege();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            //EinzelbelegDB.getListFunktion();
+            //dao.listFunktionen();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            //EinzelbelegDB.getListTextKritik();
+            //dao.listTextKritiken();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
