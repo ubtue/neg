@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
@@ -13,9 +15,13 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public class MghLemmaDBTest extends DBTest {
 
+    private ApplicationContext c = new AnnotationConfigApplicationContext(MghLemmaDAOImpl.class);
+    private MghLemmaDAO dao = null;
+   
     @BeforeEach
     void init() throws Exception {
-        MghLemmaDB.setInitialContext(super.getTestContext());
+        dao = c.getBean(MghLemmaDAOImpl.class);
+        ((MghLemmaDAOImpl)dao).setInitialContext(super.getTestContext());
     }
 
     @Test
@@ -23,19 +29,19 @@ public class MghLemmaDBTest extends DBTest {
     void testList() {
         try {
             // TODO: The test fails because of the inconsistency of the database
-            //MghLemmaDB.getList();
+            //dao.listMghLemma();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
 
         try {
-            MghLemmaDB.getListKorrektor();
+            dao.listMghLemmaKorrektor();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
 
         try {
-            MghLemmaDB.getListBearbeiter();
+            dao.listMghLemmaBearbeiter();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
