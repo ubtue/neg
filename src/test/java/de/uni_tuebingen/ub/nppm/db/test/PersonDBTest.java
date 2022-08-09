@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
@@ -13,9 +15,13 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public class PersonDBTest extends DBTest {
 
+    private ApplicationContext c = new AnnotationConfigApplicationContext(PersonDAOImpl.class);
+    private PersonDAO dao = null;
+    
     @BeforeEach
     void init() throws Exception {
-        PersonDB.setInitialContext(super.getTestContext());
+        dao = c.getBean(PersonDAOImpl.class);
+        ((PersonDAOImpl)dao).setInitialContext(super.getTestContext());
     }
 
     @Test
@@ -23,22 +29,22 @@ public class PersonDBTest extends DBTest {
     void testList() {
         // TODO: The tests fails because of the inconsistency of the database
         try {
-            PersonDB.getListPerson();
+            dao.getListPerson();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            //PersonDB.getListPersonAmtStandWeihe();
+            //dao.getListPersonAmtStandWeihe();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            PersonDB.getListPersonQuiet();
+            dao.getListPersonQuiet();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            PersonDB.getListPersonVariante();
+            dao.getListPersonVariante();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
