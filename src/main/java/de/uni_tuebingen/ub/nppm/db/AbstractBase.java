@@ -98,7 +98,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(NamenKommentarKorrektor.class);
             
             configuration.addAnnotatedClass(Quelle.class);
-            configuration.addAnnotatedClass(QuelleInEdition.class);
             configuration.addAnnotatedClass(QuelleInEdition_MM.class);
             
             configuration.addAnnotatedClass(Handschrift.class);
