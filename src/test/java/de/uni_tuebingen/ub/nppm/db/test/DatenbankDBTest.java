@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import de.uni_tuebingen.ub.nppm.db.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
@@ -13,36 +15,40 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public class DatenbankDBTest extends DBTest {
 
+    private ApplicationContext c = new AnnotationConfigApplicationContext(DatenbankDAOImpl.class);
+    private DatenbankDAO dao = null;
+   
     @BeforeEach
     void init() throws Exception {
-        DatenbankDB.setInitialContext(super.getTestContext());
+        dao = c.getBean(DatenbankDAOImpl.class);
+        ((DatenbankDAOImpl)dao).setInitialContext(super.getTestContext());
     }
 
     @Test
     @DisplayName("List Datenbank Entities")
     void testList() {
         try {
-            DatenbankDB.getListFilter();
+            dao.listDatenbankFilter();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            DatenbankDB.getListMapping();
+            dao.listDatenbankMapping();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            DatenbankDB.getListSelektion();
+            dao.listDatenbankSelektion();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            DatenbankDB.getListSprache();
+            dao.listDatenbankSprachen();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
         try {
-            DatenbankDB.getListTexte();
+            dao.listDatenbankTexte();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
