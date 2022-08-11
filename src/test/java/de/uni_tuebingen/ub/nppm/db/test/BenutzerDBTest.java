@@ -3,7 +3,11 @@ package de.uni_tuebingen.ub.nppm.db.test;
 import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
+import de.uni_tuebingen.ub.nppm.db.BenutzerDAOImpl;
+import de.uni_tuebingen.ub.nppm.db.BenutzerDAO;
+import de.uni_tuebingen.ub.nppm.db.BenutzerDAOImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
@@ -11,16 +15,20 @@ import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
  */
 public class BenutzerDBTest extends DBTest {
 
+    private ApplicationContext c = new AnnotationConfigApplicationContext(BenutzerDAOImpl.class);
+    private BenutzerDAO dao = null;
+   
     @BeforeEach
     void init() throws Exception {
-        BenutzerDB.setInitialContext(super.getTestContext());
+        dao = c.getBean(BenutzerDAOImpl.class);
+        ((BenutzerDAOImpl)dao).setInitialContext(super.getTestContext());
     }
 
     @Test
     @DisplayName("List active Users")
     void testListActiveUsers() {
         try {
-            BenutzerDB.getListAktiv();
+            dao.listBenutzerAktiv();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
@@ -30,7 +38,7 @@ public class BenutzerDBTest extends DBTest {
     @DisplayName("List inactive Users")
     void testListInactiveUsers() {
         try {
-            BenutzerDB.getListInaktiv();
+            dao.listBenutzerInaktiv();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

@@ -7,9 +7,36 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-public class BenutzerDB extends AbstractBase {
+public class BenutzerDAOImpl extends AbstractBase implements BenutzerDAO {
 
-    public static List getList() throws Exception {
+    @Override
+    public void addBenutzer(Benutzer b) {
+        getSession().persist(b);
+    }
+
+    @Override
+    public void updateBenutzer(Benutzer b) {
+        getSession().update(b);
+    }
+
+    @Override
+    public Benutzer getBenutzerById(int id) {
+        Session s = getSession();
+        Benutzer e = (Benutzer) s.load(Benutzer.class, id);
+        return e;
+    }
+
+    @Override
+    public void removeBenutzer(int id) {
+        Session session = getSession().getSession();
+        Benutzer e = (Benutzer) session.load(Benutzer.class, id);
+        if (null != e) {
+            session.delete(e);
+        }
+    }
+    
+    @Override
+    public List<Benutzer> listBenutzer() {
         Session session = getSession();
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -21,7 +48,8 @@ public class BenutzerDB extends AbstractBase {
         return session.createQuery(criteria).getResultList();
     }
 
-    public static List getListAktiv() throws Exception {
+    @Override
+    public List<Benutzer> listBenutzerAktiv() {
         Session session = getSession();
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -34,7 +62,8 @@ public class BenutzerDB extends AbstractBase {
         return session.createQuery(criteria).getResultList();
     }
 
-    public static List getListInaktiv() throws Exception {
+    @Override
+    public List<Benutzer> listBenutzerInaktiv() {
         Session session = getSession();
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
