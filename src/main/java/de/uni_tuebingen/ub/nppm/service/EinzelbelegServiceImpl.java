@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.EinzelbelegDAO;
+import de.uni_tuebingen.ub.nppm.dao.EinzelbelegDAO;
 import de.uni_tuebingen.ub.nppm.model.Einzelbeleg;
 import de.uni_tuebingen.ub.nppm.model.EinzelbelegHatFunktion_MM;
 import de.uni_tuebingen.ub.nppm.model.EinzelbelegTextkritik;

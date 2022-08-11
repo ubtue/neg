@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.NamenKommentarDAO;
+import de.uni_tuebingen.ub.nppm.dao.NamenKommentarDAO;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentarBearbeiter;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentarKorrektor;

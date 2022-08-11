@@ -3,9 +3,9 @@ package de.uni_tuebingen.ub.nppm.db.test;
 import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import de.uni_tuebingen.ub.nppm.db.BenutzerDAOImpl;
-import de.uni_tuebingen.ub.nppm.db.BenutzerDAO;
-import de.uni_tuebingen.ub.nppm.db.BenutzerDAOImpl;
+import de.uni_tuebingen.ub.nppm.dao.BenutzerDAOImpl;
+import de.uni_tuebingen.ub.nppm.dao.BenutzerDAO;
+import de.uni_tuebingen.ub.nppm.dao.BenutzerDAOImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

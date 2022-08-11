@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.BenutzerDAO;
+import de.uni_tuebingen.ub.nppm.dao.BenutzerDAO;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import java.util.List;
 import org.springframework.stereotype.Service;

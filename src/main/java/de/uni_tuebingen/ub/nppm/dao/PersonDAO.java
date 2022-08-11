@@ -1,4 +1,4 @@
-package de.uni_tuebingen.ub.nppm.db;
+package de.uni_tuebingen.ub.nppm.dao;
 
 import de.uni_tuebingen.ub.nppm.model.Person;
 import de.uni_tuebingen.ub.nppm.model.PersonAmtStandWeihe_MM;

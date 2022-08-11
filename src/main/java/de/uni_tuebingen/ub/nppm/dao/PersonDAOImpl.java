@@ -1,6 +1,6 @@
-package de.uni_tuebingen.ub.nppm.db;
+package de.uni_tuebingen.ub.nppm.dao;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
+import static de.uni_tuebingen.ub.nppm.dao.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import org.hibernate.Session;

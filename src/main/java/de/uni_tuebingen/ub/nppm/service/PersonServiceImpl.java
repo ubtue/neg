@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.PersonDAO;
+import de.uni_tuebingen.ub.nppm.dao.PersonDAO;
 import de.uni_tuebingen.ub.nppm.model.Person;
 import de.uni_tuebingen.ub.nppm.model.PersonAmtStandWeihe_MM;
 import de.uni_tuebingen.ub.nppm.model.PersonQuiet;

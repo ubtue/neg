@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.EditionDAO;
+import de.uni_tuebingen.ub.nppm.dao.EditionDAO;
 import de.uni_tuebingen.ub.nppm.model.Edition;
 import java.util.List;
 import org.springframework.stereotype.Service;

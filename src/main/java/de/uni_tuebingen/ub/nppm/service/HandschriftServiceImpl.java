@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.HandschriftDAO;
+import de.uni_tuebingen.ub.nppm.dao.HandschriftDAO;
 import de.uni_tuebingen.ub.nppm.model.Handschrift;
 import java.util.List;
 import org.springframework.stereotype.Service;

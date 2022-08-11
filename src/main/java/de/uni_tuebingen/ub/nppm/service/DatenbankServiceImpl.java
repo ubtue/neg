@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.DatenbankDAO;
+import de.uni_tuebingen.ub.nppm.dao.DatenbankDAO;
 import de.uni_tuebingen.ub.nppm.model.DatenbankFilter;
 import de.uni_tuebingen.ub.nppm.model.DatenbankMapping;
 import de.uni_tuebingen.ub.nppm.model.DatenbankSelektion;

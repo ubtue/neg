@@ -1,12 +1,12 @@
 package de.uni_tuebingen.ub.nppm.db.test;
 
-import de.uni_tuebingen.ub.nppm.db.HandschriftDAO;
-import de.uni_tuebingen.ub.nppm.db.HandschriftDAOImpl;
+import de.uni_tuebingen.ub.nppm.dao.HandschriftDAO;
+import de.uni_tuebingen.ub.nppm.dao.HandschriftDAOImpl;
 import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import de.uni_tuebingen.ub.nppm.db.HandschriftDAOImpl;
+import de.uni_tuebingen.ub.nppm.dao.HandschriftDAOImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

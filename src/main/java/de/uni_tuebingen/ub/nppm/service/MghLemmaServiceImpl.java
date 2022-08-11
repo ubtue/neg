@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.MghLemmaDAO;
+import de.uni_tuebingen.ub.nppm.dao.MghLemmaDAO;
 import de.uni_tuebingen.ub.nppm.model.*;
 import java.util.List;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.SucheDAO;
+import de.uni_tuebingen.ub.nppm.dao.SucheDAO;
 import de.uni_tuebingen.ub.nppm.model.SucheFavoriten;
 import java.util.List;
 import org.springframework.stereotype.Service;

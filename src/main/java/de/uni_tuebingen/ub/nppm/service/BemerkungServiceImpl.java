@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.service;
 
-import de.uni_tuebingen.ub.nppm.db.BemerkungDAO;
+import de.uni_tuebingen.ub.nppm.dao.BemerkungDAO;
 import de.uni_tuebingen.ub.nppm.model.Bemerkung;
 import java.util.List;
 import org.springframework.stereotype.Service;

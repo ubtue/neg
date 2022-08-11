@@ -1,4 +1,4 @@
-package de.uni_tuebingen.ub.nppm.db;
+package de.uni_tuebingen.ub.nppm.dao;
 
 import java.util.List;
 import org.hibernate.Session;
