@@ -21,14 +21,11 @@ public class EinzelbelegController {
     @Autowired
     private EinzelbelegService einzelbelegService;
 
-    @GetMapping("/list")
-    public String listEinzelbelegs(Model model) {
-        //TODO Run Update Script to clean Einzelbeleg Table first
-        List < Einzelbeleg > einzelbelege = einzelbelegService.listEinzelbelege();
-
-        model.addAttribute("einzelbelege", einzelbelege);
-
-        return "einzelbeleg/list-einzelbeleg";
+    @GetMapping("/gast/showForm")
+    public String showFormForAddGast(Model model) {
+        Einzelbeleg einzelbeleg = new Einzelbeleg();
+        model.addAttribute("einzelbeleg", einzelbeleg);
+        return "einzelbeleg/gast/einzelbeleg-form";
     }
 
     @GetMapping("/showForm")
