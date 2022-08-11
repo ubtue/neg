@@ -21,7 +21,7 @@ public class MghLemmaController {
     @Autowired
     private MghLemmaService mghlemmaService;
 
-        @GetMapping("/gast/showForm")
+    @GetMapping("/gast/showForm")
     public String showFormForGast(@RequestParam("mghlemmaId") int id,
             Model model) {
         MghLemma mghlemma = mghlemmaService.getMghLemmaById(id);
