@@ -21,13 +21,11 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @GetMapping("/list")
-    public String listPersons(Model model) {
-        List < Person > persons = personService.listPersons();
-
-        model.addAttribute("persons", persons);
-
-        return "person/list-person";
+    @GetMapping("/gast/showForm")
+    public String showFormForGast(@RequestParam("personId") int id, Model model) {
+        Person person = personService.getPersonById(id);
+        model.addAttribute("person", person);
+        return "person/gast/person-form";
     }
 
     @GetMapping("/showForm")
