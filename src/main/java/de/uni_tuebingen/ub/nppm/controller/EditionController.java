@@ -21,16 +21,6 @@ public class EditionController {
     @Autowired
     private EditionService editionService;
 
-    @GetMapping("/list")
-    public String listEditions() {
-        //TODO Run Update Script to clean Edition Table first
-        /*List < Edition > editions = editionService.listEditions();
-
-        theModel.addAttribute("editions", editions);*/
-
-        return "edition/list-edition";
-    }
-
     @GetMapping("/showForm")
     public String showFormForAdd(Model model) {
         Edition edition = new Edition();
