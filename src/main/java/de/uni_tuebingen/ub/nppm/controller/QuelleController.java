@@ -21,14 +21,12 @@ public class QuelleController {
     @Autowired
     private QuelleService quelleService;
 
-    @GetMapping("/list")
-    public String listQuelles(Model model) {
-        //TODO Run Update Script to clean Quelle Table first
-        List < Quelle > quelles = quelleService.listQuellen();
-
-        model.addAttribute("quelles", quelles);
-
-        return "quelle/list-quelle";
+    @GetMapping("/gast/showForm")
+    public String showFormForUpdateGast(@RequestParam("quelleId") int id,
+            Model model) {
+        Quelle quelle = quelleService.getQuelleById(id);
+        model.addAttribute("quelle", quelle);
+        return "quelle/gast/quelle-form";
     }
 
     @GetMapping("/showForm")
