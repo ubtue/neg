@@ -1,8 +1,8 @@
-package de.uni_tuebingen.ub.nppm.db.test;
+package de.uni_tuebingen.ub.nppm.dao.test;
 
 import de.uni_tuebingen.ub.nppm.dao.BemerkungDAO;
 import de.uni_tuebingen.ub.nppm.dao.BemerkungDAOImpl;
-import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
+import de.uni_tuebingen.ub.nppm.dao.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

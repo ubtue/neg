@@ -1,6 +1,6 @@
-package de.uni_tuebingen.ub.nppm.db.test;
+package de.uni_tuebingen.ub.nppm.dao.test;
 
-import de.uni_tuebingen.ub.nppm.db.test.base.DBTest;
+import de.uni_tuebingen.ub.nppm.dao.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import de.uni_tuebingen.ub.nppm.dao.BenutzerDAOImpl;

@@ -1,4 +1,4 @@
-package de.uni_tuebingen.ub.nppm.db.test.base;
+package de.uni_tuebingen.ub.nppm.dao.test.base;
 
 import de.uni_tuebingen.ub.nppm.mocks.CustomInitialContext;
 import org.w3c.dom.*;
