@@ -22,8 +22,9 @@ public class EinzelbelegController {
     private EinzelbelegService einzelbelegService;
 
     @GetMapping("/gast/showForm")
-    public String showFormForAddGast(Model model) {
-        Einzelbeleg einzelbeleg = new Einzelbeleg();
+    public String showFormForGast(@RequestParam("einzelbelegId") int id,
+            Model model) {
+        Einzelbeleg einzelbeleg = einzelbelegService.getEinzelbelegById(id);
         model.addAttribute("einzelbeleg", einzelbeleg);
         return "einzelbeleg/gast/einzelbeleg-form";
     }
