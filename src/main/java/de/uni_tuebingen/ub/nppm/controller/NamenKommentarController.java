@@ -21,14 +21,6 @@ public class NamenKommentarController {
     @Autowired
     private NamenKommentarService namenkommentarService;
 
-    @GetMapping("/gast/showForm")
-    public String showFormForGast(@RequestParam("namenkommentarId") int id,
-            Model model) {
-        NamenKommentar namenkommentar = namenkommentarService.getNamenKommentarById(id);
-        model.addAttribute("namenkommentar", namenkommentar);
-        return "namenkommentar/gast/namenkommentar-form";
-    }
-
     @GetMapping("/showForm")
     public String showFormForAdd(Model model) {
         NamenKommentar namenkommentar = new NamenKommentar();
