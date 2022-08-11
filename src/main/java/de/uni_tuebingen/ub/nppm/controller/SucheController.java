@@ -22,4 +22,14 @@ public class SucheController {
     public String showForm() {
         return "suche/suche-form";
     }
+    
+    @GetMapping("/showFormAdvanced")
+    public String showFormAdvanced() {
+        return "suche/freie-suche-form";
+    }
+    
+    @GetMapping("/gast/showFormAdvanced")
+    public String showFormAdvancedGast() {
+        return "suche/gast/erweiterte-suche-form";
+    }
 }
