@@ -21,13 +21,6 @@ public class HandschriftController {
     @Autowired
     private HandschriftService handschriftService;
 
-    @GetMapping("/list")
-    public String listHandschriften(Model model) {        
-        List < Handschrift > handschrifts = handschriftService.listHandschriften();
-        model.addAttribute("handschrifts", handschrifts);
-        return "handschrift/list-handschrift";
-    }
-
     @GetMapping("/showForm")
     public String showFormForAdd(Model model) {
         Handschrift handschrift = new Handschrift();
