@@ -21,16 +21,6 @@ public class MghLemmaController {
     @Autowired
     private MghLemmaService mghlemmaService;
 
-    @GetMapping("/list")
-    public String listMghLemmas(Model model) {
-        //TODO Run Update Script to clean MghLemma Table first
-        /*List < MghLemma > mghlemma = mghlemmaService.listMghLemma();
-
-        model.addAttribute("mghlemma", mghlemma);*/
-
-        return "mghlemma/list-mghlemma";
-    }
-
     @GetMapping("/showForm")
     public String showFormForAdd(Model model) {
         MghLemma mghlemma = new MghLemma();
