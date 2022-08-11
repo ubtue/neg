@@ -21,6 +21,14 @@ public class MghLemmaController {
     @Autowired
     private MghLemmaService mghlemmaService;
 
+        @GetMapping("/gast/showForm")
+    public String showFormForGast(@RequestParam("mghlemmaId") int id,
+            Model model) {
+        MghLemma mghlemma = mghlemmaService.getMghLemmaById(id);
+        model.addAttribute("mghlemma", mghlemma);
+        return "mghlemma/gast/mghlemma-form";
+    }
+    
     @GetMapping("/showForm")
     public String showFormForAdd(Model model) {
         MghLemma mghlemma = new MghLemma();
