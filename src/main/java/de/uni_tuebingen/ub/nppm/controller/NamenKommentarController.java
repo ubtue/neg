@@ -21,14 +21,12 @@ public class NamenKommentarController {
     @Autowired
     private NamenKommentarService namenkommentarService;
 
-    @GetMapping("/list")
-    public String listNamenKommentars(Model model) {
-        //TODO Run Update Script to clean NamenKommentar Table first
-        List < NamenKommentar > namenkommentare = namenkommentarService.listNamenKommentare();
-
-        model.addAttribute("namenkommentare", namenkommentare);
-
-        return "namenkommentar/list-namenkommentar";
+    @GetMapping("/gast/showForm")
+    public String showFormForGast(@RequestParam("namenkommentarId") int id,
+            Model model) {
+        NamenKommentar namenkommentar = namenkommentarService.getNamenKommentarById(id);
+        model.addAttribute("namenkommentar", namenkommentar);
+        return "namenkommentar/gast/namenkommentar-form";
     }
 
     @GetMapping("/showForm")
