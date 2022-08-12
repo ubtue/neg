@@ -31,7 +31,7 @@ public class HandschriftController {
     @PostMapping("/saveHandschrift")
     public String addHandschrift(@ModelAttribute("handschrift") Handschrift handschrift) {
         handschriftService.addHandschrift(handschrift);
-        return "redirect:/handschrift/list";
+        return "redirect:/handschrift/showForm";
     }
 
     @GetMapping("/updateForm")
@@ -45,6 +45,6 @@ public class HandschriftController {
     @GetMapping("/remove")
     public String removeHandschrift(@RequestParam("handschriftId") int id) {
         handschriftService.removeHandschrift(id);
-        return "redirect:/handschrift/list";
+        return "redirect:/handschrift/showForm";
     }
 }

@@ -39,7 +39,7 @@ public class EinzelbelegController {
     @PostMapping("/saveEinzelbeleg")
     public String addEinzelbeleg(@ModelAttribute("einzelbeleg") Einzelbeleg einzelbeleg) {
         einzelbelegService.addEinzelbeleg(einzelbeleg);
-        return "redirect:/einzelbeleg/list";
+        return "redirect:/einzelbeleg/showForm";
     }
 
     @GetMapping("/updateForm")
@@ -53,6 +53,6 @@ public class EinzelbelegController {
     @GetMapping("/remove")
     public String removeEinzelbeleg(@RequestParam("einzelbelegId") int id) {
         einzelbelegService.removeEinzelbeleg(id);
-        return "redirect:/einzelbeleg/list";
+        return "redirect:/einzelbeleg/showForm";
     }
 }

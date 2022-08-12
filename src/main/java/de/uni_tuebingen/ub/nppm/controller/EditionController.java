@@ -31,7 +31,7 @@ public class EditionController {
     @PostMapping("/saveEdition")
     public String addEdition(@ModelAttribute("edition") Edition edition) {
         editionService.addEdition(edition);
-        return "redirect:/edition/list";
+        return "redirect:/edition/showForm";
     }
 
     @GetMapping("/updateForm")
@@ -45,6 +45,6 @@ public class EditionController {
     @GetMapping("/remove")
     public String removeEdition(@RequestParam("editionId") int id) {
         editionService.removeEdition(id);
-        return "redirect:/edition/list";
+        return "redirect:/edition/showForm";
     }
 }

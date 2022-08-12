@@ -31,7 +31,7 @@ public class NamenKommentarController {
     @PostMapping("/saveNamenKommentar")
     public String addNamenKommentar(@ModelAttribute("namenkommentar") NamenKommentar namenkommentar) {
         namenkommentarService.addNamenKommentar(namenkommentar);
-        return "redirect:/namenkommentar/list";
+        return "redirect:/namenkommentar/showForm";
     }
 
     @GetMapping("/updateForm")
@@ -45,6 +45,6 @@ public class NamenKommentarController {
     @GetMapping("/remove")
     public String removeNamenKommentar(@RequestParam("namenkommentarId") int id) {
         namenkommentarService.removeNamenKommentar(id);
-        return "redirect:/namenkommentar/list";
+        return "redirect:/namenkommentar/showForm";
     }
 }

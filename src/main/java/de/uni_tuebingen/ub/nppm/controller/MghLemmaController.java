@@ -39,7 +39,7 @@ public class MghLemmaController {
     @PostMapping("/saveMghLemma")
     public String addMghLemma(@ModelAttribute("mghlemma") MghLemma mghlemma) {
         mghlemmaService.addMghLemma(mghlemma);
-        return "redirect:/mghlemma/list";
+        return "redirect:/mghlemma/showForm";
     }
 
     @GetMapping("/updateForm")
@@ -53,6 +53,6 @@ public class MghLemmaController {
     @GetMapping("/remove")
     public String removeMghLemma(@RequestParam("mghlemmaId") int id) {
         mghlemmaService.removeMghLemma(id);
-        return "redirect:/mghlemma/list";
+        return "redirect:/mghlemma/showForm";
     }
 }

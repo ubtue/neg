@@ -46,11 +46,11 @@ public class AdminController {
     
     @GetMapping("/changeLanguage")
     public String changeLanguage() {
-        return "redirect:/einzelbeleg/list";
+        return "redirect:/einzelbeleg/showForm";
     }
     
     @GetMapping("/logout")
     public String logout() {
-        return "redirect:/einzelbeleg/list";
+        return "redirect:/einzelbeleg/showForm";
     }
 }

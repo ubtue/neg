@@ -39,7 +39,7 @@ public class QuelleController {
     @PostMapping("/saveQuelle")
     public String addQuelle(@ModelAttribute("quelle") Quelle quelle) {
         quelleService.addQuelle(quelle);
-        return "redirect:/quelle/list";
+        return "redirect:/quelle/showForm";
     }
 
     @GetMapping("/updateForm")
@@ -53,6 +53,6 @@ public class QuelleController {
     @GetMapping("/remove")
     public String removeQuelle(@RequestParam("quelleId") int id) {
         quelleService.removeQuelle(id);
-        return "redirect:/quelle/list";
+        return "redirect:/quelle/showForm";
     }
 }

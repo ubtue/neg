@@ -38,7 +38,7 @@ public class PersonController {
     @PostMapping("/savePerson")
     public String addPerson(@ModelAttribute("person") Person person) {
         personService.addPerson(person);
-        return "redirect:/person/list";
+        return "redirect:/person/showForm";
     }
 
     @GetMapping("/updateForm")
@@ -52,6 +52,6 @@ public class PersonController {
     @GetMapping("/remove")
     public String removePerson(@RequestParam("personId") int id) {
         personService.removePerson(id);
-        return "redirect:/person/list";
+        return "redirect:/person/showForm";
     }
 }
