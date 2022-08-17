@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS selektion_sw_motivation;
 DROP TABLE IF EXISTS selektion_sw_namenelemente;
 DROP TABLE IF EXISTS selektion_sw_namenlexikon;
 DROP TABLE IF EXISTS selektion_sw_phongraph;
+DROP TABLE IF EXISTS selektion_sw_sprachherkunft;
 DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_arealgens';
 DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_morphologie';
 DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_motivation';
