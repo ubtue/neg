@@ -15,36 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import de.uni_tuebingen.ub.nppm.model.*;
 
 @Controller
-@RequestMapping("/quelle")
-public class QuelleController {
+@RequestMapping("/gast/quelle")
+public class GastQuelleController {
 
     @Autowired
     private QuelleService quelleService;
 
     @GetMapping("/showForm")
-    public String showFormForAdd(Model model) {
-        Quelle quelle = new Quelle();
-        model.addAttribute("quelle", quelle);
-        return "quelle/quelle-form";
-    }
-
-    @PostMapping("/saveQuelle")
-    public String addQuelle(@ModelAttribute("quelle") Quelle quelle) {
-        quelleService.addQuelle(quelle);
-        return "redirect:/quelle/showForm";
-    }
-
-    @GetMapping("/updateForm")
-    public String showFormForUpdate(@RequestParam("quelleId") int id,
+    public String showForm(@RequestParam("quelleId") int id,
             Model model) {
         Quelle quelle = quelleService.getQuelleById(id);
         model.addAttribute("quelle", quelle);
-        return "quelle/quelle-form";
-    }
-
-    @GetMapping("/remove")
-    public String removeQuelle(@RequestParam("quelleId") int id) {
-        quelleService.removeQuelle(id);
-        return "redirect:/quelle/showForm";
+        return "quelle/gast/quelle-form";
     }
 }
