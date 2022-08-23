@@ -15,36 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import de.uni_tuebingen.ub.nppm.model.*;
 
 @Controller
-@RequestMapping("/mghlemma")
-public class MghLemmaController {
+@RequestMapping("/gast/mghlemma")
+public class GastMghLemmaController {
 
     @Autowired
     private MghLemmaService mghlemmaService;
-    
+
     @GetMapping("/showForm")
-    public String showFormForAdd(Model model) {
-        MghLemma mghlemma = new MghLemma();
-        model.addAttribute("mghlemma", mghlemma);
-        return "mghlemma/mghlemma-form";
-    }
-
-    @PostMapping("/saveMghLemma")
-    public String addMghLemma(@ModelAttribute("mghlemma") MghLemma mghlemma) {
-        mghlemmaService.addMghLemma(mghlemma);
-        return "redirect:/mghlemma/showForm";
-    }
-
-    @GetMapping("/updateForm")
-    public String showFormForUpdate(@RequestParam("mghlemmaId") int id,
+    public String showForm(@RequestParam("mghlemmaId") int id,
             Model model) {
         MghLemma mghlemma = mghlemmaService.getMghLemmaById(id);
         model.addAttribute("mghlemma", mghlemma);
-        return "mghlemma/mghlemma-form";
-    }
-
-    @GetMapping("/remove")
-    public String removeMghLemma(@RequestParam("mghlemmaId") int id) {
-        mghlemmaService.removeMghLemma(id);
-        return "redirect:/mghlemma/showForm";
+        return "mghlemma/gast/mghlemma-form";
     }
 }
