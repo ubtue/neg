@@ -15,16 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import de.uni_tuebingen.ub.nppm.model.*;
 
 @Controller
-@RequestMapping("/suche")
-public class SucheController {
-
-    @GetMapping("/showForm")
-    public String showForm() {
-        return "suche/suche-form";
-    }
-    
+@RequestMapping("/gast/suche")
+public class GastSucheController {
     @GetMapping("/showFormAdvanced")
-    public String showFormAdvanced() {
-        return "suche/freie-suche-form";
+    public String showFormAdvancedGast() {
+        return "suche/gast/erweiterte-suche-form";
     }
 }
