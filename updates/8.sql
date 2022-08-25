@@ -18,11 +18,6 @@
 #   - FOREIGN KEY columns on to selektion_tables:
 #     - If they are in a n:m table, they should be NOT NULL without default
 #     - If they are in a column, they should be NOT NULL with default -1 or the corresponding default value matching "-" or "--" (NOT "?"!)
-#
-# TODO:
-# - Double check DEFAULT changes for their effects (e.g. can hat... tables really have default null?)
-#   If a column is not DEFAULT NULL, it should most likely be NOT NULL
-# - ON DELETE CASCADE / ON UPDATE CASCADE
 ALTER TABLE bemerkung MODIFY COLUMN ID INT UNSIGNED AUTO_INCREMENT;
 
 ALTER TABLE benutzer MODIFY COLUMN ID INT UNSIGNED AUTO_INCREMENT;
