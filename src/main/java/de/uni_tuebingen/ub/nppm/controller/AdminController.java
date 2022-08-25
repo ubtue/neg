@@ -2,7 +2,6 @@ package de.uni_tuebingen.ub.nppm.controller;
 
 import de.uni_tuebingen.ub.nppm.service.*;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.uni_tuebingen.ub.nppm.model.*;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/admin")
@@ -51,6 +51,6 @@ public class AdminController {
     
     @GetMapping("/logout")
     public String logout() {
-        return "redirect:/einzelbeleg/showForm";
+        return "redirect:/gast/startseite";
     }
 }
