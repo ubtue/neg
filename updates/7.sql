@@ -14,10 +14,11 @@ DELETE FROM urkunde_dorsalnotiz WHERE UrkundeID NOT IN (SELECT ID FROM urkunde);
 DELETE FROM urkunde_hataussteller WHERE UrkundeID NOT IN (SELECT ID FROM urkunde); /* 3/1697 */
 DELETE FROM urkunde_hatempfaenger WHERE UrkundeID NOT IN (SELECT ID FROM urkunde); /* 2/1632 */
 DELETE FROM person_hatareal WHERE ArealID NOT IN (SELECT ID FROM selektion_areal); /* 1/18159 ~0,01% */
+DELETE FROM edition_hateditor WHERE EditionID = 0; /* 1/704 ~0,14% */
 # DOUBLE CHECK!!!
-DELETE FROM einzelbeleg_hatamtweihe WHERE AmtWeiheID NOT IN (SELECT ID FROM selektion_amtweihe); /* 1885/23305 ~8,09% */
-DELETE FROM einzelbeleg_hatstand WHERE StandID NOT IN (SELECT ID FROM selektion_stand); /* 338/8443 ~4% */
-DELETE FROM person_hatstand WHERE StandID NOT IN (SELECT ID FROM selektion_stand); /* 1720/12141 ~14,17% */
+DELETE FROM einzelbeleg_hatamtweihe WHERE AmtWeiheID NOT IN (SELECT ID FROM selektion_amtweihe); /* 1885/23305 ~8,09%. Affects 10 values of AmtWeiheID that do not exist anymore in selektion_amtweihe. */
+DELETE FROM einzelbeleg_hatstand WHERE StandID NOT IN (SELECT ID FROM selektion_stand); /* 338/8443 ~4%. Affects 25 values of StandID that do not exist anymore in selektion_stand. */
+DELETE FROM person_hatstand WHERE StandID NOT IN (SELECT ID FROM selektion_stand); /* 1720/12141 ~14,17% Affects 3 values of StandID that do not exist anymore in selektion_stand. */
 
 # 2) 1:n columns with invalid values
 DELETE FROM einzelbeleg WHERE BearbeitungsstatusID IS NULL; /* 1/70668 ~0,00% => seems like a dummy value, just delete instead of update (selektion_bearbeitungsstatus) */
