@@ -1,0 +1,3 @@
+<div id="image">
+  <img src="../layout/icons/NeGCover.jpg" width="150" height="75" border="0" alt="">
+</div>
