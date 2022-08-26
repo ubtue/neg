@@ -10,7 +10,7 @@
   <br>
   <hr>
   <a href="/neg/namenkommentar/showForm">
-    Namenkommentar
+    Namen
   </a>
   <br>
   <hr>
