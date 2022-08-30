@@ -56,4 +56,9 @@ public class PersonDAOImpl extends AbstractBase implements PersonDAO {
     public List<PersonVariante> getListPersonVariante() {
         return getList(PersonVariante.class);
     }
+    
+    @Override
+    public List<SelektionGeschlecht> getListPersonGeschlecht() {
+        return getList(SelektionGeschlecht.class);
+    }
 }

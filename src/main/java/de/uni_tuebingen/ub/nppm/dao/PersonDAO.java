@@ -4,6 +4,8 @@ import de.uni_tuebingen.ub.nppm.model.Person;
 import de.uni_tuebingen.ub.nppm.model.PersonAmtStandWeihe_MM;
 import de.uni_tuebingen.ub.nppm.model.PersonQuiet;
 import de.uni_tuebingen.ub.nppm.model.PersonVariante;
+import de.uni_tuebingen.ub.nppm.model.SelektionGeschlecht;
+
 import java.util.List;
 
 public interface PersonDAO {
@@ -22,4 +24,6 @@ public interface PersonDAO {
     public List<PersonQuiet> getListPersonQuiet();
     
     public List<PersonVariante> getListPersonVariante();
+    
+    public List<SelektionGeschlecht> getListPersonGeschlecht();
 }

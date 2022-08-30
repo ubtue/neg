@@ -5,6 +5,7 @@ import de.uni_tuebingen.ub.nppm.model.Person;
 import de.uni_tuebingen.ub.nppm.model.PersonAmtStandWeihe_MM;
 import de.uni_tuebingen.ub.nppm.model.PersonQuiet;
 import de.uni_tuebingen.ub.nppm.model.PersonVariante;
+import de.uni_tuebingen.ub.nppm.model.SelektionGeschlecht;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Component;
@@ -66,5 +67,9 @@ public class PersonServiceImpl implements PersonService {
         return personDB.getListPersonVariante();
     }
     
-    
+    @Override
+    @Transactional
+    public List<SelektionGeschlecht> listPersonGeschlecht() {
+        return personDB.getListPersonGeschlecht();
+    }
 }

@@ -20,4 +20,6 @@ public interface PersonService {
     public List<PersonQuiet> listPersonQuiet();
     
     public List<PersonVariante> listPersonVariante();
+    
+    public List<SelektionGeschlecht> listPersonGeschlecht();
 }
