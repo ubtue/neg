@@ -7,9 +7,11 @@
      <jsp:param name="form" value="handschrift" />
 </jsp:include>
 
-<%
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
+
+<%
+  if (AuthHelper.isLogin(request)) {
 
 		int id = -2;
 		int filter = 0;
