@@ -4,7 +4,7 @@
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
@@ -12,7 +12,7 @@
 
 
 <%
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
+  if (AuthHelper.isLogin(request)) {
 
     int id = -1;
     int filter = 0;
