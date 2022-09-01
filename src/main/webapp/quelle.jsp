@@ -1,5 +1,5 @@
 ﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
 <jsp:include page="dolanguage.jsp" />
@@ -8,10 +8,7 @@
 </jsp:include>
 
 <%
-	if (session.getAttribute("BenutzerID") != null
-			&& ((Integer) session.getAttribute("BenutzerID"))
-					.intValue() > 0
-			&& !((Boolean) session.getAttribute("Gast")).booleanValue()) {
+	if (AuthHelper.isBenutzerLogin(request)) {
 
 		int id = -2;
 		int urkundeid = -1;

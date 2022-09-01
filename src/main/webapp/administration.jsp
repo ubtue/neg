@@ -3,6 +3,7 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
@@ -10,10 +11,7 @@
 <jsp:include page="dolanguage.jsp" />
 
 <%
-  if (session.getAttribute("BenutzerID")!=null
-      && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0
-      && ((Boolean) session.getAttribute("Administrator")).booleanValue()
-     ) {
+  if (AuthHelper.isAdminLogin(request)) {
 %>
 
 <HTML>

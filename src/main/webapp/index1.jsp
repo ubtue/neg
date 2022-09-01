@@ -5,16 +5,17 @@
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
 
 <%
-  if (session!=null && session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast"))) {
+  if (AuthHelper.isBenutzerLogin(request)) {
     %><jsp:forward page="einzelbeleg.jsp" /><%
   }
-  else if (session!=null && session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && ((Boolean) session.getAttribute("Gast"))) {
+  else if (AuthHelper.isGastLogin(request)) {
     response.sendRedirect("gast/einfache_suche.jsp");
   }
   else {
