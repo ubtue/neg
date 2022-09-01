@@ -9,7 +9,7 @@ Prerequisites:
   - conf/web.xml
     - Find this servlet <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
     - Add parameter `<init-param><param-name>strictQuoteEscaping</param-name><param-value>false</param-value></init-param>`
-  - Catalina/localhost/neg.xml (needs to be created)
+  - Catalina/localhost/neg.xml (needs to be created with correct user credentials)
 ```
 <Context>
     <!-- Mandatory -->
@@ -20,6 +20,12 @@ Prerequisites:
     <!-- Optional -->
     <Environment name="matomoURL" value="" type="java.lang.String"/>
     <Environment name="matomoSiteId" value="" type="java.lang.String"/>
+    
+    <!-- Mail -->
+    <Environment name="smtpHost" value="smtpserv.uni-tuebingen.de" type="java.lang.String"/>
+    <Environment name="smtpPort" value="587" type="java.lang.String"/>
+    <Environment name="smtpUser" value="exampleUser" type="java.lang.String"/>
+    <Environment name="smtpPassword" value="examplePassword" type="java.lang.String"/>
 </Context>
 ```
 - Java >= 1.8.0_77
