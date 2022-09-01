@@ -12,7 +12,7 @@
 
 
 <%
-  if (AuthHelper.isLogin(request)) {
+  if (AuthHelper.isBenutzerLogin(request)) {
     %><jsp:forward page="einzelbeleg.jsp" /><%
   }
   else if (AuthHelper.isGastLogin(request)) {

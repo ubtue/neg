@@ -11,7 +11,7 @@
 <jsp:include page="dolanguage.jsp" />
 
 <%
-  if (AuthHelper.isLogin(request)) {
+  if (AuthHelper.isBenutzerLogin(request)) {
      
      
      

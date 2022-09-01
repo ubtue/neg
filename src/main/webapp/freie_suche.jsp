@@ -16,7 +16,7 @@
 
 
 <%
-  if (AuthHelper.isLogin(request)) {
+  if (AuthHelper.isBenutzerLogin(request)) {
 
     int id = -1;
     int filter = 0;

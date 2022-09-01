@@ -8,7 +8,7 @@
 <%@ include file="functions.jsp"%>
 
 <%
-	if (AuthHelper.isLogin(request)) {
+	if (AuthHelper.isBenutzerLogin(request)) {
 %>
 
 <HTML>

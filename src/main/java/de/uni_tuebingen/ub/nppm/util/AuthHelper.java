@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 import javax.servlet.ServletException;
 
 public class AuthHelper {
-    public static boolean isLogin(HttpServletRequest request) throws ServletException, IOException{
+    public static boolean isBenutzerLogin(HttpServletRequest request) throws ServletException, IOException{
         HttpSession session = request.getSession(true);
         if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
             return true;
