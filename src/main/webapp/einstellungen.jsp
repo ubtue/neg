@@ -4,18 +4,16 @@
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
 
 <%
   Language.setLanguage(request);
-  if (session.getAttribute("BenutzerID")!=null
-      && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0
-     ) {
-     
-     
-     
+  if (AuthHelper.isBenutzerLogin(request)) {
+
   Connection cn = null;
   Statement st = null;
   ResultSet rs = null;

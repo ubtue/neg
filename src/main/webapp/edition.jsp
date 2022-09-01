@@ -3,7 +3,10 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
+
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+
 <%@ include file="configuration.jsp" %>
 
 <jsp:include page="dofilter.jsp">
@@ -12,7 +15,7 @@
 
 <%
   Language.setLanguage(request);
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
+  if (AuthHelper.isBenutzerLogin(request)) {
     int id = -2;
     int filter = 0;
     String formular = "edition";
