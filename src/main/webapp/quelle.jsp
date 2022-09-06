@@ -1,13 +1,14 @@
 ﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
-<jsp:include page="dolanguage.jsp" />
 <jsp:include page="dofilter.jsp">
      <jsp:param name="form" value="quelle" />
 </jsp:include>
 
 <%
+        Language.setLanguage(request);
 	if (AuthHelper.isBenutzerLogin(request)) {
 
 		int id = -2;
