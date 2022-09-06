@@ -8,27 +8,24 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
-<jsp:include page="dofilter.jsp">
-     <jsp:param name="form" value="mgh_lemma" />
-</jsp:include>
-
 <%
+  int id = -2;
+  String formular = "mgh_lemma";
   Language.setLanguage(request);
-  if (AuthHelper.isBenutzerLogin(request)) {
-
-    int id = -2;
-    String formular = "mgh_lemma";
-
+  Filter.setFilter(request, formular, out);
+  if (AuthHelper.isBenutzerLogin(request)) {    
     try {
         id = Integer.parseInt(request.getParameter("ID"));
     } catch (Exception e) {
     
     }
     
-    Connection cn = null;
-    Statement st = null;
+    Class.forName( sqlDriver );
+    Connection cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
+    Statement st = cn.createStatement();
     ResultSet rs = null;
     String sql = "";
+    
     try{
         if (id < -1) {
           try {
@@ -36,10 +33,8 @@
             sql = Filter.getFilterSql(request, formular);
             //select the minimum ID
             sql = sql.replace("*", "min("+formular+".ID) m");
-            Class.forName( sqlDriver );
-            cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-            st = cn.createStatement();
             rs = st.executeQuery(sql);
+            //set id
             if (rs.next())
               id = rs.getInt("m");
           } catch (Exception e) {
@@ -51,9 +46,6 @@
             sql = Filter.getFilterSql(request, formular);
             //select the item count
             String sql2 = sql.replace("*", "count(*) c");
-            Class.forName( sqlDriver );
-            cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-            st = cn.createStatement();
             rs = st.executeQuery(sql2);
             if (rs.next()){
                if(rs.getString("c").equals("0")){
