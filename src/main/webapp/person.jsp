@@ -3,16 +3,17 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.sql.SQLException" isThreadSafe="false"%>
 <%@ page import="java.sql.Statement" isThreadSafe="false"%>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
-<jsp:include page="dolanguage.jsp" />
 <jsp:include page="dofilter.jsp">
      <jsp:param name="form" value="person" />
 </jsp:include>
 
 <%
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
+  Language.setLanguage(request);
+  if (AuthHelper.isBenutzerLogin(request)) {
 
 		int id = -2;
 		int filter = 0;
@@ -239,28 +240,6 @@
 				<jsp:param name="Datenfeld" value="Identifizierungsproblem" />
 				<jsp:param name="cols" value="40" />
 				<jsp:param name="rows" value="5" />
-			</jsp:include></td>
-		</tr>
-		<tr>
-			<td width="200"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-				<jsp:param name="Formular" value="person" />
-				<jsp:param name="Datenfeld" value="CMRef" />
-			</jsp:include></td>
-			<td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="person" />
-				<jsp:param name="Datenfeld" value="CMRef" />
-			</jsp:include></td>
-		</tr>
-		<tr>
-			<td width="200"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-				<jsp:param name="Formular" value="person" />
-				<jsp:param name="Datenfeld" value="CMLink" />
-			</jsp:include></td>
-			<td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="person" />
-				<jsp:param name="Datenfeld" value="CMLink" />
 			</jsp:include></td>
 		</tr>
 		<jsp:include page="inc.modul.jsp">

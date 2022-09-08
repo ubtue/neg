@@ -4,15 +4,18 @@
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+
 <%@ include file="configuration.jsp" %>
 
-<jsp:include page="dolanguage.jsp" />
 <jsp:include page="dofilter.jsp">
      <jsp:param name="form" value="edition" />
 </jsp:include>
 
 <%
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
+  Language.setLanguage(request);
+  if (AuthHelper.isBenutzerLogin(request)) {
     int id = -2;
     int filter = 0;
     String formular = "edition";

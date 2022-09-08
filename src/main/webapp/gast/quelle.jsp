@@ -1,12 +1,12 @@
 ﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp"%>
 
-<jsp:include page="../dolanguage.jsp" />
 <jsp:include page="../dofilter.jsp" />
 
 <%
+    Language.setLanguage(request);
 	  if (session.getAttribute("BenutzerID")==null) {
      Connection cn = null;
     Statement st = null;
@@ -258,22 +258,6 @@
             </jsp:include>
               </td>
             </tr>
-
-          <tr>
-			<th>
-              <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-				<jsp:param name="Formular" value="quelle" />
-				<jsp:param name="Datenfeld" value="CMLink" />
-			  </jsp:include>
-            </th>
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="quelle" />
-				<jsp:param name="Datenfeld" value="CMLink" />
-			  </jsp:include>
-            </td>
-		 </tr>
          </tbody>
         </table>
 

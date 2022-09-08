@@ -1,15 +1,17 @@
 ﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
-<jsp:include page="dolanguage.jsp" />
 <jsp:include page="dofilter.jsp">
      <jsp:param name="form" value="handschrift" />
 </jsp:include>
 
-<%
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
+
+<%
+  Language.setLanguage(request);
+  if (AuthHelper.isBenutzerLogin(request)) {
 
 		int id = -2;
 		int filter = 0;

@@ -3,15 +3,12 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.sql.SQLException" isThreadSafe="false"%>
 <%@ page import="java.sql.Statement" isThreadSafe="false"%>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
 <%
-	if (session.getAttribute("BenutzerID") != null
-			&& ((Integer) session.getAttribute("BenutzerID"))
-					.intValue() > 0
-			&& !((Boolean) session.getAttribute("Gast")).booleanValue()) {
+	if (AuthHelper.isBenutzerLogin(request)) {
 %>
 
 <HTML>
@@ -58,11 +55,6 @@
 	<li><a href="javascript:onoff('tab6','tab1');"><jsp:include
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab7','tab1');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="literatur" />
 		<jsp:param name="Textfeld" value="Titel" />
 	</jsp:include></a></li>
 	<li><a href="javascript:onoff('tab8','tab1');"><jsp:include
@@ -128,11 +120,6 @@
 	<li><a href="javascript:onoff('tab6','tab2');"><jsp:include
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab7','tab2');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="literatur" />
 		<jsp:param name="Textfeld" value="Titel" />
 	</jsp:include></a></li>
 	<li><a href="javascript:onoff('tab8','tab2');"><jsp:include
@@ -255,11 +242,6 @@
 		<jsp:param name="Formular" value="namenkommentar" />
 		<jsp:param name="Textfeld" value="Titel" />
 	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab7','tab3');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="literatur" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
 	<li><a href="javascript:onoff('tab8','tab3');"><jsp:include
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="suche" />
@@ -343,11 +325,6 @@
 		<jsp:param name="Formular" value="namenkommentar" />
 		<jsp:param name="Textfeld" value="Titel" />
 	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab7','tab4');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="literatur" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
 	<li><a href="javascript:onoff('tab8','tab4');"><jsp:include
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="suche" />
@@ -390,11 +367,6 @@
 	<li><a href="javascript:onoff('tab6','tab5');"><jsp:include
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab7','tab5');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="literatur" />
 		<jsp:param name="Textfeld" value="Titel" />
 	</jsp:include></a></li>
 	<li><a href="javascript:onoff('tab8','tab5');"><jsp:include
@@ -441,11 +413,6 @@
 		<jsp:param name="Formular" value="namenkommentar" />
 		<jsp:param name="Textfeld" value="Titel" />
 	</jsp:include></span></li>
-	<li><a href="javascript:onoff('tab7','tab6');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="literatur" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
 	<li><a href="javascript:onoff('tab8','tab6');"><jsp:include
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="suche" />
@@ -466,33 +433,6 @@
 		<td width="450"><input type="text" size="50" name="Namenelement"
 			disabled /></td>
 	</tr>
-	<tr>
-		<th width="200">Motivation</th>
-		<td width="450"><input type="text" size="50" name="SW_Motivation" /></td>
-	</tr>
-	<tr>
-		<th width="200">Sprachl. Herkunft</th>
-		<td width="450"><input type="text" size="50"
-			name="SW_SprachHerkunft" /></td>
-	</tr>
-	<tr>
-		<th width="200">Phono / Graph</th>
-		<td width="450"><input type="text" size="50" name="SW_PhonGraph" /></td>
-	</tr>
-	<tr>
-		<th width="200">Morphologie</th>
-		<td width="450"><input type="text" size="50"
-			name="SW_Morphologie" /></td>
-	</tr>
-	<tr>
-		<th width="200">Namen / Elem.</th>
-		<td width="450"><input type="text" size="50"
-			name="SW_Namenelement" /></td>
-	</tr>
-	<tr>
-		<th width="200">Areal / Gens</th>
-		<td width="450"><input type="text" size="50" name="SW_ArealGens" /></td>
-	</tr>
 </table>
 <br>
 <h2>Ausgabefelder</h2>
@@ -507,147 +447,6 @@
 	<tr>
 		<td><input type="checkbox" name="AusgabeNamenelement" /></td>
 		<td width="200">Namenelement</td>
-	</tr>
-</table>
-<p><input type="reset" value="abbrechen" />&nbsp;&nbsp;<input
-	type="submit" value="Suchen" /></p>
-</form>
-</div>
-</div>
-
-<div id="tab7">
-<div id="header">
-<ul id="primary">
-	<li><a href="javascript:onoff('tab1','tab7');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="suche" />
-		<jsp:param name="Textfeld" value="TabLemma" />
-	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab2','tab7');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab3','tab7');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab4','tab7');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="edition" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab5','tab7');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="handschrift" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab6','tab7');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
-	<li><span><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="literatur" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></span></li>
-	<li><a href="javascript:onoff('tab8','tab7');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="suche" />
-		<jsp:param name="Textfeld" value="TabFavoriten" />
-	</jsp:include></a></li>
-</ul>
-</div>
-<div id="main">
-<form method="post" action="suchergebnis.jsp"><input
-	type="hidden" name="form" value="literatur" />
-<table>
-	<tr>
-		<th width="200">Kurztitel</th>
-		<td width="450"><input type="text" size="50" name="Kurztitel"
-			disabled /></td>
-	</tr>
-	<tr>
-		<th width="200">Typ</th>
-		<td width="450"><jsp:include page="inc.suchformular.jsp">
-			<jsp:param name="Formular" value="selektion_literaturtyp" />
-			<jsp:param name="Datenfeld" value="Typ" />
-		</jsp:include></td>
-	</tr>
-	<tr>
-		<th width="200">Titel</th>
-		<td width="450"><input type="text" size="50" name="Titel" /></td>
-	</tr>
-	<tr>
-		<th width="200">Autor (Vor-/Nachname)</th>
-		<td width="450"><input type="text" size="25" name="AutorVorname" />
-		<input type="text" size="25" name="AutorNachname" /></td>
-	</tr>
-	<tr>
-		<th width="200">Herausgeber (Vor-/Nachname)</th>
-		<td width="450"><input type="text" size="25"
-			name="HerausgeberVorname" /> <input type="text" size="25"
-			name="HerausgeberNachname" /></td>
-	</tr>
-	<tr>
-		<th width="200">Schlagwort 1</th>
-		<td width="450"><input type="text" size="50" name="SW_1" disabled /></td>
-	</tr>
-	<tr>
-		<th width="200">Schlagwort 2</th>
-		<td width="450"><input type="text" size="50" name="SW_2" disabled /></td>
-	</tr>
-	<tr>
-		<th width="200">Namen / Element</th>
-		<td width="450"><jsp:include page="inc.suchformular.jsp">
-			<jsp:param name="Formular" value="selektion_sw_namenelemente" />
-			<jsp:param name="Datenfeld" value="SW_Namenelemente" />
-		</jsp:include></td>
-	</tr>
-	<tr>
-		<th width="200">Phono / Graph</th>
-		<td width="450"><jsp:include page="inc.suchformular.jsp">
-			<jsp:param name="Formular" value="selektion_sw_phongraph" />
-			<jsp:param name="Datenfeld" value="SW_PhonGraph" />
-		</jsp:include></td>
-	</tr>
-	<tr>
-		<th width="200">Morphologie</th>
-		<td width="450"><jsp:include page="inc.suchformular.jsp">
-			<jsp:param name="Formular" value="selektion_sw_morphologie" />
-			<jsp:param name="Datenfeld" value="SW_Morphologie" />
-		</jsp:include></td>
-	</tr>
-	<tr>
-		<th width="200">Areal / Gens</th>
-		<td width="450"><jsp:include page="inc.suchformular.jsp">
-			<jsp:param name="Formular" value="selektion_sw_arealgens" />
-			<jsp:param name="Datenfeld" value="SW_ArealGens" />
-		</jsp:include></td>
-	</tr>
-
-</table>
-<br>
-<h2>Ausgabefelder</h2>
-<table>
-	<tr>
-		<td><input type="checkbox" name="AusgabeID" checked disabled /></td>
-		<td width="200">ID</td>
-		<td><input type="checkbox" name="AusgabeKurzzitierweise" disabled /></td>
-		<td width="200">Kurzzitierweise</td>
-	</tr>
-	<tr>
-		<td><input type="checkbox" name="AusgabeTitel" /></td>
-		<td width="200">Titel</td>
-		<td><input type="checkbox" name="AusgabeTyp" /></td>
-		<td width="200">Typ</td>
-	</tr>
-	<tr>
-		<td><input type="checkbox" name="AusgabeHerausgeber" /></td>
-		<td width="200">Herausgeber</td>
-		<td><input type="checkbox" name="AusgabeAutor" /></td>
-		<td width="200">Autor</td>
 	</tr>
 </table>
 <p><input type="reset" value="abbrechen" />&nbsp;&nbsp;<input
@@ -687,11 +486,6 @@
 	<li><a href="javascript:onoff('tab6','tab8');"><jsp:include
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></a></li>
-	<li><a href="javascript:onoff('tab7','tab8');"><jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="literatur" />
 		<jsp:param name="Textfeld" value="Titel" />
 	</jsp:include></a></li>
 	<li><span><jsp:include page="inc.erzeugeBeschriftung.jsp">

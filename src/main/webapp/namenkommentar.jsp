@@ -3,17 +3,17 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.sql.SQLException" isThreadSafe="false"%>
 <%@ page import="java.sql.Statement" isThreadSafe="false"%>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
-<jsp:include page="dolanguage.jsp" />
 <jsp:include page="dofilter.jsp">
      <jsp:param name="form" value="namenkommentar" />
 </jsp:include>
 
 <%
-
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
+  Language.setLanguage(request);
+  if (AuthHelper.isBenutzerLogin(request)) {
 
 
 		int id = -2;
@@ -257,11 +257,6 @@
 		<jsp:param name="Formular" value="namenkommentar" />
 		<jsp:param name="Textfeld" value="TabBearbeiter" />
 	</jsp:include> </span></li>
-	<li><a href="javascript:onoff('tab2','tab1');"> <jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="TabSchlagworte" />
-	</jsp:include> </a></li>
 	<li><a href="javascript:onoff('tab3','tab1');"> <jsp:include
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="namenkommentar" />
@@ -316,112 +311,6 @@
 </jsp:include></div>
 </div>
 
-
-<div id="tab2">
-<div id="header">
-<ul id="primary">
-	<li><a href="javascript:onoff('tab1','tab2');"> <jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="TabBearbeiter" />
-	</jsp:include> </a></li>
-	<li><span> <jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="TabSchlagworte" />
-	</jsp:include> </span></li>
-	<li><a href="javascript:onoff('tab3','tab2');"> <jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="TabBelege" />
-	</jsp:include> </a></li>
-	<li><a href="javascript:onoff('tab4','tab2');"> <jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="TabBemerkungen" />
-	</jsp:include> </a></li>
-</ul>
-</div>
-<div id="main">
-<p>
-<h2><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_Motivation" />
-</jsp:include></h2>
-<jsp:include page="inc.erzeugeFormular.jsp">
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_Motivation" />
-	<jsp:param name="size" value="25" />
-</jsp:include>
-</p>
-
-<p>
-<h2><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_Sprachherkunft" />
-</jsp:include></h2>
-<jsp:include page="inc.erzeugeFormular.jsp">
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_Sprachherkunft" />
-	<jsp:param name="size" value="25" />
-</jsp:include>
-</p>
-
-<p>
-<h2><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_PhonGraph" />
-</jsp:include></h2>
-<jsp:include page="inc.erzeugeFormular.jsp">
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_PhonGraph" />
-	<jsp:param name="size" value="25" />
-</jsp:include>
-</p>
-
-<p>
-<h2><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_Morphologie" />
-</jsp:include></h2>
-<jsp:include page="inc.erzeugeFormular.jsp">
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_Morphologie" />
-	<jsp:param name="size" value="25" />
-</jsp:include>
-</p>
-
-<p>
-<h2><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_Namenlexikon" />
-</jsp:include></h2>
-<jsp:include page="inc.erzeugeFormular.jsp">
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_Namenlexikon" />
-	<jsp:param name="size" value="25" />
-</jsp:include>
-</p>
-
-<p>
-<h2><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_ArealGens" />
-</jsp:include></h2>
-<jsp:include page="inc.erzeugeFormular.jsp">
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Datenfeld" value="SW_ArealGens" />
-	<jsp:param name="size" value="25" />
-</jsp:include>
-</p>
-</div>
-</div>
-
 <div id="tab3">
 <div id="header">
 <ul id="primary">
@@ -429,11 +318,6 @@
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="namenkommentar" />
 		<jsp:param name="Textfeld" value="TabBearbeiter" />
-	</jsp:include> </a></li>
-	<li><a href="javascript:onoff('tab2','tab3');"> <jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="TabSchlagworte" />
 	</jsp:include> </a></li>
 	<li><span> <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="namenkommentar" />
@@ -461,11 +345,6 @@
 		page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="namenkommentar" />
 		<jsp:param name="Textfeld" value="TabBearbeiter" />
-	</jsp:include> </a></li>
-	<li><a href="javascript:onoff('tab2','tab4');"> <jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="TabSchlagworte" />
 	</jsp:include> </a></li>
 	<li><a href="javascript:onoff('tab3','tab4');"> <jsp:include
 		page="inc.erzeugeBeschriftung.jsp">

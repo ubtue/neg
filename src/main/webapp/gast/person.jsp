@@ -3,14 +3,14 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.sql.SQLException" isThreadSafe="false"%>
 <%@ page import="java.sql.Statement" isThreadSafe="false"%>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp" %>
 
-<jsp:include page="../dolanguage.jsp" />
 <jsp:include page="../dofilter.jsp" />
 
 <%
+  Language.setLanguage(request);
   if (session.getAttribute("BenutzerID")==null) {
      Connection cn = null;
     Statement st = null;
@@ -315,21 +315,6 @@
               <jsp:param name="Readonly" value="yes" />
             </jsp:include>
           </td>
-		</tr>
-        <tr>
-			<td>
-              <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="person" />
-                <jsp:param name="Datenfeld" value="CMLink" />
-              </jsp:include>
-            </td>
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
-                <jsp:param name="ID" value="<%= id %>" />
-                <jsp:param name="Formular" value="person" />
-                <jsp:param name="Datenfeld" value="CMLink" />
-              </jsp:include>
-            </td>
 		</tr>
 	</tbody>
   </table>

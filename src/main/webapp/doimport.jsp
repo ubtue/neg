@@ -34,7 +34,6 @@
     <%@ include file="import/person.jsp" %>
     <%@ include file="import/quelle.jsp" %>
 
-    <%@ include file="import/schlagwort.jsp" %>
     <%@ include file="import/selektion.jsp" %>
     <%@ include file="import/selektion_amtweihe.jsp" %>
     <%@ include file="import/selektion_areal.jsp" %>
