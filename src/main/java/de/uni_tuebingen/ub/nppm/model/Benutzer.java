@@ -1,11 +1,14 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import java.time.LocalDateTime;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "benutzer")
 public class Benutzer {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int ID;
 
@@ -28,7 +31,7 @@ public class Benutzer {
     private boolean IstAdmin;
 
     @OneToOne(targetEntity = BenutzerGruppe.class)
-    @JoinColumn(name = "GruppeID", referencedColumnName="ID")
+    @JoinColumn(name = "GruppeID", referencedColumnName = "ID")
     private BenutzerGruppe Gruppe;
 
     @Column(name = "Sprache")
@@ -42,6 +45,39 @@ public class Benutzer {
 
     @Column(name = "IstReadOnly", columnDefinition = "TINYINT")
     private boolean IstReadOnly;
+
+    @Column(name = "ResetToken")
+    private String ResetToken;
+
+    @Column(name = "ResetTokenValidUntil")
+    private LocalDateTime ResetTokenValidUntil;
+
+    @Column(name = "Salt")
+    private String Salt;
+
+    public String getResetToken() {
+        return ResetToken;
+    }
+
+    public void setResetToken(String ResetToken) {
+        this.ResetToken = ResetToken;
+    }
+
+    public LocalDateTime getResetTokenValidUntil() {
+        return ResetTokenValidUntil;
+    }
+
+    public void setResetTokenValidUntil(LocalDateTime ResetTokenValidUntil) {
+        this.ResetTokenValidUntil = ResetTokenValidUntil;
+    }
+
+    public String getSalt() {
+        return Salt;
+    }
+
+    public void setSalt(String Salt) {
+        this.Salt = Salt;
+    }
 
     public int getID() {
         return ID;
