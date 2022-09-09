@@ -33,6 +33,10 @@ DELETE FROM bemerkung WHERE NOT EXISTS
 UPDATE edition SET BearbeitungsstatusID = 2 WHERE NOT EXISTS
   (SELECT * FROM selektion_bearbeitungsstatus WHERE BearbeitungsstatusID = selektion_bearbeitungsstatus.ID);
   
+# create a default edition with id 0
+INSERT INTO edition (ID) VALUES (0); 
+
+
 #setting corrupt foreing keys ReiheID to default ID -1
 UPDATE edition SET ReiheID = -1 WHERE NOT EXISTS
   (SELECT * FROM selektion_reihe WHERE ReiheID = selektion_reihe.ID);
