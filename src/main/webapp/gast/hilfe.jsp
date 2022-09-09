@@ -4,12 +4,12 @@
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
-<jsp:include page="../dolanguage.jsp" />
 
 <%
+  Language.setLanguage(request);
   if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0) {
 
                               session.setAttribute("filter", 0);

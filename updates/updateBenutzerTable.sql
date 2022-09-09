@@ -1,0 +1,4 @@
+ALTER TABLE Benutzer ADD COLUMN ResetToken VARCHAR(255);
+ALTER TABLE Benutzer ADD COLUMN ResetTokenValidUntil datetime;
+ALTER TABLE Benutzer ADD COLUMN Salt VARCHAR(255);
+

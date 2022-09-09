@@ -5,7 +5,7 @@
 <%@ page import="java.sql.Statement" isThreadSafe="false"%>
 <%@ page import="java.util.Vector" isThreadSafe="false"%>
 <%@ page import="java.util.Enumeration" isThreadSafe="false"%>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp"%>
 
@@ -14,10 +14,10 @@
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false"%>
 <%@ page import="java.io.*" isThreadSafe="false"%>
 
-<jsp:include page="../dolanguage.jsp" />
 <jsp:include page="../dofilter.jsp" />
 
 <%
+  Language.setLanguage(request);
   if (session.getAttribute("BenutzerID")==null) {
      Connection cn = null;
     Statement st = null;
