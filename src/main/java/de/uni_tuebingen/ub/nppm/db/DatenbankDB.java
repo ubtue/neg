@@ -97,4 +97,14 @@ public class DatenbankDB extends AbstractBase {
         return null;
     }
     
+    public static Object getSingleResult(String sql) throws Exception {
+        Session session = getSession();
+        SQLQuery query = session.createSQLQuery(sql);
+        List<Object> rows = query.getResultList();
+        if(rows.size() > 0)
+            return rows.get(0);
+        else
+            return null;
+    }
+    
 }

@@ -3,72 +3,64 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.sql.SQLException" isThreadSafe="false"%>
 <%@ page import="java.sql.Statement" isThreadSafe="false"%>
+<%@ page import="java.util.List" isThreadSafe="false"%>
+<%@ page import="java.math.BigInteger" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
-<%
-  int id = -2;
-  String formular = "mgh_lemma";
-  Language.setLanguage(request);
-  Filter.setFilter(request, formular, out);
-  if (AuthHelper.isBenutzerLogin(request)) {  
-  
-    if(request.getParameter("ID") != null){
-        id = Integer.parseInt(request.getParameter("ID"));
-    }
-    
-    Class.forName( sqlDriver );
-    Connection cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-    Statement st = cn.createStatement();
-    ResultSet rs = null;
-    String sql = "";
-    
-    try{
-        if (id < -1) {
-          try {
-            //get the sql filter string from the database
-            sql = Filter.getFilterSql(request, formular);
-            //select the minimum ID
-            sql = sql.replace("*", "min("+formular+".ID) m");
-            rs = st.executeQuery(sql);
-            //set id
-            if (rs.next())
-              id = rs.getInt("m");
-          } catch (Exception e) {
-               out.println(e);
-          }      
-         }else {
-          try {
-            //get the sql filter string from the database        
-            sql = Filter.getFilterSql(request, formular);
-            //select the item count
-            String sql2 = sql.replace("*", "count(*) c");
-            rs = st.executeQuery(sql2);
-            if (rs.next()){
-               if(rs.getString("c").equals("0")){
-                //no items with this filter
-                id=-1;
-               }else{
-                sql = sql.replace("*", "min("+formular+".ID) m");
-                rs = st.executeQuery(sql+(sql.contains("WHERE")?" AND ":" WHERE ")+formular+".ID = "+id);
-                if (rs.next()&& id>-1 && rs.getString("m")==null){
-                  out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-                  return;
-                }
-               }
-            }
-          } catch (Exception e) {
-              out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-              return;
-          }
+<%    
+    Integer id = -2;
+    String formular = "mgh_lemma";
+    Language.setLanguage(request);
+    Filter.setFilter(request, formular, out);
+    if (AuthHelper.isBenutzerLogin(request)) {
+        if (request.getParameter("ID") != null) {
+            id = Integer.parseInt(request.getParameter("ID"));
         }
-    }finally{
-        try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-        try { if( null != st ) st.close(); } catch( Exception ex ) {}
-        try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-    }
+
+        String sql = "";
+
+        if (id < -1) {
+            try {
+                //get the sql filter string from the database
+                sql = Filter.getFilterSql(request, formular);
+                //select the minimum ID
+                sql = sql.replace("*", "min(" + formular + ".ID) m");
+                //set id
+                id = (Integer) DatenbankDB.getSingleResult(sql);
+            } catch (Exception e) {
+                out.println(e);
+            }
+        } else {
+            try {
+                //get the sql filter string from the database
+                sql = Filter.getFilterSql(request, formular);
+                //select the item count
+                String sql2 = sql.replace("*", "count(*) c");
+                BigInteger res = (BigInteger) DatenbankDB.getSingleResult(sql2);
+                if (res != null) {
+                    if (res.intValue() == 0) {
+                        //no items with this filter
+                        id = -1;
+                    } else {
+                        sql = sql.replace("*", "min(" + formular + ".ID) m");
+                        sql = sql + (sql.contains("WHERE") ? " AND " : " WHERE ") + formular + ".ID = " + id;
+                        Integer res2 = (Integer) DatenbankDB.getSingleResult(sql);
+                        if (res2 == null) {
+                            out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
+                            return;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
+                return;
+            }
+        }
+
 %>
 
 <jsp:include page="dosave.jsp">
