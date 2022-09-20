@@ -1,6 +1,6 @@
 ﻿<%
   request.setCharacterEncoding("UTF-8");
-  String sqlDriver  = "com.mysql.jdbc.Driver";
+  String sqlDriver  = "com.mysql.cj.jdbc.Driver";
 
   // Zugangsdaten für die Datenbank (nur für die Anwendung) => siehe tomcat
   javax.naming.InitialContext initialContext = new javax.naming.InitialContext();
