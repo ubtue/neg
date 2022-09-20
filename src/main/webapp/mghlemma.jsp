@@ -13,11 +13,10 @@
   String formular = "mgh_lemma";
   Language.setLanguage(request);
   Filter.setFilter(request, formular, out);
-  if (AuthHelper.isBenutzerLogin(request)) {    
-    try {
+  if (AuthHelper.isBenutzerLogin(request)) {  
+  
+    if(request.getParameter("ID") != null){
         id = Integer.parseInt(request.getParameter("ID"));
-    } catch (Exception e) {
-    
     }
     
     Class.forName( sqlDriver );
