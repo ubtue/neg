@@ -13,16 +13,13 @@ public class Filter {
         The Sql String is used to filter entities from the database
     */
     public static String getFilterSql(HttpServletRequest request, String formular) throws Exception {
-        Integer id = -2;
+        Integer id = Constants.UNDEFINED_ID;
         Integer filter = 0;
         HttpSession session = request.getSession();
         String filterSql = null;
         //Try to get id from request
-        try {
+        if(Utils.isNumeric(request.getParameter("ID")))
             id = Integer.parseInt(request.getParameter("ID"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         //Try to get filter number from request
         try {

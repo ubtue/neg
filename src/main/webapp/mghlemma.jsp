@@ -6,6 +6,7 @@
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.math.BigInteger" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
@@ -13,13 +14,14 @@
 <%@ include file="configuration.jsp"%>
 
 <%    
-    Integer id = Constants.UNDEFINED_ID;
+    int id = Constants.UNDEFINED_ID;
     String formular = "mgh_lemma";
     Language.setLanguage(request);
     Filter.setFilter(request, formular, out);
     if (AuthHelper.isBenutzerLogin(request)) {
-        if (request.getParameter("ID") != null) {
-            id = Integer.parseInt(request.getParameter("ID"));
+        String reqID = request.getParameter("ID");
+        if (reqID != null && Utils.isNumeric(reqID)) {
+            id = Integer.parseInt(reqID);
         }
 
         String sql = "";
