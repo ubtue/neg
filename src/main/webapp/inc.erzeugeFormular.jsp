@@ -19,12 +19,12 @@
   String klarlemma = request.getParameter("Klarlemma");
   String def = "";
   String disabled = "";
-  
+
   boolean isReadOnly = (readonly!=null && readonly.equals("yes"));
   boolean isEmpty = (emp!=null && emp.equals("yes"));
   boolean isSorted = (sorted!=null && sorted.equals("yes"));
   boolean isKlarlemma = (isReadOnly && klarlemma != null && klarlemma.equals("yes"));
-  
+
 
   if (request.getParameter("ID") != null)
     id = request.getParameter("ID");

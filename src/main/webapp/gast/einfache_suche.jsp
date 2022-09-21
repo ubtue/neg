@@ -30,9 +30,7 @@
     </TITLE>
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
     <script src="../javascript/funktionen.js" type="text/javascript"></script>
-      <script src="../javascript/funktionen.js" type="text/javascript"></script>
-    <script type="text/javascript"
-            src="//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script src="../javascript/jquery-1.11.1.min.js" type="text/javascript"></script>
 
  </HEAD>
 
