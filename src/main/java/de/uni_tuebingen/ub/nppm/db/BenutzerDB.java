@@ -1,49 +1,12 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import java.util.List;
-import org.hibernate.Session;
-import de.uni_tuebingen.ub.nppm.model.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
-public class BenutzerDB extends AbstractBase {
+import de.uni_tuebingen.ub.nppm.model.Benutzer;
 
-    public static List getList() throws Exception {
-        Session session = getSession();
-
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
-        Root benutzer = criteria.from(Benutzer.class);
-        criteria.select(benutzer);
-        criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
-
-        return session.createQuery(criteria).getResultList();
-    }
-
-    public static List getListAktiv() throws Exception {
-        Session session = getSession();
-
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
-        Root benutzer = criteria.from(Benutzer.class);
-        criteria.select(benutzer);
-        criteria.where(builder.isTrue(benutzer.get(Benutzer_.IstAktiv)));
-        criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
-
-        return session.createQuery(criteria).getResultList();
-    }
-
-    public static List getListInaktiv() throws Exception {
-        Session session = getSession();
-
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
-        Root benutzer = criteria.from(Benutzer.class);
-        criteria.select(benutzer);
-        criteria.where(builder.isFalse(benutzer.get(Benutzer_.IstAktiv)));
-        criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
-
-        return session.createQuery(criteria).getResultList();
-    }
+public interface BenutzerDB extends JpaRepository<Benutzer, Integer> {
+    @Query("SELECT b FROM Benutzer b WHERE b.EMail = :EMail")
+    public Benutzer findByEmail(@Param("EMail") String EMail);
 }

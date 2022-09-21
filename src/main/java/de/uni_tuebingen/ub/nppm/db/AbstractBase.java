@@ -13,17 +13,17 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
+import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
-    
+
     protected static javax.naming.InitialContext initialContext =  null;
-    
+
     public static void setInitialContext(javax.naming.InitialContext ctx){
         initialContext = ctx;
     }
-    
+
     // Example taken from: https://www.javaguides.net/2019/08/hibernate-5-one-to-many-mapping-annotation-example.html
     protected static SessionFactory getSessionFactory() throws Exception {
         if (sessionFactory == null) {
@@ -36,24 +36,24 @@ public class AbstractBase {
             // Get settings from tomcat config
             if(initialContext == null)
                 initialContext = new javax.naming.InitialContext();
-            settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
+            settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
             settings.put(Environment.URL, (String)initialContext.lookup("java:comp/env/sqlURL"));
             settings.put(Environment.USER, (String)initialContext.lookup("java:comp/env/sqlUser"));
             settings.put(Environment.PASS, (String)initialContext.lookup("java:comp/env/sqlPassword"));
-            
+
             // This must be changed when migrating to InnoDB
             //settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
             settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLMyISAMDialect");
             settings.put(Environment.SHOW_SQL, "true");
             settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-            settings.put(Environment.HBM2DDL_AUTO,"validate");
+            settings.put(Environment.HBM2DDL_AUTO, "validate");
 
             configuration.setProperties(settings);
 
             // TODO: Add all model classes dynamically
             configuration.addAnnotatedClass(Benutzer.class);
             configuration.addAnnotatedClass(BenutzerGruppe.class);
-            
+
             configuration.addAnnotatedClass(Edition.class);
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
@@ -87,26 +87,26 @@ public class AbstractBase {
             configuration.addAnnotatedClass(MghLemma.class);
             configuration.addAnnotatedClass(MghLemmaBearbeiter.class);
             configuration.addAnnotatedClass(MghLemmaKorrektor.class);
-            
+
             configuration.addAnnotatedClass(NamenKommentar.class);
             configuration.addAnnotatedClass(NamenKommentarBearbeiter.class);
             configuration.addAnnotatedClass(NamenKommentarKorrektor.class);
-            
+
             configuration.addAnnotatedClass(Quelle.class);
             configuration.addAnnotatedClass(QuelleInEdition_MM.class);
-            
+
             configuration.addAnnotatedClass(Handschrift.class);
             configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
-            
+
             configuration.addAnnotatedClass(Urkunde.class);
             configuration.addAnnotatedClass(UrkundeBetreff.class);
             configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
-            
+
             configuration.addAnnotatedClass(Person.class);
             configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
             configuration.addAnnotatedClass(PersonQuiet.class);
             configuration.addAnnotatedClass(PersonVariante.class);
-            
+
             configuration.addAnnotatedClass(Einzelbeleg.class);
             configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
             configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
@@ -118,7 +118,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(DatenbankTexte.class);
 
             configuration.addAnnotatedClass(SucheFavoriten.class);
-            
+
             configuration.addAnnotatedClass(Bemerkung.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
@@ -148,5 +148,11 @@ public class AbstractBase {
 
     protected static List getList(Class c) throws Exception {
         return getList(c, null);
+    }
+
+    public static BenutzerDB getBenutzerDB() throws Exception {
+        Session session = getSession();
+        JpaRepositoryFactory factory = new JpaRepositoryFactory(session.getEntityManagerFactory().createEntityManager());
+        return factory.getRepository(BenutzerDB.class);
     }
 }
