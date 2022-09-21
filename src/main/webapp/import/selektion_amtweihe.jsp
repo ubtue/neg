@@ -35,7 +35,7 @@
       rs = st.executeQuery("SELECT DISTINCT Amt FROM tbl_selaemter ORDER BY Amt ASC");
       for (;rs.next(); i++) {
         try {
-          st3 = cn2.createStatement();
+          st3 = cn2.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
           rs2 = st3.executeQuery("SELECT * FROM "+tabelle+" WHERE Bezeichnung='"+DBtoDB(rs.getString("Amt"))+"';\n");
           rs2.last();
           if (rs2.getRow() < 1)
@@ -53,7 +53,7 @@
       rs = st.executeQuery("SELECT DISTINCT Amt FROM tbl_selamtpersonen ORDER BY Amt ASC");
       for (;rs.next(); i++) {
         try {
-          st3 = cn2.createStatement();
+          st3 = cn2.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
           rs2 = st3.executeQuery("SELECT * FROM "+tabelle+" WHERE Bezeichnung='"+DBtoDB(rs.getString("Amt"))+"';\n");
           rs2.last();
           if (rs2.getRow() < 1)

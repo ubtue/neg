@@ -15,8 +15,8 @@
       cn = DriverManager.getConnection( sqlURLOld, sqlUserOld, sqlPasswordOld );
       cn2 = DriverManager.getConnection( sqlURLNew, sqlUserNew, sqlPasswordNew );
 
-      st = cn.createStatement();
-      st2 = cn2.createStatement();
+      st = cn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      st2 = cn2.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
       // Daten aus tbl_areale
       rs = st.executeQuery("SELECT DISTINCT Areal FROM tbl_areale ORDER BY Areal ASC");

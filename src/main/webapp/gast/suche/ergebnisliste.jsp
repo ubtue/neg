@@ -63,7 +63,7 @@
 
       Class.forName( sqlDriver );
       cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      st = cn.createStatement();
+      st = cn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 	  if(fields.size()==0){
 	  	out.println("Bitte wÃ¤hlen Sie mind. ein Ausgabefeld aus (Schritt 2).");
@@ -133,7 +133,7 @@
           out.println("</th>");
         }
         boolean even = false;
-        
+
         while ( rs.next() ) {
 
     //    if(!rs.getString(orderV[0]).equals(oldValue[0])) out.println();
