@@ -28,72 +28,63 @@ public class DatenbankDB extends AbstractBase {
         return getList(DatenbankTexte.class);
     }
 
-    public static String getFilterSql(String formular, Integer filterNumber) {
-        try {
-            Session session = getSession();
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<DatenbankFilter> criteria = criteriaBuilder.createQuery(DatenbankFilter.class);
-            Root<DatenbankFilter> root = criteria.from(DatenbankFilter.class);
-            criteria.select(root).where(
-                    criteriaBuilder.and(
-                            criteriaBuilder.equal(root.get("nummer"), filterNumber),
-                            criteriaBuilder.equal(root.get("formular"), formular)
-                    )
-            );
-            Query query = session.createQuery(criteria);
-            DatenbankFilter item = (DatenbankFilter) query.getSingleResult();
-            if (item != null) {
-                return item.getSqlString();
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+    public static String getFilterSql(String formular, Integer filterNumber) throws Exception {
+        Session session = getSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<DatenbankFilter> criteria = criteriaBuilder.createQuery(DatenbankFilter.class);
+        Root<DatenbankFilter> root = criteria.from(DatenbankFilter.class);
+        criteria.select(root).where(
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("nummer"), filterNumber),
+                        criteriaBuilder.equal(root.get("formular"), formular)
+                )
+        );
+        Query query = session.createQuery(criteria);
+        DatenbankFilter item = (DatenbankFilter) query.getSingleResult();
+        if (item != null) {
+            return item.getSqlString();
         }
+
         return null;
     }
 
-    public static String getLabel(String language, String formular, String textfeld) {
-        try {
-            Session session = getSession();
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<DatenbankTexte> criteria = criteriaBuilder.createQuery(DatenbankTexte.class);
-            Root<DatenbankTexte> root = criteria.from(DatenbankTexte.class);
-            criteria.select(root).where(
-                    criteriaBuilder.and(
-                            criteriaBuilder.equal(root.get("textfeld"), textfeld),
-                            criteriaBuilder.equal(root.get("formular"), formular)
-                    )
-            );
-            Query query = session.createQuery(criteria);
-            DatenbankTexte item = (DatenbankTexte) query.getSingleResult();
-            if (item != null) {
-                return item.getDe();
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+    public static String getLabel(String language, String formular, String textfeld) throws Exception {
+        Session session = getSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<DatenbankTexte> criteria = criteriaBuilder.createQuery(DatenbankTexte.class);
+        Root<DatenbankTexte> root = criteria.from(DatenbankTexte.class);
+        criteria.select(root).where(
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("textfeld"), textfeld),
+                        criteriaBuilder.equal(root.get("formular"), formular)
+                )
+        );
+        Query query = session.createQuery(criteria);
+        DatenbankTexte item = (DatenbankTexte) query.getSingleResult();
+        if (item != null) {
+            return item.getDe();
         }
+
         return null;
     }
 
-    public static String getMapping(String lang, String formular, String datafield) {
-        try {
-            Session session = getSession();
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
-            Root<DatenbankMapping> root = criteria.from(DatenbankMapping.class);
-            criteria.select(root).where(
-                    criteriaBuilder.and(
-                            criteriaBuilder.equal(root.get("datenfeld"), datafield),
-                            criteriaBuilder.equal(root.get("formular"), formular)
-                    )
-            );
-            Query query = session.createQuery(criteria);
-            DatenbankMapping item = (DatenbankMapping) query.getSingleResult();
-            if (item != null) {
-                return item.getDeBeschriftung();
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+    public static String getMapping(String lang, String formular, String datafield) throws Exception {
+        Session session = getSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
+        Root<DatenbankMapping> root = criteria.from(DatenbankMapping.class);
+        criteria.select(root).where(
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("datenfeld"), datafield),
+                        criteriaBuilder.equal(root.get("formular"), formular)
+                )
+        );
+        Query query = session.createQuery(criteria);
+        DatenbankMapping item = (DatenbankMapping) query.getSingleResult();
+        if (item != null) {
+            return item.getDeBeschriftung();
         }
+
         return null;
     }
     

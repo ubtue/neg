@@ -12,7 +12,7 @@ public class Filter {
         This function return a Sql String corresponding to the formular and request.
         The Sql String is used to filter entities from the database
     */
-    public static String getFilterSql(HttpServletRequest request, String formular) {
+    public static String getFilterSql(HttpServletRequest request, String formular) throws Exception {
         Integer id = -2;
         Integer filter = 0;
         HttpSession session = request.getSession();
