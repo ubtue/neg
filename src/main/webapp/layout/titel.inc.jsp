@@ -50,7 +50,7 @@
       </td>
       <td align="right">
         <jsp:include page="../forms/link.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
           <jsp:param name="Command" value="new"/>
         </jsp:include>
@@ -61,7 +61,7 @@
   Statement st = null;
   ResultSet rs = null;
   try {
-    id = Integer.parseInt(request.getParameter("ID"));
+    //id = Integer.parseInt(request.getParameter("ID"));
     String disabled ="";
 
     Class.forName( sqlDriver );
@@ -92,7 +92,7 @@
   }
 %>
         <jsp:include page="../forms/link.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
           <jsp:param name="Command" value="first"/>
           <jsp:param name="filter" value="<%= filter %>"/>
@@ -101,7 +101,7 @@
         </jsp:include>
 
         <jsp:include page="../forms/link.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
           <jsp:param name="Command" value="back"/>
           <jsp:param name="filter" value="<%= filter %>"/>
@@ -110,7 +110,7 @@
         </jsp:include>
 
         <jsp:include page="../forms/link.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
           <jsp:param name="Command" value="next"/>
           <jsp:param name="filter" value="<%= filter %>"/>
@@ -119,7 +119,7 @@
         </jsp:include>
 
         <jsp:include page="../forms/link.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
           <jsp:param name="Command" value="last"/>
           <jsp:param name="filter" value="<%= filter %>"/>
@@ -128,7 +128,7 @@
         </jsp:include>
 
         <jsp:include page="../forms/duplicate.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
         </jsp:include>
       </td>
@@ -136,13 +136,13 @@
     <tr>
       <td align="left">
        <jsp:include page="../forms/jumpID.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
           <jsp:param name="filter" value="<%= filter %>"/>
           <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
         </jsp:include>
        <jsp:include page="../forms/jump.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
           <jsp:param name="filter" value="<%= filter %>"/>
           <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
@@ -150,7 +150,7 @@
        </td>
       <td align="right">
         <jsp:include page="../forms/filter.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
           <jsp:param name="formular" value="<%= formular %>"/>
           <jsp:param name="filter" value="<%= filter %>"/>
@@ -164,7 +164,7 @@
     <tr>
       <td align="left" nowrap>
           <jsp:include page="../forms/shortcut.jsp">
-          <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+          <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
           <jsp:param name="filter" value="<%= filter %>"/>
           <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
@@ -173,7 +173,7 @@
        </td>
       <td align="right" style="color:white;font-weight:bold;">
 Eintrag           <jsp:include page="../forms/counter.jsp">
-            <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
+            <jsp:param name="ID" value="<%= id %>"/>
             <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
             <jsp:param name="filter" value="<%= filter %>"/>
             <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
