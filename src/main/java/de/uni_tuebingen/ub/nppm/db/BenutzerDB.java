@@ -4,8 +4,9 @@ import java.util.List;
 import org.hibernate.Session;
 import de.uni_tuebingen.ub.nppm.model.*;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.*;
 import javax.persistence.criteria.Root;
+import org.hibernate.query.Query;
 
 public class BenutzerDB extends AbstractBase {
 
@@ -45,5 +46,23 @@ public class BenutzerDB extends AbstractBase {
         criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
 
         return session.createQuery(criteria).getResultList();
+    }
+
+    public static List<Benutzer> getByMail(String mail) throws Exception {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+        Root benutzer = criteria.from(Benutzer.class);
+        criteria.select(benutzer);
+        criteria.where(builder.equal(benutzer.get(Benutzer_.EMail),mail));
+        List<Benutzer> res =  session.createQuery(criteria).getResultList();
+        return res;
+    }
+    
+    public static void saveOrUpdate(Benutzer b) throws Exception {
+        Session session = getSession();
+        session.getTransaction().begin();
+        session.saveOrUpdate(b);
+        session.getTransaction().commit();
     }
 }
