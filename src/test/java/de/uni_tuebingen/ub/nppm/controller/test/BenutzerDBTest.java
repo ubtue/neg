@@ -45,13 +45,14 @@ public class BenutzerDBTest extends DBTest {
     @DisplayName("Update User")
     void testUpdateUser() {
         try {
-            List<Benutzer> lst= BenutzerDB.getByMail("kettemann.trier@t-online.de");
+            List<Benutzer> lst= BenutzerDB.getList();
             if(!lst.isEmpty()){
                 Benutzer b = lst.get(0);
-                b.setEMail("test@t-online.de");
+                String original = b.getEMail();
+                b.setEMail("test@test.de");
                 BenutzerDB.saveOrUpdate(b);
-                //set back
-                b.setEMail("kettemann.trier@t-online.de");
+                //set to original Mail
+                b.setEMail(original);
                 BenutzerDB.saveOrUpdate(b);
             }
         } catch (Exception e) {
