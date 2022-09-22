@@ -48,14 +48,14 @@ public class BenutzerDB extends AbstractBase {
         return session.createQuery(criteria).getResultList();
     }
 
-    public static List<Benutzer> getByMail(String mail) throws Exception {
+    public static Benutzer getByMail(String mail) throws Exception {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
         Root benutzer = criteria.from(Benutzer.class);
         criteria.select(benutzer);
         criteria.where(builder.equal(benutzer.get(Benutzer_.EMail),mail));
-        List<Benutzer> res =  session.createQuery(criteria).getResultList();
+        Benutzer res =  session.createQuery(criteria).getSingleResult();
         return res;
     }
     
