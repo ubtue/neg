@@ -3,9 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import org.hibernate.Session;
 import de.uni_tuebingen.ub.nppm.model.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.*;
-import javax.persistence.criteria.Root;
 import org.hibernate.query.Query;
 
 public class BenutzerDB extends AbstractBase {
