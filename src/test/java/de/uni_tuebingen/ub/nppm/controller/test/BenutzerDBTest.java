@@ -4,6 +4,8 @@ import de.uni_tuebingen.ub.nppm.controller.test.base.DBTest;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
+import de.uni_tuebingen.ub.nppm.model.*;
+import java.util.List;
 
 /**
  *
@@ -31,6 +33,27 @@ public class BenutzerDBTest extends DBTest {
     void testListInactiveUsers() {
         try {
             BenutzerDB.getListInaktiv();
+        } catch (Exception e) {
+            fail(e.getLocalizedMessage());
+        }
+    }
+    
+    /*
+    *   Update a User and set it back to the original Value
+    */
+    @Test
+    @DisplayName("Update User")
+    void testUpdateUser() {
+        try {
+            List<Benutzer> lst= BenutzerDB.getByMail("kettemann.trier@t-online.de");
+            if(!lst.isEmpty()){
+                Benutzer b = lst.get(0);
+                b.setEMail("test@t-online.de");
+                BenutzerDB.saveOrUpdate(b);
+                //set back
+                b.setEMail("kettemann.trier@t-online.de");
+                BenutzerDB.saveOrUpdate(b);
+            }
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
