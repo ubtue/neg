@@ -56,7 +56,7 @@ function CheckAll(index, check, praefix) {
 
     	// replace [help] with link to help >>
     	var p = $('.truncate-hint');
-    	p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='hilfe.jsp'>$1</a>"));
+    	p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='hilfe'>$1</a>"));
     	// <<
 
         var i = 4; // check how many input exists on the document and add 1 for the add command to work

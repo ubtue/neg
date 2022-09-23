@@ -4,14 +4,13 @@ import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import org.hibernate.*;
 import javax.persistence.criteria.*;
-import javax.servlet.jsp.JspWriter;
 
 public class DatenbankDB extends AbstractBase {
 
     public static List getListFilter() throws Exception {
         return getList(DatenbankFilter.class);
     }
-    
+
     public static List getListMapping() throws Exception {
         return getList(DatenbankMapping.class);
     }
@@ -87,7 +86,7 @@ public class DatenbankDB extends AbstractBase {
 
         return null;
     }
-    
+
     public static Object getSingleResult(String sql) throws Exception {
         Session session = getSession();
         SQLQuery query = session.createSQLQuery(sql);
@@ -97,5 +96,5 @@ public class DatenbankDB extends AbstractBase {
         else
             return null;
     }
-    
+
 }

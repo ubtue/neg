@@ -1,10 +1,23 @@
 package de.uni_tuebingen.ub.nppm.util;
 
-import java.io.*;
 import javax.servlet.http.*;
 import de.uni_tuebingen.ub.nppm.db.DatenbankDB;
 import javax.servlet.jsp.JspWriter;
 public class Language {
+
+    public static String getLanguage(HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+
+        // Usually setLanguage() is called before getLanguage()
+        // so we prioritize the session over the request.
+        if (session.getAttribute("Sprache") != null) {
+            return (String)session.getAttribute("Sprache");
+        } else if (request.getParameter("language") != null) {
+            return request.getParameter("language");
+        } else {
+            return "de";
+        }
+    }
 
     public static void setLanguage(HttpServletRequest request) {
         if (request.getParameter("language") != null) {
