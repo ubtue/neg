@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+// Annotations don't seem to work => use WEB-INF/web.xml instead for URL patterns.
 public class TestServlet extends HttpServlet {
 
     @Override
