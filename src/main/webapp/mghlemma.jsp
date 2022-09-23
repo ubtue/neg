@@ -48,7 +48,7 @@
            if (rs.next()) {
              sql = rs.getString("SQLString");
            }
-        
+
         }
  //       out.println("SQL: " + sql);
         sql = sql.replace("*", "min("+formular+".ID) m");
@@ -87,7 +87,7 @@
            if (rs.next()) {
              sql = rs.getString("SQLString");
            }
-        
+
         }
         if (rs.next()) {
           sql = rs.getString("SQLString");
