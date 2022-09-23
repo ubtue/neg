@@ -5,7 +5,7 @@
 <%@ page import="java.sql.Statement" isThreadSafe="false"%>
 <%@ page import="java.text.SimpleDateFormat" isThreadSafe="false"%>
 <%@ page import="java.util.Date" isThreadSafe="false"%>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
@@ -74,23 +74,17 @@
 
 			if (session.getAttribute(title + "filter") != null)
 				filter = ((Integer) session.getAttribute(title + "filter")).intValue();
-			String filterParameter = (String) session.getAttribute(title + "filterParameter");
 
-			String sql = "SELECT * FROM " + title;
 			Class.forName(sqlDriver);
 			cn = DriverManager.getConnection(sqlURL, sqlUser, sqlPassword);
 			st = cn.createStatement();
-			rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='" + guest + title
-					+ "' AND Nummer='" + filter + "';");
-			if (rs.next()) {
-				sql = rs.getString("SQLString");
-			}
 
+                        //get the filter sql string
+                        String sql = Filter.getFilterSql(request, guest+title);
+                        if(sql == null)
+                            sql = "SELECT * FROM " + title;
+                        //modify sql string
 			sql = sql.replace("*", "count(*) c");
-			if (filterParameter != null)
-				sql = sql.replace("###", filterParameter);
-			sql = sql.replace("#userid#", "" + ((Integer) session.getAttribute("BenutzerID")).intValue());
-			sql = sql.replace("#groupid#", "" + ((Integer) session.getAttribute("GruppeID")).intValue());
 
 			rs = st.executeQuery(sql + (sql.contains("WHERE") ? " AND " : " WHERE ") + title + ".ID < "
 					+ request.getParameter("akt"));
@@ -118,22 +112,17 @@
 				}
 				akt--;
 
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser, sqlPassword);
-				st = cn.createStatement();
-
-				sql = "SELECT " + title + ".ID FROM " + title;
-				rs = st.executeQuery("SELECT SQLString FROM datenbank_filter WHERE Formular='" + guest + title
-						+ "' AND Nummer=" + filter);
-				if (rs.next()) {
-					sql = rs.getString("SQLString");
-				}
+                                sql = Filter.getFilterSql(request, guest+title);
+                                if(sql == null)
+                                    sql = "SELECT " + title + ".ID FROM " + title;
+                                    
 				sql = sql.replace("*", title + ".ID");
-				if (session.getAttribute(title + "filterParameter") != null)
-					sql = sql.replace("###", (String) session.getAttribute(title + "filterParameter"));
+
+                                st = cn.createStatement();
 				rs = st.executeQuery(sql + " ORDER BY " + title + ".ID LIMIT " + akt + ", 1");
 				if (rs.next())
 					id = rs.getInt(title + ".ID");
+                                        
 				out.println("<script type=\"text/javascript\">");
 				out.println(
 						"location.replace(window.location.protocol+'//'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+"
