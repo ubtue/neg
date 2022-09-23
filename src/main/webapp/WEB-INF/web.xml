@@ -14,6 +14,15 @@
       <url-pattern>/TestServlet</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+      <servlet-name>HilfeServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.HilfeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>HilfeServlet</servlet-name>
+      <url-pattern>/gast/hilfe</url-pattern>
+  </servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>

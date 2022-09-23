@@ -156,7 +156,7 @@
         f&uuml;r komplexere Suchanfragen wechseln Sie bitte zur
         <a href="freie_suche.jsp">erweiterten Suche</a>.
         Eine ausf&uuml;hrliche Beschreibung der Datenbank und der Suchm&ouml;glichkeiten finden Sie unter
-        <a href="hilfe.jsp">Hilfe</a>.
+        <a href="hilfe">Hilfe</a>.
         </p>
 
         <p> &nbsp; </p>

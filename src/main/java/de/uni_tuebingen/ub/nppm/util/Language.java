@@ -1,9 +1,19 @@
 package de.uni_tuebingen.ub.nppm.util;
 
-import java.io.*;
 import javax.servlet.http.*;
 
 public class Language {
+
+    public static String getLanguage(HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        if (request.getParameter("language") != null) {
+            return request.getParameter("language");
+        } else if (session.getAttribute("Sprache") != null) {
+            return (String)session.getAttribute("Sprache");
+        } else {
+            return "de";
+        }
+    }
 
     public static void setLanguage(HttpServletRequest request) {
         if (request.getParameter("language") != null) {
