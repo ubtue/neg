@@ -6,10 +6,13 @@ public class Language {
 
     public static String getLanguage(HttpServletRequest request) {
         HttpSession session = request.getSession(true);
-        if (request.getParameter("language") != null) {
-            return request.getParameter("language");
-        } else if (session.getAttribute("Sprache") != null) {
+
+        // Usually setLanguage() is called before getLanguage()
+        // so we prioritize the session over the request.
+        if (session.getAttribute("Sprache") != null) {
             return (String)session.getAttribute("Sprache");
+        } else if (request.getParameter("language") != null) {
+            return request.getParameter("language");
         } else {
             return "de";
         }
