@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class AbstractServlet extends HttpServlet {
-    public void initRequest(HttpServletRequest request) {
+    protected void initRequest(HttpServletRequest request) throws Exception {
         Language.setLanguage(request);
     }
 
@@ -40,21 +40,34 @@ public abstract class AbstractServlet extends HttpServlet {
     }
 
     abstract protected String getTitle();
-    abstract protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    abstract protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception;
     abstract protected String getHeaderTemplate();
     abstract protected String getFooterTemplate();
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        initRequest(request);
+        addResponseHeader(request, response, getTitle());
+        generatePage(request, response);
+        addResponseFooter(request, response);
+    }
+
+    protected void doHelper(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+        try {
+            processRequest(request, response);
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        doHelper(request, response);
+    }
 
-        try {
-            this.initRequest(request);
-            this.addResponseHeader(request, response, getTitle());
-            this.processRequest(request, response);
-            this.addResponseFooter(request, response);
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doHelper(request, response);
     }
 }

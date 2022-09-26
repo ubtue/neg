@@ -11,7 +11,7 @@ public class EinstellungenServlet extends AbstractBackendServlet {
     }
 
     @Override
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher("einstellungen.jsp");
         rd.include(request, response);
     }

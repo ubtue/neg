@@ -20,7 +20,7 @@ public class HilfeServlet extends AbstractGastServlet {
     }
 
     @Override
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher("hilfe.jsp");
         rd.include(request, response);
     }
