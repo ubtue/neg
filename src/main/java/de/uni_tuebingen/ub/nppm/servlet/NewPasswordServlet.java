@@ -18,6 +18,7 @@ import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.util.MailSender;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 
 
 public class NewPasswordServlet extends HttpServlet {
@@ -114,7 +115,7 @@ public class NewPasswordServlet extends HttpServlet {
 
             response.setContentType("text/html");
 
-            String myLinkString = request.getContextPath() + "/forgotPassword?varURLUUID=" + URLEncoder.encode(uuid_content) + "&varURLEmail=" + URLEncoder.encode(email) + "&varURLTime=" + URLEncoder.encode(timeOfGeneratedUUID.toString());
+            String myLinkString = Utils.getBaseUrl(request) + "/forgotPassword?varURLUUID=" + URLEncoder.encode(uuid_content) + "&varURLEmail=" + URLEncoder.encode(email) + "&varURLTime=" + URLEncoder.encode(timeOfGeneratedUUID.toString());
 
             //Message in usesers email
             String htmlMessage = "<html>";
