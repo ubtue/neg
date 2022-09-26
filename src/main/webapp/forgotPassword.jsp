@@ -1,15 +1,3 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
-
-<%@ include file="configuration.jsp" %>
-<%    Class.forName(sqlDriver);
-    Connection cn = DriverManager.getConnection(sqlURL, sqlUser, sqlPassword);
-
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -66,57 +54,57 @@
                 font-size: 18px;
             }
         </style>
-    </head>           
+    </head>
     <body>
-        <%            //If there was no UUID sended, so show layout for putting your E-Mail Address inside and submit.
+        <% //If there was no UUID sended, so show layout for putting your E-Mail Address inside and submit.
             String uuid_content = request.getParameter("varURLUUID");
             String email_content = request.getParameter("varURLEmail");
             String timeStamp_content = request.getParameter("varURLTime");
 
             if ((uuid_content == null || uuid_content.equals("")) || (email_content == null || email_content.equals(""))) {
-        %>       
+        %>
         <div class="forgotPassword_container">
             <div class="div-1">
-                <h1>Passwort vergessen ?</h1>            
+                <h1>Passwort vergessen ?</h1>
                 <p>1. Geben Sie unten Ihre E-Mail Adresse ein.</p>
                 <p>2. Unser System sendet Ihnen einen Link an Ihre E-Mail Adresse</p>
-                <p>3. Klicken Sie den Link in Ihrer E-mail an, sie werden weiter geleitet um Ihr Passwort neu zusätzen</p>
+                <p>3. Klicken Sie den Link in Ihrer E-mail an, sie werden weiter geleitet um Ihr Passwort neu zu setzen</p>
                 <br>
                 <div class="div-1">
                     <form  method="get" action="/neg/NewPasswordServlet" id="register-form">
-                        <input type="email" name="email" id="email" value="" placeholder="Ihre Registrierte E-Mail" />   
-                        <input type="submit" value="Neues Passwort" name="submit_new_password" />        
-                        <a href="index1.jsp"><button type="button">zurück zum Login</button></a>       
-                    </form>  
+                        <input type="email" name="email" id="email" value="" placeholder="Ihre Registrierte E-Mail" />
+                        <input type="submit" value="Neues Passwort" name="submit_new_password" />
+                        <a href="index1.jsp"><button type="button">zur&uuml;ck zum Login</button></a>
+                    </form>
 
                 </div>
-            </div>  
-        </div>        
+            </div>
+        </div>
         <% } else if ((uuid_content != null && !uuid_content.equals("")) && (email_content != null && !email_content.equals(""))) {
 
             //show layout for Reset your Password by typing twice your new Password in Fields
-        %>
+%>
 
         <div class="forgotPassword_container">
             <div class="div-1">
-                <h1>Reset Passwort</h1>           
+                <h1>Reset Passwort</h1>
 
                 <br>
                 <div class="div-1">
                     <form  method="get" action="/neg/NewPasswordServlet" id="register-form">
                         <div class="div-2">
-                            <input type="password" name="newPassword" value="" placeholder="Neues Passwort" />   
-                            <input type="password" value="" name="repeatPassword" placeholder= "Wiederhole neues Passwort" />  
-                            <input type="submit"  value="Reset"  />  
-                            <input type='hidden' name='url_uuid' value=<%= uuid_content%>  >
-                            <input type='hidden' name='url_email' value=<%= email_content%> >   
-                            <input type='hidden' name='url_timeStamp' value=<%= timeStamp_content%> >  
+                            <input type="password" name="newPassword" value="" placeholder="Neues Passwort" />
+                            <input type="password" value="" name="repeatPassword" placeholder= "Wiederhole neues Passwort" />
+                            <input type="submit"  value="Reset"  />
+                            <input type="hidden" name="url_uuid" value="<%= uuid_content%>">
+                            <input type="hidden" name="url_email" value="<%= email_content%>">
+                            <input type="hidden" name="url_timeStamp" value="<%= timeStamp_content%>">
                         </div>
 
-                    </form>  
+                    </form>
                 </div>
-            </div>  
+            </div>
         </div>
-        <% }%>       
+        <% }%>
     </body>
 </html>

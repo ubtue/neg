@@ -112,7 +112,7 @@
             pw.println("</head>");
             pw.println("<body>");
             pw.println("<h1 style=\"text-align: center;\">Datenbank Sicherheit wurde verbessert das Password muss neu gesetzt werden </h1>");
-            pw.println("<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/forgotPassword.jsp\">Neuen Link generieren</a></h1>");
+            pw.println("<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/forgotPassword\">Neuen Link generieren</a></h1>");
             pw.println("</body>");
             pw.println("</html>");
         }
@@ -202,7 +202,7 @@
 
 
                 <p> &nbsp; </p><!-- comment -->
-                <a href="forgotPassword.jsp">Passwort vergessen ?</a>
+                <a href="forgotPassword">Passwort vergessen ?</a>
             </div>  <!-- ende flexbox-container -->
         </form>
     <center>

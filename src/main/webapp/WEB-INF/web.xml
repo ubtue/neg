@@ -41,6 +41,15 @@
   </servlet-mapping>
   
   <servlet>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ForgotPasswordServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <url-pattern>/forgotPassword</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
     <servlet-name>NewPasswordServlet</servlet-name>
     <servlet-class>de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet</servlet-class>
   </servlet>
