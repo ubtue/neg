@@ -23,7 +23,7 @@ import de.uni_tuebingen.ub.nppm.util.Utils;
 
 public class NewPasswordServlet extends HttpServlet {
 
-    private void writeHTMLMessage(HttpServletRequest request, HttpServletResponse response, String[] message) throws IOException {
+    private void writeHTMLMessage(HttpServletRequest request, HttpServletResponse response, String[] messages) throws IOException {
         PrintWriter pw = response.getWriter();
         pw.println("<!DOCTYPE html>");
         pw.println("<html>");
@@ -31,8 +31,8 @@ public class NewPasswordServlet extends HttpServlet {
         pw.println("<title>Nomen et Gens</title>");
         pw.println("</head>");
         pw.println("<body>");
-        for (int i = 0; i < message.length; i++) {
-            pw.println(message[i]);
+        for (String message : messages) {
+            pw.println(message);
         }
         pw.println("</body>");
         pw.println("</html>");
@@ -54,14 +54,12 @@ public class NewPasswordServlet extends HttpServlet {
         } else {
             Benutzer benutzer = BenutzerDB.getByMail(URLemail);
             if (password != null && !password.equals("") && repeatPassword.equals(password)) {
-                String databaseUUID = "";
-
                 LocalDateTime pastDateTime = benutzer.getResetTokenValidUntil();
                 LocalDateTime nowDateTime = LocalDateTime.now();
                 long timeBetween = ChronoUnit.HOURS.between(pastDateTime, nowDateTime);
 
                 //Get uuid from database
-                databaseUUID = benutzer.getResetToken();
+                String databaseUUID = benutzer.getResetToken();
 
                 if (emailIsRegistered == true && timeBetween < 24 && databaseUUID.equals(URLuuid)) {
 
@@ -134,9 +132,6 @@ public class NewPasswordServlet extends HttpServlet {
             htmlMessage += "</body>";
             htmlMessage += "</html>";
 
-            // Get the session object
-            MailSender sender = new MailSender();
-
             try {
                 //write UUUID & timeOfGeneratedUUID in (database) table benutzer
                 Benutzer benutzer = BenutzerDB.getByMail(email);
@@ -148,7 +143,7 @@ public class NewPasswordServlet extends HttpServlet {
                 String[] message = new String[1];
                 message[0] = "<h1 style=\"text-align: center;\">Erfolgreich, bitte gehen Sie zu Ihrer E-mail und benutzen Sie den link.</h1>";
                 writeHTMLMessage(request, response, message);
-                sender.send("no-reply@ub.uni-tuebingen.de", "NeG Mailer", email, "Neues Passwort für NEG Zugang", htmlMessage);  //send message
+                MailSender.Send("no-reply@ub.uni-tuebingen.de", "NeG Mailer", email, "Neues Passwort für NEG Zugang", htmlMessage);
             } catch (Exception ex) {
                 String errorMessage = ex.toString();
                 String[] message = new String[1];
