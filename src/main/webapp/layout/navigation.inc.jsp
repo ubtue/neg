@@ -89,7 +89,7 @@
   </a>
   <hr>
   <hr>
-  <a href="einstellungen.jsp">
+  <a href="einstellungen">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="einstellungen"/>
       <jsp:param name="Textfeld" value="Titel"/>

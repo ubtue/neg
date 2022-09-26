@@ -1,27 +1,19 @@
 package de.uni_tuebingen.ub.nppm.servlet.gast;
 
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class HilfeServlet extends AbstractGastServlet {
 
-    @Override
-    protected List<String> getAdditionalCss() {
-        List<String> css = super.getAdditionalCss();
-        css.add("layout/help.css");
-        return css;
-    }
-
+public class ImpressumServlet extends AbstractGastServlet {
     @Override
     protected String getTitle() {
-        return "freie_suche";
+        return "freie_suche"; // "Impressum" does not yet exist in DB
     }
 
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        RequestDispatcher rd = request.getRequestDispatcher("hilfe.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("impressum.jsp");
         rd.include(request, response);
     }
 }

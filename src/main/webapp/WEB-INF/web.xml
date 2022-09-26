@@ -23,6 +23,24 @@
       <url-pattern>/gast/hilfe</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+      <servlet-name>ImpressumServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ImpressumServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>ImpressumServlet</servlet-name>
+      <url-pattern>/gast/impressum</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+      <servlet-name>EinstellungenServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinstellungenServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>EinstellungenServlet</servlet-name>
+      <url-pattern>/einstellungen</url-pattern>
+  </servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>
