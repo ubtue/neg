@@ -23,7 +23,7 @@
              <a href="http://www.neg.uni-tuebingen.de/?q=de/projekte"> Projekte </a>|
              <a href="http://www.neg.uni-tuebingen.de/?q=de/publikationen"> Publikationen </a>|
              <a href="http://www.neg.uni-tuebingen.de/?q=de/ziele"> Ziele </a>|
-            <a href="impressum.jsp"> Impressum </a>
+            <a href="impressum"> Impressum </a>
             </p>
         </div>
         <div id="footer-contact">
