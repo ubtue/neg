@@ -5,11 +5,11 @@ import de.uni_tuebingen.ub.nppm.servlet.AbstractServlet;
 public abstract class AbstractGastServlet extends AbstractServlet {
     @Override
     protected String getHeaderTemplate() {
-        return "gast/servlet/header.jsp";
+        return "servlet/header.jsp";
     }
 
     @Override
     protected String getFooterTemplate() {
-        return "gast/servlet/footer.jsp";
+        return "servlet/footer.jsp";
     }
 }

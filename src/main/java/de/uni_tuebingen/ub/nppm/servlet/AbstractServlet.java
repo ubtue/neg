@@ -17,7 +17,7 @@ public abstract class AbstractServlet extends HttpServlet {
     }
 
     protected void addResponseHeader(HttpServletRequest request, HttpServletResponse response, String Titel) throws Exception {
-        RequestDispatcher rd = request.getRequestDispatcher("servlet/header.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(getHeaderTemplate());
         request.setAttribute("title", DatenbankDB.getLabel(Language.getLanguage(request), Titel, "Titel"));
 
         List<String> css_list = getAdditionalCss();
@@ -31,7 +31,7 @@ public abstract class AbstractServlet extends HttpServlet {
     }
 
     protected void addResponseFooter(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        RequestDispatcher rd = request.getRequestDispatcher("servlet/footer.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(getFooterTemplate());
         rd.include(request, response);
     }
 
