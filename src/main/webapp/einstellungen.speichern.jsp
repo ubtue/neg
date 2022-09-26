@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.SaltHash"%>
 ﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
@@ -78,6 +79,8 @@
 
 <%
   String sql = "";
+  String sql_1 = "";
+  String sql_2 = "";
   boolean fehler = true;
     
   if (request.getParameter("action").equals("Einstellungen")) {
@@ -97,7 +100,7 @@
           if(request.getParameter("Aktiv")!=null && request.getParameter("Aktiv").equals("on")) aktiv="1";
           else aktiv="0";
        
-    //  out.println(aktiv);
+    //  out.println(aktiv);      
       sql = "UPDATE benutzer SET EMail='"+request.getParameter("email")+"', Sprache='"+request.getParameter("Sprache")+"', Login='"+request.getParameter("Benutzername")+"', Vorname='"+request.getParameter("Vorname")+"', Nachname='"+request.getParameter("Nachname")+"', IstAdmin="+admin+ (!aktiv.equals("")?(", IstAktiv="+aktiv):"") + " WHERE ID="+benutzerID+";";
       fehler = false;
     }
@@ -142,16 +145,51 @@
         rs = null;
 
       try {
+        String oldPassword = request.getParameter("PasswortAlt");
+        String newPassword = request.getParameter("PasswortNeu");
+        String dBPassword = "";
+        String dbSalt = "";
+
         Class.forName( sqlDriver );
         cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
         st = cn.createStatement();
-        rs = st.executeQuery("SELECT Password FROM benutzer WHERE ID="+benutzerID+";");
-        if (rs.next()) {
-          if(isAdmin || rs.getString("Password").equals(md5(request.getParameter("PasswortAlt")))) {
-            fehler = false;
-            sql = "UPDATE benutzer SET Password=\""+md5(request.getParameter("PasswortNeu"))+"\" WHERE ID="+benutzerID+";";
+          rs = st.executeQuery("SELECT Salt FROM benutzer WHERE ID="+benutzerID+";");
+
+          if(rs.next())
+          {
+            dbSalt = rs.getString("Salt");
           }
-          else {
+
+
+        rs = st.executeQuery("SELECT Password FROM benutzer WHERE ID="+benutzerID+";");
+
+       
+        if(rs.next())
+        {
+            dBPassword = rs.getString("Password"); //get password from database; 
+        }
+
+      
+
+        //Hash and Salt oldPassword
+        //i want to Salt and Hash oldPassword
+        SaltHash saltHash = new SaltHash();
+        String algorithm = "MD5";
+       
+        oldPassword = saltHash.decodeSaltHash(oldPassword, algorithm, dbSalt); 
+
+        if(isAdmin || dBPassword.equals(oldPassword))
+        {
+            
+            SaltHash saltHashNew = new SaltHash();
+            String algorithmNew = "MD5";
+            byte[] saltNew = saltHash.createSalt();
+            newPassword = saltHash.generateHash(request.getParameter("PasswortNeu"), algorithm, saltNew);
+            fehler = false;
+            sql_1 = "UPDATE benutzer SET Password=\""+ newPassword +"\" WHERE ID="+ benutzerID +";";
+            sql_2 = "UPDATE benutzer SET Salt =\""+ saltHash.getSaltString() +"\" WHERE ID="+ benutzerID +";";
+        }           
+         else {
 %>
             <jsp:include page="inc.erzeugeBeschriftung.jsp">
               <jsp:param name="Formular" value="einstellungen"/>
@@ -159,8 +197,8 @@
             </jsp:include>
 <%
           }
-        }
-      }
+        
+      }//end try
       catch (Exception e) {
         out.println(e);
       }
@@ -180,7 +218,14 @@
       Class.forName( sqlDriver );
       cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
       st = cn.createStatement();
-      st.execute(sql);
+      if(sql.length() > 0)
+        st.executeUpdate(sql);
+      if(sql_1.length() > 0 && sql_2.length()>0)
+      {
+         st.executeUpdate(sql_1);
+         st.executeUpdate(sql_2);
+      }
+      
 %>
         <jsp:include page="inc.erzeugeBeschriftung.jsp">
           <jsp:param name="Formular" value="einstellungen"/>
@@ -195,11 +240,12 @@
 <%
     }
     catch (Exception e) {
-      out.println(e);
+      out.println(e);      
     }
     finally {
       try { if( null != st ) st.close(); } catch( Exception ex ) {}
       try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
+      try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
     }
   }
 %>
