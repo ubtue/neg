@@ -16,9 +16,10 @@ public abstract class AbstractServlet extends HttpServlet {
         Language.setLanguage(request);
     }
 
-    protected void addResponseHeader(HttpServletRequest request, HttpServletResponse response, String Titel) throws Exception {
+    protected void addResponseHeader(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher(getHeaderTemplate());
-        request.setAttribute("title", DatenbankDB.getLabel(Language.getLanguage(request), Titel, "Titel"));
+        request.setAttribute("title", DatenbankDB.getLabel(Language.getLanguage(request), getTitle(), "Titel"));
+        request.setAttribute("navigationTitle", getNavigationTitle());
 
         List<String> css_list = getAdditionalCss();
         String additional_css = "";
@@ -40,13 +41,17 @@ public abstract class AbstractServlet extends HttpServlet {
     }
 
     abstract protected String getTitle();
+    protected String getNavigationTitle() {
+        return "";
+    }
+
     abstract protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception;
     abstract protected String getHeaderTemplate();
     abstract protected String getFooterTemplate();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         initRequest(request);
-        addResponseHeader(request, response, getTitle());
+        addResponseHeader(request, response);
         generatePage(request, response);
         addResponseFooter(request, response);
     }

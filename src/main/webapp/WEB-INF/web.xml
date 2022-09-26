@@ -14,6 +14,15 @@
   </servlet-mapping>
 
   <servlet>
+      <servlet-name>EinzelbelegServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.EinzelbelegServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>EinzelbelegServlet</servlet-name>
+      <url-pattern>/gast/einzelbeleg</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
       <servlet-name>HilfeServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.HilfeServlet</servlet-class>
   </servlet>
@@ -39,7 +48,7 @@
       <servlet-name>EinstellungenServlet</servlet-name>
       <url-pattern>/einstellungen</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
     <servlet-name>ForgotPasswordServlet</servlet-name>
     <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ForgotPasswordServlet</servlet-class>
@@ -48,7 +57,7 @@
     <servlet-name>ForgotPasswordServlet</servlet-name>
     <url-pattern>/forgotPassword</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
     <servlet-name>NewPasswordServlet</servlet-name>
     <servlet-class>de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet</servlet-class>
