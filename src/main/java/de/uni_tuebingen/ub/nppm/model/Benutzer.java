@@ -122,4 +122,10 @@ public class Benutzer {
     public boolean isReadOnly() {
         return IstReadOnly;
     }
+
+    public void setEMail(String EMail) {
+        this.EMail = EMail;
+    }
+    
+    
 }

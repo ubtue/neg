@@ -6,10 +6,10 @@
     conditions = removeDuplicates(conditions);
     fields = removeDuplicates(fields);
     tables = removeDuplicates(tables);
-    
+
     joins = removeDuplicates(joins);
-    
-       
+
+
 
     // Bedingungen
     String conditionsString = "";
@@ -40,7 +40,7 @@
         tablesString += ", "+tables.get(i);
       }
     }
-    
+
     // Joins
     String joinsString = "";
     if (joins.size() > 0) {
@@ -63,7 +63,7 @@
 
       Class.forName( sqlDriver );
       cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      st = cn.createStatement();
+      st = cn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 	  if(fields.size()==0){
 	  	out.println("Bitte wählen Sie mind. ein Ausgabefeld aus (Schritt 2).");
@@ -76,25 +76,25 @@
       rs.last();
       int linecount = rs.getRow();
 
-	 
-      sql = "SELECT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order; //GROUP BY "+fieldsString+" 
+
+      sql = "SELECT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order; //GROUP BY "+fieldsString+"
       if (export.equals("liste") || export.equals("browse"))
         sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
       //out.println(sql);
       rs = st.executeQuery(sql);
 
- 
+
       out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
-      
-      
+
+
       %>
-      
+
       <%
 
       // ########## LISTE/BROWSE ##########
       if (export.equals("liste") || export.equals("browse")) {
       String oldValue [] = new String [5];
-      
+
         out.println("<table class=\"resultlist\">");
         out.println("<tr>");
         for (int i=0; i<headlines.size(); i++) {
@@ -134,9 +134,9 @@
         }
         boolean even = false;
         while ( rs.next() ) {
-        
+
     //    if(!rs.getString(orderV[0]).equals(oldValue[0])) out.println();
-        
+
           out.println("<tr class=\""+(even?"":"un")+"even\">");
           if (!formular.equals("favorit") && !formular.equals("freie_suche")&& !formular.equals("namenkommentar")&& !formular.equals("literatur")) {
             out.println("<td class=\"resultlist\" valign=\"top\" align=\"center\"><a href=\""+formular+".jsp?ID="+rs.getString(formular+".ID")+"\">Gehe zu</a></td>");
