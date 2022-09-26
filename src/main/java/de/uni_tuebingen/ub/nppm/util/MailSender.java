@@ -51,8 +51,8 @@ public class MailSender {
 
             msg.setFrom(new InternetAddress(senderMail, senderName));
             msg.setReplyTo(InternetAddress.parse(senderMail, false));
-            msg.setSubject(subject, "UTF-8");
-            msg.setText(message, "UTF-8");
+            msg.setSubject(subject);
+            msg.setText(message);
             msg.setContent(message, "text/html; charset=UTF-8");
             msg.setSentDate(new Date());
 

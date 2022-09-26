@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package de.uni_tuebingen.ub.nppm.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-/**
- *
- * @author root
- */
+//source: https://www.youtube.com/watch?v=hNKfEwTO3AQ
 public class SaltHash {
 
     private final char[] hexArray = "0123456789ABCDEF".toCharArray();
@@ -29,7 +22,6 @@ public class SaltHash {
     }
 
     //Methoden
-   
     public String generateHash(String data, String algorithm, byte[] salt) throws NoSuchAlgorithmException {
 
         MessageDigest digest = MessageDigest.getInstance(algorithm);
@@ -59,10 +51,9 @@ public class SaltHash {
             if (i == 0) {
                 saltString += salt[i];
             } else {
-                saltString += "S" + salt[i];
+                saltString += "S" + salt[i];  //"S" as byte divider (byte can be 1,2 or 3 numbers long)
             }
         }
-
         return salt;
     }
 
@@ -83,4 +74,5 @@ public class SaltHash {
         byte[] hash = digest.digest(data.getBytes());
         return bytesToStringHex(hash);
     }
+
 }

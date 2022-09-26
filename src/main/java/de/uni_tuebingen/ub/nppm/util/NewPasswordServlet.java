@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package de.uni_tuebingen.ub.nppm.util;
 
 import java.io.IOException;
@@ -25,51 +21,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
+import de.uni_tuebingen.ub.nppm.model.Benutzer;
 
-/**
- *
- * @author root
- */
 @WebServlet(name = "NewPasswordServlet", urlPatterns = {"/neg/NewPasswordServlet"})
 public class NewPasswordServlet extends HttpServlet {
-
-    //Class variables
-    Connection cn = null;
-    Statement st = null;
-    ResultSet rs = null;
-
-    protected Connection getDbConnection() throws ClassNotFoundException, NamingException, SQLException {
-        // Access to Database
-        javax.naming.InitialContext initialContext = new javax.naming.InitialContext();
-        String sqlURL = (String) initialContext.lookup("java:comp/env/sqlURL");
-        String sqlUser = (String) initialContext.lookup("java:comp/env/sqlUser");
-        String sqlPassword = (String) initialContext.lookup("java:comp/env/sqlPassword");
-
-        String sqlDriver = "com.mysql.jdbc.Driver";
-        Class.forName(sqlDriver);
-        return DriverManager.getConnection(sqlURL, sqlUser, sqlPassword);  //retuns an Access Object to Database
-    }
-
-    private void closeDbConnection() {
-        try {
-            if (null != rs) {
-                rs.close();
-            }
-        } catch (SQLException ex) {
-        }
-        try {
-            if (null != st) {
-                st.close();
-            }
-        } catch (SQLException ex) {
-        }
-        try {
-            if (null != cn) {
-                cn.close();
-            }
-        } catch (SQLException ex) {
-        }
-    }
 
     private void writeHTMLMessage(HttpServletRequest request, HttpServletResponse response, String[] message) throws IOException {
         PrintWriter pw = response.getWriter();
@@ -86,151 +42,74 @@ public class NewPasswordServlet extends HttpServlet {
         pw.println("</html>");
     }
 
-    //if Email is registered in Database
-    private boolean isEmailRegistered(HttpServletRequest request, HttpServletResponse response, String email) {
-        try {
-            cn = getDbConnection();
-            st = cn.createStatement();
-            String sqlQuery = "SELECT * FROM benutzer WHERE EMail= \"" + email + "\";";
-            rs = st.executeQuery(sqlQuery);
-            if (rs.next()) {
-                return true;
-            } else {
-                String[] message = new String[1];
-                message[0] = "<h1 style=\"text-align: center;\">Fehler, E-mail Adresse ist nicht registriert versuchen sie es mit einer anderen E-mail Adresse</h1>";
-                writeHTMLMessage(request, response, message);
-                return false;
-            }
-        } catch (Exception e) {
-            Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, e);
+    private void renewPassword(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, NoSuchAlgorithmException, Exception {
 
-        } finally {
-            closeDbConnection();
-        }
-        return true;
-    }
-
-    private LocalDateTime databaseTimeStamp(HttpServletRequest request, HttpServletResponse response) {
-        String URLuuid = request.getParameter("url_uuid"); //<input type hidden >---> form -->forgotPassword
-        String URLemail = request.getParameter("url_email"); //<input type hidden >---> form -->forgotPassword 
-        String URLtime = request.getParameter("url_timeStamp");        // <input type='hidden' name='url_timeStamp'
-        String databaseTimeStamp = "";
-
-        try {
-            //get the Timestamp out of database, when the link was generated --> 24 Hours valid
-            cn = getDbConnection();
-            st = cn.createStatement();
-            String sqlQuery_Timestamp = "SELECT ResetTokenValidUntil FROM benutzer WHERE EMail = '" + URLemail + "'";
-            rs = st.executeQuery(sqlQuery_Timestamp);
-
-            while (rs.next()) {
-                databaseTimeStamp = rs.getString("ResetTokenValidUntil");
-            }
-
-            int year = Integer.parseInt(databaseTimeStamp.substring(0, 4));
-            int month = Integer.parseInt(databaseTimeStamp.substring(5, 7));
-            int day = Integer.parseInt(databaseTimeStamp.substring(8, 10));
-            int hour = Integer.parseInt(databaseTimeStamp.substring(11, 13));
-            int minute = Integer.parseInt(databaseTimeStamp.substring(14, 16));
-            int second = Integer.parseInt(databaseTimeStamp.substring(17, 19));
-
-            LocalDateTime pastDateTime = LocalDateTime.of(year, month, day, hour, minute, second);
-            return pastDateTime;
-        } catch (Exception e) {
-
-        } finally {
-            closeDbConnection();
-        }
-        return null;
-    }//end databaseTimeStamp()
-
-    private void renewPassword(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, NoSuchAlgorithmException {
         RequestDispatcher dispatcher = null;
-
         String URLuuid = request.getParameter("url_uuid"); //<input type hidden >---> form -->forgotPassword
-        String URLemail = request.getParameter("url_email"); //<input type hidden >---> form -->forgotPassword 
-        String URLtime = request.getParameter("url_timeStamp");        // <input type='hidden' name='url_timeStamp'
-
+        String URLemail = request.getParameter("url_email"); //<input type hidden >---> form -->forgotPassword     
         String password = request.getParameter("newPassword");
         String repeatPassword = request.getParameter("repeatPassword");
+        //check if email exist in database
+        try {
+            boolean emailIsRegistered = BenutzerDB.hasEmail(URLemail);
+            if (!emailIsRegistered) {
+                String[] message = new String[1];
+                message[0] = "<h1 style=\"text-align: center;\">Fehler, E-mail Adresse ist nicht registriert versuchen sie einen Link mit einer anderen EMail Adresse zugenerieren</h1>";
+                writeHTMLMessage(request, response, message);
+            } else {
+                Benutzer benutzer = BenutzerDB.getByMail(URLemail);
+                if (password != null && !password.equals("") && repeatPassword.equals(password)) {
+                    String databaseUUID = "";
 
-        // if (password != null && !password.equals("") && repeatPassword != null && !repeatPassword.equals(""))
-        if (password != null && !password.equals("") && repeatPassword.equals(password)) {
-            String databaseUUID = "";
+                    LocalDateTime pastDateTime = benutzer.getResetTokenValidUntil();
+                    LocalDateTime nowDateTime = LocalDateTime.now();
+                    long timeBetween = ChronoUnit.HOURS.between(pastDateTime, nowDateTime);
 
-            //check if email exist in database
-            boolean emailIsRegistered = isEmailRegistered(request, response, URLemail);
+                    //Get uuid from database  
+                    databaseUUID = benutzer.getResetToken();
 
-            try {
+                    if (emailIsRegistered == true && timeBetween < 24 && databaseUUID.equals(URLuuid)) {
 
-                LocalDateTime pastDateTime = databaseTimeStamp(request, response);
-                LocalDateTime nowDateTime = LocalDateTime.now();
-                long timeBetween = ChronoUnit.HOURS.between(pastDateTime, nowDateTime);
+                        SaltHash saltHash = new SaltHash();
+                        String algorithm = "MD5";
+                        byte[] salt = saltHash.createSalt();
+                        String passHash = saltHash.generateHash(password, algorithm, salt);
 
-                //Get uuid from database
-                cn = getDbConnection();
-                st = cn.createStatement();
-                String sqlQuery_UUID = "SELECT ResetToken FROM benutzer WHERE EMail = '" + URLemail + "'";
-                rs = st.executeQuery(sqlQuery_UUID);
+                        benutzer.setSalt(saltHash.getSaltString());
+                        benutzer.setPassword(passHash);
+                        BenutzerDB.saveOrUpdate(benutzer);
 
-                while (rs.next()) {
-                    databaseUUID = rs.getString("ResetToken");
-                }
+                        String[] message = new String[2];
+                        message[0] = "<h1 style=\"text-align: center;\">Passwort wurde neu gesetzt</h1>";
+                        message[1] = "<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/index1.jsp\">Zum Login</a></h1>";
+                        writeHTMLMessage(request, response, message);
 
-                String temp_1 = String.valueOf(emailIsRegistered);
-                String temp_2 = String.valueOf(timeBetween);
-                //if email & timestamp & uuui  are valid, then do renew password
-                if (emailIsRegistered == true && timeBetween < 24 && databaseUUID.equals(URLuuid)) {
-                  
-                    SaltHash saltHash = new SaltHash();
-                    String algorithm = "MD5";                   
-                    byte[] salt = saltHash.createSalt();
-                    String passHash = saltHash.generateHash(password, algorithm, salt);
+                    } else { //User should generate a new Link
+                        String[] message = new String[2];
+                        message[0] = "<h1 style=\"text-align: center;\">Link ist nicht mehr gültig, bitte einen neuen Link generieren.</h1>";
+                        message[1] = "<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/forgotPassword.jsp\">Neuen Link generieren</a></h1>";
+                        writeHTMLMessage(request, response, message);
+                    }
 
-                    //To-Do: neues Passwort setzen in Database ---> einfach, dann mit md5 und dann mit Salt und vielleicht noch mit pepper !!!
-                    st = null;
-                    rs = null;
-                    st = cn.createStatement();
-
-                    String sqlQuery_WriteSalt = "UPDATE benutzer SET Salt = '" + saltHash.getSaltString() + "'" + " where EMail = '" + URLemail + "'";
-                    st.executeUpdate(sqlQuery_WriteSalt);
-
-                    String sqlQuery_WriteNewPasswordHash = "UPDATE benutzer SET Password = '" + passHash + "'" + " where EMail = '" + URLemail + "'";
-                    //   String sqlQuery_WriteNewPassword = "UPDATE benutzer SET Password = '" + password + "'" + " where EMail = '" + URLemail + "'";
-                    st.executeUpdate(sqlQuery_WriteNewPasswordHash);
-
-                    String[] message = new String[2];
-                    message[0] = "<h1 style=\"text-align: center;\">Passwort wurde neu gesetzt</h1>";
-                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/index1.jsp\">Zum Login</a></h1>";
+                } else if (!repeatPassword.equals(password)) {
+                    String[] message = new String[1];
+                    message[0] = "<h1 style=\"text-align: center;\">Passwort wiederholung stimmt nicht überein</h1>";
                     writeHTMLMessage(request, response, message);
-
-                } else { //User should generate a new Link
-                    String[] message = new String[2];
-                    message[0] = "<h1 style=\"text-align: center;\">Link ist nicht mehr gültig, bitte einen neuen Link generieren.</h1>";
-                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/forgotPassword.jsp\">Neuen Link generieren</a></h1>";
-                    writeHTMLMessage(request, response, message);
+                } else {
+                    LocalDateTime timeOfGeneratedUUID = benutzer.getResetTokenValidUntil();
+                    //resend link
+                    String myLinkString = "forgotPassword.jsp?varURLUUID=" + URLuuid + "&varURLEmail=" + URLemail + "&varURLTime=" + timeOfGeneratedUUID + "\"";
+                    dispatcher = request.getRequestDispatcher(myLinkString);
+                    dispatcher.forward(request, response);
                 }
-
-            }//end try
-            catch (ClassNotFoundException | SQLException | NamingException e) {
-                Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, e);
-            } finally {
-                closeDbConnection();
             }
-        } else if (!repeatPassword.equals(password)) {
-            String[] message = new String[1];
-            message[0] = "<h1 style=\"text-align: center;\">Passwort wiederholung stimmt nicht überein</h1>";
-            writeHTMLMessage(request, response, message);
-        } else {
-            LocalDateTime timeOfGeneratedUUID = databaseTimeStamp(request, response);
-            //resend link
-            String myLinkString = "forgotPassword.jsp?varURLUUID=" + URLuuid + "&varURLEmail=" + URLemail + "&varURLTime=" + timeOfGeneratedUUID + "\"";
-            dispatcher = request.getRequestDispatcher(myLinkString);
-            dispatcher.forward(request, response);
+        }//end try
+        catch (ClassNotFoundException | SQLException | NamingException e) {
+            Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, e);
         }
     }//end sendLink()
 
-    private void sendLink(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void sendLink(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, Exception {
         RequestDispatcher dispatcher = null;
         LocalDateTime timeOfGeneratedUUID = LocalDateTime.now();
         //2. Generate UUID  
@@ -239,7 +118,7 @@ public class NewPasswordServlet extends HttpServlet {
         //1. take the e-mail Address from user
         String email = request.getParameter("email");
         //Check if E-Mail is reguistered in database   
-        boolean emailIsRegistered = isEmailRegistered(request, response, email);
+        boolean emailIsRegistered = BenutzerDB.hasEmail(email);
 
         if (email != null && !email.equals("") && emailIsRegistered == true) {
 
@@ -264,19 +143,15 @@ public class NewPasswordServlet extends HttpServlet {
             htmlMessage += "</body>";
             htmlMessage += "</html>";
 
-            HttpSession mySession = request.getSession();
             // Get the session object
             MailSender sender = new MailSender();
 
             try {
-                //write UUUID & timeOfGeneratedUUID in (database) table benutzer  
-                cn = getDbConnection();
-                st = cn.createStatement();
-                String sqlQuery_1 = "UPDATE benutzer SET ResetToken = '" + uuid_content + "' WHERE EMail = '" + email + "'";
-                st.executeUpdate(sqlQuery_1);
-
-                String sqlQuery_2 = "UPDATE benutzer SET ResetTokenValidUntil = '" + timeOfGeneratedUUID + "' WHERE EMail = '" + email + "'";
-                st.executeUpdate(sqlQuery_2);
+                //write UUUID & timeOfGeneratedUUID in (database) table benutzer                 
+                Benutzer benutzer = BenutzerDB.getByMail(email);
+                benutzer.setResetToken(uuid_content);
+                benutzer.setResetTokenValidUntil(timeOfGeneratedUUID);
+                BenutzerDB.saveOrUpdate(benutzer);
 
                 //write in Servlet Succesfull created for the user
                 String[] message = new String[1];
@@ -290,14 +165,14 @@ public class NewPasswordServlet extends HttpServlet {
                 writeHTMLMessage(request, response, message);
                 Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
                 throw new ServletException(ex);
-            } finally {
-                closeDbConnection();
             }
-        }//end  if(email!=null || !email.equals(""))  
-        else if (emailIsRegistered != false) {
+        } else if (emailIsRegistered != false) {
             dispatcher = request.getRequestDispatcher("forgotPassword.jsp");
             dispatcher.forward(request, response);
-            closeDbConnection();
+        } else {
+            String[] message = new String[1];
+            message[0] = "<h1 style=\"text-align: center;\">Fehler, E-mail Adresse ist nicht registriert versuchen sie es mit einer anderen E-mail Adresse</h1>";
+            writeHTMLMessage(request, response, message);
         }
     }//end renewPassword
 
@@ -310,7 +185,7 @@ public class NewPasswordServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchAlgorithmException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchAlgorithmException, Exception {
 
         String URLuuid = request.getParameter("url_uuid"); //<input type hidden >---> form -->forgotPassword
         String URLemail = request.getParameter("url_email"); //<input type hidden >---> form -->forgotPassword
@@ -322,7 +197,6 @@ public class NewPasswordServlet extends HttpServlet {
         }
     }//end processRequest()
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -338,8 +212,9 @@ public class NewPasswordServlet extends HttpServlet {
             processRequest(request, response);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//end doGet()
 
     /**
@@ -357,16 +232,9 @@ public class NewPasswordServlet extends HttpServlet {
             processRequest(request, response);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//end doPost()
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 }//end Class NewPasswordServlet

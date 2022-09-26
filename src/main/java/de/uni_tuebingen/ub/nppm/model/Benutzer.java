@@ -79,6 +79,10 @@ public class Benutzer {
         this.Salt = Salt;
     }
 
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
+
     public int getID() {
         return ID;
     }
