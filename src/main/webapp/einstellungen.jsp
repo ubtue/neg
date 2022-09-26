@@ -59,7 +59,7 @@ if(isAdmin && request.getParameter("ID")!=null){
         <table>
           <tr>
             <td width="200"><label for="Benutzername">Benutzername:</label></td>
-            <td width="450"><input name="Benutzername" size="25" maxlength="255" value="<%= benutzer.getLogin() %>"></td>
+            <td width="450"><input name="Benutzername" size="25" maxlength="255" required="true" value="<%= benutzer.getLogin() %>"></td>
           </tr>
           <tr>
             <td width="200"><label for="Nachname">Nachname:</label></td>
@@ -77,7 +77,7 @@ if(isAdmin && request.getParameter("ID")!=null){
               </jsp:include>
             </td>
 
-            <td><input type="text" name="email" value="<%= benutzer.getEMail() %>"/></td>
+            <td><input type="text" name="email" required="true" value="<%= benutzer.getEMail() %>"/></td>
           </tr>
           <tr>
             <td>
@@ -143,13 +143,21 @@ if(isAdmin && request.getParameter("ID")!=null){
         <input type="hidden" name="action" value="Passwort">
         <table>
           <tr>
+            <% if(isAdmin == false){%>
             <td>
               <jsp:include page="inc.erzeugeBeschriftung.jsp">
                 <jsp:param name="Formular" value="einstellungen"/>
                 <jsp:param name="Textfeld" value="PasswortAlt"/>
               </jsp:include>
             </td>
-            <td><input type="password" name="PasswortAlt" /></td>
+            <%}%>  
+                
+            <% if(isAdmin == false){%>
+              <td><input type="password" name="PasswortAlt" /></td>
+            <%}
+               else{%>
+              <td><input type="hidden" name="PasswortAlt" /></td>
+            <%}%>   
           </tr>
           <tr>
             <td>

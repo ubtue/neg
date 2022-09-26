@@ -66,6 +66,19 @@ public class BenutzerDB extends AbstractBase {
         Benutzer res =  session.createQuery(criteria).getSingleResult();
         return res;
     }
+    
+    public static boolean hasEmail(String email) throws Exception{
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+        Root benutzer = criteria.from(Benutzer.class);
+        criteria.select(benutzer);
+        criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), email));
+        boolean emailInDatabase = !session.createQuery(criteria).getResultList().isEmpty();
+        session.close();
+        return emailInDatabase;
+    }
 
     public static void saveOrUpdate(Benutzer b) throws Exception {
         Session session = getSession();
