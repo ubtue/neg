@@ -1,13 +1,9 @@
-package de.uni_tuebingen.ub.nppm.util;
+package de.uni_tuebingen.ub.nppm.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
@@ -16,15 +12,15 @@ import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
+import de.uni_tuebingen.ub.nppm.util.MailSender;
+import de.uni_tuebingen.ub.nppm.util.SaltHash;
 
-@WebServlet(name = "NewPasswordServlet", urlPatterns = {"/neg/NewPasswordServlet"})
+
 public class NewPasswordServlet extends HttpServlet {
 
     private void writeHTMLMessage(HttpServletRequest request, HttpServletResponse response, String[] message) throws IOException {
@@ -196,7 +192,7 @@ public class NewPasswordServlet extends HttpServlet {
             sendLink(request, response);
         }
     }//end processRequest()
-
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -211,9 +207,9 @@ public class NewPasswordServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//end doGet()
 
@@ -231,9 +227,9 @@ public class NewPasswordServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//end doPost()
 

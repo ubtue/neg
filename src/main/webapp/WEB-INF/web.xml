@@ -42,7 +42,7 @@
   
   <servlet>
     <servlet-name>NewPasswordServlet</servlet-name>
-    <servlet-class>de.uni_tuebingen.ub.nppm.util.NewPasswordServlet</servlet-class>
+    <servlet-class>de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>NewPasswordServlet</servlet-name>
