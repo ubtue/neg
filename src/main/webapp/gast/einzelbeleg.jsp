@@ -228,10 +228,10 @@
 
 <!----------Textkritik---------->
 <div id="textkritik">
-    <h3><% Language.printTextfield(out, session, "einzelbeleg", "TabTextkritik"); %></h3>
-    <jsp:include page="../inc.modul.jsp">
-    <jsp:param name="ID" value="<%= id %>"/>
-    <jsp:param name="Formular" value="einzelbeleg"/>
-    <jsp:param name="Modul" value="lesartenRO"/>
-    </jsp:include>
+  <h3><% Language.printTextfield(out, session, "einzelbeleg", "TabTextkritik"); %></h3>
+  <jsp:include page="../inc.modul.jsp">
+  <jsp:param name="ID" value="<%= id %>"/>
+  <jsp:param name="Formular" value="einzelbeleg"/>
+  <jsp:param name="Modul" value="lesartenRO"/>
+  </jsp:include>
 </div>
