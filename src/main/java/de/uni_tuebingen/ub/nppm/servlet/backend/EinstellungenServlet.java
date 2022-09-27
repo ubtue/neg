@@ -1,19 +1,18 @@
-package de.uni_tuebingen.ub.nppm.servlet.gast;
+package de.uni_tuebingen.ub.nppm.servlet.backend;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class StartseiteServlet extends AbstractGastServlet {
-
+public class EinstellungenServlet extends AbstractBackendServlet {
     @Override
     protected String getTitle() {
-        return "Startseite";
+        return "einstellungen";
     }
 
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        RequestDispatcher rd = request.getRequestDispatcher("startseite.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("einstellungen.jsp");
         rd.include(request, response);
     }
 }
