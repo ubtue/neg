@@ -67,7 +67,7 @@ public class DatenbankDB extends AbstractBase {
         return null;
     }
 
-    public static String getMapping(String lang, String formular, String datafield) throws Exception {
+    public static DatenbankMapping getMapping(String formular, String datafield) throws Exception {
         Session session = getSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
@@ -79,9 +79,17 @@ public class DatenbankDB extends AbstractBase {
                 )
         );
         Query query = session.createQuery(criteria);
-        DatenbankMapping item = (DatenbankMapping) query.getSingleResult();
-        if (item != null) {
-            return item.getDeBeschriftung();
+        Object item = query.getSingleResult();
+        if (item == null) {
+            return null;
+        }
+        return (DatenbankMapping)item;
+    }
+
+    public static String getMapping(String lang, String formular, String datafield) throws Exception {
+        DatenbankMapping mapping = getMapping(formular, datafield);
+        if (mapping != null) {
+            return mapping.getDeBeschriftung();
         }
 
         return null;

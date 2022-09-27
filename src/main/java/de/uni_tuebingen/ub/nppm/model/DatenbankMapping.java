@@ -102,6 +102,10 @@ public class DatenbankMapping {
         return id;
     }
 
+    public String getBeschriftung(String language) throws NoSuchFieldException, IllegalAccessException {
+        return (String)DatenbankMapping.class.getDeclaredField(language.toLowerCase() + "Beschriftung").get(this);
+    }
+
     public String getDeBeschriftung() {
         return deBeschriftung;
     }
@@ -190,6 +194,10 @@ public class DatenbankMapping {
         this.combinedFeldtypen = combinedFeldtypen;
     }
 
+    public String getCombinedAnzeigenamen(String language) throws NoSuchFieldException, IllegalAccessException {
+        return (String)DatenbankMapping.class.getDeclaredField(language.toLowerCase() + "CombinedAnzeigenamen").get(this);
+    }
+
     public String getDeCombinedAnzeigenamen() {
         return deCombinedAnzeigenamen;
     }
@@ -270,6 +278,10 @@ public class DatenbankMapping {
         this.laCombinedAnzeigenamen = laCombinedAnzeigenamen;
     }
 
+    public String getPlatzhalter(String language) throws NoSuchFieldException, IllegalAccessException {
+        return (String)DatenbankMapping.class.getDeclaredField(language.toLowerCase() + "Platzhalter").get(this);
+    }
+
     public String getDePlatzhalter() {
         return dePlatzhalter;
     }
@@ -300,6 +312,10 @@ public class DatenbankMapping {
 
     public void setLaPlatzhalter(String laPlatzhalter) {
         this.laPlatzhalter = laPlatzhalter;
+    }
+
+    public String getTooltip(String language) throws NoSuchFieldException, IllegalAccessException {
+        return (String)DatenbankMapping.class.getDeclaredField(language.toLowerCase() + "Tooltip").get(this);
     }
 
     public String getDeTooltip() {
