@@ -14,7 +14,7 @@
     %><jsp:forward page="einzelbeleg.jsp" /><%
   }
   else if (AuthHelper.isGastLogin(request)) {
-    response.sendRedirect("gast/startseite.jsp");
+    response.sendRedirect("gast/startseite");
 } else {
 
     if (request.getParameter("language") != null) {
