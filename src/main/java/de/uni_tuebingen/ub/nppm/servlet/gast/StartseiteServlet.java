@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 public class StartseiteServlet extends AbstractGastServlet {
 
     @Override
+    protected String getNavigationTitle() {
+        return "startseite";
+    }
+
+    @Override
     protected String getTitle() {
         return "Startseite";
     }
