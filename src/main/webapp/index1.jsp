@@ -1,13 +1,10 @@
-<%@page import="java.io.PrintWriter"%>
-<%@page import="de.uni_tuebingen.ub.nppm.util.SaltHash"%>
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
-<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
-<%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.BenutzerDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.Benutzer" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.DatenbankSprache" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.SaltHash" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
@@ -19,9 +16,6 @@
   else if (AuthHelper.isGastLogin(request)) {
     response.sendRedirect("gast/einfache_suche.jsp");
 } else {
-    Connection cn = null;
-    Statement st = null;
-    ResultSet rs = null;
 
     if (request.getParameter("language") != null) {
         session = request.getSession(true);
@@ -33,50 +27,67 @@
         String login = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // Passwort verschlüsseln - veraltets orginal mit MD5 zugang
-        //  MessageDigest m = MessageDigest.getInstance("MD5");
-        //  m.update(password.getBytes(), 0, password.length());
-        //  String passwordMD5 = (new BigInteger(1, m.digest()).toString(16));
-        try {
+        if (!BenutzerDB.hasLogin(login)) {
+            %>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Benutzer existiert nicht</title>
+            </head>
+            <body>
+                <h1 style="text-align: center;">Benutzer existiert nicht</h1>
+            </body>
+            </html>
+            <%
+        } else {
 
-            //Decrypt password
-            SaltHash saltHash = new SaltHash();
-            String algorithm = "MD5";
+            Benutzer benutzer = BenutzerDB.getByLogin(login);
 
-            Class.forName(sqlDriver);
-            cn = DriverManager.getConnection(sqlURL, sqlUser, sqlPassword);
-            st = cn.createStatement();
-
-            //Fetch Salt from the database
-            String sql_saltString = "SELECT Salt FROM benutzer WHERE Login = '" + login + "'; ";
-            rs = st.executeQuery(sql_saltString);
-
-            if (rs.next()) {
-                saltHash.setSaltString(rs.getString("Salt"));
+            // 1) Check SALT
+            String saltString = benutzer.getSalt();
+            if (saltString == null || saltString.isEmpty()) {
+                %>
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Passwort zu alt</title>
+                </head>
+                <body>
+                <h1 style="text-align: center;">Die Sicherheit der Datenbank wurde verbessert. Das Password muss neu gesetzt werden</h1>
+                <h1 style="text-align: center;"><a href="<%=Utils.getBaseUrl(request)%>/forgotPassword">Neuen Link generieren</a></h1>
+                </body>
+                </html>
+                <%
             } else {
-                response.sendRedirect("gast/einfache_suche.jsp");
-            }
-
-            //Now decode password with salt to the hash value that is under password in the database    
-            String passwordMD5 = "";
-            if (saltHash.getSaltString() != null && saltHash.getSaltString().length() > 0) {
-                passwordMD5 = saltHash.decodeSaltHash(password, algorithm, saltHash.getSaltString());
-                rs = st.executeQuery("SELECT ID, Login, GruppeID, IstAdmin, Sprache, IstGast FROM benutzer WHERE Login='" + login + "' AND Password ='" + passwordMD5 + "' AND IstAktiv='1'");
-
-                if (rs.next()) {
-                    // Falls Session vorhanden, löschen
+                // 2) Check password
+                byte[] saltBytes = SaltHash.Base64StringToBytes(saltString);
+                String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
+                if (!passwordSalted.equals(benutzer.getPassword())) {
+                    %>
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Passwort falsch</title>
+                    </head>
+                    <body>
+                        <h1 style="text-align: center;">Ungültiges Passwort.</h1>
+                    </body>
+                    </html>
+                    <%
+                } else {
+                     // Falls Session vorhanden, löschen
                     if (session != null) {
                         session.invalidate();
                     }
 
                     // Neue Session erzeugen
                     session = request.getSession(true);
-                    session.setAttribute("BenutzerID", new Integer(rs.getInt("ID")));
-                    session.setAttribute("GruppeID", new Integer(rs.getInt("GruppeID")));
-                    session.setAttribute("Benutzername", rs.getString("Login"));
-                    session.setAttribute("Administrator", new Boolean((rs.getInt("IstAdmin") == 1 ? true : false)));
-                    session.setAttribute("Gast", new Boolean((rs.getInt("IstGast") == 1 ? true : false)));
-                    session.setAttribute("Sprache", rs.getString("Sprache"));
+                    session.setAttribute("BenutzerID", new Integer(benutzer.getID()));
+                    session.setAttribute("GruppeID", new Integer(benutzer.getGruppe().getID()));
+                    session.setAttribute("Benutzername", benutzer.getLogin());
+                    session.setAttribute("Administrator", new Boolean(benutzer.isAdmin()));
+                    session.setAttribute("Gast", new Boolean(benutzer.isGast()));
+                    session.setAttribute("Sprache", benutzer.getSprache());
                     session.setMaxInactiveInterval(sessionTimeout);
 
                     // Weiterleitung
@@ -85,64 +96,15 @@
                     } else {
                         response.sendRedirect("einzelbeleg.jsp");
                     }
-                } else {
+                }
+            }
+        }
+    } else {
 %>
-<p>
-    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-    </jsp:include>
-</p>
-<a href="index.jsp">
-    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-    </jsp:include>
-</a>
-<%
-            }
-        } else { //users didn`t upgrade to Salt-MD5-Hash
-
-            PrintWriter pw = response.getWriter();
-
-            pw.println("<!DOCTYPE html>");
-            pw.println("<html>");
-            pw.println("<head>");
-            pw.println("<title>Fehler Link nicht generiert</title>");
-            pw.println("</head>");
-            pw.println("<body>");
-            pw.println("<h1 style=\"text-align: center;\">Datenbank Sicherheit wurde verbessert das Password muss neu gesetzt werden </h1>");
-            pw.println("<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/forgotPassword\">Neuen Link generieren</a></h1>");
-            pw.println("</body>");
-            pw.println("</html>");
-        }
-    } finally {
-        try {
-            if (null != rs) {
-                rs.close();
-            }
-        } catch (Exception ex) {
-        }
-        try {
-            if (null != st) {
-                st.close();
-            }
-        } catch (Exception ex) {
-        }
-        try {
-            if (null != cn) {
-                cn.close();
-            }
-        } catch (Exception ex) {
-        }
-    }
-} else {
-%>
-
 <HTML>
     <HEAD>
         <TITLE>
-            Nomen et Gens - 
+            Nomen et Gens -
         </TITLE>
         <link rel="stylesheet" href="layout/layout.css" type="text/css">
         <style>
@@ -167,7 +129,7 @@
                     <h1 class="login">Nomen et Gens</h1>
                 </div>
                 <div class="flex-item-title flex-item-table">
-                    <table border="0">               
+                    <table border="0">
 
                         <tr><td colspan="2"><h2 class="login">
                                     <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -192,7 +154,7 @@
                                     </jsp:include>
                                 </label></th>
                             <td><input type="password" name="password" maxlength="20" placeholder="Passwort" /></td>
-                        </tr>    
+                        </tr>
                     </table>
 
 
@@ -206,45 +168,17 @@
             </div>  <!-- ende flexbox-container -->
         </form>
     <center>
-        <%
-            try {
-                Class.forName(sqlDriver);
-                cn = DriverManager.getConnection(sqlURL, sqlUser, sqlPassword);
-                st = cn.createStatement();
-                rs = st.executeQuery("SELECT Kuerzel, Sprache FROM datenbank_sprachen ORDER BY ID");
-                out.println("<form method=\"POST\">");
-                while (rs.next()) {
-                    out.println("<input type=\"image\" name=\"language\" alt=\"" + DBtoHTML(rs.getString("Sprache")) + "\" title=\"" + DBtoHTML(rs.getString("Sprache")) + "\" src=\"layout/flags/" + rs.getString("Kuerzel") + ".gif\" value=\"" + rs.getString("Kuerzel") + "\" style=\"border:#000 1px solid;\">");
-                }
-                out.println("</form>");
-            } catch (SQLException e) {
-                out.println(e);
-            } finally {
-                try {
-                    if (null != rs) {
-                        rs.close();
-                    }
-                } catch (Exception ex) {
-                }
-                try {
-                    if (null != st) {
-                        st.close();
-                    }
-                } catch (Exception ex) {
-                }
-                try {
-                    if (null != cn) {
-                        cn.close();
-                    }
-                } catch (Exception ex) {
-                }
-            }
-        %>
+        <% List<DatenbankSprache> sprachen = DatenbankDB.getListSprache(); %>
+        <form method="POST">
+            <% for (DatenbankSprache sprache : sprachen) { %>
+                <input type="image" name="language" alt="" title="" src="layout/flags/<%=sprache.getKuerzel()%>.gif" value="<%=sprache.getKuerzel()%>" style="border:#000 1px solid;">
+            <% } %>
+        </form>
     </center>
 </BODY>
 </HTML>
 
 <%
-        }
     }
+}
 %>

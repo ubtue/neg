@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
+import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.MailSender;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
 import de.uni_tuebingen.ub.nppm.util.Utils;
@@ -62,25 +63,22 @@ public class NewPasswordServlet extends HttpServlet {
                 String databaseUUID = benutzer.getResetToken();
 
                 if (emailIsRegistered == true && timeBetween < 24 && databaseUUID.equals(URLuuid)) {
+                    byte[] salt = SaltHash.GenerateRandomSalt(AuthHelper.getPasswordSaltLength());
+                    String passHash = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), salt);
 
-                    SaltHash saltHash = new SaltHash();
-                    String algorithm = "MD5";
-                    byte[] salt = saltHash.createSalt();
-                    String passHash = saltHash.generateHash(password, algorithm, salt);
-
-                    benutzer.setSalt(saltHash.getSaltString());
+                    benutzer.setSalt(SaltHash.BytesToBase64String(salt));
                     benutzer.setPassword(passHash);
                     BenutzerDB.saveOrUpdate(benutzer);
 
                     String[] message = new String[2];
                     message[0] = "<h1 style=\"text-align: center;\">Passwort wurde neu gesetzt</h1>";
-                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/index1.jsp\">Zum Login</a></h1>";
+                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/index1.jsp\">Zum Login</a></h1>";
                     writeHTMLMessage(request, response, message);
 
                 } else { //User should generate a new Link
                     String[] message = new String[2];
                     message[0] = "<h1 style=\"text-align: center;\">Link ist nicht mehr gültig, bitte einen neuen Link generieren.</h1>";
-                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/forgotPassword\">Neuen Link generieren</a></h1>";
+                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a></h1>";
                     writeHTMLMessage(request, response, message);
                 }
 
