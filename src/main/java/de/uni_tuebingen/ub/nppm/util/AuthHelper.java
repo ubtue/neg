@@ -7,8 +7,9 @@ import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 
 public class AuthHelper {
+    // If you ever change this algorithm, all users must renew their password manually!
     public static String getPasswordHashingAlgorithm() {
-        return "MD5";
+        return "SHA-512";
     }
 
     public static int getPasswordSaltLength() {
