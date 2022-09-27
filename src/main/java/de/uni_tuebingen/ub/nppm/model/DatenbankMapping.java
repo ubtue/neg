@@ -349,4 +349,28 @@ public class DatenbankMapping {
     public void setLaTooltip(String laTooltip) {
         this.laTooltip = laTooltip;
     }
+
+    private String[] getValueAsArray(String value) {
+        String[] result = {};
+        if (value != null && !value.isEmpty()) {
+            result = value.split(";");
+        }
+        return result;
+    }
+
+    public String[] getAltAsArray() {
+        return getValueAsArray(getAlt());
+    }
+
+    public String[] getCombinedFeldnamenAsArray() {
+        return getValueAsArray(getCombinedFeldnamen());
+    }
+
+    public String[] getCombinedFeldtypenAsArray() {
+        return getValueAsArray(getCombinedFeldtypen());
+    }
+
+    public String[] getCombinedAnzeigenamenAsArray(String sprache) throws NoSuchFieldException, IllegalAccessException {
+        return getValueAsArray(getCombinedAnzeigenamen(sprache));
+    }
 }

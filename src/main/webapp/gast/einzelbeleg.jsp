@@ -37,8 +37,7 @@
 </div>
 
 <!----------Belegstelle---------->
-<h3><% Language.printTextfield(out, session, "einzelbeleg", "TabBelegstelle"); %>
-</h3>
+<h3><% Language.printTextfield(out, session, "einzelbeleg", "TabBelegstelle"); %></h3>
 
 <table class="content-table">
   <tbody>
@@ -64,12 +63,12 @@
           <jsp:param name="Readonly" value="yes"/>
         </jsp:include>
         <jsp:include page="../inc.erzeugeFormular.jsp">
-              <jsp:param name="ID" value="<%= id %>"/>
-              <jsp:param name="Formular" value="einzelbeleg"/>
-              <jsp:param name="Datenfeld" value="Griechisch"/>
-              <jsp:param name="size" value="50"/>
-              <jsp:param name="Readonly" value="yes"/>
-            </jsp:include>
+          <jsp:param name="ID" value="<%= id %>"/>
+          <jsp:param name="Formular" value="einzelbeleg"/>
+          <jsp:param name="Datenfeld" value="Griechisch"/>
+          <jsp:param name="size" value="50"/>
+          <jsp:param name="Readonly" value="yes"/>
+        </jsp:include>
       </td>
     </tr>
     <tr>
@@ -117,7 +116,7 @@
           <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="Formular" value="einzelbeleg"/>
           <jsp:param name="Datenfeld" value="LebendVerstorben"/>
-              <jsp:param name="Readonly" value="yes"/>
+          <jsp:param name="Readonly" value="yes"/>
         </jsp:include>
       </td>
     </tr>
@@ -139,7 +138,7 @@
           <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="Formular" value="einzelbeleg"/>
           <jsp:param name="Datenfeld" value="DatierungUngewiss"/>
-              <jsp:param name="Readonly" value="yes"/>
+          <jsp:param name="Readonly" value="yes"/>
         </jsp:include>
       </td>
     </tr>
@@ -152,7 +151,7 @@
           <jsp:param name="Datenfeld" value="KommentarDatierung"/>
           <jsp:param name="cols" value="40"/>
           <jsp:param name="rows" value="5"/>
-              <jsp:param name="Readonly" value="yes"/>
+          <jsp:param name="Readonly" value="yes"/>
         </jsp:include>
       </td>
     </tr>

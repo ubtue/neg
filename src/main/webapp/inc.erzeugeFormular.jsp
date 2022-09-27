@@ -79,28 +79,12 @@
     formularAttribut = mapping.getFormularAttribut();
     buttonAktion = mapping.getButtonAktion();
     returnpage = mapping.getSeite();
-    if (mapping.getAlt() != null && !mapping.getAlt().equals("")) {
-      defaultValues = mapping.getAlt().split(";");
-      for (int i=0; i<defaultValues.length; i++)
-        defaultValues[i] = defaultValues[i].trim();
-    }
 
-    if (mapping.getCombinedFeldnamen() != null && !mapping.getCombinedFeldnamen().equals("")) {
-      combinedFeldnamen = mapping.getCombinedFeldnamen().split(";");
-      for (int i=0; i<combinedFeldnamen.length; i++)
-        combinedFeldnamen[i] = combinedFeldnamen[i].trim();
-    }
-    if (mapping.getCombinedFeldtypen() != null && !mapping.getCombinedFeldtypen().equals("")) {
-      combinedFeldtypen = mapping.getCombinedFeldtypen().split(";");
-      for (int i=0; i<combinedFeldtypen.length; i++)
-        combinedFeldtypen[i] = combinedFeldtypen[i].trim();
-    }
-      if (mapping.getCombinedAnzeigenamen(sprache) != null && !mapping.getCombinedAnzeigenamen(sprache).equals("")) {
-        combinedAnzeigenamen = mapping.getCombinedAnzeigenamen(sprache).split(";");
-        for (int i=0; i<combinedAnzeigenamen.length; i++)
-          combinedAnzeigenamen[i] = combinedAnzeigenamen[i].trim();
-      }
-    }
+    defaultValues = mapping.getAltAsArray();
+    combinedFeldnamen = mapping.getCombinedFeldnamenAsArray();
+    combinedFeldtypen = mapping.getCombinedFeldtypenAsArray();
+    combinedAnzeigenamen = mapping.getCombinedAnzeigenamenAsArray(sprache);
+  }
 %>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("<div style=\"visibility:hidden\">");%>
