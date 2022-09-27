@@ -69,12 +69,11 @@ public class DatenbankDB extends AbstractBase {
                 )
         );
         Query query = session.createQuery(criteria);
-        Object item = query.getSingleResult();
-        if (item == null) {
+        List<Object> rows = query.getResultList();
+        if (rows.isEmpty()) {
             return null;
         }
-
-        return (DatenbankTexte)item;
+        return (DatenbankTexte)rows.get(0);
     }
 
     public static DatenbankMapping getMapping(String formular, String datafield) throws Exception {
@@ -89,11 +88,11 @@ public class DatenbankDB extends AbstractBase {
                 )
         );
         Query query = session.createQuery(criteria);
-        Object item = query.getSingleResult();
-        if (item == null) {
+        List<Object> rows = query.getResultList();
+        if (rows.isEmpty()) {
             return null;
         }
-        return (DatenbankMapping)item;
+        return (DatenbankMapping)rows.get(0);
     }
 
     public static String getMapping(String lang, String formular, String datafield) throws Exception {
