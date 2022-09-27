@@ -82,7 +82,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>NewPasswordServlet</servlet-name>
-    <url-pattern>/NewPasswordServlet</url-pattern>
+    <url-pattern>/newPassword</url-pattern>
   </servlet-mapping>
 
   <welcome-file-list>
