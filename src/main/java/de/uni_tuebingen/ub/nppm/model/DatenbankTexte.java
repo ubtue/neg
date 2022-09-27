@@ -49,6 +49,10 @@ public class DatenbankTexte {
         this.formular = formular;
     }
 
+    public String get(String language) throws NoSuchFieldException, IllegalAccessException {
+        return (String)DatenbankTexte.class.getDeclaredField(language.toLowerCase()).get(this);
+    }
+
     public String getGb() {
         return gb;
     }

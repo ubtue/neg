@@ -48,6 +48,16 @@ public class DatenbankDB extends AbstractBase {
     }
 
     public static String getLabel(String language, String formular, String textfeld) throws Exception {
+        DatenbankTexte item = getLabel(formular, textfeld);
+
+        if (item != null) {
+            return item.get(language);
+        }
+
+        return null;
+    }
+
+    public static DatenbankTexte getLabel(String formular, String textfeld) throws Exception {
         Session session = getSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<DatenbankTexte> criteria = criteriaBuilder.createQuery(DatenbankTexte.class);
@@ -59,12 +69,12 @@ public class DatenbankDB extends AbstractBase {
                 )
         );
         Query query = session.createQuery(criteria);
-        DatenbankTexte item = (DatenbankTexte) query.getSingleResult();
-        if (item != null) {
-            return item.getDe();
+        Object item = query.getSingleResult();
+        if (item == null) {
+            return null;
         }
 
-        return null;
+        return (DatenbankTexte)item;
     }
 
     public static DatenbankMapping getMapping(String formular, String datafield) throws Exception {
