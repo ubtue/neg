@@ -52,7 +52,7 @@ public class NewPasswordServlet extends HttpServlet {
             writeHTMLMessage(request, response, message);
         } else {
             Benutzer benutzer = BenutzerDB.getByMail(URLemail);
-            if (password != null && !password.equals("") && repeatPassword.equals(password)) {
+            if (password != null && !password.equals("") && repeatPassword.equals(password) && password.length() >= 6) {
                 String databaseUUID = "";
 
                 LocalDateTime pastDateTime = benutzer.getResetTokenValidUntil();
@@ -89,6 +89,11 @@ public class NewPasswordServlet extends HttpServlet {
                 String[] message = new String[1];
                 message[0] = "<h1 style=\"text-align: center;\">Passwort wiederholung stimmt nicht überein</h1>";
                 writeHTMLMessage(request, response, message);
+            }else if(password.length() < 6)
+            {
+                String[] message = new String[1];
+                message[0] = "<h1 style=\"text-align: center;\">Passwort ist zu kurz, mindestlänge sind 6 Buchstaben</h1>";
+                writeHTMLMessage(request, response, message);
             } else {
                 LocalDateTime timeOfGeneratedUUID = benutzer.getResetTokenValidUntil();
                 //resend link
@@ -114,7 +119,8 @@ public class NewPasswordServlet extends HttpServlet {
 
             response.setContentType("text/html");
 
-            String myLinkString = request.getContextPath() + "/forgotPassword?varURLUUID=" + URLEncoder.encode(uuid_content) + "&varURLEmail=" + URLEncoder.encode(email) + "&varURLTime=" + URLEncoder.encode(timeOfGeneratedUUID.toString());
+            String myLinkString = "http://localhost:8080" + request.getContextPath() + "/forgotPassword?varURLUUID=" + URLEncoder.encode(uuid_content) + "&varURLEmail=" + URLEncoder.encode(email) + "&varURLTime=" + URLEncoder.encode(timeOfGeneratedUUID.toString());
+
 
             //Message in usesers email
             String htmlMessage = "<html>";
