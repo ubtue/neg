@@ -1,7 +1,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <HTML>
   <HEAD>
-    <TITLE>Nomen et Gens - ${title}</TITLE>
+    <%
+    String fullTitle = "Nomen et Gens";
+    String title = (String)request.getAttribute("title");
+    if (title != null && !title.isEmpty()) {
+        fullTitle += " | " + title;
+    }
+    %>
+    <TITLE><%=fullTitle%></TITLE>
     <link rel="icon" href="layout/images/nomen_et_gens_icon.gif" type="image/gif">
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
     <link href='layout/fonts/open-sans.css' rel='stylesheet' type='text/css'>
