@@ -26,7 +26,7 @@
 
         String sql = "";
 
-        if (id < -1) {
+        if (id == Constants.UNDEFINED_ID ) { //no id is set as parameter
             try {
                 //get the sql filter string from the database
                 sql = Filter.getFilterSql(request, formular);
@@ -37,7 +37,7 @@
             } catch (Exception e) {
                 out.println(e);
             }
-        } else {
+        } else if(id != Constants.NEW_ITEM) {
             try {
                 //get the sql filter string from the database
                 sql = Filter.getFilterSql(request, formular);
@@ -75,19 +75,7 @@
 </jsp:include>
 
 
-<HTML>
-<HEAD>
-<TITLE>Nomen et Gens - <jsp:include
-	page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="mgh_lemma" />
-	<jsp:param name="Textfeld" value="Titel" />
-</jsp:include></TITLE>
-<link rel="stylesheet" href="layout/layout.css" type="text/css">
-<script src="javascript/funktionen.js" type="text/javascript"></script>
-<noscript></noscript>
-</HEAD>
-
-<BODY
+<div
 	onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');urlRewrite(<%=id%>);">
 <FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
 <jsp:include page="layout/image.inc.html" /> <jsp:include
@@ -314,8 +302,7 @@
 </div>
 </div>
 </FORM>
-</BODY>
-</HTML>
+</div>
 <%
 
   }
