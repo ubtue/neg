@@ -1,5 +1,4 @@
-<div id="content">
-    <p>
+<p>
     <h1>Herzlich willkommen bei der Datenbank "Nomen et Gens"!</h1>
 
     <p>Die Datenbank bietet Ihnen historisch und linguistisch bearbeitete Quellenbelege zu Namen und Personen des
@@ -24,4 +23,3 @@
     <p>Weiterf&uuml;hrende Informationen zum Projekt "Nomen et Gens" finden Sie unter
         <a href="http://www.neg.uni-tuebingen.de/?q=de/ziele">Ziele</a>.</p>
 </p>
-</div>
