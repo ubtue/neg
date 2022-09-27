@@ -14,12 +14,6 @@
   <jsp:param name="form" value="gast_einzelbeleg" />
 </jsp:include>
 
-<script>
-  $(document).ready(function() {
-    urlRewrite(<%= id %>);
-  });
-</script>
-
 <jsp:include page="layout/titel.inc.jsp">
   <jsp:param name="title" value="Einzelbeleg" />
   <jsp:param name="ID" value="<%= id %>" />
