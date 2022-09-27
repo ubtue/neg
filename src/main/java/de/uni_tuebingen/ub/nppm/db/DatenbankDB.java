@@ -59,7 +59,10 @@ public class DatenbankDB extends AbstractBase {
                 )
         );
         Query query = session.createQuery(criteria);
-        DatenbankTexte item = (DatenbankTexte) query.getSingleResult();
+        List<DatenbankTexte> res = query.getResultList();
+        DatenbankTexte item = null;
+        if(res.size() > 0)
+            item = (DatenbankTexte) res.get(0);
         if (item != null) {
             return item.getDe();
         }
