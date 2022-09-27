@@ -89,7 +89,7 @@ public class DatenbankDB extends AbstractBase {
     public static String getMapping(String lang, String formular, String datafield) throws Exception {
         DatenbankMapping mapping = getMapping(formular, datafield);
         if (mapping != null) {
-            return mapping.getDeBeschriftung();
+            return mapping.getBeschriftung(lang);
         }
 
         return null;
