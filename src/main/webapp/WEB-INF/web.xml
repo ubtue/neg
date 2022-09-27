@@ -30,6 +30,15 @@
       <servlet-name>HilfeServlet</servlet-name>
       <url-pattern>/gast/hilfe</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>StartseiteServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.StartseiteServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>StartseiteServlet</servlet-name>
+      <url-pattern>/gast/startseite</url-pattern>
+  </servlet-mapping>
 
   <servlet>
       <servlet-name>ImpressumServlet</servlet-name>

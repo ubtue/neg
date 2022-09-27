@@ -3,6 +3,7 @@
     <TITLE>Nomen et Gens - ${title}</TITLE>
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
     <script src="javascript/funktionen.js" type="text/javascript"></script>
+    
     <noscript></noscript>
   </HEAD>
 

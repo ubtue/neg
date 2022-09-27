@@ -16,7 +16,7 @@
     %><jsp:forward page="einzelbeleg.jsp" /><%
   }
   else if (AuthHelper.isGastLogin(request)) {
-    response.sendRedirect("gast/startseite.jsp");
+    response.sendRedirect("gast/startseite");
   }
   else {
     Connection cn = null;
@@ -61,7 +61,7 @@
 
           // Weiterleitung
           if((Boolean)session.getAttribute("Gast")){
-            response.sendRedirect("gast/startseite.jsp");
+            response.sendRedirect("gast/startseite");
           }
           else{
             response.sendRedirect("einzelbeleg.jsp");

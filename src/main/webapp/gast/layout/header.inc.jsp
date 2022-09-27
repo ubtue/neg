@@ -17,7 +17,7 @@
 <div id="page">
 	<div id="header">
 		<div id="header-left">
-			<a href="startseite.jsp"> Nomen et Gens </a>
+			<a href="startseite"> Nomen et Gens </a>
 		</div>
 		<div id="header-right">
 <!--
@@ -44,7 +44,7 @@
         <div class="menu-wrap">
             <div class="menu">
                 <ul>
-                    <li> <a class="${param.current eq 'startseite' ? 'current' : ''}" href="startseite.jsp"> Startseite </a></li>
+                    <li> <a class="${param.current eq 'startseite' ? 'current' : ''}" href="startseite"> Startseite </a></li>
                     <li> <a class="${param.current eq 'einzelbeleg' ? 'current' : ''}" href="einzelbeleg">
                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                           <jsp:param name="Formular" value="einzelbeleg"/>
