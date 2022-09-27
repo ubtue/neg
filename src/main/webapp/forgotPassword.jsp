@@ -74,7 +74,7 @@
                     <form method="post" action="/neg/NewPasswordServlet" id="register-form">
                         <input type="email" name="email" id="email" value="" placeholder="Ihre Registrierte E-Mail" />
                         <input type="submit" value="Neues Passwort" name="submit_new_password" />
-                        <a href="index1.jsp"><button type="button">zur&uuml;ck zum Login</button></a>
+                        <a href="login"><button type="button">zur&uuml;ck zum Login</button></a>
                     </form>
 
                 </div>

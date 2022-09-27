@@ -72,7 +72,7 @@ public class NewPasswordServlet extends HttpServlet {
 
                     String[] message = new String[2];
                     message[0] = "<h1 style=\"text-align: center;\">Passwort wurde neu gesetzt</h1>";
-                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/index1.jsp\">Zum Login</a></h1>";
+                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/login\">Zum Login</a></h1>";
                     writeHTMLMessage(request, response, message);
 
                 } else { //User should generate a new Link

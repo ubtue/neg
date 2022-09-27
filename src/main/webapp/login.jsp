@@ -10,6 +10,7 @@
 <%@ include file="functions.jsp" %>
 
 <%
+
   if (AuthHelper.isBenutzerLogin(request)) {
     %><jsp:forward page="einzelbeleg.jsp" /><%
   }
@@ -90,11 +91,12 @@
                     session.setAttribute("Sprache", benutzer.getSprache());
                     session.setMaxInactiveInterval(sessionTimeout);
 
-                    // Weiterleitung
+                    // Weiterleitung. response.sendRedirect funktioniert hier nicht,
+                    // daher verwenden wir stattdessen JavaScript.
                     if ((Boolean) session.getAttribute("Gast")) {
-                        response.sendRedirect("gast/einfache_suche.jsp");
+                        %><script>window.location.href = '<%= Utils.getBaseUrl(request) + "/gast/startseite" %>';</script><%
                     } else {
-                        response.sendRedirect("einzelbeleg.jsp");
+                        %><script>window.location.href = '<%= Utils.getBaseUrl(request) + "/einzelbeleg.jsp" %>';</script><%
                     }
                 }
             }
