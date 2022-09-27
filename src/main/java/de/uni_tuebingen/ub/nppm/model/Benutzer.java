@@ -95,12 +95,24 @@ public class Benutzer {
         return Login;
     }
 
+    public void setLogin(String login) {
+        this.Login = login;
+    }
+
     public String getNachname() {
         return Nachname;
     }
 
+    public void setNachname(String nachname) {
+        this.Nachname = nachname;
+    }
+
     public String getVorname() {
         return Vorname;
+    }
+
+    public void setVorname(String vorname) {
+        this.Vorname = vorname;
     }
 
     public String getEMail() {
@@ -111,6 +123,10 @@ public class Benutzer {
         return IstAdmin;
     }
 
+    public void setAdmin(boolean isAdmin) {
+        this.IstAdmin = isAdmin;
+    }
+
     public BenutzerGruppe getGruppe() {
         return Gruppe;
     }
@@ -119,12 +135,20 @@ public class Benutzer {
         return Sprache;
     }
 
+    public void setSprache(String sprache) {
+        this.Sprache = sprache;
+    }
+
     public boolean isGast() {
         return IstGast;
     }
 
     public boolean isAktiv() {
         return IstAktiv;
+    }
+
+    public void setAktiv(boolean isActive) {
+        this.IstAktiv = isActive;
     }
 
     public boolean isReadOnly() {
