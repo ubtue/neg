@@ -16,7 +16,7 @@
 </div>
     <div id="footer">
         <div id="footer-menu">
-            <p> <a href="startseite.jsp"> NeG </a>|
+            <p> <a href="startseite"> NeG </a>|
              <a href="http://www.neg.uni-tuebingen.de/?q=de/quellenliste"> Quellenliste </a>|
              <a href="http://www.neg.uni-tuebingen.de/?q=de/tagungen"> Tagungen </a>|
              <a href="http://www.neg.uni-tuebingen.de/?q=de/mitglieder"> Mitglieder </a>|
