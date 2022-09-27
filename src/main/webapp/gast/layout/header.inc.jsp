@@ -45,7 +45,7 @@
             <div class="menu">
                 <ul>
                     <li> <a class="${param.current eq 'startseite' ? 'current' : ''}" href="startseite"> Startseite </a></li>
-                    <li> <a class="${param.current eq 'einzelbeleg' ? 'current' : ''}" href="einzelbeleg.jsp">
+                    <li> <a class="${param.current eq 'einzelbeleg' ? 'current' : ''}" href="einzelbeleg">
                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                           <jsp:param name="Formular" value="einzelbeleg"/>
                           <jsp:param name="Textfeld" value="Titel"/>

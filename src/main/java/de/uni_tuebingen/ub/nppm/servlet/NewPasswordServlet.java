@@ -16,13 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
+import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.MailSender;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 
 
 public class NewPasswordServlet extends HttpServlet {
 
-    private void writeHTMLMessage(HttpServletRequest request, HttpServletResponse response, String[] message) throws IOException {
+    private void writeHTMLMessage(HttpServletRequest request, HttpServletResponse response, String[] messages) throws IOException {
         PrintWriter pw = response.getWriter();
         pw.println("<!DOCTYPE html>");
         pw.println("<html>");
@@ -30,8 +32,8 @@ public class NewPasswordServlet extends HttpServlet {
         pw.println("<title>Nomen et Gens</title>");
         pw.println("</head>");
         pw.println("<body>");
-        for (int i = 0; i < message.length; i++) {
-            pw.println(message[i]);
+        for (String message : messages) {
+            pw.println(message);
         }
         pw.println("</body>");
         pw.println("</html>");
@@ -52,47 +54,41 @@ public class NewPasswordServlet extends HttpServlet {
             writeHTMLMessage(request, response, message);
         } else {
             Benutzer benutzer = BenutzerDB.getByMail(URLemail);
-            if (password != null && !password.equals("") && repeatPassword.equals(password) && password.length() >= 6) {
-                String databaseUUID = "";
-
+            if (password != null && password.length() >= 6 && repeatPassword.equals(password)) {
                 LocalDateTime pastDateTime = benutzer.getResetTokenValidUntil();
                 LocalDateTime nowDateTime = LocalDateTime.now();
                 long timeBetween = ChronoUnit.HOURS.between(pastDateTime, nowDateTime);
 
                 //Get uuid from database
-                databaseUUID = benutzer.getResetToken();
+                String databaseUUID = benutzer.getResetToken();
 
                 if (emailIsRegistered == true && timeBetween < 24 && databaseUUID.equals(URLuuid)) {
+                    byte[] salt = SaltHash.GenerateRandomSalt(AuthHelper.getPasswordSaltLength());
+                    String passHash = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), salt);
 
-                    SaltHash saltHash = new SaltHash();
-                    String algorithm = "MD5";
-                    byte[] salt = saltHash.createSalt();
-                    String passHash = saltHash.generateHash(password, algorithm, salt);
-
-                    benutzer.setSalt(saltHash.getSaltString());
+                    benutzer.setSalt(SaltHash.BytesToBase64String(salt));
                     benutzer.setPassword(passHash);
                     BenutzerDB.saveOrUpdate(benutzer);
 
                     String[] message = new String[2];
                     message[0] = "<h1 style=\"text-align: center;\">Passwort wurde neu gesetzt</h1>";
-                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/index1.jsp\">Zum Login</a></h1>";
+                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/index1.jsp\">Zum Login</a></h1>";
                     writeHTMLMessage(request, response, message);
 
                 } else { //User should generate a new Link
                     String[] message = new String[2];
                     message[0] = "<h1 style=\"text-align: center;\">Link ist nicht mehr gültig, bitte einen neuen Link generieren.</h1>";
-                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"http://localhost:8080/neg/forgotPassword\">Neuen Link generieren</a></h1>";
+                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a></h1>";
                     writeHTMLMessage(request, response, message);
                 }
+            } else if(password != null && password.length() < 6) {
+                String[] message = new String[1];
+                message[0] = "<h1 style=\"text-align: center;\">Passwort ist zu kurz, mindestlänge sind 6 Buchstaben</h1>";
+                writeHTMLMessage(request, response, message);
 
             } else if (!repeatPassword.equals(password)) {
                 String[] message = new String[1];
                 message[0] = "<h1 style=\"text-align: center;\">Passwort wiederholung stimmt nicht überein</h1>";
-                writeHTMLMessage(request, response, message);
-            }else if(password.length() < 6)
-            {
-                String[] message = new String[1];
-                message[0] = "<h1 style=\"text-align: center;\">Passwort ist zu kurz, mindestlänge sind 6 Buchstaben</h1>";
                 writeHTMLMessage(request, response, message);
             } else {
                 LocalDateTime timeOfGeneratedUUID = benutzer.getResetTokenValidUntil();
@@ -119,8 +115,7 @@ public class NewPasswordServlet extends HttpServlet {
 
             response.setContentType("text/html");
 
-            String myLinkString = "http://localhost:8080" + request.getContextPath() + "/forgotPassword?varURLUUID=" + URLEncoder.encode(uuid_content) + "&varURLEmail=" + URLEncoder.encode(email) + "&varURLTime=" + URLEncoder.encode(timeOfGeneratedUUID.toString());
-
+            String myLinkString = Utils.getBaseUrl(request) + "/forgotPassword?varURLUUID=" + URLEncoder.encode(uuid_content) + "&varURLEmail=" + URLEncoder.encode(email) + "&varURLTime=" + URLEncoder.encode(timeOfGeneratedUUID.toString());
 
             //Message in usesers email
             String htmlMessage = "<html>";
@@ -139,9 +134,6 @@ public class NewPasswordServlet extends HttpServlet {
             htmlMessage += "</body>";
             htmlMessage += "</html>";
 
-            // Get the session object
-            MailSender sender = new MailSender();
-
             try {
                 //write UUUID & timeOfGeneratedUUID in (database) table benutzer
                 Benutzer benutzer = BenutzerDB.getByMail(email);
@@ -153,7 +145,7 @@ public class NewPasswordServlet extends HttpServlet {
                 String[] message = new String[1];
                 message[0] = "<h1 style=\"text-align: center;\">Erfolgreich, bitte gehen Sie zu Ihrer E-mail und benutzen Sie den link.</h1>";
                 writeHTMLMessage(request, response, message);
-                sender.send("no-reply@ub.uni-tuebingen.de", "NeG Mailer", email, "Neues Passwort für NEG Zugang", htmlMessage);  //send message
+                MailSender.Send("no-reply@ub.uni-tuebingen.de", "NeG Mailer", email, "Neues Passwort für NEG Zugang", htmlMessage);
             } catch (Exception ex) {
                 String errorMessage = ex.toString();
                 String[] message = new String[1];

@@ -93,8 +93,8 @@
                 <div class="div-1">
                     <form  method="post" action="/neg/NewPasswordServlet" id="register-form">
                         <div class="div-2">
-                            <input type="password" name="newPassword" value="" placeholder="Neues Passwort" />
-                            <input type="password" name="repeatPassword" value="" placeholder="Wiederhole neues Passwort" />
+                            <input type="password" name="newPassword" value="" minlength="6" placeholder="Neues Passwort" />
+                            <input type="password" name="repeatPassword" value="" minlength="6" placeholder="Wiederhole neues Passwort" />
                             <input type="submit" value="Reset" />
                             <input type="hidden" name="url_uuid" value="<%= uuid_content%>">
                             <input type="hidden" name="url_email" value="<%= email_content%>">

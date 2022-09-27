@@ -79,6 +79,10 @@ public class Benutzer {
         this.Salt = Salt;
     }
 
+    public String getPassword() {
+        return Password;
+    }
+
     public void setPassword(String Password) {
         this.Password = Password;
     }
@@ -130,6 +134,6 @@ public class Benutzer {
     public void setEMail(String EMail) {
         this.EMail = EMail;
     }
-    
-    
+
+
 }

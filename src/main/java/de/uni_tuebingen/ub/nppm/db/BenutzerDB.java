@@ -56,17 +56,28 @@ public class BenutzerDB extends AbstractBase {
         return res;
     }
 
+    public static Benutzer getByLogin(String login) throws Exception {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+        Root benutzer = criteria.from(Benutzer.class);
+        criteria.select(benutzer);
+        criteria.where(builder.equal(benutzer.get(Benutzer_.Login), login));
+        Benutzer res =  session.createQuery(criteria).getSingleResult();
+        return res;
+    }
+
     public static Benutzer getByMail(String mail) throws Exception {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
         Root benutzer = criteria.from(Benutzer.class);
         criteria.select(benutzer);
-        criteria.where(builder.equal(benutzer.get(Benutzer_.EMail),mail));
+        criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), mail));
         Benutzer res =  session.createQuery(criteria).getSingleResult();
         return res;
     }
-    
+
     public static boolean hasEmail(String email) throws Exception{
         Session session = getSession();
 
@@ -75,9 +86,22 @@ public class BenutzerDB extends AbstractBase {
         Root benutzer = criteria.from(Benutzer.class);
         criteria.select(benutzer);
         criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), email));
-        boolean emailInDatabase = !session.createQuery(criteria).getResultList().isEmpty();
+        boolean inDatabase = !session.createQuery(criteria).getResultList().isEmpty();
         session.close();
-        return emailInDatabase;
+        return inDatabase;
+    }
+
+    public static boolean hasLogin(String login) throws Exception{
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+        Root benutzer = criteria.from(Benutzer.class);
+        criteria.select(benutzer);
+        criteria.where(builder.equal(benutzer.get(Benutzer_.Login), login));
+        boolean inDatabase = !session.createQuery(criteria).getResultList().isEmpty();
+        session.close();
+        return inDatabase;
     }
 
     public static void saveOrUpdate(Benutzer b) throws Exception {

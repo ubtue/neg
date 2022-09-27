@@ -15,7 +15,7 @@
  </HEAD>
  <BODY>
     <jsp:include page="../layout/header.inc.jsp">
-      <jsp:param name="current" value=""/>
+      <jsp:param name="current" value="${navigationTitle}"/>
     </jsp:include>
 
     <div id="content">

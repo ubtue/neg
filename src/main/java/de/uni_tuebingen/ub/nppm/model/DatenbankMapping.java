@@ -102,6 +102,10 @@ public class DatenbankMapping {
         return id;
     }
 
+    public String getBeschriftung(String language) throws NoSuchFieldException, IllegalAccessException {
+        return (String)DatenbankMapping.class.getDeclaredField(language.toLowerCase() + "Beschriftung").get(this);
+    }
+
     public String getDeBeschriftung() {
         return deBeschriftung;
     }
@@ -190,6 +194,10 @@ public class DatenbankMapping {
         this.combinedFeldtypen = combinedFeldtypen;
     }
 
+    public String getCombinedAnzeigenamen(String language) throws NoSuchFieldException, IllegalAccessException {
+        return (String)DatenbankMapping.class.getDeclaredField(language.toLowerCase() + "CombinedAnzeigenamen").get(this);
+    }
+
     public String getDeCombinedAnzeigenamen() {
         return deCombinedAnzeigenamen;
     }
@@ -270,6 +278,10 @@ public class DatenbankMapping {
         this.laCombinedAnzeigenamen = laCombinedAnzeigenamen;
     }
 
+    public String getPlatzhalter(String language) throws NoSuchFieldException, IllegalAccessException {
+        return (String)DatenbankMapping.class.getDeclaredField(language.toLowerCase() + "Platzhalter").get(this);
+    }
+
     public String getDePlatzhalter() {
         return dePlatzhalter;
     }
@@ -302,6 +314,10 @@ public class DatenbankMapping {
         this.laPlatzhalter = laPlatzhalter;
     }
 
+    public String getTooltip(String language) throws NoSuchFieldException, IllegalAccessException {
+        return (String)DatenbankMapping.class.getDeclaredField(language.toLowerCase() + "Tooltip").get(this);
+    }
+
     public String getDeTooltip() {
         return deTooltip;
     }
@@ -332,5 +348,29 @@ public class DatenbankMapping {
 
     public void setLaTooltip(String laTooltip) {
         this.laTooltip = laTooltip;
+    }
+
+    private String[] getValueAsArray(String value) {
+        String[] result = {};
+        if (value != null && !value.isEmpty()) {
+            result = value.split(";");
+        }
+        return result;
+    }
+
+    public String[] getAltAsArray() {
+        return getValueAsArray(getAlt());
+    }
+
+    public String[] getCombinedFeldnamenAsArray() {
+        return getValueAsArray(getCombinedFeldnamen());
+    }
+
+    public String[] getCombinedFeldtypenAsArray() {
+        return getValueAsArray(getCombinedFeldtypen());
+    }
+
+    public String[] getCombinedAnzeigenamenAsArray(String sprache) throws NoSuchFieldException, IllegalAccessException {
+        return getValueAsArray(getCombinedAnzeigenamen(sprache));
     }
 }

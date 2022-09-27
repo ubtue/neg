@@ -7,6 +7,15 @@ import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 
 public class AuthHelper {
+    // If you ever change this algorithm, all users must renew their password manually!
+    public static String getPasswordHashingAlgorithm() {
+        return "SHA-512";
+    }
+
+    public static int getPasswordSaltLength() {
+        return 20;
+    }
+
     public static boolean isBenutzerLogin(HttpServletRequest request) throws ServletException, IOException{
         HttpSession session = request.getSession(true);
         if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {

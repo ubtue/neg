@@ -48,6 +48,16 @@ public class DatenbankDB extends AbstractBase {
     }
 
     public static String getLabel(String language, String formular, String textfeld) throws Exception {
+        DatenbankTexte item = getLabel(formular, textfeld);
+
+        if (item != null) {
+            return item.get(language);
+        }
+
+        return null;
+    }
+
+    public static DatenbankTexte getLabel(String formular, String textfeld) throws Exception {
         Session session = getSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<DatenbankTexte> criteria = criteriaBuilder.createQuery(DatenbankTexte.class);
@@ -59,18 +69,14 @@ public class DatenbankDB extends AbstractBase {
                 )
         );
         Query query = session.createQuery(criteria);
-        List<DatenbankTexte> res = query.getResultList();
-        DatenbankTexte item = null;
-        if(res.size() > 0)
-            item = (DatenbankTexte) res.get(0);
-        if (item != null) {
-            return item.getDe();
+        List<Object> rows = query.getResultList();
+        if (rows.isEmpty()) {
+            return null;
         }
-
-        return null;
+        return (DatenbankTexte)rows.get(0);
     }
 
-    public static String getMapping(String lang, String formular, String datafield) throws Exception {
+    public static DatenbankMapping getMapping(String formular, String datafield) throws Exception {
         Session session = getSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
@@ -82,9 +88,17 @@ public class DatenbankDB extends AbstractBase {
                 )
         );
         Query query = session.createQuery(criteria);
-        DatenbankMapping item = (DatenbankMapping) query.getSingleResult();
-        if (item != null) {
-            return item.getDeBeschriftung();
+        List<Object> rows = query.getResultList();
+        if (rows.isEmpty()) {
+            return null;
+        }
+        return (DatenbankMapping)rows.get(0);
+    }
+
+    public static String getMapping(String lang, String formular, String datafield) throws Exception {
+        DatenbankMapping mapping = getMapping(formular, datafield);
+        if (mapping != null) {
+            return mapping.getBeschriftung(lang);
         }
 
         return null;

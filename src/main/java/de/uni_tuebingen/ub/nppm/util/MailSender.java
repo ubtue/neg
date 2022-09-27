@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.util;
 
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Properties;
 import javax.mail.Authenticator;
@@ -17,7 +16,7 @@ public class MailSender {
     protected Session mailSession;
 
     //Methoden
-    static protected Session login() throws NamingException {
+    static protected Session Login() throws NamingException {
         javax.naming.InitialContext initialContext = new javax.naming.InitialContext();
         String smtpHost = (String) initialContext.lookup("java:comp/env/smtpHost");
         String smtpPort = (String) initialContext.lookup("java:comp/env/smtpPort");
@@ -40,8 +39,8 @@ public class MailSender {
         return Session.getDefaultInstance(props, auth);
     }
 
-    static public void send(String senderMail, String senderName, String receiverAddresses, String subject, String message) throws NamingException {
-        Session session = login();
+    static public void Send(String senderMail, String senderName, String receiverAddresses, String subject, String message) throws NamingException {
+        Session session = Login();
 
         MimeMessage msg = new MimeMessage(session);
         try {
@@ -61,5 +60,5 @@ public class MailSender {
         } catch (Exception e) {
             System.out.println("Fehler beim senden der eMail");
         }
-    }//end send
+    }//end Send
 }

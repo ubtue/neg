@@ -4,7 +4,7 @@
 <%@ page import = "java.sql.*" isThreadSafe="false" %>
 
 <%
-  String sqlDriver = "com.mysql.jdbc.Driver";
+  String sqlDriver = "com.mysql.cj.jdbc.Driver";
   String sqlURL = "jdbc:mysql://localhost:3306/neg_neu";
   String sUsr   = "";
   String sPwd   = "";
