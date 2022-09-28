@@ -24,35 +24,27 @@
             id = Integer.parseInt(reqID);
         }
 
-        String sql = "";
+        String sql = Filter.getFilterSql(request, formular);
 
         if (id == Constants.UNDEFINED_ID ) { //no id is set as parameter
             try {
-                //get the sql filter string from the database
-                sql = Filter.getFilterSql(request, formular);
-                //select the minimum ID
-                sql = sql.replace("*", "min(" + formular + ".ID) m");
-                //set id
-                id = (Integer) DatenbankDB.getSingleResult(sql);
+                //get id from the first result of the filter
+                id = Filter.getFirstFilterResult(sql,formular);
             } catch (Exception e) {
                 out.println(e);
             }
         } else if(id != Constants.NEW_ITEM) {
             try {
-                //get the sql filter string from the database
-                sql = Filter.getFilterSql(request, formular);
-                //select the item count
-                String sql2 = sql.replace("*", "count(*) c");
-                BigInteger res = (BigInteger) DatenbankDB.getSingleResult(sql2);
+                //count
+                out.print(sql);
+                BigInteger res = Filter.countFilterItems(sql);
                 if (res != null) {
                     if (res.intValue() == 0) {
                         //no items with this filter
                         id = -1;
                     } else {
-                        sql = sql.replace("*", "min(" + formular + ".ID) m");
-                        sql = sql + (sql.contains("WHERE") ? " AND " : " WHERE ") + formular + ".ID = " + id;
-                        Integer res2 = (Integer) DatenbankDB.getSingleResult(sql);
-                        if (res2 == null) {
+                        Integer ret = Filter.existIdInFilter(sql,formular,id);
+                        if (ret == null) {
                             out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
                             return;
                         }
