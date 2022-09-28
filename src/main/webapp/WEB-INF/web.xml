@@ -96,4 +96,8 @@
       <page-encoding>UTF-8</page-encoding>
     </jsp-property-group>
   </jsp-config>
+
+  <error-page>
+    <location>/gast/servlet/error.jsp</location>
+  </error-page>
 </web-app>

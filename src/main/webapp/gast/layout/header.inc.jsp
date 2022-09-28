@@ -3,6 +3,7 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 
 <%@ include file="../../configuration.jsp" %>
 <%@ include file="../../functions.jsp" %>
@@ -35,7 +36,7 @@
 			</p>
 -->
 
-			<p><a href="hilfe"><strong>Hilfe</strong></a> | <a href="../logout.jsp?go=intern"><strong>Interner Bereich</strong></a></p>
+			<p><a href="<%=Utils.getBaseUrl(request)%>/gast/hilfe"><strong>Hilfe</strong></a> | <a href="<%=Utils.getBaseUrl(request)%>/logout.jsp?go=intern"><strong>Interner Bereich</strong></a></p>
 		</div>
 		<div class="clear"></div>
 	</div>
@@ -44,29 +45,29 @@
         <div class="menu-wrap">
             <div class="menu">
                 <ul>
-                    <li> <a class="${param.current eq 'startseite' ? 'current' : ''}" href="startseite"> Startseite </a></li>
-                    <li> <a class="${param.current eq 'einzelbeleg' ? 'current' : ''}" href="einzelbeleg">
+                    <li> <a class="${param.current eq 'startseite' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/startseite"> Startseite </a></li>
+                    <li> <a class="${param.current eq 'einzelbeleg' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/einzelbeleg">
                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                           <jsp:param name="Formular" value="einzelbeleg"/>
                           <jsp:param name="Textfeld" value="Titel"/>
                         </jsp:include>
                       </a>
                     </li>
-                    <li><a class="${param.current eq 'person' ? 'current' : ''}" href="person.jsp">
+                    <li><a class="${param.current eq 'person' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/person.jsp">
                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                           <jsp:param name="Formular" value="person"/>
                           <jsp:param name="Textfeld" value="Titel"/>
                         </jsp:include>
                       </a>
                     </li>
-                    <li><a class="${param.current eq 'namenkommentar' ? 'current' : ''}" href="mghlemma.jsp">
+                    <li><a class="${param.current eq 'namenkommentar' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/mghlemma.jsp">
                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                           <jsp:param name="Formular" value="namenkommentar"/>
                           <jsp:param name="Textfeld" value="Titel"/>
                         </jsp:include>
                       </a>
                     </li>
-                    <li><a class="${param.current eq 'quelle' ? 'current' : ''}" href="quelle.jsp">
+                    <li><a class="${param.current eq 'quelle' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/quelle.jsp">
                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                           <jsp:param name="Formular" value="quelle"/>
                           <jsp:param name="Textfeld" value="Titel"/>
@@ -76,13 +77,13 @@
                 </ul>
                 <div id="search-wrap">
                     <div id="search">
-                    <FORM method="POST" action="einfaches_ergebnis.jsp">
+                    <FORM method="POST" action="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis.jsp">
                             <input type="hidden" name="form" value="einfache_suche">
                             <input id="button" name="Suchen" value="" type="submit">
                             <input type="text" name="query" placeholder="Suchen">
                     </FORM>
                     </div>
-                      <a id="erweiterte_suche_button" class="${param.current eq 'erweiterte_suche' ? 'erweiterte_suche_active' : ''}" href="freie_suche.jsp">
+                      <a id="erweiterte_suche_button" class="${param.current eq 'erweiterte_suche' ? 'erweiterte_suche_active' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche.jsp">
                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                           <jsp:param name="Formular" value="gast_freie_suche"/>
                           <jsp:param name="Textfeld" value="Titel"/>

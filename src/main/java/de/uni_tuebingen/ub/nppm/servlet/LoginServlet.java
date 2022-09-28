@@ -11,6 +11,7 @@ import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 
 public class LoginServlet extends HttpServlet {
 
@@ -19,23 +20,17 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         if (login == null || login.isEmpty() || !BenutzerDB.hasLogin(login)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            RequestDispatcher rd = request.getRequestDispatcher("servlet/error/invaliduser.jsp");
-            rd.include(request, response);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Benutzer existiert nicht");
         } else {
             Benutzer benutzer = BenutzerDB.getByLogin(login);
             String saltString = benutzer.getSalt();
             if (saltString == null || saltString.isEmpty()) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                RequestDispatcher rd = request.getRequestDispatcher("servlet/error/passwordtooold.jsp");
-                rd.include(request, response);
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Die Sicherheit der Datenbank wurde verbessert. Das Password muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");
             } else {
                 byte[] saltBytes = SaltHash.Base64StringToBytes(saltString);
                 String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
                 if (!passwordSalted.equals(benutzer.getPassword())) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    RequestDispatcher rd = request.getRequestDispatcher("servlet/error/invalidpassword.jsp");
-                    rd.include(request, response);
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ungültiges Passwort.");
                 } else {
                     // Falls Session vorhanden, löschen
                     HttpSession session = request.getSession();
