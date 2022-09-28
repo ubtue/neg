@@ -160,7 +160,7 @@ String test(JspWriter out, Vector<String> headlines, Vector<String> fieldNames, 
                   link = true;
                }
 				else if (fieldNames.get(i).contains("mgh_lemma.MGHLemma")) {
-                    out.print("<a href=\"mghlemma?ID="+rs.getInt("mgh_lemma.ID")+"\">");
+                    out.print("<a href=\"mghlemma.jsp?ID="+rs.getInt("mgh_lemma.ID")+"\">");
                     link = true;
                   }
                      else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {

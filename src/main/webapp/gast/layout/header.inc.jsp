@@ -59,7 +59,7 @@
                         </jsp:include>
                       </a>
                     </li>
-                    <li><a class="${param.current eq 'namenkommentar' ? 'current' : ''}" href="mghlemma">
+                    <li><a class="${param.current eq 'namenkommentar' ? 'current' : ''}" href="mghlemma.jsp">
                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                           <jsp:param name="Formular" value="namenkommentar"/>
                           <jsp:param name="Textfeld" value="Titel"/>
