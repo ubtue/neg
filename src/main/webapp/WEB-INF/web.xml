@@ -57,6 +57,15 @@
       <servlet-name>EinstellungenServlet</servlet-name>
       <url-pattern>/einstellungen</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>MghLemmaServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.MghLemmaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>MghLemmaServlet</servlet-name>
+      <url-pattern>/mghlemma</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>ForgotPasswordServlet</servlet-name>
