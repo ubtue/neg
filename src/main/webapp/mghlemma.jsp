@@ -36,7 +36,6 @@
         } else if(id != Constants.NEW_ITEM) {
             try {
                 //count
-                out.print(sql);
                 BigInteger res = Filter.countFilterItems(sql);
                 if (res != null) {
                     if (res.intValue() == 0) {
