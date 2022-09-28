@@ -11,7 +11,7 @@
     <p>
       <jsp:include page="inc.erzeugeBeschriftung.jsp">
         <jsp:param name="Formular" value="login"/>
-        <jsp:param name="Textfeld" value="ErfolgreichAusgelogt"/>
+        <jsp:param name="Textfeld" value="ErfolgreichAusgeloggt"/>
       </jsp:include>
     </p>
     <!-- <a href="login">
