@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
+import java.math.*;
 
 public class Filter {
     
@@ -93,5 +94,22 @@ public class Filter {
 
         } catch (Exception e) {
         }
+    }
+    
+    public static int getFirstFilterResult(String filterSql, String formular) throws Exception {
+        filterSql = filterSql.replace("*", "min(" + formular + ".ID) m");
+        return (Integer) DatenbankDB.getSingleResult(filterSql);
+    }
+
+    public static BigInteger countFilterItems(String filterSql) throws Exception {
+        String sql = filterSql.replace("*", "count(*) c");
+        return (BigInteger) DatenbankDB.getSingleResult(sql);
+    }
+
+    public static Integer existIdInFilter(String filterSql, String formular, int id) throws Exception {
+        filterSql = filterSql.replace("*", "min(" + formular + ".ID) m");
+        filterSql = filterSql + (filterSql.contains("WHERE") ? " AND " : " WHERE ") + formular + ".ID = " + id;
+        Integer res = (Integer) DatenbankDB.getSingleResult(filterSql);
+        return res;
     }
 }
