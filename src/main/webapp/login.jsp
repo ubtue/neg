@@ -5,7 +5,7 @@
 <HTML>
     <HEAD>
         <TITLE>
-            Nomen et Gens -
+            Nomen et Gens | Login
         </TITLE>
         <link rel="stylesheet" href="layout/layout.css" type="text/css">
         <style>
