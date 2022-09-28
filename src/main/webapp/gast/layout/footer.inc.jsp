@@ -1,4 +1,5 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
+<% //close <div id="page"> and <div id="page-wrap">, see header.inc.jsp  %>
   </div>
 </div>
 <div id="footer">
