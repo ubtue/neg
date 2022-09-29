@@ -71,10 +71,10 @@
                 <p>3. Klicken Sie den Link in Ihrer E-mail an, sie werden weiter geleitet um Ihr Passwort neu zu setzen</p>
                 <br>
                 <div class="div-1">
-                    <form method="post" action="/neg/NewPasswordServlet" id="register-form">
+                    <form method="post" action="newPassword" id="register-form">
                         <input type="email" name="email" id="email" value="" placeholder="Ihre Registrierte E-Mail" />
                         <input type="submit" value="Neues Passwort" name="submit_new_password" />
-                        <a href="index1.jsp"><button type="button">zur&uuml;ck zum Login</button></a>
+                        <a href="login"><button type="button">zur&uuml;ck zum Login</button></a>
                     </form>
 
                 </div>
@@ -91,7 +91,7 @@
 
                 <br>
                 <div class="div-1">
-                    <form  method="post" action="/neg/NewPasswordServlet" id="register-form">
+                    <form method="post" action="newPassword" id="register-form">
                         <div class="div-2">
                             <input type="password" name="newPassword" value="" minlength="6" placeholder="Neues Passwort" />
                             <input type="password" name="repeatPassword" value="" minlength="6" placeholder="Wiederhole neues Passwort" />

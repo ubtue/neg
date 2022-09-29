@@ -16,6 +16,10 @@ public class AuthHelper {
         return 20;
     }
 
+    public static int getSessionTimeout() {
+        return 60*60;
+    }
+
     public static boolean isBenutzerLogin(HttpServletRequest request) throws ServletException, IOException{
         HttpSession session = request.getSession(true);
         if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
