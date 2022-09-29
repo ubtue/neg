@@ -40,7 +40,7 @@ public class Utils {
                 //get id from the first result of the filter
                 id = Filter.getFirstFilterResult(sql, formular);
             } catch (Exception e) {
-                out.println(e);
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getLocalizedMessage());
             }
         } else if (id != Constants.NEW_ITEM) {
             try {
@@ -53,12 +53,12 @@ public class Utils {
                     } else {
                         Integer ret = Filter.existIdInFilter(sql, formular, id);
                         if (ret == null) {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "ID nicht gefunden");
                         }
                     }
                 }
             } catch (Exception e) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "ID nicht vorhanden. javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getLocalizedMessage());
             }
         }
         return id;
