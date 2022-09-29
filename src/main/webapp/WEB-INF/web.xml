@@ -21,6 +21,15 @@
       <servlet-name>EinzelbelegServlet</servlet-name>
       <url-pattern>/gast/einzelbeleg</url-pattern>
   </servlet-mapping>
+  
+   <servlet>
+      <servlet-name>PersonServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.PersonServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>PersonServlet</servlet-name>
+      <url-pattern>/gast/person</url-pattern>
+  </servlet-mapping>
 
   <servlet>
       <servlet-name>HilfeServlet</servlet-name>
