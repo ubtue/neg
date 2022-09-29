@@ -1,161 +1,25 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false"%>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
-<%@ page import="java.sql.SQLException" isThreadSafe="false"%>
-<%@ page import="java.sql.Statement" isThreadSafe="false"%>
-<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
+<%@ page import="java.util.List" isThreadSafe="false"%>
+<%@ page import="java.math.BigInteger" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
 <jsp:include page="doduplicate.jsp" />
 
-<jsp:include page="dofilter.jsp">
-	<jsp:param name="form" value="einzelbeleg" />
-</jsp:include>
-
-
-
 <%
-        Language.setLanguage(request);
-		if (AuthHelper.isBenutzerLogin(request)) {
-
-		int id = -2;
-		int filter = 0;
-		String formular = "einzelbeleg";
-
-		try {
-			id = Integer.parseInt(request.getParameter("ID"));
-		} catch (Exception e) {
-		}
-
-		try {
-			filter = ((Integer) session.getAttribute(formular + "filter")).intValue();
-		} catch (Exception e) {
-		}
-
-		if (id < -1) {
-			Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			String sql = "";
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser, sqlPassword);
-				st = cn.createStatement();
-				rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='" + formular
-						+ "' AND Nummer='" + filter + "';");
-				if (rs.next()) {
-					sql = rs.getString("SQLString");
-				} else {
-					rs = st.executeQuery(
-							"SELECT * FROM datenbank_filter WHERE Formular='" + formular + "' AND Nummer='0';");
-					if (rs.next()) {
-						sql = rs.getString("SQLString");
-					}
-
-				}
-				//       out.println("SQL: " + sql);
-				sql = sql.replace("*", "min(" + formular + ".ID) m");
-				String filterParameter = (String) session.getAttribute(formular + "filterParameter");
-				// out.println("FP" + filterParameter);
-				if (filterParameter != null)
-					sql = sql.replace("###", filterParameter);
-				sql = sql.replace("#userid#", "" + ((Integer) session.getAttribute("BenutzerID")).intValue());
-				sql = sql.replace("#groupid#", "" + ((Integer) session.getAttribute("GruppeID")).intValue());
-				//       rs = st.executeQuery(sql+(sql.contains("WHERE")?" AND ":" WHERE ")+formular+".ID < "+id);
-				//  out.println("SQL: " + sql);
-				rs = st.executeQuery(sql);
-				if (rs.next())
-					id = rs.getInt("m");
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-		} else {
-			Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			String sql = "";
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser, sqlPassword);
-				st = cn.createStatement();
-				rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='" + formular
-						+ "' AND Nummer='" + filter + "';");
-				if (rs.next()) {
-					sql = rs.getString("SQLString");
-				} else {
-					rs = st.executeQuery(
-							"SELECT * FROM datenbank_filter WHERE Formular='" + formular + "' AND Nummer='0';");
-					if (rs.next()) {
-						sql = rs.getString("SQLString");
-					}
-
-				}
-				if (rs.next()) {
-					sql = rs.getString("SQLString");
-				}
-				String filterParameter = (String) session.getAttribute(formular + "filterParameter");
-				if (filterParameter != null)
-					sql = sql.replace("###", filterParameter);
-				sql = sql.replace("#userid#", "" + ((Integer) session.getAttribute("BenutzerID")).intValue());
-				sql = sql.replace("#groupid#", "" + ((Integer) session.getAttribute("GruppeID")).intValue());
-				String sql2 = sql.replace("*", "count(*) c");
-				//      out.println(sql2);
-				//       if(true)return;
-				rs = st.executeQuery(sql2);
-				if (rs.next()) {
-					if (rs.getString("c").equals("0"))
-						id = -1;
-					else {
-						sql = sql.replace("*", "min(" + formular + ".ID) m");
-						rs = st.executeQuery(
-								sql + (sql.contains("WHERE") ? " AND " : " WHERE ") + formular + ".ID = " + id);
-						if (rs.next() && id > -1 && rs.getString("m") == null) {
-							out.println(
-									"ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-							return;
-						}
-					}
-				}
-			} catch (Exception e) {
-				out.println(
-						"ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-				return;
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-		}
+    int id = Constants.UNDEFINED_ID;
+    String formular = "einzelbeleg";
+    Filter.setFilter(request, formular, out);
+    Language.setLanguage(request);
+    if (AuthHelper.isBenutzerLogin(request)) {
+        id = Utils.determineId(request, response, formular, out);
 %>
 
 <jsp:include page="dosave.jsp">
