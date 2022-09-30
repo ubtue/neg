@@ -31,15 +31,6 @@
 	<jsp:param name="form" value="einzelbeleg" />
 </jsp:include>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-    <TITLE>Nomen et Gens - <% Language.printTextfield(out, session, formular, "Titel"); %>
-</TITLE>
-<link rel="stylesheet" href="layout/layout.css" type="text/css">
-<script src="javascript/funktionen.js" type="text/javascript"></script>
-</HEAD>
-
 <div
 	onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');urlRewrite(<%=id%>);">
 	<FORM method="POST">
@@ -701,7 +692,6 @@
 		</div>
 	</FORM>
 </div>
-</HTML>
 <%
 	} else {
 %>
