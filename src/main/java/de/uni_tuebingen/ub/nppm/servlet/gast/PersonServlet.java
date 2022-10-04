@@ -29,8 +29,6 @@ public class PersonServlet extends AbstractGastServlet {
             RequestDispatcher rd = request.getRequestDispatcher("person.jsp");
             rd.include(request, response);
         }
-
-
     }
 
     @Override
