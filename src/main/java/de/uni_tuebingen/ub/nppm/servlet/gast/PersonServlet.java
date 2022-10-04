@@ -4,6 +4,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import de.uni_tuebingen.ub.nppm.db.PersonDB;
+import de.uni_tuebingen.ub.nppm.model.Einzelbeleg;
+import de.uni_tuebingen.ub.nppm.model.Person;
+import de.uni_tuebingen.ub.nppm.model.Quelle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,8 @@ public class PersonServlet extends AbstractGastServlet {
             RequestDispatcher rd = request.getRequestDispatcher("person.jsp");
             rd.include(request, response);
         }
+
+
     }
 
     @Override
