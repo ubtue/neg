@@ -52,7 +52,7 @@
                         </jsp:include>
                       </a>
                     </li>
-                    <li><a class="${param.current eq 'person' ? 'current' : ''}" href="person.jsp">
+                    <li><a class="${param.current eq 'person' ? 'current' : ''}" href="person">
                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                           <jsp:param name="Formular" value="person"/>
                           <jsp:param name="Textfeld" value="Titel"/>

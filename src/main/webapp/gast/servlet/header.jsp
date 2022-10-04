@@ -12,6 +12,8 @@
 
     ${additionalCss}
 
+    ${additionalJs}
+
  </HEAD>
  <BODY>
     <jsp:include page="../layout/header.inc.jsp">
