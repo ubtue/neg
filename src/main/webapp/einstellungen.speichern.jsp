@@ -1,14 +1,15 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.BenutzerDB"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Benutzer"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.SaltHash"%>
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%@page import="de.uni_tuebingen.ub.nppm.util.AuthHelper"%>
+
 
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
 <%
+
+  boolean actionDone = false;
   if (session.getAttribute("BenutzerID")!=null
       && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0
      ) {
@@ -19,48 +20,23 @@
       out.println("<a href=\"index.jsp\">Zur&uuml;ck zur Startseite</a>");
     }
     else {
-    
-     Connection cn = null;
-  Statement st = null;
-  ResultSet rs = null;
-  String email = "";
 
-    boolean isAdmin = false;
+
+
     int benutzerID=((Integer)session.getAttribute("BenutzerID")).intValue();
-  try {
-  
-  
-    Class.forName( sqlDriver );
-    cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-    st = cn.createStatement();
-    rs = st.executeQuery("SELECT * FROM benutzer WHERE ID="+benutzerID+";");
-    rs.next();
-    
-    isAdmin = rs.getString("IstAdmin").equals("1");
-    
+    Benutzer benutzer = BenutzerDB.getById(benutzerID);
+    boolean isAdmin = benutzer.isAdmin();
     if(isAdmin && request.getParameter("ID")!=null){
        benutzerID=Integer.parseInt(request.getParameter("ID"));
-       rs = st.executeQuery("SELECT * FROM benutzer WHERE ID="+benutzerID+";");
-       rs.next();
-    
+       benutzer = BenutzerDB.getById(benutzerID);
     }
-          }
-      catch (Exception e) {
-        out.println(e);
-      }
-      finally {
-        try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-        try { if( null != st ) st.close(); } catch( Exception ex ) {}
-        try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-      }
-    
-    
+
 
 %>
 
 <HTML>
   <HEAD>
-    <TITLE>Nomen et Gens - 
+    <TITLE>Nomen et Gens -
       <jsp:include page="inc.erzeugeBeschriftung.jsp">
         <jsp:param name="Formular" value="einstellungen"/>
         <jsp:param name="Textfeld" value="Titel"/>
@@ -78,11 +54,6 @@
     <div id="form">
 
 <%
-  String sql = "";
-  String sql_1 = "";
-  String sql_2 = "";
-  boolean fehler = true;
-    
   if (request.getParameter("action").equals("Einstellungen")) {
     if (request.getParameter("email").equals("")) {
 %>
@@ -93,16 +64,15 @@
 <%
     }
     else {
-      String admin ="0";
-      if(isAdmin && request.getParameter("Administrator")!=null && request.getParameter("Administrator").equals("on")) admin="1";
-      String aktiv ="";
-       if(isAdmin) 
-          if(request.getParameter("Aktiv")!=null && request.getParameter("Aktiv").equals("on")) aktiv="1";
-          else aktiv="0";
-       
-    //  out.println(aktiv);      
-      sql = "UPDATE benutzer SET EMail='"+request.getParameter("email")+"', Sprache='"+request.getParameter("Sprache")+"', Login='"+request.getParameter("Benutzername")+"', Vorname='"+request.getParameter("Vorname")+"', Nachname='"+request.getParameter("Nachname")+"', IstAdmin="+admin+ (!aktiv.equals("")?(", IstAktiv="+aktiv):"") + " WHERE ID="+benutzerID+";";
-      fehler = false;
+      benutzer.setEMail(request.getParameter("email"));
+      benutzer.setSprache(request.getParameter("Sprache"));
+      benutzer.setLogin(request.getParameter("Benutzername"));
+      benutzer.setVorname(request.getParameter("Vorname"));
+      benutzer.setNachname(request.getParameter("Nachname"));
+      benutzer.setAdmin(request.getParameter("Administrator").equals("on"));
+      benutzer.setAktiv(request.getParameter("Aktiv")!=null && request.getParameter("Aktiv").equals("on"));
+      BenutzerDB.saveOrUpdate(benutzer);
+      actionDone = true;
     }
   }
 
@@ -140,138 +110,56 @@
 <%
     }
     else {
-       cn = null;
-        st = null;
-        rs = null;
-
-      try {
-        String oldPassword = request.getParameter("PasswortAlt");
         String newPassword = request.getParameter("PasswortNeu");
-        String dBPassword = "";
-        String dbSalt = "";
+        String algorithm = AuthHelper.getPasswordHashingAlgorithm();
 
-        Class.forName( sqlDriver );
-        cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-        st = cn.createStatement();
-          rs = st.executeQuery("SELECT Salt FROM benutzer WHERE ID="+benutzerID+";");
-
-          if(rs.next())
-          {
-            dbSalt = rs.getString("Salt");
-          }
-
-
-        rs = st.executeQuery("SELECT Password FROM benutzer WHERE ID="+benutzerID+";");
-
-       
-        if(rs.next())
-        {
-            dBPassword = rs.getString("Password"); //get password from database; 
+        boolean isOldPasswordCorrect = false;
+        if (!isAdmin) {
+            String oldSaltString = benutzer.getSalt();
+            byte[] oldSaltBytes = SaltHash.Base64StringToBytes(oldSaltString);
+            String oldPassword = request.getParameter("PasswortAlt");
+            String oldPasswordHash = SaltHash.GenerateHash(oldPassword, algorithm, oldSaltBytes);
+            String oldDbPasswordHash = benutzer.getPassword();
+            if (!oldPasswordHash.equals(oldDbPasswordHash)) {
+%>
+              <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="einstellungen"/>
+                <jsp:param name="Textfeld" value="FehlerPasswortAltFalsch"/>
+              </jsp:include>
+<%
+            } else {
+                isOldPasswordCorrect = true;
+            }
         }
 
-      
-
-        //Hash and Salt oldPassword
-        //i want to Salt and Hash oldPassword
-        SaltHash saltHash = new SaltHash();
-        String algorithm = "MD5";
-       
-        oldPassword = saltHash.decodeSaltHash(oldPassword, algorithm, dbSalt); 
-
-        if(isAdmin || dBPassword.equals(oldPassword))
-        {
-            
-            SaltHash saltHashNew = new SaltHash();
-            String algorithmNew = "MD5";
-            byte[] saltNew = saltHash.createSalt();
-            newPassword = saltHash.generateHash(request.getParameter("PasswortNeu"), algorithm, saltNew);
-            fehler = false;
-            sql_1 = "UPDATE benutzer SET Password=\""+ newPassword +"\" WHERE ID="+ benutzerID +";";
-            sql_2 = "UPDATE benutzer SET Salt =\""+ saltHash.getSaltString() +"\" WHERE ID="+ benutzerID +";";
-        }           
-         else {
-%>
-            <jsp:include page="inc.erzeugeBeschriftung.jsp">
-              <jsp:param name="Formular" value="einstellungen"/>
-              <jsp:param name="Textfeld" value="FehlerPasswortAltFalsch"/>
-            </jsp:include>
-<%
-          }
-        
-      }//end try
-      catch (Exception e) {
-        out.println(e);
-      }
-      finally {
-        try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-        try { if( null != st ) st.close(); } catch( Exception ex ) {}
-        try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-      }
+        if(isAdmin || isOldPasswordCorrect) {
+            byte[] newSaltBytes = SaltHash.GenerateRandomSalt(AuthHelper.getPasswordSaltLength());
+            String newSaltString = SaltHash.BytesToBase64String(newSaltBytes);
+            String newPasswordHash = SaltHash.GenerateHash(newPassword, algorithm, newSaltBytes);
+            benutzer.setPassword(newPasswordHash);
+            benutzer.setSalt(newSaltString);
+            BenutzerDB.saveOrUpdate(benutzer);
+            actionDone = true;
+        }
     }
   }
 
-  if (!fehler) {
-     cn = null;
-      st = null;
-
-    try {
-      Class.forName( sqlDriver );
-      cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      st = cn.createStatement();
-      if(sql.length() > 0)
-        st.executeUpdate(sql);
-      if(sql_1.length() > 0 && sql_2.length()>0)
-      {
-         st.executeUpdate(sql_1);
-         st.executeUpdate(sql_2);
-      }
-      
+}
 %>
-        <jsp:include page="inc.erzeugeBeschriftung.jsp">
-          <jsp:param name="Formular" value="einstellungen"/>
-          <jsp:param name="Textfeld" value="ErfolgDaten"/>
-        </jsp:include>
-        <a href="javascript:history.back()">
-          <jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einstellungen"/>
-            <jsp:param name="Textfeld" value="Zurueck"/>
-          </jsp:include>
-        </a>
-<%
-    }
-    catch (Exception e) {
-      out.println(e);      
-    }
-    finally {
-      try { if( null != st ) st.close(); } catch( Exception ex ) {}
-      try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-      try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-    }
-  }
-%>
+<% if (actionDone) {%>
+  <jsp:include page="inc.erzeugeBeschriftung.jsp">
+    <jsp:param name="Formular" value="einstellungen"/>
+    <jsp:param name="Textfeld" value="ErfolgDaten"/>
+  </jsp:include>
+  <a href="javascript:history.back()">
+    <jsp:include page="inc.erzeugeBeschriftung.jsp">
+      <jsp:param name="Formular" value="einstellungen"/>
+      <jsp:param name="Textfeld" value="Zurueck"/>
+    </jsp:include>
+  </a>
+<% }
+}%>
 
     </div>
   </BODY>
 </HTML>
-
-<%
-    }
-  }
-  else {
-  %>
-    <p>
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-      </jsp:include>
-    </p>
-    <a href="index.jsp">
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a>
-  <%
-  }
-%>
-

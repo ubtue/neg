@@ -38,7 +38,7 @@
   </a>
   <br>
   <hr>
-  <a href="mghlemma.jsp">
+  <a href="mghlemma">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="mgh_lemma"/>
       <jsp:param name="Textfeld" value="Titel"/>
