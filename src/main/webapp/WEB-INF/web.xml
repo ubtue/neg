@@ -68,11 +68,11 @@
   </servlet-mapping>
   
   <servlet>
-      <servlet-name>EinzelbelegServlet</servlet-name>
+      <servlet-name>BackendEinzelbelegServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinzelbelegServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-      <servlet-name>EinzelbelegServlet</servlet-name>
+      <servlet-name>BackendEinzelbelegServlet</servlet-name>
       <url-pattern>/einzelbeleg</url-pattern>
   </servlet-mapping>
 
