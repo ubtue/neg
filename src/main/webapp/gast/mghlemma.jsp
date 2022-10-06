@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB"%>
 <%@ page import="java.util.Vector" isThreadSafe="false"%>
 <%@ page import="java.util.Enumeration" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
@@ -72,6 +73,47 @@
     Vector<String> tables = new Vector<String>();
     tables.add("mghlemma");
     tables.add("person");
+
+   String sprache = "de";
+   if (session != null && session.getAttribute("Sprache") != null)
+      sprache = (String)session.getAttribute("Sprache");
+
+   Vector<String> joins = new Vector<String>();
+   Vector<String> headlines = new Vector<String>();
+
+  // DatenbankDB.getLanguageLettering(formular, datafield, sprache)
+
+  sprache = "de_Beschriftung";
+
+
+
+    headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Person_Standardname",sprache));
+
+
+	headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Person_AmtWeihe", sprache));
+        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Person_AmtWeiheZeitraum", sprache));
+        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Person_Ethnie", sprache));
+        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Quelle", sprache));
+        headlines.add(DatenbankDB.getLanguageLettering("quelle", "Edition", sprache));
+        headlines.add(DatenbankDB.getLanguageLettering("einzelbeleg", "EditionKapitel", sprache));
+        headlines.add(DatenbankDB.getLanguageLettering("einzelbeleg", "EditionSeite", sprache));
+        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Einzelbeleg_Belegform", sprache));
+        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Einzelbeleg_Kontext", sprache));
+
+
+		headlines.add("von T.");
+		headlines.add("von M.");
+		headlines.add("von J.");
+		headlines.add("von Jh.");
+		headlines.add("bis T.");
+		headlines.add("bis M.");
+		headlines.add("bis J.");
+		headlines.add("bis Jh.");
+
+        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Einzelbeleg_Lebend", sprache));
+        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Einzelbeleg_Varianten", sprache));
+
+
 %>
 
 <jsp:include page="../dojump.jsp">

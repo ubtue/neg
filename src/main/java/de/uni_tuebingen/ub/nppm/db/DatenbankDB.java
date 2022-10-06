@@ -2,6 +2,7 @@ package de.uni_tuebingen.ub.nppm.db;
 
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
+import javax.persistence.TypedQuery;
 import org.hibernate.*;
 import javax.persistence.criteria.*;
 
@@ -73,7 +74,7 @@ public class DatenbankDB extends AbstractBase {
         if (rows.isEmpty()) {
             return null;
         }
-        return (DatenbankTexte)rows.get(0);
+        return (DatenbankTexte) rows.get(0);
     }
 
     public static DatenbankMapping getMapping(String formular, String datafield) throws Exception {
@@ -92,8 +93,49 @@ public class DatenbankDB extends AbstractBase {
         if (rows.isEmpty()) {
             return null;
         }
-        return (DatenbankMapping)rows.get(0);
+        return (DatenbankMapping) rows.get(0);
     }
+
+    public static String getLanguageLettering(String formular, String datafield, String sprache) throws Exception {
+
+        Session session =getSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
+        Root<DatenbankMapping> root = criteria.from(DatenbankMapping.class);
+        criteria.select(root).where(
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("datenfeld"), datafield),
+                        criteriaBuilder.equal(root.get("formular"), formular)
+                )
+        );
+        DatenbankMapping dm;
+        String lettering = "";
+
+        TypedQuery<DatenbankMapping> typedQuery = session.createQuery(criteria);
+         dm = typedQuery.getSingleResult();
+
+         switch(sprache)
+         {
+             case "de_Beschriftung":
+                 lettering = dm.getDeBeschriftung();
+                 break;
+
+             case "fr_beschriftung":
+                 lettering = dm.getFrBeschriftung();
+                 break;
+
+             case "gb_beschriftung":
+                 lettering = dm.getGbBeschriftung();
+
+             case "la_beschriftung":
+                 lettering = dm.getLaBeschriftung();
+
+             default:
+                 break;
+         }
+        return lettering;
+    }
+
 
     public static String getMapping(String lang, String formular, String datafield) throws Exception {
         DatenbankMapping mapping = getMapping(formular, datafield);
@@ -108,10 +150,11 @@ public class DatenbankDB extends AbstractBase {
         Session session = getSession();
         SQLQuery query = session.createSQLQuery(sql);
         List<Object> rows = query.getResultList();
-        if(rows.size() > 0)
+        if (rows.size() > 0) {
             return rows.get(0);
-        else
+        } else {
             return null;
+        }
     }
 
 }
