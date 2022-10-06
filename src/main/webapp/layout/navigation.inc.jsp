@@ -14,7 +14,7 @@
 %>
 
 <div id="navigation">
-  <a href="einzelbeleg.jsp">
+  <a href="einzelbeleg">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="einzelbeleg"/>
       <jsp:param name="Textfeld" value="Titel"/>
