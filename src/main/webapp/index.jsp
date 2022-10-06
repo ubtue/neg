@@ -13,7 +13,7 @@
 
 <%
   if (AuthHelper.isBenutzerLogin(request)) {
-    %><jsp:forward page="einzelbeleg.jsp" /><%
+    %><jsp:forward page="einzelbeleg" /><%
   }
   else if (AuthHelper.isGastLogin(request)) {
     response.sendRedirect("gast/startseite");
@@ -64,7 +64,7 @@
             response.sendRedirect("gast/startseite");
           }
           else{
-            response.sendRedirect("einzelbeleg.jsp");
+            response.sendRedirect("einzelbeleg");
           }
         }
         else {

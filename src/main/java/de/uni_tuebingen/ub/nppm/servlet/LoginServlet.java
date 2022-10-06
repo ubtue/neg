@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
                     if ((Boolean) session.getAttribute("Gast")) {
                         response.sendRedirect("gast/startseite");
                     } else {
-                        response.sendRedirect("einzelbeleg.jsp");
+                        response.sendRedirect("einzelbeleg");
                     }
                 }
             }
@@ -62,7 +62,7 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             if (AuthHelper.isBenutzerLogin(request)) {
-                response.sendRedirect("einzelbeleg.jsp");
+                response.sendRedirect("einzelbeleg");
             } else if (AuthHelper.isGastLogin(request)) {
                 response.sendRedirect("gast/startseite");
             } else if (request.getParameter("action") != null) {

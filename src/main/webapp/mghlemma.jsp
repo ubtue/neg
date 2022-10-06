@@ -19,41 +19,8 @@
     Language.setLanguage(request);
     Filter.setFilter(request, formular, out);
     if (AuthHelper.isBenutzerLogin(request)) {
-        String reqID = request.getParameter("ID");
-        if (reqID != null && Utils.isNumeric(reqID)) {
-            id = Integer.parseInt(reqID);
-        }
-
-        String sql = Filter.getFilterSql(request, formular);
-
-        if (id == Constants.UNDEFINED_ID ) { //no id is set as parameter
-            try {
-                //get id from the first result of the filter
-                id = Filter.getFirstFilterResult(sql,formular);
-            } catch (Exception e) {
-                out.println(e);
-            }
-        } else if(id != Constants.NEW_ITEM) {
-            try {
-                //count
-                BigInteger res = Filter.countFilterItems(sql);
-                if (res != null) {
-                    if (res.intValue() == 0) {
-                        //no items with this filter
-                        id = -1;
-                    } else {
-                        Integer ret = Filter.existIdInFilter(sql,formular,id);
-                        if (ret == null) {
-                            out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-                            return;
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-                return;
-            }
-        }
+        id = Utils.determineId(request, response, formular, out);
+    
         
 %>
 

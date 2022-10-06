@@ -84,6 +84,15 @@
       <servlet-name>MghLemmaServlet</servlet-name>
       <url-pattern>/mghlemma</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendEinzelbelegServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinzelbelegServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendEinzelbelegServlet</servlet-name>
+      <url-pattern>/einzelbeleg</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>ForgotPasswordServlet</servlet-name>
