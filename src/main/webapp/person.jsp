@@ -3,122 +3,25 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.sql.SQLException" isThreadSafe="false"%>
 <%@ page import="java.sql.Statement" isThreadSafe="false"%>
+<%@ page import="java.util.List" isThreadSafe="false"%>
+<%@ page import="java.math.BigInteger" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
-<jsp:include page="dofilter.jsp">
-     <jsp:param name="form" value="person" />
-</jsp:include>
-
-<%
-  Language.setLanguage(request);
-  if (AuthHelper.isBenutzerLogin(request)) {
-
-		int id = -2;
-		int filter = 0;
-		String formular = "person";
-
-		try {
-			id = Integer.parseInt(request.getParameter("ID"));
-		} catch (Exception e) {
-		}
-		try {
-			filter = ((Integer) session.getAttribute(formular+"filter"))
-					.intValue();
-		} catch (Exception e) {
-		}
-
-    if (id < -1) {
-      Connection cn = null;
-      Statement st = null;
-      ResultSet rs = null;
-      String sql = "";
-      try {
-        Class.forName( sqlDriver );
-        cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-        st = cn.createStatement();
-        rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='"+formular+"' AND Nummer='"+filter+"';");
-        if (rs.next()) {
-          sql = rs.getString("SQLString");
-        }
-        else{
-        rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='"+formular+"' AND Nummer='0';");
-           if (rs.next()) {
-             sql = rs.getString("SQLString");
-           }
+<%    
+    int id = Constants.UNDEFINED_ID;
+    String formular = "person";
+    Language.setLanguage(request);
+    Filter.setFilter(request, formular, out);
+    if (AuthHelper.isBenutzerLogin(request)) {
+        id = Utils.determineId(request, response, formular, out);
+    
         
-        }
- //       out.println("SQL: " + sql);
-        sql = sql.replace("*", "min("+formular+".ID) m");
-        String filterParameter = (String) session.getAttribute(formular+"filterParameter");
-        if (filterParameter != null)
-          sql = sql.replace("###", filterParameter);
-        sql = sql.replace("#userid#", ""+((Integer)session.getAttribute("BenutzerID")).intValue());
-        sql = sql.replace("#groupid#", ""+((Integer)session.getAttribute("GruppeID")).intValue());
- //       rs = st.executeQuery(sql+(sql.contains("WHERE")?" AND ":" WHERE ")+formular+".ID < "+id);
-  //      out.println("SQL: " + sql);
-        rs = st.executeQuery(sql);
-        if (rs.next())
-          id = rs.getInt("m");
- 	   } catch (Exception e) {
-           out.println(e);
-       }      finally {
-        try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-        try { if( null != st ) st.close(); } catch( Exception ex ) {}
-        try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-      }
-   }else    {
-      Connection cn = null;
-      Statement st = null;
-      ResultSet rs = null;
-      String sql = "";
-      try {
-        Class.forName( sqlDriver );
-        cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-        st = cn.createStatement();
-        rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='"+formular+"' AND Nummer='"+filter+"';");
-        if (rs.next()) {
-          sql = rs.getString("SQLString");
-        }
-        else{
-           rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='"+formular+"' AND Nummer='0';");
-           if (rs.next()) {
-             sql = rs.getString("SQLString");
-           }
-        
-        }
-        if (rs.next()) {
-          sql = rs.getString("SQLString");
-        }
-        String filterParameter = (String) session.getAttribute(formular + "filterParameter");
-        if (filterParameter != null)
-          sql = sql.replace("###", filterParameter);
-        sql = sql.replace("#userid#", ""+((Integer)session.getAttribute("BenutzerID")).intValue());
-        sql = sql.replace("#groupid#", ""+((Integer)session.getAttribute("GruppeID")).intValue());
-         String sql2 = sql.replace("*", "count(*) c");
- //       out.println(sql2);
- //       if(true)return;
-        rs = st.executeQuery(sql2);
-        if (rs.next()){
-           if(rs.getString("c").equals("0")) id=-1;
-           else{
-           sql = sql.replace("*", "min("+formular+".ID) m");
-           rs = st.executeQuery(sql+(sql.contains("WHERE")?" AND ":" WHERE ")+formular+".ID = "+id);
-           if (rs.next()&& id>-1 && rs.getString("m")==null){
-              out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-              return;
-           }}}
-	      } catch (Exception e) {
-              out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-             return;
-           }
-      finally {
-        try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-        try { if( null != st ) st.close(); } catch( Exception ex ) {}
-        try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-      }
-    }
 %>
 
 <jsp:include page="dosave.jsp">
@@ -129,19 +32,8 @@
 	<jsp:param name="form" value="person" />
 </jsp:include>
 
-<HTML>
-<HEAD>
-<TITLE>Nomen et Gens - <jsp:include
-	page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="person" />
-	<jsp:param name="Textfeld" value="Titel" />
-</jsp:include></TITLE>
-<link rel="stylesheet" href="layout/layout.css" type="text/css">
-<script src="javascript/funktionen.js" type="text/javascript"></script>
-<noscript></noscript>
-</HEAD>
 
-<BODY
+<div
 	onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');urlRewrite(<%=id%>);">
 <FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
 <jsp:include page="layout/image.inc.html" /> <jsp:include
@@ -574,8 +466,7 @@
 </div>
 </div>
 </FORM>
-</BODY>
-</HTML>
+</div>
 <%
   }
   else {
