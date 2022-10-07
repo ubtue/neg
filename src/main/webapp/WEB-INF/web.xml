@@ -77,6 +77,15 @@
   </servlet-mapping>
   
   <servlet>
+      <servlet-name>BackendNamenkommentarServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.NamenkommentarServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendNamenkommentarServlet</servlet-name>
+      <url-pattern>/namenkommentar</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
       <servlet-name>PersonServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.PersonServlet</servlet-class>
   </servlet>
