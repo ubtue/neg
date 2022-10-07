@@ -77,11 +77,11 @@
   </servlet-mapping>
   
   <servlet>
-      <servlet-name>PersonServlet</servlet-name>
+      <servlet-name>BackendPersonServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.PersonServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-      <servlet-name>PersonServlet</servlet-name>
+      <servlet-name>BackendPersonServlet</servlet-name>
       <url-pattern>/person</url-pattern>
   </servlet-mapping>
 
