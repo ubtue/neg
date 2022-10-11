@@ -128,6 +128,14 @@
 	<jsp:param name="form" value="gast_mgh_lemma" />
 </jsp:include>
 
+<jsp:include page="layout/titel.inc.jsp">
+	<jsp:param name="title" value="mgh_lemma" />
+	<jsp:param name="ID" value="<%= id %>" />
+	<jsp:param name="size" value="" />
+	<jsp:param name="Formular" value="mgh_lemma" />
+</jsp:include>
+
+
 
 
 <!----------ID---------->
