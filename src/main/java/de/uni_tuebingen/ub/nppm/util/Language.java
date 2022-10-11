@@ -51,19 +51,6 @@ public class Language {
         printLabel(out,session,formular,null,textfield);
     }
 
-    /*
-    private static void printLabel(JspWriter out,HttpSession session, String formular, String datenfeld, String textfeld) throws Exception{
-        String lang = "de";
-        //try to get language from session
-        if (session != null && session.getAttribute("Sprache") != null)
-            lang = (String)session.getAttribute("Sprache");
-        if (datenfeld == null && textfeld != null) {
-            out.println(DatenbankDB.getLabel(lang, formular, textfeld));
-        }else if (datenfeld != null && textfeld == null) {
-          //  out.println(DatenbankDB.getMapping(lang, formular, datenfeld));
-        }
-    }
-*/
  private static void printLabel(JspWriter out,HttpSession session, String formular, String datenfeld, String textfeld) throws Exception{
         String lang = "de";
         //try to get language from session

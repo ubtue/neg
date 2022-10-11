@@ -62,6 +62,8 @@ public abstract class AbstractServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         initRequest(request);
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
         addResponseHeader(request, response);
         generatePage(request, response);
         addResponseFooter(request, response);
