@@ -30,25 +30,4 @@ public class PersonServlet extends AbstractGastServlet {
             rd.include(request, response);
         }
     }
-
-    @Override
-     protected List<String> getAdditionalCss(){
-        ArrayList<String> list = new ArrayList<>();
-
-        list.add("layout/fonts/open-sans.css");
-        list.add("layout/fonts/alegreya-sans-sc.css");
-
-        return list;
-    }
-
-    @Override
-     protected List<String> getAdditionalJavaScript(){
-        ArrayList<String> list = new ArrayList<>();
-
-        list.add("../javascript/jquery-1.11.1.min.js");
-        list.add("../javascript/funktionen.js");
-        list.add("../javascript/javascript.js");
-
-        return list;
-    }
 }
