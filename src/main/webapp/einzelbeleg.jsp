@@ -18,8 +18,7 @@
     String formular = "einzelbeleg";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    if (AuthHelper.isBenutzerLogin(request)) {
-        id = Utils.determineId(request, response, formular, out);
+    id = Utils.determineId(request, response, formular, out);
 %>
 
 <jsp:include page="dosave.jsp">
@@ -692,15 +691,3 @@
 		</div>
 	</FORM>
 </div>
-<%
-	} else {
-%>
-<p>
-     <% Language.printTextfield(out,session, "error","Zugriff");%>
-</p>
-<a href="index.jsp">
-     <% Language.printTextfield(out,session, "all","Startseite");%>
-</a>
-<%
-	}
-%>

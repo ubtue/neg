@@ -22,7 +22,7 @@
   </a>
   <br>
   <hr>
-  <a href="person.jsp">
+  <a href="person">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="person"/>
       <jsp:param name="Textfeld" value="Titel"/>
