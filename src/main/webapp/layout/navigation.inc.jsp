@@ -30,7 +30,7 @@
   </a>
   <br>
   <hr>
-  <a href="namenkommentar.jsp">
+  <a href="namenkommentar">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="namenkommentar"/>
       <jsp:param name="Textfeld" value="Titel"/>
