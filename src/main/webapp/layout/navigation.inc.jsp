@@ -54,7 +54,7 @@
   </a>
   <br>
   <hr>
-  <a href="edition.jsp">
+  <a href="edition">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="edition"/>
       <jsp:param name="Textfeld" value="Titel"/>
