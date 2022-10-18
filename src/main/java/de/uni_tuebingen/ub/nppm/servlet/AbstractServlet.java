@@ -28,6 +28,13 @@ public abstract class AbstractServlet extends HttpServlet {
         }
         request.setAttribute("additionalCss", additional_css);
 
+        List<String> js_list = getAdditionalJavaScript();
+        String additional_js = "";
+        for (String js : js_list) {
+            additional_js += "<script src=\""+js+"\" type=\"text/javascript\"></script>";
+        }
+        request.setAttribute("additionalJs", additional_js);
+
         rd.include(request, response);
     }
 
@@ -37,6 +44,10 @@ public abstract class AbstractServlet extends HttpServlet {
     }
 
     protected List<String> getAdditionalCss() {
+        return new ArrayList<>();
+    }
+
+     protected List<String> getAdditionalJavaScript() {
         return new ArrayList<>();
     }
 
@@ -51,6 +62,8 @@ public abstract class AbstractServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         initRequest(request);
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
         addResponseHeader(request, response);
         generatePage(request, response);
         addResponseFooter(request, response);

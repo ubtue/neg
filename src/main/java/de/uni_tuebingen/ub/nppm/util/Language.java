@@ -41,17 +41,17 @@ public class Language {
             }
         }
     }
-    
+
     public static void printDatafield(JspWriter out,HttpSession session, String formular, String datenfeld) throws Exception{
         out.print("<label for=\""+datenfeld+"\">");
-        printLabel(out,session,formular,datenfeld,null);  
+        printLabel(out,session,formular,datenfeld,null);
         out.print("</label>");
     }
     public static void printTextfield(JspWriter out,HttpSession session, String formular, String textfield) throws Exception{
-        printLabel(out,session,formular,null,textfield);   
+        printLabel(out,session,formular,null,textfield);
     }
-    
-    private static void printLabel(JspWriter out,HttpSession session, String formular, String datenfeld, String textfeld) throws Exception{
+
+ private static void printLabel(JspWriter out,HttpSession session, String formular, String datenfeld, String textfeld) throws Exception{
         String lang = "de";
         //try to get language from session
         if (session != null && session.getAttribute("Sprache") != null)
@@ -60,6 +60,6 @@ public class Language {
             out.println(DatenbankDB.getLabel(lang, formular, textfeld));
         }else if (datenfeld != null && textfeld == null) {
             out.println(DatenbankDB.getMapping(lang, formular, datenfeld));
-        }        
+        }
     }
 }
