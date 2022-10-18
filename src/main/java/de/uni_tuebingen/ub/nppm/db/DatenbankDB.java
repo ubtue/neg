@@ -96,46 +96,6 @@ public class DatenbankDB extends AbstractBase {
         return (DatenbankMapping) rows.get(0);
     }
 
-    public static String getLanguageLettering(String formular, String datafield, String sprache) throws Exception {
-
-        Session session =getSession();
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
-        Root<DatenbankMapping> root = criteria.from(DatenbankMapping.class);
-        criteria.select(root).where(
-                criteriaBuilder.and(
-                        criteriaBuilder.equal(root.get("datenfeld"), datafield),
-                        criteriaBuilder.equal(root.get("formular"), formular)
-                )
-        );
-        DatenbankMapping dm;
-        String lettering = "";
-
-        TypedQuery<DatenbankMapping> typedQuery = session.createQuery(criteria);
-         dm = typedQuery.getSingleResult();
-
-         switch(sprache)
-         {
-             case "de_Beschriftung":
-                 lettering = dm.getDeBeschriftung();
-                 break;
-
-             case "fr_beschriftung":
-                 lettering = dm.getFrBeschriftung();
-                 break;
-
-             case "gb_beschriftung":
-                 lettering = dm.getGbBeschriftung();
-
-             case "la_beschriftung":
-                 lettering = dm.getLaBeschriftung();
-
-             default:
-                 break;
-         }
-        return lettering;
-    }
-
 
     public static String getMapping(String lang, String formular, String datafield) throws Exception {
         DatenbankMapping mapping = getMapping(formular, datafield);

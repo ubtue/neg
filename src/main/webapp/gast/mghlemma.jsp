@@ -81,44 +81,36 @@
     tables.add("person");
 
    String sprache = "de";
+
+
+   //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
    if (session != null && session.getAttribute("Sprache") != null)
-      sprache = (String)session.getAttribute("Sprache");
+         sprache = (String)session.getAttribute("Sprache");
+
 
    Vector<String> joins = new Vector<String>();
    Vector<String> headlines = new Vector<String>();
 
-  // DatenbankDB.getLanguageLettering(formular, datafield, sprache)
-
-  sprache = "de_Beschriftung";
-
-
-
-    headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Person_Standardname",sprache));
-
-
-	headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Person_AmtWeihe", sprache));
-        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Person_AmtWeiheZeitraum", sprache));
-        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Person_Ethnie", sprache));
-        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Quelle", sprache));
-        headlines.add(DatenbankDB.getLanguageLettering("quelle", "Edition", sprache));
-        headlines.add(DatenbankDB.getLanguageLettering("einzelbeleg", "EditionKapitel", sprache));
-        headlines.add(DatenbankDB.getLanguageLettering("einzelbeleg", "EditionSeite", sprache));
-        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Einzelbeleg_Belegform", sprache));
-        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Einzelbeleg_Kontext", sprache));
-
-
-		headlines.add("von T.");
-		headlines.add("von M.");
-		headlines.add("von J.");
-		headlines.add("von Jh.");
-		headlines.add("bis T.");
-		headlines.add("bis M.");
-		headlines.add("bis J.");
-		headlines.add("bis Jh.");
-
-        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Einzelbeleg_Lebend", sprache));
-        headlines.add(DatenbankDB.getLanguageLettering("freie_suche", "Ausgabe_Einzelbeleg_Varianten", sprache));
-
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
+    headlines.add(DatenbankDB.getMapping( sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeiheZeitraum"));
+    headlines.add(DatenbankDB.getMapping(sprache,"freie_suche", "Ausgabe_Person_Ethnie"));
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
+    headlines.add(DatenbankDB.getMapping(sprache, "quelle", "Edition"));
+    headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionKapitel"));
+    headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionSeite"));
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Belegform"));
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Kontext"));
+    headlines.add("von T.");
+    headlines.add("von M.");
+    headlines.add("von J.");
+    headlines.add("von Jh.");
+    headlines.add("bis T.");
+    headlines.add("bis M.");
+    headlines.add("bis J.");
+    headlines.add("bis Jh.");
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Lebend"));
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Varianten"));
 
 %>
 

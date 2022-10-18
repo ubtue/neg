@@ -11,6 +11,8 @@ public class DatenbankMapping {
     @Column(name = "ID")
     private Integer id;
 
+    // As soon as this class is used everywhere, we can normalize the columns.
+    // Right now, we have de_Beschriftung, but fr_beschriftung and so on.
     @Column(name = "de_Beschriftung", length = 255)
     private String deBeschriftung;
 
