@@ -22,7 +22,7 @@
   </a>
   <br>
   <hr>
-  <a href="person.jsp">
+  <a href="person">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="person"/>
       <jsp:param name="Textfeld" value="Titel"/>
@@ -30,7 +30,7 @@
   </a>
   <br>
   <hr>
-  <a href="namenkommentar.jsp">
+  <a href="namenkommentar">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="namenkommentar"/>
       <jsp:param name="Textfeld" value="Titel"/>
@@ -54,7 +54,7 @@
   </a>
   <br>
   <hr>
-  <a href="edition.jsp">
+  <a href="edition">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="edition"/>
       <jsp:param name="Textfeld" value="Titel"/>

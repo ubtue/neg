@@ -18,8 +18,7 @@
     String formular = "mgh_lemma";
     Language.setLanguage(request);
     Filter.setFilter(request, formular, out);
-    if (AuthHelper.isBenutzerLogin(request)) {
-        id = Utils.determineId(request, response, formular, out);
+    id = Utils.determineId(request, response, formular, out);
     
         
 %>
@@ -261,17 +260,3 @@
 </div>
 </FORM>
 </div>
-<%
-
-  }
-  else {
-  %>
-    <p>
-        <% Language.printTextfield(out,session, "error","Zugriff");%>
-    </p>
-    <a href="index.jsp">
-        <% Language.printTextfield(out,session, "all","Startseite");%>
-    </a>
-  <%
-  }
-%>

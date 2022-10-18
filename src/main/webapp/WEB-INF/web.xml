@@ -93,6 +93,33 @@
       <servlet-name>BackendEinzelbelegServlet</servlet-name>
       <url-pattern>/einzelbeleg</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendNamenkommentarServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.NamenkommentarServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendNamenkommentarServlet</servlet-name>
+      <url-pattern>/namenkommentar</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendPersonServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.PersonServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendPersonServlet</servlet-name>
+      <url-pattern>/person</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendEditionServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EditionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendEditionServlet</servlet-name>
+      <url-pattern>/edition</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>ForgotPasswordServlet</servlet-name>
