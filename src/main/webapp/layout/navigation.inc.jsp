@@ -70,7 +70,7 @@
   </a>
   <br>
   <hr>
-  <a href="suche.jsp">
+  <a href="suche">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="suche"/>
       <jsp:param name="Textfeld" value="Titel"/>
