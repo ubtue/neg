@@ -40,7 +40,7 @@
 </ul>
 </div>
 <div id="main">
-<form method="post" action="suche.jsp"><input type="hidden"
+<form method="post" action="suche"><input type="hidden"
 	name="form" value="identischesLemma" />
 <table>
 	<tr>
