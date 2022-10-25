@@ -2,6 +2,7 @@ package de.uni_tuebingen.ub.nppm.db;
 
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
+import javax.persistence.TypedQuery;
 import org.hibernate.*;
 import javax.persistence.criteria.*;
 
@@ -73,7 +74,7 @@ public class DatenbankDB extends AbstractBase {
         if (rows.isEmpty()) {
             return null;
         }
-        return (DatenbankTexte)rows.get(0);
+        return (DatenbankTexte) rows.get(0);
     }
 
     public static DatenbankMapping getMapping(String formular, String datafield) throws Exception {
@@ -92,8 +93,9 @@ public class DatenbankDB extends AbstractBase {
         if (rows.isEmpty()) {
             return null;
         }
-        return (DatenbankMapping)rows.get(0);
+        return (DatenbankMapping) rows.get(0);
     }
+
 
     public static String getMapping(String lang, String formular, String datafield) throws Exception {
         DatenbankMapping mapping = getMapping(formular, datafield);
@@ -108,10 +110,11 @@ public class DatenbankDB extends AbstractBase {
         Session session = getSession();
         SQLQuery query = session.createSQLQuery(sql);
         List<Object> rows = query.getResultList();
-        if(rows.size() > 0)
+        if (rows.size() > 0) {
             return rows.get(0);
-        else
+        } else {
             return null;
+        }
     }
 
 }
