@@ -13,8 +13,6 @@
 
 <%
   Language.setLanguage(request);
-  if (AuthHelper.isBenutzerLogin(request)) {
-
     int id = -1;
     int filter = 0;
     String formular = "freie_suche";
@@ -76,22 +74,3 @@
     </div>
   </BODY>
 </HTML>
-<%
-  }
-  else {
-  %>
-    <p>
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-      </jsp:include>
-    </p>
-    <a href="index.jsp">
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a>
-  <%
-  }
-%>
