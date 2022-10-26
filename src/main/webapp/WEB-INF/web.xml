@@ -120,6 +120,15 @@
       <servlet-name>BackendEditionServlet</servlet-name>
       <url-pattern>/edition</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendOhneVerknuepfungServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.OhneVerknuepfungServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendOhneVerknuepfungServlet</servlet-name>
+      <url-pattern>/ohneVerknuepfung</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>ForgotPasswordServlet</servlet-name>
