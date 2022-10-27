@@ -14,27 +14,4 @@ public class UrkundeDB extends AbstractBase {
     public static List getList() throws Exception {
         return getList(Urkunde.class);
     }
-
-     public static Urkunde getFirstPublicUrkunde(int quellenId) throws Exception {
-
-        Session session = getSession();
-
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<Urkunde> criteria = criteriaBuilder.createQuery(Urkunde.class);
-        Root<Urkunde> urkunde = criteria.from(Urkunde.class);
-        criteria.select(urkunde).where(
-                criteriaBuilder.and(
-                       // criteriaBuilder.equal(urkunde.get("QuelleID"), id)  //funktioniert nicht findet "QuelleID" nicht
-                        criteriaBuilder.equal(urkunde.get("quelle"), quellenId)
-                )
-        );
-
-        TypedQuery<Urkunde> typedQuery = session.createQuery(criteria);
-        Urkunde un = new Urkunde();
-        un = typedQuery.getSingleResult();
-
-         return un;
-    }
-
-
 }

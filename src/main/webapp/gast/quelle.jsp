@@ -12,50 +12,29 @@
 
     int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));
-    if(request.getParameter("ID") != null)
-    {
-
-
-     %>
-
-     <p>in der if schleiffe: <%= request.getParameter("ID")  %></p>
-     <%
-
-    }
 
     int urkundeid = 1;
     String formular = "quelle";
 
-    urkundeid = QuelleDB.getFirstPublicQuelleTemp(id);
-
-
-
-
-   // urkundeid = QuelleDB.getFirstPublicQuelleX(id).getId();
-//int id = 1;
-//urkundeid = QuelleDB.getFirstPublicQuelleX(id).getId();
-//urkundeid = 1346;
-
-//urkundeid = UrkundeDB.getFirstPublicUrkunde(1346).getId();
-
-    %>
-
-    <h3>urkundeid: <%= urkundeid %></h3>
-
-    <%
-    /*
-    Urkunde temp = new Urkunde();
-    temp= UrkundeDB.getFirstPublicUrkunde(id);
-    urkundeid = temp.getId();
-    */
-
+    urkundeid = QuelleDB.getFirstPublicUrkundeId(id);
 %>
 <jsp:include page="../dojump.jsp">
   <jsp:param name="form" value="gast_quelle" />
 </jsp:include>
 
+ <jsp:include page="layout/titel.inc.jsp">
+        <jsp:param name="title" value="Quelle" />
+        <jsp:param name="ID" value="<%= id %>" />
+        <jsp:param name="size" value="" />
+        <jsp:param name="Formular" value="quelle" />
+ </jsp:include>
 
-
+<jsp:include page="../inc.erzeugeFormular.jsp">
+        <jsp:param name="ID" value="<%= id %>"/>
+        <jsp:param name="Formular" value="quelle"/>
+        <jsp:param name="Datenfeld" value="ID"/>
+        <jsp:param name="size" value="11"/>
+</jsp:include>
 
 <!----------ID---------->
   <div id="id">
