@@ -5,6 +5,8 @@
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.DatenbankSelektion" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
@@ -113,18 +115,9 @@
         <div id="main">
           <table>
 <%
-            Connection cn = null;
-            Statement  st = null;
-            ResultSet  rs = null;
-
-            try {
-              Class.forName( sqlDriver );
-              cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-              st = cn.createStatement();
-              rs = st.executeQuery("SELECT DISTINCT selektion FROM datenbank_selektion ORDER BY selektion ASC;");
-
-              while(rs.next()) {
-                String tbl = rs.getString("selektion");
+              List<Object> lst = DatenbankDB.getSelektion();
+              for(Object sel : lst) {
+                String tbl = sel.toString();
                 if(tbl.startsWith("selektion_") && !tbl.endsWith("autor")) {
                   out.print("<tr>");
                   out.print("<td>"+tbl+"</td>");
@@ -133,15 +126,7 @@
                   out.print("</tr>");
                   out.println("");
                 } //if
-               
-              } //while
-            }
-            catch (SQLException e) {out.println(e);}  
-            finally {
-              try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-              try { if( null != st ) st.close(); } catch( Exception ex ) {}
-              try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-            }
+               } //for
 %>
           </table>
         </div>

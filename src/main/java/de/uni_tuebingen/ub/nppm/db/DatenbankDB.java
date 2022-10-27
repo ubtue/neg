@@ -1,10 +1,12 @@
 package de.uni_tuebingen.ub.nppm.db;
 
+import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import javax.persistence.TypedQuery;
 import org.hibernate.*;
 import javax.persistence.criteria.*;
+import org.hibernate.query.NativeQuery;
 
 public class DatenbankDB extends AbstractBase {
 
@@ -115,6 +117,14 @@ public class DatenbankDB extends AbstractBase {
         } else {
             return null;
         }
+    }
+    
+    public static List<Object> getSelektion() throws Exception, Exception {
+        Session session = getSession();
+        String SQL = "SELECT DISTINCT selektion FROM datenbank_selektion ORDER BY selektion ASC";
+        NativeQuery query = session.createSQLQuery(SQL);
+        List<Object> rows = query.getResultList();
+        return rows;
     }
 
 }
