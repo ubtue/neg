@@ -38,8 +38,7 @@
   <servlet-mapping>
       <servlet-name>NamenServlet</servlet-name>
       <url-pattern>/gast/mghlemma</url-pattern>
-  </servlet-mapping>
-  
+  </servlet-mapping>  
   <servlet>
       <servlet-name>QuelleServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.QuelleServlet</servlet-class>
@@ -48,7 +47,6 @@
       <servlet-name>QuelleServlet</servlet-name>
       <url-pattern>/gast/quelle</url-pattern>
   </servlet-mapping>
-
   <servlet>
       <servlet-name>HilfeServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.HilfeServlet</servlet-class>
