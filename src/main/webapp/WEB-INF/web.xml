@@ -120,6 +120,24 @@
       <servlet-name>BackendEditionServlet</servlet-name>
       <url-pattern>/edition</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendAdminServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.AdministrationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendAdminServlet</servlet-name>
+      <url-pattern>/administration</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendAdminAuswahlServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.AdministrationAuswahlServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendAdminAuswahlServlet</servlet-name>
+      <url-pattern>/admin-auswahlfelder</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>ForgotPasswordServlet</servlet-name>

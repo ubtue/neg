@@ -11,10 +11,8 @@
 
 <%
   Language.setLanguage(request);
-  if (AuthHelper.isAdminLogin(request)) {
-%>
+  %>
 
-<HTML>
   <HEAD>
     <TITLE>Nomen et Gens - Administration</TITLE>
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
@@ -24,7 +22,7 @@
     <noscript></noscript>
   </HEAD>
 
-  <BODY>
+  <div>
     <jsp:include page="layout/navigation.inc.jsp" />
     <jsp:include page="layout/image.inc.html" />
     <jsp:include page="layout/titel.administration.jsp" />
@@ -130,8 +128,8 @@
                 if(tbl.startsWith("selektion_") && !tbl.endsWith("autor")) {
                   out.print("<tr>");
                   out.print("<td>"+tbl+"</td>");
-                  out.print("<td><a href=\"admin.auswahlfelder.jsp?Formular=bearbeiten&Tabelle="+tbl+"\">bearbeiten</a></td>");
-                  out.print("<td><a href=\"admin.auswahlfelder.jsp?Formular=zusammenfuehren&Tabelle="+tbl+"\">zusammenf&uuml;hren</a></td>");
+                  out.print("<td><a href=\"admin-auswahlfelder?Formular=bearbeiten&Tabelle="+tbl+"\">bearbeiten</a></td>");
+                  out.print("<td><a href=\"admin-auswahlfelder?Formular=zusammenfuehren&Tabelle="+tbl+"\">zusammenf&uuml;hren</a></td>");
                   out.print("</tr>");
                   out.println("");
                 } //if
@@ -149,26 +147,4 @@
         </div>
       </div>
     </div>
-  </BODY>
-</HTML>
-
-<%
-  }
-  else {
-  %>
-    <p>
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-      </jsp:include>
-    </p>
-    <a href="index.jsp">
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a>
-  <%
-  }
-%>
-
+  </div>

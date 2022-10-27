@@ -8,20 +8,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 
-<%
-  if (AuthHelper.isAdminLogin(request)) {
-
-%>
-
-<HTML>
-  <HEAD>
-    <TITLE>Nomen et Gens - Administration</TITLE>
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <script src="../javascript/funktionen.js" type="text/javascript"></script>
-    <noscript></noscript>
-  </HEAD>
-
-  <BODY>
+  <div>
     <jsp:include page="layout/navigation.inc.jsp" />
     <jsp:include page="layout/image.inc.html" />
     <jsp:include page="layout/titel.administration.jsp" />
@@ -38,7 +25,7 @@
     String tbl = request.getParameter("Tabelle");
     String tblshort = tbl.substring((new String("selektion_")).length());
 %>
-    <FORM method="POST" action="admin.auswahlfelder.jsp">
+    <FORM method="POST" action="admin.auswahlfelder">
       <input type="hidden" name="Tabelle" value="<%= tblshort %>">
       <table>
         <tr>
@@ -214,26 +201,4 @@
 %>
 
     </div>
-  </BODY>
-</HTML>
-
-<%
-  }
-  else {
-  %>
-    <p>
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-      </jsp:include>
-    </p>
-    <a href="index.jsp">
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a>
-  <%
-  }
-%>
-
+  </div>
