@@ -14,7 +14,7 @@ import java.util.List;
 public class NamenServlet extends AbstractGastServlet {
     @Override
     protected String getTitle() {
-        return "namen";
+        return "namenkommentar";
     }
 
     @Override

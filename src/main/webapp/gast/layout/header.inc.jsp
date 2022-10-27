@@ -42,7 +42,7 @@
                                 </jsp:include>
                             </a>
                         </li>
-                        <li><a class="${param.current eq 'quelle' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/quelle.jsp">
+                        <li><a class="${param.current eq 'quelle' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/quelle">
                                 <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                     <jsp:param name="Formular" value="quelle"/>
                                     <jsp:param name="Textfeld" value="Titel"/>
