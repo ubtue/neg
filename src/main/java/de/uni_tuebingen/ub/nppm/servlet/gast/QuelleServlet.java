@@ -1,7 +1,6 @@
 package de.uni_tuebingen.ub.nppm.servlet.gast;
 
 import de.uni_tuebingen.ub.nppm.db.QuelleDB;
-import de.uni_tuebingen.ub.nppm.db.UrkundeDB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

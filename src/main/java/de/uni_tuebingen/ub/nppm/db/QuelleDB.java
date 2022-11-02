@@ -7,7 +7,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
-import org.hibernate.query.NativeQuery;
 
 public class QuelleDB extends AbstractBase {
 
@@ -24,7 +23,6 @@ public class QuelleDB extends AbstractBase {
         Root<Quelle> q = criteria.from(Quelle.class);
         criteria.select(q).where(
                 criteriaBuilder.and(
-                       // criteriaBuilder.equal(urkunde.get("QuelleID"), id)  //funktioniert nicht findet "QuelleID" nicht
                         criteriaBuilder.equal(q.get("id"), quellenId)
                 )
         );
@@ -44,7 +42,6 @@ public class QuelleDB extends AbstractBase {
         Root<Urkunde> urkunde = criteria.from(Urkunde.class);
         criteria.select(urkunde).where(
                 criteriaBuilder.and(
-                       // criteriaBuilder.equal(urkunde.get("QuelleID"), id)  //funktioniert nicht findet "QuelleID" nicht
                         criteriaBuilder.equal(urkunde.get("quelle"), quellenId)
                 )
         );
