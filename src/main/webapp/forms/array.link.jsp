@@ -1,6 +1,6 @@
 ﻿<%
   if (feldtyp.startsWith("link") && array) {
-  
+
         String[] fields = feldtyp.substring(feldtyp.lastIndexOf('(')+1, feldtyp.lastIndexOf(')')).split(",");
      try {
    Class.forName( sqlDriver );
@@ -16,10 +16,10 @@
                	 String bez = format(rs2.getString(fields[2]),fields[2]);
             	 if(bez==null) bez = "Zum Datensatz";
             	 else if(!fields[2].startsWith("PLemma")) bez = DBtoHTML(bez);
-            	 
+
             	 String add = fields[3];
- 
-            	 out.println("<a href=\""+add+".jsp?ID="+rs.getInt(fields[1])+"\">"+bez+"</a><br>");
+
+            	 out.println("<a href=\""+add+"?ID="+rs.getInt(fields[1])+"\">"+bez+"</a><br>");
              }
 
       }
