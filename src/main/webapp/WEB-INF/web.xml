@@ -140,6 +140,15 @@
   </servlet-mapping>
 
   <servlet>
+      <servlet-name>BackendHandschriftServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.HandschriftServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendHandschriftServlet</servlet-name>
+      <url-pattern>/handschrift</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
     <servlet-name>ForgotPasswordServlet</servlet-name>
     <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ForgotPasswordServlet</servlet-class>
   </servlet>
