@@ -6,6 +6,7 @@ import de.uni_tuebingen.ub.nppm.model.*;
 import javax.persistence.TypedQuery;
 import org.hibernate.*;
 import javax.persistence.criteria.*;
+import javax.servlet.http.HttpServletRequest;
 import org.hibernate.query.NativeQuery;
 
 public class DatenbankDB extends AbstractBase {
@@ -126,5 +127,64 @@ public class DatenbankDB extends AbstractBase {
         List<Object> rows = query.getResultList();
         return rows;
     }
-
+    
+    public static List<Object> getBezeichnung(String tabelle, String bezeichnung) throws Exception {
+        Session session = getSession();
+        String SQL = "SELECT Bezeichnung FROM selektion_"+tabelle +" where Bezeichnung='"+bezeichnung+"'";
+        NativeQuery query = session.createSQLQuery(SQL);
+        List<Object> rows = query.getResultList();
+        return rows;
+    }
+    
+    public static void insertBezeichnung(String tabelle, String bezeichnung, Integer id) throws Exception {
+        Session session = getSession();
+        String SQL = "INSERT INTO selektion_"+tabelle+" (ID, Bezeichnung) VALUES ("+id+", \""+bezeichnung+"\")";
+        session.getTransaction().begin();
+        NativeQuery query = session.createSQLQuery(SQL);
+        query.executeUpdate();
+        session.getTransaction().commit();
+    }
+    
+    public static void updateBezeichnung(String tabelle, String bezeichnung, String id) throws Exception {
+        Session session = getSession();
+        String SQL = "UPDATE selektion_"+tabelle
+                        +" SET Bezeichnung=\""+bezeichnung+"\""
+                        +" WHERE ID="+id;
+        session.getTransaction().begin();
+        NativeQuery query = session.createSQLQuery(SQL);
+        query.executeUpdate();
+        session.getTransaction().commit();
+    }
+    
+    public static Integer getMaxId(String tabelle) throws Exception {
+        return (Integer)DatenbankDB.getSingleResult("SELECT max(ID) max FROM selektion_"+tabelle);
+    }
+    
+    public static void updateAuswahlfelder(String tabelle, String feldAlt, String feldNeu) throws Exception {
+        Session session = getSession();        
+        String SQL = "SELECT tabelle, spalte FROM datenbank_selektion WHERE selektion ='"+tabelle+"';";
+        NativeQuery query = session.createSQLQuery(SQL);
+        List<Object[]> rows = query.getResultList();
+        for(Object[] row : rows){
+            String tbl = row[0].toString();
+            String col = row[1].toString();
+            String updateSQL = "UPDATE "+tbl+" SET "+col+"="+feldNeu
+                     + " WHERE "+col+"="+feldAlt+";";
+            session.getTransaction().begin();
+            NativeQuery update = session.createSQLQuery(updateSQL);
+            update.executeUpdate();
+            session.getTransaction().commit();
+        }
+        
+    }
+    
+    public static void deleteAuswahlfeld(String tabelle, String feldAlt) throws Exception {
+        Session session = getSession();
+        String SQL = "DELETE FROM "+tabelle
+                      + " WHERE ID="+feldAlt;
+        session.getTransaction().begin();
+        NativeQuery query = session.createSQLQuery(SQL);
+        query.executeUpdate();
+        session.getTransaction().commit();
+    }
 }
