@@ -46,7 +46,7 @@
   </a>
   <br>
   <hr>
-  <a href="quelle.jsp">
+  <a href="quelle">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="quelle"/>
       <jsp:param name="Textfeld" value="Titel"/>
