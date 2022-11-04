@@ -49,7 +49,7 @@
 			out.println("window.stop();");
  			out.println("location.replace('" + url + "error.jsp');");
 		} else
- 			out.println("location.replace('" + url + newForm + ".jsp?ID='+" + newID.substring(1) + ");");
+ 			out.println("location.replace('" + url + newForm + "?ID='+" + newID.substring(1) + ");");
 		out.println("</script>");
 
 	} else if (request.getParameter("jump") != null && request.getParameter("jump").equals("los")) {
