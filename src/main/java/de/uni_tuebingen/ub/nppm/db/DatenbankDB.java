@@ -116,5 +116,12 @@ public class DatenbankDB extends AbstractBase {
             return null;
         }
     }
+    
+    public static List<Object[]> getResult(String sql) throws Exception {
+        Session session = getSession();
+        SQLQuery query = session.createSQLQuery(sql);
+        List<Object[]> rows = query.getResultList();
+        return rows;
+    }
 
 }

@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB"%>
 ﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
@@ -52,28 +53,21 @@ $(function() {
    out.print("$('<tr><th>Dann nach</th><td>");
    out.print("<select name=\"order'+i+'\">");
    out.print("  <option value=\"-1\">--</option>");
-   Connection cn = null;
-   Statement st = null;
-   ResultSet rs = null;
 
      String sprache = "de";
   if (session != null && session.getAttribute("Sprache") != null)
     sprache = (String)session.getAttribute("Sprache");
 
-
-   try {
-    Class.forName( sqlDriver );
-    cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-    st = cn.createStatement();
-    rs = st.executeQuery("SELECT * FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
-
-    while (rs.next()) {
-
-       out.print("<option value=\"" + rs.getString("Textfeld") +"\">");
-       out.print(rs.getString(sprache));
-       out.print("</option>");
-
-    }
+    List<Object[]> res = DatenbankDB.getResult("SELECT Textfeld, "+sprache+" FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
+    for(Object[] val : res){
+        String textfeld = val[0].toString();
+        String lang = val[1].toString();
+        
+        out.print("<option test=\"test\" value=\"" + textfeld +"\">");
+        out.print(lang);
+        out.print("</option>");        
+    }    
+    
     out.print("</select>");
 
     out.print("<input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"ASC\" checked/>");
@@ -83,8 +77,7 @@ $(function() {
  	out.print("absteigend");
     out.print("<br>Zeitraum (nur für Datierung): <input type=\"text\" name=\"order'+i+'zeit\" />  ");
 
-    }
-    catch(Exception ex){ex.printStackTrace();}
+
 
     out.print("</td></tr>').appendTo('div#tab3 div#main table tbody');");
 %>
