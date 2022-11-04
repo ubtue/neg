@@ -4,6 +4,9 @@
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
     <script src="javascript/funktionen.js" type="text/javascript"></script>
     
+    ${additionalCss}
+
+    ${additionalJs}
     <noscript></noscript>
   </HEAD>
 
