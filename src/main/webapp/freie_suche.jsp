@@ -104,7 +104,7 @@ $(function() {
     <jsp:include page="layout/image.inc.html" />
     <jsp:include page="layout/titel.suche.html" />
 
-    <FORM method="POST" action="suchergebnis.jsp">
+    <FORM method="POST" action="suchergebnis">
       <input type="hidden" name="form" value="freie_suche">
 
 <!-- ##### SUCHFELDER ##### -->
