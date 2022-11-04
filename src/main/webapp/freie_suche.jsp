@@ -4,38 +4,25 @@
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
 <jsp:include page="doduplicate.jsp" />
 
 
-<jsp:include page="dofilter.jsp" />
 
 
 <%
-  Language.setLanguage(request);
-  if (AuthHelper.isBenutzerLogin(request)) {
-
-    int id = -1;
-    int filter = 0;
+    int id = Constants.UNDEFINED_ID;
     String formular = "freie_suche";
+    Filter.setFilter(request, formular, out);
+    Language.setLanguage(request);
 %>
 
-<HTML>
-  <HEAD>
-    <TITLE>Nomen et Gens -
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="freie_suche"/>
-        <jsp:param name="Textfeld" value="Titel"/>
-      </jsp:include>
-    </TITLE>
-    <link rel="stylesheet" href="layout/jquery-ui-1.10.3.css" />
-    <script src="javascript/jquery-1.11.1.min.js" type="text/javascript"></script>
-    <script src="javascript/jquery-ui-1.10.3.js" type="text/javascript"></script>
-<!-->link rel="stylesheet" href="/resources/demos/style.css" /-->
+
+<div>
 <style>
 	#truncate-hint {
 		font-size: small;
@@ -50,10 +37,6 @@ $(function() {
 });
 </script>
 
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <script src="javascript/funktionen.js" type="text/javascript"></script>
-            <link rel="stylesheet" type="text/css" href="layout/jquery.autocomplete.css" />
-    <script src="javascript/jquery.autocomplete.js"></script>
     <script type="text/javascript">
     $(function() { // when document has loaded
 
@@ -113,7 +96,7 @@ $(function() {
     </script>
 
     <noscript></noscript>
-  </HEAD>
+</div>
 
 
 
@@ -1159,24 +1142,3 @@ $(function() {
         </div>
       </div>
     </FORM>
-  </BODY>
-</HTML>
-<%
-  }
-  else {
-  %>
-    <p>
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-      </jsp:include>
-    </p>
-    <a href="index.jsp">
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a>
-  <%
-  }
-%>
