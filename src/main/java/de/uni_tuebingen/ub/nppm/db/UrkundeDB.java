@@ -14,13 +14,13 @@ public class UrkundeDB extends AbstractBase {
     public static int determineUrkundeId(Integer quelleId) throws Exception{
         
         String sqlId = "SELECT ID FROM urkunde WHERE QuelleID ="+ quelleId + ";";
-        
-        //check if urkunde exist
+                
         Object urkundeId = DatenbankDB.getSingleResult(sqlId);
+        //check if urkunde exist
         if(urkundeId != null)
             return (int)urkundeId;
         
-        //insert new quelle
+        //if not, insert new urkunde
         Session session = getSession();
         String sqlInsertUrkunde = "INSERT into urkunde (QuelleID) values ('"+ quelleId + "')";
         session.getTransaction().begin();
