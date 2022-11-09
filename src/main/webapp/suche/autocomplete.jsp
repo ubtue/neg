@@ -15,7 +15,7 @@
     String query = request.getParameter("q");
     String form = request.getParameter("form");
     String field = request.getParameter("field");
-    List<String> matched = SucheDB.getCountries(field, form, query);
+    List<String> matched = SucheDB.getCountryText(field, form, query);
     Iterator<String> iterator = matched.iterator();
     while (iterator.hasNext()) {
         String country = (String) iterator.next();

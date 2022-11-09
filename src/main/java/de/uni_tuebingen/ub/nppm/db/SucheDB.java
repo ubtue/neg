@@ -19,12 +19,12 @@ public class SucheDB extends AbstractBase {
     }
     
 
-    public static List<String> getCountries(String field, String form, String query) throws Exception {
-        String sql = "Select distinct " + field + " from " + form;
+    public static List<String> getCountryText(String country, String form, String query) throws Exception {
+        String sql = "Select distinct " + country + " from " + form;
         if (!query.equals("?")) {
-            sql += " where " + field + " like '%" + query + "%' ";
+            sql += " where " + country + " like '%" + query + "%' ";
         }
-        sql += " order by " + field;
+        sql += " order by " + country;
 
         Session session = getSession();
         SQLQuery sqlQuery = session.createSQLQuery(sql);
