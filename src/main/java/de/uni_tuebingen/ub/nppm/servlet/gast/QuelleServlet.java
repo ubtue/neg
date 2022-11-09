@@ -20,8 +20,7 @@ public class QuelleServlet extends AbstractGastServlet {
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (request.getParameter("ID") == null) {
-            int startValue = 1;
-          response.sendRedirect(request.getContextPath() + "/gast/quelle?ID=" + QuelleDB.getFirstPublicQuelle(startValue ));
+          response.sendRedirect(request.getContextPath() + "/gast/quelle?ID=" + QuelleDB.getFirstPublicQuelle().getId());
         } else {
             RequestDispatcher rd = request.getRequestDispatcher("quelle.jsp");
             rd.include(request, response);

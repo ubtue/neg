@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 public class QuelleDB extends AbstractBase {
 
@@ -14,7 +15,7 @@ public class QuelleDB extends AbstractBase {
         return getList(Quelle.class);
     }
 
-    public static int getFirstPublicQuelle(int quellenId) throws Exception {
+    public static Quelle getFirstPublicQuelle() throws Exception {
 
         Session session = getSession();
 
@@ -23,14 +24,14 @@ public class QuelleDB extends AbstractBase {
         Root<Quelle> q = criteria.from(Quelle.class);
         criteria.select(q).where(
                 criteriaBuilder.and(
-                        criteriaBuilder.equal(q.get("id"), quellenId)
+                        criteriaBuilder.equal(q.get("zuVeroeffentlichen"), 1)
                 )
         );
 
-        TypedQuery<Quelle> typedQuery = session.createQuery(criteria);
-        Quelle un = typedQuery.getSingleResult();
-
-         return un.getId();
+        Quelle un =  new Quelle();
+        Query query = session.createQuery(criteria);
+        un = (Quelle)query.setMaxResults(1).uniqueResult();
+        return un;
     }
 
      public static int getFirstPublicUrkundeId(int quellenId) throws Exception {
