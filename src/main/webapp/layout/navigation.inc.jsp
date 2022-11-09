@@ -62,7 +62,7 @@
   </a>
   <br>
   <hr>
-  <a href="handschrift.jsp">
+  <a href="handschrift">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="handschrift"/>
       <jsp:param name="Textfeld" value="Titel"/>
@@ -78,7 +78,7 @@
   </a>
   <br>
   <hr>
-  <a href="ohneVerknuepfung.jsp">offene Verkn&uuml;pfung</a>
+  <a href="ohneVerknuepfung">offene Verkn&uuml;pfung</a>
   <br>
   <hr>
   <a href="freie_suche.jsp">
