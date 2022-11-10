@@ -357,6 +357,9 @@ public class DatenbankMapping {
         if (value != null && !value.isEmpty()) {
             result = value.split(";");
         }
+        //trim result because some values have leading or trailing whitespaces
+        for (int i = 0; i < result.length; i++)
+            result[i] = result[i].trim();
         return result;
     }
 
