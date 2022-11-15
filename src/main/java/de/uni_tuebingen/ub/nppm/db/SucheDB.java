@@ -20,11 +20,11 @@ public class SucheDB extends AbstractBase {
     
 
     public static List<String> getCountryText(String country, String form, String query) throws Exception {
-        String sql = "Select distinct " + country + " from " + form;
+        String sql = "SELECT DISTINCT " + country + " FROM " + form;
         if (!query.equals("?")) {
-            sql += " where " + country + " like '%" + query + "%' ";
+            sql += " WHERE " + country + " LIKE '%" + query + "%' ";
         }
-        sql += " order by " + country;
+        sql += " ORDER BY " + country;
 
         Session session = getSession();
         SQLQuery sqlQuery = session.createSQLQuery(sql);
@@ -40,7 +40,7 @@ public class SucheDB extends AbstractBase {
         Map<Integer, String> ret = new HashMap<Integer,String>();
         Session session = getSession();  
         Transaction tx = session.beginTransaction();
-        String sql = "select ID, "+attribut+" from "+dbForm+" e where not exists (select * from "+tabelle+" eh where e.ID=eh."+zwAttribut+") order by " + attribut;
+        String sql = "SELECT ID, "+attribut+" FROM "+dbForm+" e WHERE NOT EXISTS (SELECT * FROM "+tabelle+" eh WHERE e.ID=eh."+zwAttribut+") ORDER BY " + attribut;
         SQLQuery query = session.createSQLQuery(sql);
         List<Object[]> rows = query.list();
         
