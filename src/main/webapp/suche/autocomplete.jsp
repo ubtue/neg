@@ -19,6 +19,6 @@
     Iterator<String> iterator = matched.iterator();
     while (iterator.hasNext()) {
         String country = (String) iterator.next();
-        out.println(new String(country.getBytes("UTF-8"), "ISO-8859-1"));
+        out.println(country);
     }
 %>
