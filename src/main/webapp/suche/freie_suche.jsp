@@ -394,7 +394,7 @@
   // ### Zum Namen ###
   if (request.getParameter("Ausgabe_Namenlemma") != null && request.getParameter("Ausgabe_Namenlemma").equals("on")) {
     fields.add("namenkommentar.PLemma");
-    fields.add("namenkommentar.ID");
+    fields.add("namenkommentar.ID AS namenkommentarID");
     fieldNames.add("namenkommentar.PLemma");
     count.add("namenkommentar.ID");
     tables.add("namenkommentar");
@@ -420,7 +420,7 @@
   }
     if (request.getParameter("Ausgabe_MGHLemma") != null && request.getParameter("Ausgabe_MGHLemma").equals("on")) {
         fields.add("mgh_lemma.MGHLemma");
-        fields.add("mgh_lemma.ID");
+        fields.add("mgh_lemma.ID AS mgh_lemmaID");
         fieldNames.add("mgh_lemma.MGHLemma");
         count.add("mgh_lemma.ID");
         tables.add("mgh_lemma");
@@ -431,7 +431,7 @@
     // ### Zur Person ###
   if (request.getParameter("Ausgabe_Person_Standardname") != null && request.getParameter("Ausgabe_Person_Standardname").equals("on")) {
     fields.add("person.Standardname");
-    fields.add("person.ID");
+    fields.add("person.ID AS personID");
     count.add("person.ID");
     fieldNames.add("person.Standardname");
     tables.add("person");
@@ -502,7 +502,7 @@
   if (request.getParameter("Ausgabe_Person_Verwandte") != null && request.getParameter("Ausgabe_Person_Verwandte").equals("on")) {
     fields.add("selektion_verwandtschaftsgrad.Bezeichnung");
     fields.add("perszu.Standardname");
-    fields.add("perszu.ID");
+    fields.add("perszu.ID AS perszuID");
     fieldNames.add("selektion_verwandtschaftsgrad.Bezeichnung");
     fieldNames.add("perszu.Standardname");
     if (!tableString.contains("person_verwandtmit")) {
@@ -538,7 +538,7 @@
   // ### Zum Einzelbeleg ###
   if (request.getParameter("Ausgabe_Einzelbeleg_Belegstelle") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegstelle").equals("on")) {
     fields.add("quelle.Bezeichnung");
-    fields.add("quelle.ID");
+    fields.add("quelle.ID AS quelleID");
     count.add("quelle.ID");
     fieldNames.add("quelle.Bezeichnung");
     if (!tableString.contains("quelle")) {
@@ -550,7 +550,7 @@
     if (!edition && !tableString.contains("edition")) {
       tableString += " LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID";
     fields.add("edition.Titel");
-    fields.add("edition.ID");
+    fields.add("edition.ID AS editionID");
     fieldNames.add("edition.Titel");
     //headlines.add("Edition");
            headlines.add(getLabel("quelle", "Edition", null, stmt, sprache));
@@ -611,7 +611,7 @@
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Belegform") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegform").equals("on")) {
     fields.add("einzelbeleg.Belegform");
-    fields.add("einzelbeleg.ID");
+    fields.add("einzelbeleg.ID AS einzelbelegID");
     count.add("einzelbeleg.ID");
     fieldNames.add("einzelbeleg.Belegform");
     //headlines.add("Belegform");
@@ -755,7 +755,7 @@
         
         if (request.getParameter("Ausgabe_Namenlemma") == null || !request.getParameter("Ausgabe_Namenlemma").equals("on")) {
            	fields.add("namenkommentar.PLemma");
-           	fields.add("namenkommentar.ID");
+           	fields.add("namenkommentar.ID AS namenkommentarID");
     		fieldNames.add("namenkommentar.PLemma");
     		count.add("namenkommentar.ID");
     		tables.add("namenkommentar");
@@ -771,7 +771,7 @@
    	  
     	   if (request.getParameter("Ausgabe_MGHLemma") == null || !request.getParameter("Ausgabe_MGHLemma").equals("on")) {
     	        fields.add("mgh_lemma.MGHLemma");
-    	        fields.add("mgh_lemma.ID");
+    	        fields.add("mgh_lemma.ID AS mgh_lemmaID");
     	        fieldNames.add("mgh_lemma.MGHLemma");
     	        count.add("mgh_lemma.ID");
     	        tables.add("mgh_lemma");
@@ -814,7 +814,7 @@
         
         if (request.getParameter("Ausgabe_Person_Standardname") == null || !request.getParameter("Ausgabe_Person_Standardname").equals("on")) {
     		fields.add("person.Standardname");
-    		fields.add("person.ID");
+    		fields.add("person.ID AS personID");
     		count.add("person.ID");
     		fieldNames.add("person.Standardname");
     		tables.add("person");
@@ -901,7 +901,7 @@
         
         if (request.getParameter("Ausgabe_Einzelbeleg_Belegform") == null || !request.getParameter("Ausgabe_Einzelbeleg_Belegform").equals("on")) {
     		fields.add("einzelbeleg.Belegform");
-    		fields.add("einzelbeleg.ID");
+    		fields.add("einzelbeleg.ID AS einzelbelegID");
     		count.add("einzelbeleg.ID");
     		fieldNames.add("einzelbeleg.Belegform");
     //		headlines.add("Belegform");
@@ -917,7 +917,7 @@
         
         if (request.getParameter("Ausgabe_Einzelbeleg_Belegstelle") == null || !request.getParameter("Ausgabe_Einzelbeleg_Belegstelle").equals("on")) {
     		fields.add("quelle.Bezeichnung");
-    		fields.add("quelle.ID");
+    		fields.add("quelle.ID AS quelleID");
     		count.add("quelle.ID");
     		fieldNames.add("quelle.Bezeichnung");
     		if (!tableString.contains("quelle")) {
