@@ -88,7 +88,7 @@ public class SucheDB extends AbstractBase {
         return ret;
     }
     
-    public static List<Object[]> getSearchCount(String conditionsString, String countString, String tablesString, JspWriter out) throws Exception {        
+    public static List<Object[]> getSearchCount(String conditionsString, String countString, String tablesString) throws Exception {        
         List<Object[]> ret = new ArrayList<>();
         String sql = "SELECT "+countString+" FROM "+tablesString+" WHERE ("+conditionsString+")";        
         Session session = getSession();

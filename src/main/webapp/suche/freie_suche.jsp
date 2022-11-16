@@ -1177,7 +1177,7 @@
 
     if(!countString.equals("")){     
        out.println("<b> Insgesamt ");
-       java.util.List<Object[]> result = SucheDB.getSearchCount(conditionsString, countString, tablesString, out);
+       java.util.List<Object[]> result = SucheDB.getSearchCount(conditionsString, countString, tablesString);
        for(Object[] item : result){
            for (int i=0; i<count.size(); i++) {
               out.println(item[i].toString());
