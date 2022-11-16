@@ -1,10 +1,11 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
 ﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
-<%@ page import="java.util.Enumeration" isThreadSafe="false" %>
-<%@ page import="java.util.Vector" isThreadSafe="false" %>
+<%@ page import="java.util.*" isThreadSafe="false" %>
+<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 
 <%@ page import="com.lowagie.text.Document" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.*" isThreadSafe="false" %>
@@ -1173,21 +1174,36 @@
 
 
       String sql = "SELECT "+countString+" FROM "+tablesString+" WHERE ("+conditionsString+")"; // GROUP BY "+fieldsString;
-//        out.println(sql);
- if(!countString.equals("")){     rs = st.executeQuery(sql);
-      out.println("<b> Insgesamt ");
-      while(rs.next()){
-        for (int i=0; i<count.size(); i++) {
-           out.println(rs.getString(i+1));
-           if(count.get(i).startsWith("einzelbeleg")) if(rs.getInt(i+1)==1) out.print(" Beleg"); else  out.print(" Belege");
-           else if(count.get(i).startsWith("namen")) out.print(" Namen");
-           else if(count.get(i).startsWith("mgh")) out.print(" Namen (MGH-Lemma)");
-           else if(count.get(i).startsWith("quelle")) if(rs.getInt(i+1)==1) out.print(" Quelle"); else out.print(" Quellen");
-           else if(count.get(i).startsWith("person")) if(rs.getInt(i+1)==1) out.print(" Person"); else out.print(" Personen");
-           if(i<count.size()-1) out.println(", ");           
-        }
-         
-      }}
+
+    if(!countString.equals("")){     
+       out.println("<b> Insgesamt ");
+       java.util.List<Object[]> result = SucheDB.getSearchCount(conditionsString, countString, tablesString, out);
+       for(Object[] item : result){
+           for (int i=0; i<count.size(); i++) {
+              out.println(item[i].toString());
+               if(count.get(i).startsWith("einzelbeleg")) 
+                   if(Integer.valueOf(item[i].toString()) == 1) 
+                       out.print(" Beleg"); 
+                   else  
+                       out.print(" Belege");
+               else if(count.get(i).startsWith("namen")) 
+                   out.print(" Namen");
+               else if(count.get(i).startsWith("mgh")) 
+                   out.print(" Namen (MGH-Lemma)");
+               else if(count.get(i).startsWith("quelle")) 
+                   if(Integer.valueOf(item[i].toString()) == 1) 
+                       out.print(" Quelle"); 
+                   else 
+                       out.print(" Quellen");
+               else if(count.get(i).startsWith("person")) 
+                   if(Integer.valueOf(item[i].toString()) == 1)  
+                       out.print(" Person"); 
+                   else out.print(" Personen");
+               if(i<count.size()-1) 
+                   out.println(", ");           
+           }
+       }
+    }
       out.println("<br></b>");
       
  

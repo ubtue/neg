@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.math.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspWriter;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 
 public class SucheDB extends AbstractBase {
 
@@ -82,6 +85,27 @@ public class SucheDB extends AbstractBase {
             ret.add(fieldVal);
         }
         
+        return ret;
+    }
+    
+    public static List<Object[]> getSearchCount(String conditionsString, String countString, String tablesString, JspWriter out) throws Exception {        
+        List<Object[]> ret = new ArrayList<>();
+        String sql = "SELECT "+countString+" FROM "+tablesString+" WHERE ("+conditionsString+")";        
+        Session session = getSession();
+        NativeQuery sqlQuery = session.createSQLQuery(sql);
+        List rows = sqlQuery.list();
+        
+        for (Object object : rows) {
+            //if object is not an array, cast it to a one dim array
+            if (!object.getClass().isArray()) {
+                Object[] arr = new Object[1];
+                arr[0] = object;
+                ret.add(arr);
+                return ret;
+            }else{
+                ret.add((Object[]) object);
+            }
+        }
         return ret;
     }
 }
