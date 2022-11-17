@@ -78,7 +78,7 @@
   </a>
   <br>
   <hr>
-  <a href="ohneVerknuepfung.jsp">offene Verkn&uuml;pfung</a>
+  <a href="ohneVerknuepfung">offene Verkn&uuml;pfung</a>
   <br>
   <hr>
   <a href="freie_suche.jsp">

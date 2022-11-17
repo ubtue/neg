@@ -15,6 +15,7 @@
             <div class="clear"></div>
         </div>
 
+
         <div class="menu-placeholder">
             <div class="menu-wrap">
                 <div class="menu">
@@ -27,21 +28,21 @@
                                 </jsp:include>
                             </a>
                         </li>
-                        <li><a class="${param.current eq 'person' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/person.jsp">
+                        <li><a class="${param.current eq 'person' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/person">
                                 <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                     <jsp:param name="Formular" value="person"/>
                                     <jsp:param name="Textfeld" value="Titel"/>
                                 </jsp:include>
                             </a>
                         </li>
-                        <li><a class="${param.current eq 'namenkommentar' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/mghlemma.jsp">
+                        <li><a class="${param.current eq 'namenkommentar' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/mghlemma">
                                 <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                     <jsp:param name="Formular" value="namenkommentar"/>
                                     <jsp:param name="Textfeld" value="Titel"/>
                                 </jsp:include>
                             </a>
                         </li>
-                        <li><a class="${param.current eq 'quelle' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/quelle.jsp">
+                        <li><a class="${param.current eq 'quelle' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/quelle">
                                 <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                     <jsp:param name="Formular" value="quelle"/>
                                     <jsp:param name="Textfeld" value="Titel"/>
