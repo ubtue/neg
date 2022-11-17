@@ -15,7 +15,7 @@ public class UrkundeDB extends AbstractBase {
     }
 
 
-     public static Urkunde getFirstPublicUrkundeId(int quellenId) throws Exception {
+     public static Urkunde getUrkunde(int quellenId) throws Exception {
 
         Session session = getSession();
 
@@ -23,11 +23,10 @@ public class UrkundeDB extends AbstractBase {
         CriteriaQuery<Urkunde> criteria = criteriaBuilder.createQuery(Urkunde.class);
         Root<Urkunde> urkunde = criteria.from(Urkunde.class);
 
-        criteria.select(urkunde).where(criteriaBuilder.equal(urkunde.get("quelle"), quellenId));    
+        criteria.select(urkunde).where(criteriaBuilder.equal(urkunde.get("quelle"), quellenId));
 
         TypedQuery<Urkunde> typedQuery = session.createQuery(criteria);
-        Urkunde un = new Urkunde();
-        un = typedQuery.getSingleResult();
+        Urkunde un = typedQuery.getSingleResult();
 
          return un;
     }

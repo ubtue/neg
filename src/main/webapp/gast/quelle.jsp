@@ -13,7 +13,7 @@
     id = Integer.parseInt(request.getParameter("ID"));
     int urkundeid = -1;
     String formular = "quelle";
-    urkundeid =  UrkundeDB.getFirstPublicUrkundeId(id).getId();
+    urkundeid = UrkundeDB.getUrkunde(id).getId();
 %>
 <jsp:include page="../dojump.jsp">
   <jsp:param name="form" value="gast_quelle" />
