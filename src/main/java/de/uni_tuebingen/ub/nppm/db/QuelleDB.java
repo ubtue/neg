@@ -21,37 +21,14 @@ public class QuelleDB extends AbstractBase {
 
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<Quelle> criteria = criteriaBuilder.createQuery(Quelle.class);
-        Root<Quelle> q = criteria.from(Quelle.class);
-        criteria.select(q).where(
-                criteriaBuilder.and(
-                        criteriaBuilder.equal(q.get("zuVeroeffentlichen"), 1)
-                )
-        );
+        Root<Quelle> quelle = criteria.from(Quelle.class);
+
+        criteria.select(quelle).where(criteriaBuilder.equal(quelle.get("zuVeroeffentlichen"), 1));
 
         Quelle un =  new Quelle();
         Query query = session.createQuery(criteria);
         un = (Quelle)query.setMaxResults(1).uniqueResult();
         return un;
-    }
-
-     public static int getFirstPublicUrkundeId(int quellenId) throws Exception {
-
-        Session session = getSession();
-
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<Urkunde> criteria = criteriaBuilder.createQuery(Urkunde.class);
-        Root<Urkunde> urkunde = criteria.from(Urkunde.class);
-        criteria.select(urkunde).where(
-                criteriaBuilder.and(
-                        criteriaBuilder.equal(urkunde.get("quelle"), quellenId)
-                )
-        );
-
-        TypedQuery<Urkunde> typedQuery = session.createQuery(criteria);
-        Urkunde un = new Urkunde();
-        un = typedQuery.getSingleResult();
-
-         return un.getId();
     }
 }
 

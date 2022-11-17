@@ -30,7 +30,7 @@
 
 <div id="jump-to-wrap">
 <div id="jump-to">
-<form method="post" action="NamenServlet">
+<form method="post" >
 <%
 if(request.getParameter("title").equals("mgh_lemma")){
 	  out.println("<div style='display: inline-block;padding:0px;margin-right: 40px;  border: 1px solid #999;background: #cccccc;'><div style='border: 1px solid #666;box-shadow: 2px 2px #999;display: inline-block;margin-right:5px;padding:7px;z-index:1;background: #fff;font-weight:bold;'>MGH-Lemma</div><div style='box-shadow: -1px -1px #ccc inset;z-index:50;display: inline-block;margin:0px;padding:5px;background: #ccc;'><a href='namenkommentar?fromLemma=MGH-Lemma' style='color:#666;text-decoration:none;font-weight:normal;'>Namenlemma</a></div></div>");

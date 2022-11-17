@@ -9,14 +9,11 @@
 <jsp:include page="../dofilter.jsp" />
 
 <%
-
     int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));
-
-    int urkundeid = 1;
+    int urkundeid = -1;
     String formular = "quelle";
-
-    urkundeid = QuelleDB.getFirstPublicUrkundeId(id);
+    urkundeid =  UrkundeDB.getFirstPublicUrkundeId(id).getId();
 %>
 <jsp:include page="../dojump.jsp">
   <jsp:param name="form" value="gast_quelle" />
