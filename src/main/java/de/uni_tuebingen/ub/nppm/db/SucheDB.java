@@ -80,7 +80,33 @@ public class SucheDB extends AbstractBase {
             //convert the fields from the row to a map
             Map<String, String> fieldVal = new HashMap<String, String>();
             for(int i = 0; i < fieldList.size(); i++){
-                fieldVal.put(fieldList.get(i), row[i].toString());
+                fieldVal.put(fieldList.get(i).trim(), row[i].toString());
+            }
+            ret.add(fieldVal);
+        }
+        
+        return ret;
+    }
+    
+    public static List<Map<String,String>> getSearchResult(String fieldsString , String tablesString, String conditionsString, String orderString, String order, String[] fields) throws Exception {
+        String sql = "SELECT DISTINCT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order; 
+        if (order.equals("")) 
+            sql += orderString;
+        Session session = getSession();
+        NativeQuery sqlQuery = session.createSQLQuery(sql);
+        List<Object[]> rows = sqlQuery.getResultList();
+        //return var
+        List<Map<String,String>> ret = new ArrayList<Map<String,String>>();
+        //loop over the rows
+        for(Object[] row : rows){         
+            //convert the fields from the row to a map
+            Map<String, String> fieldVal = new HashMap<String, String>();
+            for(int i = 0; i < fields.length; i++){
+                String[] name = fields[i].split(" AS ");
+                if(name.length == 2)
+                    fields[i] = name[1];
+                if(row[i] != null)
+                    fieldVal.put(fields[i].trim(), row[i].toString());
             }
             ret.add(fieldVal);
         }
