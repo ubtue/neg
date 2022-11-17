@@ -115,14 +115,14 @@
                                 sql = Filter.getFilterSql(request, guest+title);
                                 if(sql == null)
                                     sql = "SELECT " + title + ".ID FROM " + title;
-                                    
+
 				sql = sql.replace("*", title + ".ID");
 
                                 st = cn.createStatement();
 				rs = st.executeQuery(sql + " ORDER BY " + title + ".ID LIMIT " + akt + ", 1");
 				if (rs.next())
 					id = rs.getInt(title + ".ID");
-                                        
+
 				out.println("<script type=\"text/javascript\">");
 				out.println(
 						"location.replace(window.location.protocol+'//'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+"
