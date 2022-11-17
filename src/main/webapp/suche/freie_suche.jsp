@@ -1540,10 +1540,10 @@
         }
         excel.println();
         
-        while ( rs.next() ) {
+        for ( Map<String, String> item : searchResults ) {
           for(int z = 0; z<orderSize; z++){
            int jahr = 0;
-           String jahrV = rs.getString(orderV[z]);
+           String jahrV = item.get(orderV[z]);
            int zeitraum = 0;
            if(orderV[z].endsWith("Jahr")){
            	   zeitraum = Integer.parseInt(request.getParameter("order" + (z+1) + "zeit"));
@@ -1553,7 +1553,7 @@
                jahrV = "" +  jahr;
            }
 
-        if(first[z] || rs.getString(orderV[z])!=null && !jahrV.equals(oldValue[z])) {
+        if(first[z] || item.get(orderV[z])!=null && !jahrV.equals(oldValue[z])) {
            oldValue[z] = jahrV;
            if(!first[z]){
               excel.println();
@@ -1562,8 +1562,8 @@
            for(int z2=z+1; z2<orderSize; z2++) first[z2]=true;
            for(int z2=0; z2<z; z2++) excel.print(";");
            
-           String text = rs.getString(orderV[z]);
-           if(orderV[z].startsWith("einzelbeleg.ID"))text = rs.getString("einzelbeleg.Belegform");
+           String text = item.get(orderV[z]);
+           if(orderV[z].startsWith("einzelbeleg.ID"))text = item.get("einzelbeleg.Belegform");
            if(text==null) text="-";
            String titel=orderV[z];
            
@@ -1587,10 +1587,10 @@
 
             if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))){
          
-              if (rs.getString(fieldNames.get(i)) == null || rs.getString(fieldNames.get(i)).equals("null"))
+              if (item.get(fieldNames.get(i)) == null || item.get(fieldNames.get(i)).equals("null"))
                 excel.print("\"-\";");
               else
-                excel.print("\""+rs.getString(fieldNames.get(i))+"\";");
+                excel.print("\""+item.get(fieldNames.get(i))+"\";");
             }
           }
           excel.println();
@@ -1629,10 +1629,10 @@
             
        
         
-        while ( rs.next() ) {
+        for ( Map<String, String> item : searchResults ) {
           for(int z = 0; z<orderSize; z++){
            int jahr = 0;
-           String jahrV = rs.getString(orderV[z]);
+           String jahrV = item.get(orderV[z]);
            int zeitraum = 0;
            if(orderV[z].endsWith("Jahr")){
            	   zeitraum = Integer.parseInt(request.getParameter("order" + (z+1) + "zeit"));
@@ -1642,7 +1642,7 @@
                jahrV = "" +  jahr;
            }
 
-        if(first[z] || rs.getString(orderV[z])!=null && !jahrV.equals(oldValue[z])) {
+        if(first[z] || item.get(orderV[z])!=null && !jahrV.equals(oldValue[z])) {
            oldValue[z] = jahrV;
            String t = "";
            if(!first[z]){
@@ -1660,8 +1660,8 @@
            for(int z2=z+1; z2<orderSize; z2++) first[z2]=true;
            for(int z2=0; z2<z; z2++) t += "\t";
            
-           String text = rs.getString(orderV[z]);
-           if(orderV[z].startsWith("einzelbeleg.ID"))text = rs.getString("einzelbeleg.Belegform");
+           String text = item.get(orderV[z]);
+           if(orderV[z].startsWith("einzelbeleg.ID"))text = item.get("einzelbeleg.Belegform");
            if(text==null) text="-";
            String titel=orderV[z];
       //     out.println(z + "::" + orderV[z]);
@@ -1689,10 +1689,10 @@
 
             if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))){
          
-              if (rs.getString(fieldNames.get(i)) == null || rs.getString(fieldNames.get(i)).equals("null"))
+              if (item.get(fieldNames.get(i)) == null || item.get(fieldNames.get(i)).equals("null"))
                 tab.addCell(new Cell(new Paragraph("-", new  Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
               else
-                tab.addCell(new Cell(new Paragraph(rs.getString(fieldNames.get(i)), new  Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
+                tab.addCell(new Cell(new Paragraph(item.get(fieldNames.get(i)), new  Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
             }
           }
         }
