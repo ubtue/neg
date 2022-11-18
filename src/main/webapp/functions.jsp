@@ -158,6 +158,13 @@ String HTMLtoDB(String s) {
   return s;
 }
 
+String makeDateWrapper (Object tag, Object monat, Object jahr) {
+  if(tag != null && monat != null && jahr != null){
+    return makeDate(Integer.valueOf(tag.toString()),Integer.valueOf(monat.toString()),Integer.valueOf(jahr.toString()));
+  }
+  return "";
+}
+
 String makeDate (int tag, int monat, int jahr) {
   String ret = ""+(tag>0?tag:"o")+"."+(monat>0?monat:"o")+"."+(jahr>0?jahr:"o");
   if(!ret.equals("o.o.o")) return ret;
