@@ -9,11 +9,15 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 import de.uni_tuebingen.ub.nppm.model.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
+import org.hibernate.query.NativeQuery;
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
@@ -148,5 +152,12 @@ public class AbstractBase {
 
     protected static List getList(Class c) throws Exception {
         return getList(c, null);
+    }
+
+    public static List<Object[]> nativeSql(String sql) throws Exception {
+        Session session = getSession();
+        NativeQuery sqlQuery = session.createSQLQuery(sql);
+        List<Object[]> rows = sqlQuery.getResultList();        
+        return rows;
     }
 }
