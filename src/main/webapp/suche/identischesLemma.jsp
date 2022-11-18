@@ -62,7 +62,7 @@ document.open();
           if(count%2==0)out.println("<tr>");
           else out.println("<tr bgcolor='#AACCDD'>");
 
-          out.println("<td><a href=\"einzelbeleg.jsp?ID="+rs2.getInt("einzelbeleg.ID")+"\">Beleg...</a></td>");
+          out.println("<td><a href=\"einzelbeleg?ID="+rs2.getInt("einzelbeleg.ID")+"\">Beleg...</a></td>");
           out.println("<td>"+(rs2.getString("einzelbeleg.Belegform")==null?"&nbsp;":rs2.getString("einzelbeleg.Belegform"))+"</td>");
           out.println("<td> "+makeDate(rs2.getInt("einzelbeleg.VonTag"), rs2.getInt("einzelbeleg.VonMonat"), rs2.getInt("einzelbeleg.VonJahr"))+" - "+makeDate(rs2.getInt("einzelbeleg.BisTag"), rs2.getInt("einzelbeleg.BisMonat"), rs2.getInt("einzelbeleg.BisJahr"))+"</td>");
 
@@ -97,7 +97,7 @@ document.open();
             table.addCell(new Cell(new Paragraph("Datierung", new Font(Font.TIMES_ROMAN, 8))));
 
 
-           out.println("<tr><td colspan=4><a href=\"namenkommentar.jsp?ID="+rs.getString("n.ID")+"\"><h1>"+rs.getString("n.PLemma")+"</h1></a></td></tr>");
+           out.println("<tr><td colspan=4><a href=\"namenkommentar?ID="+rs.getString("n.ID")+"\"><h1>"+rs.getString("n.PLemma")+"</h1></a></td></tr>");
            int id = rs.getInt("n.ID");
        //  Statement st2 = cn.createStatement();
           ResultSet rs2 = st2.executeQuery("SELECT einzelbeleg.ID, einzelbeleg.Belegnummer, einzelbeleg.Belegform"
@@ -125,7 +125,7 @@ document.open();
         }
         else if(!rs2.getString("person.Standardname").equals(standardName)){
             standardName = rs2.getString("person.Standardname");
-            out.println("<tr><td colspan=4><a href=\"person.jsp?ID="+rs2.getString("person.ID")+"\"><h2>"+DBtoHTML(standardName)+"</h2></a></td></tr>");
+            out.println("<tr><td colspan=4><a href=\"person?ID="+rs2.getString("person.ID")+"\"><h2>"+DBtoHTML(standardName)+"</h2></a></td></tr>");
              document.add(table);
              document.add(new Paragraph("     " + standardName, new Font(Font.TIMES_ROMAN, 16)));
              table = new Table(widths.length);
@@ -136,7 +136,7 @@ document.open();
           if(count%2==0)out.println("<tr>");
           else out.println("<tr bgcolor='#AACCDD'>");
 
-          out.println("<td><a href=\"einzelbeleg.jsp?ID="+rs2.getInt("einzelbeleg.ID")+"\">Beleg...</a></td>");
+          out.println("<td><a href=\"einzelbeleg?ID="+rs2.getInt("einzelbeleg.ID")+"\">Beleg...</a></td>");
           out.println("<td>"+(rs2.getString("einzelbeleg.Belegform")==null?"&nbsp;":rs2.getString("einzelbeleg.Belegform"))+"</td>");
           out.println("<td> "+makeDate(rs2.getInt("einzelbeleg.VonTag"), rs2.getInt("einzelbeleg.VonMonat"), rs2.getInt("einzelbeleg.VonJahr"))+" - "+makeDate(rs2.getInt("einzelbeleg.BisTag"), rs2.getInt("einzelbeleg.BisMonat"), rs2.getInt("einzelbeleg.BisJahr"))+"</td>");
 
