@@ -92,7 +92,7 @@
 </ul>
 </div>
 <div id="main">
-<form method="post" action="suchergebnis.jsp"><input
+<form method="post" action="suchergebnis"><input
 	type="hidden" name="form" value="person" />
 <table>
 	<tr>
@@ -202,7 +202,7 @@
 </ul>
 </div>
 <div id="main">
-<form method="post" action="suchergebnis.jsp"><input
+<form method="post" action="suchergebnis"><input
 	type="hidden" name="form" value="quelle" />
 <table>
 	<tr>
@@ -334,7 +334,7 @@
 </ul>
 </div>
 <div id="main">
-<form method="post" action="suchergebnis.jsp"><input
+<form method="post" action="suchergebnis"><input
 	type="hidden" name="form" value="namenkommentar" />
 <table>
 	<tr>
@@ -395,7 +395,7 @@
 </ul>
 </div>
 <div id="main">
-<form method="post" action="suchergebnis.jsp"><input
+<form method="post" action="suchergebnis"><input
 	type="hidden" name="form" value="favorit" />
 <p>Testweise gibt es hier eine für die Philologen Interessante Liste
 zu <a href="person.jsp?ID=21812">dieser Person</a></p>
