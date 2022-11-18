@@ -38,8 +38,16 @@
   <servlet-mapping>
       <servlet-name>NamenServlet</servlet-name>
       <url-pattern>/gast/mghlemma</url-pattern>
+      <url-pattern>/gast/namenkommentar</url-pattern>   
+  </servlet-mapping>  
+  <servlet>
+      <servlet-name>QuelleServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.QuelleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>QuelleServlet</servlet-name>
+      <url-pattern>/gast/quelle</url-pattern>
   </servlet-mapping>
-
   <servlet>
       <servlet-name>HilfeServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.HilfeServlet</servlet-class>
@@ -137,6 +145,15 @@
   <servlet-mapping>
       <servlet-name>BackendAdminAuswahlServlet</servlet-name>
       <url-pattern>/admin-auswahlfelder</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendOhneVerknuepfungServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.OhneVerknuepfungServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendOhneVerknuepfungServlet</servlet-name>
+      <url-pattern>/ohneVerknuepfung</url-pattern>
   </servlet-mapping>
 
   <servlet>

@@ -105,11 +105,10 @@
                         st = cn.createStatement();
 
                         String password = request.getParameter("Kennwort");
-                        SaltHash saltHash = new SaltHash();
-                        String algorithm = "MD5";
-                        byte[] salt = saltHash.createSalt();
-                        password = saltHash.generateHash(password, algorithm, salt);
-                        String saltValue = saltHash.getSaltString();
+
+                        byte[] salt = SaltHash.GenerateRandomSalt(AuthHelper.getPasswordSaltLength());
+                        password = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), salt);
+                        String saltValue = SaltHash.BytesToBase64String(salt);
 
                         st.execute("INSERT INTO benutzer (Login, Nachname, Vorname, EMail, Password, Sprache, IstAdmin, GruppeID, Salt) VALUES ("
                                 + "\"" + request.getParameter("Benutzername") + "\", "
