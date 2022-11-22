@@ -26,7 +26,7 @@
       	zielattribute += ", Genauigkeit"+zielattributArray[i] + ", "+zielattributArray[i];
       }
       rs = st.executeQuery("SELECT "+zielattribute+" FROM "+zielTabelle+" WHERE ID ='"+id+"'");
-      Statement st2 = cn.createStatement();
+      Statement st2 = cn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       ResultSet rs2 = st2.executeQuery("SELECT * FROM "+auswahlherkunft + " ORDER by Bezeichnung");
       out.println("<tr>");
       boolean next = false;
@@ -74,11 +74,11 @@
       else {
         for (int j=0; j<combinedFeldnamen.length; j++) {
           out.println("<td>");
-          if(!isReadOnly){ 
+          if(!isReadOnly){
             out.println("<select name=\"Genauigkeit"+combinedFeldnamen[j]+"\">");
             out.println("<option value=\"-1\">nicht bearbeitet</option>");
           }
-          
+
           while ( rs2.next() ) {
             if(!isReadOnly) out.println("<option value=\""+rs2.getInt("ID")+"\" >"+DBtoHTML(rs2.getString("Bezeichnung"))+"</option>");
           }
@@ -92,7 +92,7 @@
                       +" >");
           out.println("</td>");
         }
-      }        
+      }
       out.println("</tr>");
     }
     catch (Exception e) {out.println(e); }

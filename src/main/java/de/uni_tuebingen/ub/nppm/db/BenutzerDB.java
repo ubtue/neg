@@ -3,9 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import org.hibernate.Session;
 import de.uni_tuebingen.ub.nppm.model.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 public class BenutzerDB extends AbstractBase {
 
@@ -45,5 +43,71 @@ public class BenutzerDB extends AbstractBase {
         criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
 
         return session.createQuery(criteria).getResultList();
+    }
+
+    public static Benutzer getById(int id) throws Exception {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+        Root benutzer = criteria.from(Benutzer.class);
+        criteria.select(benutzer);
+        criteria.where(builder.equal(benutzer.get(Benutzer_.ID), id));
+        Benutzer res =  session.createQuery(criteria).getSingleResult();
+        return res;
+    }
+
+    public static Benutzer getByLogin(String login) throws Exception {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+        Root benutzer = criteria.from(Benutzer.class);
+        criteria.select(benutzer);
+        criteria.where(builder.equal(benutzer.get(Benutzer_.Login), login));
+        Benutzer res =  session.createQuery(criteria).getSingleResult();
+        return res;
+    }
+
+    public static Benutzer getByMail(String mail) throws Exception {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+        Root benutzer = criteria.from(Benutzer.class);
+        criteria.select(benutzer);
+        criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), mail));
+        Benutzer res =  session.createQuery(criteria).getSingleResult();
+        return res;
+    }
+
+    public static boolean hasEmail(String email) throws Exception{
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+        Root benutzer = criteria.from(Benutzer.class);
+        criteria.select(benutzer);
+        criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), email));
+        boolean inDatabase = !session.createQuery(criteria).getResultList().isEmpty();
+        session.close();
+        return inDatabase;
+    }
+
+    public static boolean hasLogin(String login) throws Exception{
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+        Root benutzer = criteria.from(Benutzer.class);
+        criteria.select(benutzer);
+        criteria.where(builder.equal(benutzer.get(Benutzer_.Login), login));
+        boolean inDatabase = !session.createQuery(criteria).getResultList().isEmpty();
+        session.close();
+        return inDatabase;
+    }
+
+    public static void saveOrUpdate(Benutzer b) throws Exception {
+        Session session = getSession();
+        session.getTransaction().begin();
+        session.saveOrUpdate(b);
+        session.getTransaction().commit();
     }
 }

@@ -32,9 +32,9 @@
         <jsp:param name="Textfeld" value="Titel"/>
       </jsp:include>
     </TITLE>
-     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script src="//code.jquery.com/jquery-1.9.1.js"></script>
-<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="layout/jquery-ui-1.10.3.css" />
+    <script src="javascript/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="javascript/jquery-ui-1.10.3.js" type="text/javascript"></script>
 <!-->link rel="stylesheet" href="/resources/demos/style.css" /-->
 <style>
 	#truncate-hint {
@@ -49,43 +49,41 @@ $(function() {
 	$( document ).tooltip();
 });
 </script>
-    
+
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
     <script src="javascript/funktionen.js" type="text/javascript"></script>
             <link rel="stylesheet" type="text/css" href="layout/jquery.autocomplete.css" />
-    <script type="text/javascript"
-            src="//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script src="javascript/jquery.autocomplete.js"></script>
     <script type="text/javascript">
-    $(function() { // when document has loaded  
-      
+    $(function() { // when document has loaded
+
     	// replace [help] with link to help >>
     	var p = $('#truncate-hint');
-    	p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='gast/hilfe.jsp'>$1</a>"));
+    	p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='gast/hilfe'>$1</a>"));
     	// <<
-    	
-        var i = 4; // check how many input exists on the document and add 1 for the add command to work  
+
+        var i = 4; // check how many input exists on the document and add 1 for the add command to work
         $('a#add').click(function() { // when you click the add link
         if(i<15){
-<%  
+<%
    out.print("$('<tr><th>Dann nach</th><td>");
    out.print("<select name=\"order'+i+'\">");
    out.print("  <option value=\"-1\">--</option>");
    Connection cn = null;
    Statement st = null;
    ResultSet rs = null;
-   
+
      String sprache = "de";
   if (session != null && session.getAttribute("Sprache") != null)
     sprache = (String)session.getAttribute("Sprache");
-   
+
 
    try {
     Class.forName( sqlDriver );
     cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
     st = cn.createStatement();
     rs = st.executeQuery("SELECT * FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
-    
+
     while (rs.next()) {
 
        out.print("<option value=\"" + rs.getString("Textfeld") +"\">");
@@ -101,19 +99,19 @@ $(function() {
     out.print(" <input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"DESC\" />");
  	out.print("absteigend");
     out.print("<br>Zeitraum (nur für Datierung): <input type=\"text\" name=\"order'+i+'zeit\" />  ");
-    
+
     }
-    catch(Exception ex){ex.printStackTrace();}   
-            
+    catch(Exception ex){ex.printStackTrace();}
+
     out.print("</td></tr>').appendTo('div#tab3 div#main table tbody');");
-%>  
-    // if you have the input inside a form, change body to form in the appendTo  
-            i++; //after the click i will be i = 3 if you click again i will be i = 4  
-      } 
-     }); 
-            }); 
+%>
+    // if you have the input inside a form, change body to form in the appendTo
+            i++; //after the click i will be i = 3 if you click again i will be i = 4
+      }
+     });
+            });
     </script>
-    
+
     <noscript></noscript>
   </HEAD>
 
@@ -568,7 +566,7 @@ $(function() {
                       <jsp:param name="Datenfeld" value="Ausgabe_Erstglied"/>
                     </jsp:include>
                   </td>
-                </tr>                
+                </tr>
                 <tr>
                   <td width="25">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -1040,7 +1038,7 @@ $(function() {
               </tbody>
             </table>
            <p align="right">
-               <a href="#" id="add">Weitere Gruppierung hinzufügen</a>  
+               <a href="#" id="add">Weitere Gruppierung hinzufügen</a>
             </p>
             <p align="right">
               <a href="javascript:onoff('tab4','tab3');">
