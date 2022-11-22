@@ -106,11 +106,13 @@ public class AbstractBase {
             configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
             configuration.addAnnotatedClass(PersonQuiet.class);
             configuration.addAnnotatedClass(PersonVariante.class);
+            configuration.addAnnotatedClass(PersonAreal_MM.class);
             
             configuration.addAnnotatedClass(Einzelbeleg.class);
             configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
             configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
             configuration.addAnnotatedClass(EinzelbelegMghLemma_MM.class);
+            configuration.addAnnotatedClass(EinzelbelegNamenkommentar_MM.class);
 
             configuration.addAnnotatedClass(DatenbankFilter.class);
             configuration.addAnnotatedClass(DatenbankMapping.class);
