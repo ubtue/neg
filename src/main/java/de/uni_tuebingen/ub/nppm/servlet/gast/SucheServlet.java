@@ -21,9 +21,9 @@ public class SucheServlet extends AbstractGastServlet {
 
     @Override
     protected List<String> getAdditionalJavaScript() {
-        List<String> css = super.getAdditionalJavaScript();
-        css.add("../mktree.js" );
-        return css;
+        List<String> js = super.getAdditionalJavaScript();
+        js.add("../mktree.js" );
+        return js;
     }
 
 
