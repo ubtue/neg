@@ -11,7 +11,6 @@ h1 {font-size:24px;color:#484848;}
 h2 {font-size:18px;color:#484848;}
 h3 {font-style:italic;font-weight:normal;font-size:16px;color:#484848;}
 
-ul { list-style: square; list-style-position: inside; }
 ol { list-style: decimal; list-style-position: inside; }
 
 #content ul, #content ol { padding-bottom: 20px; padding-left: 10px; }
