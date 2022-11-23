@@ -9,11 +9,14 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 import de.uni_tuebingen.ub.nppm.model.*;
+import java.io.IOException;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
+import javax.servlet.jsp.JspWriter;
+import org.hibernate.Transaction;
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
@@ -57,6 +60,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(Edition.class);
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
+            configuration.addAnnotatedClass(EditionEditor.class);
 
             configuration.addAnnotatedClass(SelektionAmtWeihe.class);
             configuration.addAnnotatedClass(SelektionAreal.class);
@@ -101,6 +105,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(Urkunde.class);
             configuration.addAnnotatedClass(UrkundeBetreff.class);
             configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
+            configuration.addAnnotatedClass(UrkundeEmpfaenger.class);
             
             configuration.addAnnotatedClass(Person.class);
             configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
@@ -155,5 +160,21 @@ public class AbstractBase {
 
     protected static List getList(Class c) throws Exception {
         return getList(c, null);
+    }
+    
+    public static boolean remove(Class class_, int id) throws Exception {
+        if (id > 0) {
+            Session session = getSession();
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            //Load
+            Object obj = session.load(class_, id);
+            //Remove
+            session.remove(obj);
+            //Commit
+            transaction.commit();
+            return true;
+        }
+        return false;
     }
 }
