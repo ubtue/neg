@@ -128,7 +128,7 @@ public class DatenbankDB extends AbstractBase {
         return rows;
     }
     
-    public static List<Object> getBezeichnung(String tabelle, String bezeichnung) throws Exception {
+    public static List<Object> getSelektionBezeichnung(String tabelle, String bezeichnung) throws Exception {
         Session session = getSession();
         String SQL = "SELECT Bezeichnung FROM selektion_"+tabelle +" where Bezeichnung='"+bezeichnung+"'";
         NativeQuery query = session.createSQLQuery(SQL);
@@ -136,12 +136,12 @@ public class DatenbankDB extends AbstractBase {
         return rows;
     }
     
-    public static void insertBezeichnung(String tabelle, String bezeichnung, Integer id) throws Exception {
+    public static void insertSelektionBezeichnung(String tabelle, String bezeichnung, Integer id) throws Exception {
         String sql = "INSERT INTO selektion_"+tabelle+" (ID, Bezeichnung) VALUES ("+id+", \""+bezeichnung+"\")";
         insertOrUpdate(sql);
     }
     
-    public static void updateBezeichnung(String tabelle, String bezeichnung, String id) throws Exception {
+    public static void updateSelektionBezeichnung(String tabelle, String bezeichnung, String id) throws Exception {
         String sql = "UPDATE selektion_"+tabelle
                         +" SET Bezeichnung=\""+bezeichnung+"\""
                         +" WHERE ID="+id;

@@ -89,7 +89,7 @@
     }
     else {
         int id = 1;
-        List<Object> result = DatenbankDB.getBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"));
+        List<Object> result = DatenbankDB.getSelektionBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"));
         if(!result.isEmpty()){
              out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"exisitiert bereits und wurde daher nicht angelegt.</p>");
             out.println("<a href=\"administration\">zur&uuml;ck</a>");
@@ -99,7 +99,7 @@
           Integer maxId = DatenbankDB.getMaxId(request.getParameter("Tabelle"));
           if (maxId != null) {
             id += maxId;
-            DatenbankDB.insertBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"),id);
+            DatenbankDB.insertSelektionBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"),id);
             out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"erfolgreich angelegt.</p>");
             out.println("<a href=\"administration\">zur&uuml;ck</a>");
           }
@@ -116,13 +116,13 @@
       out.println("<a href=\"javascript:history.back()\">zur&uuml;ck</a>");
     }
     else {
-        List<Object> result = DatenbankDB.getBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"));
+        List<Object> result = DatenbankDB.getSelektionBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"));
         if(!result.isEmpty() && result.get(0).toString().equals(request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"))){
             out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"exisitiert bereits, benutzen Sie bitte die Funktion 'zusammenführen' um beide Auswahl zusammenzuführen.</p>");
             out.println("<a href=\"administration\">zur&uuml;ck</a>");
         }
         else{
-            DatenbankDB.updateBezeichnung(request.getParameter("Tabelle"), 
+            DatenbankDB.updateSelektionBezeichnung(request.getParameter("Tabelle"), 
                 request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"), 
                 request.getParameter(request.getParameter("Tabelle"))
             );
