@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import javax.persistence.TypedQuery;
@@ -120,11 +119,12 @@ public class DatenbankDB extends AbstractBase {
         }
     }
     
-    public static List<Object> getSelektion() throws Exception, Exception {
+    public static List<DatenbankSelektion> getSelektion() throws Exception {
         Session session = getSession();
-        String SQL = "SELECT DISTINCT selektion FROM datenbank_selektion ORDER BY selektion ASC";
+        String SQL = "SELECT DISTINCT * FROM datenbank_selektion ORDER BY selektion ASC";
         NativeQuery query = session.createSQLQuery(SQL);
-        List<Object> rows = query.getResultList();
+        query.addEntity(DatenbankSelektion.class);
+        List<DatenbankSelektion> rows = query.getResultList();
         return rows;
     }
     
@@ -137,23 +137,15 @@ public class DatenbankDB extends AbstractBase {
     }
     
     public static void insertBezeichnung(String tabelle, String bezeichnung, Integer id) throws Exception {
-        Session session = getSession();
-        String SQL = "INSERT INTO selektion_"+tabelle+" (ID, Bezeichnung) VALUES ("+id+", \""+bezeichnung+"\")";
-        session.getTransaction().begin();
-        NativeQuery query = session.createSQLQuery(SQL);
-        query.executeUpdate();
-        session.getTransaction().commit();
+        String sql = "INSERT INTO selektion_"+tabelle+" (ID, Bezeichnung) VALUES ("+id+", \""+bezeichnung+"\")";
+        insertOrUpdate(sql);
     }
     
     public static void updateBezeichnung(String tabelle, String bezeichnung, String id) throws Exception {
-        Session session = getSession();
-        String SQL = "UPDATE selektion_"+tabelle
+        String sql = "UPDATE selektion_"+tabelle
                         +" SET Bezeichnung=\""+bezeichnung+"\""
                         +" WHERE ID="+id;
-        session.getTransaction().begin();
-        NativeQuery query = session.createSQLQuery(SQL);
-        query.executeUpdate();
-        session.getTransaction().commit();
+        insertOrUpdate(sql);
     }
     
     public static Integer getMaxId(String tabelle) throws Exception {

@@ -115,9 +115,9 @@
         <div id="main">
           <table>
 <%
-              List<Object> lst = DatenbankDB.getSelektion();
-              for(Object sel : lst) {
-                String tbl = sel.toString();
+              List<DatenbankSelektion> lst = DatenbankDB.getSelektion();
+              for(DatenbankSelektion sel : lst) {
+                String tbl = sel.getSelektion();
                 if(tbl.startsWith("selektion_") && !tbl.endsWith("autor")) {
                   out.print("<tr>");
                   out.print("<td>"+tbl+"</td>");
