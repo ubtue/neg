@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.util;
 
 import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.model.*;
 import java.io.IOException;
 import javax.servlet.http.*;
 import javax.servlet.jsp.JspWriter;
@@ -20,35 +21,40 @@ public class DeleteHelper {
                 int id = Integer.valueOf(request.getParameter("ID"));
                 switch(request.getParameter("table")){
                     case "einzelbeleg_hatmghlemma":
-                        ret = EinzelbelegDB.removeMghLemmaFromEinzelbeleg(id,out);                  
+                        ret = EinzelbelegDB.remove(EinzelbelegMghLemma_MM.class,id);                  
                         break;
                     case "einzelbeleg_hatnamenkommentar":
-                        ret = EinzelbelegDB.removeNamenKommentarFromEinzelbeleg(id,out);                  
+                        ret = EinzelbelegDB.remove(EinzelbelegNamenkommentar_MM.class,id);                  
                         break;
                     case "person_hatamtstandweihe":
-                        ret = PersonDB.removeAmtStandWeiheFromPerson(id, out);
+                        ret = PersonDB.remove(PersonAmtStandWeihe_MM.class,id);
                         break;
                     case "person_hatareal":
-                        ret = PersonDB.removeArealFromPerson(id, out);
+                        ret = PersonDB.remove(PersonAreal_MM.class,id);
                         break;
                     case "person_hatethnie":
-                        ret = PersonDB.removeEthnieFromPerson(id, out);
+                        ret = PersonDB.remove(PersonEthnie_MM.class,id);
                         break;
                     case "person_verwandtmit":
-                        ret = PersonDB.removeVerwandtMitFromPerson(id, out);
+                        ret = PersonDB.remove(PersonVerwandtMit_MM.class,id);
                         break;                                                            
                     case "einzelbeleg_hatperson":
-                        ret = EinzelbelegDB.removePersonFromEinzelbeleg(id, out);
+                        ret = EinzelbelegDB.remove(EinzelbelegHatPerson_MM.class,id);
                         break;
                     case "quelle_inedition":
+                        ret = EinzelbelegDB.remove(QuelleInEdition_MM.class,id);
                         break;
                     case "urkunde_betreff":
+                        ret = EinzelbelegDB.remove(UrkundeBetreff.class,id);
                         break;
                     case "urkunde_hatempfaenger":
+                        ret = EinzelbelegDB.remove(UrkundeEmpfaenger.class,id);
                         break;
                     case "edition_hateditor":
+                        ret = EinzelbelegDB.remove(EditionEditor.class,id);
                         break;
-                    case "handschrift_ueberlieferung":                                        
+                    case "handschrift_ueberlieferung":    
+                        ret = EinzelbelegDB.remove(HandschriftUeberlieferung.class,id);
                         break;
                 }
             } catch (Exception ex) {
