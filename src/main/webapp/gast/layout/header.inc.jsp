@@ -52,7 +52,7 @@
                     </ul>
                     <div id="search-wrap">
                         <div id="search">
-                            <FORM method="POST" action="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis.jsp">
+                            <FORM method="POST" action="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis">
                                 <input type="hidden" name="form" value="einfache_suche">
                                 <input id="button" name="Suchen" value="" type="submit">
                                 <input type="text" name="query" placeholder="Suchen">
