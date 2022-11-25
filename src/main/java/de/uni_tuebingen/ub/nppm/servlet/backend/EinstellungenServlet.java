@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class EinstellungenServlet extends AbstractBackendServlet {
+
     @Override
     protected String getTitle() {
         return "einstellungen";
