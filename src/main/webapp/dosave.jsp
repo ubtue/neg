@@ -5,7 +5,8 @@
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.text.SimpleDateFormat" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.*" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
@@ -37,26 +38,26 @@
       try {
         if(request.getParameter("ID").equals("-1")){
            rs = st.executeQuery("SELECT max(ID) ID FROM "+form);
-           rs.next();
+           rs.next();           
            id = rs.getInt("ID") + 1;
+           id = DatenbankDB.getMaxId(form);
         }
         else id = Integer.parseInt(request.getParameter("ID"));
       }
       catch (Exception e) { out.println(e); }
 
-      rs = st.executeQuery("SELECT * FROM "+form+" WHERE ID="+id+";");
-      if (!form.equals("urkunde") && !rs.next()) {
-        st2.execute("INSERT INTO "+form+" (ID, Erstellt, ErstelltVon, GehoertGruppe)"
-                    +" VALUES("+id+", NOW(), "+session.getAttribute("BenutzerID")+", "+session.getAttribute("GruppeID")+");");
+      boolean exist = DatenbankDB.existForm(form, id);
+      if (!form.equals("urkunde") && !exist) {
+        DatenbankDB.insertMetaData(form, id, (int)session.getAttribute("BenutzerID"), (int)session.getAttribute("GruppeID"));
       }
       else if (!form.equals("urkunde")){
-        st2.execute("UPDATE "+form+" SET LetzteAenderung = NOW(), LetzteAenderungVon=\""+session.getAttribute("BenutzerID")+"\" WHERE ID="+id+";");
+        DatenbankDB.updateMetaData(form, id, (int)session.getAttribute("BenutzerID"));
       }
 
 
       out.println("SELECT * FROM datenbank_mapping WHERE Formular='"+request.getParameter("form")+"' ORDER BY ID ASC;");
       rs = st.executeQuery("SELECT * FROM datenbank_mapping WHERE Formular='"+request.getParameter("form")+"' ORDER BY ID ASC;");
-     
+      List<DatenbankMapping> lst = DatenbankDB.getMapping(form);
       
       while (rs.next()) {
         // Textfield, Textarea, select, addselect
