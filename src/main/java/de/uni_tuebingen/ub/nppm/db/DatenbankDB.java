@@ -119,6 +119,13 @@ public class DatenbankDB extends AbstractBase {
         }
     }
     
+    public static List<Object[]> getResult(String sql) throws Exception {
+        Session session = getSession();
+        SQLQuery query = session.createSQLQuery(sql);
+        List<Object[]> rows = query.getResultList();
+        return rows;
+    }
+    
     public static List<DatenbankSelektion> getSelektion() throws Exception {
         Session session = getSession();
         String SQL = "SELECT DISTINCT * FROM datenbank_selektion ORDER BY selektion ASC";

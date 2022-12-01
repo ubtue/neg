@@ -81,7 +81,7 @@
   <a href="ohneVerknuepfung">offene Verkn&uuml;pfung</a>
   <br>
   <hr>
-  <a href="freie_suche.jsp">
+  <a href="freie_suche">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="freie_suche"/>
       <jsp:param name="Textfeld" value="Titel"/>

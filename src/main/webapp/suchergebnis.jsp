@@ -1,20 +1,8 @@
 ﻿<%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-<HTML>
-  <HEAD>
-    <TITLE>Nomen et Gens - Suchergebnis</TITLE>
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <script src="javascript/funktionen.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="mktree.css" type="text/css">
-    <script type="text/javascript" src="mktree.js"></script>
-    
-    
-    <noscript></noscript>
-  </HEAD>
 
-  <BODY>
-    <BODY onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');">
+    <div onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');">
 
     <jsp:include page="dojump.jsp">
 
@@ -40,5 +28,4 @@
         }
       %>
     </div>
-  </BODY>
-</HTML>
+  </div>
