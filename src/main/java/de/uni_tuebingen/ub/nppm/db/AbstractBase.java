@@ -160,4 +160,12 @@ public class AbstractBase {
         List<Object[]> rows = sqlQuery.getResultList();        
         return rows;
     }
+    
+    protected static void insertOrUpdate(String sql) throws Exception {
+        Session session = getSession();
+        session.getTransaction().begin();
+        NativeQuery query = session.createSQLQuery(sql);
+        query.executeUpdate();
+        session.getTransaction().commit();
+    }
 }
