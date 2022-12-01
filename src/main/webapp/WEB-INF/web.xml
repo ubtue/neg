@@ -30,7 +30,14 @@
       <servlet-name>PersonServlet</servlet-name>
       <url-pattern>/gast/person</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+      <servlet-name>SucheServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.SucheServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>SucheServlet</servlet-name>
+      <url-pattern>/gast/einfaches_ergebnis</url-pattern>  
+  </servlet-mapping>  
   <servlet>
       <servlet-name>NamenServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.NamenServlet</servlet-class>
@@ -163,6 +170,15 @@
   <servlet-mapping>
       <servlet-name>BackendHandschriftServlet</servlet-name>
       <url-pattern>/handschrift</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendQuelleServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.QuelleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendQuelleServlet</servlet-name>
+      <url-pattern>/quelle</url-pattern>
   </servlet-mapping>
   
   <servlet>
