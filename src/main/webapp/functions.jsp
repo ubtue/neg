@@ -3,7 +3,8 @@
 <%@ page import="java.util.Vector" isThreadSafe="false" %>
 <%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
+<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.util.StringTokenizer" isThreadSafe="false"%>
@@ -232,27 +233,15 @@ int max(int a, int b) {
 }
 
 
-String getLabel(String formular, String datenfeld, String textfeld, Statement st, String sprache){
-	  String sql = "";
-	  
+String getLabel(String formular, String datenfeld, String textfeld, Statement st, String sprache) throws Exception{	  
 	  if (datenfeld == null && textfeld != null) {
-	    sql = "SELECT "+sprache+" Beschriftung FROM datenbank_texte WHERE Formular=\""+formular+"\" AND Textfeld=\""+textfeld+"\";";
+            return DatenbankDB.getLabel(sprache, formular, textfeld);
+            
 	  }
 	  else if (datenfeld != null && textfeld == null) {
-	    sql = "SELECT "+sprache+"_Beschriftung Beschriftung FROM datenbank_mapping WHERE Formular=\""+formular+"\" AND datenfeld=\""+datenfeld+"\";";
+            return DatenbankDB.getMapping(sprache, formular, datenfeld);
 	  }
-	  
-	  ResultSet  rs = null;
-	  try {
-	    rs = st.executeQuery(sql);
-	    if ( rs.next() ) {
-	      return DBtoHTML(rs.getString("Beschriftung"));
 
-	    }
-	  }
-	  catch (Exception e) {
-
-	  }
 	  return "";
 	
 }

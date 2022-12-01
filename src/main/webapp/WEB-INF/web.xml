@@ -173,6 +173,24 @@
   </servlet-mapping>
   
   <servlet>
+      <servlet-name>BackendFreieSucheServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.FreieSucheServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendFreieSucheServlet</servlet-name>
+      <url-pattern>/freie_suche</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendFreieSucheErgebnisServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.FreieSucheErgebnisServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendFreieSucheErgebnisServlet</servlet-name>
+      <url-pattern>/suchergebnis</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
       <servlet-name>BackendQuelleServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.QuelleServlet</servlet-class>
   </servlet>
