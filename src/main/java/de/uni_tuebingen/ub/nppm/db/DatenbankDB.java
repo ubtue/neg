@@ -162,21 +162,14 @@ public class DatenbankDB extends AbstractBase {
             String col = row[1].toString();
             String updateSQL = "UPDATE "+tbl+" SET "+col+"="+feldNeu
                      + " WHERE "+col+"="+feldAlt+";";
-            session.getTransaction().begin();
-            NativeQuery update = session.createSQLQuery(updateSQL);
-            update.executeUpdate();
-            session.getTransaction().commit();
+            insertOrUpdate(updateSQL);
         }
         
     }
     
     public static void deleteAuswahlfeld(String tabelle, String feldAlt) throws Exception {
-        Session session = getSession();
         String SQL = "DELETE FROM "+tabelle
                       + " WHERE ID="+feldAlt;
-        session.getTransaction().begin();
-        NativeQuery query = session.createSQLQuery(SQL);
-        query.executeUpdate();
-        session.getTransaction().commit();
+        insertOrUpdate(SQL);
     }
 }
