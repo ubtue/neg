@@ -103,7 +103,7 @@
 
   <br>
   <hr>
-  <a href="administration.jsp">
+  <a href="administration">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="administration"/>
       <jsp:param name="Textfeld" value="Titel"/>
