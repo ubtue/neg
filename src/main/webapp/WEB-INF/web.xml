@@ -182,15 +182,6 @@
   </servlet-mapping>
   
   <servlet>
-      <servlet-name>BackendSuchErgebnisServlet</servlet-name>
-      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.SuchErgebnisServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-      <servlet-name>BackendSuchErgebnisServlet</servlet-name>
-      <url-pattern>/suchergebnis</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
       <servlet-name>BackendFreieSucheServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.FreieSucheServlet</servlet-class>
   </servlet>
