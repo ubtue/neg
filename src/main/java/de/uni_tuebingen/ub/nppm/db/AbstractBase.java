@@ -9,14 +9,12 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 import de.uni_tuebingen.ub.nppm.model.*;
-import java.io.IOException;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
-import javax.servlet.jsp.JspWriter;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
@@ -177,4 +175,13 @@ public class AbstractBase {
         }
         return false;
     }
+
+    protected static void insertOrUpdate(String sql) throws Exception {
+        Session session = getSession();
+        session.getTransaction().begin();
+        NativeQuery query = session.createSQLQuery(sql);
+        query.executeUpdate();
+        session.getTransaction().commit();
+    }
+    
 }

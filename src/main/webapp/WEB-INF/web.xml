@@ -137,6 +137,24 @@
   </servlet-mapping>
   
   <servlet>
+      <servlet-name>BackendAdminServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.AdministrationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendAdminServlet</servlet-name>
+      <url-pattern>/administration</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendAdminAuswahlServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.AdministrationAuswahlServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendAdminAuswahlServlet</servlet-name>
+      <url-pattern>/admin-auswahlfelder</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
       <servlet-name>BackendOhneVerknuepfungServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.OhneVerknuepfungServlet</servlet-class>
   </servlet>
@@ -152,6 +170,24 @@
   <servlet-mapping>
       <servlet-name>BackendHandschriftServlet</servlet-name>
       <url-pattern>/handschrift</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendFreieSucheServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.FreieSucheServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendFreieSucheServlet</servlet-name>
+      <url-pattern>/freie_suche</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>BackendFreieSucheErgebnisServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.FreieSucheErgebnisServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendFreieSucheErgebnisServlet</servlet-name>
+      <url-pattern>/suchergebnis</url-pattern>
   </servlet-mapping>
   
   <servlet>
