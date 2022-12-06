@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
+import org.hibernate.query.NativeQuery;
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
@@ -149,4 +150,13 @@ public class AbstractBase {
     protected static List getList(Class c) throws Exception {
         return getList(c, null);
     }
+    
+    protected static void insertOrUpdate(String sql) throws Exception {
+        Session session = getSession();
+        session.getTransaction().begin();
+        NativeQuery query = session.createSQLQuery(sql);
+        query.executeUpdate();
+        session.getTransaction().commit();
+    }
+    
 }
