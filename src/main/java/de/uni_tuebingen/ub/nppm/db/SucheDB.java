@@ -69,18 +69,18 @@ public class SucheDB extends AbstractBase {
     public static int getLinecount(String tablesString, String conditionsString) throws Exception {
         String sql = "SELECT COUNT(*) FROM "+tablesString+" WHERE ("+conditionsString+")";
         Session session = getSession();
-        SQLQuery sqlQuery = session.createSQLQuery(sql);
+        NativeQuery sqlQuery = session.createSQLQuery(sql);
         sqlQuery.setMaxResults(1);
         List<Object> rows = sqlQuery.getResultList();
-        return (int)rows.get(0);
+        return (int)Integer.parseInt(rows.get(0).toString());
     }
         
     public static List<Map<String,String>> getFields(String fields , String tablesString, String conditionsString, String export, int pageoffset, int pageLimit) throws Exception {
         String sql = "SELECT "+fields+" FROM "+tablesString+" WHERE ("+conditionsString+")";
-        if (export.equals("liste") || export.equals("browse"))
+        if (export != null && export.equals("liste") || export.equals("browse"))
             sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
         Session session = getSession();
-        SQLQuery sqlQuery = session.createSQLQuery(sql);
+        NativeQuery sqlQuery = session.createSQLQuery(sql);
         List<Object[]> rows = sqlQuery.getResultList();
         //convert field str to list
         List<String> fieldList = new ArrayList<String>(Arrays.asList(fields.split(",")));
@@ -90,7 +90,8 @@ public class SucheDB extends AbstractBase {
             //convert the fields from the row to a map
             Map<String, String> fieldVal = new HashMap<String, String>();
             for(int i = 0; i < fieldList.size(); i++){
-                fieldVal.put(fieldList.get(i).trim(), row[i].toString());
+                if(row[i] != null)
+                    fieldVal.put(fieldList.get(i).trim(), row[i].toString());
             }
             ret.add(fieldVal);
         }
