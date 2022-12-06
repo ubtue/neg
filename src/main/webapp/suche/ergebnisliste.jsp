@@ -66,15 +66,8 @@
 	  	return;
 	  }
 
-
-      String sql = "SELECT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+")"; // GROUP BY "+fieldsString;
       int linecount = SucheDB.getLinecount(tablesString, conditionsString);
       out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
-
-
-      %>
-
-      <%
 
       // ########## LISTE/BROWSE ##########
       if (export.equals("liste") || export.equals("browse")) {
@@ -118,9 +111,7 @@
           out.println("</th>");
         }
         boolean even = false;
-        
         List<Map<String,String>> rowsAsMap = SucheDB.getFields(fieldsString, tablesString, conditionsString, export, pageoffset, pageLimit);
-        
         for ( Map<String,String> row : rowsAsMap ) {
 
           out.println("<tr class=\""+(even?"":"un")+"even\">");
@@ -130,8 +121,8 @@
 
           for(int i=0; i<fieldNames.size(); i++) {
             out.println("<td class=\"resultlist\" valign=\"top\">");
-            if (row.get(fieldNames.get(i)) != null && !DBtoHTML(row.get(fieldNames.get(i))).equals("")) {
-              String cell =  DBtoHTML(row.get(fieldNames.get(i)));
+            if (row.get(fields.get(i).trim()) != null && !DBtoHTML(row.get(fields.get(i).trim())).equals("")) {
+              String cell =  DBtoHTML(row.get(fields.get(i)));
               if (export.equals("browse")) {
                 boolean link = false;
                 if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
