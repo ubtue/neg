@@ -116,7 +116,7 @@
           java.util.HashMap row = (java.util.HashMap) o;
           out.println("<tr class=\""+(even?"":"un")+"even\">");
           if (!formular.equals("favorit") && !formular.equals("freie_suche")&& !formular.equals("namenkommentar")&& !formular.equals("literatur")) {
-            out.println("<td class=\"resultlist\" valign=\"top\" align=\"center\"><a href=\""+formular+".jsp?ID="+row.get(formular+"ID")+"\">Gehe zu</a></td>");
+            out.println("<td class=\"resultlist\" valign=\"top\" align=\"center\"><a href=\""+formular+"?ID="+row.get(formular+"ID")+"\">Gehe zu</a></td>");
           }
 
           for(int i=0; i<fieldNames.size(); i++) {
@@ -139,7 +139,7 @@
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar.jsp?ID="+row.get("ID")+"\">");
+                  out.print("<a href=\"namenkommentar?ID="+row.get("ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
@@ -155,7 +155,7 @@
                   }
                 }
                 else if (fieldNames.get(i).contains("ID")) {
-            out.println("<a href=\""+formular+".jsp?ID="+row.get(formular+"ID")+"\">Gehe zu: ");
+            out.println("<a href=\""+formular+"?ID="+row.get(formular+"ID")+"\">Gehe zu: ");
                               link = true;
                 }
                 out.print(cell);
