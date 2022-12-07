@@ -138,8 +138,8 @@
                   out.print("<a href=\"person.jsp?ID="+row.get("perszu.ID")+"\">");
                   link = true;
                 }
-                else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar?ID="+row.get("ID")+"\">");
+                else if (fieldNames.get(i).contains("PLemma")) {
+                  out.print("<a href=\"namenkommentar?ID="+row.get("namenkommentarID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
