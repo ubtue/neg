@@ -1,3 +1,5 @@
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+
 ﻿<%
   if (session != null) {
     String sprache = (String) session.getAttribute("Sprache");
@@ -9,17 +11,11 @@
     String ziel = request.getParameter("go"); // "intern" oder "gast"
   %>
     <p>
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="login"/>
-        <jsp:param name="Textfeld" value="ErfolgreichAusgeloggt"/>
-      </jsp:include>
+        <% Language.printTextfield(out,session, "login","ErfolgreichAusgeloggt");%>
     </p>
-    <!-- <a href="login">
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a> -->
+    
+    <% Language.printTextfield(out,session, "all","Startseite");%>
+    
     <% if(ziel == null || ziel.equals("intern")) { %>
     	<script>window.location = 'login';</script>
     <% } else { %>

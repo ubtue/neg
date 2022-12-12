@@ -120,13 +120,7 @@
   <br>
   <hr>
   <hr>
-  <!-- <a href="logout.jsp">
-    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-      <jsp:param name="Formular" value="logout"/>
-      <jsp:param name="Textfeld" value="Titel"/>
-    </jsp:include>
-  </a>-->
-  <a href="logout.jsp?go=gast">Abmelden</a>
+  <a href="logout?go=gast">Abmelden</a>
   <br>
   <br>
 <%

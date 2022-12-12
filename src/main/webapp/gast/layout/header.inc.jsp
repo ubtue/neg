@@ -10,7 +10,7 @@
                 <a href="startseite"> Nomen et Gens </a>
             </div>
             <div id="header-right">
-                <p><a href="<%=Utils.getBaseUrl(request)%>/gast/hilfe"><strong>Hilfe</strong></a> | <a href="<%=Utils.getBaseUrl(request)%>/logout.jsp?go=intern"><strong>Interner Bereich</strong></a></p>
+                <p><a href="<%=Utils.getBaseUrl(request)%>/gast/hilfe"><strong>Hilfe</strong></a> | <a href="<%=Utils.getBaseUrl(request)%>/logout?go=intern"><strong>Interner Bereich</strong></a></p>
             </div>
             <div class="clear"></div>
         </div>
