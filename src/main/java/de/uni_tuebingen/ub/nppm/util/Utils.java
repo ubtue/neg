@@ -6,7 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
 
 public class Utils {
-    public static boolean isNumeric(String str){
+
+    public static boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);
         } catch (NumberFormatException numberFormatException) {
@@ -24,8 +25,8 @@ public class Utils {
         String baseUrl = scheme + "://" + host + ((("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)) ? "" : ":" + port) + contextPath;
         return baseUrl;
     }
-    
-    public static int determineId(HttpServletRequest request, HttpServletResponse response, String formular, JspWriter out) throws Exception{
+
+    public static int determineId(HttpServletRequest request, HttpServletResponse response, String formular, JspWriter out) throws Exception {
         int id = Constants.UNDEFINED_ID;
 
         String reqID = request.getParameter("ID");

@@ -21,7 +21,6 @@ import de.uni_tuebingen.ub.nppm.util.MailSender;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 
-
 public class NewPasswordServlet extends HttpServlet {
 
     private void writeHTMLMessage(HttpServletRequest request, HttpServletResponse response, String[] messages) throws IOException {
@@ -81,7 +80,7 @@ public class NewPasswordServlet extends HttpServlet {
                     message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a></h1>";
                     writeHTMLMessage(request, response, message);
                 }
-            } else if(password != null && password.length() < 6) {
+            } else if (password != null && password.length() < 6) {
                 String[] message = new String[1];
                 message[0] = "<h1 style=\"text-align: center;\">Passwort ist zu kurz, mindestlänge sind 6 Buchstaben</h1>";
                 writeHTMLMessage(request, response, message);
