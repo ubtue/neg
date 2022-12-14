@@ -79,17 +79,17 @@
             || feldtyp.equals("sqlselect")
            ) {
           // KEIN ARRAY
-          if(!isArray) {
-            rs2 = st2.executeQuery("SELECT "+zielAttribut+" FROM "+zieltabelle+" WHERE ID='"+id+"';");            
+          if(!isArray) {  
+            String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
             // Datensatz ändern
-            if (rs2.next() && (
-                 (request.getParameter(datenfeld) != null && rs2.getString(zielAttribut) != null && !rs2.getString(zielAttribut).equals(DBtoDB(request.getParameter(datenfeld))))
+            if (attrVal != null && (
+                 (request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
                 ||
-                 (request.getParameter(datenfeld) != null && rs2.getString(zielAttribut) == null && !request.getParameter(datenfeld).equals(""))
+                 (request.getParameter(datenfeld) != null && attrVal == null && !request.getParameter(datenfeld).equals(""))
                )) {
-               st3.execute("UPDATE "+zieltabelle
-                          +" SET "+zielAttribut+"='"+DBtoDB(request.getParameter(datenfeld))+"'"
-                          +" WHERE ID='"+id+"';");
+                  SaveHelper.insertOrUpdateSql("UPDATE "+zieltabelle
+                          +" SET "+zielAttribut+"=\""+DBtoDB(request.getParameter(datenfeld))+"\""
+                          +" WHERE ID=\""+id+"\"");
             } // ENDE Datensatz ändern
 
           } // ENDE kein Array
@@ -100,16 +100,12 @@
               // Prüfen, ob aktueller Eintrag bereits vorhanden
               if (request.getParameter(datenfeld+"["+i+"]_entryid") != null) {
                 // Prüfen, ob Datensatz geändert wurde
-                rs2 = st2.executeQuery("SELECT ID, "+zielAttribut
-                                       +" FROM "+zieltabelle
-                                       +" WHERE ID = "+request.getParameter(datenfeld+"["+i+"]_entryid")+";");
-
-                if (rs2.next() && !rs2.getString(zielAttribut).equals(DBtoDB(request.getParameter(datenfeld+"["+i+"]")))) {
+                String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, Integer.valueOf(request.getParameter(datenfeld+"["+i+"]_entryid")));
+                if (attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld+"["+i+"]")))) {
                   String sql = "UPDATE " + zieltabelle
-                             + " SET "+zielAttribut+"='"+DBtoDB(request.getParameter(datenfeld+"["+i+"]"))+"'"
+                             + " SET "+zielAttribut+"=\""+DBtoDB(request.getParameter(datenfeld+"["+i+"]"))+"\""
                              + " WHERE ID="+request.getParameter(datenfeld+"["+i+"]_entryid");
-                  st3.execute(sql);
-                 // out.println(sql);
+                  SaveHelper.insertOrUpdateSql(sql);
                 }
               }
 
@@ -118,10 +114,9 @@
                 if (request.getParameter(datenfeld+"["+i+"]") != null && !request.getParameter(datenfeld+"["+i+"]").equals("") && !request.getParameter(datenfeld+"["+i+"]").equals("-1")) {
                   String sql = "INSERT INTO "+zieltabelle
                                +" ("+formularAttribut+", "+zielAttribut+")"
-                               +" VALUES ("+id+", '"+DBtoDB(request.getParameter(datenfeld+"["+i+"]"))+"');";
+                               +" VALUES ("+id+", \""+DBtoDB(request.getParameter(datenfeld+"["+i+"]"))+"\" );";
                   if(formularAttribut != null)
-                    st2.execute(sql);                                    
-                 // out.println(sql);
+                    SaveHelper.insertOrUpdateSql(sql);                                    
                 }
               }
             }
@@ -132,14 +127,14 @@
         else if (feldtyp.equals("checkbox")) {
           // KEIN ARRAY
           if(!isArray) {
-            rs2 = st2.executeQuery("SELECT "+zielAttribut+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
+            String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
             int checkbox = 0;
             if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
               checkbox = 1;
             }
-            if (rs2.next() && rs2.getInt(zielAttribut) != checkbox ) {
-              st3.execute("UPDATE "+zieltabelle
-                          +" SET "+zielAttribut+"='"+checkbox+"'"
+            if (attrVal!=null && Integer.valueOf(attrVal) != checkbox ) {
+                 SaveHelper.insertOrUpdateSql("UPDATE "+zieltabelle
+                          +" SET "+zielAttribut+"=\""+checkbox+"\""
                           +" WHERE ID='"+id+"';");
             } // ENDE Datensatz ändern
           } // ENDE kein Array
@@ -206,9 +201,7 @@
                 sql += zielattributArray[i] + "=\"" + ((!request.getParameter(combinedFeldnamenArray[i]).equals(""))?request.getParameter(combinedFeldnamenArray[i]):"0") +"\", ";
                 sql += "Genauigkeit" + zielattributArray[i] + "=\"" + ((!request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]).equals(""))?request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]):"0") +"\"";                   }
               sql += " WHERE ID='"+id+"';";
-              st3 = cn.createStatement();
-           //   out.println(sql);
-              st3.execute(sql);
+              SaveHelper.insertOrUpdateSql(sql);
             }
           }
         } // ENDE Datum
