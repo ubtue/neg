@@ -20,22 +20,12 @@ public class SaveHelper extends AbstractBase {
     public static void insertMetaData(String form, int id, int benutzerID, int gruppenID) throws Exception {
         String sql = "INSERT INTO "+form+" (ID, Erstellt, ErstelltVon, GehoertGruppe)"
                     +" VALUES("+id+", NOW(), "+benutzerID+", "+gruppenID+");";
-        //insert
-        Session session = getSession();
-        session.getTransaction().begin();
-        NativeQuery query = session.createSQLQuery(sql);
-        query.executeUpdate();
-        session.getTransaction().commit();      
+        insertOrUpdate(sql);
     }
     
     public static void updateMetaData(String form, int id, int benutzerID) throws Exception {
         String sql = "UPDATE "+form+" SET LetzteAenderung = NOW(), LetzteAenderungVon=\""+benutzerID+"\" WHERE ID="+id+";";
-        //update
-        Session session = getSession();
-        session.getTransaction().begin();
-        NativeQuery query = session.createSQLQuery(sql);
-        query.executeUpdate();
-        session.getTransaction().commit();      
+        insertOrUpdate(sql);
     }
     
     public static List<DatenbankMapping> getMapping(String formular) throws Exception {
@@ -54,9 +44,23 @@ public class SaveHelper extends AbstractBase {
     }
     
     public static String getSingleField(String zielAttribut, String zieltabelle, int id) throws Exception {
-        Object res = DatenbankDB.getSingleResult("SELECT "+zielAttribut+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
-        if(res != null)
-            return res.toString();
-        return null;
+        String sql = "SELECT " + zielAttribut + " FROM " + zieltabelle + " WHERE ID='" + id + "';";
+        try {            
+            Object res = DatenbankDB.getSingleResult(sql);
+            if (res != null) {
+                return res.toString();
+            }
+            return null;
+        } catch (Exception exception) {
+            throw new Exception(exception.getLocalizedMessage()+"\nSQL: "+sql);            
+        }
     }    
+    
+    public static void insertOrUpdateSql(String sql) throws Exception {
+        try {
+            insertOrUpdate(sql);
+        } catch (Exception exception) {
+            throw new Exception(exception.getLocalizedMessage()+"\nSQL: "+sql);
+        }
+    }
 }
