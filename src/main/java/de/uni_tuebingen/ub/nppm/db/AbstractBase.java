@@ -1,30 +1,32 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import java.util.Properties;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
-
-import de.uni_tuebingen.ub.nppm.model.*;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 
+import de.uni_tuebingen.ub.nppm.model.*;
+
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
-    
+
     protected static javax.naming.InitialContext initialContext =  null;
-    
+
     public static void setInitialContext(javax.naming.InitialContext ctx){
         initialContext = ctx;
     }
-    
+
     // Example taken from: https://www.javaguides.net/2019/08/hibernate-5-one-to-many-mapping-annotation-example.html
     protected static SessionFactory getSessionFactory() throws Exception {
         if (sessionFactory == null) {
@@ -41,7 +43,7 @@ public class AbstractBase {
             settings.put(Environment.URL, (String)initialContext.lookup("java:comp/env/sqlURL"));
             settings.put(Environment.USER, (String)initialContext.lookup("java:comp/env/sqlUser"));
             settings.put(Environment.PASS, (String)initialContext.lookup("java:comp/env/sqlPassword"));
-            
+
             // This must be changed when migrating to InnoDB
             //settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
             settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLMyISAMDialect");
@@ -54,7 +56,7 @@ public class AbstractBase {
             // TODO: Add all model classes dynamically
             configuration.addAnnotatedClass(Benutzer.class);
             configuration.addAnnotatedClass(BenutzerGruppe.class);
-            
+
             configuration.addAnnotatedClass(Edition.class);
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
@@ -89,14 +91,14 @@ public class AbstractBase {
             configuration.addAnnotatedClass(MghLemma.class);
             configuration.addAnnotatedClass(MghLemmaBearbeiter.class);
             configuration.addAnnotatedClass(MghLemmaKorrektor.class);
-            
+
             configuration.addAnnotatedClass(NamenKommentar.class);
             configuration.addAnnotatedClass(NamenKommentarBearbeiter.class);
             configuration.addAnnotatedClass(NamenKommentarKorrektor.class);
-            
+
             configuration.addAnnotatedClass(Quelle.class);
             configuration.addAnnotatedClass(QuelleInEdition_MM.class);
-            
+
             configuration.addAnnotatedClass(Handschrift.class);
             configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
             
@@ -111,7 +113,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(PersonVariante.class);
             configuration.addAnnotatedClass(PersonAreal_MM.class);
             configuration.addAnnotatedClass(PersonEthnie_MM.class);
-            configuration.addAnnotatedClass(PersonVerwandtMit_MM.class);                        
+            configuration.addAnnotatedClass(PersonVerwandtMit_MM.class);          
             
             configuration.addAnnotatedClass(Einzelbeleg.class);
             configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
@@ -119,7 +121,6 @@ public class AbstractBase {
             configuration.addAnnotatedClass(EinzelbelegMghLemma_MM.class);
             configuration.addAnnotatedClass(EinzelbelegNamenkommentar_MM.class);
             configuration.addAnnotatedClass(EinzelbelegHatPerson_MM.class);
-
         
             configuration.addAnnotatedClass(DatenbankFilter.class);
             configuration.addAnnotatedClass(DatenbankMapping.class);
@@ -128,7 +129,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(DatenbankTexte.class);
 
             configuration.addAnnotatedClass(SucheFavoriten.class);
-            
+
             configuration.addAnnotatedClass(Bemerkung.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
@@ -183,5 +184,21 @@ public class AbstractBase {
         query.executeUpdate();
         session.getTransaction().commit();
     }
-    
+
+    protected static List<Map> getMappedList(Query query) throws Exception {
+        // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
+        query.setResultTransformer(org.hibernate.transform.AliasToEntityMapResultTransformer.INSTANCE);
+        return query.list();
+    }
+
+    protected static List<Map> getMappedList(CriteriaQuery criteria) throws Exception {
+        return getMappedList(getSession().createQuery(criteria));
+    }
+
+    protected static List<Map> getMappedList(String query) throws Exception {
+        // Note: If you wanna use this function properly and your query
+        // contains a JOIN, please make sure to provide aliases (using AS)
+        // to be able to access the result columns by key.
+        return getMappedList(getSession().createNativeQuery(query));
+    }
 }
