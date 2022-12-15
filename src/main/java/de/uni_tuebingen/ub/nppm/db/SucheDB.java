@@ -59,15 +59,6 @@ public class SucheDB extends AbstractBase {
 
         return ret;
     }
-
-    public static int getLinecount(String tablesString, String conditionsString) throws Exception {
-        String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
-        Session session = getSession();
-        NativeQuery sqlQuery = session.createSQLQuery(sql);
-        sqlQuery.setMaxResults(1);
-        List<Object> rows = sqlQuery.getResultList();
-        return (int)Integer.parseInt(rows.get(0).toString());
-    }
     
     public static List getFields(String fields , String tablesString, String conditionsString, String export, Integer pageoffset, Integer pageLimit) throws Exception {
         String sql = "SELECT "+fields+" FROM "+tablesString+" WHERE ("+conditionsString+")";
