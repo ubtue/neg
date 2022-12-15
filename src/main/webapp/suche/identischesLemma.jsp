@@ -77,7 +77,7 @@ document.open();
         java.util.List<Object[]> result = SucheDB.nativeSql(sql);                     
         for(Object[] row : result){
         // step 4: we add a paragraph to the document
-                        document.add(new Paragraph(row[1].toString(), new Font(Font.TIMES_ROMAN, 28)));
+                        document.add(new Paragraph(DBtoHTML(row[1].toString()), new Font(Font.TIMES_ROMAN, 28)));
 
         float [] widths = {0.1f,0.1f,0.1f,0.1f,0.2f,0.1f,0.1f,0.1f};
 
@@ -94,8 +94,8 @@ document.open();
             table.addCell(new Cell(new Paragraph("Datierung", new Font(Font.TIMES_ROMAN, 8))));
 
 
-           out.println("<tr><td colspan=4><a href=\"namenkommentar?ID="+row[0]+"\"><h1>"+row[1]+"</h1></a></td></tr>");
-           int id = Integer.valueOf(row[0].toString());
+           out.println("<tr><td colspan=4><a href=\"namenkommentar?ID="+DBtoHTML(row[0])+"\"><h1>"+DBtoHTML(row[1])+"</h1></a></td></tr>");
+           int id = Integer.valueOf(DBtoHTML(row[0].toString()));
        //  Statement st2 = cn.createStatement();
           String sql2 = "SELECT einzelbeleg.ID, einzelbeleg.Belegnummer, einzelbeleg.Belegform"
                              +", person.ID as personID, person.Standardname"
@@ -122,7 +122,7 @@ document.open();
         }
         else if(!resultRow[4].toString().equals(standardName)){
             standardName = resultRow[4].toString();
-            out.println("<tr><td colspan=4><a href=\"person?ID="+resultRow[3]+"\"><h2>"+DBtoHTML(standardName)+"</h2></a></td></tr>");
+            out.println("<tr><td colspan=4><a href=\"person?ID="+DBtoHTML(resultRow[3])+"\"><h2>"+DBtoHTML(standardName)+"</h2></a></td></tr>");
              document.add(table);
              document.add(new Paragraph("     " + standardName, new Font(Font.TIMES_ROMAN, 16)));
              table = new Table(widths.length);
@@ -133,11 +133,11 @@ document.open();
           if(count%2==0)out.println("<tr>");
           else out.println("<tr bgcolor='#AACCDD'>");
 
-          out.println("<td><a href=\"einzelbeleg?ID="+resultRow[0]+"\">Beleg...</a></td>");
-          out.println("<td>"+(resultRow[2]==null?"&nbsp;":resultRow[2])+"</td>");
+          out.println("<td><a href=\"einzelbeleg?ID="+DBtoHTML(resultRow[0])+"\">Beleg...</a></td>");
+          out.println("<td>"+(resultRow[2]==null?"&nbsp;":DBtoHTML(resultRow[2]))+"</td>");
           out.println("<td> "+makeDateWrapper(resultRow[5], resultRow[6], resultRow[7])+" - "+makeDateWrapper(resultRow[8], resultRow[9], resultRow[10])+"</td>");
 
-            Cell eb = new Cell(new Paragraph((resultRow[2]==null?"&nbsp;":resultRow[2].toString()), new Font(Font.TIMES_ROMAN, 8)));
+            Cell eb = new Cell(new Paragraph((resultRow[2]==null?"&nbsp;":DBtoHTML(resultRow[2].toString())), new Font(Font.TIMES_ROMAN, 8)));
             table.addCell(eb);
 
              Cell dat = new Cell(new Paragraph(makeDateWrapper(resultRow[5], resultRow[6], resultRow[7])+" - "+makeDateWrapper(resultRow[8], resultRow[9], resultRow[10]), new Font(Font.TIMES_ROMAN, 8)));
@@ -170,19 +170,19 @@ document.open();
                     table.addCell("");
             }
 
-            out.println("<tr><td>"+innerResultRow[0] + "</td>");
-            out.println("<td>" + innerResultRow[1] +"</td>");
-            out.println("<td><a href=\"handschrift.jsp?ID="+innerResultRow[4]+"\"/><div style=\"font-size:8pt\">" + innerResultRow[2]+"</div></a></td>");
-            out.println("<td>" + innerResultRow[12]+"</td>");
-            out.println("<td>" + innerResultRow[11]+"</td>");
+            out.println("<tr><td>"+DBtoHTML(innerResultRow[0]) + "</td>");
+            out.println("<td>" + DBtoHTML(innerResultRow[1]) +"</td>");
+            out.println("<td><a href=\"handschrift.jsp?ID="+innerResultRow[4]+"\"/><div style=\"font-size:8pt\">" + DBtoHTML(innerResultRow[2])+"</div></a></td>");
+            out.println("<td>" + DBtoHTML(innerResultRow[12])+"</td>");
+            out.println("<td>" + DBtoHTML(innerResultRow[11])+"</td>");
             String date =  makeDateWrapper(innerResultRow[5], innerResultRow[6], innerResultRow[7])+" - "+makeDateWrapper(innerResultRow[8], innerResultRow[9], innerResultRow[10]);
           out.println("<td> "+date+"</td></tr>");
 
-                       table.addCell(new Cell(new Paragraph(innerResultRow[0].toString(), new Font(Font.TIMES_ROMAN, 8))));
-         table.addCell(new Cell(new Paragraph(innerResultRow[1].toString(), new Font(Font.TIMES_ROMAN, 8))));
-       table.addCell(new Cell(new Paragraph(innerResultRow[2].toString(), new Font(Font.TIMES_ROMAN, 8))));
-     table.addCell(new Cell(new Paragraph(innerResultRow[12].toString(), new Font(Font.TIMES_ROMAN, 8))));
-     table.addCell(new Cell(new Paragraph(innerResultRow[11].toString(), new Font(Font.TIMES_ROMAN, 8))));
+                       table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[0].toString()), new Font(Font.TIMES_ROMAN, 8))));
+         table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[1].toString()), new Font(Font.TIMES_ROMAN, 8))));
+       table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[2].toString()), new Font(Font.TIMES_ROMAN, 8))));
+     table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[12].toString()), new Font(Font.TIMES_ROMAN, 8))));
+     table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[11].toString()), new Font(Font.TIMES_ROMAN, 8))));
       table.addCell(new Cell(new Paragraph(date, new Font(Font.TIMES_ROMAN, 8))));
 
           }
