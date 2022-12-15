@@ -7,6 +7,7 @@ import java.util.Base64;
 
 //source: https://www.youtube.com/watch?v=hNKfEwTO3AQ
 public class SaltHash {
+
     public static String GenerateHash(String data, String algorithm, byte[] salt) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance(algorithm);
         digest.reset();

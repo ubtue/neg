@@ -1,16 +1,10 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
-import java.util.ArrayList;
-import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.math.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspWriter;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -30,7 +24,6 @@ public class SucheDB extends AbstractBase {
     public static List getFavoriten() throws Exception {
         return getList(SucheFavoriten.class);
     }
-    
 
     public static List<String> getCountryText(String country, String form, String query) throws Exception {
         String sql = "SELECT DISTINCT " + country + " FROM " + form;
@@ -45,30 +38,30 @@ public class SucheDB extends AbstractBase {
         return rows;
     }
 
-    public static Map<Integer, String> getAttributes(HttpServletRequest request) throws Exception{
-        String dbForm=request.getParameter("dbForm");
-        String tabelle=request.getParameter("zwischentabelle");
-        String zwAttribut=request.getParameter("zwAttribut");
-        String attribut=request.getParameter("attribut");
+    public static Map<Integer, String> getAttributes(HttpServletRequest request) throws Exception {
+        String dbForm = request.getParameter("dbForm");
+        String tabelle = request.getParameter("zwischentabelle");
+        String zwAttribut = request.getParameter("zwAttribut");
+        String attribut = request.getParameter("attribut");
 
-        Map<Integer, String> ret = new HashMap<Integer,String>();
+        Map<Integer, String> ret = new HashMap<Integer, String>();
         Session session = getSession();
         Transaction tx = session.beginTransaction();
-        String sql = "SELECT ID, "+attribut+" FROM "+dbForm+" e WHERE NOT EXISTS (SELECT * FROM "+tabelle+" eh WHERE e.ID=eh."+zwAttribut+") ORDER BY " + attribut;
+        String sql = "SELECT ID, " + attribut + " FROM " + dbForm + " e WHERE NOT EXISTS (SELECT * FROM " + tabelle + " eh WHERE e.ID=eh." + zwAttribut + ") ORDER BY " + attribut;
         SQLQuery query = session.createSQLQuery(sql);
         List<Object[]> rows = query.list();
 
-        for(Object[] row : rows){
-            if(row[0] != null && row[1] != null){
+        for (Object[] row : rows) {
+            if (row[0] != null && row[1] != null) {
                 ret.put(Integer.valueOf(row[0].toString()), row[1].toString());
             }
         }
 
         return ret;
     }
-    
+
     public static int getLinecount(String tablesString, String conditionsString) throws Exception {
-        String sql = "SELECT COUNT(*) FROM "+tablesString+" WHERE ("+conditionsString+")";
+        String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
         Session session = getSession();
         NativeQuery sqlQuery = session.createSQLQuery(sql);
         sqlQuery.setMaxResults(1);
@@ -87,40 +80,43 @@ public class SucheDB extends AbstractBase {
         
         return sqlQuery.getResultList();
     }
-    
-    public static List<Map<String,String>> getSearchResult(String fieldsString , String tablesString, String conditionsString, String orderString, String order, String[] fields) throws Exception {
-        String sql = "SELECT DISTINCT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order; 
-        if (order.equals("")) 
+
+    public static List<Map<String, String>> getSearchResult(String fieldsString, String tablesString, String conditionsString, String orderString, String order, String[] fields) throws Exception {
+        String sql = "SELECT DISTINCT " + fieldsString + " FROM " + tablesString + " WHERE (" + conditionsString + ") " + order;
+        if (order.equals("")) {
             sql += orderString;
+        }
         Session session = getSession();
         NativeQuery sqlQuery = session.createSQLQuery(sql);
         List<Object[]> rows = sqlQuery.getResultList();
         //return var
-        List<Map<String,String>> ret = new ArrayList<Map<String,String>>();
+        List<Map<String, String>> ret = new ArrayList<Map<String, String>>();
         //loop over the rows
-        for(Object[] row : rows){         
+        for (Object[] row : rows) {
             //convert the fields from the row to a map
             Map<String, String> fieldVal = new HashMap<String, String>();
-            for(int i = 0; i < fields.length; i++){
+            for (int i = 0; i < fields.length; i++) {
                 String[] name = fields[i].split(" AS ");
-                if(name.length == 2)
+                if (name.length == 2) {
                     fields[i] = name[1];
-                if(row[i] != null)
+                }
+                if (row[i] != null) {
                     fieldVal.put(fields[i].trim(), row[i].toString());
+                }
             }
             ret.add(fieldVal);
         }
-        
+
         return ret;
     }
-    
-    public static List<Object[]> getSearchCount(String conditionsString, String countString, String tablesString) throws Exception {        
+
+    public static List<Object[]> getSearchCount(String conditionsString, String countString, String tablesString) throws Exception {
         List<Object[]> ret = new ArrayList<>();
-        String sql = "SELECT "+countString+" FROM "+tablesString+" WHERE ("+conditionsString+")";        
+        String sql = "SELECT " + countString + " FROM " + tablesString + " WHERE (" + conditionsString + ")";
         Session session = getSession();
         NativeQuery sqlQuery = session.createSQLQuery(sql);
         List rows = sqlQuery.list();
-        
+
         for (Object object : rows) {
             //if object is not an array, cast it to a one dim array
             if (!object.getClass().isArray()) {
@@ -128,7 +124,7 @@ public class SucheDB extends AbstractBase {
                 arr[0] = object;
                 ret.add(arr);
                 return ret;
-            }else{
+            } else {
                 ret.add((Object[]) object);
             }
         }
@@ -142,8 +138,8 @@ public class SucheDB extends AbstractBase {
         CriteriaQuery<Tuple> query = builder.createTupleQuery();
 
         Root rootEinzelbeleg = query.from(Einzelbeleg.class);
-        Join <Einzelbeleg, Quelle> joinQuelle = rootEinzelbeleg.join(Einzelbeleg_.QUELLE, JoinType.LEFT);
-        Join <Einzelbeleg, Person> joinPerson = rootEinzelbeleg.join(Einzelbeleg_.PERSON);
+        Join<Einzelbeleg, Quelle> joinQuelle = rootEinzelbeleg.join(Einzelbeleg_.QUELLE, JoinType.LEFT);
+        Join<Einzelbeleg, Person> joinPerson = rootEinzelbeleg.join(Einzelbeleg_.PERSON);
 
         // If you add / change the parameters here, make sure to also change the calls for tuple.get() below
         query.multiselect(rootEinzelbeleg, joinQuelle, joinPerson);

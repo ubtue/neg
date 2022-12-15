@@ -5,27 +5,26 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 public class SucheServlet extends AbstractGastServlet {
+
     @Override
     protected String getTitle() {
         return "einfaches_ergebnis";
     }
 
-     @Override
+    @Override
     protected List<String> getAdditionalCss() {
         List<String> css = super.getAdditionalCss();
-        css.add("layout/mktree.css" );
+        css.add("layout/mktree.css");
         return css;
     }
 
     @Override
     protected List<String> getAdditionalJavaScript() {
         List<String> js = super.getAdditionalJavaScript();
-        js.add("../mktree.js" );
+        js.add("../mktree.js");
         return js;
     }
-
 
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -33,4 +32,3 @@ public class SucheServlet extends AbstractGastServlet {
         rd.include(request, response);
     }
 }
-

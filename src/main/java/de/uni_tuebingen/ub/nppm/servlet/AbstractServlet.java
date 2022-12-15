@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class AbstractServlet extends HttpServlet {
+
     protected void initRequest(HttpServletRequest request) throws Exception {
         Language.setLanguage(request);
     }
@@ -31,7 +32,7 @@ public abstract class AbstractServlet extends HttpServlet {
         List<String> js_list = getAdditionalJavaScript();
         String additional_js = "";
         for (String js : js_list) {
-            additional_js += "<script src=\""+js+"\" type=\"text/javascript\"></script>";
+            additional_js += "<script src=\"" + js + "\" type=\"text/javascript\"></script>";
         }
         request.setAttribute("additionalJs", additional_js);
 
@@ -47,17 +48,20 @@ public abstract class AbstractServlet extends HttpServlet {
         return new ArrayList<>();
     }
 
-     protected List<String> getAdditionalJavaScript() {
+    protected List<String> getAdditionalJavaScript() {
         return new ArrayList<>();
     }
 
     abstract protected String getTitle();
+
     protected String getNavigationTitle() {
         return "";
     }
 
     abstract protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception;
+
     abstract protected String getHeaderTemplate();
+
     abstract protected String getFooterTemplate();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
