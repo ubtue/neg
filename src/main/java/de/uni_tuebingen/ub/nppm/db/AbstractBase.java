@@ -154,7 +154,7 @@ public class AbstractBase {
         return getList(c, null);
     }
 
-    public static List<Object[]> nativeSql(String sql) throws Exception {
+    public static List<Object[]> getListNative(String sql) throws Exception {
         Session session = getSession();
         NativeQuery sqlQuery = session.createSQLQuery(sql);
         List<Object[]> rows = sqlQuery.getResultList();        

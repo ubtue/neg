@@ -44,7 +44,7 @@ document.open();
 
          int count=0;
          String standardName = "";
-         java.util.List<Object[]> result = SucheDB.nativeSql(sql);
+         java.util.List<Object[]> result = SucheDB.getListNative(sql);
         for ( Object[] row : result ) {
 
         count++;
@@ -74,7 +74,7 @@ document.open();
                              +" FROM einzelbeleg_hatnamenkommentar eh2, einzelbeleg e2, namenkommentar n"
                              +" WHERE e2.Belegform LIKE '" +request.getParameter("Belegform")+"' AND eh2.EinzelbelegID=e2.ID AND n.ID=eh2.NamenkommentarID GROUP BY n.ID ORDER BY n.PLemma";
         
-        java.util.List<Object[]> result = SucheDB.nativeSql(sql);                     
+        java.util.List<Object[]> result = SucheDB.getListNative(sql);                     
         for(Object[] row : result){
         // step 4: we add a paragraph to the document
                         document.add(new Paragraph(DBtoHTML(row[1].toString()), new Font(Font.TIMES_ROMAN, 28)));
@@ -104,7 +104,7 @@ document.open();
                              +" WHERE einzelbeleg_hatnamenkommentar.NamenkommentarID = \""+id+"\""
                              +" AND einzelbeleg_hatnamenkommentar.EinzelbelegID = einzelbeleg.ID"
                              +" ORDER BY person.Standardname ASC";
-          java.util.List<Object[]> results = SucheDB.nativeSql(sql2); 
+          java.util.List<Object[]> results = SucheDB.getListNative(sql2); 
          int count=0;
          String standardName = "";
         for ( Object[] resultRow : results) {
@@ -151,7 +151,7 @@ document.open();
 
           int belegCount =0;
 
-          java.util.List<Object[]> sucheResults = SucheDB.nativeSql(sql3); 
+          java.util.List<Object[]> sucheResults = SucheDB.getListNative(sql3); 
           for(Object[] innerResultRow : sucheResults){
           belegCount++;
             if(first){
