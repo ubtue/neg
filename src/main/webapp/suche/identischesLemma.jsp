@@ -40,7 +40,7 @@ document.open();
         String sql = "SELECT einzelbeleg.ID, einzelbeleg.Belegnummer, einzelbeleg.Belegform"
                               +", einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr"
                              +" FROM einzelbeleg"
-                             +" WHERE not exists (select eh.EinzelbelegID from einzelbeleg_hatnamenkommentar eh where einzelbeleg.ID=eh.EinzelbelegID) ORDER BY einzelbeleg.ID";
+                             +" WHERE NOT EXISTS (SELECT eh.EinzelbelegID FROM einzelbeleg_hatnamenkommentar eh WHERE einzelbeleg.ID=eh.EinzelbelegID) ORDER BY einzelbeleg.ID";
 
          int count=0;
          String standardName = "";
@@ -72,7 +72,7 @@ document.open();
         {
         String sql = "SELECT n.ID, n.PLemma"
                              +" FROM einzelbeleg_hatnamenkommentar eh2, einzelbeleg e2, namenkommentar n"
-                             +" WHERE e2.Belegform LIKE '" +request.getParameter("Belegform")+"' AND eh2.EinzelbelegID=e2.ID AND n.ID=eh2.NamenkommentarID group by n.ID order by n.PLemma";
+                             +" WHERE e2.Belegform LIKE '" +request.getParameter("Belegform")+"' AND eh2.EinzelbelegID=e2.ID AND n.ID=eh2.NamenkommentarID GROUP BY n.ID ORDER BY n.PLemma";
         
         java.util.List<Object[]> result = SucheDB.nativeSql(sql);                     
         for(Object[] row : result){
