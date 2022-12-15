@@ -69,9 +69,9 @@ public class SucheDB extends AbstractBase {
         return (int)Integer.parseInt(rows.get(0).toString());
     }
     
-    public static List getFields(String fields , String tablesString, String conditionsString, String export, int pageoffset, int pageLimit) throws Exception {
+    public static List getFields(String fields , String tablesString, String conditionsString, String export, Integer pageoffset, Integer pageLimit) throws Exception {
         String sql = "SELECT "+fields+" FROM "+tablesString+" WHERE ("+conditionsString+")";
-        if (export != null && export.equals("liste") || export.equals("browse"))
+        if (export != null && (export.equals("liste") || export.equals("browse")) && pageoffset != null && pageLimit != null)
             sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
         Session session = getSession();
         NativeQuery sqlQuery = session.createSQLQuery(sql);
