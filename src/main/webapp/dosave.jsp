@@ -26,7 +26,6 @@
 
     String debug = "debug";
 
-    try {
       Class.forName(sqlDriver);
       cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
 
@@ -421,19 +420,6 @@
 </script>
 <noscript></noscript>
  <%
-    }
-    } // ENDE try...catch
-
-    catch (Exception e) {
-        throw new Exception(e);
-      //out.println(e);
-      //  out.println(Arrays.toString(Thread.currentThread().getStackTrace()).replace( ',', '\n' ));
-    }
-    finally {
-      try { if( null != st3 ) st3.close(); } catch( Exception ex ) {}
-      try { if( null != rs2 ) rs2.close(); } catch( Exception ex ) {}
-      try { if( null != st2 ) st2.close(); } catch( Exception ex ) {}
-      try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
     }
   } // ENDE if (speichern)
 %>
