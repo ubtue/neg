@@ -2,6 +2,9 @@
   <HEAD>
     <TITLE>Nomen et Gens - ${title}</TITLE>
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
+    
+    <script src="javascript/funktionen.js" type="text/javascript"></script>
+
     <link rel="stylesheet" href="layout/jquery-ui-1.10.3.css" type="text/css">
     <link rel="stylesheet" href="layout/jquery.autocomplete.css" type="text/css">
     

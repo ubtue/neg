@@ -172,6 +172,15 @@
       <url-pattern>/handschrift</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+      <servlet-name>BackendSucheServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.SucheServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendSucheServlet</servlet-name>
+      <url-pattern>/suche</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
       <servlet-name>BackendLogoutServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.LogoutServlet</servlet-class>

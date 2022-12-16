@@ -1,15 +1,12 @@
 ﻿<%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-
     <div onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');">
 
     <jsp:include page="dojump.jsp">
 
   <jsp:param name="form" value="gast_quelle" />
 </jsp:include>
-    <jsp:include page="layout/navigation.inc.jsp" />
-    <jsp:include page="layout/image.inc.html" />
     <jsp:include page="layout/titel.suche.html" />
     <div id="form">
       <%

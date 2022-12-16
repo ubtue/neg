@@ -1,11 +1,7 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
 <%@ page import="java.util.Vector" isThreadSafe="false" %>
 
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.Document" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.*" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false" %>
@@ -38,33 +34,32 @@ document.open();
 */
       out.println("<table class=\"date\">\n");
       out.println("<tr><th>Link</th><th>Beleg</th><th>Datierung</th><th>Sigle: Variante</th></tr>\n");
-      Connection cn = null;
-      Statement  st = null;
-      ResultSet  rs = null;
       try {
-        Class.forName( sqlDriver );
-        cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-        st = cn.createStatement();
-        Statement st2 = cn.createStatement();
 
         if(request.getParameter("Belegform").equals("")){
-        
-          ResultSet rs2 = st2.executeQuery("SELECT einzelbeleg.ID, einzelbeleg.Belegnummer, einzelbeleg.Belegform"
+        String sql = "SELECT einzelbeleg.ID, einzelbeleg.Belegnummer, einzelbeleg.Belegform"
                               +", einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr"
                              +" FROM einzelbeleg"
-                             +" WHERE not exists (select eh.EinzelbelegID from neg_final.einzelbeleg_hatnamenkommentar eh where einzelbeleg.ID=eh.EinzelbelegID) ORDER BY einzelbeleg.ID");
+                             +" WHERE NOT EXISTS (SELECT eh.EinzelbelegID FROM einzelbeleg_hatnamenkommentar eh WHERE einzelbeleg.ID=eh.EinzelbelegID) ORDER BY einzelbeleg.ID";
 
          int count=0;
          String standardName = "";
-        while ( rs2.next() ) {
+         java.util.List<Object[]> result = SucheDB.getListNative(sql);
+        for ( Object[] row : result ) {
 
         count++;
           if(count%2==0)out.println("<tr>");
           else out.println("<tr bgcolor='#AACCDD'>");
 
-          out.println("<td><a href=\"einzelbeleg.jsp?ID="+rs2.getInt("einzelbeleg.ID")+"\">Beleg...</a></td>");
-          out.println("<td>"+(rs2.getString("einzelbeleg.Belegform")==null?"&nbsp;":rs2.getString("einzelbeleg.Belegform"))+"</td>");
-          out.println("<td> "+makeDate(rs2.getInt("einzelbeleg.VonTag"), rs2.getInt("einzelbeleg.VonMonat"), rs2.getInt("einzelbeleg.VonJahr"))+" - "+makeDate(rs2.getInt("einzelbeleg.BisTag"), rs2.getInt("einzelbeleg.BisMonat"), rs2.getInt("einzelbeleg.BisJahr"))+"</td>");
+          out.println("<td><a href=\"einzelbeleg?ID="+row[0]+"\">Beleg...</a></td>");
+          if(row[2] == null){
+            row[2] = "&nbsp;";
+          }
+          out.println("<td>"+(row[2])+"</td>");
+          String date1 = makeDateWrapper(row[3], row[4], row[5]);
+          String date2 = makeDateWrapper(row[6], row[7], row[8]);
+          if(date1 != "" && date2 != "")
+            out.println("<td> "+date1+" - "+date2+"</td>");
 
 		out.println("</tr>");
 
@@ -75,12 +70,14 @@ document.open();
         
         }else 
         {
-        rs = st.executeQuery("SELECT n.ID, n.PLemma"
+        String sql = "SELECT n.ID, n.PLemma"
                              +" FROM einzelbeleg_hatnamenkommentar eh2, einzelbeleg e2, namenkommentar n"
-                             +" WHERE e2.Belegform LIKE '" +request.getParameter("Belegform")+"' AND eh2.EinzelbelegID=e2.ID AND n.ID=eh2.NamenkommentarID group by n.ID order by n.PLemma");// limit "+limit+"," + offset);
-        while(rs.next()){
+                             +" WHERE e2.Belegform LIKE '" +request.getParameter("Belegform")+"' AND eh2.EinzelbelegID=e2.ID AND n.ID=eh2.NamenkommentarID GROUP BY n.ID ORDER BY n.PLemma";
+        
+        java.util.List<Object[]> result = SucheDB.getListNative(sql);                     
+        for(Object[] row : result){
         // step 4: we add a paragraph to the document
-                        document.add(new Paragraph(rs.getString("n.PLemma"), new Font(Font.TIMES_ROMAN, 28)));
+                        document.add(new Paragraph(DBtoHTML(row[1].toString()), new Font(Font.TIMES_ROMAN, 28)));
 
         float [] widths = {0.1f,0.1f,0.1f,0.1f,0.2f,0.1f,0.1f,0.1f};
 
@@ -97,21 +94,21 @@ document.open();
             table.addCell(new Cell(new Paragraph("Datierung", new Font(Font.TIMES_ROMAN, 8))));
 
 
-           out.println("<tr><td colspan=4><a href=\"namenkommentar.jsp?ID="+rs.getString("n.ID")+"\"><h1>"+rs.getString("n.PLemma")+"</h1></a></td></tr>");
-           int id = rs.getInt("n.ID");
+           out.println("<tr><td colspan=4><a href=\"namenkommentar?ID="+DBtoHTML(row[0])+"\"><h1>"+DBtoHTML(row[1])+"</h1></a></td></tr>");
+           int id = Integer.valueOf(DBtoHTML(row[0].toString()));
        //  Statement st2 = cn.createStatement();
-          ResultSet rs2 = st2.executeQuery("SELECT einzelbeleg.ID, einzelbeleg.Belegnummer, einzelbeleg.Belegform"
-                             +", person.ID, person.Standardname"
+          String sql2 = "SELECT einzelbeleg.ID, einzelbeleg.Belegnummer, einzelbeleg.Belegform"
+                             +", person.ID as personID, person.Standardname"
                              +", einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr"
                              +" FROM einzelbeleg_hatnamenkommentar, (einzelbeleg LEFT JOIN einzelbeleg_hatperson ON einzelbeleg.ID = einzelbeleg_hatperson.EinzelbelegID) LEFT JOIN person ON einzelbeleg_hatperson.PersonID = person.ID"
                              +" WHERE einzelbeleg_hatnamenkommentar.NamenkommentarID = \""+id+"\""
                              +" AND einzelbeleg_hatnamenkommentar.EinzelbelegID = einzelbeleg.ID"
-                             +" ORDER BY person.Standardname ASC");
-
+                             +" ORDER BY person.Standardname ASC";
+          java.util.List<Object[]> results = SucheDB.getListNative(sql2); 
          int count=0;
          String standardName = "";
-        while ( rs2.next() ) {
-        if(rs2.getString("person.Standardname")==null){
+        for ( Object[] resultRow : results) {
+        if(resultRow[4]==null){
            if(!standardName.equals("-")){
              standardName = "-";
              out.println("<tr><td colspan=4><h2>"+DBtoHTML(standardName)+"</h1></td></tr>");
@@ -123,9 +120,9 @@ document.open();
          table.setWidths(widths);
            }
         }
-        else if(!rs2.getString("person.Standardname").equals(standardName)){
-            standardName = rs2.getString("person.Standardname");
-            out.println("<tr><td colspan=4><a href=\"person.jsp?ID="+rs2.getString("person.ID")+"\"><h2>"+DBtoHTML(standardName)+"</h2></a></td></tr>");
+        else if(!resultRow[4].toString().equals(standardName)){
+            standardName = resultRow[4].toString();
+            out.println("<tr><td colspan=4><a href=\"person?ID="+DBtoHTML(resultRow[3])+"\"><h2>"+DBtoHTML(standardName)+"</h2></a></td></tr>");
              document.add(table);
              document.add(new Paragraph("     " + standardName, new Font(Font.TIMES_ROMAN, 16)));
              table = new Table(widths.length);
@@ -136,29 +133,26 @@ document.open();
           if(count%2==0)out.println("<tr>");
           else out.println("<tr bgcolor='#AACCDD'>");
 
-          out.println("<td><a href=\"einzelbeleg.jsp?ID="+rs2.getInt("einzelbeleg.ID")+"\">Beleg...</a></td>");
-          out.println("<td>"+(rs2.getString("einzelbeleg.Belegform")==null?"&nbsp;":rs2.getString("einzelbeleg.Belegform"))+"</td>");
-          out.println("<td> "+makeDate(rs2.getInt("einzelbeleg.VonTag"), rs2.getInt("einzelbeleg.VonMonat"), rs2.getInt("einzelbeleg.VonJahr"))+" - "+makeDate(rs2.getInt("einzelbeleg.BisTag"), rs2.getInt("einzelbeleg.BisMonat"), rs2.getInt("einzelbeleg.BisJahr"))+"</td>");
+          out.println("<td><a href=\"einzelbeleg?ID="+DBtoHTML(resultRow[0])+"\">Beleg...</a></td>");
+          out.println("<td>"+(resultRow[2]==null?"&nbsp;":DBtoHTML(resultRow[2]))+"</td>");
+          out.println("<td> "+makeDateWrapper(resultRow[5], resultRow[6], resultRow[7])+" - "+makeDateWrapper(resultRow[8], resultRow[9], resultRow[10])+"</td>");
 
-            Cell eb = new Cell(new Paragraph((rs2.getString("einzelbeleg.Belegform")==null?"&nbsp;":rs2.getString("einzelbeleg.Belegform")), new Font(Font.TIMES_ROMAN, 8)));
+            Cell eb = new Cell(new Paragraph((resultRow[2]==null?"&nbsp;":DBtoHTML(resultRow[2].toString())), new Font(Font.TIMES_ROMAN, 8)));
             table.addCell(eb);
 
-             Cell dat = new Cell(new Paragraph(makeDate(rs2.getInt("einzelbeleg.VonTag"), rs2.getInt("einzelbeleg.VonMonat"), rs2.getInt("einzelbeleg.VonJahr"))+" - "+makeDate(rs2.getInt("einzelbeleg.BisTag"), rs2.getInt("einzelbeleg.BisMonat"), rs2.getInt("einzelbeleg.BisJahr")), new Font(Font.TIMES_ROMAN, 8)));
+             Cell dat = new Cell(new Paragraph(makeDateWrapper(resultRow[5], resultRow[6], resultRow[7])+" - "+makeDateWrapper(resultRow[8], resultRow[9], resultRow[10]), new Font(Font.TIMES_ROMAN, 8)));
              table.addCell(dat);
 
-
-          Statement st3 = cn.createStatement();
-
-          ResultSet rs3 = st3.executeQuery("Select u.Sigle, e.Variante, h.Bibliothekssignatur, e.handschriftID, h.ID, hu.VonTag, hu.VonMonat, hu.VonJahr, hu.BisTag, hu.BisMonat, hu.BisJahr, s1.Bezeichnung, s2.Bezeichnung  from einzelbeleg_textkritik e, ueberlieferung_edition u, handschrift h, handschrift_ueberlieferung hu, selektion_ort s1, selektion_ort s2 where e.EinzelbelegID=" + rs2.getString("einzelbeleg.ID") +" and hu.ID=e.handschriftID and hu.handschriftID=h.ID and e.handschriftID=u.ueberlieferungID and e.editionID=u.editionID and s1.ID=hu.Bibliotheksheimat AND s2.ID=hu.Schriftheimat");
-
+          String sql3 = "Select u.Sigle, e.Variante, h.Bibliothekssignatur, e.handschriftID, h.ID, hu.VonTag, hu.VonMonat, hu.VonJahr, hu.BisTag, hu.BisMonat, hu.BisJahr, s1.Bezeichnung, s2.Bezeichnung  from einzelbeleg_textkritik e, ueberlieferung_edition u, handschrift h, handschrift_ueberlieferung hu, selektion_ort s1, selektion_ort s2 where e.EinzelbelegID=" + resultRow[0] +" and hu.ID=e.handschriftID and hu.handschriftID=h.ID and e.handschriftID=u.ueberlieferungID and e.editionID=u.editionID and s1.ID=hu.Bibliotheksheimat AND s2.ID=hu.Schriftheimat";
+          
           out.println("<td><table cellpadding=2 style=\"font-size:8pt\">");
           String sigle = "";
           boolean first=true;
 
           int belegCount =0;
 
-
-          while(rs3.next()){
+          java.util.List<Object[]> sucheResults = SucheDB.getListNative(sql3); 
+          for(Object[] innerResultRow : sucheResults){
           belegCount++;
             if(first){
             first=false;
@@ -176,19 +170,19 @@ document.open();
                     table.addCell("");
             }
 
-            out.println("<tr><td>"+rs3.getString("u.Sigle") + "</td>");
-            out.println("<td>" + rs3.getString("e.Variante")+"</td>");
-            out.println("<td><a href=\"handschrift.jsp?ID="+rs3.getString("h.ID")+"\"/><div style=\"font-size:8pt\">" + rs3.getString("h.Bibliothekssignatur")+"</div></a></td>");
-            out.println("<td>" + rs3.getString("s2.Bezeichnung")+"</td>");
-            out.println("<td>" + rs3.getString("s1.Bezeichnung")+"</td>");
-            String date =  makeDate(rs3.getInt("hu.VonTag"), rs3.getInt("hu.VonMonat"), rs3.getInt("hu.VonJahr"))+" - "+makeDate(rs3.getInt("hu.BisTag"), rs3.getInt("hu.BisMonat"), rs3.getInt("hu.BisJahr"));
+            out.println("<tr><td>"+DBtoHTML(innerResultRow[0]) + "</td>");
+            out.println("<td>" + DBtoHTML(innerResultRow[1]) +"</td>");
+            out.println("<td><a href=\"handschrift.jsp?ID="+innerResultRow[4]+"\"/><div style=\"font-size:8pt\">" + DBtoHTML(innerResultRow[2])+"</div></a></td>");
+            out.println("<td>" + DBtoHTML(innerResultRow[12])+"</td>");
+            out.println("<td>" + DBtoHTML(innerResultRow[11])+"</td>");
+            String date =  makeDateWrapper(innerResultRow[5], innerResultRow[6], innerResultRow[7])+" - "+makeDateWrapper(innerResultRow[8], innerResultRow[9], innerResultRow[10]);
           out.println("<td> "+date+"</td></tr>");
 
-                       table.addCell(new Cell(new Paragraph(rs3.getString("u.Sigle"), new Font(Font.TIMES_ROMAN, 8))));
-         table.addCell(new Cell(new Paragraph(rs3.getString("e.Variante"), new Font(Font.TIMES_ROMAN, 8))));
-       table.addCell(new Cell(new Paragraph(rs3.getString("h.Bibliothekssignatur"), new Font(Font.TIMES_ROMAN, 8))));
-     table.addCell(new Cell(new Paragraph(rs3.getString("s2.Bezeichnung"), new Font(Font.TIMES_ROMAN, 8))));
-     table.addCell(new Cell(new Paragraph(rs3.getString("s1.Bezeichnung"), new Font(Font.TIMES_ROMAN, 8))));
+                       table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[0].toString()), new Font(Font.TIMES_ROMAN, 8))));
+         table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[1].toString()), new Font(Font.TIMES_ROMAN, 8))));
+       table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[2].toString()), new Font(Font.TIMES_ROMAN, 8))));
+     table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[12].toString()), new Font(Font.TIMES_ROMAN, 8))));
+     table.addCell(new Cell(new Paragraph(DBtoHTML(innerResultRow[11].toString()), new Font(Font.TIMES_ROMAN, 8))));
       table.addCell(new Cell(new Paragraph(date, new Font(Font.TIMES_ROMAN, 8))));
 
           }

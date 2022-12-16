@@ -30,7 +30,7 @@
     if (fields.size() > 0) {
       fieldsString += fields.firstElement();
       for (int i=1; i<fields.size(); i++) {
-        fieldsString += ", "+fields.get(i);
+        fieldsString += ", "+fields.get(i) ;
       }
     }
 
@@ -66,15 +66,8 @@
 	  	return;
 	  }
 
-
-      String sql = "SELECT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+")"; // GROUP BY "+fieldsString;
       int linecount = SucheDB.getLinecount(tablesString, conditionsString);
       out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
-
-
-      %>
-
-      <%
 
       // ########## LISTE/BROWSE ##########
       if (export.equals("liste") || export.equals("browse")) {
@@ -118,20 +111,19 @@
           out.println("</th>");
         }
         boolean even = false;
-        
-        List<Map<String,String>> rowsAsMap = SucheDB.getFields(fieldsString, tablesString, conditionsString, export, pageoffset, pageLimit);
-        
-        for ( Map<String,String> row : rowsAsMap ) {
-
+        List rowsAsMap = SucheDB.getFields(fieldsString, tablesString, conditionsString, export, pageoffset, pageLimit);
+        for ( Object o : rowsAsMap ) {
+          java.util.HashMap row = (java.util.HashMap) o;
           out.println("<tr class=\""+(even?"":"un")+"even\">");
           if (!formular.equals("favorit") && !formular.equals("freie_suche")&& !formular.equals("namenkommentar")&& !formular.equals("literatur")) {
-            out.println("<td class=\"resultlist\" valign=\"top\" align=\"center\"><a href=\""+formular+".jsp?ID="+row.get(formular+".ID")+"\">Gehe zu</a></td>");
+            out.println("<td class=\"resultlist\" valign=\"top\" align=\"center\"><a href=\""+formular+"?ID="+row.get(formular+"ID")+"\">Gehe zu</a></td>");
           }
 
           for(int i=0; i<fieldNames.size(); i++) {
             out.println("<td class=\"resultlist\" valign=\"top\">");
-            if (row.get(fieldNames.get(i)) != null && !DBtoHTML(row.get(fieldNames.get(i))).equals("")) {
-              String cell =  DBtoHTML(row.get(fieldNames.get(i)));
+            if (row.get(fieldNames.get(i).trim()) != null && !DBtoHTML(row.get(fieldNames.get(i).trim()).toString()).equals("")) {
+              String cellVal = row.get(fieldNames.get(i).trim()).toString();
+              String cell =  DBtoHTML(cellVal);
               if (export.equals("browse")) {
                 boolean link = false;
                 if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
@@ -146,8 +138,8 @@
                   out.print("<a href=\"person.jsp?ID="+row.get("perszu.ID")+"\">");
                   link = true;
                 }
-                else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar.jsp?ID="+row.get("namenkommentar.ID")+"\">");
+                else if (fieldNames.get(i).contains("PLemma")) {
+                  out.print("<a href=\"namenkommentar?ID="+row.get("namenkommentarID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
@@ -163,7 +155,7 @@
                   }
                 }
                 else if (fieldNames.get(i).contains("ID")) {
-            out.println("<a href=\""+formular+".jsp?ID="+row.get(formular+".ID")+"\">Gehe zu: ");
+            out.println("<a href=\""+formular+"?ID="+row.get(formular+"ID")+"\">Gehe zu: ");
                               link = true;
                 }
                 out.print(cell);
