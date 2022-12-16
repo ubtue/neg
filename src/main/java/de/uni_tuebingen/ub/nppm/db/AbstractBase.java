@@ -172,10 +172,17 @@ public class AbstractBase {
         return getMappedList(getSession().createQuery(criteria));
     }
 
-    protected static List<Map> getMappedList(String query) throws Exception {
+    public static List<Map> getMappedList(String query) throws Exception {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
         return getMappedList(getSession().createNativeQuery(query));
+    }
+    
+    public static List<Object[]> getListNative(String sql) throws Exception {
+        Session session = getSession();
+        NativeQuery sqlQuery = session.createSQLQuery(sql);
+        List<Object[]> rows = sqlQuery.getResultList();
+        return rows;
     }
 }
