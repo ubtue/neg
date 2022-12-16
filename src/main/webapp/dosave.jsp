@@ -1,8 +1,3 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.text.SimpleDateFormat" isThreadSafe="false" %>
 <%@ page import="java.util.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
@@ -15,23 +10,6 @@
   if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
     int id = -1;
     String form = request.getParameter("form");
-
-
-    Connection cn = null;
-
-    Statement st2 = null; // für Anfrage an Datenbank
-    ResultSet rs2 = null;
-
-    Statement st3 = null; // für UPDATE / INSERT Anweisung
-
-    String debug = "debug";
-
-      Class.forName(sqlDriver);
-      cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-
-      st2 = cn.createStatement();
-      st3 = cn.createStatement();
-
       try {
         if(request.getParameter("ID").equals("-1")){
            id = SaveHelper.getMaxId(form)+1;
@@ -159,21 +137,22 @@
             if(i>0) zielAttributStr +=", ";
             zielAttributStr +=zielattributArray[i] + ", Genauigkeit" + zielattributArray[i];
           }
-          rs2 = st2.executeQuery("SELECT "+zielAttributStr+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
+          //rs2 = st2.executeQuery("SELECT "+zielAttributStr+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
           //TODO
-          //List<Object[]> attributes = SaveHelper.getListNative("SELECT "+zielAttributStr+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
-          if (rs2.next()) {
+          List<Map> attributes = SaveHelper.getMappedList("SELECT "+zielAttributStr+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
+          if (attributes.size() > 0) {
+            Map attr = attributes.iterator().next();
             boolean changed = false;
             for (int i=0; i<zielattributArray.length; i++) {
-              if (rs2.getString(zielattributArray[i])!= null)
-                if( !rs2.getString(zielattributArray[i]).equals(request.getParameter(combinedFeldnamenArray[i]))) {
+              if (attr.get(zielattributArray[i])!= null)
+                if( !attr.get(zielattributArray[i]).equals(request.getParameter(combinedFeldnamenArray[i]))) {
 
                 changed = true;
               }
               else;
               else changed=true;
-              if (rs2.getString("Genauigkeit" + zielattributArray[i])!= null)
-                if( !rs2.getString("Genauigkeit" + zielattributArray[i]).equals(request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]))) {
+              if (attr.get("Genauigkeit" + zielattributArray[i])!= null)
+                if( !attr.get("Genauigkeit" + zielattributArray[i]).equals(request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]))) {
 
                 changed = true;
               }
@@ -217,13 +196,14 @@
 
           // Datensatz ändern
           if(formularAttribut != null && zieltabelle != null){
-            rs2 = st2.executeQuery("SELECT "+zielAttribut+" FROM "+zieltabelle+" WHERE "+formularAttribut+"='"+id+"'"+cond);
-            if (rs2.next() && request.getParameter(datenfeld) != null) {
+            List<Map> attributes = SaveHelper.getMappedList("SELECT "+zielAttribut+" FROM "+zieltabelle+" WHERE "+formularAttribut+"='"+id+"'"+cond);
+            if (attributes.size() > 0 && request.getParameter(datenfeld) != null) {
+              Map attr = attributes.iterator().next();
               if (request.getParameter(datenfeld).equals("")) {
-                st3.execute("DELETE FROM "+zieltabelle+" WHERE "+formularAttribut+"='"+id+"'"+cond);
+                SaveHelper.insertOrUpdateSql("DELETE FROM "+zieltabelle+" WHERE "+formularAttribut+"='"+id+"'"+cond);
               } // ENDE löschen
-              else if(!request.getParameter(datenfeld).equals("") &&  !DBtoDB(request.getParameter(datenfeld)).equals(rs2.getString(zielAttribut))) {
-                st3.execute ("UPDATE "+zieltabelle
+              else if(!request.getParameter(datenfeld).equals("") &&  !DBtoDB(request.getParameter(datenfeld)).equals(attr.get(zielAttribut))) {
+                SaveHelper.insertOrUpdateSql("UPDATE "+zieltabelle
                             +" SET "+zielAttribut+"='"+DBtoDB(request.getParameter(datenfeld))+"'"
                             +" WHERE "+formularAttribut+"='"+id+"'"+cond);
               } // ENDE ändern
@@ -242,7 +222,7 @@
               value = ", "+session.getAttribute("BenutzerID");
             }
             if(formularAttribut != null && zieltabelle != null){
-                st3.execute ("INSERT INTO "+zieltabelle
+                SaveHelper.insertOrUpdateSql("INSERT INTO "+zieltabelle
                             +" ("+zielAttribut+", "+formularAttribut+field+")"
                             +" VALUES ('"+DBtoDB(request.getParameter(datenfeld))+"', "+id+value+");");
             }
@@ -256,7 +236,7 @@
             SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
             String sql = "INSERT INTO "+zieltabelle+" ("+(zieltabelle.equals("namenkommentar")?"NamenkommentarID":"MGHLemmaID")+", BenutzerID, Zeitstempel) VALUES ";
             sql += "("+ id +", "+ session.getAttribute("BenutzerID") +", "+sf.format(d)+")";
-            st2.execute(sql);
+            SaveHelper.insertOrUpdateSql(sql);
                          //     out.println(sql);
 
           }
@@ -285,21 +265,21 @@
             if (request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid") != null) {
               boolean aenderung = false;
  
-              rs2 = st2.executeQuery("SELECT * FROM "+zieltabelle+" WHERE ID='"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"';");
-              if (rs2.next()) {
+              List<Map> attributes = SaveHelper.getMappedList("SELECT * FROM "+zieltabelle+" WHERE ID='"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"';");
+              if ( attributes.size() > 0) {
+                Map attr = attributes.iterator().next();
                 for (int j=0; j<combinedFeldnamenArray.length; j++) {
                   if (combinedFeldtypenArray[j].equals("subtable")){
                //    out.println("SUBTABLE");
                     for(int j2=0; request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"+"["+j2+"]")!=null; j2++) {
-                      if(request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")!=null) {
-                        Statement st4 = cn.createStatement();
-                        ResultSet rs4 = st4.executeQuery("select * from ueberlieferung_edition where editionID="+request.getParameter(combinedFeldnamenArray[j]+"_ed["+i+"]"+"["+j2+"]")+" and ueberlieferungID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid"));
-
-                        if(rs4.next()) {
-                          st4.execute("UPDATE ueberlieferung_edition SET sigle='" +request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"+"["+j2+"]")+"' WHERE  editionID="+request.getParameter(combinedFeldnamenArray[j]+"_ed["+i+"]"+"["+j2+"]")+" and ueberlieferungID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid"));
+                      if(request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")!=null) {                     
+                        List<Map> ueberlieferungEdition = SaveHelper.getMappedList("SELECT * FROM ueberlieferung_edition WHERE editionID="+request.getParameter(combinedFeldnamenArray[j]+"_ed["+i+"]"+"["+j2+"]")+" AND ueberlieferungID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid"));
+                        if(ueberlieferungEdition.size() > 0) {
+                          SaveHelper.insertOrUpdateSql("UPDATE ueberlieferung_edition SET sigle='" +request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"+"["+j2+"]")+"' WHERE  editionID="+request.getParameter(combinedFeldnamenArray[j]+"_ed["+i+"]"+"["+j2+"]")+" and ueberlieferungID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid"));                          
                         }
-                        else
-                          st4.execute("INSERT into ueberlieferung_edition (UeberlieferungID, EditionID, Sigle) VALUES ('"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"','"+request.getParameter(combinedFeldnamenArray[j]+"_ed["+i+"]"+"["+j2+"]")+"','" +request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"+"["+j2+"]")+"')");
+                        else{
+                          SaveHelper.insertOrUpdateSql("INSERT into ueberlieferung_edition (UeberlieferungID, EditionID, Sigle) VALUES ('"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"','"+request.getParameter(combinedFeldnamenArray[j]+"_ed["+i+"]"+"["+j2+"]")+"','" +request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"+"["+j2+"]")+"')");                          
+                        }
                       }
                     }
                   }
@@ -310,9 +290,9 @@
                       || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
                     if (request.getParameter(combinedFeldnamenArray[j]+"["+i+"]") != null &&
                        (
-                        (!request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals("") && rs2.getString(zielattributArray[j])== null)
+                        (!request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals("") && attr.get(zielattributArray[j])== null)
                        ||
-                        (!request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals(rs2.getString(zielattributArray[j])))
+                        (!request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals(attr.get(zielattributArray[j])))
                        )
                        ) 
                        
@@ -324,11 +304,11 @@
                   else if (combinedFeldtypenArray[j].equals("checkbox")) {
                     if (request.getParameter(combinedFeldnamenArray[j]+"["+i+"]") != null
                        && request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals("on")
-                       && (rs2.getString(zielattributArray[j]) == null || rs2.getString(zielattributArray[j]).equals("0"))) {
+                       && (attr.get(zielattributArray[j]) == null || attr.get(zielattributArray[j]).equals("0"))) {
                       aenderung = true;
                     }
                     else if (request.getParameter(combinedFeldnamenArray[j]+"["+i+"]") == null
-                            && (rs2.getString(zielattributArray[j]) != null && rs2.getString(zielattributArray[j]).equals("1"))) {
+                            && (attr.get(zielattributArray[j]) != null && attr.get(zielattributArray[j]).equals("1"))) {
                       aenderung = true;
                     }
                   }
@@ -348,7 +328,6 @@
                       || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
                     sql += zielattributArray[j] + " = '"+DBtoDB(request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"))+"', ";
                     if(zieltabelle.equals("quelle_inedition") && zielattributArray[j].equals("EditionID")){
-                       cn.setAutoCommit(false);
                        ed = DBtoDB(request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"));
                     }
                   }
@@ -360,18 +339,16 @@
                 sql += " WHERE ID='"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"';";
                 String old_ed = "";
                  if(!ed.equals("")){
-                    ResultSet rs3 = st3.executeQuery("select EditionID from quelle_inedition WHERE ID='"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"';");
-                    while(rs3.next())old_ed = rs3.getString("EditionID");
+                    List<Map> editionLst = SaveHelper.getMappedList("select EditionID from quelle_inedition WHERE ID='"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"';");
+                    if(editionLst.size() > 0){
+                        old_ed = editionLst.get(editionLst.size()-1).get("EditionID").toString();
+                    }
                  }
-                st3.execute(sql);
+                SaveHelper.insertOrUpdateSql( sql);
                 if(!ed.equals("")){
-                   st3.execute("Update ueberlieferung_edition set EditionID='"+ed+"' where EditionID="+old_ed+" and UeberlieferungID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+" and q_i.QuelleID=h_u.QuelleID)");
-                   st3.execute("Update einzelbeleg_textkritik set EditionID='"+ed+"' where EditionID="+old_ed+" and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+" and q_i.QuelleID=h_u.QuelleID)");
-                   st3.execute(" Update einzelbeleg set EditionID ='"+ed+"' where EditionID="+old_ed+" and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+" and q_i.QuelleID=h_u.QuelleID)");
- 
-
- 				  cn.commit();
- 				  cn.setAutoCommit(true);
+                   SaveHelper.insertOrUpdateSql("Update ueberlieferung_edition set EditionID='"+ed+"' where EditionID="+old_ed+" and UeberlieferungID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+" and q_i.QuelleID=h_u.QuelleID)");
+                   SaveHelper.insertOrUpdateSql("Update einzelbeleg_textkritik set EditionID='"+ed+"' where EditionID="+old_ed+" and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+" and q_i.QuelleID=h_u.QuelleID)");
+                   SaveHelper.insertOrUpdateSql(" Update einzelbeleg set EditionID ='"+ed+"' where EditionID="+old_ed+" and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+" and q_i.QuelleID=h_u.QuelleID)");
                 }
               //out.println(sql);
 
@@ -404,7 +381,7 @@
                     }
                   }
                 }
-                st2.execute(sql);
+                SaveHelper.insertOrUpdateSql(sql);
               }
             }
           }
