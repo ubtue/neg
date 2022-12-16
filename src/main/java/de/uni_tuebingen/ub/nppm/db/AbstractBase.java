@@ -8,14 +8,14 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
-
+import de.uni_tuebingen.ub.nppm.model.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
+import org.hibernate.query.NativeQuery;
 import de.uni_tuebingen.ub.nppm.model.*;
 
 
@@ -154,6 +154,13 @@ public class AbstractBase {
         return getList(c, null);
     }
 
+    public static List<Object[]> getListNative(String sql) throws Exception {
+        Session session = getSession();
+        NativeQuery sqlQuery = session.createSQLQuery(sql);
+        List<Object[]> rows = sqlQuery.getResultList();        
+        return rows;
+    }
+    
     protected static void insertOrUpdate(String sql) throws Exception {
         Session session = getSession();
         session.getTransaction().begin();
@@ -177,5 +184,14 @@ public class AbstractBase {
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
         return getMappedList(getSession().createNativeQuery(query));
+    }
+    
+    public static int getLinecount(String tablesString, String conditionsString) throws Exception {
+        String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
+        Session session = getSession();
+        NativeQuery sqlQuery = session.createSQLQuery(sql);
+        sqlQuery.setMaxResults(1);
+        List<Object> rows = sqlQuery.getResultList();
+        return (int)Integer.parseInt(rows.get(0).toString());
     }
 }

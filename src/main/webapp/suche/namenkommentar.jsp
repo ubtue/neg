@@ -43,12 +43,12 @@
     }
 
     // Ausgabfelder
-    fields.add("namenkommentar.ID");
-    fieldNames.add("ID");
+    fields.add("namenkommentar.ID AS namenkommentarID");
+    fieldNames.add("namenkommentarID");
     headlines.add("ID");
 
     fields.add("PLemma");
-    fieldNames.add("namenkommentar.PLemma");
+    fieldNames.add("PLemma");
     headlines.add("Zwischenlemma");
 
     tables.add("namenkommentar");
