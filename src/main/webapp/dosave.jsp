@@ -52,7 +52,6 @@
       List<DatenbankMapping> lst = SaveHelper.getMapping(form);
       
       for (DatenbankMapping mapping : lst) {
-        //out.println("ID"+mapping.getId());
         // Textfield, Textarea, select, addselect
         String feldtyp = mapping.getFeldtyp();
         Boolean isArray = mapping.getArray();
@@ -62,24 +61,15 @@
         String formularAttribut = mapping.getFormularAttribut();
         String combFeldnamen = mapping.getCombinedFeldnamen();
         String combFeldtyp = mapping.getCombinedFeldtypen();
-        //out.println("HELLO"+zielAttribut);
-        /*out.println(feldtyp);
-        out.println(isArray);
-        out.println(zielAttribut);
-        out.println(zieltabelle);
-        out.println(datenfeld);
-        out.println(formularAttribut);
-        out.println(combFeldnamen);
-        out.println(combFeldtyp);*/
-        if (feldtyp.equals("textfield")
+        if (feldtyp != null && (feldtyp.equals("textfield")
             || feldtyp.equals("textarea")
             || feldtyp.equals("select")
             || feldtyp.equals("addselect")
             || feldtyp.equals("addselectandtext")
-            || feldtyp.equals("sqlselect")
+            || feldtyp.equals("sqlselect"))
            ) {
           // KEIN ARRAY
-          if(!isArray) {  
+          if(isArray != null && !isArray && zielAttribut != null && zieltabelle != null) {  
             String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
             // Datensatz ändern
             if (attrVal != null && (
@@ -95,7 +85,7 @@
           } // ENDE kein Array
 
           // ARRAY
-          else if(isArray) {
+          else if(isArray && zielAttribut != null && zieltabelle != null) {
             for (int i=0; request.getParameter(datenfeld+"["+i+"]")!=null; i++) {
               // Prüfen, ob aktueller Eintrag bereits vorhanden
               if (request.getParameter(datenfeld+"["+i+"]_entryid") != null) {
@@ -111,11 +101,10 @@
 
               else {
                 // Wenn etwas eingetragen ist, in die Datenbank einfügen
-                if (request.getParameter(datenfeld+"["+i+"]") != null && !request.getParameter(datenfeld+"["+i+"]").equals("") && !request.getParameter(datenfeld+"["+i+"]").equals("-1")) {
+                if (formularAttribut != null && request.getParameter(datenfeld+"["+i+"]") != null && !request.getParameter(datenfeld+"["+i+"]").equals("") && !request.getParameter(datenfeld+"["+i+"]").equals("-1")) {
                   String sql = "INSERT INTO "+zieltabelle
                                +" ("+formularAttribut+", "+zielAttribut+")"
                                +" VALUES ("+id+", \""+DBtoDB(request.getParameter(datenfeld+"["+i+"]"))+"\" );";
-                  if(formularAttribut != null)
                     SaveHelper.insertOrUpdateSql(sql);                                    
                 }
               }
@@ -124,7 +113,7 @@
         } //ENDE Textfield, Textarea, select, addselect
 
         // checkbox
-        else if (feldtyp.equals("checkbox")) {
+        else if (feldtyp != null && feldtyp.equals("checkbox") && zielAttribut != null && zieltabelle != null) {
           // KEIN ARRAY
           if(!isArray) {
             String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
@@ -141,8 +130,8 @@
         } //ENDE checkbox
 
         // Datum
-        else if (feldtyp.equals("date")) {
-       //  out.println("DATE");
+        else if (feldtyp != null && feldtyp.equals("date") && zielAttribut != null && zieltabelle != null) {
+         out.println("DATE");
           // Datensatz geändert?
           String[] zielattributArray = {""};
           String[] combinedFeldnamenArray = {""};
@@ -159,7 +148,7 @@
             zielattribute += ", "+zielattributArray[i];
           }
 
-          if (combFeldnamen.contains(";")) {
+          if (combFeldnamen != null && combFeldnamen.contains(";")) {
             combinedFeldnamenArray = combFeldnamen.split(";");
             for (int j=0; j<combinedFeldnamenArray.length; j++) {
               combinedFeldnamenArray[j] = combinedFeldnamenArray[j].trim();
@@ -172,7 +161,8 @@
             zielAttributStr +=zielattributArray[i] + ", Genauigkeit" + zielattributArray[i];
           }
           rs2 = st2.executeQuery("SELECT "+zielAttributStr+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
-          //out.println("SELECT "+zielAttributStr+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
+          //TODO
+          //List<Object[]> attributes = SaveHelper.getListNative("SELECT "+zielAttributStr+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
           if (rs2.next()) {
             boolean changed = false;
             for (int i=0; i<zielattributArray.length; i++) {
@@ -194,20 +184,27 @@
 
             if (changed) {
               String sql = "UPDATE "+zieltabelle+" SET ";
-              for (int i=0; i<zielattributArray.length; i++) {
-                if (i>0) {
-                  sql += ", ";
+              boolean sqlValid = false;
+              for (int i=0; i<zielattributArray.length; i++) {                
+                if(request.getParameter(combinedFeldnamenArray[i]) != null && request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]) != null){
+                    if (i>0) {
+                      sql += ", ";
+                    }
+                    sql += zielattributArray[i] + "=\"" + ((!request.getParameter(combinedFeldnamenArray[i]).equals(""))?request.getParameter(combinedFeldnamenArray[i]):"0") +"\", ";
+                    sql += "Genauigkeit" + zielattributArray[i] + "=\"" + ((!request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]).equals(""))?request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]):"0") +"\"";                                       
+                    sqlValid = true;                    
                 }
-                sql += zielattributArray[i] + "=\"" + ((!request.getParameter(combinedFeldnamenArray[i]).equals(""))?request.getParameter(combinedFeldnamenArray[i]):"0") +"\", ";
-                sql += "Genauigkeit" + zielattributArray[i] + "=\"" + ((!request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]).equals(""))?request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]):"0") +"\"";                   }
-              sql += " WHERE ID='"+id+"';";
-              SaveHelper.insertOrUpdateSql(sql);
+                if(i == (zielattributArray.length-1))
+                    sql += " WHERE ID='"+id+"';";
+              }               
+              if(sqlValid)
+                SaveHelper.insertOrUpdateSql(sql);  
             }
           }
         } // ENDE Datum
 
         // Bemerkungsfeld
-        else if (feldtyp.equals("note")) {
+        else if (feldtyp != null && feldtyp.equals("note") && zielAttribut != null && zieltabelle != null) {
           String cond = "";
           if (datenfeld.equals("BemerkungAlle")) {
             cond = " AND GruppeID IS NULL AND BenutzerID IS NULL;";
@@ -220,7 +217,7 @@
           }
 
           // Datensatz ändern
-          if(formularAttribut != null){
+          if(formularAttribut != null && zieltabelle != null){
             rs2 = st2.executeQuery("SELECT "+zielAttribut+" FROM "+zieltabelle+" WHERE "+formularAttribut+"='"+id+"'"+cond);
             if (rs2.next() && request.getParameter(datenfeld) != null) {
               if (request.getParameter(datenfeld).equals("")) {
@@ -245,7 +242,7 @@
               field = ", BenutzerID";
               value = ", "+session.getAttribute("BenutzerID");
             }
-            if(formularAttribut != null){
+            if(formularAttribut != null && zieltabelle != null){
                 st3.execute ("INSERT INTO "+zieltabelle
                             +" ("+zielAttribut+", "+formularAttribut+field+")"
                             +" VALUES ('"+DBtoDB(request.getParameter(datenfeld))+"', "+id+value+");");
@@ -254,7 +251,7 @@
         } // ENDE Bemerkungsfeld
 
         // Namenkommentar Editor
-        else if (feldtyp.equals("nkeditor")) {
+        else if (feldtyp != null && feldtyp.equals("nkeditor") && zielAttribut != null && zieltabelle != null) {
           if( request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
             Date d = new Date();
             SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -267,7 +264,7 @@
         } // ENDE NamenkommentarEditor
 
         // combined
-        else if (feldtyp.equals("combined")) {
+        else if (zieltabelle != null && zielAttribut != null && feldtyp != null && feldtyp.equals("combined") && combFeldnamen != null && combFeldtyp != null && combFeldnamen.length() == combFeldtyp.length()) {
           String[] zielattributArray = zielAttribut.split(";");
           for (int i=0; i<zielattributArray.length; i++) {
             zielattributArray[i] = zielattributArray[i].trim();
@@ -338,7 +335,7 @@
                   }
                 }
               }
-              if (aenderung) {
+              if (aenderung && zieltabelle != null) {
                 
               
               
@@ -383,7 +380,7 @@
             }
 
             // Datensatz neu
-            else {
+            else if(zieltabelle != null && formularAttribut != null) {
               boolean aenderung = false;
               for (int j=0; j<combinedFeldnamenArray.length; j++) {
                 if (request.getParameter(combinedFeldnamenArray[j]+"["+i+"]") != null
@@ -408,9 +405,7 @@
                     }
                   }
                 }
-                if(formularAttribut != null){
-                    st2.execute(sql);
-                }
+                st2.execute(sql);
               }
             }
           }
@@ -430,8 +425,9 @@
     } // ENDE try...catch
 
     catch (Exception e) {
-      out.println(e);
-        out.println(Arrays.toString(Thread.currentThread().getStackTrace()).replace( ',', '\n' ));
+        throw new Exception(e);
+      //out.println(e);
+      //  out.println(Arrays.toString(Thread.currentThread().getStackTrace()).replace( ',', '\n' ));
     }
     finally {
       try { if( null != st3 ) st3.close(); } catch( Exception ex ) {}
