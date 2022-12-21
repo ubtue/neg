@@ -117,6 +117,10 @@ String DBtoHTML(String s) {
   return s;
 }
 
+String DBtoHTML(Object obj) {
+    return DBtoHTML(obj.toString());
+}
+
 String HTMLtoDB(String s) {
   if(s==null) return s;
   s = s.replace("&lt;", "<");
