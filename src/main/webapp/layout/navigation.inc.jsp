@@ -46,7 +46,7 @@
   </a>
   <br>
   <hr>
-  <a href="quelle.jsp">
+  <a href="quelle">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="quelle"/>
       <jsp:param name="Textfeld" value="Titel"/>
@@ -70,7 +70,7 @@
   </a>
   <br>
   <hr>
-  <a href="suche.jsp">
+  <a href="suche">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="suche"/>
       <jsp:param name="Textfeld" value="Titel"/>
@@ -81,7 +81,7 @@
   <a href="ohneVerknuepfung">offene Verkn&uuml;pfung</a>
   <br>
   <hr>
-  <a href="freie_suche.jsp">
+  <a href="freie_suche">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="freie_suche"/>
       <jsp:param name="Textfeld" value="Titel"/>
@@ -103,7 +103,7 @@
 
   <br>
   <hr>
-  <a href="administration.jsp">
+  <a href="administration">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
       <jsp:param name="Formular" value="administration"/>
       <jsp:param name="Textfeld" value="Titel"/>
@@ -120,13 +120,7 @@
   <br>
   <hr>
   <hr>
-  <!-- <a href="logout.jsp">
-    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-      <jsp:param name="Formular" value="logout"/>
-      <jsp:param name="Textfeld" value="Titel"/>
-    </jsp:include>
-  </a>-->
-  <a href="logout.jsp?go=gast">Abmelden</a>
+  <a href="logout?go=gast">Abmelden</a>
   <br>
   <br>
 <%
