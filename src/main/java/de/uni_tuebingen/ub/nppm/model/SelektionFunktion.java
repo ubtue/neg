@@ -14,7 +14,7 @@ public class SelektionFunktion {
     private String bezeichnung;
 
     @ManyToMany(mappedBy = "funktion")
-    private List<Einzelbeleg> einzelbeleg = new ArrayList<>();
+    private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
     
     public Integer getId() {
         return id;
@@ -33,21 +33,14 @@ public class SelektionFunktion {
     }
 
     public void removeEinzelbeleg(int id) {
-        for (int i = 0; i < this.getEinzelbeleg().size();) {
-            Einzelbeleg beleg = this.getEinzelbeleg().get(i);
-            if (beleg.getId() != null && beleg.getId() == id) {
-                this.getEinzelbeleg().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getEinzelbeleg().removeIf(e -> e.getId() == id);
     }
 
-    public List<Einzelbeleg> getEinzelbeleg() {
+    public Set<Einzelbeleg> getEinzelbeleg() {
         return einzelbeleg;
     }
 
-    public void setEinzelbeleg(List<Einzelbeleg> einzelbeleg) {
+    public void setEinzelbeleg(Set<Einzelbeleg> einzelbeleg) {
         this.einzelbeleg = einzelbeleg;
     }
 }
