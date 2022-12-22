@@ -23,7 +23,7 @@ public class Urkunde {
         joinColumns = { @JoinColumn(name = "AusstellerID") }, 
         inverseJoinColumns = { @JoinColumn(name = "UrkundeID") }
     )
-    private List<SelektionUrkundeAusstellerEmpfaenger> aussteller = new ArrayList<SelektionUrkundeAusstellerEmpfaenger>();;
+    private Set<SelektionUrkundeAusstellerEmpfaenger> aussteller = new HashSet<SelektionUrkundeAusstellerEmpfaenger>();;
     
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -31,9 +31,9 @@ public class Urkunde {
         joinColumns = { @JoinColumn(name = "EmpfaengerID") }, 
         inverseJoinColumns = { @JoinColumn(name = "UrkundeID") }
     )
-    private List<SelektionUrkundeAusstellerEmpfaenger> empfaenger = new ArrayList<SelektionUrkundeAusstellerEmpfaenger>();
+    private Set<SelektionUrkundeAusstellerEmpfaenger> empfaenger = new HashSet<SelektionUrkundeAusstellerEmpfaenger>();
     
-    public List<SelektionUrkundeAusstellerEmpfaenger> getEmpfaenger() {
+    public Set<SelektionUrkundeAusstellerEmpfaenger> getEmpfaenger() {
         return this.empfaenger;
     }
     
@@ -42,17 +42,10 @@ public class Urkunde {
     }
       
     public void removeEmpfaenger(int id){
-        for (int i = 0; i < this.getEmpfaenger().size(); ) {
-            SelektionUrkundeAusstellerEmpfaenger sel = this.getEmpfaenger().get(i);
-            if(sel.getId() != null && sel.getId() == id){
-                this.getEmpfaenger().remove(i);
-            }else{
-                i++;
-            }
-        }
+        this.getEmpfaenger().removeIf(e -> e.getId() == id);
     }
     
-    public List<SelektionUrkundeAusstellerEmpfaenger> getAussteller() {
+    public Set<SelektionUrkundeAusstellerEmpfaenger> getAussteller() {
         return this.aussteller;
     }
     
@@ -61,14 +54,7 @@ public class Urkunde {
     }
       
     public void removeAussteller(int id){
-        for (int i = 0; i < this.getAussteller().size(); ) {
-            SelektionUrkundeAusstellerEmpfaenger sel = this.getAussteller().get(i);
-            if(sel.getId() != null && sel.getId() == id){
-                this.getAussteller().remove(i);
-            }else{
-                i++;
-            }
-        }
+        this.getAussteller().removeIf(e -> e.getId() == id);
     }
 
     public Integer getId() {
