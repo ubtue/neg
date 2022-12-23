@@ -4,7 +4,7 @@ import javax.servlet.http.*;
 import de.uni_tuebingen.ub.nppm.db.DatenbankDB;
 import javax.servlet.jsp.JspWriter;
 public class Language {
-
+    
     public static String getLanguage(HttpServletRequest request) {
         HttpSession session = request.getSession(true);
 
@@ -15,7 +15,7 @@ public class Language {
         } else if (request.getParameter("language") != null) {
             return request.getParameter("language");
         } else {
-            return "de";
+            return Constants.DEFAULT_LANG;
         }
     }
 
@@ -42,29 +42,44 @@ public class Language {
         }
     }
 
-    public static void printDatafield(JspWriter out,HttpSession session, String formular, String datenfeld) throws Exception{
-        out.print("<label for=\""+datenfeld+"\">");
-        printLabel(out,session,formular,datenfeld,null);
+    public static void printDatafield(JspWriter out,HttpSession session, String formular, String datenfeld) throws Exception{       
+        String lang = getLanguage(session);        
+        String[] langArray = {lang, Constants.DEFAULT_LANG};
+        boolean isSet = false;
+        out.print("<label for=\""+datenfeld+"\">");        
+        for(String l : langArray){
+            String print = DatenbankDB.getMapping(l, formular, datenfeld);
+            if(print != null){                
+                out.println(print);                
+                isSet = true;
+                break;
+            }
+        }
         out.print("</label>");
+        if(!isSet)
+            out.println("no datafield available");
     }
     public static void printTextfield(JspWriter out,HttpSession session, String formular, String textfield) throws Exception{
-        printLabel(out,session,formular,null,textfield);
+        String lang = getLanguage(session);        
+        String[] langArray = {lang, Constants.DEFAULT_LANG};
+        boolean isSet = false;
+        for(String l : langArray){
+            String print = DatenbankDB.getLabel(l, formular, textfield);
+            if(print != null){
+                out.println(print);
+                isSet = true;
+                break;
+            }
+        }
+        if(!isSet)
+            out.println("no translation found");
     }
-
- private static void printLabel(JspWriter out,HttpSession session, String formular, String datenfeld, String textfeld) throws Exception{
-        String lang = "de";
-        String print = null;
+    
+    private static String getLanguage(HttpSession session) {
+        String lang = Constants.DEFAULT_LANG;
         //try to get language from session
         if (session != null && session.getAttribute("Sprache") != null)
             lang = (String)session.getAttribute("Sprache");
-        if (datenfeld == null && textfeld != null) {
-            print = DatenbankDB.getLabel(lang, formular, textfeld);
-            if(print != null)
-                out.println(print);
-        }else if (datenfeld != null && textfeld == null) {
-            print = DatenbankDB.getMapping(lang, formular, datenfeld);
-            if(print != null)
-                out.println(print);
-        }
+        return lang;
     }
 }
