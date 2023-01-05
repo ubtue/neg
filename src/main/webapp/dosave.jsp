@@ -47,7 +47,8 @@
            ) {
           // KEIN ARRAY
           if(isArray != null && !isArray && zielAttribut != null && zieltabelle != null) {  
-            String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
+            String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);     
+            //out.println("DEBUG \nattrVal\t"+attrVal+" \nzielAtte\t"+zielAttribut+"\nzieltablle\t"+zieltabelle+"\nid\t"+id);
             // Datensatz ändern
             if (attrVal != null && (
                  (request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
@@ -68,6 +69,7 @@
               if (request.getParameter(datenfeld+"["+i+"]_entryid") != null) {
                 // Prüfen, ob Datensatz geändert wurde
                 String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, Integer.valueOf(request.getParameter(datenfeld+"["+i+"]_entryid")));
+                out.println("DEBUG \nattrVal\t"+attrVal+" \nzielAtte\t"+zielAttribut+"\nzieltablle\t"+zieltabelle+"\nid\t"+id);
                 if (attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld+"["+i+"]")))) {
                   String sql = "UPDATE " + zieltabelle
                              + " SET "+zielAttribut+"=\""+DBtoDB(request.getParameter(datenfeld+"["+i+"]"))+"\""
@@ -315,9 +317,6 @@
                 }
               }
               if (aenderung && zieltabelle != null) {
-                
-              
-              
                 String sql = "UPDATE "+zieltabelle+" SET ";
                 String ed = "";
                 for (int j=0; j<combinedFeldnamenArray.length; j++) {
