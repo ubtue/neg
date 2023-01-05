@@ -253,131 +253,117 @@
           String[] combinedFeldnamenArray = Arrays.stream(combFeldnamen.split(";")).map(String::trim).toArray(String[]::new);
 
           String[] combinedFeldtypenArray = Arrays.stream(combFeldtyp.split(";")).map(String::trim).toArray(String[]::new);
+          if (combinedFeldtypenArray.length == combinedFeldtypenArray.length) {
+                  for (int i = 0; request.getParameter(combinedFeldnamenArray[0] + "[" + i + "]") != null; i++) {
 
-          for (int i=0; request.getParameter(combinedFeldnamenArray[0]+"["+i+"]")!=null; i++) {
+                      // Datensatz ändern
+                      if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
+                          boolean aenderung = false;
 
-            // Datensatz ändern
-            if (request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid") != null) {
-              boolean aenderung = false;
- 
-              List<Map> attributes = SaveHelper.getMappedList("SELECT * FROM "+zieltabelle+" WHERE ID='"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"';");
-              out.println("DEBUG size attributes: "+attributes.size());
-              if ( attributes.size() > 0) {
-                Map attr = attributes.iterator().next();
-                for (int j=0; j<combinedFeldnamenArray.length; j++) {
-                  if (combinedFeldtypenArray[j].equals("subtable")){
-               //    out.println("SUBTABLE");
-                    for(int j2=0; request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"+"["+j2+"]")!=null; j2++) {
-                      if(request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")!=null) {                     
-                        List<Map> ueberlieferungEdition = SaveHelper.getMappedList("SELECT * FROM ueberlieferung_edition WHERE editionID="+request.getParameter(combinedFeldnamenArray[j]+"_ed["+i+"]"+"["+j2+"]")+" AND ueberlieferungID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid"));
-                        if(ueberlieferungEdition.size() > 0) {
-                          SaveHelper.insertOrUpdateSql("UPDATE ueberlieferung_edition SET sigle='" +request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"+"["+j2+"]")+"' WHERE  editionID="+request.getParameter(combinedFeldnamenArray[j]+"_ed["+i+"]"+"["+j2+"]")+" and ueberlieferungID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid"));                          
-                        }
-                        else{
-                          SaveHelper.insertOrUpdateSql("INSERT into ueberlieferung_edition (UeberlieferungID, EditionID, Sigle) VALUES ('"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"','"+request.getParameter(combinedFeldnamenArray[j]+"_ed["+i+"]"+"["+j2+"]")+"','" +request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"+"["+j2+"]")+"')");                          
-                        }
+                          List<Map> attributes = SaveHelper.getMappedList("SELECT * FROM " + zieltabelle + " WHERE ID='" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "';");
+                          out.println("DEBUG size attributes: " + attributes.size());
+                          if (attributes.size() > 0) {
+                              Map attr = attributes.iterator().next();
+                              for (int j = 0; j < combinedFeldnamenArray.length; j++) {
+                                  if (combinedFeldtypenArray[j].equals("subtable")) {
+                                      //    out.println("SUBTABLE");
+                                      for (int j2 = 0; request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") != null; j2++) {
+                                          if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
+                                              List<Map> ueberlieferungEdition = SaveHelper.getMappedList("SELECT * FROM ueberlieferung_edition WHERE editionID=" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + " AND ueberlieferungID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                                              if (ueberlieferungEdition.size() > 0) {
+                                                  SaveHelper.insertOrUpdateSql("UPDATE ueberlieferung_edition SET sigle='" + request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") + "' WHERE  editionID=" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + " and ueberlieferungID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                                              } else {
+                                                  SaveHelper.insertOrUpdateSql("INSERT into ueberlieferung_edition (UeberlieferungID, EditionID, Sigle) VALUES ('" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "','" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + "','" + request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") + "')");
+                                              }
+                                          }
+                                      }
+                                  } else if (combinedFeldtypenArray[j].equals("textfield")
+                                          || combinedFeldtypenArray[j].equals("textarea")
+                                          || combinedFeldtypenArray[j].equals("select")
+                                          || combinedFeldtypenArray[j].equals("sqlselect")
+                                          || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
+                                      if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
+                                              && ((!request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("") && attr.get(zielattributArray[j]) == null)
+                                              || (!request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals(attr.get(zielattributArray[j]))))) {
+                                          aenderung = true;
+                                      }
+                                  } else if (combinedFeldtypenArray[j].equals("checkbox")) {
+                                      if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
+                                              && request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("on")
+                                              && (attr.get(zielattributArray[j]) == null || attr.get(zielattributArray[j]).equals("0"))) {
+                                          aenderung = true;
+                                      } else if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") == null
+                                              && (attr.get(zielattributArray[j]) != null && attr.get(zielattributArray[j]).equals("1"))) {
+                                          aenderung = true;
+                                      }
+                                  }
+                              }
+                          }
+                          if (aenderung && zieltabelle != null) {
+                              String sql = "UPDATE " + zieltabelle + " SET ";
+                              String ed = "";
+                              for (int j = 0; j < combinedFeldnamenArray.length; j++) {
+                                  if (combinedFeldtypenArray[j].equals("textfield")
+                                          || combinedFeldtypenArray[j].equals("textarea")
+                                          || combinedFeldtypenArray[j].equals("select")
+                                          || combinedFeldtypenArray[j].equals("sqlselect")
+                                          || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
+                                      sql += zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + "', ";
+                                      if (zieltabelle.equals("quelle_inedition") && zielattributArray[j].equals("EditionID")) {
+                                          ed = DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]"));
+                                      }
+                                  } else if (combinedFeldtypenArray[j].equals("checkbox")) {
+                                      sql += zielattributArray[j] + " = '" + (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("on") ? "1" : "0") + "', ";
+                                  }
+                              }
+                              sql = sql.substring(0, sql.length() - 2);
+                              sql += " WHERE ID='" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "';";
+                              String old_ed = "";
+                              if (!ed.equals("")) {
+                                  List<Map> editionLst = SaveHelper.getMappedList("select EditionID from quelle_inedition WHERE ID='" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "';");
+                                  if (editionLst.size() > 0) {
+                                      old_ed = editionLst.get(editionLst.size() - 1).get("EditionID").toString();
+                                  }
+                              }
+                              SaveHelper.insertOrUpdateSql(sql);
+                              if (!ed.equals("")) {
+                                  SaveHelper.insertOrUpdateSql("Update ueberlieferung_edition set EditionID='" + ed + "' where EditionID=" + old_ed + " and UeberlieferungID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)");
+                                  SaveHelper.insertOrUpdateSql("Update einzelbeleg_textkritik set EditionID='" + ed + "' where EditionID=" + old_ed + " and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)");
+                                  SaveHelper.insertOrUpdateSql(" Update einzelbeleg set EditionID ='" + ed + "' where EditionID=" + old_ed + " and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)");
+                              }
+                              //out.println(sql);
+
+                          }
+                      } // Datensatz neu
+                      else if (zieltabelle != null && formularAttribut != null) {
+                          boolean aenderung = false;
+                          for (int j = 0; j < combinedFeldnamenArray.length; j++) {
+                              if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
+                                      && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("")
+                                      && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("-1")) {
+                                  aenderung = true;
+                              }
+                          }
+                          if (aenderung) {
+                              String sql = "INSERT INTO " + zieltabelle + " SET " + formularAttribut + " = '" + id + "'";
+                              for (int j = 0; j < combinedFeldnamenArray.length; j++) {
+                                  if (!combinedFeldnamenArray[j].equals("")) {
+                                      if (combinedFeldtypenArray[j].equals("textfield")
+                                              || combinedFeldtypenArray[j].equals("textarea")
+                                              || combinedFeldtypenArray[j].equals("select")
+                                              || combinedFeldtypenArray[j].equals("sqlselect")
+                                              || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
+                                          sql += ", " + zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + "'";
+                                      } else if (combinedFeldtypenArray[j].equals("checkbox")) {
+                                          sql += ", " + zielattributArray[j] + " = '" + (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("on") ? "1" : "0") + "'";
+                                      }
+                                  }
+                              }
+                              SaveHelper.insertOrUpdateSql(sql);
+                          }
                       }
-                    }
                   }
-                  else if (combinedFeldtypenArray[j].equals("textfield")
-                      || combinedFeldtypenArray[j].equals("textarea")
-                      || combinedFeldtypenArray[j].equals("select")
-                      || combinedFeldtypenArray[j].equals("sqlselect")
-                      || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
-                    if (request.getParameter(combinedFeldnamenArray[j]+"["+i+"]") != null &&
-                       (
-                        (!request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals("") && attr.get(zielattributArray[j])== null)
-                       ||
-                        (!request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals(attr.get(zielattributArray[j])))
-                       )
-                       ) 
-                       
-                        
-                       {
-                      aenderung = true;
-                    }
-                  }
-                  else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                    if (request.getParameter(combinedFeldnamenArray[j]+"["+i+"]") != null
-                       && request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals("on")
-                       && (attr.get(zielattributArray[j]) == null || attr.get(zielattributArray[j]).equals("0"))) {
-                      aenderung = true;
-                    }
-                    else if (request.getParameter(combinedFeldnamenArray[j]+"["+i+"]") == null
-                            && (attr.get(zielattributArray[j]) != null && attr.get(zielattributArray[j]).equals("1"))) {
-                      aenderung = true;
-                    }
-                  }
-                }
               }
-              if (aenderung && zieltabelle != null) {
-                String sql = "UPDATE "+zieltabelle+" SET ";
-                String ed = "";
-                for (int j=0; j<combinedFeldnamenArray.length; j++) {
-                  if (combinedFeldtypenArray[j].equals("textfield")
-                      || combinedFeldtypenArray[j].equals("textarea")
-                      || combinedFeldtypenArray[j].equals("select")
-                      || combinedFeldtypenArray[j].equals("sqlselect")
-                      || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
-                    sql += zielattributArray[j] + " = '"+DBtoDB(request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"))+"', ";
-                    if(zieltabelle.equals("quelle_inedition") && zielattributArray[j].equals("EditionID")){
-                       ed = DBtoDB(request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"));
-                    }
-                  }
-                  else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                    sql += zielattributArray[j] + " = '"+(request.getParameter(combinedFeldnamenArray[j]+"["+i+"]")!=null && request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals("on")?"1":"0")+"', ";
-                  }
-                }
-                sql = sql.substring(0, sql.length()-2);
-                sql += " WHERE ID='"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"';";
-                String old_ed = "";
-                 if(!ed.equals("")){
-                    List<Map> editionLst = SaveHelper.getMappedList("select EditionID from quelle_inedition WHERE ID='"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"';");
-                    if(editionLst.size() > 0){
-                        old_ed = editionLst.get(editionLst.size()-1).get("EditionID").toString();
-                    }
-                 }
-                SaveHelper.insertOrUpdateSql( sql);
-                if(!ed.equals("")){
-                   SaveHelper.insertOrUpdateSql("Update ueberlieferung_edition set EditionID='"+ed+"' where EditionID="+old_ed+" and UeberlieferungID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+" and q_i.QuelleID=h_u.QuelleID)");
-                   SaveHelper.insertOrUpdateSql("Update einzelbeleg_textkritik set EditionID='"+ed+"' where EditionID="+old_ed+" and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+" and q_i.QuelleID=h_u.QuelleID)");
-                   SaveHelper.insertOrUpdateSql(" Update einzelbeleg set EditionID ='"+ed+"' where EditionID="+old_ed+" and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID="+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+" and q_i.QuelleID=h_u.QuelleID)");
-                }
-              //out.println(sql);
-
-              }
-            }
-
-            // Datensatz neu
-            else if(zieltabelle != null && formularAttribut != null) {
-              boolean aenderung = false;
-              for (int j=0; j<combinedFeldnamenArray.length; j++) {
-                if (request.getParameter(combinedFeldnamenArray[j]+"["+i+"]") != null
-                    && !request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals("")
-                    && !request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals("-1")) {
-                  aenderung = true;
-                }
-              }
-              if (aenderung) {
-                String sql = "INSERT INTO "+zieltabelle+" SET "+formularAttribut+" = '"+id+"'";
-                for (int j=0; j<combinedFeldnamenArray.length; j++) {
-                  if (!combinedFeldnamenArray[j].equals("")) {
-                    if (combinedFeldtypenArray[j].equals("textfield")
-                        || combinedFeldtypenArray[j].equals("textarea")
-                        || combinedFeldtypenArray[j].equals("select")
-                        || combinedFeldtypenArray[j].equals("sqlselect")
-                        || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
-                      sql += ", "+zielattributArray[j] + " = '"+DBtoDB(request.getParameter(combinedFeldnamenArray[j]+"["+i+"]"))+"'";
-                    }
-                    else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                      sql += ", "+zielattributArray[j] + " = '"+(request.getParameter(combinedFeldnamenArray[j]+"["+i+"]")!=null && request.getParameter(combinedFeldnamenArray[j]+"["+i+"]").equals("on")?"1":"0")+"'";
-                    }
-                  }
-                }
-                SaveHelper.insertOrUpdateSql(sql);
-              }
-            }
-          }
         } // ENDE combined
       } // ENDE while
 
