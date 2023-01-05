@@ -246,20 +246,12 @@
 
         // combined
         else if (zieltabelle != null && zielAttribut != null && feldtyp != null && feldtyp.equals("combined") && combFeldnamen != null && combFeldtyp != null && combFeldnamen.length() == combFeldtyp.length()) {
-          String[] zielattributArray = zielAttribut.split(";");
-          for (int i=0; i<zielattributArray.length; i++) {
-            zielattributArray[i] = zielattributArray[i].trim();
-          }
+          out.println("DEBUG combFeldnamen Length: "+combFeldnamen.length());
+          String[] zielattributArray = Arrays.stream(zielAttribut.split(";")).map(String::trim).toArray(String[]::new);
 
-          String[] combinedFeldnamenArray = combFeldnamen.split(";");
-          for (int i=0; i<combinedFeldnamenArray.length; i++) {
-            combinedFeldnamenArray[i] = combinedFeldnamenArray[i].trim();
-          }
+          String[] combinedFeldnamenArray = Arrays.stream(combFeldnamen.split(";")).map(String::trim).toArray(String[]::new);
 
-          String[] combinedFeldtypenArray = combFeldtyp.split(";");
-          for (int i=0; i<combinedFeldtypenArray.length; i++) {
-            combinedFeldtypenArray[i] = combinedFeldtypenArray[i].trim();
-          }
+          String[] combinedFeldtypenArray = Arrays.stream(combFeldtyp.split(";")).map(String::trim).toArray(String[]::new);
 
           for (int i=0; request.getParameter(combinedFeldnamenArray[0]+"["+i+"]")!=null; i++) {
 
