@@ -48,7 +48,6 @@
           // KEIN ARRAY
           if(isArray != null && !isArray && zielAttribut != null && zieltabelle != null) {  
             String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);     
-            //out.println("DEBUG \nattrVal\t"+attrVal+" \nzielAtte\t"+zielAttribut+"\nzieltablle\t"+zieltabelle+"\nid\t"+id);
             // Datensatz ändern
             if (attrVal != null && (
                  (request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
@@ -69,7 +68,6 @@
               if (request.getParameter(datenfeld+"["+i+"]_entryid") != null) {
                 // Prüfen, ob Datensatz geändert wurde
                 String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, Integer.valueOf(request.getParameter(datenfeld+"["+i+"]_entryid")));
-                out.println("DEBUG \nattrVal\t"+attrVal+" \nzielAtte\t"+zielAttribut+"\nzieltablle\t"+zieltabelle+"\nid\t"+id);
                 if (attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld+"["+i+"]")))) {
                   String sql = "UPDATE " + zieltabelle
                              + " SET "+zielAttribut+"=\""+DBtoDB(request.getParameter(datenfeld+"["+i+"]"))+"\""
@@ -110,7 +108,6 @@
 
         // Datum
         else if (feldtyp != null && feldtyp.equals("date") && zielAttribut != null && zieltabelle != null) {
-         out.println("DATE");
           // Datensatz geändert?
           String[] zielattributArray = {""};
           String[] combinedFeldnamenArray = {""};
@@ -119,7 +116,6 @@
             zielattributArray = zielAttribut.split(";");
             for (int j=0; j<zielattributArray.length; j++) {
               zielattributArray[j] = zielattributArray[j].trim();
-            //  out.println(zielattributArray[j]);
             }
           }
           String zielattribute = zielattributArray[0];
@@ -239,15 +235,11 @@
             String sql = "INSERT INTO "+zieltabelle+" ("+(zieltabelle.equals("namenkommentar")?"NamenkommentarID":"MGHLemmaID")+", BenutzerID, Zeitstempel) VALUES ";
             sql += "("+ id +", "+ session.getAttribute("BenutzerID") +", "+sf.format(d)+")";
             SaveHelper.insertOrUpdateSql(sql);
-                         //     out.println(sql);
-
           }
         } // ENDE NamenkommentarEditor
 
         // combined
         else if (feldtyp != null && feldtyp.equals("combined") && zieltabelle != null && zielAttribut != null && combFeldnamen != null && combFeldtyp != null) {
-          out.println("DEBUG combFeldnamen Length: "+combFeldnamen.length());
-          out.println("DEBUG combFeldtyp Length: "+combFeldtyp.length());
           String[] zielattributArray = Arrays.stream(zielAttribut.split(";")).map(String::trim).toArray(String[]::new);
 
           String[] combinedFeldnamenArray = Arrays.stream(combFeldnamen.split(";")).map(String::trim).toArray(String[]::new);
@@ -261,12 +253,10 @@
                           boolean aenderung = false;
 
                           List<Map> attributes = SaveHelper.getMappedList("SELECT * FROM " + zieltabelle + " WHERE ID='" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "';");
-                          out.println("DEBUG size attributes: " + attributes.size());
                           if (attributes.size() > 0) {
                               Map attr = attributes.iterator().next();
                               for (int j = 0; j < combinedFeldnamenArray.length; j++) {
                                   if (combinedFeldtypenArray[j].equals("subtable")) {
-                                      //    out.println("SUBTABLE");
                                       for (int j2 = 0; request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") != null; j2++) {
                                           if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
                                               List<Map> ueberlieferungEdition = SaveHelper.getMappedList("SELECT * FROM ueberlieferung_edition WHERE editionID=" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + " AND ueberlieferungID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
@@ -331,8 +321,6 @@
                                   SaveHelper.insertOrUpdateSql("Update einzelbeleg_textkritik set EditionID='" + ed + "' where EditionID=" + old_ed + " and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)");
                                   SaveHelper.insertOrUpdateSql(" Update einzelbeleg set EditionID ='" + ed + "' where EditionID=" + old_ed + " and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)");
                               }
-                              //out.println(sql);
-
                           }
                       } // Datensatz neu
                       else if (zieltabelle != null && formularAttribut != null) {
