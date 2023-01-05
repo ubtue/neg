@@ -160,20 +160,16 @@ public class AbstractBase {
         return getList(c, null);
     }
     
-    public static boolean remove(Class class_, int id) throws Exception {
-        if (id > 0) {
-            Session session = getSession();
-            Transaction transaction = session.getTransaction();
-            transaction.begin();
-            //Load
-            Object obj = session.load(class_, id);
-            //Remove
-            session.remove(obj);
-            //Commit
-            transaction.commit();
-            return true;
-        }
-        return false;
+    public static void remove(Class class_, int id) throws Exception {
+        Session session = getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        //Load
+        Object obj = session.load(class_, id);
+        //Remove
+        session.remove(obj);
+        //Commit
+        transaction.commit();
     }
 
     public static List<Object[]> getListNative(String sql) throws Exception {
