@@ -128,8 +128,6 @@
                       }
                       zielAttributStr += zielattributArray[i] + ", Genauigkeit" + zielattributArray[i];
                   }
-                  //rs2 = st2.executeQuery("SELECT "+zielAttributStr+" FROM "+zieltabelle+" WHERE ID='"+id+"';");
-                  //TODO
                   List<Map> attributes = SaveHelper.getMappedList("SELECT " + zielAttributStr + " FROM " + zieltabelle + " WHERE ID='" + id + "';");
                   if (attributes.size() > 0) {
                       Map attr = attributes.iterator().next();
