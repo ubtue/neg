@@ -63,7 +63,7 @@
           } // ENDE kein Array
 
           // ARRAY
-          else if(isArray && zielAttribut != null && zieltabelle != null) {
+          else if(isArray != null && isArray && zielAttribut != null && zieltabelle != null) {
             for (int i=0; request.getParameter(datenfeld+"["+i+"]")!=null; i++) {
               // Prüfen, ob aktueller Eintrag bereits vorhanden
               if (request.getParameter(datenfeld+"["+i+"]_entryid") != null) {
@@ -245,8 +245,9 @@
         } // ENDE NamenkommentarEditor
 
         // combined
-        else if (zieltabelle != null && zielAttribut != null && feldtyp != null && feldtyp.equals("combined") && combFeldnamen != null && combFeldtyp != null && combFeldnamen.length() == combFeldtyp.length()) {
+        else if (feldtyp != null && feldtyp.equals("combined") && zieltabelle != null && zielAttribut != null && combFeldnamen != null && combFeldtyp != null) {
           out.println("DEBUG combFeldnamen Length: "+combFeldnamen.length());
+          out.println("DEBUG combFeldtyp Length: "+combFeldtyp.length());
           String[] zielattributArray = Arrays.stream(zielAttribut.split(";")).map(String::trim).toArray(String[]::new);
 
           String[] combinedFeldnamenArray = Arrays.stream(combFeldnamen.split(";")).map(String::trim).toArray(String[]::new);
@@ -260,6 +261,7 @@
               boolean aenderung = false;
  
               List<Map> attributes = SaveHelper.getMappedList("SELECT * FROM "+zieltabelle+" WHERE ID='"+request.getParameter(datenfeld.toLowerCase()+"["+i+"]_entryid")+"';");
+              out.println("DEBUG size attributes: "+attributes.size());
               if ( attributes.size() > 0) {
                 Map attr = attributes.iterator().next();
                 for (int j=0; j<combinedFeldnamenArray.length; j++) {
