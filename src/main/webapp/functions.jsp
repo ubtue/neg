@@ -41,8 +41,10 @@ boolean isSet(String zielTabelle, String zielAttribut, int id , Statement st){
 
 String DBtoDB(String s) {
   if (s!=null) {
-    s = s.replace("\'", "\\'");
-    s = s.replace("\"", "\\\"");
+    s = s.replace("\\", "\\\\").
+    replace("\'", "\\'").
+    replace("\"", "\\\"")
+    ;    
   }
   return s;
 }
