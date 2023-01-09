@@ -463,7 +463,7 @@ $(function() {
                   </td>
                 </tr>                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr><td colspan="2"><h3>
-                        <% Language.printTextfield(out,session, formular,"Zur Person");%>
+                        <% Language.printTextfield(out,session, formular,"ZurPerson");%>
                         </h3></td></tr>
                 <tr>
                   <td width="25">
