@@ -1,6 +1,8 @@
 <HTML>
   <HEAD>
     <TITLE>Nomen et Gens - ${title}</TITLE>
+    <meta http-equiv="Content-Type" 
+      content="text/html; charset=utf-8">
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
     
     <script src="javascript/funktionen.js" type="text/javascript"></script>

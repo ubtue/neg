@@ -50,6 +50,10 @@ public class AbstractBase {
             settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
             settings.put(Environment.HBM2DDL_AUTO,"validate");
 
+            settings.put("hibernate.connection.CharSet", "utf-8");
+            settings.put("hibernate.connection.useUnicode", true);
+            settings.put("hibernate.connection.characterEncoding", "utf-8");
+    
             configuration.setProperties(settings);
 
             // TODO: Add all model classes dynamically

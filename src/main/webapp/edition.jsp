@@ -212,7 +212,7 @@
                 </span>
               </li>
 	<li><a href="javascript:onoff('tab5','tab1');"> 
-            <% Language.printTextfield(out,session, formular,"TabUeberlieferung");%>
+            <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
 <!-- TAB BÄNDE & QUELLEN
               <li>
@@ -262,7 +262,7 @@
                 </a>
               </li>
 	<li><span> 
-            <% Language.printTextfield(out,session, formular,"TabUeberlieferung");%>
+            <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </span></li>
 <!-- TAB BÄNDE & QUELLEN
               <li>
@@ -367,7 +367,7 @@
                 </a>
               </li>
 	<li><a href="javascript:onoff('tab5','tab4');"> 
-            <% Language.printTextfield(out,session, formular,"TabUeberlieferung");%>
+            <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
 <!-- TAB BÄNDE & QUELLEN
               <li>
