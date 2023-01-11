@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import de.uni_tuebingen.ub.nppm.model.*;
@@ -15,9 +14,8 @@ import java.util.Properties;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
-import de.uni_tuebingen.ub.nppm.model.*;
-
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
@@ -65,6 +63,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(Edition.class);
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
+            configuration.addAnnotatedClass(EditionEditor.class);
 
             configuration.addAnnotatedClass(SelektionAmtWeihe.class);
             configuration.addAnnotatedClass(SelektionAreal.class);
@@ -105,20 +104,27 @@ public class AbstractBase {
 
             configuration.addAnnotatedClass(Handschrift.class);
             configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
-
+            
             configuration.addAnnotatedClass(Urkunde.class);
             configuration.addAnnotatedClass(UrkundeBetreff.class);
             configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
-
+            configuration.addAnnotatedClass(UrkundeEmpfaenger.class);
+            
             configuration.addAnnotatedClass(Person.class);
             configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
             configuration.addAnnotatedClass(PersonQuiet.class);
             configuration.addAnnotatedClass(PersonVariante.class);
-
+            configuration.addAnnotatedClass(PersonAreal_MM.class);
+            configuration.addAnnotatedClass(PersonEthnie_MM.class);
+            configuration.addAnnotatedClass(PersonVerwandtMit_MM.class);          
+            
             configuration.addAnnotatedClass(Einzelbeleg.class);
             configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
             configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
-
+            configuration.addAnnotatedClass(EinzelbelegMghLemma_MM.class);
+            configuration.addAnnotatedClass(EinzelbelegNamenkommentar_MM.class);
+            configuration.addAnnotatedClass(EinzelbelegHatPerson_MM.class);
+        
             configuration.addAnnotatedClass(DatenbankFilter.class);
             configuration.addAnnotatedClass(DatenbankMapping.class);
             configuration.addAnnotatedClass(DatenbankSelektion.class);
@@ -156,6 +162,18 @@ public class AbstractBase {
 
     protected static List getList(Class c) throws Exception {
         return getList(c, null);
+    }
+    
+    public static void remove(Class class_, int id) throws Exception {
+        Session session = getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        //Load
+        Object obj = session.load(class_, id);
+        //Remove
+        session.remove(obj);
+        //Commit
+        transaction.commit();
     }
 
     public static List<Object[]> getListNative(String sql) throws Exception {

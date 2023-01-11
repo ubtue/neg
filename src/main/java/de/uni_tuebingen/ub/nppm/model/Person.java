@@ -68,7 +68,7 @@ public class Person {
             inverseJoinColumns = {
                 @JoinColumn(name = "StandID")}
     )
-    List<SelektionStand> stand = new ArrayList<>();
+    Set<SelektionStand> stand = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -78,7 +78,7 @@ public class Person {
             inverseJoinColumns = {
                 @JoinColumn(name = "AmtWeiheID")}
     )
-    List<SelektionAmtWeihe> amtWeihe = new ArrayList<>();
+    Set<SelektionAmtWeihe> amtWeihe = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -88,7 +88,7 @@ public class Person {
             inverseJoinColumns = {
                 @JoinColumn(name = "ArealID")}
     )
-    List<SelektionAreal> areal = new ArrayList<>();
+    Set<SelektionAreal> areal = new HashSet<>();
 
     @OneToMany(mappedBy = "person", cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     private List<PersonQuiet> quiet = new ArrayList<>();
@@ -104,7 +104,7 @@ public class Person {
             inverseJoinColumns = {
                 @JoinColumn(name = "EthnieID")}
     )
-    List<SelektionEthnie> ethnie = new ArrayList<>();
+    Set<SelektionEthnie> ethnie = new HashSet<>();
     
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -114,10 +114,10 @@ public class Person {
             inverseJoinColumns = {
                 @JoinColumn(name = "EthnienerhaltID")}
     )
-    List<SelektionEthnienErhalt> ethnieErhalt = new ArrayList<>();
+    Set<SelektionEthnienErhalt> ethnieErhalt = new HashSet<>();
     
     @ManyToMany(mappedBy = "person")
-    private List<Einzelbeleg> einzelbeleg = new ArrayList<>();
+    private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -235,15 +235,15 @@ public class Person {
         this.gehoertGruppe = gehoertGruppe;
     }
     
-    public List<SelektionStand> getStand() {
+    public Set<SelektionStand> getStand() {
         return stand;
     }
 
-    public List<SelektionAmtWeihe> getAmtWeihe() {
+    public Set<SelektionAmtWeihe> getAmtWeihe() {
         return amtWeihe;
     }
 
-    public List<SelektionAreal> getAreal() {
+    public Set<SelektionAreal> getAreal() {
         return areal;
     }
 
@@ -255,19 +255,19 @@ public class Person {
         return variante;
     }
 
-    public List<SelektionEthnie> getEthnie() {
+    public Set<SelektionEthnie> getEthnie() {
         return ethnie;
     }
 
-    public List<SelektionEthnienErhalt> getEthnieErhalt() {
+    public Set<SelektionEthnienErhalt> getEthnieErhalt() {
         return ethnieErhalt;
     }
     
-    public List<Einzelbeleg> getEinzelbeleg() {
+    public Set<Einzelbeleg> getEinzelbeleg() {
         return einzelbeleg;
     }
 
-    public void setEinzelbeleg(List<Einzelbeleg> einzelbeleg) {
+    public void setEinzelbeleg(Set<Einzelbeleg> einzelbeleg) {
         this.einzelbeleg = einzelbeleg;
     }
     
@@ -276,14 +276,7 @@ public class Person {
     }
 
     public void removeStand(int id) {
-        for (int i = 0; i < this.getStand().size();) {
-            SelektionStand s = this.getStand().get(i);
-            if (s.getId() != null && s.getId() == id) {
-                this.getStand().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getStand().removeIf(e -> e.getId() == id);
     }
 
     public void addAmtWeihe(SelektionAmtWeihe s) {
@@ -291,14 +284,7 @@ public class Person {
     }
 
     public void removeAmtWeihe(int id) {
-        for (int i = 0; i < this.getAmtWeihe().size();) {
-            SelektionAmtWeihe s = this.getAmtWeihe().get(i);
-            if (s.getId() != null && s.getId() == id) {
-                this.getAmtWeihe().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getAmtWeihe().removeIf(e -> e.getId() == id);
     }
 
     public void addQuiet(PersonQuiet p) {
@@ -321,14 +307,7 @@ public class Person {
     }
 
     public void removeAreal(int id) {
-        for (int i = 0; i < this.getAreal().size();) {
-            SelektionAreal s = this.getAreal().get(i);
-            if (s.getId() != null && s.getId() == id) {
-                this.getAreal().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getAreal().removeIf(e -> e.getId() == id);
     }
 
     public void addVariante(PersonVariante pV) {
@@ -351,14 +330,7 @@ public class Person {
     }
 
     public void removeEthnie(int id) {
-        for (int i = 0; i < this.getEthnie().size();) {
-            SelektionEthnie s = this.getEthnie().get(i);
-            if (s.getId() != null && s.getId() == id) {
-                this.getEthnie().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getEthnie().removeIf(e -> e.getId() == id);
     }
     
     public void addEthnieErhalt(SelektionEthnienErhalt ethnieErhalt) {
@@ -366,14 +338,7 @@ public class Person {
     }
 
     public void removeEthnieErhalt(int id) {
-        for (int i = 0; i < this.getEthnieErhalt().size();) {
-            SelektionEthnienErhalt s = this.getEthnieErhalt().get(i);
-            if (s.getId() != null && s.getId() == id) {
-                this.getEthnieErhalt().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getEthnieErhalt().removeIf(e -> e.getId() == id);
     }
     
     public void addEinzelbeleg(Einzelbeleg beleg) {
@@ -381,13 +346,6 @@ public class Person {
     }
 
     public void removeEinzelbeleg(int id) {
-        for (int i = 0; i < this.getEinzelbeleg().size();) {
-            Einzelbeleg beleg = this.getEinzelbeleg().get(i);
-            if (beleg.getId() != null && beleg.getId() == id) {
-                this.getEinzelbeleg().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getEinzelbeleg().removeIf(e -> e.getId() == id);
     }
 }

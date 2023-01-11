@@ -16,10 +16,10 @@ public class SelektionAmtWeihe {
     private String bezeichnung;
 
     @ManyToMany(mappedBy = "amtWeihe")
-    private List<Person> personen = new ArrayList<>();
+    private Set<Person> personen = new HashSet<>();
 
     @ManyToMany(mappedBy = "amtWeihe")
-    private List<Einzelbeleg> einzelbelege = new ArrayList<>();
+    private Set<Einzelbeleg> einzelbelege = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -33,11 +33,11 @@ public class SelektionAmtWeihe {
         this.bezeichnung = bezeichnung;
     }
 
-    public List<Einzelbeleg> getEinzelbelege() {
+    public Set<Einzelbeleg> getEinzelbelege() {
         return this.einzelbelege;
     }
 
-    public List<Person> getPersonen() {
+    public Set<Person> getPersonen() {
         return this.personen;
     }
 
@@ -46,14 +46,7 @@ public class SelektionAmtWeihe {
     }
 
     public void removePerson(int id) {
-        for (int i = 0; i < this.getPersonen().size();) {
-            Person person = this.getPersonen().get(i);
-            if (person.getId() != null && person.getId() == id) {
-                this.getPersonen().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getPersonen().removeIf(e -> e.getId() == id);
     }
     
     public void addEinzelbeleg(Einzelbeleg einzelbeleg) {
@@ -61,13 +54,6 @@ public class SelektionAmtWeihe {
     }
 
     public void removeEinzelbeleg(int id) {
-        for (int i = 0; i < this.getEinzelbelege().size();) {
-            Einzelbeleg beleg = this.getEinzelbelege().get(i);
-            if (beleg.getId() != null && beleg.getId() == id) {
-                this.getEinzelbelege().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getEinzelbelege().removeIf(e -> e.getId() == id);
     }
 }
