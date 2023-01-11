@@ -46,7 +46,7 @@ public class MghLemma {
     private BenutzerGruppe gehoertGruppe;
     
     @ManyToMany(mappedBy = "mghLemma")
-    private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
+    private Set<Einzelbeleg> einzelbelege = new HashSet<>();
 
     public int getId() {
         return id;
@@ -108,16 +108,16 @@ public class MghLemma {
         this.gehoertGruppe = gehoertGruppe;
     }
 
-    public Set<Einzelbeleg> getEinzelbeleg() {
-        return einzelbeleg;
+    public Set<Einzelbeleg> getEinzelbelege() {
+        return einzelbelege;
     }
     
     public void addEinzelbeleg(Einzelbeleg person) {
-        this.getEinzelbeleg().add(person);
+        this.getEinzelbelege().add(person);
     }
 
     public void removeEinzelbeleg(int id) {
-        this.getEinzelbeleg().removeIf(e -> e.getId() == id);
+        this.getEinzelbelege().removeIf(e -> e.getId() == id);
     }
     
 }
