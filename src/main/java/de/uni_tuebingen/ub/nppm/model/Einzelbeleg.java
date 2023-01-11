@@ -247,7 +247,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "AmtWeiheID")}
     )
-    List<SelektionAmtWeihe> amtWeihe = new ArrayList<>();
+    Set<SelektionAmtWeihe> amtWeihe = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -257,7 +257,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "ArealID")}
     )
-    List<SelektionAreal> areal = new ArrayList<>();
+    Set<SelektionAreal> areal = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -267,7 +267,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "FunktionID")}
     )
-    List<SelektionFunktion> funktion = new ArrayList<>();
+    Set<SelektionFunktion> funktion = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -277,7 +277,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "MGHLemmaID")}
     )
-    List<MghLemma> mghLemma = new ArrayList<>();
+    Set<MghLemma> mghLemma = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -287,7 +287,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "NamenkommentarID")}
     )
-    List<NamenKommentar> namenKommentar = new ArrayList<>();
+    Set<NamenKommentar> namenKommentar = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -297,7 +297,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "PersonID")}
     )
-    List<Person> person = new ArrayList<>();
+    Set<Person> person = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -307,7 +307,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "StandID")}
     )
-    List<SelektionStand> stand = new ArrayList<>();
+    Set<SelektionStand> stand = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -577,31 +577,31 @@ public class Einzelbeleg {
         return mghLemmaKorrigiert;
     }
 
-    public List<SelektionAmtWeihe> getAmtWeihe() {
+    public Set<SelektionAmtWeihe> getAmtWeihe() {
         return amtWeihe;
     }
 
-    public List<SelektionAreal> getAreal() {
+    public Set<SelektionAreal> getAreal() {
         return areal;
     }
 
-    public List<SelektionFunktion> getFunktion() {
+    public Set<SelektionFunktion> getFunktion() {
         return funktion;
     }
 
-    public List<MghLemma> getMghLemma() {
+    public Set<MghLemma> getMghLemma() {
         return mghLemma;
     }
 
-    public List<NamenKommentar> getNamenKommentar() {
+    public Set<NamenKommentar> getNamenKommentar() {
         return namenKommentar;
     }
 
-    public List<Person> getPerson() {
+    public Set<Person> getPerson() {
         return person;
     }
 
-    public List<SelektionStand> getStand() {
+    public Set<SelektionStand> getStand() {
         return stand;
     }
 
@@ -869,7 +869,7 @@ public class Einzelbeleg {
         this.mghLemmaKorrigiert = mghLemmaKorrigiert;
     }
 
-    public void setMghLemma(List<MghLemma> mghLemma) {
+    public void setMghLemma(Set<MghLemma> mghLemma) {
         this.mghLemma = mghLemma;
     }
 }

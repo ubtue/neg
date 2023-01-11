@@ -14,12 +14,12 @@ public class SelektionUrkundeAusstellerEmpfaenger {
     private String bezeichnung;
 
     @ManyToMany(mappedBy = "empfaenger")
-    private List<Urkunde> urkundeEmpfaenger = new ArrayList<Urkunde>();
+    private Set<Urkunde> urkundeEmpfaenger = new HashSet<Urkunde>();
     
     @ManyToMany(mappedBy = "aussteller")
-    private List<Urkunde> urkundeAussteller = new ArrayList<Urkunde>();;
+    private Set<Urkunde> urkundeAussteller = new HashSet<Urkunde>();;
     
-    public List<Urkunde> getUrkundeEmpfaenger() {
+    public Set<Urkunde> getUrkundeEmpfaenger() {
         return this.urkundeEmpfaenger;
     }
     
@@ -28,17 +28,10 @@ public class SelektionUrkundeAusstellerEmpfaenger {
     }
       
     public void removeUrkundeEmpfaenger(int id){
-        for (int i = 0; i < this.getUrkundeEmpfaenger().size(); ) {
-            Urkunde uk = this.getUrkundeEmpfaenger().get(i);
-            if(uk.getId() != null && uk.getId() == id){
-                this.getUrkundeEmpfaenger().remove(i);
-            }else{
-                i++;
-            }
-        }
+        this.getUrkundeEmpfaenger().removeIf(e -> e.getId() == id);
     }
     
-    public List<Urkunde> getUrkundeAussteller() {
+    public Set<Urkunde> getUrkundeAussteller() {
         return this.urkundeAussteller;
     }
     
@@ -47,14 +40,7 @@ public class SelektionUrkundeAusstellerEmpfaenger {
     }
       
     public void removeUrkundeAussteller(int id){
-        for (int i = 0; i < this.getUrkundeAussteller().size(); ) {
-            Urkunde uk = this.getUrkundeAussteller().get(i);
-            if(uk.getId() != null && uk.getId() == id){
-                this.getUrkundeAussteller().remove(i);
-            }else{
-                i++;
-            }
-        }
+        this.getUrkundeAussteller().removeIf(e -> e.getId() == id);
     }
     
     public Integer getId() {

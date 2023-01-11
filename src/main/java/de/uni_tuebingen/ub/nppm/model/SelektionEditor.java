@@ -20,9 +20,9 @@ public class SelektionEditor {
     private String vorname;
     
     @ManyToMany(mappedBy = "editors")
-    private List<Edition> editions = new ArrayList<>();
+    private Set<Edition> editions = new HashSet<>();
 
-    public List<Edition> getEditions() {
+    public Set<Edition> getEditions() {
         return editions;
     }
 
@@ -31,14 +31,7 @@ public class SelektionEditor {
     }
       
     public void removeEdition(int id){
-        for (int i = 0; i < this.getEditions().size(); ) {
-            Edition edition = this.getEditions().get(i);
-            if(edition.getId() != null && edition.getId() == id){
-                this.getEditions().remove(i);
-            }else{
-                i++;
-            }
-        }
+        this.getEditions().removeIf(e -> e.getId() == id);
     }
     
     public Integer getId() {
