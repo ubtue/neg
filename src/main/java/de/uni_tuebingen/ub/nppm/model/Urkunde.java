@@ -23,7 +23,7 @@ public class Urkunde {
         joinColumns = { @JoinColumn(name = "AusstellerID") }, 
         inverseJoinColumns = { @JoinColumn(name = "UrkundeID") }
     )
-    private Set<SelektionUrkundeAusstellerEmpfaenger> aussteller = new HashSet<SelektionUrkundeAusstellerEmpfaenger>();;
+    private Set<SelektionUrkundeAusstellerEmpfaenger> aussteller = new HashSet<SelektionUrkundeAusstellerEmpfaenger>();
     
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
