@@ -170,14 +170,18 @@ public class AbstractBase {
     
     public static void remove(Class class_, int id) throws Exception {
         Session session = getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-        //Load
-        Object obj = session.load(class_, id);
-        //Remove
-        session.remove(obj);
-        //Commit
-        transaction.commit();
+        try {
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            //Load
+            Object obj = session.load(class_, id);
+            //Remove
+            session.remove(obj);
+            //Commit
+            transaction.commit();
+        } finally {
+            session.close();
+        }
     }
 
     public static List<Object[]> getListNative(String sql) throws Exception {
@@ -189,10 +193,14 @@ public class AbstractBase {
     
     protected static void insertOrUpdate(String sql) throws Exception {
         Session session = getSession();
-        session.getTransaction().begin();
-        NativeQuery query = session.createSQLQuery(sql);
-        query.executeUpdate();
-        session.getTransaction().commit();
+        try {            
+            session.getTransaction().begin();
+            NativeQuery query = session.createSQLQuery(sql);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        } finally {
+            session.close();
+        }
     }
 
     protected static List<Map> getMappedList(Query query) throws Exception {
