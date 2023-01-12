@@ -53,7 +53,11 @@ public class AbstractBase {
             settings.put("hibernate.connection.CharSet", "utf-8");
             settings.put("hibernate.connection.useUnicode", true);
             settings.put("hibernate.connection.characterEncoding", "utf-8");
-    
+            
+            settings.put("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
+            settings.put("hibernate.c3p0.min_size", "5");
+            settings.put("hibernate.c3p0.max_size", "100");
+        
             configuration.setProperties(settings);
 
             // TODO: Add all model classes dynamically
