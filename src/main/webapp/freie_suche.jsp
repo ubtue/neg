@@ -291,17 +291,6 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                      <% Language.printDatafield(out,session, formular,"StandEinzelbeleg");%>
-                  </th>
-                  <td width="450">
-                    <jsp:include page="inc.erzeugeFormular.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="StandEinzelbeleg"/>
-                    </jsp:include>
-                  </td>
-                </tr>
-                <tr>
-                  <th width="200" valign="top">
                       <% Language.printDatafield(out,session, formular,"Funktion");%>
                   </th>
                   <td width="450">
