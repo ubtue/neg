@@ -706,7 +706,7 @@
 								+ " ORDER BY quelle_inedition.Sigle ASC");
 				while (rs.next()) {
 					out.println("<tr>");
-					out.println("<td><a href=\"quelle.jsp?ID="
+					out.println("<td><a href=\"quelle?ID="
 							+ rs.getInt("quelle.ID") + "\">"
 							+ rs.getString("quelle.Bezeichnung")
 							+ "</a></td>");

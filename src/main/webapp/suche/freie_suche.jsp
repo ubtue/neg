@@ -1346,7 +1346,7 @@
                     link = true;
                   }
                  else if (orderV[z].equals("quelle.Bezeichnung")) {
-                  out.print("<a href=\"quelle.jsp?ID="+item.get("quelle.ID")+"\">");
+                  out.print("<a href=\"quelle?ID="+item.get("quelle.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("edition.Titel")) {
@@ -1422,7 +1422,7 @@
                     link = true;
                   }
                   else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
-                  out.print("<a href=\"quelle.jsp?ID="+item.get("quelleID")+"\">");
+                  out.print("<a href=\"quelle?ID="+item.get("quelleID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("edition.Titel")) {

@@ -166,7 +166,7 @@
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
-                  out.print("<a href=\"quelle.jsp?ID="+rs.getInt("quelle.ID")+"\">");
+                  out.print("<a href=\"quelle?ID="+rs.getInt("quelle.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("edition.Titel")) {

@@ -143,7 +143,7 @@
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
-                  out.print("<a href=\"quelle.jsp?ID="+row.get("quelle.ID")+"\">");
+                  out.print("<a href=\"quelle?ID="+row.get("quelle.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("edition.Titel")) {
