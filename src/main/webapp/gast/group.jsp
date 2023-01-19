@@ -87,7 +87,7 @@ String test(JspWriter out, Vector<String> headlines, Vector<String> fieldNames, 
                   link = true;
                 }
                 else if (orderV[z].equals("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar.jsp?ID="+rs.getInt("namenkommentar.ID")+"\">");
+                  out.print("<a href=\"namenkommentar?ID="+rs.getInt("namenkommentar.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
@@ -156,7 +156,7 @@ String test(JspWriter out, Vector<String> headlines, Vector<String> fieldNames, 
                   link = true;
                }
                else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                   out.print("<a href=\"namenkommentar.jsp?ID="+rs.getInt("namenkommentar.ID")+"\">");
+                   out.print("<a href=\"namenkommentar?ID="+rs.getInt("namenkommentar.ID")+"\">");
                   link = true;
                }
 				else if (fieldNames.get(i).contains("mgh_lemma.MGHLemma")) {

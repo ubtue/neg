@@ -1338,7 +1338,7 @@
                   link = true;
                 }
                 else if (orderV[z].equals("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar.jsp?ID="+item.get("namenkommentarID")+"\">");
+                  out.print("<a href=\"namenkommentar?ID="+item.get("namenkommentarID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
@@ -1414,7 +1414,7 @@
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar.jsp?ID="+item.get("namenkommentarID")+"\">");
+                  out.print("<a href=\"namenkommentar?ID="+item.get("namenkommentarID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("mgh_lemma.MGHLemma")) {

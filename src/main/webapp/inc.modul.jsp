@@ -188,7 +188,7 @@
 						"namenkommentar.ID=einzelbeleg_hatnamenkommentar.NamenkommentarID WHERE person.ID=\""
 								+ id + "\"");
 				while (rs.next()  && rs.getString("namenkommentar.PLemma") !=null) {
-					out.println("<a href=\"namenkommentar.jsp?ID="+rs.getString("namenkommentar.ID")+"\">"+format(rs.getString("namenkommentar.PLemma"),"PLemma")+"<br>");
+					out.println("<a href=\"namenkommentar?ID="+rs.getString("namenkommentar.ID")+"\">"+format(rs.getString("namenkommentar.PLemma"),"PLemma")+"<br>");
 				}
 				out.println("</td></tr>");
 			} catch (Exception e) {

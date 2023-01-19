@@ -162,7 +162,7 @@
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar.jsp?ID="+rs.getInt("namenkommentar.ID")+"\">");
+                  out.print("<a href=\"namenkommentar?ID="+rs.getInt("namenkommentar.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
