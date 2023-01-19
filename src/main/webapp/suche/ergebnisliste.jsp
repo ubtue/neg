@@ -148,7 +148,7 @@
                 }
                 else if (fieldNames.get(i).contains("edition.Titel")) {
                   try{
-                  out.print("<a href=\"edition.jsp?ID="+row.get("edition.ID")+"\">");
+                  out.print("<a href=\"edition?ID="+row.get("edition.ID")+"\">");
                   link = true;
                   }catch(Exception e){
                      link=false;

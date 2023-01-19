@@ -1351,7 +1351,7 @@
                 }
                 else if (orderV[z].equals("edition.Titel")) {
                   try{
-                  out.print("<a href=\"edition.jsp?ID="+item.get("editionID")+"\">");
+                  out.print("<a href=\"edition?ID="+item.get("editionID")+"\">");
                   link = true;
                   }catch(Exception e){
                      link=false;
@@ -1427,7 +1427,7 @@
                 }
                 else if (fieldNames.get(i).contains("edition.Titel")) {
                   try{
-                  out.print("<a href=\"edition.jsp?ID="+item.get("editionID")+"\">");
+                  out.print("<a href=\"edition?ID="+item.get("editionID")+"\">");
                   link = true;
                   }catch(Exception e){
                      link=false;
