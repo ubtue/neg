@@ -7,9 +7,11 @@
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
-<%    if (session.getAttribute("BenutzerID") != null
-            && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0
-            && ((Boolean) session.getAttribute("Administrator")).booleanValue()) {
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
+
+<%    if (AuthHelper.isAdminLogin(request)) {
+
+
 %>
 <!DOCTYPE html>
 <html>
@@ -92,8 +94,15 @@
                 %>
             </textarea>
 
-            <input type="submit" name="speichern" value="speichern"/>
-            <a href="img.jsp" target="_blank">Bilder verwalten</a>
+            <div style="display: flex;">
+                <div style="margin-right: 10px;" method="post">
+                    <input type="submit" name="speichern" value="speichern"/>
+                 </div>
+
+                <form action="img?pictureAccess=1" method="post">
+                  <input type="submit" name="pictureAccess" value="Bild Verwaltung"/>
+                </form>
+            </div>
         </form>
     </body>
 </html>

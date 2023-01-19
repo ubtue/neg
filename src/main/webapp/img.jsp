@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.AuthHelper"%>
 ﻿<%@page import="java.io.File"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.net.URL"%>
@@ -11,9 +12,9 @@
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
-<%    if (session.getAttribute("BenutzerID") != null
-            && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0
-            && ((Boolean) session.getAttribute("Administrator")).booleanValue()) {
+
+<%    if (AuthHelper.isAdminLogin(request)) {
+
 %>
 <!DOCTYPE html>
 <html>
@@ -24,12 +25,13 @@
 
         <%
             String folder = "gast\\layout";
-
+            out.println("<a href=\"edit\">Zurück zu TinyMce</a>");
             out.println("<h2>Bild hochladen</h2>");
-            out.println("<form method=\"POST\" enctype=\"multipart/form-data\">");
+            out.println("<form action=\"img?pictureAccess=1\" method=\"POST\" enctype=\"multipart/form-data\">");
             out.println("<input type=\"file\" name=\"file\">");
             out.println("<br/><br/>");
             out.println("<input type=\"submit\" value=\"hochladen\">");
+            out.println("<input type=\"hidden\" name=\"pictureAccess\" >");
             out.println("</form>");
 
             if (ServletFileUpload.isMultipartContent(request)) {
@@ -88,7 +90,8 @@
                                     || file.getName().toLowerCase().endsWith("jpeg")
                                     || file.getName().toLowerCase().endsWith("gif")) {
                                 out.println("<tr><td>layout/" + file.getName() + "</td><td><img src=\"layout/" + file.getName() + "\" height=\"256px\"></td>");
-                                out.println("<td><form method=\"post\" action=\"img.jsp\"><input type=\"hidden\" name=\"filename\" value=\"" + file.getName() + "\"><input type=\"submit\" name=\"deleteFile\" value=\"l&ouml;schen\"></form></td>");
+                                out.println("<td><form method=\"post\" action=\"img?pictureAccess=1&deleteFile=1\"><input type=\"hidden\" name=\"filename\" value=\"" + file.getName() + "\"><input type=\"submit\" name=\"deleteFile\" value=\"l&ouml;schen\">  </form></td>");
+
                                 out.println("</tr>");
                             }
                         }
@@ -100,7 +103,6 @@
 
             try {
                 String fileToDelete = "";
-
                 if (request.getParameter("deleteFile") != null) {
                     if (request.getParameter("filename") != null) {
                         fileToDelete = request.getParameter("filename");
@@ -110,7 +112,8 @@
                         File file = new File(pathname);
                         boolean fileIsDeleted = file.delete();
                         if (fileIsDeleted == true) {
-                            response.setIntHeader("Refresh", 1);  //refresh page
+                            out.println("<script>location.reload();</script>");
+                           // response.setIntHeader("Refresh", 1);  //refresh page
                             out.println("<p>Bild " + fileToDelete + " erfolgreich gel&ouml;scht!</p>");
                         }
                     }
