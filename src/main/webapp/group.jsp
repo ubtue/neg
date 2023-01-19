@@ -80,11 +80,11 @@ String test(JspWriter out, Vector<String> headlines, Vector<String> fieldNames, 
                   link = true;
                 }
                 else if (orderV[z].equals("person.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+rs.getInt("person.ID")+"\">");
+                  out.print("<a href=\"person?ID="+rs.getInt("person.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("perszu.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+rs.getInt("perszu.ID")+"\">");
+                  out.print("<a href=\"person?ID="+rs.getInt("perszu.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("namenkommentar.PLemma")) {
@@ -149,11 +149,11 @@ String test(JspWriter out, Vector<String> headlines, Vector<String> fieldNames, 
                   link = true;
                }
                else if (fieldNames.get(i).contains("person.Standardname")) {
-                   out.print("<a href=\"person.jsp?ID="+rs.getInt("person.ID")+"\">");
+                   out.print("<a href=\"person?ID="+rs.getInt("person.ID")+"\">");
                   link = true;
                }
                else if (fieldNames.get(i).contains("perszu.Standardname")) {
-                   out.print("<a href=\"person.jsp?ID="+rs.getInt("perszu.ID")+"\">");
+                   out.print("<a href=\"person?ID="+rs.getInt("perszu.ID")+"\">");
                   link = true;
                }
                else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {

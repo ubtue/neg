@@ -1330,11 +1330,11 @@
                   link = true;
                 }
                 else if (orderV[z].equals("person.ID")) {
-                  out.print("<a href=\"person.jsp?ID="+item.get("personID")+"\">");
+                  out.print("<a href=\"person?ID="+item.get("personID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("perszu.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+item.get("perszuID")+"\">");
+                  out.print("<a href=\"person?ID="+item.get("perszuID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("namenkommentar.PLemma")) {
@@ -1406,11 +1406,11 @@
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("person.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+item.get("personID")+"\">");
+                  out.print("<a href=\"person?ID="+item.get("personID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("perszu.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+item.get("perszuID")+"\">");
+                  out.print("<a href=\"person?ID="+item.get("perszuID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {

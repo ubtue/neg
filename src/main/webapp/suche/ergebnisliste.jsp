@@ -131,11 +131,11 @@
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("person.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+row.get("person.ID")+"\">");
+                  out.print("<a href=\"person?ID="+row.get("person.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("perszu.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+row.get("perszu.ID")+"\">");
+                  out.print("<a href=\"person?ID="+row.get("perszu.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("PLemma")) {

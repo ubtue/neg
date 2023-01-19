@@ -508,7 +508,7 @@
 				while (rs.next()) {
 					count++;
 					out.println("<tr>");
-					out.println("<td><a href=\"person.jsp?ID="
+					out.println("<td><a href=\"person?ID="
 							+ rs.getInt("p.ID") + "\">"
 							+ rs.getString("p.Standardname")
 							+ "</a></td>");
@@ -1453,7 +1453,7 @@ firstEdition = true;
 					if (rs.getString("person.PKZ") == null)
 						out.println("--");
 					else {
-						out.println("<a href=\"person.jsp?ID="
+						out.println("<a href=\"person?ID="
 								+ rs.getInt("person.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -1678,7 +1678,7 @@ firstEdition = true;
 					if (rs.getString("person.PKZ") == null)
 						out.println("--");
 					else {
-						out.println("<a href=\"person.jsp?ID="
+						out.println("<a href=\"person?ID="
 								+ rs.getInt("person.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">

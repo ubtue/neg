@@ -154,11 +154,11 @@
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("person.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+rs.getInt("person.ID")+"\">");
+                  out.print("<a href=\"person?ID="+rs.getInt("person.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("perszu.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+rs.getInt("perszu.ID")+"\">");
+                  out.print("<a href=\"person?ID="+rs.getInt("perszu.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
