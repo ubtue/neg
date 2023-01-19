@@ -607,7 +607,7 @@
 					while (rs2.next()) {
 						out.println("<tr>");
 						out
-								.println("<td>&nbsp;</td><td><a href=\"handschrift.jsp?ID="
+								.println("<td>&nbsp;</td><td><a href=\"handschrift?ID="
 										+ rs2.getInt("handschrift.ID")
 										+ "\">");
 %>
@@ -812,7 +812,7 @@
 					while (rs2.next()) {
 						out.println("<tr>");
 						out
-								.println("<td>&nbsp;</td><td><a href=\"handschrift.jsp?ID="
+								.println("<td>&nbsp;</td><td><a href=\"handschrift?ID="
 										+ rs2.getInt("handschrift.ID")
 										+ "\">");
 %>

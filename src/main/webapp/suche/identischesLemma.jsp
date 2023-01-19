@@ -172,7 +172,7 @@ document.open();
 
             out.println("<tr><td>"+DBtoHTML(innerResultRow[0]) + "</td>");
             out.println("<td>" + DBtoHTML(innerResultRow[1]) +"</td>");
-            out.println("<td><a href=\"handschrift.jsp?ID="+innerResultRow[4]+"\"/><div style=\"font-size:8pt\">" + DBtoHTML(innerResultRow[2])+"</div></a></td>");
+            out.println("<td><a href=\"handschrift?ID="+innerResultRow[4]+"\"/><div style=\"font-size:8pt\">" + DBtoHTML(innerResultRow[2])+"</div></a></td>");
             out.println("<td>" + DBtoHTML(innerResultRow[12])+"</td>");
             out.println("<td>" + DBtoHTML(innerResultRow[11])+"</td>");
             String date =  makeDateWrapper(innerResultRow[5], innerResultRow[6], innerResultRow[7])+" - "+makeDateWrapper(innerResultRow[8], innerResultRow[9], innerResultRow[10]);
