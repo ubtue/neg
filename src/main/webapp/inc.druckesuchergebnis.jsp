@@ -65,7 +65,7 @@
         out.println("<tr>");
 
         if (formular.equals("einzelbeleg"))
-          out.println("<td valign=\"top\"><a href=\"einzelbeleg.jsp?ID="+rs.getString("einzelbeleg.ID")+"\">GoTo</a></td>");
+          out.println("<td valign=\"top\"><a href=\"einzelbeleg?ID="+rs.getString("einzelbeleg.ID")+"\">GoTo</a></td>");
         if (formular.equals("person"))
           out.println("<td valign=\"top\"><a href=\"person?ID="+rs.getString("person.ID")+"\">GoTo</a></td>");
 

@@ -127,7 +127,7 @@
               if (export.equals("browse")) {
                 boolean link = false;
                 if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
-                  out.print("<a href=\"einzelbeleg.jsp?ID="+row.get("einzelbeleg.ID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+row.get("einzelbeleg.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("person.Standardname")) {

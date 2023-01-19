@@ -1326,7 +1326,7 @@
                            boolean link = false;
            if(export.equals("browse") && !text.equals("-"))
                 if (orderV[z].equals("einzelbeleg.ID")) {
-                  out.print("<a href=\"einzelbeleg.jsp?ID="+item.get("einzelbeleg.ID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+item.get("einzelbeleg.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("person.ID")) {
@@ -1402,7 +1402,7 @@
               if (export.equals("browse")) {
                 boolean link = false;
                 if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
-                  out.print("<a href=\"einzelbeleg.jsp?ID="+item.get("einzelbelegID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+item.get("einzelbelegID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("person.Standardname")) {

@@ -72,11 +72,11 @@ String test(JspWriter out, Vector<String> headlines, Vector<String> fieldNames, 
               boolean link = false;
               if(!text.equals("-"))
                 if (orderV[z].equals("einzelbeleg.ID")) {
-                  out.print("<a href=\"einzelbeleg.jsp?ID="+rs.getInt("einzelbeleg.ID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+rs.getInt("einzelbeleg.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("e2.ID")) {
-                  out.print("<a href=\"einzelbeleg.jsp?ID="+rs.getInt("e2.ID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+rs.getInt("e2.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("person.Standardname")) {
@@ -141,11 +141,11 @@ String test(JspWriter out, Vector<String> headlines, Vector<String> fieldNames, 
                String cell =  DBtoHTML(rs.getString(fieldNames.get(i)));
                boolean link = false;
                if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
-                  out.print("<a href=\"einzelbeleg.jsp?ID="+rs.getInt("einzelbeleg.ID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+rs.getInt("einzelbeleg.ID")+"\">");
                   link = true;
                }
                if (fieldNames.get(i).contains("e2.Belegform")) {
-                   out.print("<a href=\"einzelbeleg.jsp?ID="+rs.getInt("e2.ID")+"\">");
+                   out.print("<a href=\"einzelbeleg?ID="+rs.getInt("e2.ID")+"\">");
                   link = true;
                }
                else if (fieldNames.get(i).contains("person.Standardname")) {

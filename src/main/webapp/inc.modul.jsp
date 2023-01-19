@@ -268,7 +268,7 @@
 						out.println("<tr>");
 					else
 						out.println("<tr bgcolor='#AACCDD'>");
-					out.println("<td><a href=\"einzelbeleg.jsp?ID="
+					out.println("<td><a href=\"einzelbeleg?ID="
 							+ rs.getInt("e.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -380,7 +380,7 @@
 						out.println("<tr>");
 					else
 						out.println("<tr bgcolor='#AACCDD'>");
-					out.println("<td><a href=\"einzelbeleg.jsp?ID="
+					out.println("<td><a href=\"einzelbeleg?ID="
 							+ rs.getInt("e.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -1432,7 +1432,7 @@ firstEdition = true;
 								+ " ORDER BY einzelbeleg.VonJahr, einzelbeleg.VonMonat, einzelbeleg.VonTag ASC");
 				while (rs.next()) {
 					out.println("<tr>");
-					out.println("<td><a href=\"einzelbeleg.jsp?ID="
+					out.println("<td><a href=\"einzelbeleg?ID="
 							+ rs.getInt("einzelbeleg.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -1657,7 +1657,7 @@ firstEdition = true;
 								+ " ORDER BY einzelbeleg.VonJahr, einzelbeleg.VonMonat, einzelbeleg.VonTag ASC");
 				while (rs.next()) {
 					out.println("<tr>");
-					out.println("<td><a href=\"einzelbeleg.jsp?ID="
+					out.println("<td><a href=\"einzelbeleg?ID="
 							+ rs.getInt("einzelbeleg.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
