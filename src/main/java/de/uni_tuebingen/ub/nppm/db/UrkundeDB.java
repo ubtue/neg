@@ -26,11 +26,15 @@ public class UrkundeDB extends AbstractBase {
         
         //if not, insert new urkunde
         Session session = getSession();
-        String sqlInsertUrkunde = "INSERT into urkunde (QuelleID) values ('"+ quelleId + "')";
-        session.getTransaction().begin();
-        NativeQuery query = session.createSQLQuery(sqlInsertUrkunde);
-        query.executeUpdate();
-        session.getTransaction().commit();
+        try {
+            String sqlInsertUrkunde = "INSERT into urkunde (QuelleID) values ('" + quelleId + "')";
+            session.getTransaction().begin();
+            NativeQuery query = session.createSQLQuery(sqlInsertUrkunde);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        } finally {
+            session.close();
+        }
         
         //return urkunde id
         return (int)DatenbankDB.getSingleResult(sqlId);        
