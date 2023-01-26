@@ -53,7 +53,14 @@ public class AbstractBase {
             settings.put("hibernate.connection.CharSet", "utf-8");
             settings.put("hibernate.connection.useUnicode", true);
             settings.put("hibernate.connection.characterEncoding", "utf-8");
-    
+            
+            settings.put("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
+            settings.put("hibernate.c3p0.min_size", "5");
+            settings.put("hibernate.c3p0.max_size", "100");
+            settings.put("hibernate.c3p0.maxIdleTime", "120");
+            settings.put("hibernate.c3p0.idleConnectionTestPeriod", "30");
+            settings.put("hibernate.c3p0.preferredTestQuery", "SELECT 1");
+                    
             configuration.setProperties(settings);
 
             // TODO: Add all model classes dynamically
@@ -166,14 +173,18 @@ public class AbstractBase {
     
     public static void remove(Class class_, int id) throws Exception {
         Session session = getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-        //Load
-        Object obj = session.load(class_, id);
-        //Remove
-        session.remove(obj);
-        //Commit
-        transaction.commit();
+        try {
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            //Load
+            Object obj = session.load(class_, id);
+            //Remove
+            session.remove(obj);
+            //Commit
+            transaction.commit();
+        } finally {
+            session.close();
+        }
     }
 
     public static List<Object[]> getListNative(String sql) throws Exception {
@@ -185,10 +196,14 @@ public class AbstractBase {
     
     protected static void insertOrUpdate(String sql) throws Exception {
         Session session = getSession();
-        session.getTransaction().begin();
-        NativeQuery query = session.createSQLQuery(sql);
-        query.executeUpdate();
-        session.getTransaction().commit();
+        try {            
+            session.getTransaction().begin();
+            NativeQuery query = session.createSQLQuery(sql);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        } finally {
+            session.close();
+        }
     }
 
     protected static List<Map> getMappedList(Query query) throws Exception {

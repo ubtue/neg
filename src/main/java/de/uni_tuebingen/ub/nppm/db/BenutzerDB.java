@@ -106,8 +106,12 @@ public class BenutzerDB extends AbstractBase {
 
     public static void saveOrUpdate(Benutzer b) throws Exception {
         Session session = getSession();
-        session.getTransaction().begin();
-        session.saveOrUpdate(b);
-        session.getTransaction().commit();
+        try {
+            session.getTransaction().begin();
+            session.saveOrUpdate(b);
+            session.getTransaction().commit();
+        } finally {
+            session.close();
+        }
     }
 }
