@@ -1326,19 +1326,19 @@
                            boolean link = false;
            if(export.equals("browse") && !text.equals("-"))
                 if (orderV[z].equals("einzelbeleg.ID")) {
-                  out.print("<a href=\"einzelbeleg.jsp?ID="+item.get("einzelbeleg.ID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+item.get("einzelbeleg.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("person.ID")) {
-                  out.print("<a href=\"person.jsp?ID="+item.get("personID")+"\">");
+                  out.print("<a href=\"person?ID="+item.get("personID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("perszu.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+item.get("perszuID")+"\">");
+                  out.print("<a href=\"person?ID="+item.get("perszuID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar.jsp?ID="+item.get("namenkommentarID")+"\">");
+                  out.print("<a href=\"namenkommentar?ID="+item.get("namenkommentarID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
@@ -1346,12 +1346,12 @@
                     link = true;
                   }
                  else if (orderV[z].equals("quelle.Bezeichnung")) {
-                  out.print("<a href=\"quelle.jsp?ID="+item.get("quelle.ID")+"\">");
+                  out.print("<a href=\"quelle?ID="+item.get("quelle.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("edition.Titel")) {
                   try{
-                  out.print("<a href=\"edition.jsp?ID="+item.get("editionID")+"\">");
+                  out.print("<a href=\"edition?ID="+item.get("editionID")+"\">");
                   link = true;
                   }catch(Exception e){
                      link=false;
@@ -1402,19 +1402,19 @@
               if (export.equals("browse")) {
                 boolean link = false;
                 if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
-                  out.print("<a href=\"einzelbeleg.jsp?ID="+item.get("einzelbelegID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+item.get("einzelbelegID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("person.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+item.get("personID")+"\">");
+                  out.print("<a href=\"person?ID="+item.get("personID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("perszu.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+item.get("perszuID")+"\">");
+                  out.print("<a href=\"person?ID="+item.get("perszuID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar.jsp?ID="+item.get("namenkommentarID")+"\">");
+                  out.print("<a href=\"namenkommentar?ID="+item.get("namenkommentarID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("mgh_lemma.MGHLemma")) {
@@ -1422,12 +1422,12 @@
                     link = true;
                   }
                   else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
-                  out.print("<a href=\"quelle.jsp?ID="+item.get("quelleID")+"\">");
+                  out.print("<a href=\"quelle?ID="+item.get("quelleID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("edition.Titel")) {
                   try{
-                  out.print("<a href=\"edition.jsp?ID="+item.get("editionID")+"\">");
+                  out.print("<a href=\"edition?ID="+item.get("editionID")+"\">");
                   link = true;
                   }catch(Exception e){
                      link=false;

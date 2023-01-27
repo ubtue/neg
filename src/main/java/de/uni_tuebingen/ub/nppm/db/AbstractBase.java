@@ -158,13 +158,17 @@ public class AbstractBase {
 
     protected static List getList(Class c, CriteriaQuery criteria) throws Exception {
         Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        if(criteria == null){
-            criteria = builder.createQuery(c);
+        try {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            if (criteria == null) {
+                criteria = builder.createQuery(c);
+            }
+            Root root = criteria.from(c);
+            criteria.select(root);
+            return session.createQuery(criteria).getResultList();
+        } finally {
+            session.close();
         }
-        Root root = criteria.from(c);
-        criteria.select(root);
-        return session.createQuery(criteria).getResultList();
     }
 
     protected static List getList(Class c) throws Exception {
