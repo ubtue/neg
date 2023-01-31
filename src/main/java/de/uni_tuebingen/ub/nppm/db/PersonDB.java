@@ -32,11 +32,15 @@ public class PersonDB extends AbstractBase {
      public static Person getFirstPublicPerson() throws Exception, Exception {
 
         Session session = getSession();
-        String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";
-
-        NativeQuery query = session.createSQLQuery(SQL);
-        query.addEntity(Person.class);
-        query.setMaxResults(1);
-        return (Person)query.getSingleResult();
+         try {
+             String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";
+             
+             NativeQuery query = session.createSQLQuery(SQL);
+             query.addEntity(Person.class);
+             query.setMaxResults(1);
+             return (Person) query.getSingleResult();
+         } finally {
+             session.close();
+         }
     }
 }

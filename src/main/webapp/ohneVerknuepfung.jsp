@@ -28,7 +28,6 @@
           <li><a href="ohneVerknuepfung?form=quelle&dbForm=quelle&zwischentabelle=quelle_inedition&attribut=Bezeichnung&zwAttribut=QuelleID">Quelle ohne Edition</a></li>
           <li><a href="ohneVerknuepfung?form=quelle&dbForm=quelle&zwischentabelle=handschrift_ueberlieferung&attribut=Bezeichnung&zwAttribut=QuelleID">Quelle ohne Überlieferung</a></li>
           <li><a href="ohneVerknuepfung?form=handschrift&dbForm=handschrift&zwischentabelle=handschrift_ueberlieferung&attribut=Bibliothekssignatur&zwAttribut=HandschriftID">Textzeugen ohne Überlieferung</a></li>
-          <!--li><a href="http://localhost:8080/NeG_final/ohneVerknuepfung.jsp?form=handschrift.jsp&dbForm=handschrift&zwischentabelle=einzelbeleg_textkritik&attribut=Bibliothekssignatur&zwAttribut=HandschriftID">Textkritik ohne Belege</a></li-->
        </ul>
        
        

@@ -1,7 +1,0 @@
-ALTER table handschrift_ueberlieferung add column `EditionID` int(11) NOT NULL default '-1';
-
-ALTER table handschrift_ueberlieferung add column `Bibliotheksheimat` int(11) NOT NULL default '-1';
-
-ALTER TABLE `neg_test`.`datenbank_mapping` MODIFY COLUMN `ZielAttribut` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
-
-UPDATE einzelbeleg set EditionID=-1 where EditionID is null;

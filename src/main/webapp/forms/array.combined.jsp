@@ -287,7 +287,7 @@
 													+ " AND ueberlieferung_edition.ueberlieferungID="
 													+ rs.getInt("ID"));
 									out
-											.println("<tr><td><a href=\"edition.jsp?ID="
+											.println("<tr><td><a href=\"edition?ID="
 													+ rs2
 															.getString("ID")
 													+ "\">"
