@@ -1,11 +1,10 @@
 package de.uni_tuebingen.ub.nppm.db;
 
+import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
-import javax.persistence.TypedQuery;
 import org.hibernate.*;
 import javax.persistence.criteria.*;
-import javax.servlet.http.HttpServletRequest;
 import org.hibernate.query.NativeQuery;
 
 public class DatenbankDB extends AbstractBase {
