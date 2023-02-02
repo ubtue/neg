@@ -1,2 +1,2 @@
-#Add missing translations
-insert into datenbank_texte (Formular, Textfeld, de, gb, fr, la) values("login", "ErfolgreichAusgeloggt", "Erfolgreich Ausgeloggt", "Successfully logged out", "Déconnexion réussie", "Feliciter conclusum est");
+#Update the Column Seite to fit to the new URLs
+UPDATE datenbank_mapping SET Seite = REPLACE(Seite, '.jsp', '')
