@@ -39,7 +39,7 @@
               break;
            }
         }
-        if(empty && defaultValues!=null){
+        if(empty && defaultValues!=null && defaultValues.length > 0){
            rs = st.executeQuery(defaultValues[0].replaceAll("%id%",id));
            next = rs.next();
         }

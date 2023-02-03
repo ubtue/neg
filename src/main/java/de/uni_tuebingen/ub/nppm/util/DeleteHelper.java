@@ -8,14 +8,13 @@ import javax.servlet.jsp.JspWriter;
 
 public class DeleteHelper {
     public static boolean deleteEntity(HttpServletRequest request,HttpServletResponse response,JspWriter out) {
-        boolean ret = false;
         if (request.getParameter("table") == null
             || request.getParameter("ID") == null
             || request.getParameter("returnpage") == null
             || request.getParameter("returnid") == null
         ) {
             //wrong request parameters
-            return ret;
+            return false;
         }else{            
             try {
                 int id = Integer.valueOf(request.getParameter("ID"));
@@ -55,18 +54,18 @@ public class DeleteHelper {
                         break;
                     case "handschrift_ueberlieferung":    
                         EinzelbelegDB.remove(HandschriftUeberlieferung.class,id);
-                        break;
+                        break;                                            
                 }
             } catch (Exception ex) {
-                ret = false;
                 try {
                     //print error message
                     out.println(ex.getLocalizedMessage());
                 } catch (IOException ex1) {
                     ex1.printStackTrace();                    
                 }
+                return false;
             }
         }
-        return ret;
+        return true;
     }
 }

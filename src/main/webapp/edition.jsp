@@ -52,21 +52,6 @@
           <tbody>
             <tr>
               <td width="200">
-                  <% Language.printDatafield(out,session, formular,"Editionnummer");%>
-              </td>
-              <td width="450">
-                <jsp:include page="inc.erzeugeFormular.jsp">
-                  <jsp:param name="ID" value="<%= id %>"/>
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Editionnummer"/>
-                  <jsp:param name="Default" value="<%= id %>"/>
-                </jsp:include>
-              </td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td width="200">
                   <% Language.printDatafield(out,session, formular,"Titel");%>
               </td>
               <td width="450">

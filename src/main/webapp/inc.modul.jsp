@@ -188,7 +188,7 @@
 						"namenkommentar.ID=einzelbeleg_hatnamenkommentar.NamenkommentarID WHERE person.ID=\""
 								+ id + "\"");
 				while (rs.next()  && rs.getString("namenkommentar.PLemma") !=null) {
-					out.println("<a href=\"namenkommentar.jsp?ID="+rs.getString("namenkommentar.ID")+"\">"+format(rs.getString("namenkommentar.PLemma"),"PLemma")+"<br>");
+					out.println("<a href=\"namenkommentar?ID="+rs.getString("namenkommentar.ID")+"\">"+format(rs.getString("namenkommentar.PLemma"),"PLemma")+"<br>");
 				}
 				out.println("</td></tr>");
 			} catch (Exception e) {
@@ -268,7 +268,7 @@
 						out.println("<tr>");
 					else
 						out.println("<tr bgcolor='#AACCDD'>");
-					out.println("<td><a href=\"einzelbeleg.jsp?ID="
+					out.println("<td><a href=\"einzelbeleg?ID="
 							+ rs.getInt("e.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -380,7 +380,7 @@
 						out.println("<tr>");
 					else
 						out.println("<tr bgcolor='#AACCDD'>");
-					out.println("<td><a href=\"einzelbeleg.jsp?ID="
+					out.println("<td><a href=\"einzelbeleg?ID="
 							+ rs.getInt("e.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -508,7 +508,7 @@
 				while (rs.next()) {
 					count++;
 					out.println("<tr>");
-					out.println("<td><a href=\"person.jsp?ID="
+					out.println("<td><a href=\"person?ID="
 							+ rs.getInt("p.ID") + "\">"
 							+ rs.getString("p.Standardname")
 							+ "</a></td>");
@@ -607,7 +607,7 @@
 					while (rs2.next()) {
 						out.println("<tr>");
 						out
-								.println("<td>&nbsp;</td><td><a href=\"handschrift.jsp?ID="
+								.println("<td>&nbsp;</td><td><a href=\"handschrift?ID="
 										+ rs2.getInt("handschrift.ID")
 										+ "\">");
 %>
@@ -706,7 +706,7 @@
 								+ " ORDER BY quelle_inedition.Sigle ASC");
 				while (rs.next()) {
 					out.println("<tr>");
-					out.println("<td><a href=\"quelle.jsp?ID="
+					out.println("<td><a href=\"quelle?ID="
 							+ rs.getInt("quelle.ID") + "\">"
 							+ rs.getString("quelle.Bezeichnung")
 							+ "</a></td>");
@@ -812,7 +812,7 @@
 					while (rs2.next()) {
 						out.println("<tr>");
 						out
-								.println("<td>&nbsp;</td><td><a href=\"handschrift.jsp?ID="
+								.println("<td>&nbsp;</td><td><a href=\"handschrift?ID="
 										+ rs2.getInt("handschrift.ID")
 										+ "\">");
 %>
@@ -1432,7 +1432,7 @@ firstEdition = true;
 								+ " ORDER BY einzelbeleg.VonJahr, einzelbeleg.VonMonat, einzelbeleg.VonTag ASC");
 				while (rs.next()) {
 					out.println("<tr>");
-					out.println("<td><a href=\"einzelbeleg.jsp?ID="
+					out.println("<td><a href=\"einzelbeleg?ID="
 							+ rs.getInt("einzelbeleg.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -1453,7 +1453,7 @@ firstEdition = true;
 					if (rs.getString("person.PKZ") == null)
 						out.println("--");
 					else {
-						out.println("<a href=\"person.jsp?ID="
+						out.println("<a href=\"person?ID="
 								+ rs.getInt("person.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -1657,7 +1657,7 @@ firstEdition = true;
 								+ " ORDER BY einzelbeleg.VonJahr, einzelbeleg.VonMonat, einzelbeleg.VonTag ASC");
 				while (rs.next()) {
 					out.println("<tr>");
-					out.println("<td><a href=\"einzelbeleg.jsp?ID="
+					out.println("<td><a href=\"einzelbeleg?ID="
 							+ rs.getInt("einzelbeleg.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -1678,7 +1678,7 @@ firstEdition = true;
 					if (rs.getString("person.PKZ") == null)
 						out.println("--");
 					else {
-						out.println("<a href=\"person.jsp?ID="
+						out.println("<a href=\"person?ID="
 								+ rs.getInt("person.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">

@@ -534,25 +534,6 @@
 						<jsp:param name="Formular" value="einzelbeleg" />
 						<jsp:param name="Datenfeld" value="Funktion" />
 					</jsp:include>
-					<jsp:include page="inc.erzeugeFormular.jsp">
-						<jsp:param name="ID" value="<%=id%>" />
-						<jsp:param name="Formular" value="einzelbeleg" />
-						<jsp:param name="Datenfeld" value="KommentarEthnie" />
-						<jsp:param name="Visibility" value="hidden" />
-					</jsp:include>
-					<jsp:include page="inc.erzeugeFormular.jsp">
-						<jsp:param name="ID" value="<%=id%>" />
-						<jsp:param name="Formular" value="einzelbeleg" />
-						<jsp:param name="Datenfeld" value="KommentarAreal" />
-						<jsp:param name="Visibility" value="hidden" />
-					</jsp:include>
-					<jsp:include page="inc.erzeugeFormular.jsp">
-						<jsp:param name="ID" value="<%=id%>" />
-						<jsp:param name="Formular" value="einzelbeleg" />
-						<jsp:param name="Datenfeld" value="KommentarVerwandtschaft" />
-						<jsp:param name="Visibility" value="hidden" />
-					</jsp:include>
-
 				</div>
 			</div>
 
