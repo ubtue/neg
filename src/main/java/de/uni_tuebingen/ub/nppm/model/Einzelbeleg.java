@@ -58,7 +58,7 @@ public class Einzelbeleg {
     @Column(name = "UeberlieferungDatierung", length = 255)
     private String ueberlieferungDatierung;
 
-    @Column(name = "Belegform", length = 255)
+    @Column(name = "Belegform", length = 191)
     private String belegform;
 
     @Column(name = "Griechisch", length = 255)
