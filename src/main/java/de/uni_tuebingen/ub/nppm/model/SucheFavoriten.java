@@ -14,7 +14,7 @@ public class SucheFavoriten {
     @Column(name = "Bezeichnung", length = 255)
     private String bezeichnung;
 
-    @Column(name = "SQL", columnDefinition = "TEXT")
+    @Column(name = "SQL", columnDefinition = "MEDIUMTEXT")
     private String sql;
 
     @Column(name = "de_Ueberschriften", length = 255)
