@@ -2,30 +2,33 @@
 ##TABLE bemerkung##
 
 #delete corrupt bemerkung records(bemerkung that isnt associate with anything)
-DELETE FROM bemerkung WHERE NOT EXISTS
- (SELECT * FROM einzelbeleg WHERE EinzelbelegID = einzelbeleg.ID)
- or
- NOT EXISTS
- (SELECT * FROM quelle WHERE QuelleID = quelle.ID)
-  or
- NOT EXISTS
- (SELECT * FROM edition WHERE EditionID = edition.ID)
-   or
- NOT EXISTS
- (SELECT * FROM handschrift WHERE HandschriftID = handschrift.ID)
-   or
- NOT EXISTS
- (SELECT * FROM namenkommentar WHERE NamenkommentarID = namenkommentar.ID)
-   or
- NOT EXISTS
- (SELECT * FROM mgh_lemma WHERE MGHLemmaID = mgh_lemma.ID)
-   or
- NOT EXISTS
- (SELECT * FROM benutzer_gruppe WHERE GruppeID = benutzer_gruppe.ID)
-  or
- NOT EXISTS
- (SELECT * FROM benutzer WHERE BenutzerID = benutzer.ID) 
- ;
+DELETE FROM bemerkung WHERE EinzelbelegID IS NOT NULL AND NOT EXISTS
+ (SELECT * FROM einzelbeleg WHERE bemerkung.EinzelbelegID = einzelbeleg.ID);
+
+DELETE FROM bemerkung WHERE PersonID IS NOT NULL AND NOT EXISTS
+ (SELECT * FROM person WHERE bemerkung.PersonID = person.ID);
+
+DELETE FROM bemerkung WHERE QuelleID IS NOT NULL AND NOT EXISTS
+ (SELECT * FROM quelle WHERE bemerkung.QuelleID = quelle.ID);
+
+DELETE FROM bemerkung WHERE EditionID IS NOT NULL AND NOT EXISTS
+ (SELECT * FROM edition WHERE bemerkung.EditionID = edition.ID);
+
+DELETE FROM bemerkung WHERE HandschriftID IS NOT NULL AND NOT EXISTS
+ (SELECT * FROM handschrift WHERE bemerkung.HandschriftID = handschrift.ID);
+
+DELETE FROM bemerkung WHERE NamenkommentarID IS NOT NULL AND NOT EXISTS
+ (SELECT * FROM namenkommentar WHERE bemerkung.NamenkommentarID = namenkommentar.ID);
+
+DELETE FROM bemerkung WHERE MGHLemmaID IS NOT NULL AND NOT EXISTS
+ (SELECT * FROM mgh_lemma WHERE bemerkung.MGHLemmaID = mgh_lemma.ID);
+
+DELETE FROM bemerkung WHERE GruppeID IS NOT NULL AND NOT EXISTS
+ (SELECT * FROM benutzer_gruppe WHERE bemerkung.GruppeID = benutzer_gruppe.ID);
+
+DELETE FROM bemerkung WHERE BenutzerID IS NOT NULL AND NOT EXISTS
+ (SELECT * FROM benutzer WHERE bemerkung.BenutzerID = benutzer.ID);
+
 
 ##TABLE edition##
 
@@ -66,16 +69,16 @@ DELETE FROM einzelbeleg_textkritik WHERE NOT EXISTS
 # setting corrupt foreign keys GrammatikGeschlechtID to 3
 UPDATE einzelbeleg SET GrammatikGeschlechtID = 3 WHERE NOT EXISTS
  (SELECT * FROM selektion_grammatikgeschlecht WHERE GrammatikGeschlechtID = selektion_grammatikgeschlecht.ID);
-  
+
 # setting corrupt foreign keys LebendVerstorbenID to 2
  UPDATE einzelbeleg SET LebendVerstorbenID = 2 WHERE NOT EXISTS
  (SELECT * FROM selektion_lebendverstorben WHERE LebendVerstorbenID = selektion_lebendverstorben.ID);
- 
+
  # setting corrupt foreign keys EditionID to NULL
  UPDATE einzelbeleg SET EditionID = NULL WHERE NOT EXISTS
  (SELECT * FROM edition WHERE EditionID = edition.ID);
- 
- 
+
+
  #replace missing user with a valid (example for mderntl)
  #TODO create dummy user in live system
 UPDATE einzelbeleg SET LetzteAenderungVon = 145,ErstelltVon=145,GehoertGruppe=4 WHERE NOT EXISTS
