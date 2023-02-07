@@ -31,7 +31,7 @@ Prerequisites:
 - Java >= 1.8.0_77
 - MySQL >= 5.7
   - collation-server = utf8_unicode_ci
-  - character-set-server = utf8
+  - character-set-server = utf8mb4
   - group_concat_max_len = 100000000
   - log_bin_trust_function_creators = 1
   - sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
