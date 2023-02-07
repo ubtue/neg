@@ -1,93 +1,59 @@
-# Migration MyISAM => InnoDB
-#
-# The engine used for new tables is determined by the server default (see "SHOW ENGINES";)
-# (There is no Database-specific setting that needs to be changed).
-#
-# First we must change the engine of all tables,
-# afterwards we are able to introduce foreign keys between them.
-# (This will be done in a separate update file.)
-#
-# Note: Several tables are not included:
-# - DROPPED tables from previous SQL updates
-# - gast... tables, since they are in fact only views (try using "SHOW CREATE TABLE gastquelle;")
-#
-# You can use the following statement to check the storage engine of all tables:
-# - SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'neg';
-ALTER TABLE bemerkung ENGINE = INNODB;
-ALTER TABLE benutzer ENGINE = INNODB;
-ALTER TABLE benutzer_gruppe ENGINE = INNODB;
-ALTER TABLE datenbank_filter ENGINE = INNODB;
-ALTER TABLE datenbank_mapping ENGINE = INNODB;
-ALTER TABLE datenbank_selektion ENGINE = INNODB;
-ALTER TABLE datenbank_sprachen ENGINE = INNODB;
-ALTER TABLE datenbank_texte ENGINE = INNODB;
-ALTER TABLE edition ENGINE = INNODB;
-ALTER TABLE edition_band ENGINE = INNODB;
-ALTER TABLE edition_bestand ENGINE = INNODB;
-ALTER TABLE edition_hateditor ENGINE = INNODB;
-ALTER TABLE einzelbeleg ENGINE = INNODB;
-ALTER TABLE einzelbeleg_hatamtweihe ENGINE = INNODB;
-ALTER TABLE einzelbeleg_hatareal ENGINE = INNODB;
-ALTER TABLE einzelbeleg_hatethnie ENGINE = INNODB;
-ALTER TABLE einzelbeleg_hatfunktion ENGINE = INNODB;
-ALTER TABLE einzelbeleg_hatmghlemma ENGINE = INNODB;
-ALTER TABLE einzelbeleg_hatnamenkommentar ENGINE = INNODB;
-ALTER TABLE einzelbeleg_hatperson ENGINE = INNODB;
-ALTER TABLE einzelbeleg_hatstand ENGINE = INNODB;
-ALTER TABLE einzelbeleg_textkritik ENGINE = INNODB;
-ALTER TABLE handschrift ENGINE = INNODB;
-ALTER TABLE handschrift_ueberlieferung ENGINE = INNODB;
-ALTER TABLE mgh_lemma ENGINE = INNODB;
-ALTER TABLE mgh_lemma_bearbeiter MODIFY Zeitstempel datetime DEFAULT NOW();
-ALTER TABLE mgh_lemma_bearbeiter ENGINE = INNODB;
-ALTER TABLE mgh_lemma_korrektor MODIFY Zeitstempel datetime DEFAULT NOW();
-ALTER TABLE mgh_lemma_korrektor ENGINE = INNODB;
-ALTER TABLE namenkommentar ENGINE = INNODB;
-ALTER TABLE namenkommentar_bearbeiter MODIFY Zeitstempel datetime DEFAULT NOW();
-ALTER TABLE namenkommentar_bearbeiter ENGINE = INNODB;
-ALTER TABLE namenkommentar_korrektor MODIFY Zeitstempel datetime DEFAULT NOW();
-ALTER TABLE namenkommentar_korrektor ENGINE = INNODB;
-ALTER TABLE person ENGINE = INNODB;
-ALTER TABLE person_hatamtstandweihe ENGINE = INNODB;
-ALTER TABLE person_hatareal ENGINE = INNODB;
-ALTER TABLE person_hatethnie ENGINE = INNODB;
-ALTER TABLE person_hatstand ENGINE = INNODB;
-ALTER TABLE person_quiet ENGINE = INNODB;
-ALTER TABLE person_variante ENGINE = INNODB;
-ALTER TABLE person_verwandtmit ENGINE = INNODB;
-ALTER TABLE quelle ENGINE = INNODB;
-ALTER TABLE quelle_inedition ENGINE = INNODB;
-ALTER TABLE selektion_amtstandweihe ENGINE = INNODB;
-ALTER TABLE selektion_amtweihe ENGINE = INNODB;
-ALTER TABLE selektion_areal ENGINE = INNODB;
-ALTER TABLE selektion_autor ENGINE = INNODB;
-ALTER TABLE selektion_bearbeitungsstatus ENGINE = INNODB;
-ALTER TABLE selektion_bewertung ENGINE = INNODB;
-ALTER TABLE selektion_bkz ENGINE = INNODB;
-ALTER TABLE selektion_datgenauigkeit ENGINE = INNODB;
-ALTER TABLE selektion_dmghband ENGINE = INNODB;
-ALTER TABLE selektion_echtheit ENGINE = INNODB;
-ALTER TABLE selektion_editor ENGINE = INNODB;
-ALTER TABLE selektion_ethnie ENGINE = INNODB;
-ALTER TABLE selektion_ethnienerhalt ENGINE = INNODB;
-ALTER TABLE selektion_funktion ENGINE = INNODB;
-ALTER TABLE selektion_geschlecht ENGINE = INNODB;
-ALTER TABLE selektion_grammatikgeschlecht ENGINE = INNODB;
-ALTER TABLE selektion_janein ENGINE = INNODB;
-ALTER TABLE selektion_kasus ENGINE = INNODB;
-ALTER TABLE selektion_lebendverstorben ENGINE = INNODB;
-ALTER TABLE selektion_ort ENGINE = INNODB;
-ALTER TABLE selektion_quellengattung ENGINE = INNODB;
-ALTER TABLE selektion_reihe ENGINE = INNODB;
-ALTER TABLE selektion_sammelband ENGINE = INNODB;
-ALTER TABLE selektion_stand ENGINE = INNODB;
-ALTER TABLE selektion_urkundeausstellerempfaenger ENGINE = INNODB;
-ALTER TABLE selektion_verwandtschaftsgrad ENGINE = INNODB;
-ALTER TABLE suche_favoriten ENGINE = INNODB;
-ALTER TABLE ueberlieferung_edition ENGINE = INNODB;
-ALTER TABLE urkunde ENGINE = INNODB;
-ALTER TABLE urkunde_betreff ENGINE = INNODB;
-ALTER TABLE urkunde_dorsalnotiz ENGINE = INNODB;
-ALTER TABLE urkunde_hataussteller ENGINE = INNODB;
-ALTER TABLE urkunde_hatempfaenger ENGINE = INNODB;
+# Cleanup DB values which are preventing FOREIGN KEYs from being introduced.
 
+# 1) relational n:m-tables where one of the foreign keys is either NULL or invalid
+DELETE FROM quelle_inedition WHERE EditionID NOT IN (SELECT ID FROM edition); /* 7/2974 ~0,24% */
+DELETE FROM einzelbeleg_hatperson WHERE EinzelbelegID NOT IN (SELECT ID FROM einzelbeleg); /* 2/59920 ~0,00% */
+DELETE FROM einzelbeleg_hatstand WHERE EinzelbelegID NOT IN (SELECT ID FROM einzelbeleg); /* 2/8443 ~0,02% */
+DELETE FROM handschrift_ueberlieferung WHERE HandschriftID NOT IN (SELECT ID FROM handschrift); /* 1/6069 ~0,02% */
+DELETE FROM ueberlieferung_edition WHERE UeberlieferungID NOT IN (SELECT ID FROM handschrift_ueberlieferung); /* 99/6866 ~1,44% */
+DELETE FROM einzelbeleg_hatnamenkommentar WHERE NamenkommentarID NOT IN (SELECT ID FROM namenkommentar); /* 16/60756 ~0,03% */
+DELETE FROM einzelbeleg_hatperson WHERE PersonID NOT IN (SELECT ID FROM person); /* 41/59920 ~0,07% */
+DELETE FROM person_verwandtmit WHERE PersonIDzu NOT IN (SELECT ID FROM person); /* 2/34179 ~0,01% */
+DELETE FROM urkunde_betreff WHERE UrkundeID NOT IN (SELECT ID FROM urkunde); /* 3/1648 ~0,01% */
+DELETE FROM urkunde_dorsalnotiz WHERE UrkundeID NOT IN (SELECT ID FROM urkunde); /* 3/406 */
+DELETE FROM urkunde_hataussteller WHERE UrkundeID NOT IN (SELECT ID FROM urkunde); /* 3/1697 */
+DELETE FROM urkunde_hatempfaenger WHERE UrkundeID NOT IN (SELECT ID FROM urkunde); /* 2/1632 */
+DELETE FROM person_hatareal WHERE ArealID NOT IN (SELECT ID FROM selektion_areal); /* 1/18159 ~0,01% */
+DELETE FROM edition_hateditor WHERE EditionID = 0; /* 1/704 ~0,14% */
+# DOUBLE CHECK!!!
+DELETE FROM einzelbeleg_hatamtweihe WHERE AmtWeiheID NOT IN (SELECT ID FROM selektion_amtweihe); /* 1885/23305 ~8,09%. Affects 10 values of AmtWeiheID that do not exist anymore in selektion_amtweihe. */
+DELETE FROM einzelbeleg_hatfunktion WHERE NOT EXISTS (SELECT * FROM einzelbeleg WHERE EinzelbelegID = einzelbeleg.ID) OR NOT EXISTS (SELECT * FROM selektion_funktion WHERE FunktionID = selektion_funktion.ID);
+DELETE FROM einzelbeleg_hatstand WHERE StandID NOT IN (SELECT ID FROM selektion_stand); /* 338/8443 ~4%. Affects 25 values of StandID that do not exist anymore in selektion_stand. */
+DELETE FROM einzelbeleg_textkritik WHERE NOT EXISTS (SELECT * FROM einzelbeleg WHERE EinzelbelegID = einzelbeleg.ID) OR NOT EXISTS (SELECT * FROM handschrift WHERE HandschriftID = handschrift.ID) OR NOT EXISTS (SELECT * FROM edition WHERE EditionID = edition.ID);
+DELETE FROM namenkommentar_bearbeiter WHERE NOT EXISTS (SELECT * FROM namenkommentar WHERE NamenkommentarID = namenkommentar.ID);
+DELETE FROM person_hatstand WHERE StandID NOT IN (SELECT ID FROM selektion_stand); /* 1720/12141 ~14,17% Affects 3 values of StandID that do not exist anymore in selektion_stand. */
+DELETE FROM person_hatamtstandweihe WHERE NOT EXISTS (SELECT * FROM person WHERE PersonID = person.ID) OR NOT EXISTS (SELECT * FROM selektion_amtweihe WHERE AmtWeiheID = selektion_amtweihe.ID);
+
+# 2) 1:n columns with invalid values
+DELETE FROM einzelbeleg WHERE BearbeitungsstatusID IS NULL; /* 1/70668 ~0,00% => seems like a dummy value, just delete instead of update (selektion_bearbeitungsstatus) */
+UPDATE einzelbeleg SET KasusID = -1 WHERE KasusID IS NULL; /* 316/70668 ~0,45% => -1 is "-", 1 would be "?" (selektion_kasus)*/
+UPDATE einzelbeleg SET KasusID = -1 WHERE KasusID = 0; /* 467/70668 ~0,45% => -1 is "-", 1 would be "?" (selektion_kasus)*/
+
+# DOUBLE CHECK!!!
+UPDATE person_hatethnie SET EthnienerhaltID = -1 WHERE EthnienerhaltID = 5; /* 12310/13353 ~92,19%, 5 doesnt exist, -1 is '--', 4 would be '?' (selektion_hatethnie) */
+UPDATE person SET Geschlecht = -1 WHERE Geschlecht IS NULL; /* 6844/30413 ~22,50% => -1 would be "--", 3 would be '?' (selektion_geschlecht) */
+UPDATE person SET Fiktiv = -1 WHERE Fiktiv IS NULL; /* 2645/30413 ~8,70% => -1 would be "--",  2 would be '?' (selektion_janein) */
+
+UPDATE edition SET BearbeitungsstatusID = 2 WHERE NOT EXISTS (SELECT * FROM selektion_bearbeitungsstatus WHERE BearbeitungsstatusID = selektion_bearbeitungsstatus.ID);
+UPDATE edition SET ReiheID = -1 WHERE NOT EXISTS (SELECT * FROM selektion_reihe WHERE ReiheID = selektion_reihe.ID);
+UPDATE einzelbeleg SET GrammatikGeschlechtID = 3 WHERE NOT EXISTS (SELECT * FROM selektion_grammatikgeschlecht WHERE GrammatikGeschlechtID = selektion_grammatikgeschlecht.ID);
+UPDATE einzelbeleg SET LebendVerstorbenID = 2 WHERE NOT EXISTS (SELECT * FROM selektion_lebendverstorben WHERE LebendVerstorbenID = selektion_lebendverstorben.ID);
+UPDATE einzelbeleg SET EditionID = NULL WHERE NOT EXISTS (SELECT * FROM edition WHERE EditionID = edition.ID);
+UPDATE mgh_lemma SET BearbeitungsstatusID = 2 WHERE NOT EXISTS (SELECT * FROM selektion_bearbeitungsstatus WHERE BearbeitungsstatusID = selektion_bearbeitungsstatus.ID );
+UPDATE namenkommentar SET BearbeitungsstatusID = 2 WHERE NOT EXISTS (SELECT * FROM selektion_bearbeitungsstatus WHERE BearbeitungsstatusID = selektion_bearbeitungsstatus.ID);
+
+# replace missing user with a valid (example for mderntl)
+# TODO create dummy user in live system
+UPDATE einzelbeleg SET LetzteAenderungVon = 145,ErstelltVon=145,GehoertGruppe=4 WHERE NOT EXISTS (SELECT * FROM benutzer WHERE LetzteAenderungVon = benutzer.ID ) OR NOT EXISTS (SELECT * FROM benutzer WHERE ErstelltVon = benutzer.ID ) OR NOT EXISTS (SELECT * FROM benutzer WHERE GehoertGruppe = benutzer.ID);
+
+DELETE FROM bemerkung WHERE EinzelbelegID IS NOT NULL AND NOT EXISTS (SELECT * FROM einzelbeleg WHERE bemerkung.EinzelbelegID = einzelbeleg.ID);
+DELETE FROM bemerkung WHERE PersonID IS NOT NULL AND NOT EXISTS (SELECT * FROM person WHERE bemerkung.PersonID = person.ID);
+DELETE FROM bemerkung WHERE QuelleID IS NOT NULL AND NOT EXISTS (SELECT * FROM quelle WHERE bemerkung.QuelleID = quelle.ID);
+DELETE FROM bemerkung WHERE EditionID IS NOT NULL AND NOT EXISTS (SELECT * FROM edition WHERE bemerkung.EditionID = edition.ID);
+DELETE FROM bemerkung WHERE HandschriftID IS NOT NULL AND NOT EXISTS (SELECT * FROM handschrift WHERE bemerkung.HandschriftID = handschrift.ID);
+DELETE FROM bemerkung WHERE NamenkommentarID IS NOT NULL AND NOT EXISTS (SELECT * FROM namenkommentar WHERE bemerkung.NamenkommentarID = namenkommentar.ID);
+DELETE FROM bemerkung WHERE MGHLemmaID IS NOT NULL AND NOT EXISTS (SELECT * FROM mgh_lemma WHERE bemerkung.MGHLemmaID = mgh_lemma.ID);
+DELETE FROM bemerkung WHERE GruppeID IS NOT NULL AND NOT EXISTS (SELECT * FROM benutzer_gruppe WHERE bemerkung.GruppeID = benutzer_gruppe.ID);
+DELETE FROM bemerkung WHERE BenutzerID IS NOT NULL AND NOT EXISTS (SELECT * FROM benutzer WHERE bemerkung.BenutzerID = benutzer.ID);
+
+DELETE FROM urkunde WHERE NOT EXISTS (SELECT * FROM quelle WHERE QuelleID = quelle.ID);
