@@ -78,7 +78,6 @@ ALTER TABLE selektion_quellengattung CONVERT TO CHARACTER SET utf8mb4 COLLATE ut
 ALTER TABLE selektion_reihe CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE selektion_sammelband CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE selektion_stand CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; 
-ALTER TABLE selektion_sw_sprachherkunft CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE selektion_urkundeausstellerempfaenger CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE selektion_verwandtschaftsgrad CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE suche_favoriten CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; 
