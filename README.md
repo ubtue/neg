@@ -45,6 +45,13 @@ For servers (ZDV):
     - Make sure you change the db user passwords to something safe.
     - if you want to install neg-dmp on a separate machine and access the mysql db in this instance,
       you also have to change the host for the user and prevent it to be bound to localhost (e.g. disable bind-address and mysqlx-bind-address in mysqld.cnf).
+    - [client]
+        default-character-set = utf8mb4
+      [mysqld]
+        character-set-server = utf8mb4
+        collation-server = utf8mb4_unicode_ci
+      [mysql]
+        default-character-set = utf8mb4
 - Tomcat
     - if tomcat installation fails, contact ZDV admin (workaround for default group 100).
     - change tomcat ports to 80+443
