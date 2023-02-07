@@ -15,7 +15,7 @@ public class Einzelbeleg {
     @Column(name = "Belegnummer", length = 10)
     private String belegnummer;
 
-    @Column(name = "Kontext", columnDefinition = "TEXT")
+    @Column(name = "Kontext", columnDefinition = "MEDIUMTEXT")
     private String kontext;
 
     @OneToOne(targetEntity = SelektionGeschlecht.class)
@@ -58,7 +58,7 @@ public class Einzelbeleg {
     @Column(name = "UeberlieferungDatierung", length = 255)
     private String ueberlieferungDatierung;
 
-    @Column(name = "Belegform", length = 255)
+    @Column(name = "Belegform", length = 191)
     private String belegform;
 
     @Column(name = "Griechisch", length = 255)
@@ -75,23 +75,23 @@ public class Einzelbeleg {
     @JoinColumn(name = "GrammatikGeschlechtID", referencedColumnName = "ID")
     private SelektionGrammatikgeschlecht grammatikGeschlecht;
 
-    @Column(name = "ASWQuellenzitat", columnDefinition = "TEXT")
+    @Column(name = "ASWQuellenzitat", columnDefinition = "MEDIUMTEXT")
     private String aswQuellenzitat;
 
-    @Column(name = "Bemerkung", columnDefinition = "TEXT")
+    @Column(name = "Bemerkung", columnDefinition = "MEDIUMTEXT")
     private String bemerkung;
 
     @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
 
-    @Column(name = "KommentarEthnie", columnDefinition = "TEXT")
+    @Column(name = "KommentarEthnie", columnDefinition = "MEDIUMTEXT")
     private String kommentarEthnie;
 
-    @Column(name = "KommentarAreal", columnDefinition = "TEXT")
+    @Column(name = "KommentarAreal", columnDefinition = "MEDIUMTEXT")
     private String kommentarAreal;
 
-    @Column(name = "KommentarVerwandtschaft", columnDefinition = "TEXT")
+    @Column(name = "KommentarVerwandtschaft", columnDefinition = "MEDIUMTEXT")
     private String kommentarVerwandtschaft;
 
     @Column(name = "Eindeutig", columnDefinition = "BIT DEFAULT NULL")
@@ -233,7 +233,7 @@ public class Einzelbeleg {
     @Column(name = "QuelleVonJahrhundert", length = 5)
     private String quelleVonJahrhundert;
 
-    @Column(name = "KommentarPerson", columnDefinition = "TEXT")
+    @Column(name = "KommentarPerson", columnDefinition = "MEDIUMTEXT")
     private String kommentarPerson;
 
     @Column(name = "MGHLemmaKorrigiert", columnDefinition = "BIT DEFAULT NULL")

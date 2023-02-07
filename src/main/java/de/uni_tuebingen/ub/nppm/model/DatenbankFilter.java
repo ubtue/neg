@@ -11,10 +11,10 @@ public class DatenbankFilter {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "Bezeichnung", length = 255)
+    @Column(name = "Bezeichnung", length = 191)
     private String bezeichnung;
 
-    @Column(name = "Formular", length = 255)
+    @Column(name = "Formular", length = 191)
     private String formular;
 
     @Column(name = "SQLString", length = 255)
