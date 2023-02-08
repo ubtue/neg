@@ -18,6 +18,7 @@
 #   - FOREIGN KEY columns on to selektion_tables:
 #     - If they are in a n:m table, they should be NOT NULL without default
 #     - If they are in a column, they should be NOT NULL with default -1 or the corresponding default value matching "-" or "--" (NOT "?"!)
+#   - So far we will NOT set any key to use ON DELETE CASCADE or ON DELETE UPDATE. This might be done at a later point if needed.
 ALTER TABLE bemerkung MODIFY COLUMN ID INT UNSIGNED AUTO_INCREMENT;
 
 ALTER TABLE benutzer MODIFY COLUMN ID INT UNSIGNED AUTO_INCREMENT;
@@ -107,7 +108,8 @@ ALTER TABLE edition_hateditor MODIFY COLUMN EditionID INT NOT NULL;
 ALTER TABLE edition_hateditor ADD CONSTRAINT edition_hateditor_EditionID FOREIGN KEY (EditionID) REFERENCES edition(ID);
 ALTER TABLE einzelbeleg MODIFY COLUMN EditionID INT DEFAULT NULL;
 ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_EditionID FOREIGN KEY (EditionID) REFERENCES edition(ID);
-ALTER TABLE einzelbeleg_textkritik MODIFY COLUMN EditionID INT NOT NULL;
+ALTER TABLE einzelbeleg_textkritik MODIFY COLUMN EditionID INT DEFAULT NULL;
+UPDATE einzelbeleg_textkritik SET EditionID = NULL WHERE EditionID = -1 OR EditionID = 0;
 ALTER TABLE einzelbeleg_textkritik ADD CONSTRAINT einzelbeleg_textkritik_EditionID FOREIGN KEY (EditionID) REFERENCES edition(ID);
 ALTER TABLE handschrift_ueberlieferung MODIFY COLUMN EditionID INT DEFAULT NULL;
 UPDATE handschrift_ueberlieferung SET EditionID = NULL WHERE EditionID = -1;
@@ -172,6 +174,7 @@ ALTER TABLE bemerkung ADD CONSTRAINT bemerkung_HandschriftID FOREIGN KEY (Handsc
 ALTER TABLE einzelbeleg MODIFY COLUMN HandschriftID INT UNSIGNED DEFAULT NULL;
 ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_HandschriftID FOREIGN KEY (HandschriftID) REFERENCES handschrift(ID);
 ALTER TABLE einzelbeleg_textkritik MODIFY COLUMN HandschriftID INT UNSIGNED DEFAULT NULL;
+UPDATE einzelbeleg_textkritik SET HandschriftID=NULL WHERE HandschriftID=0 OR HandschriftID = -1;
 ALTER TABLE einzelbeleg_textkritik ADD CONSTRAINT einzelbeleg_textkritik_HandschriftID FOREIGN KEY (HandschriftID) REFERENCES handschrift(ID);
 ALTER TABLE handschrift_ueberlieferung MODIFY COLUMN HandschriftID INT UNSIGNED DEFAULT NULL;
 ALTER TABLE handschrift_ueberlieferung ADD CONSTRAINT handschrift_ueberlieferung_HandschriftID FOREIGN KEY (HandschriftID) REFERENCES handschrift(ID);
