@@ -73,3 +73,4 @@ ALTER TABLE urkunde_betreff CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_uni
 ALTER TABLE urkunde_dorsalnotiz CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE urkunde_hataussteller CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE urkunde_hatempfaenger CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
