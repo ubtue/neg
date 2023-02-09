@@ -125,6 +125,10 @@ public class AbstractBase {
 
             configuration.addAnnotatedClass(Bemerkung.class);
 
+            configuration.addAnnotatedClass(TinyMCE_Content.class);
+
+
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
@@ -157,10 +161,10 @@ public class AbstractBase {
     public static List<Object[]> getListNative(String sql) throws Exception {
         Session session = getSession();
         NativeQuery sqlQuery = session.createSQLQuery(sql);
-        List<Object[]> rows = sqlQuery.getResultList();        
+        List<Object[]> rows = sqlQuery.getResultList();
         return rows;
     }
-    
+
     protected static void insertOrUpdate(String sql) throws Exception {
         Session session = getSession();
         session.getTransaction().begin();
@@ -185,7 +189,7 @@ public class AbstractBase {
         // to be able to access the result columns by key.
         return getMappedList(getSession().createNativeQuery(query));
     }
-    
+
     public static int getLinecount(String tablesString, String conditionsString) throws Exception {
         String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
         Session session = getSession();

@@ -98,10 +98,7 @@
                 <div style="margin-right: 10px;" method="post">
                     <input type="submit" name="speichern" value="speichern"/>
                  </div>
-
-                <form action="img?pictureAccess=1" method="post">
-                  <input type="submit" name="pictureAccess" value="Bild Verwaltung"/>
-                </form>
+                 <a href="img?pictureAccess=1">Bild Verwaltung</a>
             </div>
         </form>
     </body>
