@@ -58,7 +58,7 @@
                                 <input type="text" name="query" placeholder="Suchen">
                             </FORM>
                         </div>
-                        <a id="erweiterte_suche_button" class="${param.current eq 'erweiterte_suche' ? 'erweiterte_suche_active' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche.jsp">
+                        <a id="erweiterte_suche_button" class="${param.current eq 'erweiterte_suche' ? 'erweiterte_suche_active' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche">
                             <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                 <jsp:param name="Formular" value="gast_freie_suche"/>
                                 <jsp:param name="Textfeld" value="Titel"/>
