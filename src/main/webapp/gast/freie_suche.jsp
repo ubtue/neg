@@ -119,7 +119,7 @@ function CheckAll(index, check, praefix) {
   <BODY>
 <!--onLoad="javascript:onoff('tab2','tab1'); onoff('tab1','tab2');"-->
 
-      <FORM method="POST" action="einfaches_ergebnis.jsp">
+      <FORM method="POST" action="einfaches_ergebnis">
     <jsp:include page="layout/header.inc.jsp">
         <jsp:param name="current" value="erweiterte_suche" />
     </jsp:include>
@@ -149,7 +149,7 @@ function CheckAll(index, check, praefix) {
         </ul>
         <div class="clear"></div>
 
-    <FORM method="POST" action="suchergebnis.jsp">
+    <FORM method="POST" action="suchergebnis">
       <input type="hidden" name="form" value="freie_suche">
 
 <!-- ##### SUCHFELDER ##### -->
