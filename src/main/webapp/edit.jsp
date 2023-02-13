@@ -1,11 +1,16 @@
+<%--
+    Document   : gismo
+    Created on : 30.01.2023, 09:45:22
+    Author     : root
+--%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@page import="java.io.File"%>
-<%@page import="de.uni_tuebingen.ub.nppm.util.AuthHelper"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.net.URL"%>
 <%@page import="java.io.*"%>
 <%@page import="java.nio.*"%>
-<%@ include file="../configuration.jsp" %>
+<%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
 

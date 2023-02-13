@@ -1,149 +1,85 @@
-package de.uni_tuebingen.ub.nppm.db;
+package de.uni_tuebingen.ub.nppm.model;
 
-import de.uni_tuebingen.ub.nppm.model.TinyMCE_Content;
-import de.uni_tuebingen.ub.nppm.model.TinyMCE_Content_;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import org.hibernate.Session;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import org.hibernate.annotations.Type;
 
-public class TinyMCE_ContentDB extends AbstractBase {
+@Entity
+@Table(name = "tinyMce_test")
+public class TinyMCE_Content {
 
-    public static void putToDatabase(TinyMCE_Content imageContent) throws Exception {
-        Session session = getSession();
-        session.beginTransaction();
-        session.save(imageContent);
-        session.getTransaction().commit();
-        session.close();
-    }//end function
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "ID")
+    int ID;
 
-     public static void saveFile(String path, String name, String content_Type) throws Exception {
-        Session session = getSession();
-        byte[] photoBytes = readBytesFromFile(path);
-        TinyMCE_Content myImage = new TinyMCE_Content(name, content_Type, photoBytes);
-        putToDatabase(myImage);
-    }//end function
+    @Column(name = "name", length = 255)
+    String name;
 
-    private static byte[] readBytesFromFile(String filePath) throws Exception {
-        File inputFile = new File(filePath);
-        FileInputStream inputStream = new FileInputStream(inputFile);
-        byte[] fileBytes = new byte[(int) inputFile.length()];
-        inputStream.read(fileBytes);
-        inputStream.close();
-        return fileBytes;
-    }//end function
+    @Column(name = "contentType", length = 55)
+    String content_Type;
 
-    public static TinyMCE_Content getById(int id) throws Exception {
-        Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root myImage = criteria.from(TinyMCE_Content.class);
-        criteria.select(myImage);
-        criteria.where(builder.equal(myImage.get(TinyMCE_Content_.ID), id));
-        TinyMCE_Content content = session.createQuery(criteria).getSingleResult();
+
+    @Lob
+    @Type(type="org.hibernate.type.ImageType")
+    @Column(name="content", nullable=false, columnDefinition="blob")
+    private byte[] content;
+
+    //Constructors
+
+    public TinyMCE_Content() {
+    }
+
+    public TinyMCE_Content(String name, String content_Type, byte[] content) {
+        this.name = name;
+        this.content_Type = content_Type;
+        this.content = content;
+    }
+
+    //Getters & Setters
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getContent_Type() {
+        return content_Type;
+    }
+
+    public void setContent_Type(String content_Type) {
+        this.content_Type = content_Type;
+    }
+
+    public byte[] getContent() {
         return content;
-    }//end function
+    }
 
-    public static TinyMCE_Content getByName(String name) throws Exception {
-        Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root myImage = criteria.from(TinyMCE_Content.class);
-        criteria.select(myImage);
-        criteria.where(builder.equal(myImage.get(TinyMCE_Content_.NAME), name));
-        TinyMCE_Content content = session.createQuery(criteria).getSingleResult();
-        return content;
-    }//end function
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
 
-    public static List<TinyMCE_Content> getList() throws Exception {
-        Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root myImage = criteria.from(TinyMCE_Content.class);
-        criteria.getOrderList();
-        List<TinyMCE_Content> images = (List<TinyMCE_Content>) session.createQuery(criteria).list();
-        return images;
-    }//end function
+    //To-String
 
-    // unused function for future use ...
-    public static void copyPicturesFromDatabaseTableToTempFolder(String outputDirectory) throws Exception {
-        Session session = getSession();
-        List<TinyMCE_Content> pictures = TinyMCE_ContentDB.getList();
-        for (TinyMCE_Content ic : pictures) {
-            String name = ic.getName();
-            String filePathToSave = outputDirectory + name;
-            byte[] photoBytes = ic.getContent();
-            saveBytesToFile(filePathToSave, photoBytes);
-        }
-    }//end function
+    @Override
+    public String toString() {
+        return "ImageContent{" + "ID=" + ID + ", name=" + name + ", content_Type=" + content_Type + ", content=" + content + '}';
+    }
 
-
-
-
-    public static void copyHTMLFromDatabaseTableToTempFolder(String outputDirectory, String name) throws Exception {
-        Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root myImage = criteria.from(TinyMCE_Content.class);
-        criteria.select(myImage);
-        criteria.where(builder.equal(myImage.get(TinyMCE_Content_.NAME), name));
-        TinyMCE_Content content = session.createQuery(criteria).getSingleResult();
-         String filePathToSave = outputDirectory + name;
-            byte[] HtmlBytes = content.getContent();
-            saveBytesToFile(filePathToSave, HtmlBytes);
-
-    }//end function
-
-    private static void saveBytesToFile(String filePath, byte[] fileBytes) throws Exception {
-        FileOutputStream outputStream = new FileOutputStream(filePath);
-        outputStream.write(fileBytes);
-        outputStream.close();
-    }//end function
-
-
-    public static void deleteByName(String name) throws Exception {
-        try {
-            Session session = getSession();
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-            Root myImage = criteria.from(TinyMCE_Content.class);
-            criteria.select(myImage);
-            criteria.where(builder.equal(myImage.get(TinyMCE_Content_.NAME), name));
-            TinyMCE_Content image = session.createQuery(criteria).getSingleResult();
-            session.beginTransaction();
-            session.delete(image);
-            session.getTransaction().commit();
-
-        } catch (Exception e) {
-            // out.println("Invaders from Mars: " + e.toString());
-        }
-    }//end function
-
-
-    //Search if name exists in database
-    public static boolean searchName(String name) throws Exception
-    {
-        boolean available = false;
-        Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root picture = criteria.from(TinyMCE_Content.class);
-        criteria.select(picture);
-        criteria.where(builder.equal(picture.get(TinyMCE_Content_.NAME), name));
-        List<TinyMCE_Content> pictures =  (List<TinyMCE_Content>) session.createQuery(criteria).list();
-        if(!pictures.isEmpty())
-        {
-            available = true;
-        }
-        else
-        {
-            available = false;
-        }
-        return available;
-   }//end fuction
 }//end Class
