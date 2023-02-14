@@ -9,36 +9,11 @@
 <%@ include file="../functions.jsp" %>
 
 <%
-  Language.setLanguage(request);
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0) {
-                          session.setAttribute("filter", 0);
-        session.setAttribute("filterParameter", "");
-
     int id = -1;
     int filter = 0;
     String formular = "freie_suche";
 %>
-
-<HTML>
-  <HEAD>
-    <TITLE>Nomen et Gens -
-      <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="freie_suche"/>
-        <jsp:param name="Textfeld" value="Titel"/>
-      </jsp:include>
-    </TITLE>
-    <link rel="icon" href="layout/images/nomen_et_gens_icon.gif" type="image/gif">
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <link href="layout/fonts/open-sans.css" rel="stylesheet" type="text/css">
-    <link href="layout/fonts/alegreya-sans-sc.css" rel="stylesheet" type="text/css">
-    <link href="../layout/jquery-ui-1.10.3.css" rel="stylesheet" type="text/css">
-    <script src="../javascript/funktionen.js" type="text/javascript"></script>
-    <script src="../layout/BubbleTooltips.js" type="text/javascript" ></script> <!--Pfad zur js-Datei-->
-    <script src="../javascript/jquery-1.11.1.min.js" type="text/javascript"></script>
-    <script src="../javascript/jquery-ui-1.10.3.js" type="text/javascript"></script>
-    <script src="../javascript/javascript.js" type="text/javascript"></script>
-
-
+<div>
 <script type="text/javascript">
 function CheckAll(index, check, praefix) {
   for(i=0; i< document.forms[index].elements.length; i++){
@@ -114,16 +89,9 @@ function CheckAll(index, check, praefix) {
 
     <noscript></noscript>
 
-  </HEAD>
+  </div>
 
-  <BODY>
-<!--onLoad="javascript:onoff('tab2','tab1'); onoff('tab1','tab2');"-->
-
-      <FORM method="POST" action="einfaches_ergebnis">
-    <jsp:include page="layout/header.inc.jsp">
-        <jsp:param name="current" value="erweiterte_suche" />
-    </jsp:include>
-</FORM>
+  <div>
 
 <div id="content">
 <div id="erweiterte-suche">
@@ -775,31 +743,10 @@ function CheckAll(index, check, praefix) {
         </div-->
       </div>
 </div>
-<jsp:include page="layout/footer.inc.jsp" />
     </FORM>
   </div>
           <script type="text/javascript">
       enableTooltips();
     </script>
 
-  </BODY>
-</HTML>
-<%
-  }
-  else {
-  %>
-    <p>
-      <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-      </jsp:include>
-    </p>
-    <a href="index.jsp">
-      <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a>
-  <%
-  }
-%>
+  </div>
