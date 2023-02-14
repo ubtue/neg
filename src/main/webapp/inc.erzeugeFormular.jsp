@@ -48,6 +48,9 @@
   boolean array = false;
 
   String sprache = (String)session.getAttribute("Sprache");
+  //set standard language
+  if(sprache == null)
+    sprache = "de"; 
   String beschriftung = "";
   String platzhalter = "";
   String tooltip = "";
