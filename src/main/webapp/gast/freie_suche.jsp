@@ -97,22 +97,13 @@ function CheckAll(index, check, praefix) {
 <div id="erweiterte-suche">
         <ul id="tabs">
             <li><a data-id="tab-1" class="tab-1 current-search search-button" href="#">
-                  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab1"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out, session, formular, "Tab1"); %>
              </a></li>
             <li><a data-id="tab-2" class="tab-2 search-button" href="#">
-                  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab2"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out, session, formular, "Tab2"); %>
             </a></li>
             <li><a data-id="tab-3" class="tab-3 search-button" href="#">
-                  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab3"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out, session, formular, "Tab3"); %>
             </a></li>
         </ul>
         <div class="clear"></div>
@@ -123,10 +114,7 @@ function CheckAll(index, check, praefix) {
 <!-- ##### SUCHFELDER ##### -->
         <div id="tab-1">
           <span class="truncate-hint">
-          	<jsp:include page="../inc.erzeugeBeschriftung.jsp">
-            	<jsp:param name="Formular" value="freie_suche"/>
-                <jsp:param name="Textfeld" value="TruncateHint"/>
-			</jsp:include>
+              <% Language.printTextfield(out, session, formular, "TruncateHint"); %>
           </span>
           <span class="move"> Schritt 1 von 3 </span>
           <div class="clear"> </div>
@@ -134,10 +122,7 @@ function CheckAll(index, check, praefix) {
               <tbody>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="NeGID"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "NeGID"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -150,10 +135,7 @@ function CheckAll(index, check, praefix) {
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Belegform"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Belegform"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -164,10 +146,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Kontext"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Kontext"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -178,16 +157,15 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Namenlemma"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Namenlemma"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="gast_freie_suche"/>
                       <jsp:param name="Datenfeld" value="Namenkommentar"/>
-                    </jsp:include>/<jsp:include page="../inc.erzeugeFormular.jsp">
+                    </jsp:include>/
+                    
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="gast_freie_suche"/>
                       <jsp:param name="Datenfeld" value="Namenkommentar2"/>
                       <jsp:param name="Sorted" value="yes"/>
@@ -195,10 +173,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="MGHLemma"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "MGHLemma"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -210,10 +185,7 @@ function CheckAll(index, check, praefix) {
                  <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Personenname"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Personenname"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -224,10 +196,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Geschlecht"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Geschlecht"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -238,10 +207,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="PersonZeitraum"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "PersonZeitraum"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -253,10 +219,7 @@ function CheckAll(index, check, praefix) {
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="AmtWeihePerson"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "AmtWeihePerson"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -267,10 +230,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="StandPerson"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "StandPerson"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -281,10 +241,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="EthniePerson"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "EthniePerson"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -295,10 +252,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="AmtWeiheEinzelbeleg"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "AmtWeiheEinzelbeleg"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -309,10 +263,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="EthnieEinzelbeleg"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "EthnieEinzelbeleg"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -324,10 +275,7 @@ function CheckAll(index, check, praefix) {
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Quelle"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Quelle"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -341,10 +289,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="QuelleZeitraum"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "QuelleZeitraum"); %>
                   </th>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -367,22 +312,17 @@ function CheckAll(index, check, praefix) {
             <table>
               <tbody>
                 <tr><td colspan="2"><h3>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="gast_freie_suche"/>
-                      <jsp:param name="Textfeld" value="ZumNamen"/>
-                    </jsp:include></h3></td></tr>
+                        <% Language.printTextfield(out, session, "gast_freie_suche", "ZumNamen"); %>
+                        </h3></td></tr>
                 <tr>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Ausgabe_Namenlemma"/>
-                    </jsp:include>
+                    </jsp:include>                      
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Namenlemma"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Namenlemma"); %>
                   </td>
                 </tr>
                                 <tr>
@@ -393,17 +333,12 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_MGHLemma"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_MGHLemma"); %>
                   </td>
                 </tr>                <tr><td colspan="2">&nbsp;</td></tr>
                 <tr><td colspan="2"><h3>
-				    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="gast_freie_suche"/>
-                      <jsp:param name="Textfeld" value="ZurPerson"/>
-                    </jsp:include></h3></td></tr>
+                        <% Language.printTextfield(out, session, "gast_freie_suche", "ZurPerson"); %>
+                        </h3></td></tr>
                 <tr>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -412,10 +347,7 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_Standardname"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Person_Standardname"); %>
                   </td>
                 </tr>
                 <tr>
@@ -426,10 +358,7 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeihe"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Person_AmtWeihe"); %>
                     <font color="blue"></font>
                   </td>
                 </tr>
@@ -441,10 +370,7 @@ function CheckAll(index, check, praefix) {
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeiheZeitraum"/>
                     </jsp:include>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeiheZeitraum"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Person_AmtWeiheZeitraum"); %>
                   </td>
                 </tr>
                 <tr>
@@ -455,10 +381,7 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_Ethnie"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Person_Ethnie"); %>
                     <font color="blue"></font>
                   </td>
                 </tr>
@@ -470,20 +393,15 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Geschlecht"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Geschlecht"); %>
                     <font color="blue"></font>
                   </td>
                 </tr>
 
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr><td colspan="2"><h3>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="gast_freie_suche"/>
-                      <jsp:param name="Textfeld" value="ZumEinzelbeleg"/>
-                    </jsp:include></h3></td></tr>
+                        <% Language.printTextfield(out, session, "gast_freie_suche", "ZumEinzelbeleg"); %>
+                        </h3></td></tr>
                 <tr>
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -492,10 +410,7 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Belegform"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Belegform"); %>
                   </td>
                 </tr>
                 <tr>
@@ -506,10 +421,7 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Belegstelle"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Belegstelle"); %>
                   </td>
                 </tr>
                 <tr>
@@ -520,10 +432,7 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Kontext"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Kontext"); %>
                   </td>
                 </tr>
                 <tr>
@@ -534,10 +443,7 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Datierung"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Datierung"); %>
                   </td>
                 </tr>
                 <tr>
@@ -548,10 +454,7 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_lebend"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_lebend"); %>
                   </td>
                 </tr>
                 <tr>
@@ -562,10 +465,7 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Varianten"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Varianten"); %>
                     <font color="blue"></font>
                   </td>
                 </tr>
@@ -582,17 +482,11 @@ function CheckAll(index, check, praefix) {
               </a>
             </p>
                 <a href="javascript:CheckAll(1, true, 'Ausgabe_')" class="search-next search-functions">
-                  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="gast_freie_suche"/>
-                    <jsp:param name="Textfeld" value="AlleAuswahlen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out, session, "gast_freie_suche", "AlleAuswahlen"); %>
                 </a>
                 <div class="clear"></div>
                 <a href="javascript:CheckAll(1, false, 'Ausgabe_')" class="search-next search-functions">
-                  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="gast_freie_suche"/>
-                    <jsp:param name="Textfeld" value="AuswahlAufheben"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out, session, "gast_freie_suche", "AuswahlAufheben"); %>
                 </a>
                 <div class="clear"></div>
                 <a href="#erweiterte-suche" class="search-next search-button left erweiterte_suche_prev" data-id="tab-1"> Zur&uuml;ck zu Schritt 1 </a>
@@ -605,19 +499,13 @@ function CheckAll(index, check, praefix) {
             <span class="move"> Schritt 3 von 3 </span>
             <div class="clear"> </div>
             <h3>
-              <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="freie_suche"/>
-                <jsp:param name="Textfeld" value="Ueberschrift3"/>
-              </jsp:include>
+                <% Language.printTextfield(out, session, formular, "Ueberschrift3"); %>
             </h3>
             <table>
               <tbody>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="Sortierung1"/>
-                    </jsp:include>
+                      <% Language.printTextfield(out, session, formular, "Sortierung1"); %>
                   </th>
                   <td>
                     <jsp:include page="../forms/search.order.jsp">
@@ -627,10 +515,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="Sortierung2"/>
-                    </jsp:include>
+                      <% Language.printTextfield(out, session, formular, "Sortierung2"); %>
                   </th>
                   <td>
                     <jsp:include page="../forms/search.order.jsp">
@@ -640,10 +525,7 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="Sortierung3"/>
-                    </jsp:include>
+                      <% Language.printTextfield(out, session, formular, "Sortierung3"); %>
                   </th>
                   <td>
                     <jsp:include page="../forms/search.order.jsp">
@@ -676,34 +558,22 @@ function CheckAll(index, check, praefix) {
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab4');">
-                  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab1"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out, session, formular, "Tab1"); %>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab2','tab4');">
-                  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab2"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out, session, formular, "Tab2"); %>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab4');">
-                  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab3"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out, session, formular, "Tab3"); %>
                 </a>
               </li>
               <li>
                 <span>
-                  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab4"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out, session, formular, "Tab4"); %>
                 </span>
               </li>
             </ul>
@@ -716,10 +586,7 @@ function CheckAll(index, check, praefix) {
                     <input type="radio" name="export" value="liste" />
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="ExportListe"/>
-                    </jsp:include>
+                    <% Language.printTextfield(out, session, formular, "ExportListe"); %>
                   </td>
                 </tr>
                 <tr>
@@ -727,10 +594,7 @@ function CheckAll(index, check, praefix) {
                     <input type="radio" name="export" value="browse" />
                   </td>
                   <td>
-                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="ExportBrowse"/>
-                    </jsp:include>
+                    <% Language.printTextfield(out, session, formular, "ExportBrowse"); %>
                   </td>
                 </tr>
               </tbody>
