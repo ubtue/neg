@@ -1,4 +1,3 @@
-
 ##TABLE bemerkung##
 
 #delete corrupt bemerkung records(bemerkung that isnt associate with anything)
@@ -121,3 +120,9 @@ DELETE FROM person_hatamtstandweihe WHERE NOT EXISTS
 
 DELETE FROM urkunde WHERE NOT EXISTS
  (SELECT * FROM quelle WHERE QuelleID = quelle.ID);
+
+##TABLE benutzer##
+ALTER TABLE benutzer ADD COLUMN Salt VARCHAR(255) AFTER EMail;
+ALTER TABLE benutzer ADD COLUMN ResetToken VARCHAR(255) AFTER Password;
+ALTER TABLE benutzer ADD COLUMN ResetTokenValidUntil datetime AFTER ResetToken;
+
