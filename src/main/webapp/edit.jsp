@@ -105,10 +105,17 @@
                 String jspPath = session.getServletContext().getRealPath("gast") + "/";
 
                 String name = "hilfe.html";
-                TinyMCE_ContentDB.copyHTMLFromDatabaseTableToTempFolder(jspPath, name);
+                boolean available = TinyMCE_ContentDB.searchName(name);
+                if(available)
+                {
+                    TinyMCE_ContentDB.copyHTMLFromDatabaseTableToTempFolder(jspPath, name);
+                }
+                else
+                {
+                    out.println("Error: Datei " + name + " ist nicht vorhanden");
+                }
 
-
-                String txtFilePath = jspPath + "hilfe.html";
+                String txtFilePath = jspPath + name;
                 BufferedReader reader = new BufferedReader(new FileReader(txtFilePath));
                 StringBuilder sb = new StringBuilder();
                 String line;
@@ -117,7 +124,6 @@
                     sb.append(line + "\n");
                 }
                 String myString = sb.toString();
-
             %>
 
             <textarea id="mytextarea" name="area">
