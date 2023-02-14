@@ -1,3 +1,2 @@
-ALTER TABLE benutzer ADD COLUMN Salt VARCHAR(255) AFTER EMail;
-ALTER TABLE benutzer ADD COLUMN ResetToken VARCHAR(255) AFTER Password;
-ALTER TABLE benutzer ADD COLUMN ResetTokenValidUntil datetime AFTER ResetToken;
+#Update the Column Seite to fit to the new URLs
+UPDATE datenbank_mapping SET Seite = REPLACE(Seite, '.jsp', '');
