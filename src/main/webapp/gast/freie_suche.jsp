@@ -1,8 +1,3 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp" %>
@@ -43,9 +38,6 @@ function CheckAll(index, check, praefix) {
    out.print("$('<tr><th>Dann nach</th><td>");
    out.print("<select name=\"order'+i+'\">");
    out.print("  <option value=\"-1\">--</option>");
-   Connection cn = null;
-   Statement st = null;
-   ResultSet rs = null;
 
      String sprache = "de";
   if (session != null && session.getAttribute("Sprache") != null)
@@ -53,17 +45,11 @@ function CheckAll(index, check, praefix) {
 
 
    try {
-    Class.forName( sqlDriver );
-    cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-    st = cn.createStatement();
-    rs = st.executeQuery("SELECT * FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
-
-    while (rs.next()) {
-
-       out.print("<option value=\"" + rs.getString("Textfeld") +"\">");
-       out.print(rs.getString(sprache));
+    List<java.util.Map> result = DatenbankDB.getMappedList("SELECT * FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
+    for(java.util.Map map : result){
+       out.print("<option value=\"" + map.get("Textfeld") +"\">");
+       out.print(map.get(sprache));
        out.print("</option>");
-
     }
     out.print("</select>");
 
