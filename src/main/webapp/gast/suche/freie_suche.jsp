@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB"%>
 ﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
@@ -1023,20 +1024,21 @@
 
       String sql = "SELECT "+countString+" FROM "+tablesString+" WHERE ("+conditionsString+")"; // GROUP BY "+fieldsString;
   //     out.println(sql);
- if(!countString.equals("")){     rs = st.executeQuery(sql);
+ if(!countString.equals("")){
       out.println("<p style=\"font-weight: 700; margin-bottom: 20px;\"><b> Insgesamt ");
-      while(rs.next()){
+      java.util.List<Object[]> lst = DatenbankDB.getListNative(sql);
+      for(Object[] obj : lst){
         for (int i=0; i<count.size(); i++) {
-           out.println(rs.getString(i+1));
-           if(count.get(i).startsWith("einzelbeleg")) if(rs.getInt(i+1)==1) out.print(" Beleg"); else  out.print(" Belege");
+           out.println(obj[i].toString());
+           if(count.get(i).startsWith("einzelbeleg")) if(Integer.valueOf(obj[i].toString())==1) out.print(" Beleg"); else  out.print(" Belege");
            else if(count.get(i).startsWith("namen")) out.print(" Namen");
            else if(count.get(i).startsWith("mgh")) out.print(" Namen (MGH-Lemma)");
-          else if(count.get(i).startsWith("quelle")) if(rs.getInt(i+1)==1) out.print(" Quelle"); else out.print(" Quellen");
-           else if(count.get(i).startsWith("person")) if(rs.getInt(i+1)==1) out.print(" Person"); else out.print(" Personen");
+          else if(count.get(i).startsWith("quelle")) if(Integer.valueOf(obj[i].toString())==1) out.print(" Quelle"); else out.print(" Quellen");
+           else if(count.get(i).startsWith("person")) if(Integer.valueOf(obj[i].toString())==1) out.print(" Person"); else out.print(" Personen");
            if(i<count.size()-1) out.println(", ");           
         }
-         
-      }}
+      }
+    }
       out.println("<br></b></p>");
 
 	 
