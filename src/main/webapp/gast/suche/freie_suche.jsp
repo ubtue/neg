@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.FrontendExtendedSearch"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB"%>
 ﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
@@ -320,7 +321,7 @@
   // ### Zum Namen ###
   if (request.getParameter("Ausgabe_Namenlemma") != null && request.getParameter("Ausgabe_Namenlemma").equals("on")) {
     fields.add("namenkommentar.PLemma");
-    fields.add("namenkommentar.ID");
+    fields.add("namenkommentar.ID AS namenkommentarID");
     fieldNames.add("namenkommentar.PLemma");
         count.add("namenkommentar.ID");
     tables.add("namenkommentar");
@@ -330,7 +331,7 @@
   }
   if (request.getParameter("Ausgabe_MGHLemma") != null && request.getParameter("Ausgabe_MGHLemma").equals("on")) {
       fields.add("mgh_lemma.MGHLemma");
-      fields.add("mgh_lemma.ID");
+      fields.add("mgh_lemma.ID AS mgh_lemmaID");
       fieldNames.add("mgh_lemma.MGHLemma");
       count.add("mgh_lemma.ID");
       tables.add("mgh_lemma");
@@ -341,7 +342,7 @@
   // ### Zur Person ###
   if (request.getParameter("Ausgabe_Person_Standardname") != null && request.getParameter("Ausgabe_Person_Standardname").equals("on")) {
     fields.add("person.Standardname");
-    fields.add("person.ID");
+    fields.add("person.ID AS personID");
     count.add("person.ID");
     fieldNames.add("person.Standardname");
     tables.add("person");
@@ -399,7 +400,7 @@
   if (request.getParameter("Ausgabe_Person_Verwandte") != null && request.getParameter("Ausgabe_Person_Verwandte").equals("on")) {
     fields.add("selektion_verwandtschaftsgrad.Bezeichnung");
     fields.add("perszu.Standardname");
-    fields.add("perszu.ID");
+    fields.add("perszu.ID AS perszuID");
     fieldNames.add("selektion_verwandtschaftsgrad.Bezeichnung");
     fieldNames.add("perszu.Standardname");
     if (!tableString.contains("person_verwandtmit")) {
@@ -435,7 +436,7 @@
   // ### Zum Einzelbeleg ###
   if (request.getParameter("Ausgabe_Einzelbeleg_Belegstelle") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegstelle").equals("on")) {
     fields.add("quelle.Bezeichnung");
-    fields.add("quelle.ID");
+    fields.add("quelle.ID AS quelleID");
     count.add("quelle.ID");
     fieldNames.add("quelle.Bezeichnung");
     if (!tableString.contains("quelle")) {
@@ -478,7 +479,7 @@
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Belegform") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegform").equals("on")) {
     fields.add("einzelbeleg.Belegform");
-    fields.add("einzelbeleg.ID");
+    fields.add("einzelbeleg.ID AS einzelbelegID");
     count.add("einzelbeleg.ID");
     fieldNames.add("einzelbeleg.Belegform");
     //headlines.add("Belegform");
@@ -1118,14 +1119,16 @@
             
             
             boolean found = false;
-       
-        while ( rs.next() ) {
+
+        java.util.List<java.util.Map<String,String>> searchRes = FrontendExtendedSearch.getSearchResult(fieldsString, tablesString, conditionsString, order, fields.toArray(new String[fields.size()]));
+
+        for ( java.util.Map row : searchRes) {
         found = true;
         
         
         for(int z = 0; z<orderSize; z++){
            int jahr = 0;
-           String jahrV = rs.getString(orderV[z]);
+           String jahrV = row.get(orderV[z]).toString();
            int zeitraum = 0;
            if(orderV[z].endsWith("Jahr")){
            try{
@@ -1153,9 +1156,9 @@
            else out.print("<li class=\"liOpen\" style=\"font-size:large\">");
            //entryCount[z]++;
            
-           String text = rs.getString(orderV[z]);
-           if(orderV[z].startsWith("einzelbeleg.ID"))text = rs.getString("einzelbeleg.Belegform");
-           if(orderV[z].startsWith("person.ID"))text = rs.getString("person.Standardname");
+           String text = row.get(orderV[z]).toString();
+           if(orderV[z].startsWith("einzelbeleg.ID"))text = row.get("einzelbeleg.Belegform").toString();
+           if(orderV[z].startsWith("person.ID"))text = row.get("person.Standardname").toString();
            if(text==null) text="-";
            String titel=orderV[z];
       //     out.println(z + "::" + orderV[z]);
@@ -1168,39 +1171,39 @@
                            boolean link = false;
            if(export.equals("browse") && !text.equals("-"))
                 if (orderV[z].equals("einzelbeleg.ID")) {
-                  out.print("<a href=\"einzelbeleg?ID="+rs.getInt("einzelbeleg.ID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+row.get("einzelbelegID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("person.ID")) {
-                  out.print("<a href=\"person?ID="+rs.getInt("person.ID")+"\">");
+                  out.print("<a href=\"person?ID="+row.get("personID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("perszu.Standardname")) {
-                  out.print("<a href=\"person?ID="+rs.getInt("perszu.ID")+"\">");
+                  out.print("<a href=\"person?ID="+row.get("perszuID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar?ID="+rs.getInt("namenkommentar.ID")+"\">");
+                  out.print("<a href=\"namenkommentar?ID="+row.get("namenkommentarID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
-                    out.print("<a href=\"mghlemma?ID="+rs.getInt("mgh_lemma.ID")+"\">");
+                    out.print("<a href=\"mghlemma?ID="+row.get("mgh_lemmaID")+"\">");
                     link = true;
                   }
                 else if (orderV[z].equals("quelle.Bezeichnung")) {
-                  out.print("<a href=\"quelle?ID="+rs.getInt("quelle.ID")+"\">");
+                  out.print("<a href=\"quelle?ID="+row.get("quelleID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("edition.Titel")) {
                   try{
-                  out.print("<a href=\"edition?ID="+rs.getInt("edition.ID")+"\">");
+                  out.print("<a href=\"edition?ID="+row.get("edition.ID")+"\">");
                   link = true;
                   }catch(Exception e){
                      link=false;
                   }
                 }
                 else if (orderV[z].contains("ID")) {
-           out.print("<a href=\""+formular+".jsp?ID="+rs.getString(formular+".ID")+"\">Gehe zu: ");
+           out.print("<a href=\""+formular+"?ID="+row.get(formular+".ID")+"\">Gehe zu: ");
                               link = true;
                 }
                 
@@ -1233,50 +1236,50 @@
                      
           out.print("<tr class=\""+(even?"":"un")+"even\">");
            if (!formular.equals("favorit") && !formular.equals("freie_suche")&& !formular.equals("namenkommentar")&& !formular.equals("literatur")) {
-            out.print("<td valign=\"top\" align=\"center\"><a href=\""+formular+".jsp?ID="+rs.getString(formular+".ID")+"\">Gehe zu</a></td>");
+            out.print("<td valign=\"top\" align=\"center\"><a href=\""+formular+"?ID="+row.get(formular+".ID")+"\">Gehe zu</a></td>");
           }
 
           for(int i=0; i<fieldNames.size(); i++) {
           if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))){
             out.print("<td class=\"resultlist\" valign=\"top\">");
-             if (rs.getString(fieldNames.get(i)) != null && !DBtoHTML(rs.getString(fieldNames.get(i))).equals("")) {
-              String cell =  DBtoHTML(rs.getString(fieldNames.get(i)));
+             if (row.get(fieldNames.get(i)) != null && !DBtoHTML(row.get(fieldNames.get(i))).equals("")) {
+              String cell =  DBtoHTML(row.get(fieldNames.get(i)));
               if (export.equals("browse")) {
                 boolean link = false;
                 if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
-                  out.print("<a href=\"einzelbeleg?ID="+rs.getInt("einzelbeleg.ID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+row.get("einzelbelegID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("person.Standardname")) {
-                  out.print("<a href=\"person?ID="+rs.getInt("person.ID")+"\">");
+                  out.print("<a href=\"person?ID="+row.get("personID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("perszu.Standardname")) {
-                  out.print("<a href=\"person?ID="+rs.getInt("perszu.ID")+"\">");
+                  out.print("<a href=\"person?ID="+row.get("perszuID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                  out.print("<a href=\"namenkommentar?ID="+rs.getInt("namenkommentar.ID")+"\">");
+                  out.print("<a href=\"namenkommentar?ID="+row.get("namenkommentarID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("mgh_lemma.MGHLemma")) {
-                    out.print("<a href=\"mghlemma?ID="+rs.getInt("mgh_lemma.ID")+"\">");
+                    out.print("<a href=\"mghlemma?ID="+row.get("mgh_lemmaID")+"\">");
                     link = true;
                   }
                 else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
-                  out.print("<a href=\"quelle?ID="+rs.getInt("quelle.ID")+"\">");
+                  out.print("<a href=\"quelle?ID="+row.get("quelleID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("edition.Titel")) {
                   try{
-                  out.print("<a href=\"edition?ID="+rs.getInt("edition.ID")+"\">");
+                  out.print("<a href=\"edition?ID="+row.get("edition.ID")+"\">");
                   link = true;
                   }catch(Exception e){
                      link=false;
                   }
                 }
                 else if (fieldNames.get(i).contains("ID")) {
-                  out.print("<a href=\""+formular+".jsp?ID="+rs.getString(formular+".ID")+"\">Gehe zu: ");
+                  out.print("<a href=\""+formular+"?ID="+row.get(formular+".ID")+"\">Gehe zu: ");
                               link = true;
                 }
                 if(fieldNames.get(i).endsWith("PLemma") || fieldNames.get(i).equals("Erstglied") || fieldNames.get(i).equals("Zweitglied"))
@@ -1561,6 +1564,7 @@
     }
     catch (Exception e) {
       out.println(e);
+      throw new Exception(e);
     }
     finally {
       try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
