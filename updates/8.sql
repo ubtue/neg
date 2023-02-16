@@ -41,9 +41,8 @@ UPDATE einzelbeleg SET EditionID = NULL WHERE NOT EXISTS (SELECT * FROM edition 
 UPDATE mgh_lemma SET BearbeitungsstatusID = 2 WHERE NOT EXISTS (SELECT * FROM selektion_bearbeitungsstatus WHERE BearbeitungsstatusID = selektion_bearbeitungsstatus.ID );
 UPDATE namenkommentar SET BearbeitungsstatusID = 2 WHERE NOT EXISTS (SELECT * FROM selektion_bearbeitungsstatus WHERE BearbeitungsstatusID = selektion_bearbeitungsstatus.ID);
 
-# replace missing user with a valid (example for mderntl)
-# TODO create dummy user in live system
-UPDATE einzelbeleg SET LetzteAenderungVon = 145,ErstelltVon=145,GehoertGruppe=4 WHERE NOT EXISTS (SELECT * FROM benutzer WHERE LetzteAenderungVon = benutzer.ID ) OR NOT EXISTS (SELECT * FROM benutzer WHERE ErstelltVon = benutzer.ID ) OR NOT EXISTS (SELECT * FROM benutzer WHERE GehoertGruppe = benutzer.ID);
+# replace missing user with a valid (149 = "nppm-team")
+UPDATE einzelbeleg SET LetzteAenderungVon = 149,ErstelltVon=149,GehoertGruppe=4 WHERE NOT EXISTS (SELECT * FROM benutzer WHERE LetzteAenderungVon = benutzer.ID ) OR NOT EXISTS (SELECT * FROM benutzer WHERE ErstelltVon = benutzer.ID ) OR NOT EXISTS (SELECT * FROM benutzer WHERE GehoertGruppe = benutzer.ID);
 
 DELETE FROM bemerkung WHERE EinzelbelegID IS NOT NULL AND NOT EXISTS (SELECT * FROM einzelbeleg WHERE bemerkung.EinzelbelegID = einzelbeleg.ID);
 DELETE FROM bemerkung WHERE PersonID IS NOT NULL AND NOT EXISTS (SELECT * FROM person WHERE bemerkung.PersonID = person.ID);
