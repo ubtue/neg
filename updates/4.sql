@@ -2,31 +2,31 @@
 ##TABLE bemerkung##
 
 #delete corrupt bemerkung records(bemerkung that isnt associate with anything)
-DELETE FROM bemerkung WHERE NOT EXISTS
+DELETE FROM bemerkung WHERE bemerkung.EinzelbelegID IS NOT NULL AND NOT EXISTS
  (SELECT * FROM einzelbeleg WHERE bemerkung.EinzelbelegID = einzelbeleg.ID);
 
-DELETE FROM bemerkung WHERE NOT EXISTS
+DELETE FROM bemerkung WHERE bemerkung.PersonID IS NOT NULL AND NOT EXISTS
  (SELECT * FROM person WHERE bemerkung.PersonID = person.ID);
  
-DELETE FROM bemerkung WHERE NOT EXISTS
+DELETE FROM bemerkung WHERE bemerkung.QuelleID IS NOT NULL AND NOT EXISTS
  (SELECT * FROM quelle WHERE bemerkung.QuelleID = quelle.ID);
 
-DELETE FROM bemerkung WHERE NOT EXISTS
+DELETE FROM bemerkung WHERE bemerkung.EditionID IS NOT NULL AND NOT EXISTS
  (SELECT * FROM edition WHERE bemerkung.EditionID = edition.ID);
 
-DELETE FROM bemerkung WHERE NOT EXISTS
+DELETE FROM bemerkung WHERE bemerkung.HandschriftID IS NOT NULL AND NOT EXISTS
  (SELECT * FROM handschrift WHERE bemerkung.HandschriftID = handschrift.ID);
 
-DELETE FROM bemerkung WHERE NOT EXISTS
+DELETE FROM bemerkung WHERE bemerkung.NamenkommentarID IS NOT NULL AND NOT EXISTS
  (SELECT * FROM namenkommentar WHERE bemerkung.NamenkommentarID = namenkommentar.ID);
 
-DELETE FROM bemerkung WHERE NOT EXISTS
+DELETE FROM bemerkung WHERE bemerkung.MGHLemmaID IS NOT NULL AND  NOT EXISTS
  (SELECT * FROM mgh_lemma WHERE bemerkung.MGHLemmaID = mgh_lemma.ID);
 
-DELETE FROM bemerkung WHERE NOT EXISTS
+DELETE FROM bemerkung WHERE bemerkung.GruppeID IS NOT NULL AND NOT EXISTS
  (SELECT * FROM benutzer_gruppe WHERE bemerkung.GruppeID = benutzer_gruppe.ID);
 
-DELETE FROM bemerkung WHERE NOT EXISTS
+DELETE FROM bemerkung WHERE bemerkung.BenutzerID IS NOT NULL AND NOT EXISTS
  (SELECT * FROM benutzer WHERE bemerkung.BenutzerID = benutzer.ID);
 
 
