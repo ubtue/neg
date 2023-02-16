@@ -146,6 +146,7 @@ ALTER TABLE einzelbeleg_hatperson ADD CONSTRAINT einzelbeleg_hatperson_Einzelbel
 ALTER TABLE einzelbeleg_hatstand MODIFY COLUMN EinzelbelegID INT UNSIGNED NOT NULL;
 ALTER TABLE einzelbeleg_hatstand ADD CONSTRAINT einzelbeleg_hatstand_EinzelbelegID FOREIGN KEY (EinzelbelegID) REFERENCES einzelbeleg(ID);
 ALTER TABLE einzelbeleg_textkritik MODIFY COLUMN EinzelbelegID INT UNSIGNED NOT NULL;
+DELETE FROM einzelbeleg_textkritik WHERE EinzelbelegID NOT IN (SELECT ID FROM einzelbeleg); /* 1/69964, copied from 8.sql, only seems to work here after types have changed for some reason. */
 ALTER TABLE einzelbeleg_textkritik ADD CONSTRAINT einzelbeleg_textkritik_EinzelbelegID FOREIGN KEY (EinzelbelegID) REFERENCES einzelbeleg(ID);
 
 ALTER TABLE einzelbeleg_hatamtweihe MODIFY COLUMN ID INT UNSIGNED AUTO_INCREMENT;
