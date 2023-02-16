@@ -19,7 +19,7 @@ public class BemerkungDBTest extends DBTest {
     void testList() {
         try {
             // TODO: The test fails because of the inconsistency of the database
-            //BemerkungDB.getList();
+            BemerkungDB.getList();
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }

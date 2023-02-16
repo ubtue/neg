@@ -31,7 +31,7 @@ Prerequisites:
 - Java >= 1.8.0_77
 - MySQL >= 5.7
   - collation-server = utf8_unicode_ci
-  - character-set-server = utf8
+  - character-set-server = utf8mb4
   - group_concat_max_len = 100000000
   - log_bin_trust_function_creators = 1
   - sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
@@ -45,6 +45,13 @@ For servers (ZDV):
     - Make sure you change the db user passwords to something safe.
     - if you want to install neg-dmp on a separate machine and access the mysql db in this instance,
       you also have to change the host for the user and prevent it to be bound to localhost (e.g. disable bind-address and mysqlx-bind-address in mysqld.cnf).
+    - [client]
+        default-character-set = utf8mb4
+      [mysqld]
+        character-set-server = utf8mb4
+        collation-server = utf8mb4_unicode_ci
+      [mysql]
+        default-character-set = utf8mb4
 - Tomcat
     - if tomcat installation fails, contact ZDV admin (workaround for default group 100).
     - change tomcat ports to 80+443
