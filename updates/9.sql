@@ -380,6 +380,7 @@ ALTER TABLE person_hatethnie MODIFY COLUMN EthnienerhaltID INT NOT NULL;
 ALTER TABLE person_hatethnie ADD CONSTRAINT person_hatethnie_EthnienerhaltID FOREIGN KEY (EthnienerhaltID) REFERENCES selektion_ethnienerhalt(ID); /* Problem here? Check! /*
 
 ALTER TABLE selektion_funktion MODIFY COLUMN ID INT AUTO_INCREMENT; /* DEFAULT 0 => -1*/
+UPDATE einzelbeleg_hatfunktion SET FunktionID = -1 WHERE FunktionID IS NULL;
 ALTER TABLE einzelbeleg_hatfunktion MODIFY COLUMN FunktionID INT NOT NULL;
 ALTER TABLE einzelbeleg_hatfunktion ADD CONSTRAINT einzelbeleg_hatfunktion_FunktionID FOREIGN KEY (FunktionID) REFERENCES selektion_funktion(ID);
 
