@@ -16,7 +16,7 @@ public class BenutzerDB extends AbstractBase {
             Root benutzer = criteria.from(Benutzer.class);
             criteria.select(benutzer);
             criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
-            
+
             return session.createQuery(criteria).getResultList();
         } finally {
             session.close();
@@ -33,7 +33,7 @@ public class BenutzerDB extends AbstractBase {
             criteria.select(benutzer);
             criteria.where(builder.isTrue(benutzer.get(Benutzer_.IstAktiv)));
             criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
-            
+
             return session.createQuery(criteria).getResultList();
         } finally {
             session.close();
@@ -50,7 +50,7 @@ public class BenutzerDB extends AbstractBase {
             criteria.select(benutzer);
             criteria.where(builder.isFalse(benutzer.get(Benutzer_.IstAktiv)));
             criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
-            
+
             return session.createQuery(criteria).getResultList();
         } finally {
             session.close();
@@ -80,6 +80,21 @@ public class BenutzerDB extends AbstractBase {
             Root benutzer = criteria.from(Benutzer.class);
             criteria.select(benutzer);
             criteria.where(builder.equal(benutzer.get(Benutzer_.Login), login));
+            Benutzer res = session.createQuery(criteria).getSingleResult();
+            return res;
+        } finally {
+            session.close();
+        }
+    }
+
+    public static Benutzer getByLoginAktiv(String login) throws Exception {
+        Session session = getSession();
+        try {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
+            Root benutzer = criteria.from(Benutzer.class);
+            criteria.select(benutzer);
+            criteria.where(builder.and(builder.equal(benutzer.get(Benutzer_.Login), login), builder.isTrue(benutzer.get(Benutzer_.IstAktiv))));
             Benutzer res = session.createQuery(criteria).getSingleResult();
             return res;
         } finally {
@@ -129,7 +144,7 @@ public class BenutzerDB extends AbstractBase {
             criteria.select(benutzer);
             criteria.where(builder.equal(benutzer.get(Benutzer_.Login), login));
             boolean inDatabase = !session.createQuery(criteria).getResultList().isEmpty();
-            
+
             return inDatabase;
         } finally {
             session.close();
