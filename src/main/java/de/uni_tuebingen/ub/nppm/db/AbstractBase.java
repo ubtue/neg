@@ -142,6 +142,10 @@ public class AbstractBase {
 
             configuration.addAnnotatedClass(Bemerkung.class);
 
+            configuration.addAnnotatedClass(TinyMCE_Content.class);
+
+
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
@@ -194,10 +198,10 @@ public class AbstractBase {
     public static List<Object[]> getListNative(String sql) throws Exception {
         Session session = getSession();
         NativeQuery sqlQuery = session.createSQLQuery(sql);
-        List<Object[]> rows = sqlQuery.getResultList();        
+        List<Object[]> rows = sqlQuery.getResultList();
         return rows;
     }
-    
+
     protected static void insertOrUpdate(String sql) throws Exception {
         Session session = getSession();
         try {            
