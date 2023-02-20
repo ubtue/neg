@@ -1,12 +1,10 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.DeleteHelper" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
 <%
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0) {
+  if (AuthHelper.isBenutzerLogin(request)) {
 %>
 
 <HTML>
@@ -37,25 +35,14 @@
     out.println("Falscher Aufruf!");
   }
   else {
-    String sql = "DELETE FROM "+request.getParameter("table")+" WHERE ID="+request.getParameter("ID")+";";
-    Connection cn = null;
-    Statement  st = null;
-    try {
-      Class.forName( sqlDriver );
-      cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      st = cn.createStatement();
-      st.execute(sql);
-      out.println("<p>Eintrag erfolgreich gel&ouml;scht!</p>");
-    }
-    catch (Exception e) {
-      out.println(e);
-    } 
-    finally {
-      try { if( null != st ) st.close(); } catch( Exception ex ) {}
-      try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
+    if(DeleteHelper.deleteEntity(request,response,out)){
+        out.println("<p>Eintrag erfolgreich gel&ouml;scht!</p>");
+        out.println("<script type=\"text/javascript\">window.setTimeout(location.replace('"+request.getParameter("returnpage")+"?ID="+request.getParameter("returnid")+"'),1000)</script>");    
+    }else{
+        out.println("<p>Fehler beim l&ouml;schen!</p>");
+        out.println("<a href=\"javascript: history.back();\">Zur&uuml;ck</a>");    
     }
     
- out.println("<script type=\"text/javascript\">window.setTimeout(location.replace('"+request.getParameter("returnpage")+"?ID="+request.getParameter("returnid")+"'),1000)</script>");
     
   }
 %>

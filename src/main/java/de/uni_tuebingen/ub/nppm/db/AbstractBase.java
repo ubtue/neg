@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import de.uni_tuebingen.ub.nppm.model.*;
@@ -15,9 +14,8 @@ import java.util.Properties;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
-import de.uni_tuebingen.ub.nppm.model.*;
-
 
 public class AbstractBase {
     protected static SessionFactory sessionFactory;
@@ -52,6 +50,17 @@ public class AbstractBase {
             settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
             settings.put(Environment.HBM2DDL_AUTO,"validate");
 
+            settings.put("hibernate.connection.CharSet", "utf8mb4");
+            settings.put("hibernate.connection.useUnicode", true);
+            settings.put("hibernate.connection.characterEncoding", "utf-8");
+            
+            settings.put("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
+            settings.put("hibernate.c3p0.min_size", "5");
+            settings.put("hibernate.c3p0.max_size", "100");
+            settings.put("hibernate.c3p0.maxIdleTime", "120");
+            settings.put("hibernate.c3p0.idleConnectionTestPeriod", "30");
+            settings.put("hibernate.c3p0.preferredTestQuery", "SELECT 1");
+                    
             configuration.setProperties(settings);
 
             // TODO: Add all model classes dynamically
@@ -61,6 +70,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(Edition.class);
             configuration.addAnnotatedClass(EditionBand.class);
             configuration.addAnnotatedClass(EditionBestand.class);
+            configuration.addAnnotatedClass(EditionEditor.class);
 
             configuration.addAnnotatedClass(SelektionAmtWeihe.class);
             configuration.addAnnotatedClass(SelektionAreal.class);
@@ -101,20 +111,27 @@ public class AbstractBase {
 
             configuration.addAnnotatedClass(Handschrift.class);
             configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
-
+            
             configuration.addAnnotatedClass(Urkunde.class);
             configuration.addAnnotatedClass(UrkundeBetreff.class);
             configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
-
+            configuration.addAnnotatedClass(UrkundeEmpfaenger.class);
+            
             configuration.addAnnotatedClass(Person.class);
             configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
             configuration.addAnnotatedClass(PersonQuiet.class);
             configuration.addAnnotatedClass(PersonVariante.class);
-
+            configuration.addAnnotatedClass(PersonAreal_MM.class);
+            configuration.addAnnotatedClass(PersonEthnie_MM.class);
+            configuration.addAnnotatedClass(PersonVerwandtMit_MM.class);          
+            
             configuration.addAnnotatedClass(Einzelbeleg.class);
             configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
             configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
-
+            configuration.addAnnotatedClass(EinzelbelegMghLemma_MM.class);
+            configuration.addAnnotatedClass(EinzelbelegNamenkommentar_MM.class);
+            configuration.addAnnotatedClass(EinzelbelegHatPerson_MM.class);
+        
             configuration.addAnnotatedClass(DatenbankFilter.class);
             configuration.addAnnotatedClass(DatenbankMapping.class);
             configuration.addAnnotatedClass(DatenbankSelektion.class);
@@ -145,17 +162,37 @@ public class AbstractBase {
 
     protected static List getList(Class c, CriteriaQuery criteria) throws Exception {
         Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        if(criteria == null){
-            criteria = builder.createQuery(c);
+        try {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            if (criteria == null) {
+                criteria = builder.createQuery(c);
+            }
+            Root root = criteria.from(c);
+            criteria.select(root);
+            return session.createQuery(criteria).getResultList();
+        } finally {
+            session.close();
         }
-        Root root = criteria.from(c);
-        criteria.select(root);
-        return session.createQuery(criteria).getResultList();
     }
 
     protected static List getList(Class c) throws Exception {
         return getList(c, null);
+    }
+    
+    public static void remove(Class class_, int id) throws Exception {
+        Session session = getSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            //Load
+            Object obj = session.load(class_, id);
+            //Remove
+            session.remove(obj);
+            //Commit
+            transaction.commit();
+        } finally {
+            session.close();
+        }
     }
 
     public static List<Object[]> getListNative(String sql) throws Exception {
@@ -167,10 +204,14 @@ public class AbstractBase {
 
     protected static void insertOrUpdate(String sql) throws Exception {
         Session session = getSession();
-        session.getTransaction().begin();
-        NativeQuery query = session.createSQLQuery(sql);
-        query.executeUpdate();
-        session.getTransaction().commit();
+        try {            
+            session.getTransaction().begin();
+            NativeQuery query = session.createSQLQuery(sql);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        } finally {
+            session.close();
+        }
     }
 
     protected static List<Map> getMappedList(Query query) throws Exception {
@@ -183,7 +224,7 @@ public class AbstractBase {
         return getMappedList(getSession().createQuery(criteria));
     }
 
-    protected static List<Map> getMappedList(String query) throws Exception {
+    public static List<Map> getMappedList(String query) throws Exception {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.

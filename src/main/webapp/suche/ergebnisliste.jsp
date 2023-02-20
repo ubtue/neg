@@ -127,15 +127,15 @@
               if (export.equals("browse")) {
                 boolean link = false;
                 if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
-                  out.print("<a href=\"einzelbeleg.jsp?ID="+row.get("einzelbeleg.ID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+row.get("einzelbeleg.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("person.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+row.get("person.ID")+"\">");
+                  out.print("<a href=\"person?ID="+row.get("person.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("perszu.Standardname")) {
-                  out.print("<a href=\"person.jsp?ID="+row.get("perszu.ID")+"\">");
+                  out.print("<a href=\"person?ID="+row.get("perszu.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("PLemma")) {
@@ -143,12 +143,12 @@
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
-                  out.print("<a href=\"quelle.jsp?ID="+row.get("quelle.ID")+"\">");
+                  out.print("<a href=\"quelle?ID="+row.get("quelle.ID")+"\">");
                   link = true;
                 }
                 else if (fieldNames.get(i).contains("edition.Titel")) {
                   try{
-                  out.print("<a href=\"edition.jsp?ID="+row.get("edition.ID")+"\">");
+                  out.print("<a href=\"edition?ID="+row.get("edition.ID")+"\">");
                   link = true;
                   }catch(Exception e){
                      link=false;

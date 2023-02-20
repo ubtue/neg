@@ -398,7 +398,7 @@
 <form method="post" action="suchergebnis"><input
 	type="hidden" name="form" value="favorit" />
 <p>Testweise gibt es hier eine für die Philologen Interessante Liste
-zu <a href="person.jsp?ID=21812">dieser Person</a></p>
+zu <a href="person?ID=21812">dieser Person</a></p>
 <p><input type="reset" value="abbrechen" />&nbsp;&nbsp;<input
 	type="submit" value="Suchen" /></p>
 </form>

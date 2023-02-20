@@ -65,9 +65,10 @@ public abstract class AbstractServlet extends HttpServlet {
     abstract protected String getFooterTemplate();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setCharacterEncoding("UTF-8");
         initRequest(request);
         response.setContentType("text/html; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");        
         addResponseHeader(request, response);
         generatePage(request, response);
         addResponseFooter(request, response);

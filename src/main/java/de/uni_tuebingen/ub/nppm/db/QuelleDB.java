@@ -19,17 +19,20 @@ public class QuelleDB extends AbstractBase {
 
         Session session = getSession();
 
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<Quelle> criteria = criteriaBuilder.createQuery(Quelle.class);
-        Root<Quelle> quelle = criteria.from(Quelle.class);
-
-        criteria.select(quelle).where(criteriaBuilder.equal(quelle.get("zuVeroeffentlichen"), 1));
-
-        Quelle result =  new Quelle();
-        Query query = session.createQuery(criteria);
-        result = (Quelle)query.setMaxResults(1).uniqueResult();
-        session.close();
-        return result;
+        try {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Quelle> criteria = criteriaBuilder.createQuery(Quelle.class);
+            Root<Quelle> quelle = criteria.from(Quelle.class);
+            
+            criteria.select(quelle).where(criteriaBuilder.equal(quelle.get("zuVeroeffentlichen"), 1));
+            
+            Quelle un = new Quelle();
+            Query query = session.createQuery(criteria);
+            un = (Quelle) query.setMaxResults(1).uniqueResult();
+            return un;
+        } finally {
+            session.close();
+        }
     }
 }
 

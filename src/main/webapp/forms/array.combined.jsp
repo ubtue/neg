@@ -287,7 +287,7 @@
 													+ " AND ueberlieferung_edition.ueberlieferungID="
 													+ rs.getInt("ID"));
 									out
-											.println("<tr><td><a href=\"edition.jsp?ID="
+											.println("<tr><td><a href=\"edition?ID="
 													+ rs2
 															.getString("ID")
 													+ "\">"
@@ -396,12 +396,26 @@
 											.getString(zielattributArray[j]) != null ? rs
 									.getInt(zielattributArray[j])
 									: -1);
+                                                        //Map stores the options fields of a select form
+                                                        //key: the value of the option
+                                                        //value: selected attribute of the option
+                                                        Map<Integer, String> selectForm = new HashMap<Integer, String>();
+                                                        //init
+                                                        selectForm.put(0, "");
+                                                        selectForm.put(-1, "");
+                                                        //assign
+                                                        if (selected == 0) {
+                                                            selectForm.put(0, "selected");
+                                                        } else if (selected == -1) {
+                                                            selectForm.put(-1, "selected");
+                                                        }
+                                                        
 							if (!isReadOnly)
 								out
-										.println("<option value=\"-1\">nicht bearbeitet</option>");
+										.println("<option value=\"-1\" "+selectForm.get(-1)+">nicht bearbeitet</option>");
 							if (!isReadOnly)
 								out
-										.println("<option value=\"0\">unklar</option>");
+										.println("<option value=\"0\" "+selectForm.get(0)+">unklar</option>");
 							if (!sql.equals(""))
 								while (rs2.next()) {
 									if (!isReadOnly)

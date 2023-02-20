@@ -38,6 +38,25 @@
       <servlet-name>SucheServlet</servlet-name>
       <url-pattern>/gast/einfaches_ergebnis</url-pattern>  
   </servlet-mapping>  
+  <!-- Erweiterte Suche Frontend-->
+  <servlet>
+      <servlet-name>FrontendErweiterteSucheServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ErweiterteSucheServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>FrontendErweiterteSucheServlet</servlet-name>
+      <url-pattern>/gast/freie_suche</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>FrontendErweiterteSucheErgebnisServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ErweiterteSucheErgebnisServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>FrontendErweiterteSucheErgebnisServlet</servlet-name>
+      <url-pattern>/gast/suchergebnis</url-pattern>
+  </servlet-mapping>
+  <!-- Ende Erweiterte Suche Frontend-->
   <servlet>
       <servlet-name>NamenServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.NamenServlet</servlet-class>

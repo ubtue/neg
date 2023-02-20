@@ -72,7 +72,7 @@ public class Edition {
         joinColumns = { @JoinColumn(name = "EditionID") }, 
         inverseJoinColumns = { @JoinColumn(name = "EditorID") }
     )
-    List<SelektionEditor> editors = new ArrayList<>();
+    Set<SelektionEditor> editors = new HashSet<>();
     
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -82,9 +82,9 @@ public class Edition {
             inverseJoinColumns = {
                 @JoinColumn(name = "QuelleID")}
     )
-    List<Quelle> quellen = new ArrayList<>();
+    Set<Quelle> quellen = new HashSet<>();
 
-    public List<SelektionEditor> getEditors() {
+    public Set<SelektionEditor> getEditors() {
         return editors;
     }
     
@@ -93,17 +93,10 @@ public class Edition {
     }
       
     public void removeEditor(int id){
-        for (int i = 0; i < this.getEditors().size(); ) {
-            SelektionEditor editor = this.getEditors().get(i);
-            if(editor.getId() != null && editor.getId() == id){
-                this.getEditors().remove(i);
-            }else{
-                i++;
-            }
-        }
+        this.getEditors().removeIf(e -> e.getId() == id);
     }
     
-    public List<Quelle> getQuellen() {
+    public Set<Quelle> getQuellen() {
         return quellen;
     }
 
@@ -112,14 +105,7 @@ public class Edition {
     }
 
     public void removeQuelle(int id) {
-        for (int i = 0; i < this.getQuellen().size();) {
-            Quelle w = this.getQuellen().get(i);
-            if (w.getId() != null && w.getId() == id) {
-                this.getQuellen().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getQuellen().removeIf(q -> q.getId() == id);
     }
 
     public Integer getId() {

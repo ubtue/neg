@@ -52,21 +52,6 @@
           <tbody>
             <tr>
               <td width="200">
-                  <% Language.printDatafield(out,session, formular,"Editionnummer");%>
-              </td>
-              <td width="450">
-                <jsp:include page="inc.erzeugeFormular.jsp">
-                  <jsp:param name="ID" value="<%= id %>"/>
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Editionnummer"/>
-                  <jsp:param name="Default" value="<%= id %>"/>
-                </jsp:include>
-              </td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td width="200">
                   <% Language.printDatafield(out,session, formular,"Titel");%>
               </td>
               <td width="450">
@@ -212,7 +197,7 @@
                 </span>
               </li>
 	<li><a href="javascript:onoff('tab5','tab1');"> 
-            <% Language.printTextfield(out,session, formular,"TabUeberlieferung");%>
+            <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
 <!-- TAB BÄNDE & QUELLEN
               <li>
@@ -262,7 +247,7 @@
                 </a>
               </li>
 	<li><span> 
-            <% Language.printTextfield(out,session, formular,"TabUeberlieferung");%>
+            <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </span></li>
 <!-- TAB BÄNDE & QUELLEN
               <li>
@@ -367,7 +352,7 @@
                 </a>
               </li>
 	<li><a href="javascript:onoff('tab5','tab4');"> 
-            <% Language.printTextfield(out,session, formular,"TabUeberlieferung");%>
+            <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
 <!-- TAB BÄNDE & QUELLEN
               <li>

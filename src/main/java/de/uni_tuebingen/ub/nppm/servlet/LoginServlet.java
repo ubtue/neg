@@ -22,7 +22,7 @@ public class LoginServlet extends HttpServlet {
         if (login == null || login.isEmpty() || !BenutzerDB.hasLogin(login)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Benutzer existiert nicht");
         } else {
-            Benutzer benutzer = BenutzerDB.getByLogin(login);
+            Benutzer benutzer = BenutzerDB.getByLoginAktiv(login);
             String saltString = benutzer.getSalt();
             if (saltString == null || saltString.isEmpty()) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Die Sicherheit der Datenbank wurde verbessert. Das Password muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");

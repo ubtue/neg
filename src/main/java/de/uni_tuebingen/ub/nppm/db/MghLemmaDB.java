@@ -23,13 +23,15 @@ public class MghLemmaDB extends AbstractBase {
     public static MghLemma getFirstPublicMGHLemma() throws Exception {
 
         Session session = getSession();
-        String SQL = "SELECT * FROM mgh_lemma WHERE mgh_lemma.ID in (SELECT n.ID FROM einzelbeleg e, quelle q, einzelbeleg_hatmghlemma h, mgh_lemma n WHERE e.ID=h.einzelbelegID and n.ID=h.MGHLemmaID and e.QuelleID=q.ID AND q.ZuVeroeffentlichen=1) ORDER BY id ASC";
-
-        NativeQuery query = session.createSQLQuery(SQL);
-        query.addEntity(MghLemma.class);
-        query.setMaxResults(1);
-        MghLemma result = (MghLemma)query.getSingleResult();
-        session.close();
-        return result;
+        try {
+            String SQL = "SELECT * FROM mgh_lemma WHERE mgh_lemma.ID in (SELECT n.ID FROM einzelbeleg e, quelle q, einzelbeleg_hatmghlemma h, mgh_lemma n WHERE e.ID=h.einzelbelegID and n.ID=h.MGHLemmaID and e.QuelleID=q.ID AND q.ZuVeroeffentlichen=1) ORDER BY id ASC";
+            
+            NativeQuery query = session.createSQLQuery(SQL);
+            query.addEntity(MghLemma.class);
+            query.setMaxResults(1);
+            return (MghLemma) query.getSingleResult();
+        } finally {
+            session.close();
+        }
     }
 }

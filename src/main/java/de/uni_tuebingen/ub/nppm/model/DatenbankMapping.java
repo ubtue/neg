@@ -88,16 +88,16 @@ public class DatenbankMapping {
     @Column(name = "la_Platzhalter", length = 255)
     private String laPlatzhalter;
 
-    @Column(name = "de_Tooltip", columnDefinition = "TEXT")
+    @Column(name = "de_Tooltip", columnDefinition = "MEDIUMTEXT")
     private String deTooltip;
 
-    @Column(name = "fr_Tooltip", columnDefinition = "TEXT")
+    @Column(name = "fr_Tooltip", columnDefinition = "MEDIUMTEXT")
     private String frTooltip;
 
-    @Column(name = "gb_Tooltip", columnDefinition = "TEXT")
+    @Column(name = "gb_Tooltip", columnDefinition = "MEDIUMTEXT")
     private String gbTooltip;
 
-    @Column(name = "la_Tooltip", columnDefinition = "TEXT")
+    @Column(name = "la_Tooltip", columnDefinition = "MEDIUMTEXT")
     private String laTooltip;
 
     public Integer getId() {

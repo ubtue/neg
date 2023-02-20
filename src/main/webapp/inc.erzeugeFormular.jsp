@@ -48,6 +48,9 @@
   boolean array = false;
 
   String sprache = (String)session.getAttribute("Sprache");
+  //set standard language
+  if(sprache == null)
+    sprache = "de"; 
   String beschriftung = "";
   String platzhalter = "";
   String tooltip = "";
@@ -94,7 +97,7 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
-
+<%@ page import="java.util.*" isThreadSafe="false" %>
 <%
 // TODO: These definitions here are still necessary for the forms/templates to work.
 // We should refactor them at a later point.

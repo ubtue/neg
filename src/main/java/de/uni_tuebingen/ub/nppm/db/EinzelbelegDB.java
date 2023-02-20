@@ -13,14 +13,17 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static Einzelbeleg getById(int id) throws Exception {
         Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Einzelbeleg> criteria = builder.createQuery(Einzelbeleg.class);
-        Root einzelbeleg = criteria.from(Einzelbeleg.class);
-        criteria.select(einzelbeleg);
-        criteria.where(builder.equal(einzelbeleg.get(Einzelbeleg_.ID), id));
-        Einzelbeleg res =  session.createQuery(criteria).getSingleResult();
-        session.close();
-        return res;
+        try {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Einzelbeleg> criteria = builder.createQuery(Einzelbeleg.class);
+            Root einzelbeleg = criteria.from(Einzelbeleg.class);
+            criteria.select(einzelbeleg);
+            criteria.where(builder.equal(einzelbeleg.get(Einzelbeleg_.ID), id));
+            Einzelbeleg res = session.createQuery(criteria).getSingleResult();
+            return res;
+        } finally {
+            session.close();
+        }
     }
 
     public static List getList() throws Exception {
@@ -37,10 +40,13 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static Einzelbeleg getFirstPublicEinzelbeleg() throws Exception {
         Session session = getSession();
-        String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
-        Query query = session.createQuery(HQL).setMaxResults(1);
-        Einzelbeleg einzelbeleg = (Einzelbeleg)query.getSingleResult();
-        session.close();
-        return einzelbeleg;
+        try {
+            String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
+            Query query = session.createQuery(HQL).setMaxResults(1);
+            Einzelbeleg einzelbeleg = (Einzelbeleg) query.getSingleResult();
+            return einzelbeleg;
+        } finally {
+            session.close();
+        }
     }
 }

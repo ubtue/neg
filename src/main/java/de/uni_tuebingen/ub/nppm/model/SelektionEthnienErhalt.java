@@ -14,7 +14,7 @@ public class SelektionEthnienErhalt {
     private String bezeichnung;
     
     @ManyToMany(mappedBy = "ethnieErhalt")
-    private List<Person> personen = new ArrayList<>();
+    private Set<Person> personen = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -28,7 +28,7 @@ public class SelektionEthnienErhalt {
         this.bezeichnung = bezeichnung;
     }
     
-    public List<Person> getPersonen() {
+    public Set<Person> getPersonen() {
         return this.personen;
     }
 
@@ -37,13 +37,6 @@ public class SelektionEthnienErhalt {
     }
 
     public void removePerson(int id) {
-        for (int i = 0; i < this.getPersonen().size();) {
-            Person person = this.getPersonen().get(i);
-            if (person.getId() != null && person.getId() == id) {
-                this.getPersonen().remove(i);
-            } else {
-                i++;
-            }
-        }
+        this.getPersonen().removeIf(e -> e.getId() == id);
     }
 }

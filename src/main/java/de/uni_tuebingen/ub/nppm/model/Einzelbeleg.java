@@ -15,7 +15,7 @@ public class Einzelbeleg {
     @Column(name = "Belegnummer", length = 10)
     private String belegnummer;
 
-    @Column(name = "Kontext", columnDefinition = "TEXT")
+    @Column(name = "Kontext", columnDefinition = "MEDIUMTEXT")
     private String kontext;
 
     @OneToOne(targetEntity = SelektionGeschlecht.class)
@@ -58,7 +58,7 @@ public class Einzelbeleg {
     @Column(name = "UeberlieferungDatierung", length = 255)
     private String ueberlieferungDatierung;
 
-    @Column(name = "Belegform", length = 255)
+    @Column(name = "Belegform", length = 191)
     private String belegform;
 
     @Column(name = "Griechisch", length = 255)
@@ -75,23 +75,23 @@ public class Einzelbeleg {
     @JoinColumn(name = "GrammatikGeschlechtID", referencedColumnName = "ID")
     private SelektionGrammatikgeschlecht grammatikGeschlecht;
 
-    @Column(name = "ASWQuellenzitat", columnDefinition = "TEXT")
+    @Column(name = "ASWQuellenzitat", columnDefinition = "MEDIUMTEXT")
     private String aswQuellenzitat;
 
-    @Column(name = "Bemerkung", columnDefinition = "TEXT")
+    @Column(name = "Bemerkung", columnDefinition = "MEDIUMTEXT")
     private String bemerkung;
 
     @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
 
-    @Column(name = "KommentarEthnie", columnDefinition = "TEXT")
+    @Column(name = "KommentarEthnie", columnDefinition = "MEDIUMTEXT")
     private String kommentarEthnie;
 
-    @Column(name = "KommentarAreal", columnDefinition = "TEXT")
+    @Column(name = "KommentarAreal", columnDefinition = "MEDIUMTEXT")
     private String kommentarAreal;
 
-    @Column(name = "KommentarVerwandtschaft", columnDefinition = "TEXT")
+    @Column(name = "KommentarVerwandtschaft", columnDefinition = "MEDIUMTEXT")
     private String kommentarVerwandtschaft;
 
     @Column(name = "Eindeutig", columnDefinition = "BIT DEFAULT NULL")
@@ -233,7 +233,7 @@ public class Einzelbeleg {
     @Column(name = "QuelleVonJahrhundert", length = 5)
     private String quelleVonJahrhundert;
 
-    @Column(name = "KommentarPerson", columnDefinition = "TEXT")
+    @Column(name = "KommentarPerson", columnDefinition = "MEDIUMTEXT")
     private String kommentarPerson;
 
     @Column(name = "MGHLemmaKorrigiert", columnDefinition = "BIT DEFAULT NULL")
@@ -247,7 +247,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "AmtWeiheID")}
     )
-    List<SelektionAmtWeihe> amtWeihe = new ArrayList<>();
+    Set<SelektionAmtWeihe> amtWeihe = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -257,7 +257,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "ArealID")}
     )
-    List<SelektionAreal> areal = new ArrayList<>();
+    Set<SelektionAreal> areal = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -267,7 +267,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "FunktionID")}
     )
-    List<SelektionFunktion> funktion = new ArrayList<>();
+    Set<SelektionFunktion> funktion = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -277,7 +277,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "MGHLemmaID")}
     )
-    List<MghLemma> mghLemma = new ArrayList<>();
+    Set<MghLemma> mghLemma = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -287,7 +287,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "NamenkommentarID")}
     )
-    List<NamenKommentar> namenKommentar = new ArrayList<>();
+    Set<NamenKommentar> namenKommentar = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -297,7 +297,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "PersonID")}
     )
-    List<Person> person = new ArrayList<>();
+    Set<Person> person = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
@@ -307,7 +307,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "StandID")}
     )
-    List<SelektionStand> stand = new ArrayList<>();
+    Set<SelektionStand> stand = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -577,31 +577,31 @@ public class Einzelbeleg {
         return mghLemmaKorrigiert;
     }
 
-    public List<SelektionAmtWeihe> getAmtWeihe() {
+    public Set<SelektionAmtWeihe> getAmtWeihe() {
         return amtWeihe;
     }
 
-    public List<SelektionAreal> getAreal() {
+    public Set<SelektionAreal> getAreal() {
         return areal;
     }
 
-    public List<SelektionFunktion> getFunktion() {
+    public Set<SelektionFunktion> getFunktion() {
         return funktion;
     }
 
-    public List<MghLemma> getMghLemma() {
+    public Set<MghLemma> getMghLemma() {
         return mghLemma;
     }
 
-    public List<NamenKommentar> getNamenKommentar() {
+    public Set<NamenKommentar> getNamenKommentar() {
         return namenKommentar;
     }
 
-    public List<Person> getPerson() {
+    public Set<Person> getPerson() {
         return person;
     }
 
-    public List<SelektionStand> getStand() {
+    public Set<SelektionStand> getStand() {
         return stand;
     }
 
@@ -869,7 +869,7 @@ public class Einzelbeleg {
         this.mghLemmaKorrigiert = mghLemmaKorrigiert;
     }
 
-    public void setMghLemma(List<MghLemma> mghLemma) {
+    public void setMghLemma(Set<MghLemma> mghLemma) {
         this.mghLemma = mghLemma;
     }
 }
