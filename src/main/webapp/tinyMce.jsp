@@ -43,7 +43,16 @@
     <body>
         <%
 
-              String helpFileName = request.getParameter("loadFile").toString();
+              String helpFileName = "";
+            if(request.getParameter("loadFile") == null)
+            {
+                helpFileName = "hilfe.html";
+
+            }
+            else
+            {
+                 helpFileName = request.getParameter("loadFile").toString();
+            }
 
             if (request.getParameter("speichern") != null) {
                 String html = request.getParameter("area");
