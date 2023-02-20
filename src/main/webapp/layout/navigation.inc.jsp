@@ -111,7 +111,7 @@
   </a>
   <br>
   <hr>
-    <a href="edit" target="_blank">
+    <a href="file" target="_blank">
     Hilfe bearbeiten
   </a>
   <%

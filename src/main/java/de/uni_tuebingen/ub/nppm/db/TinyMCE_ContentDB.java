@@ -1,22 +1,14 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.model.*;
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspWriter;
 import org.hibernate.Session;
 
 public class TinyMCE_ContentDB extends AbstractBase {
@@ -54,6 +46,7 @@ public class TinyMCE_ContentDB extends AbstractBase {
         criteria.select(myImage);
         criteria.where(builder.equal(myImage.get(TinyMCE_Content_.ID), id));
         TinyMCE_Content content = session.createQuery(criteria).getSingleResult();
+        session.close();
         return content;
     }//end function
 
@@ -157,6 +150,5 @@ public class TinyMCE_ContentDB extends AbstractBase {
         session.getTransaction().commit();
         session.close();
     }
-
 
 }//end Class

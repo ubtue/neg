@@ -28,6 +28,8 @@ public class MghLemmaDB extends AbstractBase {
         NativeQuery query = session.createSQLQuery(SQL);
         query.addEntity(MghLemma.class);
         query.setMaxResults(1);
-        return (MghLemma)query.getSingleResult();
+        MghLemma result = (MghLemma)query.getSingleResult();
+        session.close();
+        return result;
     }
 }

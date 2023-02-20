@@ -14,13 +14,11 @@
 
 <%
     //When the page is accessed, the help.html is read from the database
-
     String myFile = "hilfe.html";
     TinyMCE_Content content = TinyMCE_ContentDB.getByName(myFile);
     byte[] htmlBytes = content.getContent();
     String utf8String = new String(htmlBytes, java.nio.charset.StandardCharsets.UTF_8);
     out.println(utf8String);
-
 %>
 
 

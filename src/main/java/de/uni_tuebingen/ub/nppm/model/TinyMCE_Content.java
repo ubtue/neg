@@ -15,7 +15,7 @@ public class TinyMCE_Content {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "ID")
+    @Column(name = "ID")
     int ID;
 
     @Column(name = "name", length = 255)
@@ -24,14 +24,12 @@ public class TinyMCE_Content {
     @Column(name = "contentType", length = 55)
     String content_Type;
 
-
     @Lob
-    @Type(type="org.hibernate.type.ImageType")
-    @Column(name="content", nullable=false, columnDefinition="blob")
+    @Type(type = "org.hibernate.type.ImageType")
+    @Column(name = "content", nullable = false, columnDefinition = "blob")
     private byte[] content;
 
     //Constructors
-
     public TinyMCE_Content() {
     }
 
@@ -42,7 +40,6 @@ public class TinyMCE_Content {
     }
 
     //Getters & Setters
-
     public int getID() {
         return ID;
     }
@@ -76,7 +73,6 @@ public class TinyMCE_Content {
     }
 
     //To-String
-
     @Override
     public String toString() {
         return "ImageContent{" + "ID=" + ID + ", name=" + name + ", content_Type=" + content_Type + ", content=" + content + '}';

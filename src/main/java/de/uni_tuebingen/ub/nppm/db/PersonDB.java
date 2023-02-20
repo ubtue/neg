@@ -37,6 +37,8 @@ public class PersonDB extends AbstractBase {
         NativeQuery query = session.createSQLQuery(SQL);
         query.addEntity(Person.class);
         query.setMaxResults(1);
-        return (Person)query.getSingleResult();
+        Person result = (Person)query.getSingleResult();
+        session.close();
+        return result;
     }
 }

@@ -19,6 +19,7 @@ public class EinzelbelegDB extends AbstractBase {
         criteria.select(einzelbeleg);
         criteria.where(builder.equal(einzelbeleg.get(Einzelbeleg_.ID), id));
         Einzelbeleg res =  session.createQuery(criteria).getSingleResult();
+        session.close();
         return res;
     }
 
@@ -39,6 +40,7 @@ public class EinzelbelegDB extends AbstractBase {
         String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
         Query query = session.createQuery(HQL).setMaxResults(1);
         Einzelbeleg einzelbeleg = (Einzelbeleg)query.getSingleResult();
+        session.close();
         return einzelbeleg;
     }
 }

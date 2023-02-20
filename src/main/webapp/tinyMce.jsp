@@ -41,18 +41,15 @@
         </script>
     </head>
     <body>
-        <%
+        <%            String helpFileName = request.getParameter("loadFile").toString();
 
-              String helpFileName = "";
-            if(request.getParameter("loadFile") == null)
-            {
+            /*
+            if (request.getParameter("loadFile") == null) {
                 helpFileName = "hilfe.html";
-
+            } else {
+                helpFileName = request.getParameter("loadFile").toString();
             }
-            else
-            {
-                 helpFileName = request.getParameter("loadFile").toString();
-            }
+*/
 
             if (request.getParameter("speichern") != null) {
                 String html = request.getParameter("area");
@@ -73,8 +70,7 @@
         <form method="post">
 
             <textarea id="mytextarea" name="area">
-                <%
-                    out.println(utf8String);
+                <%                    out.println(utf8String);
                 %>
             </textarea>
 
@@ -82,9 +78,8 @@
                 <div style="margin-right: 10px;" method="post">
                     <input type="submit" name="speichern" value="speichern"/>
                 </div>
-                <a href="img?pictureAccess=1" style="margin-right: 10px;">Bild Verwaltung</a>
-                <br>
-                 <a href="file?fileAccess=1" style="margin-right: 10px;">Datei Verwaltung</a>
+
+                <a href="file?fileAccess=1" style="margin-right: 10px;">Datei <%= DBtoHTML("&")%> Bild Verwaltung</a>
             </div>
         </form>
     </body>

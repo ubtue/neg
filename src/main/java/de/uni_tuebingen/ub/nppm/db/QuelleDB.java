@@ -25,10 +25,11 @@ public class QuelleDB extends AbstractBase {
 
         criteria.select(quelle).where(criteriaBuilder.equal(quelle.get("zuVeroeffentlichen"), 1));
 
-        Quelle un =  new Quelle();
+        Quelle result =  new Quelle();
         Query query = session.createQuery(criteria);
-        un = (Quelle)query.setMaxResults(1).uniqueResult();
-        return un;
+        result = (Quelle)query.setMaxResults(1).uniqueResult();
+        session.close();
+        return result;
     }
 }
 

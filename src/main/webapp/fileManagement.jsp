@@ -11,6 +11,7 @@
 <%@page import="org.apache.commons.fileupload.disk.*" isThreadSafe="false" %>
 <%@page import="org.apache.commons.fileupload.servlet.*" isThreadSafe="false" %>
 <%@page import="org.apache.commons.fileupload.util.*" isThreadSafe="false" %>
+<%@include file="functions.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,9 +20,8 @@
     </head>
     <body>
         <%
-         try {
-                out.println("<a href=\"edit\">Zurück zu TinyMce</a>");
-                out.println("<h2>Html Datei hochladen</h2>");
+            try {
+                out.println("<h2>Html Dateien & Bilder verwalten</h2>");
                 out.println("<form action=\"file?fileAccess=1\" method=\"POST\" enctype=\"multipart/form-data\">");
                 out.println("<input type=\"file\" name=\"file\">");
                 out.println("<br/><br/>");
@@ -47,11 +47,9 @@
 
                         if (!item.isFormField()) {
 
-                            if (item.getContentType().startsWith("text/html")) {
-                       //    int tempI = 12;
-                       //      if (tempI == 12) {
+                            if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("image")) {
 
-                                String pathname = this.getServletContext().getRealPath("/")  + item.getName();
+                                String pathname = this.getServletContext().getRealPath("/") + item.getName();
 
                                 String fileName = item.getName().toString();
 
@@ -87,7 +85,7 @@
             } catch (Exception e) {
                 out.println("Error: " + e.toString());
             }
-        try {
+            try {
 
         %>
 
@@ -103,20 +101,36 @@
                 for (TinyMCE_Content content : fileList) {
                     if (content.getContent_Type().startsWith("text/html")) {
                         String name = content.getName();
-                      //  String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
-                        String fileUrl = Utils.getBaseUrl(request) + "/content?name=" +name;
-
+                        String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
 
             %>
-                        <tr>
-                            <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
-                            <td><a href="edit?loadFile=<%=name%>">Load in TinyMce</a></td>
-                            <td>
-                                <form action="file?fileAccess=fileDelete&filename=<%=name%>"  method="post" enctype="multipart/form-data">
-                                    <input type="submit" name="deleteFile" value ="l&ouml;schen">
-                                </form>
-                            </td>
-                        </tr>
+            <tr>
+                <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
+                <td><a href="edit?loadFile=<%=name%>">Load in TinyMce</a></td>
+                <td>
+                    <form action="file?fileAccess=fileDelete&filename=<%=name%>"  method="post" enctype="multipart/form-data">
+                        <input type="submit" name="deleteFile" value ="l&ouml;schen">
+                    </form>
+                </td>
+            </tr>
+            <%
+                    }
+                }
+                for (TinyMCE_Content content : fileList) {
+                    if (content.getContent_Type().startsWith("image")) {
+                        String name = content.getName();
+                        String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+
+            %>
+            <tr>
+                <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
+                <td><img src="<%=imageUrl%>" height="256px"></td>
+                <td>
+                    <form action="file?fileAccess=fileDelete&filename=<%=name%>"  method="post" enctype="multipart/form-data">
+                        <input type="submit" name="deleteFile" value ="l&ouml;schen">
+                    </form>
+                </td>
+            </tr>
             <%
                     }
                 }

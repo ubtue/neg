@@ -26,6 +26,8 @@ public class NamenKommentarDB extends AbstractBase {
         NativeQuery query = session.createSQLQuery(SQL);
         query.addEntity(NamenKommentar.class);
         query.setMaxResults(1);
-        return (NamenKommentar)query.getSingleResult();
+        NamenKommentar result = (NamenKommentar)query.getSingleResult();
+        session.close();
+        return result;
     }
 }

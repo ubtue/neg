@@ -14,16 +14,16 @@ public class UrkundeDB extends AbstractBase {
     public static List getList() throws Exception {
         return getList(Urkunde.class);
     }
-    
+
     public static int determineUrkundeId(Integer quelleId) throws Exception{
-        
+
         String sqlId = "SELECT ID FROM urkunde WHERE QuelleID ="+ quelleId + ";";
-                
+
         Object urkundeId = DatenbankDB.getSingleResult(sqlId);
         //check if urkunde exist
         if(urkundeId != null)
             return (int)urkundeId;
-        
+
         //if not, insert new urkunde
         Session session = getSession();
         String sqlInsertUrkunde = "INSERT into urkunde (QuelleID) values ('"+ quelleId + "')";
@@ -31,9 +31,9 @@ public class UrkundeDB extends AbstractBase {
         NativeQuery query = session.createSQLQuery(sqlInsertUrkunde);
         query.executeUpdate();
         session.getTransaction().commit();
-        
+        session.close();
         //return urkunde id
-        return (int)DatenbankDB.getSingleResult(sqlId);        
+        return (int)DatenbankDB.getSingleResult(sqlId);
     }
 
      public static Urkunde getUrkunde(int quellenId) throws Exception {
@@ -47,8 +47,8 @@ public class UrkundeDB extends AbstractBase {
         criteria.select(urkunde).where(criteriaBuilder.equal(urkunde.get("quelle"), quellenId));
 
         TypedQuery<Urkunde> typedQuery = session.createQuery(criteria);
-        Urkunde un = typedQuery.getSingleResult();
-
-         return un;
+        Urkunde result = typedQuery.getSingleResult();
+        session.close();
+         return result;
     }
 }

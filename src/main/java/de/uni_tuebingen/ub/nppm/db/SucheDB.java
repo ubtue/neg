@@ -59,16 +59,16 @@ public class SucheDB extends AbstractBase {
 
         return ret;
     }
-    
+
     public static List getFields(String fields , String tablesString, String conditionsString, String export, Integer pageoffset, Integer pageLimit) throws Exception {
         String sql = "SELECT "+fields+" FROM "+tablesString+" WHERE ("+conditionsString+")";
         if (export != null && (export.equals("liste") || export.equals("browse")) && pageoffset != null && pageLimit != null)
             sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
         Session session = getSession();
         NativeQuery sqlQuery = session.createSQLQuery(sql);
-        
+
         sqlQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-        
+
         return sqlQuery.getResultList();
     }
 
@@ -160,6 +160,7 @@ public class SucheDB extends AbstractBase {
 
             endResultList.add(endResult);
         }
+        session.close();
         return endResultList;
     }
 }

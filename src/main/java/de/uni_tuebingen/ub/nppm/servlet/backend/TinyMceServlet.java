@@ -11,33 +11,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author root
- */
 public class TinyMceServlet extends HttpServlet {
 
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PrintWriter out = response.getWriter();
-        if (request.getParameter("pictureAccess") == null && request.getParameter("fileAccess") == null && request.getParameter("fileLoad") == null){
-            RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
+        if (request.getParameter("fileAccess") == null && request.getParameter("loadFile") == null) {
+            RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
             rd.include(request, response);
 
-        } else if(request.getParameter("pictureAccess") != null) {
-            String temp = request.getParameter("pictureAccess");
-            if (temp.equals("pictureDelete")) {
-                if (request.getParameter("filename") != null) {
-                    String deletePicture = (String) request.getParameter("filename");
-                    TinyMCE_ContentDB.deleteByName(deletePicture);
-                } else {
-                    out.println("Datei kann nicht gel&ouml;scht werden");
-                }
-            }
-            RequestDispatcher rd = request.getRequestDispatcher("img.jsp");
-            rd.include(request, response);
-        }
-        else if(request.getParameter("fileAccess") != null)
-        {
+        } else if (request.getParameter("fileAccess") != null) {
             String temp = request.getParameter("fileAccess");
             if (temp.equals("fileDelete")) {
                 if (request.getParameter("filename") != null) {
@@ -49,16 +31,13 @@ public class TinyMceServlet extends HttpServlet {
             }
             RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
             rd.include(request, response);
-        }
-        else if(request.getParameter("fileLoad") != null)
-        {
+        } else if (request.getParameter("loadFile") != null) {
 
             RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
             rd.include(request, response);
         }
 
     }//end function
-
 
     protected void initRequest(HttpServletRequest request) throws Exception {
         Language.setLanguage(request);

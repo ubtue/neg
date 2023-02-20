@@ -21,13 +21,13 @@ String chop (String text, int letters) {
 
 boolean isSet(String zielTabelle, String zielAttribut, int id , Statement st){
 	  String sql = "SELECT "+zielAttribut+" FROM "+zielTabelle+" WHERE ID=\""+id+"\"";
-	  
 
-	  
+
+
 	  ResultSet  rs = null;
 	  try {
 	    rs = st.executeQuery(sql);
-	    if ( rs.next() && rs.getString(zielAttribut) != null && rs.getInt(zielAttribut) == 1) 
+	    if ( rs.next() && rs.getString(zielAttribut) != null && rs.getInt(zielAttribut) == 1)
             {
             	      return true;
 	        }
@@ -60,10 +60,10 @@ Vector calcCenturies(int von, int bis){
 
    int vonCent = von / 100;
    if(!(von % 100 == 0))vonCent++;
-   
+
    int bisCent = bis / 100;
    if(!(bis % 100 == 0))bisCent++;
-   
+
    for(int i=vonCent; i<=bisCent; i++){
       ret.add(i + "");
       ret.add(i + "Jh");
@@ -76,12 +76,12 @@ Vector calcCenturies(int von, int bis){
 
 String DBtoHTML(String s) {
   if(s==null) return s;
- // s = s.replace("&", "&amp;");
+  s = s.replace("&", "&amp;");
   s = s.replace("<", "&lt;");
   s = s.replace(">", "&gt;");
   s = s.replace("\"", "&quot;");
   s = s.replace("\'", "&#039;");
- 
+
   s = s.replace("ä", "&auml;");
   s = s.replace("ö", "&ouml;");
   s = s.replace("ü", "&uuml;");
@@ -123,7 +123,7 @@ String HTMLtoDB(String s) {
   s = s.replace("&gt;", ">");
   s = s.replace("&quot;", "\"");
   s = s.replace("&#039;", "\'");
- 
+
   s = s.replace("&auml;", "ä");
   s = s.replace("&ouml;", "ö");
   s = s.replace("&uuml;", "ü");
@@ -240,23 +240,23 @@ int max(int a, int b) {
 }
 
 
-String getLabel(String formular, String datenfeld, String textfeld, Statement st, String sprache) throws Exception{	  
+String getLabel(String formular, String datenfeld, String textfeld, Statement st, String sprache) throws Exception{
 	  if (datenfeld == null && textfeld != null) {
             return DatenbankDB.getLabel(sprache, formular, textfeld);
-            
+
 	  }
 	  else if (datenfeld != null && textfeld == null) {
             return DatenbankDB.getMapping(sprache, formular, datenfeld);
 	  }
 
 	  return "";
-	
+
 }
 
 String format(String text, String feld){
-	if(!feld.endsWith("PLemma") && !feld.endsWith("MGHLemma") && !feld.endsWith("Klarlemma")) 
+	if(!feld.endsWith("PLemma") && !feld.endsWith("MGHLemma") && !feld.endsWith("Klarlemma"))
 		return text;
-	
+
 	String lemma = text;
 	lemma = lemma.replaceAll("@-e1", "&#x01E3;");
 	lemma = lemma.replaceAll("@-E1", "&#x01E2;");
@@ -282,15 +282,15 @@ String format(String text, String feld){
 			+ lemma.substring(1);
 	else if(lemma.length()>0)lemma = lemma.substring(0, 1).toUpperCase();
 
-	
-	if(lemma.startsWith("&#x01E3;")) lemma = "&#x01E2;"+ lemma.substring(8); 
-	if(lemma.startsWith("&#x012B;")) lemma = "&#x012A;"+ lemma.substring(8); 
-	if(lemma.startsWith("&thorn;")) lemma = "&THORN;"+ lemma.substring(7); 
-	if(lemma.startsWith("&#x0101;")) lemma = "&#x0100;"+ lemma.substring(8); 
-	if(lemma.startsWith("&#x014D;")) lemma = "&#x014C;"+ lemma.substring(8); 
-	if(lemma.startsWith("&#x0113;")) lemma = "&#x0112;"+ lemma.substring(8); 
-	if(lemma.startsWith("&#x016B;")) lemma = "&#x016A;"+ lemma.substring(8); 
-	
+
+	if(lemma.startsWith("&#x01E3;")) lemma = "&#x01E2;"+ lemma.substring(8);
+	if(lemma.startsWith("&#x012B;")) lemma = "&#x012A;"+ lemma.substring(8);
+	if(lemma.startsWith("&thorn;")) lemma = "&THORN;"+ lemma.substring(7);
+	if(lemma.startsWith("&#x0101;")) lemma = "&#x0100;"+ lemma.substring(8);
+	if(lemma.startsWith("&#x014D;")) lemma = "&#x014C;"+ lemma.substring(8);
+	if(lemma.startsWith("&#x0113;")) lemma = "&#x0112;"+ lemma.substring(8);
+	if(lemma.startsWith("&#x016B;")) lemma = "&#x016A;"+ lemma.substring(8);
+
 	return lemma;
 }
 
@@ -307,7 +307,7 @@ String[] getdMGHUrl(Connection cn, String einzelbelegID) {
 			  "where b.editionid = e.id " +
 			  "and d.id > 0 " +
 			  "and e.dmghbandid = d.id " +
-			  "and b.id = " + einzelbelegID 
+			  "and b.id = " + einzelbelegID
 		  );
 		  if(rs.next()) {
 			  String seiteZeile = rs.getString("seite").trim();
@@ -320,7 +320,7 @@ String[] getdMGHUrl(Connection cn, String einzelbelegID) {
 			  String url = rs.getString("url");
 			  dmghUrl = String.format("http://www.mgh.de/dmgh/resolving/%s_%s_S._%s",
 					  url, band, seite);
-			  linkinfo = String.format("%s %s, S. %s, Zeile %s", 
+			  linkinfo = String.format("%s %s, S. %s, Zeile %s",
 					  url.replace("_", " "), band, seite, zeile);
 		  }
 	  }
@@ -333,7 +333,7 @@ String[] getdMGHUrl(Connection cn, String einzelbelegID) {
 	  }
 	 return new String[] {
 		dmghUrl,
-		linkinfo		
+		linkinfo
 	 };
 }
 
@@ -341,6 +341,6 @@ String getBelegformLinked(Connection cn, String einzelbelegID, String belegform)
 	String[] dmghUrl = getdMGHUrl(cn, einzelbelegID);
 	if(dmghUrl[0].isEmpty())
 		return belegform;
-	return String.format("<a href='%s' title='%s'>%s</a>", dmghUrl[0], dmghUrl[1], belegform); 
+	return String.format("<a href='%s' title='%s'>%s</a>", dmghUrl[0], dmghUrl[1], belegform);
 }
 %>

@@ -16,7 +16,10 @@ public class BenutzerDB extends AbstractBase {
         criteria.select(benutzer);
         criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
 
-        return session.createQuery(criteria).getResultList();
+        List result = session.createQuery(criteria).getResultList();
+        session.close();
+        return result;
+
     }
 
     public static List getListAktiv() throws Exception {
@@ -29,7 +32,9 @@ public class BenutzerDB extends AbstractBase {
         criteria.where(builder.isTrue(benutzer.get(Benutzer_.IstAktiv)));
         criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
 
-        return session.createQuery(criteria).getResultList();
+        List result = session.createQuery(criteria).getResultList();
+        session.close();
+        return result;
     }
 
     public static List getListInaktiv() throws Exception {
@@ -42,7 +47,9 @@ public class BenutzerDB extends AbstractBase {
         criteria.where(builder.isFalse(benutzer.get(Benutzer_.IstAktiv)));
         criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
 
-        return session.createQuery(criteria).getResultList();
+        List result = session.createQuery(criteria).getResultList();
+        session.close();
+        return result;
     }
 
     public static Benutzer getById(int id) throws Exception {
@@ -53,6 +60,7 @@ public class BenutzerDB extends AbstractBase {
         criteria.select(benutzer);
         criteria.where(builder.equal(benutzer.get(Benutzer_.ID), id));
         Benutzer res =  session.createQuery(criteria).getSingleResult();
+        session.close();
         return res;
     }
 
@@ -64,6 +72,7 @@ public class BenutzerDB extends AbstractBase {
         criteria.select(benutzer);
         criteria.where(builder.equal(benutzer.get(Benutzer_.Login), login));
         Benutzer res =  session.createQuery(criteria).getSingleResult();
+        session.close();
         return res;
     }
 
@@ -75,6 +84,7 @@ public class BenutzerDB extends AbstractBase {
         criteria.select(benutzer);
         criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), mail));
         Benutzer res =  session.createQuery(criteria).getSingleResult();
+        session.close();
         return res;
     }
 
@@ -109,5 +119,6 @@ public class BenutzerDB extends AbstractBase {
         session.getTransaction().begin();
         session.saveOrUpdate(b);
         session.getTransaction().commit();
+        session.close();
     }
 }
