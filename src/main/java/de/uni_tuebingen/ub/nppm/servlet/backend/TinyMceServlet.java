@@ -1,19 +1,12 @@
 package de.uni_tuebingen.ub.nppm.servlet.backend;
 
-import de.uni_tuebingen.ub.nppm.db.TinyMCE_ContentDB;
-import de.uni_tuebingen.ub.nppm.servlet.backend.*;
-import de.uni_tuebingen.ub.nppm.db.PersonDB;
-import de.uni_tuebingen.ub.nppm.model.TinyMCE_Content;
-import de.uni_tuebingen.ub.nppm.util.Language;
+import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,31 +18,47 @@ import javax.servlet.http.HttpServletResponse;
 public class TinyMceServlet extends HttpServlet {
 
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-         PrintWriter out = response.getWriter();
-        if (request.getParameter("pictureAccess") == null) {
-            RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
+        PrintWriter out = response.getWriter();
+        if (request.getParameter("pictureAccess") == null && request.getParameter("fileAccess") == null && request.getParameter("fileLoad") == null){
+            RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
             rd.include(request, response);
 
-
-        } else {
+        } else if(request.getParameter("pictureAccess") != null) {
             String temp = request.getParameter("pictureAccess");
-            if(temp.equals("pictureDelete"))
-            {
-               if(request.getParameter("filename") != null)
-               {
-                    String deletePicture = (String)request.getParameter("filename");
+            if (temp.equals("pictureDelete")) {
+                if (request.getParameter("filename") != null) {
+                    String deletePicture = (String) request.getParameter("filename");
                     TinyMCE_ContentDB.deleteByName(deletePicture);
-               }
-               else
-               {
-                   out.println("Datei kann nicht gel&ouml;scht werden");
-               }
+                } else {
+                    out.println("Datei kann nicht gel&ouml;scht werden");
+                }
             }
             RequestDispatcher rd = request.getRequestDispatcher("img.jsp");
             rd.include(request, response);
         }
+        else if(request.getParameter("fileAccess") != null)
+        {
+            String temp = request.getParameter("fileAccess");
+            if (temp.equals("fileDelete")) {
+                if (request.getParameter("filename") != null) {
+                    String deleteFile = (String) request.getParameter("filename");
+                    TinyMCE_ContentDB.deleteByName(deleteFile);
+                } else {
+                    out.println("Datei kann nicht gel&ouml;scht werden");
+                }
+            }
+            RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
+            rd.include(request, response);
+        }
+        else if(request.getParameter("fileLoad") != null)
+        {
 
-    }
+            RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
+            rd.include(request, response);
+        }
+
+    }//end function
+
 
     protected void initRequest(HttpServletRequest request) throws Exception {
         Language.setLanguage(request);

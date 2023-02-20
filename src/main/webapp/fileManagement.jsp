@@ -1,8 +1,8 @@
-<%@page import="de.uni_tuebingen.ub.nppm.model.TinyMCE_Content"%>
-<%@page import="java.util.List"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
-﻿<%@page import="java.io.File"%>
+<%@page import="java.util.List"%>
+<%@page import="java.io.File"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.net.URL"%>
 <%@page import="java.io.*"%>
@@ -11,27 +11,22 @@
 <%@page import="org.apache.commons.fileupload.disk.*" isThreadSafe="false" %>
 <%@page import="org.apache.commons.fileupload.servlet.*" isThreadSafe="false" %>
 <%@page import="org.apache.commons.fileupload.util.*" isThreadSafe="false" %>
-<%@include file="functions.jsp" %>
-
-<%    if (AuthHelper.isAdminLogin(request)) {
-
-%>
 <!DOCTYPE html>
 <html>
     <head>
-        <script type="text/javascript" src="../javascript/funktionen.js"></script>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
     </head>
     <body>
-
         <%
-            try {
+         try {
                 out.println("<a href=\"edit\">Zurück zu TinyMce</a>");
-                out.println("<h2>Bild hochladen</h2>");
-                out.println("<form action=\"img?pictureAccess=1\" method=\"POST\" enctype=\"multipart/form-data\">");
+                out.println("<h2>Html Datei hochladen</h2>");
+                out.println("<form action=\"file?fileAccess=1\" method=\"POST\" enctype=\"multipart/form-data\">");
                 out.println("<input type=\"file\" name=\"file\">");
                 out.println("<br/><br/>");
                 out.println("<input type=\"submit\" value=\"hochladen\">");
-                out.println("<input type=\"hidden\" name=\"pictureAccess\" >");
+                out.println("<input type=\"hidden\" name=\"fileAccess\" >");
                 out.println("</form>");
 
                 if (ServletFileUpload.isMultipartContent(request)) {
@@ -52,14 +47,15 @@
 
                         if (!item.isFormField()) {
 
-                            if (item.getContentType().startsWith("image")) {
+                            if (item.getContentType().startsWith("text/html")) {
 
-                                String pathname = this.getServletContext().getRealPath("/") + "layout/" + item.getName();
-                                String pictureName = item.getName().toString();
+                                String pathname = this.getServletContext().getRealPath("/")  + item.getName();
 
-                                boolean pictureExists = TinyMCE_ContentDB.searchName(pictureName);
+                                String fileName = item.getName().toString();
 
-                                if (pictureExists == true) {
+                                boolean fileExists = TinyMCE_ContentDB.searchName(fileName);
+
+                                if (fileExists == true) {
 
                                     out.println("<p>Datei existiert bereits!</p>"); //hier pop up window
                                 } else {
@@ -72,7 +68,7 @@
                                     file.close();
 
                                     //Now copy from temp folder to database/table
-                                    TinyMCE_ContentDB.saveFile(pathname, pictureName, contentType);
+                                    TinyMCE_ContentDB.saveFile(pathname, fileName, contentType);
 
                                     //Now delete the temporary file again
                                     File myObj = new File(pathname);
@@ -89,31 +85,32 @@
             } catch (Exception e) {
                 out.println("Error: " + e.toString());
             }
-
-            try {
+        try {
 
         %>
 
         <table style="border-collapse:collapse;" border=1>
             <tr>
                 <th>Pfad</th>
-                <th>Abbildung</th>
+                <th>Load</th>
                 <th>&nbsp;</th>
             </tr>
 
-            <%                     List<TinyMCE_Content> pictureList = TinyMCE_ContentDB.getList();
+            <%                     List<TinyMCE_Content> fileList = TinyMCE_ContentDB.getList();
 
-                for (TinyMCE_Content content : pictureList) {
-                    if (content.getContent_Type().startsWith("image")) {
+                for (TinyMCE_Content content : fileList) {
+                    if (content.getContent_Type().startsWith("text/html")) {
                         String name = content.getName();
-                        String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+                      //  String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+                        String fileUrl = Utils.getBaseUrl(request) + "/content?name=" +name;
+
 
             %>
                         <tr>
-                            <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
-                            <td><img src="<%=imageUrl%>" height="256px"></td>
+                            <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
+                            <td><a href="edit?loadFile=<%=name%>">Load in TinyMce</a></td>
                             <td>
-                                <form action="img?pictureAccess=pictureDelete&filename=<%=name%>"  method="post" enctype="multipart/form-data">
+                                <form action="file?fileAccess=fileDelete&filename=<%=name%>"  method="post" enctype="multipart/form-data">
                                     <input type="submit" name="deleteFile" value ="l&ouml;schen">
                                 </form>
                             </td>
@@ -133,20 +130,3 @@
         %>
     </body>
 </html>
-<%} else {
-%>
-<p>
-    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-    </jsp:include>
-</p>
-<a href="index.jsp">
-    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-    </jsp:include>
-</a>
-<%
-    }
-%>

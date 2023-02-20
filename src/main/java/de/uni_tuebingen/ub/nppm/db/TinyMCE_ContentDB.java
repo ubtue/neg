@@ -1,15 +1,22 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import de.uni_tuebingen.ub.nppm.model.TinyMCE_Content;
-import de.uni_tuebingen.ub.nppm.model.TinyMCE_Content_;
+import de.uni_tuebingen.ub.nppm.model.*;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.JspWriter;
 import org.hibernate.Session;
 
 public class TinyMCE_ContentDB extends AbstractBase {
@@ -22,11 +29,12 @@ public class TinyMCE_ContentDB extends AbstractBase {
         session.close();
     }//end function
 
-     public static void saveFile(String path, String name, String content_Type) throws Exception {
+    public static void saveFile(String path, String name, String content_Type) throws Exception {
         Session session = getSession();
         byte[] photoBytes = readBytesFromFile(path);
         TinyMCE_Content myImage = new TinyMCE_Content(name, content_Type, photoBytes);
         putToDatabase(myImage);
+        session.close();
     }//end function
 
     private static byte[] readBytesFromFile(String filePath) throws Exception {
@@ -57,6 +65,7 @@ public class TinyMCE_ContentDB extends AbstractBase {
         criteria.select(myImage);
         criteria.where(builder.equal(myImage.get(TinyMCE_Content_.NAME), name));
         TinyMCE_Content content = session.createQuery(criteria).getSingleResult();
+        session.close();
         return content;
     }//end function
 
@@ -67,10 +76,10 @@ public class TinyMCE_ContentDB extends AbstractBase {
         Root myImage = criteria.from(TinyMCE_Content.class);
         criteria.getOrderList();
         List<TinyMCE_Content> images = (List<TinyMCE_Content>) session.createQuery(criteria).list();
+        session.close();
         return images;
     }//end function
 
-    // unused function for future use ...
     public static void copyPicturesFromDatabaseTableToTempFolder(String outputDirectory) throws Exception {
         Session session = getSession();
         List<TinyMCE_Content> pictures = TinyMCE_ContentDB.getList();
@@ -80,11 +89,10 @@ public class TinyMCE_ContentDB extends AbstractBase {
             byte[] photoBytes = ic.getContent();
             saveBytesToFile(filePathToSave, photoBytes);
         }
+        session.close();
     }//end function
 
-
-
-
+    // unused function for future use ...
     public static void copyHTMLFromDatabaseTableToTempFolder(String outputDirectory, String name) throws Exception {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -93,10 +101,10 @@ public class TinyMCE_ContentDB extends AbstractBase {
         criteria.select(myImage);
         criteria.where(builder.equal(myImage.get(TinyMCE_Content_.NAME), name));
         TinyMCE_Content content = session.createQuery(criteria).getSingleResult();
-         String filePathToSave = outputDirectory + name;
-            byte[] HtmlBytes = content.getContent();
-            saveBytesToFile(filePathToSave, HtmlBytes);
-
+        String filePathToSave = outputDirectory + name;
+        byte[] HtmlBytes = content.getContent();
+        saveBytesToFile(filePathToSave, HtmlBytes);
+        session.close();
     }//end function
 
     private static void saveBytesToFile(String filePath, byte[] fileBytes) throws Exception {
@@ -105,10 +113,9 @@ public class TinyMCE_ContentDB extends AbstractBase {
         outputStream.close();
     }//end function
 
-
     public static void deleteByName(String name) throws Exception {
+        Session session = getSession();
         try {
-            Session session = getSession();
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
             Root myImage = criteria.from(TinyMCE_Content.class);
@@ -118,16 +125,14 @@ public class TinyMCE_ContentDB extends AbstractBase {
             session.beginTransaction();
             session.delete(image);
             session.getTransaction().commit();
-
+            session.close();
         } catch (Exception e) {
-            // out.println("Invaders from Mars: " + e.toString());
+            session.close();
         }
     }//end function
 
-
     //Search if name exists in database
-    public static boolean searchName(String name) throws Exception
-    {
+    public static boolean searchName(String name) throws Exception {
         boolean available = false;
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -135,15 +140,23 @@ public class TinyMCE_ContentDB extends AbstractBase {
         Root picture = criteria.from(TinyMCE_Content.class);
         criteria.select(picture);
         criteria.where(builder.equal(picture.get(TinyMCE_Content_.NAME), name));
-        List<TinyMCE_Content> pictures =  (List<TinyMCE_Content>) session.createQuery(criteria).list();
-        if(!pictures.isEmpty())
-        {
+        List<TinyMCE_Content> pictures = (List<TinyMCE_Content>) session.createQuery(criteria).list();
+        if (!pictures.isEmpty()) {
             available = true;
-        }
-        else
-        {
+        } else {
             available = false;
         }
+        session.close();
         return available;
-   }//end fuction
+    }//end fuction
+
+    public static void saveOrUpdate(TinyMCE_Content content) throws Exception {
+        Session session = getSession();
+        session.getTransaction().begin();
+        session.saveOrUpdate(content);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+
 }//end Class

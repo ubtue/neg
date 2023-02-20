@@ -13,33 +13,15 @@
 <%@page import="org.apache.commons.fileupload.util.*" isThreadSafe="false" %>
 
 <%
-               //When the page is accessed, the help.thml is copied from the database to a temporary folder and read from there
+    //When the page is accessed, the help.html is read from the database
 
-                String jspPath = session.getServletContext().getRealPath("gast") + "/";
+    String myFile = "hilfe.html";
+    TinyMCE_Content content = TinyMCE_ContentDB.getByName(myFile);
+    byte[] htmlBytes = content.getContent();
+    String utf8String = new String(htmlBytes, java.nio.charset.StandardCharsets.UTF_8);
+    out.println(utf8String);
 
-                String name = "hilfe.html";
-                boolean available = TinyMCE_ContentDB.searchName(name);
-                if(available)
-                {
-                    TinyMCE_ContentDB.copyHTMLFromDatabaseTableToTempFolder(jspPath, name);
-                }
-                else
-                {
-                    out.println("Error: Datei " + name + " ist nicht vorhanden");
-                }
-
-                String txtFilePath = jspPath + "hilfe.html";
-                BufferedReader reader = new BufferedReader(new FileReader(txtFilePath));
-                StringBuilder sb = new StringBuilder();
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                String myString = sb.toString();
-
-            %>
-<jsp:include page="hilfe.html" />
+%>
 
 
 
