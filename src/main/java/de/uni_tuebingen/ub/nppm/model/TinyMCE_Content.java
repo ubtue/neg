@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = "tinyMce_test")
+@Table(name = "tinyMce_content")
 public class TinyMCE_Content {
 
     @Id
