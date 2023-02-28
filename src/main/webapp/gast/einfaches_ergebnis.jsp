@@ -1,6 +1,7 @@
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
-<%@ include file="../group.jsp" %>
+
+
 
 
 
