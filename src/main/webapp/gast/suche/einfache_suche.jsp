@@ -65,7 +65,6 @@
             }
         }
         out.println("<script>console.log('Using query term: " + query_like.replaceAll("'", "\\'") + "')</script>");
-        //<<
 
         out.println("<div id=\"level_function\"> <div class=\"open_next_level\" onClick=\"expandNextLevel('complete')\">Weitere Ebene aufklappen</div>");
         out.print("<div class=\"close_prev_level\" onClick=\"collapseNextLevel('complete')\">Weitere Ebene zuklappen</div></div>");
@@ -207,7 +206,7 @@
                 + "person.Standardname ASC, e2.Belegform ASC, (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, "
                 + "quelle.BisJahrhundert) DIV 25), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC";
 
-     //   out.println(sql);
+        //   out.println(sql);
         belegform = "";
         firstBeleg = true;
 
@@ -243,40 +242,6 @@
         headlines.add("EB bis Jh.");
         headlines.add("EB Jahr");
 
-        /*
-        fieldNames = new Vector<String>();
-        fieldNames.add("Standardname");
-        fieldNames.add("Bezeichnung");
-        fieldNames.add("Titel");
-        fieldNames.add("EditionKapitel");
-        fieldNames.add("EditionSeite");
-        fieldNames.add("quelleVonJahr");
-        fieldNames.add("quelleVonJahrhundert");
-        fieldNames.add("quelleBisJahr");
-        fieldNames.add("quelleBisJahrhundert");
-        fieldNames.add("Belegform");
-        fieldNames.add("quelleVonJahr");
-        fieldNames.add("quelleVonJahrhundert");
-        fieldNames.add("quelleBisJahr");
-        fieldNames.add("quelleBisJahrhundert");
-        fieldNames.add("einzelbelegBerJahr");
-
-         sql = "SELECT DISTINCT person.Standardname, person.ID as personID, quelle.Bezeichnung , quelle.ID as quelleID, edition.Titel as editionTitel, edition.ID as editionID, "
-                + "e2.EditionKapitel, e2.EditionSeite, quelle.VonTag as quelleVonTag, quelle.VonMonat as  quelleVonMonat, quelle.VonJahr as quelleVonJahr , "
-                + "quelle.VonJahrhundert as quelleVonJahrhundert, quelle.BisTag as quelleBisTag,  quelle.BisMonat as quelleBisMonat, quelle.BisJahr as quelleBisJahr, quelle.BisJahrhundert as  quelleBisJahrhundert, e2.Belegform, "
-                + "e2.ID as e2ID, e2.VonTag, e2.VonMonat, e2.VonJahr, e2.VonJahrhundert, "
-                + "e2.BisTag, e2.BisMonat, e2.BisJahr, e2.BisJahrhundert, "
-                + "VON_JAHR_JHDT(e2.VonJahr, e2.VonJahrhundert, e2.BisJahrhundert) AS einzelbelegBerJahr "
-                + "FROM (SELECT * FROM person WHERE person.Standardname LIKE '" + query_like + "' "
-                + "OR person.ID IN (SELECT personID FROM person_variante WHERE Variante LIKE '" + query_like + "')) as person "
-                + "LEFT OUTER JOIN einzelbeleg_hatperson eh2 ON eh2.PersonID=person.ID "
-                + "LEFT OUTER JOIN einzelbeleg e2 ON e2.ID=eh2.EinzelbelegID "
-                + "LEFT OUTER JOIN quelle ON e2.QuelleID=quelle.ID "
-                + "LEFT OUTER JOIN edition ON e2.EditionID=edition.ID "
-                + "WHERE (quelle.zuVeroeffentlichen='1') "
-                + "ORDER BY person.Standardname ASC, quelle.Bezeichnung ASC, e2.Belegform ASC, (VON_JAHR_JHDT(e2.VonJahr, e2.VonJahrhundert, e2.BisJahrhundert) DIV 25), VON_JAHR_JHDT(e2.VonJahr, e2.VonJahrhundert, e2.BisJahrhundert) ASC";
-
-    */
         fieldNames = new Vector<String>();
         fieldNames.add("Standardname");
         fieldNames.add("Bezeichnung");
@@ -340,7 +305,7 @@
         String[] orderV3 = {"Bezeichnung"};
 
         sql = "SELECT DISTINCT quelle.Bezeichnung, quelle.ID as quelleID, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr FROM quelle WHERE (quelle.Bezeichnung LIKE '" + query_like + "' and quelle.zuVeroeffentlichen='1') ORDER BY quelle.Bezeichnung ASC ,VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC ";
-//	out.println(sql);
+	//out.println(sql);
 
         resultAsMap = SucheDB.getEinfacheSucheResult(sql);
 
@@ -420,7 +385,6 @@
         }
 
         out.println("</ul>");
-
 
 %>
 <script type="text/javascript">

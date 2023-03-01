@@ -25,7 +25,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 
-
 public class SucheDB extends AbstractBase {
 
     public static List getFavoriten() throws Exception {
@@ -75,10 +74,11 @@ public class SucheDB extends AbstractBase {
         }
     }
 
-    public static List getFields(String fields , String tablesString, String conditionsString, String export, Integer pageoffset, Integer pageLimit) throws Exception {
-        String sql = "SELECT "+fields+" FROM "+tablesString+" WHERE ("+conditionsString+")";
-        if (export != null && (export.equals("liste") || export.equals("browse")) && pageoffset != null && pageLimit != null)
-            sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
+    public static List getFields(String fields, String tablesString, String conditionsString, String export, Integer pageoffset, Integer pageLimit) throws Exception {
+        String sql = "SELECT " + fields + " FROM " + tablesString + " WHERE (" + conditionsString + ")";
+        if (export != null && (export.equals("liste") || export.equals("browse")) && pageoffset != null && pageLimit != null) {
+            sql += " LIMIT " + (pageoffset * pageLimit) + ", " + pageLimit;
+        }
         Session session = getSession();
         try {
             NativeQuery sqlQuery = session.createSQLQuery(sql);
@@ -214,7 +214,7 @@ public class SucheDB extends AbstractBase {
                     header += headlines.get(i);
                     header += "</th>";
                 }
-            }//end for
+            }
             boolean even = false;
             header += "</tr>";
 
@@ -238,9 +238,9 @@ public class SucheDB extends AbstractBase {
                             jahr = Integer.parseInt(jahrV);
                             jahr = jahr / zeitraum;
                             jahrV = "" + jahr;
-                        }//end if
+                        }
 
-                    }//end else
+                    }
 
                     if (first[z] || rs.get(orderV[z]) != null && !jahrV.equalsIgnoreCase(oldValue[z])) {
                         oldValue[z] = jahrV;
@@ -250,7 +250,7 @@ public class SucheDB extends AbstractBase {
                                 out.print("</ul></li>");
                             }
 
-                        }//end if
+                        }
                         first[z] = false;
                         for (int z2 = z + 1; z2 < orderSize; z2++) {
                             first[z2] = true;
@@ -307,7 +307,8 @@ public class SucheDB extends AbstractBase {
                                 out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
                                 link = true;
                             }
-                            /*else if (orderV[z].equals("editionTitel") && rs.get("editionID") != null) {  //vielleicht löschen
+                            /* only for Administrator old code maybe for later use
+                            else if (orderV[z].equals("editionTitel") && rs.get("editionID") != null) {
                                 try {
                                     out.print("<a href=\"edition?ID=" + (int) rs.get("editionID") + "\">");
                                     link = true;
@@ -379,7 +380,7 @@ public class SucheDB extends AbstractBase {
                                 out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
                                 link = true;
                             }
-                            /*
+                            /* only for Administrator old code maybe for later use
                             else if (fieldNames.get(i).contains("editionTitel")) { //vielleicht löschen
                                 try {
                                     out.print("<a href=\"edition?ID=" + (int) rs.get("editionID") + "\">");
@@ -388,7 +389,7 @@ public class SucheDB extends AbstractBase {
                                     link = false;
                                 }
                             }
-                            */
+                             */
 
                             if (fieldNames.get(i).endsWith("PLemma") || fieldNames.get(i).equals("Erstglied") || fieldNames.get(i).equals("Zweitglied")) {
                                 cell = format(cell, "PLemma");
@@ -397,8 +398,7 @@ public class SucheDB extends AbstractBase {
                             if (link) {
                                 out.print("</a> ");
                             }
-                        }//end if
-                        else {
+                        } else {
                             out.print("&nbsp;");
                         }
                         out.print("</td>");
@@ -410,7 +410,7 @@ public class SucheDB extends AbstractBase {
                 even = !even;
             }
 
-            //abschliesendes ...
+            //final closing...
             out.print("</tr>");
             out.print("</table>");
 
@@ -428,8 +428,5 @@ public class SucheDB extends AbstractBase {
             String stackTrace = writer.toString();
             out.println(stackTrace);
         }
-
-    }//end function
-
-
+    }
 }
