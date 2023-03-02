@@ -345,7 +345,7 @@
         fieldNames.add("quelleVonJahrhundert");
         fieldNames.add("quelleBisJahr");
         fieldNames.add("quelleBisJahrhundert");
-        fieldNames.add("Belegform");
+        fieldNames.add("e2Belegform");
         fieldNames.add("VonJahr");
         fieldNames.add("VonJahrhundert");
         fieldNames.add("BisJahr");
@@ -355,12 +355,12 @@
         orderSize = 0;
         order = "ORDER BY einzelbeleg.Belegform, (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) DIV 25), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC, quelle.Bezeichnung ASC ";
 
-        String orderV4[] = {"Belegform", "quelleBerJahr", "Bezeichnung"};
+        String orderV4[] = {"e2Belegform", "quelleBerJahr", "Bezeichnung"};
 
         sql = "SELECT DISTINCT quelle.Bezeichnung, "
                 + "quelle.ID as quelleID, edition.Titel as editionTitel, edition.ID as editionID, e2.EditionKapitel, e2.EditionSeite, quelle.VonTag as quelleVonTag, "
                 + "quelle.VonMonat as quelleVonMonat, quelle.VonJahr as quelleVonJahr, quelle.VonJahrhundert as quelleVonJahrhundert, quelle.BisTag as quelleBisTag, quelle.BisMonat as quelleBisMonat, quelle.BisJahr as quelleBisJahr, "
-                + "quelle.BisJahrhundert as quelleBisJahrhundert, e2.Belegform, e2.ID as e2ID, e2.VonTag, e2.VonMonat, "
+                + "quelle.BisJahrhundert as quelleBisJahrhundert, e2.Belegform as e2Belegform, e2.ID as e2ID, e2.VonTag, e2.VonMonat, "
                 + "e2.VonJahr, e2.VonJahrhundert, e2.BisTag, e2.BisMonat, e2.BisJahr, "
                 + "e2.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS "
                 + "quelleBerJahr FROM (select * from einzelbeleg where Belegform LIKE '" + query_like + "') as e2 "
