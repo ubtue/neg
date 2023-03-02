@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@page import="java.util.Map"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.SucheDB"%>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
@@ -141,7 +142,7 @@
             found = true;
             out.print("<li  style=\"width:49%;float:left;\" class=\"liOpen\" style=\"font-size:large\">\"" + query + "\" entspricht dem Lemma folgender Namen <ul>");
 
-            SucheDB.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV0, order, "", false);
+            Utils.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV0, order, "", false);
             out.println("</ul></li>");
 
         }
@@ -219,7 +220,7 @@
             found = true;
             out.print("<li  style=\"width:45%;float:left;margin-left:1em\"  class=\"liOpen\" style=\"font-size:large\">MGH-Lemma <ul>");
 
-            SucheDB.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV1, order, "", false);
+            Utils.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV1, order, "", false);
             out.println("</ul></li>");
 
         }
@@ -287,7 +288,7 @@
                     + (is_exact_query ? "entspricht dem Namen oder einer Namensvariante folgender Personen" : "kommt im Namen oder einer Namensvariante folgender Personen vor")
                     + " <ul>");
 
-            SucheDB.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV2, order, "EB Jahr", false);
+            Utils.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV2, order, "EB Jahr", false);
 
             out.println("</ul></li>");
         }
@@ -313,7 +314,7 @@
             found = true;
             out.print("<li style=\"width:100%;float:left\" class=\"liOpen\" style=\"margin-top:20pt;font-size:large\">\"" + query + "\" entspricht dem Namen folgender Quellen <ul>");
 
-            SucheDB.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV3, order, "", false);
+            Utils.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV3, order, "", false);
 
             out.println("</ul></li>");
         }
@@ -379,7 +380,7 @@
             found = true;
             out.print("<li style=\"width:100%;float:left\" class=\"liOpen\" style=\"margin-top:20pt;font-size:large\">\"" + query + "\" entspricht folgenden Belegformen <ul>");
 
-            SucheDB.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV4, order, "", true);
+            Utils.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV4, order, "", true);
 
             out.println("</ul></li>");
         }

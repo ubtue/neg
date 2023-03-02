@@ -12,6 +12,7 @@
 <%@ page import="java.util.regex.Pattern" isThreadSafe="false"%>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false"%>
 
 <%!
 String chop(String text, int letters) {
@@ -46,7 +47,7 @@ String DBtoDB(String s) {
 }
 
 String DBtoJS(String s) {
-    return StringEscapeUtils.escapeEcmaScript(s);
+    return Utils.escapeJS(s);
 }
 
 Vector calcCenturies(int von, int bis) {
@@ -73,7 +74,7 @@ Vector calcCenturies(int von, int bis) {
 }
 
 String DBtoHTML(String s) {
-    return StringEscapeUtils.escapeHtml4(s);
+    return Utils.escapeHTML(s);
 }
 
 String DBtoHTML(Object obj) {
@@ -81,7 +82,7 @@ String DBtoHTML(Object obj) {
 }
 
 String HTMLtoDB(String s) {
-    return StringEscapeUtils.unescapeHtml4(s);
+    return Utils.unescapeHTML(s);
 }
 
 String makeDateWrapper(Object tag, Object monat, Object jahr) {
@@ -108,7 +109,7 @@ String numberResize(int value, int positions) {
 }
 
 String urlEncode(String s) {
-    return URLEncoder.encode(s);
+    return Utils.urlEncode(s);
 }
 
 String md5(String input) {
@@ -153,62 +154,7 @@ String getLabel(String formular, String datenfeld, String textfeld, Statement st
 }
 
 String format(String text, String feld) {
-    if (!feld.endsWith("PLemma") && !feld.endsWith("MGHLemma") && !feld.endsWith("Klarlemma")) {
-        return text;
-    }
-
-    String lemma = text;
-    lemma = lemma.replaceAll("@-e1", "&#x01E3;");
-    lemma = lemma.replaceAll("@-E1", "&#x01E2;");
-    lemma = lemma.replaceAll("@!d", "&thorn;");
-    lemma = lemma.replaceAll("@-I", "&#x012A;");
-    lemma = lemma.replaceAll("@-i", "&#x012B;");
-    lemma = lemma.replaceAll("@-A", "&#x0100;");
-    lemma = lemma.replaceAll("@-a", "&#x0101;");
-    lemma = lemma.replaceAll("@-O", "&#x014C;");
-    lemma = lemma.replaceAll("@-o", "&#x014D;");
-    lemma = lemma.replaceAll("@-E2", "&#x0112;");
-    lemma = lemma.replaceAll("@-e2", "&#x0113;");
-    lemma = lemma.replaceAll("@-E", "&#x0112;");
-    lemma = lemma.replaceAll("@-e", "&#x0113;");
-    lemma = lemma.replaceAll("@-U", "&#x016A;");
-    lemma = lemma.replaceAll("@-u", "&#x016B;");
-    if (!lemma.equals("-")) {
-        lemma = lemma.replace("-", "");
-    }
-    lemma = lemma.replaceAll("~", "");
-    lemma = lemma.replaceAll("\\.", "");
-
-    if (lemma.length() > 1) {
-        lemma = lemma.substring(0, 1).toUpperCase()
-                + lemma.substring(1);
-    } else if (lemma.length() > 0) {
-        lemma = lemma.substring(0, 1).toUpperCase();
-    }
-
-    if (lemma.startsWith("&#x01E3;")) {
-        lemma = "&#x01E2;" + lemma.substring(8);
-    }
-    if (lemma.startsWith("&#x012B;")) {
-        lemma = "&#x012A;" + lemma.substring(8);
-    }
-    if (lemma.startsWith("&thorn;")) {
-        lemma = "&THORN;" + lemma.substring(7);
-    }
-    if (lemma.startsWith("&#x0101;")) {
-        lemma = "&#x0100;" + lemma.substring(8);
-    }
-    if (lemma.startsWith("&#x014D;")) {
-        lemma = "&#x014C;" + lemma.substring(8);
-    }
-    if (lemma.startsWith("&#x0113;")) {
-        lemma = "&#x0112;" + lemma.substring(8);
-    }
-    if (lemma.startsWith("&#x016B;")) {
-        lemma = "&#x016A;" + lemma.substring(8);
-    }
-
-    return lemma;
+    return Utils.format(text, feld);
 }
 
 String[] getdMGHUrl(Connection cn, String einzelbelegID) {
