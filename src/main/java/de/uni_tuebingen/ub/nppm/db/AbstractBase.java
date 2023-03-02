@@ -53,14 +53,14 @@ public class AbstractBase {
             settings.put("hibernate.connection.CharSet", "utf8mb4");
             settings.put("hibernate.connection.useUnicode", true);
             settings.put("hibernate.connection.characterEncoding", "utf-8");
-            
+
             settings.put("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
             settings.put("hibernate.c3p0.min_size", "5");
             settings.put("hibernate.c3p0.max_size", "100");
             settings.put("hibernate.c3p0.maxIdleTime", "120");
             settings.put("hibernate.c3p0.idleConnectionTestPeriod", "30");
             settings.put("hibernate.c3p0.preferredTestQuery", "SELECT 1");
-                    
+
             configuration.setProperties(settings);
 
             // TODO: Add all model classes dynamically
@@ -111,27 +111,27 @@ public class AbstractBase {
 
             configuration.addAnnotatedClass(Handschrift.class);
             configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
-            
+
             configuration.addAnnotatedClass(Urkunde.class);
             configuration.addAnnotatedClass(UrkundeBetreff.class);
             configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
             configuration.addAnnotatedClass(UrkundeEmpfaenger.class);
-            
+
             configuration.addAnnotatedClass(Person.class);
             configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
             configuration.addAnnotatedClass(PersonQuiet.class);
             configuration.addAnnotatedClass(PersonVariante.class);
             configuration.addAnnotatedClass(PersonAreal_MM.class);
             configuration.addAnnotatedClass(PersonEthnie_MM.class);
-            configuration.addAnnotatedClass(PersonVerwandtMit_MM.class);          
-            
+            configuration.addAnnotatedClass(PersonVerwandtMit_MM.class);
+
             configuration.addAnnotatedClass(Einzelbeleg.class);
             configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
             configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
             configuration.addAnnotatedClass(EinzelbelegMghLemma_MM.class);
             configuration.addAnnotatedClass(EinzelbelegNamenkommentar_MM.class);
             configuration.addAnnotatedClass(EinzelbelegHatPerson_MM.class);
-        
+
             configuration.addAnnotatedClass(DatenbankFilter.class);
             configuration.addAnnotatedClass(DatenbankMapping.class);
             configuration.addAnnotatedClass(DatenbankSelektion.class);
@@ -178,7 +178,7 @@ public class AbstractBase {
     protected static List getList(Class c) throws Exception {
         return getList(c, null);
     }
-    
+
     public static void remove(Class class_, int id) throws Exception {
         Session session = getSession();
         try {
@@ -204,7 +204,7 @@ public class AbstractBase {
 
     protected static void insertOrUpdate(String sql) throws Exception {
         Session session = getSession();
-        try {            
+        try {
             session.getTransaction().begin();
             NativeQuery query = session.createSQLQuery(sql);
             query.executeUpdate();
@@ -221,14 +221,27 @@ public class AbstractBase {
     }
 
     protected static List<Map> getMappedList(CriteriaQuery criteria) throws Exception {
-        return getMappedList(getSession().createQuery(criteria));
+         Session session = getSession();
+
+         try{
+             return getMappedList(session.createQuery(criteria));
+         }finally{
+              session.close();
+         }
     }
 
     public static List<Map> getMappedList(String query) throws Exception {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
-        return getMappedList(getSession().createNativeQuery(query));
+         Session session = getSession();
+
+        try{
+            return getMappedList(session.createNativeQuery(query));
+        }finally{
+            session.close();
+        }
+
     }
 
     public static int getLinecount(String tablesString, String conditionsString) throws Exception {
