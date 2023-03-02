@@ -214,7 +214,6 @@
         resultAsMap = SucheDB.getEinfacheSucheResult(sql);
 
         found = false;
-        out.println("<ul class=\"mktree\" id=\"complete\">");
 
         if (!resultAsMap.isEmpty()) {
             found = true;
