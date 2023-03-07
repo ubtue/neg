@@ -18,11 +18,12 @@ import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 
 public class AbstractBase {
+
     protected static SessionFactory sessionFactory;
 
-    protected static javax.naming.InitialContext initialContext =  null;
+    protected static javax.naming.InitialContext initialContext = null;
 
-    public static void setInitialContext(javax.naming.InitialContext ctx){
+    public static void setInitialContext(javax.naming.InitialContext ctx) {
         initialContext = ctx;
     }
 
@@ -36,19 +37,20 @@ public class AbstractBase {
             Properties settings = new Properties();
 
             // Get settings from tomcat config
-            if(initialContext == null)
+            if (initialContext == null) {
                 initialContext = new javax.naming.InitialContext();
+            }
             settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
-            settings.put(Environment.URL, (String)initialContext.lookup("java:comp/env/sqlURL"));
-            settings.put(Environment.USER, (String)initialContext.lookup("java:comp/env/sqlUser"));
-            settings.put(Environment.PASS, (String)initialContext.lookup("java:comp/env/sqlPassword"));
+            settings.put(Environment.URL, (String) initialContext.lookup("java:comp/env/sqlURL"));
+            settings.put(Environment.USER, (String) initialContext.lookup("java:comp/env/sqlUser"));
+            settings.put(Environment.PASS, (String) initialContext.lookup("java:comp/env/sqlPassword"));
 
             // This must be changed when migrating to InnoDB
             //settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
             settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLMyISAMDialect");
             settings.put(Environment.SHOW_SQL, "true");
             settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-            settings.put(Environment.HBM2DDL_AUTO,"validate");
+            settings.put(Environment.HBM2DDL_AUTO, "validate");
 
             settings.put("hibernate.connection.CharSet", "utf8mb4");
             settings.put("hibernate.connection.useUnicode", true);
@@ -144,10 +146,8 @@ public class AbstractBase {
 
             configuration.addAnnotatedClass(TinyMCE_Content.class);
 
-
-
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                .applySettings(configuration.getProperties()).build();
+                    .applySettings(configuration.getProperties()).build();
             System.out.println("Hibernate Java Config serviceRegistry created");
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
@@ -197,9 +197,14 @@ public class AbstractBase {
 
     public static List<Object[]> getListNative(String sql) throws Exception {
         Session session = getSession();
-        NativeQuery sqlQuery = session.createSQLQuery(sql);
-        List<Object[]> rows = sqlQuery.getResultList();
-        return rows;
+        try {
+            NativeQuery sqlQuery = session.createSQLQuery(sql);
+            List<Object[]> rows = sqlQuery.getResultList();
+            return rows;
+        } finally {
+            session.close();
+        }
+
     }
 
     protected static void insertOrUpdate(String sql) throws Exception {
@@ -221,35 +226,41 @@ public class AbstractBase {
     }
 
     protected static List<Map> getMappedList(CriteriaQuery criteria) throws Exception {
-         Session session = getSession();
+        Session session = getSession();
 
-         try{
-             return getMappedList(session.createQuery(criteria));
-         }finally{
-              session.close();
-         }
+        try {
+            return getMappedList(session.createQuery(criteria));
+        } finally {
+            session.close();
+        }
     }
 
     public static List<Map> getMappedList(String query) throws Exception {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
-         Session session = getSession();
+        Session session = getSession();
 
-        try{
+        try {
             return getMappedList(session.createNativeQuery(query));
-        }finally{
+        } finally {
             session.close();
         }
 
     }
 
     public static int getLinecount(String tablesString, String conditionsString) throws Exception {
-        String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
         Session session = getSession();
-        NativeQuery sqlQuery = session.createSQLQuery(sql);
-        sqlQuery.setMaxResults(1);
-        List<Object> rows = sqlQuery.getResultList();
-        return (int)Integer.parseInt(rows.get(0).toString());
+        try {
+            String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
+
+            NativeQuery sqlQuery = session.createSQLQuery(sql);
+            sqlQuery.setMaxResults(1);
+            List<Object> rows = sqlQuery.getResultList();
+            return (int) Integer.parseInt(rows.get(0).toString());
+        } finally {
+            session.close();
+        }
+
     }
 }
