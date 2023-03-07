@@ -10,7 +10,7 @@
 
     <p><a id="anim1" href="#">Hier</a> k&ouml;nnen Sie die Datenbank durchsuchen,
         f&uuml;r komplexere Suchanfragen wechseln Sie bitte zur
-        <a href="freie_suche.jsp">erweiterten Suche</a>.
+        <a href="freie_suche">erweiterten Suche</a>.
         Eine ausf&uuml;hrliche Beschreibung der Datenbank und der Suchm&ouml;glichkeiten finden Sie unter
         <a href="hilfe">Hilfe</a>.
     </p>
