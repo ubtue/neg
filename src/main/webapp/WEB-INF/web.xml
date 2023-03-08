@@ -129,6 +129,15 @@
   </servlet-mapping>
   
   <servlet>
+      <servlet-name>BackendEinzelbelegCompServlet</servlet-name>
+      <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinzelbelegCompServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>BackendEinzelbelegCompServlet</servlet-name>
+      <url-pattern>/einzelbeleg_comp</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
       <servlet-name>BackendNamenkommentarServlet</servlet-name>
       <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.NamenkommentarServlet</servlet-class>
   </servlet>
