@@ -1,10 +1,15 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.model.*;
+import static de.uni_tuebingen.ub.nppm.util.Utils.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -12,6 +17,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspWriter;
 import org.hibernate.Criteria;
 import org.hibernate.query.Query;
 import org.hibernate.SQLQuery;
@@ -55,29 +61,30 @@ public class SucheDB extends AbstractBase {
             String sql = "SELECT ID, " + attribut + " FROM " + dbForm + " e WHERE NOT EXISTS (SELECT * FROM " + tabelle + " eh WHERE e.ID=eh." + zwAttribut + ") ORDER BY " + attribut;
             SQLQuery query = session.createSQLQuery(sql);
             List<Object[]> rows = query.list();
-            
+
             for (Object[] row : rows) {
                 if (row[0] != null && row[1] != null) {
                     ret.put(Integer.valueOf(row[0].toString()), row[1].toString());
                 }
             }
-            
+
             return ret;
         } finally {
             session.close();
         }
     }
-    
-    public static List getFields(String fields , String tablesString, String conditionsString, String export, Integer pageoffset, Integer pageLimit) throws Exception {
-        String sql = "SELECT "+fields+" FROM "+tablesString+" WHERE ("+conditionsString+")";
-        if (export != null && (export.equals("liste") || export.equals("browse")) && pageoffset != null && pageLimit != null)
-            sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
+
+    public static List getFields(String fields, String tablesString, String conditionsString, String export, Integer pageoffset, Integer pageLimit) throws Exception {
+        String sql = "SELECT " + fields + " FROM " + tablesString + " WHERE (" + conditionsString + ")";
+        if (export != null && (export.equals("liste") || export.equals("browse")) && pageoffset != null && pageLimit != null) {
+            sql += " LIMIT " + (pageoffset * pageLimit) + ", " + pageLimit;
+        }
         Session session = getSession();
         try {
             NativeQuery sqlQuery = session.createSQLQuery(sql);
-            
+
             sqlQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-            
+
             return sqlQuery.getResultList();
         } finally {
             session.close();
@@ -110,7 +117,7 @@ public class SucheDB extends AbstractBase {
                 }
                 ret.add(fieldVal);
             }
-            
+
             return ret;
         } finally {
             session.close();
@@ -124,7 +131,7 @@ public class SucheDB extends AbstractBase {
         try {
             NativeQuery sqlQuery = session.createSQLQuery(sql);
             List rows = sqlQuery.list();
-            
+
             for (Object object : rows) {
                 //if object is not an array, cast it to a one dim array
                 if (!object.getClass().isArray()) {
@@ -148,21 +155,21 @@ public class SucheDB extends AbstractBase {
         try {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Tuple> query = builder.createTupleQuery();
-            
+
             Root rootEinzelbeleg = query.from(Einzelbeleg.class);
             Join<Einzelbeleg, Quelle> joinQuelle = rootEinzelbeleg.join(Einzelbeleg_.QUELLE, JoinType.LEFT);
             Join<Einzelbeleg, Person> joinPerson = rootEinzelbeleg.join(Einzelbeleg_.PERSON);
 
             // If you add / change the parameters here, make sure to also change the calls for tuple.get() below
             query.multiselect(rootEinzelbeleg, joinQuelle, joinPerson);
-            
+
             if (suchoptionen.quelleZuVeroeffentlichen) {
                 query.where(builder.equal(joinQuelle.get(Quelle_.zuVeroeffentlichen), 1));
             }
             if (suchoptionen.einzelbelegBelegform != null) {
                 query.where(builder.equal(rootEinzelbeleg.get(Einzelbeleg_.BELEGFORM), suchoptionen.einzelbelegBelegform));
             }
-            
+
             Query preparedQuery = session.createQuery(query);
             if (suchoptionen.limit > 0) {
                 preparedQuery.setMaxResults(suchoptionen.limit);
@@ -178,7 +185,7 @@ public class SucheDB extends AbstractBase {
                 endResult.einzelbeleg = tuple.get(0, Einzelbeleg.class);
                 endResult.quelle = tuple.get(1, Quelle.class);
                 endResult.person = tuple.get(2, Person.class);
-                
+
                 endResultList.add(endResult);
             }
             return endResultList;
@@ -186,4 +193,9 @@ public class SucheDB extends AbstractBase {
             session.close();
         }
     }
+
+    public static List<Map> getEinfacheSucheResult(String sql) throws Exception {
+        return getMappedList(sql);
+    }
+
 }
