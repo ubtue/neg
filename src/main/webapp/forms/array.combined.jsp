@@ -498,7 +498,7 @@
 									out
 											.println("<a href=\""
 													+ add
-													+ ".jsp?ID="
+													+ "?ID="
 													+ rs
 															.getInt(fields[1])
 													+ "\">");

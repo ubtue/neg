@@ -11,7 +11,7 @@
       Statement st2 = cn.createStatement();
              ResultSet rs2 = st2.executeQuery("SELECT "+fields[2]+" FROM "+fields[0]+" WHERE ID="+rs.getInt(fields[1])+";");
              if(rs2.next())  {
-            	 out.println("<a href=\""+fields[0]+".jsp?ID="+rs.getInt(fields[1])+"\">"+(rs2.getString(fields[2])!=null?DBtoHTML(rs2.getString(fields[2])):"Zum Datensatz")+"</a>");
+            	 out.println("<a href=\""+fields[0]+"?ID="+rs.getInt(fields[1])+"\">"+(rs2.getString(fields[2])!=null?DBtoHTML(rs2.getString(fields[2])):"Zum Datensatz")+"</a>");
              }
 
       }
