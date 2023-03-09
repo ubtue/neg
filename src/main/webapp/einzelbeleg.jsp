@@ -50,7 +50,7 @@
 		</jsp:include>
 
 		<div id="form">
-			<a href="einzelbeleg_comp.jsp?ID=<%=id%>"> 
+			<a href="einzelbeleg_comp?ID=<%=id%>"> 
                             <% Language.printTextfield(out,session, formular,"KompakteSicht");%>
 			</a>
 			<table style="width: 100%;">
