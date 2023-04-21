@@ -19,7 +19,7 @@ DELETE FROM person_hatareal WHERE ArealID NOT IN (SELECT ID FROM selektion_areal
 DELETE FROM edition_hateditor WHERE EditionID = 0; /* 1/704 ~0,14% */
 UPDATE einzelbeleg_hatfunktion SET FunktionID = -1 WHERE FunktionID=57; /* 3088/27617 ~11% */
 DELETE FROM einzelbeleg_hatstand WHERE StandID NOT IN (SELECT ID FROM selektion_stand); /* 338/8443 ~4%. Affects 25 values of StandID that do not exist anymore in selektion_stand. */
-UPDATE einzelbeleg_textkritik SET HandschriftID = -1 WHERE HandschriftID NOT IN (SELECT ID FROM handschrift_ueberlieferung); /* 1253/6070, ~20% */
+UPDATE einzelbeleg_textkritik SET HandschriftID = -1 WHERE HandschriftID != -1 AND HandschriftID NOT IN (SELECT ID FROM handschrift_ueberlieferung); /* 1253/6070, ~20% */
 DELETE FROM einzelbeleg_textkritik WHERE EinzelbelegID NOT IN (SELECT ID FROM einzelbeleg); /* 1/69964 */
 DELETE FROM namenkommentar_bearbeiter WHERE NOT EXISTS (SELECT * FROM namenkommentar WHERE NamenkommentarID = namenkommentar.ID); /* 28/6134 */
 DELETE FROM person_hatstand WHERE StandID NOT IN (SELECT ID FROM selektion_stand); /* 1720/12141 ~14,17% Affects 3 values of StandID that do not exist anymore in selektion_stand. */
