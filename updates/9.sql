@@ -174,10 +174,6 @@ ALTER TABLE bemerkung MODIFY COLUMN HandschriftID INT UNSIGNED DEFAULT NULL;
 ALTER TABLE bemerkung ADD CONSTRAINT bemerkung_HandschriftID FOREIGN KEY (HandschriftID) REFERENCES handschrift(ID);
 ALTER TABLE einzelbeleg MODIFY COLUMN HandschriftID INT UNSIGNED DEFAULT NULL;
 ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_HandschriftID FOREIGN KEY (HandschriftID) REFERENCES handschrift(ID);
-ALTER TABLE einzelbeleg_textkritik MODIFY COLUMN HandschriftID INT DEFAULT NULL;
-UPDATE einzelbeleg_textkritik SET HandschriftID=NULL WHERE HandschriftID=0 OR HandschriftID = -1;
-ALTER TABLE einzelbeleg_textkritik MODIFY COLUMN HandschriftID INT UNSIGNED DEFAULT NULL;
-ALTER TABLE einzelbeleg_textkritik ADD CONSTRAINT einzelbeleg_textkritik_HandschriftID FOREIGN KEY (HandschriftID) REFERENCES handschrift(ID);
 ALTER TABLE handschrift_ueberlieferung MODIFY COLUMN HandschriftID INT UNSIGNED DEFAULT NULL;
 ALTER TABLE handschrift_ueberlieferung ADD CONSTRAINT handschrift_ueberlieferung_HandschriftID FOREIGN KEY (HandschriftID) REFERENCES handschrift(ID);
 
@@ -185,6 +181,10 @@ ALTER TABLE handschrift_ueberlieferung MODIFY COLUMN ID INT UNSIGNED AUTO_INCREM
 ALTER TABLE ueberlieferung_edition MODIFY COLUMN UeberlieferungID INT UNSIGNED NOT NULL;
 ALTER TABLE ueberlieferung_edition MODIFY COLUMN UeberlieferungID INT UNSIGNED;
 ALTER TABLE ueberlieferung_edition ADD CONSTRAINT ueberlieferung_edition_UeberlieferungID FOREIGN KEY (UeberlieferungID) REFERENCES handschrift_ueberlieferung(ID);
+ALTER TABLE einzelbeleg_textkritik MODIFY COLUMN HandschriftID INT DEFAULT NULL;
+UPDATE einzelbeleg_textkritik SET HandschriftID=NULL WHERE HandschriftID=0 OR HandschriftID = -1;
+ALTER TABLE einzelbeleg_textkritik MODIFY COLUMN HandschriftID INT UNSIGNED DEFAULT NULL;
+ALTER TABLE einzelbeleg_textkritik ADD CONSTRAINT einzelbeleg_textkritik_HandschriftID FOREIGN KEY (HandschriftID) REFERENCES handschrift_ueberlieferung(ID);
 
 /* literatur...-tables have been removed from database */
 
