@@ -1,5 +1,5 @@
 #Clean up CM References
-DELETE from datenbank_mapping where Formular = "quelle" and Datenfeld = "CMRef";
-DELETE from datenbank_mapping where Formular = "quelle" and Datenfeld = "CMLink";
-DELETE from datenbank_mapping where Formular = "person" and Datenfeld = "CMRef";
-DELETE from datenbank_mapping where Formular = "person" and Datenfeld = "CMLink";
+DELETE FROM datenbank_mapping WHERE Formular = "quelle" AND Datenfeld = "CMRef";
+DELETE FROM datenbank_mapping WHERE Formular = "quelle" AND Datenfeld = "CMLink";
+DELETE FROM datenbank_mapping WHERE Formular = "person" AND Datenfeld = "CMRef";
+DELETE FROM datenbank_mapping WHERE Formular = "person" AND Datenfeld = "CMLink";
