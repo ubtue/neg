@@ -40,14 +40,12 @@ public class AbstractBase {
             if (initialContext == null) {
                 initialContext = new javax.naming.InitialContext();
             }
-            settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
+            settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
             settings.put(Environment.URL, (String) initialContext.lookup("java:comp/env/sqlURL"));
             settings.put(Environment.USER, (String) initialContext.lookup("java:comp/env/sqlUser"));
             settings.put(Environment.PASS, (String) initialContext.lookup("java:comp/env/sqlPassword"));
 
-            // This must be changed when migrating to InnoDB
-            //settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
-            settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLMyISAMDialect");
+            settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
             settings.put(Environment.SHOW_SQL, "true");
             settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
             settings.put(Environment.HBM2DDL_AUTO, "validate");
