@@ -196,7 +196,7 @@ public class AbstractBase {
     public static List<Object[]> getListNative(String sql) throws Exception {
         Session session = getSession();
         try {
-            NativeQuery sqlQuery = session.createSQLQuery(sql);
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             return rows;
         } finally {
@@ -209,7 +209,7 @@ public class AbstractBase {
         Session session = getSession();
         try {
             session.getTransaction().begin();
-            NativeQuery query = session.createSQLQuery(sql);
+            NativeQuery query = session.createNativeQuery(sql);
             query.executeUpdate();
             session.getTransaction().commit();
         } finally {
@@ -252,7 +252,7 @@ public class AbstractBase {
         try {
             String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
 
-            NativeQuery sqlQuery = session.createSQLQuery(sql);
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
             sqlQuery.setMaxResults(1);
             List<Object> rows = sqlQuery.getResultList();
             return (int) Integer.parseInt(rows.get(0).toString());
