@@ -38,7 +38,7 @@ public class NewPasswordServlet extends HttpServlet {
         pw.println("</html>");
     }
 
-    private void renewPassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
+   private void renewPassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String URLuuid = request.getParameter("url_uuid"); //<input type hidden >---> form -->forgotPassword
         String URLemail = request.getParameter("url_email"); //<input type hidden >---> form -->forgotPassword
@@ -53,52 +53,63 @@ public class NewPasswordServlet extends HttpServlet {
             writeHTMLMessage(request, response, message);
         } else {
             Benutzer benutzer = BenutzerDB.getByMail(URLemail);
-            if (password != null && password.length() >= 6 && repeatPassword.equals(password)) {
-                LocalDateTime pastDateTime = benutzer.getResetTokenValidUntil();
-                LocalDateTime nowDateTime = LocalDateTime.now();
-                long timeBetween = ChronoUnit.HOURS.between(pastDateTime, nowDateTime);
+            //Get uuid from database
+            String databaseUUID = benutzer.getResetToken();
 
-                //Get uuid from database
-                String databaseUUID = benutzer.getResetToken();
-
-                if (emailIsRegistered == true && timeBetween < 24 && databaseUUID.equals(URLuuid)) {
-                    byte[] salt = SaltHash.GenerateRandomSalt(AuthHelper.getPasswordSaltLength());
-                    String passHash = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), salt);
-
-                    benutzer.setSalt(SaltHash.BytesToBase64String(salt));
-                    benutzer.setPassword(passHash);
-                    BenutzerDB.saveOrUpdate(benutzer);
-
-                    String[] message = new String[2];
-                    message[0] = "<h1 style=\"text-align: center;\">Passwort wurde neu gesetzt</h1>";
-                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/logout?go=intern\">Zum Login</a></h1>";
-                    writeHTMLMessage(request, response, message);
-
-                } else { //User should generate a new Link
-                    String[] message = new String[2];
-                    message[0] = "<h1 style=\"text-align: center;\">Link ist nicht mehr gültig, bitte einen neuen Link generieren.</h1>";
-                    message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a></h1>";
-                    writeHTMLMessage(request, response, message);
-                }
-            } else if (password != null && password.length() < 6) {
-                String[] message = new String[1];
-                message[0] = "<h1 style=\"text-align: center;\">Passwort ist zu kurz, mindestlänge sind 6 Buchstaben</h1>";
-                writeHTMLMessage(request, response, message);
-
-            } else if (!repeatPassword.equals(password)) {
-                String[] message = new String[1];
-                message[0] = "<h1 style=\"text-align: center;\">Passwort wiederholung stimmt nicht überein</h1>";
+            if (databaseUUID == null) {
+                String[] message = new String[2];
+                message[0] = "<h1 style=\"text-align: center;\">Link ist nicht mehr gültig, bitte einen neuen Link generieren.</h1>";
+                message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a></h1>";
                 writeHTMLMessage(request, response, message);
             } else {
-                LocalDateTime timeOfGeneratedUUID = benutzer.getResetTokenValidUntil();
-                //resend link
-                String myLinkString = "forgotPassword?varURLUUID=" + URLuuid + "&varURLEmail=" + URLemail + "&varURLTime=" + timeOfGeneratedUUID + "\"";
-                RequestDispatcher dispatcher = request.getRequestDispatcher(myLinkString);
-                dispatcher.forward(request, response);
+
+                if (password != null && password.length() >= 6 && repeatPassword.equals(password)) {
+                    LocalDateTime pastDateTime = benutzer.getResetTokenValidUntil();
+                    LocalDateTime nowDateTime = LocalDateTime.now();
+                    long timeBetween = ChronoUnit.HOURS.between(pastDateTime, nowDateTime);
+
+                    if (emailIsRegistered == true && timeBetween < 24 && databaseUUID.equals(URLuuid)) {
+                        byte[] salt = SaltHash.GenerateRandomSalt(AuthHelper.getPasswordSaltLength());
+                        String passHash = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), salt);
+
+                        benutzer.setSalt(SaltHash.BytesToBase64String(salt));
+                        benutzer.setPassword(passHash);
+                        benutzer.setResetToken(null);
+                        benutzer.setResetTokenValidUntil(null);
+                        BenutzerDB.saveOrUpdate(benutzer);
+
+                        String[] message = new String[2];
+                        message[0] = "<h1 style=\"text-align: center;\">Passwort wurde neu gesetzt</h1>";
+                        message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/logout?go=intern\">Zum Login</a></h1>";
+                        writeHTMLMessage(request, response, message);
+
+                    } else { //User should generate a new Link
+                        String[] message = new String[2];
+                        message[0] = "<h1 style=\"text-align: center;\">Link ist nicht mehr gültig, bitte einen neuen Link generieren.</h1>";
+                        message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a></h1>";
+                        writeHTMLMessage(request, response, message);
+                    }
+                } else if (password != null && password.length() < 6) {
+                    String[] message = new String[1];
+                    message[0] = "<h1 style=\"text-align: center;\">Passwort ist zu kurz, mindestlänge sind 6 Buchstaben</h1>";
+                    writeHTMLMessage(request, response, message);
+
+                } else if (!repeatPassword.equals(password)) {
+                    String[] message = new String[1];
+                    message[0] = "<h1 style=\"text-align: center;\">Passwort wiederholung stimmt nicht überein</h1>";
+                    writeHTMLMessage(request, response, message);
+                } else {
+                    LocalDateTime timeOfGeneratedUUID = benutzer.getResetTokenValidUntil();
+                    //resend link
+                    String myLinkString = "forgotPassword?varURLUUID=" + URLuuid + "&varURLEmail=" + URLemail + "&varURLTime=" + timeOfGeneratedUUID + "\"";
+                    RequestDispatcher dispatcher = request.getRequestDispatcher(myLinkString);
+                    dispatcher.forward(request, response);
+                }
             }
+
         }
 
-    }//end sendLink()
+    }//end renewPassword()
 
     private void sendLink(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, Exception {
         LocalDateTime timeOfGeneratedUUID = LocalDateTime.now();

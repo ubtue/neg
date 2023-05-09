@@ -168,6 +168,7 @@
             </plugin>
             <plugin>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1.1</version>
                 <groupId>org.codehaus.mojo</groupId>
                 <executions>
                     <execution>
