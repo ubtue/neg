@@ -39,14 +39,14 @@ public class ContextListener implements ServletContextListener {
         /*
             Deregister drivers
         */
-        try {
-            while(DriverManager.getDrivers().hasMoreElements()){
+        while (DriverManager.getDrivers().hasMoreElements()) {
+            try {
                 Driver d = DriverManager.getDrivers().nextElement();
                 DriverManager.deregisterDriver(d);
-            }            
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }            
     }
 
     @Override
