@@ -1,12 +1,13 @@
 package de.uni_tuebingen.ub.nppm.model;
 
-import java.util.Date;
+import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -61,6 +62,9 @@ public class NamenKommentar {
     
     @Column(name = "Rekonstruktion")
     private Integer rekonstruktion;
+    
+    @ManyToMany(mappedBy = "namenKommentar")
+    private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
 
     public int getId() {
         return id;
@@ -168,5 +172,17 @@ public class NamenKommentar {
 
     public void setRekonstruktion(Integer rekonstruktion) {
         this.rekonstruktion = rekonstruktion;
+    }
+
+    public Set<Einzelbeleg> getEinzelbeleg() {
+        return einzelbeleg;
+    }
+
+    public void addEinzelbeleg(Einzelbeleg beleg) {
+        this.getEinzelbeleg().add(beleg);
+    }
+
+    public void removeEinzelbeleg(int id) {
+        this.getEinzelbeleg().removeIf(e -> e.getId() == id);
     }
 }

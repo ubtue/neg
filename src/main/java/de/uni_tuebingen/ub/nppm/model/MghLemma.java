@@ -1,12 +1,13 @@
 package de.uni_tuebingen.ub.nppm.model;
 
-import java.util.Date;
+import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -43,6 +44,9 @@ public class MghLemma {
     @OneToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
+    
+    @ManyToMany(mappedBy = "mghLemma")
+    private Set<Einzelbeleg> einzelbelege = new HashSet<>();
 
     public int getId() {
         return id;
@@ -103,6 +107,17 @@ public class MghLemma {
     public void setGehoertGruppe(BenutzerGruppe gehoertGruppe) {
         this.gehoertGruppe = gehoertGruppe;
     }
+
+    public Set<Einzelbeleg> getEinzelbelege() {
+        return einzelbelege;
+    }
     
+    public void addEinzelbeleg(Einzelbeleg person) {
+        this.getEinzelbelege().add(person);
+    }
+
+    public void removeEinzelbeleg(int id) {
+        this.getEinzelbelege().removeIf(e -> e.getId() == id);
+    }
     
 }

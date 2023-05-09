@@ -1,27 +1,12 @@
 ﻿<%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-<HTML>
-  <HEAD>
-    <TITLE>Nomen et Gens - Suchergebnis</TITLE>
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <script src="javascript/funktionen.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="mktree.css" type="text/css">
-    <script type="text/javascript" src="mktree.js"></script>
-    
-    
-    <noscript></noscript>
-  </HEAD>
-
-  <BODY>
-    <BODY onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');">
+    <div onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');">
 
     <jsp:include page="dojump.jsp">
 
   <jsp:param name="form" value="gast_quelle" />
 </jsp:include>
-    <jsp:include page="layout/navigation.inc.jsp" />
-    <jsp:include page="layout/image.inc.html" />
     <jsp:include page="layout/titel.suche.html" />
     <div id="form">
       <%
@@ -38,10 +23,6 @@
         else if ( request.getParameter("form").equals("namenkommentar") ) {
           %><%@ include file="suche/namenkommentar.jsp" %><%
         }
-        else if ( request.getParameter("form").equals("literatur") ) {
-          %><%@ include file="suche/literatur.jsp" %><%
-        }
       %>
     </div>
-  </BODY>
-</HTML>
+  </div>

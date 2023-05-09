@@ -3,20 +3,18 @@
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.DatenbankSelektion" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-<jsp:include page="dolanguage.jsp" />
 
 <%
-  if (session.getAttribute("BenutzerID")!=null
-      && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0
-      && ((Boolean) session.getAttribute("Administrator")).booleanValue()
-     ) {
-%>
+  Language.setLanguage(request);
+  %>
 
-<HTML>
   <HEAD>
     <TITLE>Nomen et Gens - Administration</TITLE>
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
@@ -26,7 +24,7 @@
     <noscript></noscript>
   </HEAD>
 
-  <BODY>
+  <div>
     <jsp:include page="layout/navigation.inc.jsp" />
     <jsp:include page="layout/image.inc.html" />
     <jsp:include page="layout/titel.administration.jsp" />
@@ -117,60 +115,20 @@
         <div id="main">
           <table>
 <%
-            Connection cn = null;
-            Statement  st = null;
-            ResultSet  rs = null;
-
-            try {
-              Class.forName( sqlDriver );
-              cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-              st = cn.createStatement();
-              rs = st.executeQuery("SELECT DISTINCT selektion FROM datenbank_selektion ORDER BY selektion ASC;");
-
-              while(rs.next()) {
-                String tbl = rs.getString("selektion");
+              List<String> lst = DatenbankDB.getSelektion();
+              for(String tbl : lst) {
                 if(tbl.startsWith("selektion_") && !tbl.endsWith("autor")) {
                   out.print("<tr>");
                   out.print("<td>"+tbl+"</td>");
-                  out.print("<td><a href=\"admin.auswahlfelder.jsp?Formular=bearbeiten&Tabelle="+tbl+"\">bearbeiten</a></td>");
-                  out.print("<td><a href=\"admin.auswahlfelder.jsp?Formular=zusammenfuehren&Tabelle="+tbl+"\">zusammenf&uuml;hren</a></td>");
+                  out.print("<td><a href=\"admin-auswahlfelder?Formular=bearbeiten&Tabelle="+tbl+"\">bearbeiten</a></td>");
+                  out.print("<td><a href=\"admin-auswahlfelder?Formular=zusammenfuehren&Tabelle="+tbl+"\">zusammenf&uuml;hren</a></td>");
                   out.print("</tr>");
                   out.println("");
                 } //if
-               
-              } //while
-            }
-            catch (SQLException e) {out.println(e);}  
-            finally {
-              try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-              try { if( null != st ) st.close(); } catch( Exception ex ) {}
-              try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-            }
+               } //for
 %>
           </table>
         </div>
       </div>
     </div>
-  </BODY>
-</HTML>
-
-<%
-  }
-  else {
-  %>
-    <p>
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-      </jsp:include>
-    </p>
-    <a href="index.jsp">
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a>
-  <%
-  }
-%>
-
+  </div>

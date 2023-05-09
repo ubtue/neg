@@ -1,8 +1,3 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
 <%@ page import="java.util.Vector" isThreadSafe="false" %>
 
@@ -67,30 +62,6 @@
     if (!request.getParameter("AutorNachname").equals("")) {
        if(!tableString.contains("literatur_autor")) tableString += " LEFT OUTER JOIN literatur_autor ON literatur_autor.LiteraturID = literatur.ID ";
       conditions.add("literatur_autor.Nachname LIKE \""+request.getParameter("AutorNachname")+"\"");
-    }
-
-    if (!request.getParameter("SW_Namenelemente").equals("-99")) {
-      tables.add("literatur_sw_namenelemente");
-      conditions.add("literatur_sw_namenelemente.literaturID = literatur.ID");
-      conditions.add("literatur_sw_namenelemente.Schlagwort = \""+request.getParameter("SW_Namenelemente")+"\"");
-    }
-
-    if (!request.getParameter("SW_PhonGraph").equals("-99")) {
-      tables.add("literatur_sw_phongraph");
-      conditions.add("literatur_sw_phongraph.literaturID = literatur.ID");
-      conditions.add("literatur_sw_phongraph.Schlagwort = \""+request.getParameter("SW_PhonGraph")+"\"");
-    }
-
-    if (!request.getParameter("SW_Morphologie").equals("-99")) {
-      tables.add("literatur_sw_morphologie");
-      conditions.add("literatur_sw_morphologie.literaturID = literatur.ID");
-      conditions.add("literatur_sw_morphologie.Schlagwort = \""+request.getParameter("SW_Morphologie")+"\"");
-    }
-
-    if (!request.getParameter("SW_ArealGens").equals("-99")) {
-      tables.add("literatur_sw_arealgens");
-      conditions.add("literatur_sw_arealgens.literaturID = literatur.ID");
-      conditions.add("literatur_sw_arealgens.Schlagwort = \""+request.getParameter("SW_ArealGens")+"\"");
     }
 
     // Ausgabfelder

@@ -13,6 +13,36 @@ public class SelektionUrkundeAusstellerEmpfaenger {
     @Column(name = "Bezeichnung", length=255)
     private String bezeichnung;
 
+    @ManyToMany(mappedBy = "empfaenger")
+    private Set<Urkunde> urkundeEmpfaenger = new HashSet<Urkunde>();
+    
+    @ManyToMany(mappedBy = "aussteller")
+    private Set<Urkunde> urkundeAussteller = new HashSet<Urkunde>();;
+    
+    public Set<Urkunde> getUrkundeEmpfaenger() {
+        return this.urkundeEmpfaenger;
+    }
+    
+    public void addUrkundeEmpfaenger(Urkunde uk){
+        this.getUrkundeEmpfaenger().add(uk);
+    }
+      
+    public void removeUrkundeEmpfaenger(int id){
+        this.getUrkundeEmpfaenger().removeIf(e -> e.getId() == id);
+    }
+    
+    public Set<Urkunde> getUrkundeAussteller() {
+        return this.urkundeAussteller;
+    }
+    
+    public void addUrkundeAussteller(Urkunde uk){
+        this.getUrkundeAussteller().add(uk);
+    }
+      
+    public void removeUrkundeAussteller(int id){
+        this.getUrkundeAussteller().removeIf(e -> e.getId() == id);
+    }
+    
     public Integer getId() {
         return id;
     }

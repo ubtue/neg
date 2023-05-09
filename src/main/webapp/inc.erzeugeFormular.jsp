@@ -1,8 +1,5 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.DatenbankMapping" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
@@ -19,12 +16,12 @@
   String klarlemma = request.getParameter("Klarlemma");
   String def = "";
   String disabled = "";
-  
+
   boolean isReadOnly = (readonly!=null && readonly.equals("yes"));
   boolean isEmpty = (emp!=null && emp.equals("yes"));
   boolean isSorted = (sorted!=null && sorted.equals("yes"));
   boolean isKlarlemma = (isReadOnly && klarlemma != null && klarlemma.equals("yes"));
-  
+
 
   if (request.getParameter("ID") != null)
     id = request.getParameter("ID");
@@ -50,6 +47,10 @@
   String feldtyp = "";
   boolean array = false;
 
+  String sprache = (String)session.getAttribute("Sprache");
+  //set standard language
+  if(sprache == null)
+    sprache = "de"; 
   String beschriftung = "";
   String platzhalter = "";
   String tooltip = "";
@@ -65,63 +66,46 @@
   String[] combinedFeldtypen = null;
   String[] combinedAnzeigenamen = null;
 
-  // Textfeldtyp auslesen
-  Connection cn = null;
-  Statement  st = null;
-  ResultSet  rs = null;
-  try {
-    Class.forName( sqlDriver );
-    cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-    st = cn.createStatement();
-    rs = st.executeQuery("SELECT * FROM datenbank_mapping WHERE Formular=\""+formular+"\" AND datenfeld=\""+datenfeld+"\"");
-    if ( rs.next() ) {
-      feldtyp = rs.getString("Feldtyp");
-      array = (rs.getInt("Array") == 1 ? true : false);
-      beschriftung = rs.getString((String)session.getAttribute("Sprache")+"_Beschriftung");
-      platzhalter = rs.getString((String)session.getAttribute("Sprache")+"_Platzhalter");
-      if(platzhalter==null || platzhalter.equals("null"))platzhalter="";
-      tooltip = rs.getString((String)session.getAttribute("Sprache")+"_Tooltip");
-      if(tooltip==null || platzhalter.equals("null"))tooltip="";
-      zielTabelle = rs.getString("ZielTabelle");
-      zielAttribut = rs.getString("ZielAttribut");
-      auswahlherkunft = rs.getString("Auswahlherkunft");
-      formularAttribut = rs.getString("FormularAttribut");
-      buttonAktion = rs.getString("buttonAktion");
-      returnpage = rs.getString("Seite");
-      if (rs.getString("default") != null && !rs.getString("default").equals("")) {
-        defaultValues = rs.getString("default").split(";");
-        for (int i=0; i<defaultValues.length; i++)
-          defaultValues[i] = defaultValues[i].trim();
-      }
+  DatenbankMapping mapping = DatenbankDB.getMapping(formular, datenfeld);
 
-      if (rs.getString("combinedFeldnamen") != null && !rs.getString("combinedFeldnamen").equals("")) {
-        combinedFeldnamen = rs.getString("combinedFeldnamen").split(";");
-        for (int i=0; i<combinedFeldnamen.length; i++)
-          combinedFeldnamen[i] = combinedFeldnamen[i].trim();
-      }
-      if (rs.getString("combinedFeldtypen") != null && !rs.getString("combinedFeldtypen").equals("")) {
-        combinedFeldtypen = rs.getString("combinedFeldtypen").split(";");
-        for (int i=0; i<combinedFeldtypen.length; i++)
-          combinedFeldtypen[i] = combinedFeldtypen[i].trim();
-      }
-      if (rs.getString(((String)session.getAttribute("Sprache"))+"_combinedAnzeigenamen") != null && !rs.getString(((String)session.getAttribute("Sprache"))+"_combinedAnzeigenamen").equals("")) {
-        combinedAnzeigenamen = rs.getString(((String)session.getAttribute("Sprache"))+"_combinedAnzeigenamen").split(";");
-        for (int i=0; i<combinedAnzeigenamen.length; i++)
-          combinedAnzeigenamen[i] = combinedAnzeigenamen[i].trim();
-      }
-    }
-  }
-  catch (Exception e) {
-    out.println(e);
-  }
-  finally {
-    try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-    try { if( null != st ) st.close(); } catch( Exception ex ) {}
-    try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
+  if (mapping != null) {
+    feldtyp = mapping.getFeldtyp();
+    array = mapping.getArray();
+    beschriftung = mapping.getBeschriftung(sprache);
+    platzhalter = mapping.getPlatzhalter(sprache);
+    if(platzhalter==null || platzhalter.equals("null"))platzhalter="";
+    tooltip = mapping.getTooltip(sprache);
+    if(tooltip==null || platzhalter.equals("null"))tooltip="";
+    zielTabelle = mapping.getZielTabelle();
+    zielAttribut = mapping.getZielAttribut();
+    auswahlherkunft = mapping.getAuswahlherkunft();
+    formularAttribut = mapping.getFormularAttribut();
+    buttonAktion = mapping.getButtonAktion();
+    returnpage = mapping.getSeite();
+
+    defaultValues = mapping.getAltAsArray();
+    combinedFeldnamen = mapping.getCombinedFeldnamenAsArray();
+    combinedFeldtypen = mapping.getCombinedFeldtypenAsArray();
+    combinedAnzeigenamen = mapping.getCombinedAnzeigenamenAsArray(sprache);
   }
 %>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("<div style=\"visibility:hidden\">");%>
+
+<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
+<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
+<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
+<%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%@ page import="java.util.*" isThreadSafe="false" %>
+<%
+// TODO: These definitions here are still necessary for the forms/templates to work.
+// We should refactor them at a later point.
+Connection cn = null;
+Statement  st = null;
+ResultSet  rs = null;
+%>
+
 <%@ include file="forms/autocomplete.jsp" %>
 <%@ include file="forms/array.addselect.jsp" %>
 <%@ include file="forms/array.addselectandtext.jsp" %>

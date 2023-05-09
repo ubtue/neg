@@ -1,11 +1,14 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import java.time.LocalDateTime;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "benutzer")
 public class Benutzer {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int ID;
 
@@ -28,7 +31,7 @@ public class Benutzer {
     private boolean IstAdmin;
 
     @OneToOne(targetEntity = BenutzerGruppe.class)
-    @JoinColumn(name = "GruppeID", referencedColumnName="ID")
+    @JoinColumn(name = "GruppeID", referencedColumnName = "ID")
     private BenutzerGruppe Gruppe;
 
     @Column(name = "Sprache")
@@ -43,6 +46,47 @@ public class Benutzer {
     @Column(name = "IstReadOnly", columnDefinition = "TINYINT")
     private boolean IstReadOnly;
 
+    @Column(name = "ResetToken")
+    private String ResetToken;
+
+    @Column(name = "ResetTokenValidUntil")
+    private LocalDateTime ResetTokenValidUntil;
+
+    @Column(name = "Salt")
+    private String Salt;
+
+    public String getResetToken() {
+        return ResetToken;
+    }
+
+    public void setResetToken(String ResetToken) {
+        this.ResetToken = ResetToken;
+    }
+
+    public LocalDateTime getResetTokenValidUntil() {
+        return ResetTokenValidUntil;
+    }
+
+    public void setResetTokenValidUntil(LocalDateTime ResetTokenValidUntil) {
+        this.ResetTokenValidUntil = ResetTokenValidUntil;
+    }
+
+    public String getSalt() {
+        return Salt;
+    }
+
+    public void setSalt(String Salt) {
+        this.Salt = Salt;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
+
     public int getID() {
         return ID;
     }
@@ -51,12 +95,24 @@ public class Benutzer {
         return Login;
     }
 
+    public void setLogin(String login) {
+        this.Login = login;
+    }
+
     public String getNachname() {
         return Nachname;
     }
 
+    public void setNachname(String nachname) {
+        this.Nachname = nachname;
+    }
+
     public String getVorname() {
         return Vorname;
+    }
+
+    public void setVorname(String vorname) {
+        this.Vorname = vorname;
     }
 
     public String getEMail() {
@@ -67,12 +123,20 @@ public class Benutzer {
         return IstAdmin;
     }
 
+    public void setAdmin(boolean isAdmin) {
+        this.IstAdmin = isAdmin;
+    }
+
     public BenutzerGruppe getGruppe() {
         return Gruppe;
     }
 
     public String getSprache() {
         return Sprache;
+    }
+
+    public void setSprache(String sprache) {
+        this.Sprache = sprache;
     }
 
     public boolean isGast() {
@@ -83,7 +147,17 @@ public class Benutzer {
         return IstAktiv;
     }
 
+    public void setAktiv(boolean isActive) {
+        this.IstAktiv = isActive;
+    }
+
     public boolean isReadOnly() {
         return IstReadOnly;
     }
+
+    public void setEMail(String EMail) {
+        this.EMail = EMail;
+    }
+
+
 }

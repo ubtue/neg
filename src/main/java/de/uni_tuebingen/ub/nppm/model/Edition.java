@@ -66,15 +66,25 @@ public class Edition {
     @JoinColumn(name = "dMGHBandID", referencedColumnName="ID")
     private SelektionDmghBand dMGHBand; 
     
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
         name = "edition_hateditor", 
         joinColumns = { @JoinColumn(name = "EditionID") }, 
         inverseJoinColumns = { @JoinColumn(name = "EditorID") }
     )
-    List<SelektionEditor> editors = new ArrayList<>();
+    Set<SelektionEditor> editors = new HashSet<>();
+    
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @JoinTable(
+            name = "quelle_inedition",
+            joinColumns = {
+                @JoinColumn(name = "EditionID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "QuelleID")}
+    )
+    Set<Quelle> quellen = new HashSet<>();
 
-    public List<SelektionEditor> getEditors() {
+    public Set<SelektionEditor> getEditors() {
         return editors;
     }
     
@@ -83,14 +93,19 @@ public class Edition {
     }
       
     public void removeEditor(int id){
-        for (int i = 0; i < this.getEditors().size(); ) {
-            SelektionEditor editor = this.getEditors().get(i);
-            if(editor.getId() != null && editor.getId() == id){
-                this.getEditors().remove(i);
-            }else{
-                i++;
-            }
-        }
+        this.getEditors().removeIf(e -> e.getId() == id);
+    }
+    
+    public Set<Quelle> getQuellen() {
+        return quellen;
+    }
+
+    public void addQuelle(Quelle q) {
+        this.getQuellen().add(q);
+    }
+
+    public void removeQuelle(int id) {
+        this.getQuellen().removeIf(q -> q.getId() == id);
     }
 
     public Integer getId() {

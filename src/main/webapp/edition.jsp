@@ -4,119 +4,22 @@
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+
 <%@ include file="configuration.jsp" %>
 
-<jsp:include page="dolanguage.jsp" />
-<jsp:include page="dofilter.jsp">
-     <jsp:param name="form" value="edition" />
-</jsp:include>
 
 <%
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
-    int id = -2;
-    int filter = 0;
+    int id = Constants.UNDEFINED_ID;
     String formular = "edition";
-
-    try {
-      id = Integer.parseInt(request.getParameter("ID"));
-    }
-    catch (Exception e) {}
-    try {
-      filter = ((Integer)session.getAttribute(formular+"filter")).intValue();
-    }
-    catch (Exception e) {}
-
-    if (id < -1) {
-      Connection cn = null;
-      Statement st = null;
-      ResultSet rs = null;
-      String sql = "";
-      try {
-        Class.forName( sqlDriver );
-        cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-        st = cn.createStatement();
-        rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='"+formular+"' AND Nummer='"+filter+"';");
-        if (rs.next()) {
-          sql = rs.getString("SQLString");
-        }
-        else{
-        rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='"+formular+"' AND Nummer='0';");
-           if (rs.next()) {
-             sql = rs.getString("SQLString");
-           }
-        
-        }
- //       out.println("SQL: " + sql);
-        sql = sql.replace("*", "min("+formular+".ID) m");
-        String filterParameter = (String) session.getAttribute(formular+"filterParameter");
-        if (filterParameter != null)
-          sql = sql.replace("###", filterParameter);
-        sql = sql.replace("#userid#", ""+((Integer)session.getAttribute("BenutzerID")).intValue());
-        sql = sql.replace("#groupid#", ""+((Integer)session.getAttribute("GruppeID")).intValue());
- //       rs = st.executeQuery(sql+(sql.contains("WHERE")?" AND ":" WHERE ")+formular+".ID < "+id);
-  //      out.println("SQL: " + sql);
-        rs = st.executeQuery(sql);
-        if (rs.next())
-          id = rs.getInt("m");
- 	   } catch (Exception e) {
-           out.println(e);
-       }      finally {
-        try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-        try { if( null != st ) st.close(); } catch( Exception ex ) {}
-        try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-      }
-    }else    {
-      Connection cn = null;
-      Statement st = null;
-      ResultSet rs = null;
-      String sql = "";
-      try {
-        Class.forName( sqlDriver );
-        cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-        st = cn.createStatement();
-        rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='"+formular+"' AND Nummer='"+filter+"';");
-        if (rs.next()) {
-          sql = rs.getString("SQLString");
-        }
-        else{
-           rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='"+formular+"' AND Nummer='0';");
-           if (rs.next()) {
-             sql = rs.getString("SQLString");
-           }
-        
-        }
-        if (rs.next()) {
-          sql = rs.getString("SQLString");
-        }
-        String filterParameter = (String) session.getAttribute(formular + "filterParameter");
-        if (filterParameter != null)
-          sql = sql.replace("###", filterParameter);
-        sql = sql.replace("#userid#", ""+((Integer)session.getAttribute("BenutzerID")).intValue());
-        sql = sql.replace("#groupid#", ""+((Integer)session.getAttribute("GruppeID")).intValue());
-         String sql2 = sql.replace("*", "count(*) c");
- //       out.println(sql2);
- //       if(true)return;
-        rs = st.executeQuery(sql2);
-        if (rs.next()){
-           if(rs.getString("c").equals("0")) id=-1;
-           else{
-           sql = sql.replace("*", "min("+formular+".ID) m");
-           rs = st.executeQuery(sql+(sql.contains("WHERE")?" AND ":" WHERE ")+formular+".ID = "+id);
-           if (rs.next()&& id>-1 && rs.getString("m")==null){
-              out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-              return;
-           }}}
-	      } catch (Exception e) {
-              out.println("ID nicht vorhanden. <a href=\"javascript:history.back();\">Zur&uuml;ck zur vorherigen Seite</a>");
-             return;
-           }
-      finally {
-        try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-        try { if( null != st ) st.close(); } catch( Exception ex ) {}
-        try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-      }
-    }
-
+    Filter.setFilter(request, formular, out);
+    Language.setLanguage(request);
+    id = Utils.determineId(request, response, formular, out);
 %>
 
 <jsp:include page="dosave.jsp">
@@ -127,20 +30,7 @@
   <jsp:param name="form" value="edition" />
 </jsp:include>
 
-<HTML>
-  <HEAD>
-    <TITLE>Nomen et Gens - 
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="edition"/>
-        <jsp:param name="Textfeld" value="Titel"/>
-      </jsp:include>
-    </TITLE>
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <script src="javascript/funktionen.js" type="text/javascript"></script>
-    <noscript></noscript>
-  </HEAD>
-
-  <BODY onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');urlRewrite(<%= id %>);">
+  <div onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');urlRewrite(<%= id %>);">
     <FORM method="POST">
       <jsp:include page="layout/navigation.inc.jsp" />
       <jsp:include page="layout/image.inc.html" />
@@ -162,28 +52,7 @@
           <tbody>
             <tr>
               <td width="200">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Editionnummer"/>
-                </jsp:include>
-              </td>
-              <td width="450">
-                <jsp:include page="inc.erzeugeFormular.jsp">
-                  <jsp:param name="ID" value="<%= id %>"/>
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Editionnummer"/>
-                  <jsp:param name="Default" value="<%= id %>"/>
-                </jsp:include>
-              </td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td width="200">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Titel"/>
-                </jsp:include>
+                  <% Language.printDatafield(out,session, formular,"Titel");%>
               </td>
               <td width="450">
                 <jsp:include page="inc.erzeugeFormular.jsp">
@@ -202,10 +71,7 @@
             </tr>
             <tr>
               <td width="200">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Quelle"/>
-                </jsp:include>
+                  <% Language.printDatafield(out,session, formular,"Quelle");%>
               </td>
               <td width="450">
                 <jsp:include page="inc.erzeugeFormular.jsp">
@@ -220,10 +86,7 @@
             </tr>
             <tr>
               <td width="200">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Jahr"/>
-                </jsp:include>
+                  <% Language.printDatafield(out,session, formular,"Jahr");%>
               </td>
               <td width="450">
                 <jsp:include page="inc.erzeugeFormular.jsp">
@@ -237,10 +100,7 @@
             </tr>
             <tr>
               <td width="200">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Ort"/>
-                </jsp:include>
+                  <% Language.printDatafield(out,session, formular,"Ort");%>
               </td>
               <td width="450">
                 <jsp:include page="inc.erzeugeFormular.jsp">
@@ -258,6 +118,7 @@
                   <jsp:param name="Formular" value="edition"/>
                   <jsp:param name="Datenfeld" value="Reihe"/>
                 </jsp:include>
+                  <% Language.printDatafield(out,session, formular,"Reihe");%>
               </td>
               <td width="450">
                 <jsp:include page="inc.erzeugeFormular.jsp">
@@ -267,10 +128,7 @@
                 </jsp:include>
               </td>
               <td>
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Band"/>
-                </jsp:include>
+                  <% Language.printDatafield(out,session, formular,"Band");%>
               </td>
               <td>
                 <jsp:include page="inc.erzeugeFormular.jsp">
@@ -282,10 +140,7 @@
             </tr>
             <tr>
               <td width="200">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="dMGHBand"/>
-                </jsp:include>
+                  <% Language.printDatafield(out,session, formular,"dMGHBand");%>
               </td>
               <td width="450">
                 <jsp:include page="inc.erzeugeFormular.jsp">
@@ -297,10 +152,7 @@
             </tr>
             <tr>
               <td width="200">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Zitierweise"/>
-                </jsp:include>
+                  <% Language.printDatafield(out,session, formular,"Zitierweise");%>
               </td>
               <td width="450">
                 <jsp:include page="inc.erzeugeFormular.jsp">
@@ -341,41 +193,27 @@
             <ul id="primary">
               <li>
                 <span>
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabEditoren"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabEditoren");%>
                 </span>
               </li>
-	<li><a href="javascript:onoff('tab5','tab1');"> <jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="TabUeberlieferung" />
-	</jsp:include> </a></li>
+	<li><a href="javascript:onoff('tab5','tab1');"> 
+            <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
+            </a></li>
 <!-- TAB BÄNDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBaende"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabBaende");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab1');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabQuellen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabQuellen");%>
                 </a>
               </li>
 -->
               <li>
                 <a href="javascript:onoff('tab4','tab1');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBemerkungen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
                 </a>
               </li>
             </ul>
@@ -385,10 +223,7 @@
               <tbody>
                 <tr>
                   <th width="200"valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="edition"/>
-                      <jsp:param name="Datenfeld" value="Editor"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Editor");%>
                   </th>
                   <td>
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -408,41 +243,27 @@
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab5');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabEditoren"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabEditoren");%>
                 </a>
               </li>
-	<li><span> <jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="TabUeberlieferung" />
-	</jsp:include> </span></li>
+	<li><span> 
+            <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
+            </span></li>
 <!-- TAB BÄNDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBaende"/>
-                  </jsp:include>
+                <% Language.printTextfield(out,session, formular,"TabBaende");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab1');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabQuellen"/>
-                  </jsp:include>
+                   <% Language.printTextfield(out,session, formular,"TabQuellen");%>
                 </a>
               </li>
 -->
               <li>
                 <a href="javascript:onoff('tab4','tab5');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBemerkungen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
                 </a>
               </li>
             </ul>
@@ -459,34 +280,22 @@
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab3');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabEditoren"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabEditoren");%>
                 </a>
               </li>
               <li>
                 <span>
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBaende"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabBaende");%>
                 </span>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab2');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabQuellen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabQuellen");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab4','tab2');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBemerkungen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
                 </a>
               </li>
             </ul>
@@ -505,34 +314,22 @@
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab3');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabEditoren"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabEditoren");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab2','tab3');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBaende"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabBaende");%>
                 </a>
               </li>
               <li>
                 <span>
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabQuellen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabQuellen");%>
                 </span>
               </li>
               <li>
                 <a href="javascript:onoff('tab4','tab3');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBemerkungen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
                 </a>
               </li>
             </ul>
@@ -551,41 +348,27 @@
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab4');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabEditoren"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabEditoren");%>
                 </a>
               </li>
-	<li><a href="javascript:onoff('tab5','tab4');"> <jsp:include
-		page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="TabUeberlieferung" />
-	</jsp:include> </a></li>
+	<li><a href="javascript:onoff('tab5','tab4');"> 
+            <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
+            </a></li>
 <!-- TAB BÄNDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab4');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBaende"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabBaende");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab4');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabQuellen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabQuellen");%>
                 </a>
               </li>
 -->
               <li>
                 <span>
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="edition"/>
-                    <jsp:param name="Textfeld" value="TabBemerkungen"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
                 </span>
               </li>
             </ul>
@@ -595,10 +378,7 @@
               <tbody>
                 <tr>
                   <td valign="top" width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="edition"/>
-                      <jsp:param name="Datenfeld" value="BemerkungAlle"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"BemerkungAlle");%>
                   </td>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -612,10 +392,7 @@
                 </tr>
                 <tr>
                   <td valign="top" width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="edition"/>
-                      <jsp:param name="Datenfeld" value="BemerkungGruppe"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"BemerkungGruppe");%>
                   </td>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -629,10 +406,7 @@
                 </tr>
                 <tr>
                   <td valign="top" width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="edition"/>
-                      <jsp:param name="Datenfeld" value="BemerkungPrivat"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"BemerkungPrivat");%>
                   </td>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -646,10 +420,7 @@
                 </tr>
                 <tr>
                   <td width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="edition"/>
-                      <jsp:param name="Datenfeld" value="Bearbeitungsstatus"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Bearbeitungsstatus");%>
                   </td>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -661,10 +432,7 @@
                 </tr>
                 <tr>
                   <td valign="top" width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="edition"/>
-                      <jsp:param name="Datenfeld" value="LetzteAenderung"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"LetzteAenderung");%>
                   </td>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -676,10 +444,7 @@
                 </tr>
                 <tr>
                   <td valign="top" width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="edition"/>
-                      <jsp:param name="Datenfeld" value="LetzteAenderungVon"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"LetzteAenderungVon");%>
                   </td>
                   <td>
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -691,10 +456,7 @@
                 </tr>
                 <tr>
                   <td valign="top" width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="edition"/>
-                      <jsp:param name="Datenfeld" value="Erstellt"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Erstellt");%>
                   </td>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -706,10 +468,7 @@
                 </tr>
                 <tr>
                   <td valign="top" width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="edition"/>
-                      <jsp:param name="Datenfeld" value="ErstelltVon"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"ErstelltVon");%>
                   </td>
                   <td>
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -733,24 +492,4 @@
         </div>
       </div>
     </FORM>
-  </BODY>
-</HTML>
-<%
-  }
-  else {
-  %>
-    <p>
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-      </jsp:include>
-    </p>
-    <a href="index.jsp">
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a>
-  <%
-  }
-%>
+  </div>

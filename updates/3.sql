@@ -1,0 +1,22 @@
+#Schlagwort
+DROP TABLE IF EXISTS schlagwort_arealgens;
+DROP TABLE IF EXISTS schlagwort_morphologie;
+DROP TABLE IF EXISTS schlagwort_motivation;
+DROP TABLE IF EXISTS schlagwort_namenelemente;
+DROP TABLE IF EXISTS schlagwort_namenlexikon;
+DROP TABLE IF EXISTS schlagwort_phongraph;
+DROP TABLE IF EXISTS schlagwort_sprachherkunft;
+DROP TABLE IF EXISTS selektion_sw_arealgens;
+DROP TABLE IF EXISTS selektion_sw_morphologie;
+DROP TABLE IF EXISTS selektion_sw_motivation;
+DROP TABLE IF EXISTS selektion_sw_namenelemente;
+DROP TABLE IF EXISTS selektion_sw_namenlexikon;
+DROP TABLE IF EXISTS selektion_sw_phongraph;
+DROP TABLE IF EXISTS selektion_sw_sprachherkunft;
+DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_arealgens';
+DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_morphologie';
+DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_motivation';
+DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_namenelemente';
+DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_namenlexikon';
+DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_phongraph';
+DELETE FROM datenbank_selektion WHERE selektion='selektion_sw_sprachherkunft';

@@ -5,17 +5,18 @@
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
 
 <%
-  if (session!=null && session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast"))) {
-    %><jsp:forward page="einzelbeleg.jsp" /><%
+  if (AuthHelper.isBenutzerLogin(request)) {
+    %><jsp:forward page="einzelbeleg" /><%
   }
-  else if (session!=null && session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && ((Boolean) session.getAttribute("Gast"))) {
-    response.sendRedirect("gast/startseite.jsp");
+  else if (AuthHelper.isGastLogin(request)) {
+    response.sendRedirect("gast/startseite");
   }
   else {
     Connection cn = null;
@@ -60,10 +61,10 @@
 
           // Weiterleitung
           if((Boolean)session.getAttribute("Gast")){
-            response.sendRedirect("gast/startseite.jsp");
+            response.sendRedirect("gast/startseite");
           }
           else{
-            response.sendRedirect("einzelbeleg.jsp");
+            response.sendRedirect("einzelbeleg");
           }
         }
         else {

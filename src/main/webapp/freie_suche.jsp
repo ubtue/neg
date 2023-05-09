@@ -1,39 +1,29 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB"%>
 ﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
-
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
 <jsp:include page="doduplicate.jsp" />
 
-<jsp:include page="dolanguage.jsp" />
-<jsp:include page="dofilter.jsp" />
+
 
 
 <%
-  if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
-
-    int id = -1;
-    int filter = 0;
+    int id = Constants.UNDEFINED_ID;
     String formular = "freie_suche";
+    Filter.setFilter(request, formular, out);
+    Language.setLanguage(request);
 %>
 
-<HTML>
-  <HEAD>
-    <TITLE>Nomen et Gens -
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="freie_suche"/>
-        <jsp:param name="Textfeld" value="Titel"/>
-      </jsp:include>
-    </TITLE>
-     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script src="//code.jquery.com/jquery-1.9.1.js"></script>
-<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<!-->link rel="stylesheet" href="/resources/demos/style.css" /-->
+
+<div>
 <style>
 	#truncate-hint {
 		font-size: small;
@@ -47,50 +37,37 @@ $(function() {
 	$( document ).tooltip();
 });
 </script>
-    
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <script src="javascript/funktionen.js" type="text/javascript"></script>
-            <link rel="stylesheet" type="text/css" href="layout/jquery.autocomplete.css" />
-    <script type="text/javascript"
-            src="//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-    <script src="javascript/jquery.autocomplete.js"></script>
+
     <script type="text/javascript">
-    $(function() { // when document has loaded  
-      
+    $(function() { // when document has loaded
+
     	// replace [help] with link to help >>
     	var p = $('#truncate-hint');
-    	p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='gast/hilfe.jsp'>$1</a>"));
+    	p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='gast/hilfe'>$1</a>"));
     	// <<
-    	
-        var i = 4; // check how many input exists on the document and add 1 for the add command to work  
+
+        var i = 4; // check how many input exists on the document and add 1 for the add command to work
         $('a#add').click(function() { // when you click the add link
         if(i<15){
-<%  
+<%
    out.print("$('<tr><th>Dann nach</th><td>");
    out.print("<select name=\"order'+i+'\">");
    out.print("  <option value=\"-1\">--</option>");
-   Connection cn = null;
-   Statement st = null;
-   ResultSet rs = null;
-   
+
      String sprache = "de";
   if (session != null && session.getAttribute("Sprache") != null)
     sprache = (String)session.getAttribute("Sprache");
-   
 
-   try {
-    Class.forName( sqlDriver );
-    cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-    st = cn.createStatement();
-    rs = st.executeQuery("SELECT * FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
+    List<Object[]> res = DatenbankDB.getResult("SELECT Textfeld, "+sprache+" FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
+    for(Object[] val : res){
+        String textfeld = val[0].toString();
+        String lang = val[1].toString();
+        
+        out.print("<option test=\"test\" value=\"" + textfeld +"\">");
+        out.print(lang);
+        out.print("</option>");        
+    }    
     
-    while (rs.next()) {
-
-       out.print("<option value=\"" + rs.getString("Textfeld") +"\">");
-       out.print(rs.getString(sprache));
-       out.print("</option>");
-
-    }
     out.print("</select>");
 
     out.print("<input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"ASC\" checked/>");
@@ -99,21 +76,20 @@ $(function() {
     out.print(" <input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"DESC\" />");
  	out.print("absteigend");
     out.print("<br>Zeitraum (nur für Datierung): <input type=\"text\" name=\"order'+i+'zeit\" />  ");
-    
-    }
-    catch(Exception ex){ex.printStackTrace();}   
-            
+
+
+
     out.print("</td></tr>').appendTo('div#tab3 div#main table tbody');");
-%>  
-    // if you have the input inside a form, change body to form in the appendTo  
-            i++; //after the click i will be i = 3 if you click again i will be i = 4  
-      } 
-     }); 
-            }); 
+%>
+    // if you have the input inside a form, change body to form in the appendTo
+            i++; //after the click i will be i = 3 if you click again i will be i = 4
+      }
+     });
+            });
     </script>
-    
+
     <noscript></noscript>
-  </HEAD>
+</div>
 
 
 
@@ -121,7 +97,7 @@ $(function() {
     <jsp:include page="layout/image.inc.html" />
     <jsp:include page="layout/titel.suche.html" />
 
-    <FORM method="POST" action="suchergebnis.jsp">
+    <FORM method="POST" action="suchergebnis">
       <input type="hidden" name="form" value="freie_suche">
 
 <!-- ##### SUCHFELDER ##### -->
@@ -131,60 +107,38 @@ $(function() {
             <ul id="primary">
               <li>
                 <span>
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab1"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"Tab1");%>
                 </span>
               </li>
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab2"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"Tab2");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab1');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab3"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"Tab3");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab4','tab1');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab4"/>
-                  </jsp:include>
+                    <% Language.printTextfield(out,session, formular,"Tab4");%>
                 </a>
               </li>
             </ul>
           </div>
           <div id="main">
             <p id="truncate-hint">
-            	<jsp:include page="inc.erzeugeBeschriftung.jsp">
-                	<jsp:param name="Formular" value="freie_suche"/>
-                	<jsp:param name="Textfeld" value="TruncateHint"/>
-              	</jsp:include>
+                <% Language.printTextfield(out,session, formular,"TruncateHint");%>
             </p>
             <h3>
-              <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="freie_suche"/>
-                <jsp:param name="Textfeld" value="Ueberschrift1"/>
-              </jsp:include>
+                <% Language.printTextfield(out,session, formular,"Ueberschrift1");%>
             </h3>
             <table>
               <tbody>
                 <tr>
                   <th width="200">
-                                      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="NeGIDjump"/>
-                    </jsp:include>
-
+                    <% Language.printDatafield(out,session, formular,"NeGIDjump");%>
                   </th>
                   <td width="450">
                     <span></span><input type="text"  title="NeG-ID" placeholder="NeG-ID" name="jumpValueID" size="5">
@@ -194,10 +148,7 @@ $(function() {
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Belegform"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Belegform");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -209,10 +160,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Kontext"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Kontext");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -223,10 +171,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Namenlemma"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Namenlemma");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -238,10 +183,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Erstglied"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Erstglied");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -252,10 +194,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Zweitglied"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Zweitglied");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -266,10 +205,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="MGHLemma"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"MGHLemma");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -281,10 +217,7 @@ $(function() {
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Personenname"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Personenname");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -296,10 +229,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Geschlecht"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Geschlecht");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -311,10 +241,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="PersonZeitraum"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"PersonZeitraum");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -322,19 +249,13 @@ $(function() {
                       <jsp:param name="Datenfeld" value="PersonZeitraum"/>
                     </jsp:include>
                     <br>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="Datumsformat"/>
-                    </jsp:include>: 6Jh2, 750, 750-810, 5Jh1-7Jh2
+                    Format: 6Jh2, 750, 750-810, 5Jh1-7Jh2
                   </td>
                 </tr>
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="AmtWeihePerson"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"AmtWeihePerson");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -346,10 +267,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="StandPerson"/>
-                     </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"StandPerson");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -361,10 +279,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="AmtWeiheEinzelbeleg"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"AmtWeiheEinzelbeleg");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -376,24 +291,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="StandEinzelbeleg"/>
-                    </jsp:include>
-                  </th>
-                  <td width="450">
-                    <jsp:include page="inc.erzeugeFormular.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="StandEinzelbeleg"/>
-                    </jsp:include>
-                  </td>
-                </tr>
-                <tr>
-                  <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Funktion"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Funktion");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -406,10 +304,7 @@ $(function() {
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Verwandtschaftsgrad"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Verwandtschaftsgrad");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -422,10 +317,7 @@ $(function() {
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Quelle"/>
-                    </jsp:include>
+                       <% Language.printDatafield(out,session, formular,"Quelle");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -437,10 +329,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Quellengattung"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Quellengattung");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -452,10 +341,7 @@ $(function() {
                 </tr>
                  <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="QuelleZeitraum"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"QuelleZeitraum");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -463,25 +349,19 @@ $(function() {
                       <jsp:param name="Datenfeld" value="QuelleZeitraum"/>
                     </jsp:include>
                     <br>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="Datumsformat"/>
-                    </jsp:include>: 6Jh2, 750, 750-810, 5Jh1-7Jh2
+                    <% Language.printTextfield(out,session, formular,"Datumsformat");%>: 6Jh2, 750, 750-810, 5Jh1-7Jh2
                   </td>
                 </tr>
               </tbody>
             </table>
             <!--p>&nbsp;<font color="red">*</font> <br>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="KeineFunktion"/>
-                    </jsp:include></p-->
+                    
+                    <% Language.printTextfield(out,session, formular,"KeineFunktion");%>
+            </p-->
             <p align="right">
               <a href="javascript:onoff('tab2','tab1');">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="freie_suche"/>
-                  <jsp:param name="Textfeld" value="LinkWeiter"/>
-                </jsp:include>
+                
+                  <% Language.printTextfield(out,session, formular,"LinkWeiter");%>
               </a>
             </p>
           </div>
@@ -493,52 +373,40 @@ $(function() {
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab2');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab1"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab1");%>
                 </a>
               </li>
               <li>
                 <span>
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab2"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab2");%>
                 </span>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab2');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab3"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab3");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab4','tab2');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab4"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab4");%>
                 </a>
               </li>
             </ul>
           </div>
           <div id="main">
             <h3>
-              <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="freie_suche"/>
-                <jsp:param name="Textfeld" value="Ueberschrift2"/>
-              </jsp:include>
+              
+                <% Language.printTextfield(out,session, formular,"Ueberschrift2");%>
             </h3>
             <table>
               <tbody>
                 <tr><td colspan="2"><h3>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="ZumNamen"/>
-                    </jsp:include></h3></td></tr>
+                 <% Language.printTextfield(out,session, formular,"ZumNamen");%>
+                        </h3></td></tr>
                 <tr>
                   <td width="25">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -547,10 +415,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <th width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Namenlemma"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Namenlemma");%>
                   </th>
                 </tr>
                 <tr>
@@ -561,12 +426,9 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Erstglied"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Erstglied");%>
                   </td>
-                </tr>                
+                </tr>
                 <tr>
                   <td width="25">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -575,10 +437,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Zweitglied"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Zweitglied");%>
                   </td>
                 </tr>
                                 <tr>
@@ -589,16 +448,12 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_MGHLemma"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_MGHLemma");%>
                   </td>
                 </tr>                 <tr><td colspan="2">&nbsp;</td></tr>
-                <tr><td colspan="2"><h3><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="Zur Person"/>
-                    </jsp:include></h3></td></tr>
+                <tr><td colspan="2"><h3>
+                        <% Language.printTextfield(out,session, formular,"ZurPerson");%>
+                        </h3></td></tr>
                 <tr>
                   <td width="25">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -607,10 +462,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <th width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_Standardname"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Person_Standardname");%>
                   </th>
                 </tr>
                 <tr>
@@ -621,10 +473,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeihe"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Person_AmtWeihe");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
@@ -636,10 +485,7 @@ $(function() {
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeiheZeitraum"/>
                     </jsp:include>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeiheZeitraum"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Person_AmtWeiheZeitraum");%>
                   </td>
                 </tr>
                 <tr>
@@ -650,10 +496,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_Ethnie"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Person_Ethnie");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
@@ -665,10 +508,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Stand"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Stand");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
@@ -680,10 +520,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Geschlecht"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Geschlecht");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
@@ -695,10 +532,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_Verwandte"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Person_Verwandte");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
@@ -710,19 +544,15 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Person_Areal"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Person_Areal");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
 
                 <tr><td colspan="2">&nbsp;</td></tr>
-                <tr><td colspan="2"><h3><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="ZumEinzelbeleg"/>
-                    </jsp:include></h3></td></tr>
+                <tr><td colspan="2"><h3>
+                        <% Language.printTextfield(out,session, formular,"ZumEinzelbeleg");%>
+                        </h3></td></tr>
                 <tr>
                   <td width="25">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -731,10 +561,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Belegstelle"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Belegstelle");%>
                   </td>
                 </tr>
                 <tr>
@@ -745,10 +572,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Quelle_Datierung"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Quelle_Datierung");%>
                   </td>
                 </tr>
                 <tr>
@@ -759,10 +583,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Quellengattung"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Quellengattung");%>
                   </td>
                 </tr>
                 <tr>
@@ -773,10 +594,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <th width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Belegform"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Belegform");%>
                   </th>
                 </tr>
                 <tr>
@@ -787,10 +605,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Kontext"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Kontext");%>
                   </td>
                 </tr>
                 <tr>
@@ -801,10 +616,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Datierung"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Datierung");%>
                   </td>
                 </tr>
                 <tr>
@@ -815,10 +627,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_lebend"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_lebend");%>
                   </td>
                 </tr>
                 <tr>
@@ -829,10 +638,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Funktion"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Funktion");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
@@ -844,10 +650,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Areal"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Areal");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
@@ -859,10 +662,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Varianten"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Varianten");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
@@ -874,10 +674,7 @@ $(function() {
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Textzeuge"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Textzeuge");%>
                     <font color="red">*</font>
                   </td>
                 </tr>
@@ -889,10 +686,7 @@ $(function() {
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Textzeuge_Datierung"/>
                     </jsp:include>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Textzeuge_Datierung"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Textzeuge_Datierung");%>
                     <font color="red">*</font>
                   </td>
                 </tr>
@@ -904,10 +698,7 @@ $(function() {
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Textzeuge_Schriftheimat"/>
                     </jsp:include>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Textzeuge_Schriftheimat"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Textzeuge_Schriftheimat");%>
                     <font color="red">*</font>
                   </td>
                 </tr>
@@ -919,31 +710,22 @@ $(function() {
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Textzeuge_Bibliotheksheimat"/>
                     </jsp:include>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Textzeuge_Bibliotheksheimat"/>
-                    </jsp:include>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Textzeuge_Bibliotheksheimat");%>
                     <font color="red">*</font>
                   </td>
                 </tr>
               </tbody>
             </table>
             <p>
-              &nbsp;<font color="red">*</font> <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="KeineFunktion"/>
-                    </jsp:include><br>
-              &nbsp;<font color="blue">**</font> <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="GroessereAusgabe"/>
-                    </jsp:include>
+              &nbsp;<font color="red">*</font> 
+                    <% Language.printTextfield(out,session, formular,"KeineFunktion");%>
+              <br>
+              &nbsp;<font color="blue">**</font> 
+                    <% Language.printTextfield(out,session, formular,"GroessereAusgabe");%>
             </p>
             <p align="right">
               <a href="javascript:onoff('tab3','tab2');">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="freie_suche"/>
-                  <jsp:param name="Textfeld" value="LinkWeiter"/>
-                </jsp:include>
+                  <% Language.printTextfield(out,session, formular,"LinkWeiter");%>
               </a>
             </p>
           </div>
@@ -955,53 +737,41 @@ $(function() {
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab3');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab1"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab1");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab2','tab3');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab2"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab2");%>
                 </a>
               </li>
               <li>
                 <span>
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab3"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab3");%>
                 </span>
               </li>
               <li>
                 <a href="javascript:onoff('tab4','tab3');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab4"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab4");%>
                 </a>
               </li>
             </ul>
           </div>
           <div id="main">
             <h3>
-              <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="freie_suche"/>
-                <jsp:param name="Textfeld" value="Ueberschrift3"/>
-              </jsp:include>
+              
+                <% Language.printTextfield(out,session, formular,"Ueberschrift3");%>
             </h3>
             <table>
               <tbody>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="Sortierung1"/>
-                    </jsp:include>
+                    
+                      <% Language.printTextfield(out,session, formular,"Sortierung1");%>
                   </th>
                   <td width="450">
                     <jsp:include page="forms/search.order.jsp">
@@ -1011,10 +781,8 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="Sortierung2"/>
-                    </jsp:include>
+                    
+                      <% Language.printTextfield(out,session, formular,"Sortierung2");%>
                   </th>
                   <td width="450">
                     <jsp:include page="forms/search.order.jsp">
@@ -1024,10 +792,8 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="Sortierung3"/>
-                    </jsp:include>
+                    
+                      <% Language.printTextfield(out,session, formular,"Sortierung3");%>
                   </th>
                   <td width="450">
                     <jsp:include page="forms/search.order.jsp">
@@ -1038,14 +804,12 @@ $(function() {
               </tbody>
             </table>
            <p align="right">
-               <a href="#" id="add">Weitere Gruppierung hinzufügen</a>  
+               <a href="#" id="add">Weitere Gruppierung hinzufügen</a>
             </p>
             <p align="right">
               <a href="javascript:onoff('tab4','tab3');">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="freie_suche"/>
-                  <jsp:param name="Textfeld" value="LinkWeiter"/>
-                </jsp:include>
+                
+                  <% Language.printTextfield(out,session, formular,"LinkWeiter");%>
               </a>
             </p>
           </div>
@@ -1057,44 +821,34 @@ $(function() {
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab4');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab1"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab1");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab2','tab4');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab2"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab2");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab4');">
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab3"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab3");%>
                 </a>
               </li>
               <li>
                 <span>
-                  <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="freie_suche"/>
-                    <jsp:param name="Textfeld" value="Tab4"/>
-                  </jsp:include>
+                  
+                    <% Language.printTextfield(out,session, formular,"Tab4");%>
                 </span>
               </li>
             </ul>
           </div>
           <div id="main">
             <h3>
-              <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                <jsp:param name="Formular" value="freie_suche"/>
-                <jsp:param name="Textfeld" value="Ueberschrift4"/>
-              </jsp:include>
+              
+                <% Language.printTextfield(out,session, formular,"Ueberschrift4");%>
             </h3>
             <table>
               <tbody>
@@ -1103,10 +857,8 @@ $(function() {
                     <input type="radio" name="export" value="liste" />
                   </td>
                   <td>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="ExportListe"/>
-                    </jsp:include>
+                    
+                      <% Language.printTextfield(out,session, formular,"ExportListe");%>
                   </td>
                 </tr>
                 <tr>
@@ -1114,10 +866,8 @@ $(function() {
                     <input type="radio" name="export" value="excel" />
                   </td>
                   <td>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="ExportExcel"/>
-                    </jsp:include>
+                    
+                      <% Language.printTextfield(out,session, formular,"ExportExcel");%>
                   </td>
                 </tr>
                 <tr>
@@ -1125,10 +875,8 @@ $(function() {
                     <input type="radio" name="export" value="rtf" />
                   </td>
                   <td>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="ExportRtf"/>
-                    </jsp:include>
+                    
+                      <% Language.printTextfield(out,session, formular,"ExportRtf");%>
                     <font color="red">*</font>
                   </td>
                 </tr>
@@ -1137,19 +885,15 @@ $(function() {
                     <input type="radio" name="export" value="browse" />
                   </td>
                   <td>
-                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="ExportBrowse"/>
-                    </jsp:include>
+                    
+                      <% Language.printTextfield(out,session, formular,"ExportBrowse");%>
                   </td>
                 </tr>
               </tbody>
             </table>
             <p>
-              &nbsp;<font color="red">*</font> <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Textfeld" value="KeineFunktion"/>
-                    </jsp:include>
+              &nbsp;<font color="red">*</font> 
+                <% Language.printTextfield(out,session, formular,"KeineFunktion");%>
             </p>
             <p align="right">
               <input type="reset">
@@ -1159,24 +903,3 @@ $(function() {
         </div>
       </div>
     </FORM>
-  </BODY>
-</HTML>
-<%
-  }
-  else {
-  %>
-    <p>
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-      </jsp:include>
-    </p>
-    <a href="index.jsp">
-      <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-      </jsp:include>
-    </a>
-  <%
-  }
-%>

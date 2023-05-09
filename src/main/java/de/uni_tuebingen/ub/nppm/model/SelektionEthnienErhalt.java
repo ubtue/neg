@@ -12,6 +12,9 @@ public class SelektionEthnienErhalt {
 
     @Column(name = "Bezeichnung", length=255)
     private String bezeichnung;
+    
+    @ManyToMany(mappedBy = "ethnieErhalt")
+    private Set<Person> personen = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -23,5 +26,17 @@ public class SelektionEthnienErhalt {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+    
+    public Set<Person> getPersonen() {
+        return this.personen;
+    }
+
+    public void addPerson(Person person) {
+        this.getPersonen().add(person);
+    }
+
+    public void removePerson(int id) {
+        this.getPersonen().removeIf(e -> e.getId() == id);
     }
 }
