@@ -12,8 +12,6 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        C3P0Registry.getNumPooledDataSources();
-
         /*
             Close C3P0 Connection Pool
         */
