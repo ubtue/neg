@@ -48,7 +48,7 @@
                   if (isArray != null && !isArray && zielAttribut != null && zieltabelle != null) {
                       String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
                       // Datensatz ändern
-                      if (attrVal != null && ((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
+                      if (((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
                               || (request.getParameter(datenfeld) != null && attrVal == null && !request.getParameter(datenfeld).equals("")))) {
                           SaveHelper.insertOrUpdateSql("UPDATE " + zieltabelle
                                   + " SET " + zielAttribut + "=\"" + DBtoDB(request.getParameter(datenfeld)) + "\""
