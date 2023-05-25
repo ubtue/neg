@@ -90,6 +90,7 @@ if(isAdmin && request.getParameter("ID")!=null){
               <jsp:include page="administration/select.jsp">
                 <jsp:param name="Tabelle" value="datenbank_sprachen" />
                 <jsp:param name="Feldname" value="Sprache" />
+                <jsp:param name="checkValue" value="<%= benutzer.getSprache() %>" />
               </jsp:include>
             </td>
           </tr>
