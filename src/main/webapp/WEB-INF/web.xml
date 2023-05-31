@@ -307,4 +307,8 @@
   <error-page>
     <location>/gast/servlet/error.jsp</location>
   </error-page>
+  
+  <listener>
+      <listener-class>de.uni_tuebingen.ub.nppm.util.ContextListener</listener-class>
+  </listener>
 </web-app>
