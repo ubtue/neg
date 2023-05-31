@@ -1,3 +1,8 @@
+<%@page import="java.time.temporal.ChronoUnit"%>
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Benutzer"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.BenutzerDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -56,11 +61,12 @@
         </style>
     </head>
     <body>
-        <% //If there was no UUID sended, so show layout for putting your E-Mail Address inside and submit.
-            String uuid_content = request.getParameter("varURLUUID");
-            String email_content = request.getParameter("varURLEmail");
-            String timeStamp_content = request.getParameter("varURLTime");
+        <%
+            String uuid_content = request.getParameter("varURLUUID");  //ResetToken
+            String email_content = request.getParameter("varURLEmail"); //EMail
+            String timeStamp_content = request.getParameter("varURLTime"); //ResetTokenValidUntil
 
+            //If there was no ResetToken sended by getParameter, so show layout for putting your E-Mail Address inside and submit.
             if ((uuid_content == null || uuid_content.equals("")) || (email_content == null || email_content.equals(""))) {
         %>
         <div class="forgotPassword_container">
@@ -81,9 +87,35 @@
             </div>
         </div>
         <% } else if ((uuid_content != null && !uuid_content.equals("")) && (email_content != null && !email_content.equals(""))) {
+            //check if the email is registered
+            boolean emailIsRegistered = BenutzerDB.hasEmail(email_content);
+            if (!emailIsRegistered) {
+        %>
+        <h1>Fehler, E-mail Adresse ist nicht registriert versuchen sie einen Link mit einer anderen EMail Adresse zugenerieren</h1>
+        <%
+        } else {
 
-            //show layout for Reset your Password by typing twice your new Password in Fields
-%>
+            Benutzer benutzer = BenutzerDB.getByMail(email_content);
+            //Get ResetToken from database
+            String databaseUUID = benutzer.getResetToken();
+
+            long timeBetween = 25;
+            if (benutzer.getResetTokenValidUntil() != null) {
+                LocalDateTime pastDateTime = benutzer.getResetTokenValidUntil();
+                LocalDateTime nowDateTime = LocalDateTime.now();
+                timeBetween = ChronoUnit.HOURS.between(pastDateTime, nowDateTime);
+            }
+
+            if (databaseUUID == null || !databaseUUID.equals(uuid_content) || timeBetween > 24) {
+
+                String temp = "/forgotPassword";
+        %>
+        <h1>Link ist nicht mehr g&uuml;ltig, bitte einen neuen Link generieren.</h1>
+        <h1><a href=" <%= Utils.getBaseUrl(request) + temp%> " >Neuen Link generieren</a></h1>
+        <%
+        } else { //show layout for Reset your Password by typing twice your new Password in Fields
+
+        %>
 
         <div class="forgotPassword_container">
             <div class="div-1">
@@ -104,6 +136,11 @@
                 </div>
             </div>
         </div>
-        <% }%>
+
+        <%
+                    }
+                }
+            }
+        %>
     </body>
 </html>

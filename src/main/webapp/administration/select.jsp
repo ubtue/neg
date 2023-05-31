@@ -26,7 +26,12 @@
 
     out.println("<select name=\""+request.getParameter("Feldname")+"\">");
     while( rs.next() ) {
-      out.println("<option value=\""+rs.getString("key")+"\">"+DBtoHTML(rs.getString("value"))+"</option>");
+      //To pre select a option in the select element
+      String selected = "";      
+      if(request.getParameter("checkValue") != null && request.getParameter("checkValue").equals(rs.getString("key"))){
+        selected = "selected";
+      }
+      out.println("<option value=\""+rs.getString("key")+"\""+selected+">"+DBtoHTML(rs.getString("value"))+"</option>");
     }
     out.println("</select>");
   }
