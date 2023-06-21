@@ -155,6 +155,17 @@
         </jsp:include>
       </td>
     </tr>
+    <tr>
+      <th><% Language.printDatafield(out, session, "einzelbeleg", "Konvent"); %></th>
+      <td>
+        <jsp:include page="../inc.erzeugeFormular.jsp">
+          <jsp:param name="ID" value="<%= id %>"/>
+          <jsp:param name="Formular" value="einzelbeleg"/>
+          <jsp:param name="Datenfeld" value="Konvent"/>
+          <jsp:param name="Readonly" value="yes"/>
+        </jsp:include>
+      </td>
+    </tr>
   </tbody>
 </table>
 
