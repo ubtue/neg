@@ -16,3 +16,5 @@ INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Ar
 VALUES ("einzelbeleg", "Konvent", "Konvent", "select", 0, "einzelbeleg", "KonventID", "selektion_konvent", "einzelbeleg", "Convent", "Monastère", "Monasterium");
 
 ALTER TABLE einzelbeleg ADD KonventID INT DEFAULT -1;
+
+INSERT INTO datenbank_selektion (selektion, tabelle, spalte) VALUES ('selektion_konvent', 'einzelbeleg', 'KonventID');
