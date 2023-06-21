@@ -20,7 +20,7 @@ Prerequisites:
     <!-- Optional -->
     <Environment name="matomoURL" value="" type="java.lang.String"/>
     <Environment name="matomoSiteId" value="" type="java.lang.String"/>
-    
+
     <!-- Mail -->
     <Environment name="smtpHost" value="smtpserv.uni-tuebingen.de" type="java.lang.String"/>
     <Environment name="smtpPort" value="587" type="java.lang.String"/>
@@ -56,8 +56,11 @@ For servers (ZDV):
     - if tomcat installation fails, contact ZDV admin (workaround for default group 100).
     - change tomcat ports to 80+443
     - instead of Catalina/localhost/neg.xml:
-        - move settings to server.xml Host section to avoid access via /neg in url.
-        - Also add these attributes to <Context path="" docBase="neg" debug="0" reloadable="true"></Context>
+        - move settings to server.xml Host section
+            - avoid access via /neg in url
+            - also we can have more tools like e.g. alignment on the same server. we should put it to server.xml so we can have an alternative version for server maintenance which will also disable all other software. This would not be possible if we split the configuration into multiple files in Catalina/localhost (which might be easier for development systems).
+        - Also add these attributes to <Context path="" docBase="neg"></Context>
+            - Note that reloadable="true" can also be added for development machines, but it is not recommended in production
     - don't forget the SSL certificate
     - make sure you use the correct matomoSiteId
 - Firewall
