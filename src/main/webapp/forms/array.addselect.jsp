@@ -27,7 +27,6 @@
           rs2 = st2.executeQuery("SELECT * FROM "+auswahlherkunft+" ORDER BY Bezeichnung ASC");
           if(!isReadOnly){
              out.println("<option value=\"-1\">nicht bearbeitet</option>");
-             out.println("<option value=\"0\">unklar</option>");
           }
           while ( rs2.next() ) {
            if(!isReadOnly) out.println("<option value=\""+rs2.getInt("ID")+"\" "+(rs2.getInt("ID")==selected?"selected":"")+">"+DBtoHTML(rs2.getString("Bezeichnung"))+"</option>");

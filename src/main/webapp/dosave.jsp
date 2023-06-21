@@ -48,7 +48,7 @@
                   if (isArray != null && !isArray && zielAttribut != null && zieltabelle != null) {
                       String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
                       // Datensatz ändern
-                      if (attrVal != null && ((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
+                      if (((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
                               || (request.getParameter(datenfeld) != null && attrVal == null && !request.getParameter(datenfeld).equals("")))) {
                           SaveHelper.insertOrUpdateSql("UPDATE " + zieltabelle
                                   + " SET " + zielAttribut + "=\"" + DBtoDB(request.getParameter(datenfeld)) + "\""
@@ -286,7 +286,13 @@
                                               || combinedFeldtypenArray[j].equals("select")
                                               || combinedFeldtypenArray[j].equals("sqlselect")
                                               || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
-                                          sql += zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + "', ";
+                                          //Dont Quote NULL values
+                                          if(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").compareTo("NULL") == 0){
+                                            sql += zielattributArray[j] + " = " + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + ", ";
+                                          }else{
+                                            sql += zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + "', ";
+                                          }                                              
+                                          
                                           if (zieltabelle.equals("quelle_inedition") && zielattributArray[j].equals("EditionID")) {
                                               ed = DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]"));
                                           }
@@ -330,7 +336,9 @@
                               for (int j = 0; j < combinedFeldnamenArray.length; j++) {
                                   if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
                                           && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("")
-                                          && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("-1")) {
+                                          && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("-1")
+                                          && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("NULL")
+                                          ) {
                                       aenderung = true;
                                   }
                               }

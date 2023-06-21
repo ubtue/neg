@@ -1,3 +1,9 @@
+#Clean up CM References
+DELETE FROM datenbank_mapping WHERE Formular = "quelle" AND Datenfeld = "CMRef";
+DELETE FROM datenbank_mapping WHERE Formular = "quelle" AND Datenfeld = "CMLink";
+DELETE FROM datenbank_mapping WHERE Formular = "person" AND Datenfeld = "CMRef";
+DELETE FROM datenbank_mapping WHERE Formular = "person" AND Datenfeld = "CMLink";
+
 CREATE TABLE IF NOT EXISTS `neg`.`selektion_konvent` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Bezeichnung` VARCHAR(50) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci' NOT NULL,

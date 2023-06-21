@@ -67,52 +67,56 @@
     while (count <5 && rs.next()) {
       count++;
       String value = format(rs.getString(bez),bez);
-      int max = Math.min(7,value.length());
-      if(bez.equals("PLemma")){
-      int posAmph = value.substring(0,max).lastIndexOf("&");
-      int posSem = value.substring(0,max).lastIndexOf(";");
-      if(posAmph>posSem){ 
-         posSem = value.indexOf(";", posAmph);
-         max = value.indexOf(";", posAmph)+1;
-      }}
-      value = value.substring(0,max);
-      value = "<a style='color:#ffffff;' href='?ID="+rs.getString("ID")+"'>"+value+"..."+"</a>";
-      res = value + "\t" + res;
+      if(value != null){
+        int max = Math.min(7,value.length());
+        if(bez.equals("PLemma")){
+        int posAmph = value.substring(0,max).lastIndexOf("&");
+        int posSem = value.substring(0,max).lastIndexOf(";");
+        if(posAmph>posSem){ 
+           posSem = value.indexOf(";", posAmph);
+           max = value.indexOf(";", posAmph)+1;
+        }}
+        value = value.substring(0,max);
+        value = "<a style='color:#ffffff;' href='?ID="+rs.getString("ID")+"'>"+value+"..."+"</a>";
+        res = value + "\t" + res;
+      }
     }
     out.println(res);
         rs = st.executeQuery(sql2);
     if (rs.next()) {
       String value = format(rs.getString(bez),bez);
-      int max = Math.min(10,value.length());
-      if(bez.equals("PLemma")){
-      int posAmph = value.substring(0,max).lastIndexOf("&");
-      int posSem = value.substring(0,max).lastIndexOf(";");
-      if(posAmph>posSem){ 
-         posSem = value.indexOf(";", posAmph);
-         max = value.indexOf(";", posAmph)+1;
-      }}
-      value = value.substring(0,max);
-      out.println("<span style=\"color:white;\"><b>"+value + "...</b></span>\t");
+      if(value != null){
+        int max = Math.min(10,value.length());
+        if(bez.equals("PLemma")){
+        int posAmph = value.substring(0,max).lastIndexOf("&");
+        int posSem = value.substring(0,max).lastIndexOf(";");
+        if(posAmph>posSem){ 
+           posSem = value.indexOf(";", posAmph);
+           max = value.indexOf(";", posAmph)+1;
+        }}
+        value = value.substring(0,max);
+        out.println("<span style=\"color:white;\"><b>"+value + "...</b></span>\t");
+      }
     }    rs = st.executeQuery(sql3);
     count = 0;
     while (count <5 && rs.next()) {
       count++;
       String value = format(rs.getString(bez),bez);
-      int max = Math.min(7,value.length());
-      if(bez.equals("PLemma")){
-      int posAmph = value.substring(0,max).lastIndexOf("&");
-      int posSem = value.substring(0,max).lastIndexOf(";");
-      if(posAmph>posSem){ 
-         posSem = value.indexOf(";", posAmph);
-         max = value.indexOf(";", posAmph)+1;
-      }}
-      value = value.substring(0,max);
-      value = "<a style='color:#ffffff;' href='?ID="+rs.getString("ID")+"'>"+value+"..."+"</a>";
-      out.println(value + "\t");
+      if(value != null){
+        int max = Math.min(7,value.length());
+        if(bez.equals("PLemma")){
+        int posAmph = value.substring(0,max).lastIndexOf("&");
+        int posSem = value.substring(0,max).lastIndexOf(";");
+        if(posAmph>posSem){ 
+           posSem = value.indexOf(";", posAmph);
+           max = value.indexOf(";", posAmph)+1;
+        }}
+        value = value.substring(0,max);
+        value = "<a style='color:#ffffff;' href='?ID="+rs.getString("ID")+"'>"+value+"..."+"</a>";
+        out.println(value + "\t");
+      }
     }
-  } catch (Exception e) {
-    out.println(e);
-  } finally {
+  }  finally {
     try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
     try { if( null != st ) st.close(); } catch( Exception ex ) {}
     try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
