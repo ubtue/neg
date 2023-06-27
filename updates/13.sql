@@ -1,4 +1,4 @@
-SET @count = 0;
-UPDATE `selektion_quellengattung` SET `selektion_quellengattung`.`ID` = @count:= @count + 1;
-ALTER TABLE `selektion_quellengattung` AUTO_INCREMENT = 1;
-
+SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';
+ALTER TABLE einzelbeleg DROP FOREIGN KEY einzelbeleg_QuelleGattungID;
+ALTER TABLE selektion_quellengattung MODIFY COLUMN ID INT NOT NULL auto_increment;
+ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_QuelleGattungID FOREIGN KEY (QuelleGattungID) REFERENCES selektion_quellengattung(ID) ON UPDATE CASCADE;
