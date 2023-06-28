@@ -81,6 +81,7 @@ public class NewPasswordServlet extends HttpServlet {
     }
 
     private void sendLink(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, Exception {
+        PrintWriter out = response.getWriter();
         LocalDateTime timeOfGeneratedUUID = LocalDateTime.now();
         //2. Generate UUID
         String uuid_content = String.valueOf(UUID.randomUUID());
@@ -88,67 +89,62 @@ public class NewPasswordServlet extends HttpServlet {
         //1. take the e-mail Address from user
         String email = request.getParameter("email");
         //Check if E-Mail is reguistered in database
-        boolean emailIsRegistered = BenutzerDB.hasEmail(email);
 
-        if(email != null && emailIsRegistered == true)
-        {
-             if (email.equals(""))
-             {
-                String[] message = new String[1];
-                message[0] = "<h1 style=\"text-align: center;\">Sie haben keine E-mail eingegeben</h1>";
-                writeHTMLMessage(request, response, message);
-             }
-
-            response.setContentType("text/html");
-
-            String myLinkString = Utils.getBaseUrl(request) + "/forgotPassword?varURLUUID=" + URLEncoder.encode(uuid_content) + "&varURLEmail=" + URLEncoder.encode(email) + "&varURLTime=" + URLEncoder.encode(timeOfGeneratedUUID.toString());
-
-            //Message in usesers email
-            String htmlMessage = "<html>";
-            htmlMessage += "<head>";
-            htmlMessage += "<meta charset=\"UTF-8\">";
-            htmlMessage += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">";
-            htmlMessage += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
-            htmlMessage += "</head>";
-            htmlMessage += "<body>";
-            htmlMessage += "<h1>Passwort zurücksetzen?</h1>";
-            htmlMessage += "<p>Um Ihr Passwort zurückzusetzen, klicken Sie auf den Link</p>";
-            htmlMessage += "<p>Der Link ist 24 Stunden gültig</p>";
-            htmlMessage += "<a href=\"";
-            htmlMessage += myLinkString;
-            htmlMessage += "\">zurücksetzen</a>";
-            htmlMessage += "</body>";
-            htmlMessage += "</html>";
-
-            try {
-                //write UUUID & timeOfGeneratedUUID in (database) table benutzer
-                Benutzer benutzer = BenutzerDB.getByMail(email);
-                benutzer.setResetToken(uuid_content);
-                benutzer.setResetTokenValidUntil(timeOfGeneratedUUID);
-                BenutzerDB.saveOrUpdate(benutzer);
-
-                //write in Servlet Succesfull created for the user
-                String[] message = new String[1];
-                message[0] = "<h1 style=\"text-align: center;\">Erfolgreich, bitte gehen Sie zu Ihrer E-mail und benutzen Sie den link.</h1>";
-                writeHTMLMessage(request, response, message);
-                MailSender.Send("no-reply@ub.uni-tuebingen.de", "NeG Mailer", email, "Neues Passwort für NEG Zugang", htmlMessage);
-            } catch (Exception ex) {
-                String errorMessage = ex.toString();
-                String[] message = new String[1];
-                message[0] = "<h1" + errorMessage + "  </h1>";
-                writeHTMLMessage(request, response, message);
-                Logger
-                        .getLogger(NewPasswordServlet.class
-                                .getName()).log(Level.SEVERE, null, ex);
-                throw new ServletException(ex);
-            }
-        } else if (emailIsRegistered != false) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("forgotPassword");
-            dispatcher.forward(request, response);
-        } else {
+        if (email == null || email.equals("")) {
             String[] message = new String[1];
-            message[0] = "<h1 style=\"text-align: center;\">Fehler, E-mail Adresse ist nicht registriert versuchen sie es mit einer anderen E-mail Adresse</h1>";
+            message[0] = "<h1 style=\"text-align: center;\">Sie haben keine E-mail eingegeben</h1>";
             writeHTMLMessage(request, response, message);
+        } else {
+            boolean emailIsRegistered = BenutzerDB.hasEmail(email);
+            if (emailIsRegistered == false) {
+                String[] message = new String[1];
+                message[0] = "<h1 style=\"text-align: center;\">Fehler, E-mail Adresse ist nicht registriert versuchen sie es mit einer anderen E-mail Adresse</h1>";
+                writeHTMLMessage(request, response, message);
+            } else {
+                response.setContentType("text/html");
+
+                String myLinkString = Utils.getBaseUrl(request) + "/forgotPassword?varURLUUID=" + URLEncoder.encode(uuid_content) + "&varURLEmail=" + URLEncoder.encode(email) + "&varURLTime=" + URLEncoder.encode(timeOfGeneratedUUID.toString());
+
+                //Message in usesers email
+                String htmlMessage = "<html>";
+                htmlMessage += "<head>";
+                htmlMessage += "<meta charset=\"UTF-8\">";
+                htmlMessage += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">";
+                htmlMessage += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+                htmlMessage += "</head>";
+                htmlMessage += "<body>";
+                htmlMessage += "<h1>Passwort zurücksetzen?</h1>";
+                htmlMessage += "<p>Um Ihr Passwort zurückzusetzen, klicken Sie auf den Link</p>";
+                htmlMessage += "<p>Der Link ist 24 Stunden gültig</p>";
+                htmlMessage += "<a href=\"";
+                htmlMessage += myLinkString;
+                htmlMessage += "\">zurücksetzen</a>";
+                htmlMessage += "</body>";
+                htmlMessage += "</html>";
+
+                try {
+                    //write UUUID & timeOfGeneratedUUID in (database) table benutzer
+                    Benutzer benutzer = BenutzerDB.getByMail(email);
+                    benutzer.setResetToken(uuid_content);
+                    benutzer.setResetTokenValidUntil(timeOfGeneratedUUID);
+                    BenutzerDB.saveOrUpdate(benutzer);
+
+                    //write in Servlet Succesfull created for the user
+                    String[] message = new String[1];
+                    message[0] = "<h1 style=\"text-align: center;\">Erfolgreich, bitte gehen Sie zu Ihrer E-mail und benutzen Sie den link.</h1>";
+                    writeHTMLMessage(request, response, message);
+                    MailSender.Send("no-reply@ub.uni-tuebingen.de", "NeG Mailer", email, "Neues Passwort für NEG Zugang", htmlMessage);
+                } catch (Exception ex) {
+                    String errorMessage = ex.toString();
+                    String[] message = new String[1];
+                    message[0] = "<h1" + errorMessage + "  </h1>";
+                    writeHTMLMessage(request, response, message);
+                    Logger
+                            .getLogger(NewPasswordServlet.class
+                                    .getName()).log(Level.SEVERE, null, ex);
+                    throw new ServletException(ex);
+                }
+            }
         }
     }//end renewPassword
 
