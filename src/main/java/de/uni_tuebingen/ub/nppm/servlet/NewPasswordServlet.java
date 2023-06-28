@@ -90,7 +90,13 @@ public class NewPasswordServlet extends HttpServlet {
         //Check if E-Mail is reguistered in database
         boolean emailIsRegistered = BenutzerDB.hasEmail(email);
 
-        if (email != null && !email.equals("") && emailIsRegistered == true) {
+        if(email.equals(""))
+        {
+            String[] message = new String[1];
+            message[0] = "<h1 style=\"text-align: center;\">Sie haben keine E-mail eingegeben</h1>";
+            writeHTMLMessage(request, response, message);
+        }
+        else if (email != null && !email.equals("") && emailIsRegistered == true) {
 
             response.setContentType("text/html");
 
