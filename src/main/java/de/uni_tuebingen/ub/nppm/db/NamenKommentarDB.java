@@ -24,7 +24,7 @@ public class NamenKommentarDB extends AbstractBase {
         Session session = getSession();
         try {
             String SQL = "SELECT * FROM namenkommentar WHERE namenkommentar.ID in (SELECT n.ID FROM einzelbeleg e, quelle q, einzelbeleg_hatnamenkommentar h, namenkommentar n WHERE e.ID=h.einzelbelegID and n.ID=h.namenkommentarID and e.QuelleID=q.ID AND q.ZuVeroeffentlichen=1) order by namenkommentar.ID  ASC";
-            NativeQuery query = session.createSQLQuery(SQL);
+            NativeQuery query = session.createNativeQuery(SQL);
             query.addEntity(NamenKommentar.class);
             query.setMaxResults(1);
             return (NamenKommentar) query.getSingleResult();
