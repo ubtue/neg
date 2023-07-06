@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = "futuras_content")
+@Table(name = "content")
 public class TinyMCE_Content {
 
     public enum Context {
