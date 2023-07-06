@@ -16,6 +16,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <%      DatenbankTexte titel = DatenbankTexteDB.getText("tinyMce", "Titel");
+                String value = "Nomen et Gens | " + titel.getDe();
+
+        %>
+        <title><%= value%></title>
         <script type="text/javascript" src="layout/tinymce/tinymce.min.js"></script>
         <script type="text/javascript">
             tinymce.init({
@@ -42,14 +47,6 @@
     </head>
     <body>
         <%            String helpFileName = request.getParameter("loadFile").toString();
-
-            /*
-            if (request.getParameter("loadFile") == null) {
-                helpFileName = "hilfe.html";
-            } else {
-                helpFileName = request.getParameter("loadFile").toString();
-            }
-*/
 
             if (request.getParameter("speichern") != null) {
                 String html = request.getParameter("area");
@@ -79,7 +76,7 @@
                     <input type="submit" name="speichern" value="speichern"/>
                 </div>
 
-                <a href="file?fileAccess=1" style="margin-right: 10px;">Datei <%= DBtoHTML("&")%> Bild Verwaltung</a>
+                <a href="file" style="margin-right: 10px;">Datei <%= DBtoHTML("&")%> Bild Verwaltung</a>
             </div>
         </form>
     </body>

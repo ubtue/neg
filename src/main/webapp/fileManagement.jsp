@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.TinyMCE_Content.Context"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
@@ -16,133 +17,151 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <%
+            DatenbankTexte titel = DatenbankTexteDB.getText("fileManagement", "Titel");
+            String value = "Nomen et Gens | " + titel.getDe();
+            int id = 1;
+        %>
+        <title><%= value%></title>
+
     </head>
     <body>
-        <%
-            try {
+        <div id="dynamicContentDiv">
+            <%
                 out.println("<h2>Html Dateien & Bilder verwalten</h2>");
-                out.println("<form action=\"file?fileAccess=1\" method=\"POST\" enctype=\"multipart/form-data\">");
-                out.println("<input type=\"file\" name=\"file\">");
-                out.println("<br/><br/>");
-                out.println("<input type=\"submit\" value=\"hochladen\">");
-                out.println("<input type=\"hidden\" name=\"fileAccess\" >");
-                out.println("</form>");
 
-                if (ServletFileUpload.isMultipartContent(request)) {
-                    // Create a new file upload handler
-                    ServletFileUpload upload = new ServletFileUpload();
-
-                    // Parse the request
-                    FileItemIterator iter = upload.getItemIterator(request);
-                    out.println("Übertragung gestartet...");
-
-                    while (iter.hasNext()) {
-
-                        FileItemStream item = iter.next();
-                        String name = item.getFieldName();
-                        InputStream stream = item.openStream();
-
-                        String contentType = item.getContentType();
-
-                        if (!item.isFormField()) {
-
-                            if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("image")) {
-
-                                String pathname = this.getServletContext().getRealPath("/") + item.getName();
-
-                                String fileName = item.getName().toString();
-
-                                boolean fileExists = TinyMCE_ContentDB.searchName(fileName);
-
-                                if (fileExists == true) {
-
-                                    out.println("<p>Datei existiert bereits!</p>"); //hier pop up window
-                                } else {
-
-                                    // Write stream to file
-                                    FileOutputStream file = new FileOutputStream(new File(pathname));
-                                    for (int data = stream.read(); data >= 0; data = stream.read()) {
-                                        file.write(data);
-                                    }
-                                    file.close();
-
-                                    //Now copy from temp folder to database/table
-                                    TinyMCE_ContentDB.saveFile(pathname, fileName, contentType);
-
-                                    //Now delete the temporary file again
-                                    File myObj = new File(pathname);
-                                    myObj.delete();
-
-                                    out.println("<p>Datei erfolgreich hochgeladen!</p>");
-                                }
-                            } else {
-                                out.println("Dateityp nicht erlaubt. Bitte wenden Sie sich an den Administrator");
-                            }
-                        }
-                    }
+                if (request.getAttribute("message") != null) {
+                    out.println((String)request.getAttribute("message"));
                 }
-            } catch (Exception e) {
-                out.println("Error: " + e.toString());
-            }
-            try {
 
-        %>
+                String context = "";
+                if (request.getParameter("context") != null) {
+                    context = request.getParameter("context");
+                }
+                TinyMCE_Content.Context contextEnum = null;
+                if (context.equals("HILFE")) {
+                    contextEnum = TinyMCE_Content.Context.HILFE;
+                } else if (context.equals("NAMENKOMMENTAR")) {
+                    contextEnum = TinyMCE_Content.Context.NAMENKOMMENTAR;
+                }
+            %>
 
-        <table style="border-collapse:collapse;" border=1>
-            <tr>
-                <th>Pfad</th>
-                <th>Load</th>
-                <th>&nbsp;</th>
-            </tr>
+            <form method="get">
+                <select name="context" onchange="this.form.submit();">
+                    <option value="">Context ausw&auml;hlen</option>
+                    <option value="HILFE" <% if (contextEnum == TinyMCE_Content.Context.HILFE) {
+                            out.print("selected");
+                        } %>>Hilfe</option>
+                    <option value="NAMENKOMMENTAR" <% if (contextEnum == TinyMCE_Content.Context.NAMENKOMMENTAR)
+                                    out.print("selected"); %>>Namenkommentar</option>
+                </select>
+            </form>
+            <br><br>
 
-            <%                     List<TinyMCE_Content> fileList = TinyMCE_ContentDB.getList();
 
-                for (TinyMCE_Content content : fileList) {
-                    if (content.getContent_Type().startsWith("text/html")) {
+            <%
+                try {
+
+                    String fileToDelete = request.getParameter("filename");
+                    boolean deleteConfirmation = (fileToDelete != null && !fileToDelete.isEmpty());
+                    boolean showPage = (!context.isEmpty());
+                    if (showPage) {
+
+            %>
+            <!-- Attention with enctype="multipart/form-data" type hidden does not work, must with url file? ... be handed over -->
+            <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file[]" value="Datei auswahl" multiple>
+                <br><br>
+                <input type="submit" value="hochladen">
+            </form>
+
+            <table style="border-collapse:collapse;" border=1>
+                <tr>
+                    <th>Pfad</th>
+                    <th>Load</th>
+                    <th>&nbsp;</th>
+                </tr>
+
+                <%
+                    List<TinyMCE_Content> fileList = TinyMCE_ContentDB.getList(contextEnum.toString());
+                    for (TinyMCE_Content content : fileList) {
+                        if (content.getContent_Type().startsWith("text/html")) {
+                            String name = content.getName();
+                            String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+
+                %>
+                <tr>
+                    <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
+                    <td><a href="edit?loadFile=<%=name%>">Load in TinyMce</a></td>
+                    <td>
+                        <form action="file" method="post" onsubmit="return confirm('Datei wirklich l&ouml;schen?');">
+                            <input type="submit" name="deleteFile" value ="l&ouml;schen">
+                            <input type="hidden" name="fileAccess" value="fileDelete">
+                            <input type="hidden" name="id" value="<%=content.getID()%>">
+                            <input type="hidden" name="context" value="<%=context%>">
+                        </form>
+                    </td>
+                </tr>
+                <%
+                    }
+
+                    if (content.getContent_Type().startsWith("text/plain") || content.getContent_Type().startsWith("application/vnd.oasis.opendocument.text")
+                            || content.getContent_Type().startsWith("application/msword")
+                            || content.getContent_Type().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+
                         String name = content.getName();
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+                %>
+                <tr>
+                    <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
+                    <td></td>
+                    <td>
+                        <form action="file" method="post" onsubmit="return confirm('Datei wirklich l&ouml;schen?');">
+                            <input type="submit" name="deleteFile" value ="l&ouml;schen">
+                            <input type="hidden" name="fileAccess" value="fileDelete">
+                            <input type="hidden" name="id" value="<%=content.getID()%>">
+                            <input type="hidden" name="context" value="<%=context%>">
+                        </form>
+                    </td>
+                </tr>
+                <%
 
-            %>
-            <tr>
-                <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
-                <td><a href="edit?loadFile=<%=name%>">Load in TinyMce</a></td>
-                <td>
-                    <form action="file?fileAccess=fileDelete&filename=<%=name%>"  method="post" enctype="multipart/form-data">
-                        <input type="submit" name="deleteFile" value ="l&ouml;schen">
-                    </form>
-                </td>
-            </tr>
-            <%
+                        }
+                    }   //end for (TinyMCE_Content content : fileList) {
+                    for (TinyMCE_Content content : fileList) {
+                        if (content.getContent_Type().startsWith("image")) {
+                            String name = content.getName();
+                            String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+
+                %>
+                <tr>
+                    <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
+                    <td><img src="<%=imageUrl%>" height="256px"></td>
+                    <td>
+                        <form action="file" method="post" onsubmit="return confirm('Datei wirklich l&ouml;schen?');">
+                            <input type="submit" name="deleteFile" value ="l&ouml;schen">
+                            <input type="hidden" name="fileAccess" value="fileDelete">
+                            <input type="hidden" name="id" value="<%=content.getID()%>">
+                            <input type="hidden" name="context" value="<%=context%>">
+                        </form>
+                    </td>
+                </tr>
+                <%
+                        }
                     }
-                }
-                for (TinyMCE_Content content : fileList) {
-                    if (content.getContent_Type().startsWith("image")) {
-                        String name = content.getName();
-                        String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
 
-            %>
-            <tr>
-                <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
-                <td><img src="<%=imageUrl%>" height="256px"></td>
-                <td>
-                    <form action="file?fileAccess=fileDelete&filename=<%=name%>"  method="post" enctype="multipart/form-data">
-                        <input type="submit" name="deleteFile" value ="l&ouml;schen">
-                    </form>
-                </td>
-            </tr>
-            <%
-                    }
-                }
+                %>
 
+            </table>
+
+            <%                    }//end showPage
+                } catch (Exception e) {
+                    out.println("Error: " + e.toString());
+                }
+                out.println("</table>");
             %>
 
-        </table>
+        </div>
 
-        <%                      } catch (Exception e) {
-                out.println("Error: " + e.toString());
-            }
-            out.println("</table>");
-        %>
     </body>
 </html>

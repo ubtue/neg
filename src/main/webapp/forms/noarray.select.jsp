@@ -1,15 +1,16 @@
-﻿<%
+<%
   if (feldtyp.equals("select") && !array) {
     try {
-    
-    
+
+
       Class.forName( sqlDriver );
       cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
       st = cn.createStatement();
       int selected = -1;
-      if (Integer.parseInt(id) > 0) {     
-        rs = st.executeQuery("SELECT "+zielAttribut+" FROM "+zielTabelle+" WHERE ID=\""+id+"\"");
-        System.out.println("SELECT "+zielAttribut+" FROM "+zielTabelle+" WHERE ID=\""+id+"\"");
+      if (Integer.parseInt(id) > 0) {
+        String sql = "SELECT "+zielAttribut+" FROM "+zielTabelle+" WHERE ID=\""+id+"\"";
+        System.out.println(sql);
+        rs = st.executeQuery(sql);
         if(rs.next()) {
         	String selection = rs.getString(zielAttribut);
           if(selection!=null)selected = rs.getInt(zielAttribut);
@@ -19,6 +20,8 @@
       if(!isReadOnly){
          out.println("<select name=\""+datenfeld+"\"  style=\"width: 250px\"");
          out.println(">");
+         if(typeFile != null)
+         out.println("<option value=\"\">Datei ausw&auml;hlen</option>");
       }
       if(isEmpty)out.println("<option value=\"-2\">ist leer</option>");
       Statement st2 = null;
@@ -26,8 +29,11 @@
       try {
         st2 = cn.createStatement();
         String sql = "SELECT * FROM "+auswahlherkunft;
+        if (auswahlherkunftFilter != null && !auswahlherkunftFilter.equals("") && filter != null && !filter.equals("")) {
+            sql += " WHERE " + auswahlherkunftFilter +"='" + filter + "'";
+        }
         if(!isSorted) sql += " ORDER BY Bezeichnung ASC";
-        
+
         rs2 = st2.executeQuery(sql);
         while ( rs2.next() ) {
         	String value = rs2.getString("Bezeichnung");
@@ -47,6 +53,6 @@
       try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
     }
           if(!tooltip.equals("")) out.println("<a href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\""+tooltip+"\"> ? </a>");
-    
+
   }
 %>

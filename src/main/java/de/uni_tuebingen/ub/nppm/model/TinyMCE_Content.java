@@ -2,6 +2,8 @@ package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,15 +12,20 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = "tinyMce_content")
+@Table(name = "futuras_content")
 public class TinyMCE_Content {
+
+    public enum Context {
+        HILFE,
+        NAMENKOMMENTAR
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     int ID;
 
-    @Column(name = "name", length = 255)
+    @Column(name = "Bezeichnung", length = 255)
     String name;
 
     @Column(name = "contentType", length = 55)
@@ -29,17 +36,22 @@ public class TinyMCE_Content {
     @Column(name = "content", nullable = false, columnDefinition = "blob")
     private byte[] content;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "context", nullable = false)
+    private Context context;
+
     //Constructors
+    //Default Constructor is neccessary !!! - don delete
     public TinyMCE_Content() {
     }
 
-    public TinyMCE_Content(String name, String content_Type, byte[] content) {
+    public TinyMCE_Content(String name, String content_Type, byte[] content, Context context) {
         this.name = name;
         this.content_Type = content_Type;
         this.content = content;
+        this.context = context;
     }
 
-    //Getters & Setters
     public int getID() {
         return ID;
     }
@@ -72,10 +84,11 @@ public class TinyMCE_Content {
         this.content = content;
     }
 
-    //To-String
-    @Override
-    public String toString() {
-        return "ImageContent{" + "ID=" + ID + ", name=" + name + ", content_Type=" + content_Type + ", content=" + content + '}';
+    public Context getContext() {
+        return context;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
 }//end Class

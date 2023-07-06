@@ -5,7 +5,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
 import java.io.OutputStream;
@@ -17,6 +16,14 @@ public class ContentServlet extends HttpServlet {
         try {
             TinyMCE_Content content = TinyMCE_ContentDB.getByName(name);
             resp.setContentType(content.getContent_Type());
+
+            if (content.getContent_Type().startsWith("text/plain") || content.getContent_Type().startsWith("application/vnd.oasis.opendocument.text")
+                    || content.getContent_Type().startsWith("application/msword")
+                    || content.getContent_Type().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))  {
+                // Set Content-Disposition header to specify the filename
+            resp.setHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
+            }
+
             OutputStream os = resp.getOutputStream();
             byte[] photoBytes = content.getContent();
             os.write(photoBytes);
