@@ -124,26 +124,19 @@
                         <%
                             if (id != -1 && NamenKommentarDB.getById(id).getDateiname() != null && !NamenKommentarDB.getById(id).getDateiname().equals("")) {
                                 int fileId = 1;
-                                String fileName = "";
                                 boolean fileExist = false;
-                                boolean nameExist = false;
+
                                 TinyMCE_Content content = new TinyMCE_Content();
 
                                 if (!NamenKommentarDB.getById(id).getDateiname().equals("")) {
-                                    try {
+
                                         fileId = Integer.parseInt(NamenKommentarDB.getById(id).getDateiname());
                                         fileExist = TinyMCE_ContentDB.searchId(fileId);  //serachID(fileName)
-                                    } catch (NumberFormatException e) {
-                                        fileName = NamenKommentarDB.getById(id).getDateiname();
-                                        nameExist = TinyMCE_ContentDB.searchName(fileName);
-                                    }
 
-                                    if (fileExist || nameExist) {
+                                    if (fileExist) {
 
                                         if (fileExist) {
                                             content = TinyMCE_ContentDB.getById(fileId);  //getByIde(fileID)
-                                        } else if (nameExist) {
-                                            content = TinyMCE_ContentDB.getByName(fileName);
                                         }
 
                                         String name = content.getName();
