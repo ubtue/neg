@@ -16,8 +16,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%      DatenbankTexte titel = DatenbankTexteDB.getText("tinyMce", "Titel");
-                String value = "Nomen et Gens | " + titel.getDe();
+        <%
+            DatenbankTexte titel = DatenbankTexteDB.getText("tinyMce", "Titel");
+            String value = "Nomen et Gens | " + titel.getDe();
 
         %>
         <title><%= value%></title>
@@ -46,7 +47,8 @@
         </script>
     </head>
     <body>
-        <%            String helpFileName = request.getParameter("loadFile").toString();
+        <%
+            String helpFileName = request.getParameter("loadFile").toString();
 
             if (request.getParameter("speichern") != null) {
                 String html = request.getParameter("area");
@@ -65,7 +67,6 @@
         %>
 
         <form method="post">
-
             <textarea id="mytextarea" name="area">
                 <%                    out.println(utf8String);
                 %>
@@ -82,20 +83,8 @@
     </body>
 </html>
 <%
-} else {
-%>
-<p>
-    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-    </jsp:include>
-</p>
-<a href="index.jsp">
-    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-    </jsp:include>
-</a>
-<%
+    } else {
+        // Weiterleitung zur logout.jsp
+        response.sendRedirect("logout.jsp");
     }
 %>

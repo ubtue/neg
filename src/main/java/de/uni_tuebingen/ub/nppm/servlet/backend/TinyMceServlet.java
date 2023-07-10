@@ -21,6 +21,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class TinyMceServlet extends HttpServlet {
+     protected Benutzer benutzer;
 
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PrintWriter out = response.getWriter();
@@ -136,12 +137,21 @@ public class TinyMceServlet extends HttpServlet {
         return pathname;
     }
 
-    protected void initRequest(HttpServletRequest request) throws Exception {
+     protected void initRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Language.setLanguage(request);
+         benutzer = AuthHelper.getBenutzer(request);
+        if (isLoginRequired() && benutzer == null || benutzer.isGast()) {
+             RequestDispatcher rd = request.getRequestDispatcher("logout.jsp");
+                rd.forward(request, response);
+        }
+    }
+
+      protected boolean isLoginRequired() {
+        return true;
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        initRequest(request);
+        initRequest(request, response);
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         generatePage(request, response);

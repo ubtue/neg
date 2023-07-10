@@ -28,22 +28,24 @@
     <body>
         <div id="dynamicContentDiv">
             <%
-                out.println("<h2>Html Dateien & Bilder verwalten</h2>");
+                if (AuthHelper.isAdminLogin(request)) {
 
-                if (request.getAttribute("message") != null) {
-                    out.println((String)request.getAttribute("message"));
-                }
+                    out.println("<h2>Html Dateien & Bilder verwalten</h2>");
 
-                String context = "";
-                if (request.getParameter("context") != null) {
-                    context = request.getParameter("context");
-                }
-                TinyMCE_Content.Context contextEnum = null;
-                if (context.equals("HILFE")) {
-                    contextEnum = TinyMCE_Content.Context.HILFE;
-                } else if (context.equals("NAMENKOMMENTAR")) {
-                    contextEnum = TinyMCE_Content.Context.NAMENKOMMENTAR;
-                }
+                    if (request.getAttribute("message") != null) {
+                        out.println((String) request.getAttribute("message"));
+                    }
+
+                    String context = "";
+                    if (request.getParameter("context") != null) {
+                        context = request.getParameter("context");
+                    }
+                    TinyMCE_Content.Context contextEnum = null;
+                    if (context.equals("HILFE")) {
+                        contextEnum = TinyMCE_Content.Context.HILFE;
+                    } else if (context.equals("NAMENKOMMENTAR")) {
+                        contextEnum = TinyMCE_Content.Context.NAMENKOMMENTAR;
+                    }
             %>
 
             <form method="get">
@@ -52,16 +54,13 @@
                     <option value="HILFE" <% if (contextEnum == TinyMCE_Content.Context.HILFE) {
                             out.print("selected");
                         } %>>Hilfe</option>
-                    <option value="NAMENKOMMENTAR" <% if (contextEnum == TinyMCE_Content.Context.NAMENKOMMENTAR)
-                                    out.print("selected"); %>>Namenkommentar</option>
+                            <option value="NAMENKOMMENTAR" <% if (contextEnum == TinyMCE_Content.Context.NAMENKOMMENTAR)
+                            out.print("selected"); %>>Namenkommentar</option>
                 </select>
             </form>
             <br><br>
-
-
             <%
                 try {
-
                     String fileToDelete = request.getParameter("filename");
                     boolean deleteConfirmation = (fileToDelete != null && !fileToDelete.isEmpty());
                     boolean showPage = (!context.isEmpty());
@@ -151,17 +150,19 @@
                     }
 
                 %>
-
             </table>
-
-            <%                    }//end showPage
-                } catch (Exception e) {
-                    out.println("Error: " + e.toString());
+            <%                        }//end showPage
+                    } catch (Exception e) {
+                        out.println("Error: " + e.toString());
+                    }
+                    out.println("</table>");
+                }//end if (AuthHelper.isAdminLogin(request))
+                else {
+                      // Weiterleitung zur logout.jsp
+                      response.sendRedirect("logout.jsp");
                 }
-                out.println("</table>");
+
             %>
-
         </div>
-
     </body>
 </html>
