@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
@@ -20,7 +19,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-public class TinyMceServlet extends HttpServlet {
+public class TinyMceServlet extends AbstractBackendServlet {
      protected Benutzer benutzer;
 
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -177,6 +176,11 @@ public class TinyMceServlet extends HttpServlet {
             throws ServletException, IOException {
 
         doHelper(request, response);
+    }
+
+    @Override
+    protected String getTitle() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }//end class
