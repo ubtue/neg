@@ -2,6 +2,10 @@ package de.uni_tuebingen.ub.nppm.db;
 
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 
@@ -28,6 +32,66 @@ public class NamenKommentarDB extends AbstractBase {
             query.addEntity(NamenKommentar.class);
             query.setMaxResults(1);
             return (NamenKommentar) query.getSingleResult();
+        } finally {
+            session.close();
+        }
+    }
+
+     public static NamenKommentar getById(int id) throws Exception {
+        Session session = getSession();
+        try {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<NamenKommentar> criteria = builder.createQuery(NamenKommentar .class);
+            Root namenkommentar = criteria.from(NamenKommentar .class);
+            criteria.select(namenkommentar);
+            criteria.where(builder.equal( namenkommentar.get(NamenKommentar_.ID), id));
+            NamenKommentar res = session.createQuery(criteria).getSingleResult();
+            return res;
+        } finally {
+            session.close();
+        }
+    }
+
+
+    public static List<NamenKommentar> searchByFileName(String filename) throws Exception {
+        Session session = getSession();
+        try {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<NamenKommentar> criteria = builder.createQuery(NamenKommentar .class);
+            Root namenkommentar = criteria.from(NamenKommentar .class);
+            criteria.select(namenkommentar);
+            criteria.where(builder.equal( namenkommentar.get(NamenKommentar_.DATEINAME), filename));
+            List<NamenKommentar> res = session.createQuery(criteria).getResultList();
+            return res;
+        } finally {
+            session.close();
+        }
+    }
+
+    public static void saveOrUpdate(NamenKommentar namenkommentar) throws Exception {
+        Session session = getSession();
+        session.getTransaction().begin();
+        session.saveOrUpdate(namenkommentar);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public static void setDateiname(int id, String dateiname) throws Exception {
+        Session session = getSession();
+        try {
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaUpdate<NamenKommentar> criteriaUpdate = builder.createCriteriaUpdate(NamenKommentar.class);
+            Root<NamenKommentar> root = criteriaUpdate.from(NamenKommentar.class);
+
+            criteriaUpdate.set(root.get(NamenKommentar_.DATEINAME), dateiname);
+            criteriaUpdate.where(builder.equal(root.get(NamenKommentar_.ID), id));
+
+            session.createQuery(criteriaUpdate).executeUpdate();
+
+            session.getTransaction().commit();
+
         } finally {
             session.close();
         }

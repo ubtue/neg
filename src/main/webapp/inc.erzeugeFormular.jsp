@@ -14,6 +14,7 @@
   String emp = request.getParameter("Empty");
   String sorted = request.getParameter("Sorted");
   String klarlemma = request.getParameter("Klarlemma");
+  String typeFile = request.getParameter("type");
   String def = "";
   String disabled = "";
 
@@ -50,13 +51,15 @@
   String sprache = (String)session.getAttribute("Sprache");
   //set standard language
   if(sprache == null)
-    sprache = "de"; 
+    sprache = "de";
   String beschriftung = "";
   String platzhalter = "";
   String tooltip = "";
   String zielTabelle = "";
   String zielAttribut = "";
   String auswahlherkunft = "";
+  String auswahlherkunftFilter = "";
+  String filter = "";
   String formularAttribut = "";
   String buttonAktion = "";
   String returnpage = "";
@@ -79,6 +82,8 @@
     zielTabelle = mapping.getZielTabelle();
     zielAttribut = mapping.getZielAttribut();
     auswahlherkunft = mapping.getAuswahlherkunft();
+    auswahlherkunftFilter = mapping.getAuswahlherkunftFilter();
+    filter = mapping.getFilter();
     formularAttribut = mapping.getFormularAttribut();
     buttonAktion = mapping.getButtonAktion();
     returnpage = mapping.getSeite();

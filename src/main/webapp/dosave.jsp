@@ -185,8 +185,9 @@
                   }
 
                   // Datensatz ändern
-                  if (formularAttribut != null && zieltabelle != null) {
-                      List<Map> attributes = SaveHelper.getMappedList("SELECT " + zielAttribut + " FROM " + zieltabelle + " WHERE " + formularAttribut + "='" + id + "'" + cond);
+                   List<Map> attributes = SaveHelper.getMappedList("SELECT " + zielAttribut + " FROM " + zieltabelle + " WHERE " + formularAttribut + "='" + id + "'" + cond);
+                  if (formularAttribut != null && zieltabelle != null && (attributes.size() > 0 && request.getParameter(datenfeld) != null)) {
+
                       if (attributes.size() > 0 && request.getParameter(datenfeld) != null) {
                           Map attr = attributes.iterator().next();
                           if (request.getParameter(datenfeld).equals("")) {
@@ -198,6 +199,7 @@
                                       + " WHERE " + formularAttribut + "='" + id + "'" + cond);
                           } // ENDE ändern
                       } // ENDE Datensatz ändern
+
                   } // Datensatz neu
                   else if (request.getParameter(datenfeld) != null && !request.getParameter(datenfeld).equals("")) {
                       String field = "";
@@ -291,13 +293,13 @@
                                             sql += zielattributArray[j] + " = " + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + ", ";
                                           }else{
                                             sql += zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + "', ";
-                                          }                                              
-                                          
+                                          }
+
                                           if (zieltabelle.equals("quelle_inedition") && zielattributArray[j].equals("EditionID")) {
                                               ed = DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]"));
                                           }
                                       } else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                                          sql += zielattributArray[j] + " = '" + (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j] + 
+                                          sql += zielattributArray[j] + " = '" + (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j] +
                                           "[" + i + "]").equals("on") ? "1" : "0") + "', ";
                                       }
                                   }
@@ -305,9 +307,9 @@
                                   sql += " WHERE ID='" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "';";
                                   String old_ed = "";
                                   if (!ed.equals("")) {
-                                      List<Map> editionLst = SaveHelper.getMappedList("select EditionID from quelle_inedition WHERE ID='" + request.getParameter(datenfeld.toLowerCase() 
+                                      List<Map> editionLst = SaveHelper.getMappedList("select EditionID from quelle_inedition WHERE ID='" + request.getParameter(datenfeld.toLowerCase()
                                       + "[" + i + "]_entryid") + "';");
-                                      
+
                                       if (editionLst.size() > 0) {
                                           old_ed = editionLst.get(editionLst.size() - 1).get("EditionID").toString();
                                       }
@@ -315,17 +317,17 @@
                                   SaveHelper.insertOrUpdateSql(sql);
                                   if (!ed.equals("")) {
                                       SaveHelper.insertOrUpdateSql("Update ueberlieferung_edition set EditionID='" + ed + "' where EditionID=" + old_ed +
-                                        " and UeberlieferungID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + 
+                                        " and UeberlieferungID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" +
                                         request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)"
                                       );
-                                      
-                                      SaveHelper.insertOrUpdateSql("Update einzelbeleg_textkritik set EditionID='" + ed + "' where EditionID=" + old_ed + 
-                                        " and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + request.getParameter(datenfeld.toLowerCase() 
+
+                                      SaveHelper.insertOrUpdateSql("Update einzelbeleg_textkritik set EditionID='" + ed + "' where EditionID=" + old_ed +
+                                        " and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + request.getParameter(datenfeld.toLowerCase()
                                         + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)"
                                       );
-                                      
-                                      SaveHelper.insertOrUpdateSql(" Update einzelbeleg set EditionID ='" + ed + "' where EditionID=" + old_ed + 
-                                        " and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID=" + 
+
+                                      SaveHelper.insertOrUpdateSql(" Update einzelbeleg set EditionID ='" + ed + "' where EditionID=" + old_ed +
+                                        " and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID=" +
                                         request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)"
                                       );
                                   }
@@ -353,8 +355,8 @@
                                                   || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
                                               sql += ", " + zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + "'";
                                           } else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                                              sql += ", " + zielattributArray[j] + " = '" + 
-                                              (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j] + 
+                                              sql += ", " + zielattributArray[j] + " = '" +
+                                              (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j] +
                                               "[" + i + "]").equals("on") ? "1" : "0") + "'";
                                           }
                                       }

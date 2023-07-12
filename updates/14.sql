@@ -1,0 +1,24 @@
+ INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('tinyMce', 'Titel', 'TinyMCE', 'TinyMCE', 'TinyMCE', 'TinyMCE');
+ 
+ INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('fileManagement', 'Titel', 'Inhalt', 'Content', 'Contenu', 'Contenta');
+ 
+ INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('navigation', 'InhaltBearbeiten', 'Inhalt bearbeiten', 'edit content', 'modifier le contenu', 'recensere content');
+
+ALTER TABLE tinyMce_content CHANGE COLUMN name Bezeichnung varchar(255); 
+
+ALTER TABLE tinyMce_content MODIFY contentType varchar(255);
+
+ALTER TABLE tinyMce_content ADD COLUMN context VARCHAR(255) NOT NULL;
+
+UPDATE tinyMce_content SET context = 'HILFE';
+
+RENAME TABLE tinyMce_content TO content;
+
+ALTER TABLE datenbank_mapping ADD COLUMN Filter varchar(255) after Auswahlherkunft_Filter;
+
+INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, ZielTabelle, ZielAttribut, Auswahlherkunft, Auswahlherkunft_Filter, Filter, Seite)
+VALUES ('namenkommentar', 'DateinameX', 'Dateiname', 'select', 0, 'namenkommentar', 'Dateiname', 'content', 'context', 'NAMENKOMMENTAR', 'namenkommentar');
+
+
+
+
