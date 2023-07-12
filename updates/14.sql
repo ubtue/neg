@@ -14,6 +14,8 @@ UPDATE tinyMce_content SET context = 'HILFE';
 
 RENAME TABLE tinyMce_content TO content;
 
+ALTER TABLE datenbank_mapping ADD COLUMN Auswahlherkunft_Filter varchar(255) after Auswahlherkunft;
+
 ALTER TABLE datenbank_mapping ADD COLUMN Filter varchar(255) after Auswahlherkunft_Filter;
 
 INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, ZielTabelle, ZielAttribut, Auswahlherkunft, Auswahlherkunft_Filter, Filter, Seite)
