@@ -1,4 +1,4 @@
-<%@page import="de.uni_tuebingen.ub.nppm.model.TinyMCE_Content.Context"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Content.Context"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
@@ -40,21 +40,21 @@
                     if (request.getParameter("context") != null) {
                         context = request.getParameter("context");
                     }
-                    TinyMCE_Content.Context contextEnum = null;
+                   Content.Context contextEnum = null;
                     if (context.equals("HILFE")) {
-                        contextEnum = TinyMCE_Content.Context.HILFE;
+                        contextEnum =Content.Context.HILFE;
                     } else if (context.equals("NAMENKOMMENTAR")) {
-                        contextEnum = TinyMCE_Content.Context.NAMENKOMMENTAR;
+                        contextEnum =Content.Context.NAMENKOMMENTAR;
                     }
             %>
 
             <form method="get">
                 <select name="context" onchange="this.form.submit();">
                     <option value="">Context ausw&auml;hlen</option>
-                    <option value="HILFE" <% if (contextEnum == TinyMCE_Content.Context.HILFE) {
+                    <option value="HILFE" <% if (contextEnum ==Content.Context.HILFE) {
                             out.print("selected");
                         } %>>Hilfe</option>
-                            <option value="NAMENKOMMENTAR" <% if (contextEnum == TinyMCE_Content.Context.NAMENKOMMENTAR)
+                            <option value="NAMENKOMMENTAR" <% if (contextEnum ==Content.Context.NAMENKOMMENTAR)
                             out.print("selected"); %>>Namenkommentar</option>
                 </select>
             </form>
@@ -82,8 +82,8 @@
                 </tr>
 
                 <%
-                    List<TinyMCE_Content> fileList = TinyMCE_ContentDB.getList(contextEnum.toString());
-                    for (TinyMCE_Content content : fileList) {
+                    List<Content> fileList =ContentDB.getList(contextEnum.toString());
+                    for (Content content : fileList) {
                         if (content.getContent_Type().startsWith("text/html")) {
                             String name = content.getName();
                             String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
@@ -126,8 +126,8 @@
                 <%
 
                         }
-                    }   //end for (TinyMCE_Content content : fileList) {
-                    for (TinyMCE_Content content : fileList) {
+                    }   //end for (Content content : fileList) {
+                    for (Content content : fileList) {
                         if (content.getContent_Type().startsWith("image")) {
                             String name = content.getName();
                             String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);

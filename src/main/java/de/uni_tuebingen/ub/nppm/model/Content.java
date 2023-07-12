@@ -13,7 +13,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "content")
-public class TinyMCE_Content {
+public class Content {
 
     public enum Context {
         HILFE,
@@ -42,10 +42,10 @@ public class TinyMCE_Content {
 
     //Constructors
     //Default Constructor is neccessary !!! - don delete
-    public TinyMCE_Content() {
+    public Content() {
     }
 
-    public TinyMCE_Content(String name, String content_Type, byte[] content, Context context) {
+    public Content(String name, String content_Type, byte[] content, Context context) {
         this.name = name;
         this.content_Type = content_Type;
         this.content = content;

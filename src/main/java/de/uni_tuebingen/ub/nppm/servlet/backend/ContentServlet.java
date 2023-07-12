@@ -19,7 +19,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-public class TinyMceServlet extends AbstractBackendServlet {
+public class ContentServlet extends AbstractBackendServlet {
      protected Benutzer benutzer;
 
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -57,22 +57,22 @@ public class TinyMceServlet extends AbstractBackendServlet {
     public void deleteFile(String fileId) throws IOException, Exception {
 
         Integer id = Integer.parseInt(fileId);
-        TinyMCE_Content content = TinyMCE_ContentDB.getById(id);
-        if (content.getContext().equals(TinyMCE_Content.Context.NAMENKOMMENTAR)) {
+        Content content = ContentDB.getById(id);
+        if (content.getContext().equals(Content.Context.NAMENKOMMENTAR)) {
             List<NamenKommentar> namenkommentarList = NamenKommentarDB.searchByFileName(fileId);
             for (NamenKommentar n : namenkommentarList) {
                 n.setDateiname(null);
                 NamenKommentarDB.saveOrUpdate(n);
             }
         }
-        TinyMCE_ContentDB.deleteById(id);
+        ContentDB.deleteById(id);
 
     }//end function
 
     public void uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, FileUploadException, Exception {
         PrintWriter out = response.getWriter();
         String context = request.getParameter("context");
-        TinyMCE_Content.Context contextEnum = TinyMCE_Content.Context.valueOf(context);
+        Content.Context contextEnum = Content.Context.valueOf(context);
 
         // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload();
@@ -96,18 +96,18 @@ public class TinyMceServlet extends AbstractBackendServlet {
 
                     String fileName = item.getName();
 
-                    boolean fileExists = TinyMCE_ContentDB.searchName(fileName);
+                    boolean fileExists = ContentDB.searchName(fileName);
                     String pathname = writeItemToTempFile(item);
 
                     if (fileExists == true) {
-                        TinyMCE_Content content = TinyMCE_ContentDB.getByName(fileName);
-                        byte[] bytes = TinyMCE_ContentDB.readBytesFromFile(pathname);
+                        Content content = ContentDB.getByName(fileName);
+                        byte[] bytes = ContentDB.readBytesFromFile(pathname);
                         content.setContent(bytes);
-                        TinyMCE_ContentDB.saveOrUpdate(content);
+                        ContentDB.saveOrUpdate(content);
 
                         request.setAttribute("message", "<p>Datei existiert bereits + wurde aktualisiert!</p>");
                     } else {
-                        TinyMCE_ContentDB.saveFile(pathname, fileName, contentType, contextEnum);
+                        ContentDB.saveFile(pathname, fileName, contentType, contextEnum);
                         request.setAttribute("message", "<p>Datei erfolgreich hochgeladen!</p>");
                     }
 

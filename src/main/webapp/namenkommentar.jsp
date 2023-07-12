@@ -126,17 +126,17 @@
                                 int fileId = 1;
                                 boolean fileExist = false;
 
-                                TinyMCE_Content content = new TinyMCE_Content();
+                               Content content = new Content();
 
                                 if (!NamenKommentarDB.getById(id).getDateiname().equals("")) {
 
                                         fileId = Integer.parseInt(NamenKommentarDB.getById(id).getDateiname());
-                                        fileExist = TinyMCE_ContentDB.searchId(fileId);  //serachID(fileName)
+                                        fileExist =ContentDB.searchId(fileId);  //serachID(fileName)
 
                                     if (fileExist) {
 
                                         if (fileExist) {
-                                            content = TinyMCE_ContentDB.getById(fileId);  //getByIde(fileID)
+                                            content =ContentDB.getById(fileId);  //getByIde(fileID)
                                         }
 
                                         String name = content.getName();

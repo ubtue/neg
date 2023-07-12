@@ -1,7 +1,7 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.model.*;
-import de.uni_tuebingen.ub.nppm.model.TinyMCE_Content.Context;
+import de.uni_tuebingen.ub.nppm.model.Content.Context;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,9 +11,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
-public class TinyMCE_ContentDB extends AbstractBase {
+public class ContentDB extends AbstractBase {
 
-    public static void putToDatabase(TinyMCE_Content imageContent) throws Exception {
+    public static void putToDatabase(Content imageContent) throws Exception {
         Session session = getSession();
         session.beginTransaction();
         session.save(imageContent);
@@ -24,7 +24,7 @@ public class TinyMCE_ContentDB extends AbstractBase {
     public static void saveFile(String path, String name, String content_Type, Context context) throws Exception {
         Session session = getSession();
         byte[] contentBytes = readBytesFromFile(path);
-        TinyMCE_Content content = new TinyMCE_Content(name, content_Type, contentBytes, context);
+        Content content = new Content(name, content_Type, contentBytes, context);
         putToDatabase(content);
         session.close();
     }//end function
@@ -38,46 +38,46 @@ public class TinyMCE_ContentDB extends AbstractBase {
         return fileBytes;
     }//end function
 
-    public static TinyMCE_Content getById(int id) throws Exception {
+    public static Content getById(int id) throws Exception {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root myImage = criteria.from(TinyMCE_Content.class);
+        CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+        Root myImage = criteria.from(Content.class);
         criteria.select(myImage);
-        criteria.where(builder.equal(myImage.get(TinyMCE_Content_.ID), id));
-        TinyMCE_Content content = session.createQuery(criteria).getSingleResult();
+        criteria.where(builder.equal(myImage.get(Content_.ID), id));
+        Content content = session.createQuery(criteria).getSingleResult();
         session.close();
         return content;
     }//end function
 
-    public static TinyMCE_Content getByName(String name) throws Exception {
+    public static Content getByName(String name) throws Exception {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root myImage = criteria.from(TinyMCE_Content.class);
+        CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+        Root myImage = criteria.from(Content.class);
         criteria.select(myImage);
-        criteria.where(builder.equal(myImage.get(TinyMCE_Content_.NAME), name));
-        TinyMCE_Content content = session.createQuery(criteria).getSingleResult();
+        criteria.where(builder.equal(myImage.get(Content_.NAME), name));
+        Content content = session.createQuery(criteria).getSingleResult();
         session.close();
         return content;
     }//end function
 
-    public static List<TinyMCE_Content> getList() throws Exception {
+    public static List<Content> getList() throws Exception {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root myImage = criteria.from(TinyMCE_Content.class);
+        CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+        Root myImage = criteria.from(Content.class);
         criteria.getOrderList();
-        List<TinyMCE_Content> images = (List<TinyMCE_Content>) session.createQuery(criteria).list();
+        List<Content> images = (List<Content>) session.createQuery(criteria).list();
         session.close();
         return images;
     }//end function
 
-    public static List<TinyMCE_Content> getList(String context) throws Exception {
+    public static List<Content> getList(String context) throws Exception {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root<TinyMCE_Content> myImage = criteria.from(TinyMCE_Content.class);
+        CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+        Root<Content> myImage = criteria.from(Content.class);
         criteria.select(myImage);
 
         // Filter hinzufügen basierend auf dem übergebenen Kontext
@@ -85,15 +85,15 @@ public class TinyMCE_ContentDB extends AbstractBase {
             criteria.where(builder.equal(myImage.get("context"), Context.valueOf(context)));
         }
 
-        List<TinyMCE_Content> images = session.createQuery(criteria).getResultList();
+        List<Content> images = session.createQuery(criteria).getResultList();
         session.close();
         return images;
     }
 
     public static void copyPicturesFromDatabaseTableToTempFolder(String outputDirectory) throws Exception {
         Session session = getSession();
-        List<TinyMCE_Content> pictures = TinyMCE_ContentDB.getList();
-        for (TinyMCE_Content ic : pictures) {
+        List<Content> pictures = ContentDB.getList();
+        for (Content ic : pictures) {
             String name = ic.getName();
             String filePathToSave = outputDirectory + name;
             byte[] photoBytes = ic.getContent();
@@ -106,11 +106,11 @@ public class TinyMCE_ContentDB extends AbstractBase {
     public static void copyHTMLFromDatabaseTableToTempFolder(String outputDirectory, String name) throws Exception {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root myImage = criteria.from(TinyMCE_Content.class);
+        CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+        Root myImage = criteria.from(Content.class);
         criteria.select(myImage);
-        criteria.where(builder.equal(myImage.get(TinyMCE_Content_.NAME), name));
-        TinyMCE_Content content = session.createQuery(criteria).getSingleResult();
+        criteria.where(builder.equal(myImage.get(Content_.NAME), name));
+        Content content = session.createQuery(criteria).getSingleResult();
         String filePathToSave = outputDirectory + name;
         byte[] HtmlBytes = content.getContent();
         saveBytesToFile(filePathToSave, HtmlBytes);
@@ -127,11 +127,11 @@ public class TinyMCE_ContentDB extends AbstractBase {
         Session session = getSession();
         try {
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-            Root myImage = criteria.from(TinyMCE_Content.class);
+            CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+            Root myImage = criteria.from(Content.class);
             criteria.select(myImage);
-            criteria.where(builder.equal(myImage.get(TinyMCE_Content_.ID), id));
-            TinyMCE_Content image = session.createQuery(criteria).getSingleResult();
+            criteria.where(builder.equal(myImage.get(Content_.ID), id));
+            Content image = session.createQuery(criteria).getSingleResult();
             session.beginTransaction();
             session.delete(image);
             session.getTransaction().commit();
@@ -145,11 +145,11 @@ public class TinyMCE_ContentDB extends AbstractBase {
         Session session = getSession();
         try {
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-            Root myImage = criteria.from(TinyMCE_Content.class);
+            CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+            Root myImage = criteria.from(Content.class);
             criteria.select(myImage);
-            criteria.where(builder.equal(myImage.get(TinyMCE_Content_.NAME), name));
-            TinyMCE_Content image = session.createQuery(criteria).getSingleResult();
+            criteria.where(builder.equal(myImage.get(Content_.NAME), name));
+            Content image = session.createQuery(criteria).getSingleResult();
             session.beginTransaction();
             session.delete(image);
             session.getTransaction().commit();
@@ -164,11 +164,11 @@ public class TinyMCE_ContentDB extends AbstractBase {
         boolean available = false;
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root picture = criteria.from(TinyMCE_Content.class);
+        CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+        Root picture = criteria.from(Content.class);
         criteria.select(picture);
-        criteria.where(builder.equal(picture.get(TinyMCE_Content_.NAME), name));
-        List<TinyMCE_Content> pictures = (List<TinyMCE_Content>) session.createQuery(criteria).list();
+        criteria.where(builder.equal(picture.get(Content_.NAME), name));
+        List<Content> pictures = (List<Content>) session.createQuery(criteria).list();
         if (!pictures.isEmpty()) {
             available = true;
         } else {
@@ -183,11 +183,11 @@ public class TinyMCE_ContentDB extends AbstractBase {
         boolean available = false;
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TinyMCE_Content> criteria = builder.createQuery(TinyMCE_Content.class);
-        Root picture = criteria.from(TinyMCE_Content.class);
+        CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+        Root picture = criteria.from(Content.class);
         criteria.select(picture);
-        criteria.where(builder.equal(picture.get(TinyMCE_Content_.ID), id));
-        List<TinyMCE_Content> pictures = (List<TinyMCE_Content>) session.createQuery(criteria).list();
+        criteria.where(builder.equal(picture.get(Content_.ID), id));
+        List<Content> pictures = (List<Content>) session.createQuery(criteria).list();
         if (!pictures.isEmpty()) {
             available = true;
         } else {
@@ -197,7 +197,7 @@ public class TinyMCE_ContentDB extends AbstractBase {
         return available;
     }//end fuction
 
-    public static void saveOrUpdate(TinyMCE_Content content) throws Exception {
+    public static void saveOrUpdate(Content content) throws Exception {
         Session session = getSession();
         session.getTransaction().begin();
         session.saveOrUpdate(content);

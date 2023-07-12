@@ -142,7 +142,7 @@ public class AbstractBase {
 
             configuration.addAnnotatedClass(Bemerkung.class);
 
-            configuration.addAnnotatedClass(TinyMCE_Content.class);
+            configuration.addAnnotatedClass(Content.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();

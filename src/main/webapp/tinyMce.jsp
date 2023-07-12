@@ -53,14 +53,14 @@
             if (request.getParameter("speichern") != null) {
                 String html = request.getParameter("area");
 
-                TinyMCE_Content content = TinyMCE_ContentDB.getByName(helpFileName);
+                Content content = ContentDB.getByName(helpFileName);
                 byte[] htmlBytes = html.getBytes(java.nio.charset.StandardCharsets.UTF_8);
                 content.setContent(htmlBytes);
-                TinyMCE_ContentDB.saveOrUpdate(content);
+                ContentDB.saveOrUpdate(content);
                 out.println("<span style=\"color:green\">Erfolgreich gespeichert</span>");
             }
 
-            TinyMCE_Content content = TinyMCE_ContentDB.getByName(helpFileName);
+            Content content = ContentDB.getByName(helpFileName);
             byte[] htmlBytes = content.getContent();
             String utf8String = new String(htmlBytes, java.nio.charset.StandardCharsets.UTF_8);
 

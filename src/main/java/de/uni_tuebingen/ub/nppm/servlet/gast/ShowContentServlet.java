@@ -9,12 +9,12 @@ import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
 import java.io.OutputStream;
 
-public class ContentServlet extends HttpServlet {
+public class ShowContentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         try {
-            TinyMCE_Content content = TinyMCE_ContentDB.getByName(name);
+            Content content = ContentDB.getByName(name);
             resp.setContentType(content.getContent_Type());
 
             if (content.getContent_Type().startsWith("text/plain") || content.getContent_Type().startsWith("application/vnd.oasis.opendocument.text")
