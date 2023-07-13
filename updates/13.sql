@@ -5,3 +5,6 @@ ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_QuelleGattungID FOREIGN KEY (
 ALTER TABLE selektion_quellengattung MODIFY COLUMN ID INT NOT NULL auto_increment;
 -- restore sql mode
 SET SESSION sql_mode=default;
+
+INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('navigation', 'InhaltBearbeiten', 'Inhalt bearbeiten', 'edit content', 'modifier le contenu', 'recensere content');
+

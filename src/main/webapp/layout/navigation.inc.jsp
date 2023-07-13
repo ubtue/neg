@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.DatenbankTexte"%>
 ﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
@@ -112,7 +113,10 @@
   <br>
   <hr>
     <a href="file" target="_blank">
-    Hilfe bearbeiten
+    <%
+                DatenbankTexte label = DatenbankTexteDB.getText("navigation", "InhaltBearbeiten");
+    %>
+    <%= label.getDe() %>
   </a>
   <%
   }

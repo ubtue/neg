@@ -412,10 +412,7 @@
                                                         
 							if (!isReadOnly)
 								out
-										.println("<option value=\"-1\" "+selectForm.get(-1)+">nicht bearbeitet</option>");
-							if (!isReadOnly)
-								out
-										.println("<option value=\"0\" "+selectForm.get(0)+">unklar</option>");
+										.println("<option value=\"NULL\" "+selectForm.get(-1)+">nicht bearbeitet</option>");
 							if (!sql.equals(""))
 								while (rs2.next()) {
 									if (!isReadOnly)

@@ -1,3 +1,9 @@
+#Clean up CM References
+DELETE FROM datenbank_mapping WHERE Formular = "quelle" AND Datenfeld = "CMRef";
+DELETE FROM datenbank_mapping WHERE Formular = "quelle" AND Datenfeld = "CMLink";
+DELETE FROM datenbank_mapping WHERE Formular = "person" AND Datenfeld = "CMRef";
+DELETE FROM datenbank_mapping WHERE Formular = "person" AND Datenfeld = "CMLink";
+
 CREATE TABLE IF NOT EXISTS `neg`.`selektion_konvent` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Bezeichnung` VARCHAR(50) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci' NOT NULL,
@@ -16,3 +22,5 @@ INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Ar
 VALUES ("einzelbeleg", "Konvent", "Konvent", "select", 0, "einzelbeleg", "KonventID", "selektion_konvent", "einzelbeleg", "Convent", "Monastère", "Monasterium");
 
 ALTER TABLE einzelbeleg ADD KonventID INT DEFAULT -1;
+
+INSERT INTO datenbank_selektion (selektion, tabelle, spalte) VALUES ('selektion_konvent', 'einzelbeleg', 'KonventID');

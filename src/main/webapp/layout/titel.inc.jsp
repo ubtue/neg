@@ -14,7 +14,7 @@
   session = request.getSession(true);
   int filter = 0;
   String filterParameter = null;
-  String formular = request.getParameter("Formular"); 
+  String formular = request.getParameter("Formular");
   try {
     filter = ((Integer) session.getAttribute(formular + "filter")).intValue();
     filterParameter = (String) session.getAttribute(formular + "filterParameter");
@@ -35,7 +35,7 @@
             <jsp:param name="Formular" value="<%= request.getParameter("title") %>"/>
             <jsp:param name="Textfeld" value="Titel"/>
           </jsp:include>
-          <% 
+          <%
            if(title.equals("Einzelbeleg") || title.equals("Person") || title.equals("Namenkommentar") || title.equals("Quelle")){
 			String url = request.getRequestURL().toString();
           	String query = request.getQueryString();
@@ -43,7 +43,7 @@
 			out.println("<a href=\""+url);
 			if (query!=null) out.println("?"+query);
 			out.println("\">");
-          
+
           %><img src="layout/icons/lupe.png" height="16" width="16" alt="Zeige Eintrag im Gast-Modus"></a>
           <%} %>
         </h1>
@@ -78,7 +78,7 @@
     if(!disabled.equals(" disabled"))
       out.println("    <script type=\"text/javascript\">shortcut.add(\"Ctrl+Shift+S\",function() {document.forms[0].speichern.click();	},{	'type':'keydown',	'propagate':false,	'target':document});</script>");
 %>
-    <input type="submit" name="speichern" value="speichern" <%= disabled %>>
+    <input id="speichernX" type="submit" name="speichern" value="speichern" <%= disabled %>>
     <input type="reset" name="abbrechen" value="zur&uuml;cksetzen" <%= disabled %>>
 <%
   }
@@ -160,7 +160,7 @@
     </tr>
     </table>
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
-    
+
     <tr>
       <td align="left" nowrap>
           <jsp:include page="../forms/shortcut.jsp">

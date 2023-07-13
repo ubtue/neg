@@ -54,7 +54,10 @@ public class DeleteHelper {
                         break;
                     case "handschrift_ueberlieferung":    
                         EinzelbelegDB.remove(HandschriftUeberlieferung.class,id);
-                        break;                                            
+                        break;        
+                    case "einzelbeleg_textkritik":    
+                        EinzelbelegDB.remove(EinzelbelegTextkritik.class,id);
+                        break;
                 }
             } catch (Exception ex) {
                 try {
