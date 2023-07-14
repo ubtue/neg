@@ -36,11 +36,11 @@
 
         rs2 = st2.executeQuery(sql);
         while ( rs2.next() ) {
-        	String value = rs2.getString("Bezeichnung");
-          	  if(datenfeld.startsWith("Namenkommentar")) value = format(value, "PLemma");
+            String value = DBtoHTML(rs2.getString("Bezeichnung"));
+            if(datenfeld.startsWith("Namenkommentar")) value = format(value, "PLemma");
 
-             if(!isReadOnly)out.println("<option value=\""+rs2.getInt("ID")+"\" "+(rs2.getInt("ID")==selected?"selected":"")+">"+DBtoHTML(value)+"</option>");
-             else if(rs2.getInt("ID")==selected)out.println(DBtoHTML(value));
+            if(!isReadOnly)out.println("<option value=\""+rs2.getInt("ID")+"\" "+(rs2.getInt("ID")==selected?"selected":"")+">"+value+"</option>");
+            else if(rs2.getInt("ID")==selected)out.println(value);
         }
       } finally {
         try { if( null != rs2 ) rs2.close(); } catch( Exception ex ) {}
