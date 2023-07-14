@@ -16,6 +16,12 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <%
+            DatenbankTexte titel = DatenbankTexteDB.getText("tinyMce", "Titel");
+            String value = "Nomen et Gens | " + titel.getDe();
+
+        %>
+        <title><%= value%></title>
         <script type="text/javascript" src="layout/tinymce/tinymce.min.js"></script>
         <script type="text/javascript">
             tinymce.init({
@@ -41,34 +47,26 @@
         </script>
     </head>
     <body>
-        <%            String helpFileName = request.getParameter("loadFile").toString();
-
-            /*
-            if (request.getParameter("loadFile") == null) {
-                helpFileName = "hilfe.html";
-            } else {
-                helpFileName = request.getParameter("loadFile").toString();
-            }
-*/
+        <%
+            String helpFileName = request.getParameter("loadFile").toString();
 
             if (request.getParameter("speichern") != null) {
                 String html = request.getParameter("area");
 
-                TinyMCE_Content content = TinyMCE_ContentDB.getByName(helpFileName);
+                Content content = ContentDB.getByName(helpFileName);
                 byte[] htmlBytes = html.getBytes(java.nio.charset.StandardCharsets.UTF_8);
                 content.setContent(htmlBytes);
-                TinyMCE_ContentDB.saveOrUpdate(content);
+                ContentDB.saveOrUpdate(content);
                 out.println("<span style=\"color:green\">Erfolgreich gespeichert</span>");
             }
 
-            TinyMCE_Content content = TinyMCE_ContentDB.getByName(helpFileName);
+            Content content = ContentDB.getByName(helpFileName);
             byte[] htmlBytes = content.getContent();
             String utf8String = new String(htmlBytes, java.nio.charset.StandardCharsets.UTF_8);
 
         %>
 
         <form method="post">
-
             <textarea id="mytextarea" name="area">
                 <%                    out.println(utf8String);
                 %>
@@ -79,26 +77,14 @@
                     <input type="submit" name="speichern" value="speichern"/>
                 </div>
 
-                <a href="file?fileAccess=1" style="margin-right: 10px;">Datei <%= DBtoHTML("&")%> Bild Verwaltung</a>
+                <a href="file" style="margin-right: 10px;">Datei <%= DBtoHTML("&")%> Bild Verwaltung</a>
             </div>
         </form>
     </body>
 </html>
 <%
-} else {
-%>
-<p>
-    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="error"/>
-        <jsp:param name="Textfeld" value="Zugriff"/>
-    </jsp:include>
-</p>
-<a href="index.jsp">
-    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="all"/>
-        <jsp:param name="Textfeld" value="Startseite"/>
-    </jsp:include>
-</a>
-<%
+    } else {
+        // Weiterleitung zur logout.jsp
+        response.sendRedirect("logout.jsp");
     }
 %>

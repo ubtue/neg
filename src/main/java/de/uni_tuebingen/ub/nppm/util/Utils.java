@@ -1,8 +1,6 @@
 package de.uni_tuebingen.ub.nppm.util;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.util.List;

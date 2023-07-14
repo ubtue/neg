@@ -11,7 +11,10 @@
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
     id = Utils.determineId(request, response, formular, out);
-    urkundeid = UrkundeDB.determineUrkundeId(id);
+    //only determine the urkunde id for an existing quelle record
+    if(id != Constants.UNDEFINED_ID && id != Constants.NEW_ITEM){
+        urkundeid = UrkundeDB.determineUrkundeId(id);
+    }
 %>
 <jsp:include page="dosave.jsp">
 	<jsp:param name="form" value="quelle" />

@@ -40,6 +40,12 @@ public class DatenbankMapping {
     @Column(name = "Auswahlherkunft", length = 50)
     private String auswahlherkunft;
 
+    @Column(name = "Auswahlherkunft_Filter", length = 255)
+    private String auswahlherkunftFilter;
+
+    @Column(name = "Filter", length = 255)
+    private String filter;
+
     @Column(name = "combinedFeldnamen", length = 255)
     private String combinedFeldnamen;
 
@@ -178,6 +184,22 @@ public class DatenbankMapping {
 
     public void setAuswahlherkunft(String auswahlherkunft) {
         this.auswahlherkunft = auswahlherkunft;
+    }
+
+    public String getAuswahlherkunftFilter() {
+        return auswahlherkunftFilter;
+    }
+
+    public void setAuswahlherkunftFilter(String auswahlherkunftFilter) {
+        this.auswahlherkunftFilter = auswahlherkunftFilter;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     public String getCombinedFeldnamen() {

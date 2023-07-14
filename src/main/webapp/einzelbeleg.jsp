@@ -493,6 +493,18 @@
 										<jsp:param name="Datenfeld" value="AmtWeihe" />
 									</jsp:include></td>
 							</tr>
+                                                        
+                                                        <tr>
+                                                            <th width="200" valign="top">
+                                                                <% Language.printDatafield(out, session, formular, "Konvent");%>
+                                                            </th>
+                                                            <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+                                                                    <jsp:param name="ID" value="<%=id%>" />
+                                                                    <jsp:param name="Formular" value="einzelbeleg" />
+                                                                    <jsp:param name="Datenfeld" value="Konvent" />
+                                                                </jsp:include></td>
+                                                        </tr>
+                                                        
 							<tr>
 								<th width="200" valign="top">
                                                                     <% Language.printDatafield(out,session, formular,"Ethnie");%>
