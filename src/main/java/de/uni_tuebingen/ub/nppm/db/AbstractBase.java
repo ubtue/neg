@@ -204,12 +204,15 @@ public class AbstractBase {
         }
     }
 
-    public static Object getRowNative(String sql) throws Exception {
+    public static Object[] getRowNative(String sql) throws Exception {
         Session session = getSession();
 
         try {
-            NativeQuery sqlQuery = session.createNativeQuery(sql);
-            return sqlQuery.getSingleResult();
+            List<Object[]> list = getListNative(sql);
+            if (list.size() > 0)
+                return list.get(0);
+            else
+                return null;
         } finally {
             session.close();
         }
