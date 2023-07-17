@@ -161,4 +161,19 @@ public class BenutzerDB extends AbstractBase {
             session.close();
         }
     }
+
+    public static BenutzerGruppe getGruppeById(int id) throws Exception {
+        Session session = getSession();
+        try {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<BenutzerGruppe> criteria = builder.createQuery(BenutzerGruppe.class);
+            Root benutzer = criteria.from(BenutzerGruppe.class);
+            criteria.select(benutzer);
+            criteria.where(builder.equal(benutzer.get(BenutzerGruppe_.ID), id));
+            BenutzerGruppe res = session.createQuery(criteria).getSingleResult();
+            return res;
+        } finally {
+            session.close();
+        }
+    }
 }
