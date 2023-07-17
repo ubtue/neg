@@ -202,7 +202,17 @@ public class AbstractBase {
         } finally {
             session.close();
         }
+    }
 
+    public static Object getRowNative(String sql) throws Exception {
+        Session session = getSession();
+
+        try {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            return sqlQuery.getSingleResult();
+        } finally {
+            session.close();
+        }
     }
 
     protected static void insertOrUpdate(String sql) throws Exception {
