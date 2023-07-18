@@ -8,6 +8,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import de.uni_tuebingen.ub.nppm.model.*;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -152,6 +153,15 @@ public class AbstractBase {
         return sessionFactory;
     }
 
+    protected static String getDatabaseName() throws Exception {
+        String url = (String) initialContext.lookup("java:comp/env/sqlURL");
+        if (url.startsWith("jdbc:")) {
+            URI uri = URI.create(transformedCredentials.substring("jdbc:".length()));
+            return uri.getPath();
+        }
+        return null;
+    }
+
     // For now, we open a new session each time this method is called.
     // Later, we might try to use a static session similar to the static SessionFactory.
     protected static Session getSession() throws Exception {
@@ -250,6 +260,11 @@ public class AbstractBase {
 
     public static int getLinecount(String tablesString, String conditionsString) throws Exception {
         String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
+        return getIntNative(sql);
+    }
+
+    public static int getMaxCharacterLength(String table, String column) throws Exception {
+        String sql = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" + getDatabaseName() + "' AND TABLE_NAME = '" + table + "' AND COLUMN_NAME='"+ column +"'";
         return getIntNative(sql);
     }
 }
