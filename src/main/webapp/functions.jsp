@@ -1,6 +1,9 @@
 ﻿<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.net.URLEncoder" isThreadSafe="false" %>
 <%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
+<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+<%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.util.Vector" isThreadSafe="false" %>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.List" isThreadSafe="false"%>
@@ -140,7 +143,7 @@ String format(String text, String feld) {
 
 
 
-String[] getdMGHUrl(String einzelbelegID) {
+String[] getdMGHUrl(String einzelbelegID) throws Exception {
     String dmghUrl = "";
     String linkinfo = "";
 
@@ -173,7 +176,7 @@ String[] getdMGHUrl(String einzelbelegID) {
     };
 }
 
-String getBelegformLinked(String einzelbelegID, String belegform) {
+String getBelegformLinked(String einzelbelegID, String belegform) throws Exception {
     String[] dmghUrl = getdMGHUrl(einzelbelegID);
     if (dmghUrl[0].isEmpty()) {
         return belegform;

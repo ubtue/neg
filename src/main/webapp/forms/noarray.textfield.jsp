@@ -10,12 +10,12 @@
         }
 
         if (Integer.parseInt(id) > 0) {
-            Object[] columns = AbstractBase.getRowNative("SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
-            if (columns != null && columns.length > 0) {
+            String value_zielAttribut = AbstractBase.getStringNative("SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
+            if (value_zielAttribut != null) {
                 if (!isReadOnly) {
-                    out.print("value=\"" + DBtoHTML(columns[0].toString()) + "\" ");
+                    out.print("value=\"" + DBtoHTML(value_zielAttribut) + "\" ");
                 } else {
-                    String belegformHtml = DBtoHTML(format(columns[0].toString(), isKlarlemma ? "Klarlemma" : ""));
+                    String belegformHtml = DBtoHTML(format(value_zielAttribut, isKlarlemma ? "Klarlemma" : ""));
                     if (formular.equals("einzelbeleg") && datenfeld.equals("Belegform")) {
                         belegformHtml = getBelegformLinked(id, belegformHtml);
                     }

@@ -35,7 +35,7 @@
             }
             out.println("</td>");
 
-            String href = "javascript:deleteEntry('" + zielTabelle + "', '" + rs.getInt("ID") + "', '" + returnpage + "', '" + id + "');";
+            String href = "javascript:deleteEntry('" + zielTabelle + "', '" + row_id + "', '" + returnpage + "', '" + id + "');";
             out.println("<td>");
             if (!isReadOnly) {
                 out.println("<a href=\"" + href + "\">");

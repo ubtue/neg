@@ -156,7 +156,7 @@ public class AbstractBase {
     protected static String getDatabaseName() throws Exception {
         String url = (String) initialContext.lookup("java:comp/env/sqlURL");
         if (url.startsWith("jdbc:")) {
-            URI uri = URI.create(transformedCredentials.substring("jdbc:".length()));
+            URI uri = URI.create(url.substring("jdbc:".length()));
             return uri.getPath();
         }
         return null;
@@ -223,6 +223,21 @@ public class AbstractBase {
             List<Object> rows = sqlQuery.getResultList();
             if (!rows.isEmpty() && rows.get(0) != null)
                 return Integer.parseInt(rows.get(0).toString());
+        }
+
+        return null;
+    }
+
+    public static String getStringNative(String sql) throws Exception {
+        // This function is needed because if we use getRowNative or getListNative
+        // we will have problems to cast a BigInteger to an Object, so we cast to
+        // Int instead.
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            //sqlQuery.setMaxResults(1);
+            List<Object> rows = sqlQuery.getResultList();
+            if (!rows.isEmpty() && rows.get(0) != null)
+                return rows.get(0).toString();
         }
 
         return null;
