@@ -203,15 +203,18 @@ public class AbstractBase {
         return null;
     }
 
-    public static int getIntNative(String sql) throws Exception {
+    public static Integer getIntNative(String sql) throws Exception {
         // This function is needed because if we use getRowNative or getListNative
         // we will have problems to cast a BigInteger to an Object, so we cast to
         // Int instead.
         try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
-            sqlQuery.setMaxResults(1);
+            //sqlQuery.setMaxResults(1);
             List<Object> rows = sqlQuery.getResultList();
-            return (int) Integer.parseInt(rows.get(0).toString());
+            if (rows.isEmpty())
+                return null;
+            else
+                return Integer.parseInt(rows.get(0).toString());
         }
     }
 

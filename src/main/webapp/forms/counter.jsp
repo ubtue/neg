@@ -24,8 +24,8 @@
 
     String sql_akt = sql_max + (sql_max.contains("WHERE") ? " AND " : " WHERE ") + title + ".ID < " + id;
 
-    int akt = AbstractBase.getIntNative(sql_akt) + 1;
-    int max = AbstractBase.getIntNative(sql_max);
+    Integer akt = AbstractBase.getIntNative(sql_akt) + 1;
+    Integer max = AbstractBase.getIntNative(sql_max);
 
     out.println("[" + akt + " / " + max + "]");
 %>
