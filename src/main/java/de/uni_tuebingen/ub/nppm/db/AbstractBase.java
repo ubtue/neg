@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import de.uni_tuebingen.ub.nppm.model.*;
 import java.net.URI;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -229,15 +230,32 @@ public class AbstractBase {
     }
 
     public static String getStringNative(String sql) throws Exception {
-        // This function is needed because if we use getRowNative or getListNative
-        // we will have problems to cast a BigInteger to an Object, so we cast to
-        // Int instead.
         try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             //sqlQuery.setMaxResults(1);
             List<Object> rows = sqlQuery.getResultList();
             if (!rows.isEmpty() && rows.get(0) != null)
                 return rows.get(0).toString();
+        }
+
+        return null;
+    }
+
+    public static List<String> getStringListNative(String sql) throws Exception {
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            List<String> rows = sqlQuery.getResultList();
+            return rows;
+        }
+    }
+
+    public static Timestamp getTimestampNative(String sql) throws Exception {
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            //sqlQuery.setMaxResults(1);
+            List<Timestamp> rows = sqlQuery.getResultList();
+            if (!rows.isEmpty() && rows.get(0) != null)
+                return rows.get(0);
         }
 
         return null;
