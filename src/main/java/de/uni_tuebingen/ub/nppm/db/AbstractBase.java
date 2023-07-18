@@ -159,8 +159,7 @@ public class AbstractBase {
     }
 
     protected static List getList(Class c, CriteriaQuery criteria) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             if (criteria == null) {
                 criteria = builder.createQuery(c);
@@ -168,8 +167,6 @@ public class AbstractBase {
             Root root = criteria.from(c);
             criteria.select(root);
             return session.createQuery(criteria).getResultList();
-        } finally {
-            session.close();
         }
     }
 
@@ -178,8 +175,7 @@ public class AbstractBase {
     }
 
     public static void remove(Class class_, int id) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             Transaction transaction = session.getTransaction();
             transaction.begin();
             //Load
@@ -188,45 +184,31 @@ public class AbstractBase {
             session.remove(obj);
             //Commit
             transaction.commit();
-        } finally {
-            session.close();
         }
     }
 
     public static List<Object[]> getListNative(String sql) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             return rows;
-        } finally {
-            session.close();
         }
     }
 
     public static Object[] getRowNative(String sql) throws Exception {
-        Session session = getSession();
+        List<Object[]> list = getListNative(sql);
+        if (!list.isEmpty())
+            return list.get(0);
 
-        try {
-            List<Object[]> list = getListNative(sql);
-            if (list.size() > 0)
-                return list.get(0);
-            else
-                return null;
-        } finally {
-            session.close();
-        }
+        return null;
     }
 
     protected static void insertOrUpdate(String sql) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             session.getTransaction().begin();
             NativeQuery query = session.createNativeQuery(sql);
             query.executeUpdate();
             session.getTransaction().commit();
-        } finally {
-            session.close();
         }
     }
 
@@ -237,12 +219,8 @@ public class AbstractBase {
     }
 
     protected static List<Map> getMappedList(CriteriaQuery criteria) throws Exception {
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             return getMappedList(session.createQuery(criteria));
-        } finally {
-            session.close();
         }
     }
 
@@ -250,28 +228,19 @@ public class AbstractBase {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             return getMappedList(session.createNativeQuery(query));
-        } finally {
-            session.close();
         }
-
     }
 
     public static int getLinecount(String tablesString, String conditionsString) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
 
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             sqlQuery.setMaxResults(1);
             List<Object> rows = sqlQuery.getResultList();
             return (int) Integer.parseInt(rows.get(0).toString());
-        } finally {
-            session.close();
         }
-
     }
 }
