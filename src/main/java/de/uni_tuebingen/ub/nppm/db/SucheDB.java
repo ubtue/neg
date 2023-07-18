@@ -14,7 +14,6 @@ import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
 import org.hibernate.Criteria;
 import org.hibernate.query.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
@@ -32,13 +31,10 @@ public class SucheDB extends AbstractBase {
         }
         sql += " ORDER BY " + country;
 
-        Session session = getSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(sql);
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<String> rows = sqlQuery.getResultList();
             return rows;
-        } finally {
-            session.close();
         }
     }
 
@@ -52,7 +48,7 @@ public class SucheDB extends AbstractBase {
         try (Session session = getSession()) {
             Transaction tx = session.beginTransaction();
             String sql = "SELECT ID, " + attribut + " FROM " + dbForm + " e WHERE NOT EXISTS (SELECT * FROM " + tabelle + " eh WHERE e.ID=eh." + zwAttribut + ") ORDER BY " + attribut;
-            SQLQuery query = session.createSQLQuery(sql);
+            NativeQuery query = session.createNativeQuery(sql);
             List<Object[]> rows = query.list();
 
             for (Object[] row : rows) {
@@ -90,11 +86,11 @@ public class SucheDB extends AbstractBase {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             //return var
-            List<Map<String, String>> ret = new ArrayList<Map<String, String>>();
+            List<Map<String, String>> ret = new ArrayList<>();
             //loop over the rows
             for (Object[] row : rows) {
                 //convert the fields from the row to a map
-                Map<String, String> fieldVal = new HashMap<String, String>();
+                Map<String, String> fieldVal = new HashMap<>();
                 for (int i = 0; i < fields.length; i++) {
                     String[] name = fields[i].split(" AS ");
                     if (name.length == 2) {
