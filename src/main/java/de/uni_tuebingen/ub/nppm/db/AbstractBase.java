@@ -211,11 +211,11 @@ public class AbstractBase {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             //sqlQuery.setMaxResults(1);
             List<Object> rows = sqlQuery.getResultList();
-            if (rows.isEmpty())
-                return null;
-            else
+            if (!rows.isEmpty() && rows.get(0) != null)
                 return Integer.parseInt(rows.get(0).toString());
         }
+
+        return null;
     }
 
     protected static void insertOrUpdate(String sql) throws Exception {

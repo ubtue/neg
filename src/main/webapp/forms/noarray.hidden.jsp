@@ -1,19 +1,12 @@
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+
 ﻿<%
-  if (feldtyp.equals("hidden") && !array) {
-    try {
-      Class.forName( sqlDriver );
-      cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      st = cn.createStatement();
-      rs = st.executeQuery("SELECT "+zielAttribut+" FROM "+zielTabelle+" WHERE ID=\""+id+"\"");
-      out.print("<input type='hidden' name=\""+datenfeld+"\" ");
-      if ( rs.next() && rs.getString(zielAttribut) != null) {
-        out.print("value=\""+rs.getString(zielAttribut)+"\" ");
-      }
-      out.println(" />");
-    } finally {
-      try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-      try { if( null != st ) st.close(); } catch( Exception ex ) {}
-      try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
+    if (feldtyp.equals("hidden") && !array) {
+        Object[] columns = AbstractBase.getRowNative("SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
+        out.print("<input type='hidden' name=\"" + datenfeld + "\" ");
+        if (columns != null && columns.length > 0) {
+            out.print("value=\"" + columns[0].toString() + "\" ");
+        }
+        out.println(" />");
     }
-  }
 %>
