@@ -14,49 +14,40 @@ public class UrkundeDB extends AbstractBase {
     public static List getList() throws Exception {
         return getList(Urkunde.class);
     }
-    
+
     public static int determineUrkundeId(Integer quelleId) throws Exception{
-        
+
         String sqlId = "SELECT ID FROM urkunde WHERE QuelleID ="+ quelleId + ";";
-                
+
         Object urkundeId = DatenbankDB.getSingleResult(sqlId);
         //check if urkunde exist
         if(urkundeId != null)
             return (int)urkundeId;
-        
+
         //if not, insert new urkunde
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             String sqlInsertUrkunde = "INSERT into urkunde (QuelleID) values ('" + quelleId + "')";
             session.getTransaction().begin();
             NativeQuery query = session.createSQLQuery(sqlInsertUrkunde);
             query.executeUpdate();
             session.getTransaction().commit();
-        } finally {
-            session.close();
         }
-        
-        //return urkunde id
-        return (int)DatenbankDB.getSingleResult(sqlId);        
+
+        return (int)DatenbankDB.getSingleResult(sqlId);
     }
 
      public static Urkunde getUrkunde(int quellenId) throws Exception {
+        try (Session session = getSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Urkunde> criteria = criteriaBuilder.createQuery(Urkunde.class);
+            Root<Urkunde> urkunde = criteria.from(Urkunde.class);
 
-        Session session = getSession();
+            criteria.select(urkunde).where(criteriaBuilder.equal(urkunde.get("quelle"), quellenId));
 
-         try {
-             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-             CriteriaQuery<Urkunde> criteria = criteriaBuilder.createQuery(Urkunde.class);
-             Root<Urkunde> urkunde = criteria.from(Urkunde.class);
-             
-             criteria.select(urkunde).where(criteriaBuilder.equal(urkunde.get("quelle"), quellenId));
-             
-             TypedQuery<Urkunde> typedQuery = session.createQuery(criteria);
-             Urkunde un = typedQuery.getSingleResult();
-             
-             return un;
-         } finally {
-             session.close();
-         }
+            TypedQuery<Urkunde> typedQuery = session.createQuery(criteria);
+            Urkunde un = typedQuery.getSingleResult();
+
+            return un;
+        }
     }
 }

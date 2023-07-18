@@ -11,19 +11,19 @@ import org.hibernate.Session;
 public class DatenbankTexteDB extends AbstractBase {
 
     public static DatenbankTexte getText(String formular, String textfeld) throws Exception {
-        Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<DatenbankTexte> criteria = builder.createQuery(DatenbankTexte.class);
-        Root<DatenbankTexte> titel = criteria.from(DatenbankTexte.class);
+        try (Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<DatenbankTexte> criteria = builder.createQuery(DatenbankTexte.class);
+            Root<DatenbankTexte> titel = criteria.from(DatenbankTexte.class);
 
-        criteria.select(titel);
-        criteria.where(builder.and(
-                builder.equal(titel.get(DatenbankTexte_.FORMULAR), formular),
-                builder.equal(titel.get(DatenbankTexte_.TEXTFELD), textfeld)
-        ));
+            criteria.select(titel);
+            criteria.where(builder.and(
+                    builder.equal(titel.get(DatenbankTexte_.FORMULAR), formular),
+                    builder.equal(titel.get(DatenbankTexte_.TEXTFELD), textfeld)
+            ));
 
-        DatenbankTexte content = session.createQuery(criteria).getSingleResult();
-        session.close();
-        return content;
+            DatenbankTexte content = session.createQuery(criteria).getSingleResult();
+            return content;
+        }
     }
 }

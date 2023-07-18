@@ -8,9 +8,7 @@ import javax.persistence.criteria.*;
 public class BenutzerDB extends AbstractBase {
 
     public static List getList() throws Exception {
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
             Root benutzer = criteria.from(Benutzer.class);
@@ -18,15 +16,11 @@ public class BenutzerDB extends AbstractBase {
             criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
 
             return session.createQuery(criteria).getResultList();
-        } finally {
-            session.close();
         }
     }
 
     public static List getListAktiv() throws Exception {
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
             Root benutzer = criteria.from(Benutzer.class);
@@ -35,15 +29,11 @@ public class BenutzerDB extends AbstractBase {
             criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
 
             return session.createQuery(criteria).getResultList();
-        } finally {
-            session.close();
         }
     }
 
     public static List getListInaktiv() throws Exception {
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
             Root benutzer = criteria.from(Benutzer.class);
@@ -52,14 +42,11 @@ public class BenutzerDB extends AbstractBase {
             criteria.orderBy(builder.asc(benutzer.get(Benutzer_.Nachname)), builder.asc(benutzer.get(Benutzer_.Vorname)));
 
             return session.createQuery(criteria).getResultList();
-        } finally {
-            session.close();
         }
     }
 
     public static Benutzer getById(int id) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
             Root benutzer = criteria.from(Benutzer.class);
@@ -67,14 +54,11 @@ public class BenutzerDB extends AbstractBase {
             criteria.where(builder.equal(benutzer.get(Benutzer_.ID), id));
             Benutzer res = session.createQuery(criteria).getSingleResult();
             return res;
-        } finally {
-            session.close();
         }
     }
 
     public static Benutzer getByLogin(String login) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
             Root benutzer = criteria.from(Benutzer.class);
@@ -82,14 +66,11 @@ public class BenutzerDB extends AbstractBase {
             criteria.where(builder.equal(benutzer.get(Benutzer_.Login), login));
             Benutzer res = session.createQuery(criteria).getSingleResult();
             return res;
-        } finally {
-            session.close();
         }
     }
 
     public static Benutzer getByLoginAktiv(String login) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
             Root benutzer = criteria.from(Benutzer.class);
@@ -97,14 +78,11 @@ public class BenutzerDB extends AbstractBase {
             criteria.where(builder.and(builder.equal(benutzer.get(Benutzer_.Login), login), builder.isTrue(benutzer.get(Benutzer_.IstAktiv))));
             Benutzer res = session.createQuery(criteria).getSingleResult();
             return res;
-        } finally {
-            session.close();
         }
     }
 
     public static Benutzer getByMail(String mail) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
             Root benutzer = criteria.from(Benutzer.class);
@@ -112,15 +90,11 @@ public class BenutzerDB extends AbstractBase {
             criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), mail));
             Benutzer res = session.createQuery(criteria).getSingleResult();
             return res;
-        } finally {
-            session.close();
         }
     }
 
     public static boolean hasEmail(String email) throws Exception{
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
             Root benutzer = criteria.from(Benutzer.class);
@@ -129,15 +103,11 @@ public class BenutzerDB extends AbstractBase {
             boolean inDatabase = !session.createQuery(criteria).getResultList().isEmpty();
             session.close();
             return inDatabase;
-        } finally {
-            session.close();
         }
     }
 
     public static boolean hasLogin(String login) throws Exception{
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
             Root benutzer = criteria.from(Benutzer.class);
@@ -146,25 +116,19 @@ public class BenutzerDB extends AbstractBase {
             boolean inDatabase = !session.createQuery(criteria).getResultList().isEmpty();
 
             return inDatabase;
-        } finally {
-            session.close();
         }
     }
 
     public static void saveOrUpdate(Benutzer b) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             session.getTransaction().begin();
             session.saveOrUpdate(b);
             session.getTransaction().commit();
-        } finally {
-            session.close();
         }
     }
 
     public static BenutzerGruppe getGruppeById(int id) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<BenutzerGruppe> criteria = builder.createQuery(BenutzerGruppe.class);
             Root benutzer = criteria.from(BenutzerGruppe.class);
@@ -172,8 +136,6 @@ public class BenutzerDB extends AbstractBase {
             criteria.where(builder.equal(benutzer.get(BenutzerGruppe_.ID), id));
             BenutzerGruppe res = session.createQuery(criteria).getSingleResult();
             return res;
-        } finally {
-            session.close();
         }
     }
 }
