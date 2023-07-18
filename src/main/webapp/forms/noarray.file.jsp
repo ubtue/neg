@@ -5,7 +5,7 @@
     if (feldtyp.equals("file") && !array) {
 
         Object[] columns = AbstractBase.getRowNative("SELECT ID, " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
-        if (columns != null && columns.length > 0) {
+        if (columns != null && columns.length > 1 && columns[1] != null) {
             String folder = "";
             if (zielTabelle.equals("person")) {
                 folder = commentFolder_personenkommentar;
