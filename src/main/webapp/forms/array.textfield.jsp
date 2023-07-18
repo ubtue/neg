@@ -26,8 +26,9 @@
             }
 
             if (!isReadOnly) {
+                Integer maxLength = AbstractBase.getMaxCharacterLength(zielTabelle, zielAttribut);
                 out.println((size > 0 ? "size=\"" + size + "\" " : "")
-                        + "maxlength=\"" + AbstractBase.getMaxCharacterLength(zielTabelle, zielAttribut) + "\" "
+                        + "maxlength=\"" + ((maxLength != null) ? maxLength : "") + "\" "
                         + "/>");
             }
             if (!isReadOnly) {

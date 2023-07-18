@@ -278,7 +278,7 @@ public class AbstractBase {
         return getIntNative(sql);
     }
 
-    public static int getMaxCharacterLength(String table, String column) throws Exception {
+    public static Integer getMaxCharacterLength(String table, String column) throws Exception {
         String sql = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" + getDatabaseName() + "' AND TABLE_NAME = '" + table + "' AND COLUMN_NAME='"+ column +"'";
         return getIntNative(sql);
     }

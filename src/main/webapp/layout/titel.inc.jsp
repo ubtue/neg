@@ -1,6 +1,7 @@
 <%@ include file="../configuration.jsp" %>
 
-<%    int id = -1;
+<%
+    int id = -1;
     String title = request.getParameter("title");
 
     //Filter berechnen
