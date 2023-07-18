@@ -6,15 +6,15 @@
 
         List<Object[]> rowlist = AbstractBase.getListNative("SELECT ID, " + zielAttribut + " FROM " + zielTabelle + " WHERE " + formular + "ID=\"" + id + "\"");
 
-        int selected = -1;
+        String selected = "-1";
         int i = 0;
         out.println("<table>");
         for (Object[] columns : rowlist) {
             out.println("<tr>");
             out.println("<td>");
 
-            int value_id = Integer.getInteger(columns[0].toString());
-            int value_zielAttribut = Integer.getInteger(columns[1].toString());
+            String value_id = columns[0].toString();
+            String value_zielAttribut = columns[1].toString();
             selected = value_zielAttribut;
 
             if (!isReadOnly) {
@@ -25,12 +25,12 @@
 
             List<Object[]> rowlist2 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
             for (Object[] columns2 : rowlist2) {
-                int value2_id = Integer.getInteger(columns2[0].toString());
+                String value2_id = columns2[0].toString();
                 String value2_Bezeichnung = columns2[1].toString();
 
                 if (!isReadOnly) {
-                    out.println("<option value=\"" + value2_id + "\" " + ((value2_id == selected) ? "selected" : "") + ">"+ DBtoHTML(value2_Bezeichnung) + "</option>");
-                } else if (value2_id == selected) {
+                    out.println("<option value=\"" + value2_id + "\" " + (value2_id.equals(selected) ? "selected" : "") + ">"+ DBtoHTML(value2_Bezeichnung) + "</option>");
+                } else if (value2_id.equals(selected)) {
                     out.println(DBtoHTML(value2_Bezeichnung));
                 }
             }
