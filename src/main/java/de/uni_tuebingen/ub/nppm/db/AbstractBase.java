@@ -203,6 +203,18 @@ public class AbstractBase {
         return null;
     }
 
+    public static int getIntNative(String sql) throws Exception {
+        // This function is needed because if we use getRowNative or getListNative
+        // we will have problems to cast a BigInteger to an Object, so we cast to
+        // Int instead.
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            sqlQuery.setMaxResults(1);
+            List<Object> rows = sqlQuery.getResultList();
+            return (int) Integer.parseInt(rows.get(0).toString());
+        }
+    }
+
     protected static void insertOrUpdate(String sql) throws Exception {
         try (Session session = getSession()) {
             session.getTransaction().begin();
@@ -234,13 +246,7 @@ public class AbstractBase {
     }
 
     public static int getLinecount(String tablesString, String conditionsString) throws Exception {
-        try (Session session = getSession()) {
-            String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
-
-            NativeQuery sqlQuery = session.createNativeQuery(sql);
-            sqlQuery.setMaxResults(1);
-            List<Object> rows = sqlQuery.getResultList();
-            return (int) Integer.parseInt(rows.get(0).toString());
-        }
+        String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
+        return getIntNative(sql);
     }
 }

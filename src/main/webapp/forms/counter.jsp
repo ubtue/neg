@@ -3,9 +3,6 @@
 ﻿<%@ include file="../configuration.jsp" %>
 
 <%
-    int akt = 0;
-    int max = 0;
-
     int id = -1;
     String title = request.getParameter("title");
     String guest = "";
@@ -21,19 +18,14 @@
     } catch (NumberFormatException e) {
     }
 
-    String sql = DatenbankDB.getFilterSql(guest + title, filter);
-    sql = sql.replace("*", "count(*) c");
-    sql = sql.replace("###", filterParameter);
+    String sql_max = DatenbankDB.getFilterSql(guest + title, filter);
+    sql_max = sql_max.replace("*", "count(*) c");
+    sql_max = sql_max.replace("###", filterParameter);
 
-    Object[] columns = AbstractBase.getRowNative(sql + (sql.contains("WHERE") ? " AND " : " WHERE ") + title + ".ID < " + id);
-    if (columns != null && columns.length > 0) {
-        akt = Integer.getInteger(columns[0].toString());
-    }
+    String sql_akt = sql_max + (sql_max.contains("WHERE") ? " AND " : " WHERE ") + title + ".ID < " + id;
 
-    Object[] columns2 = AbstractBase.getRowNative(sql);
-    if (columns2 != null && columns2.length > 0) {
-        max = Integer.getInteger(columns2[0].toString());
-    }
+    int akt = AbstractBase.getIntNative(sql_akt) + 1;
+    int max = AbstractBase.getIntNative(sql_max);
 
     out.println("[" + akt + " / " + max + "]");
 %>
