@@ -1,7 +1,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
 
-﻿<%
+<%
     if (feldtyp.equals("file") && !array) {
 
         Object[] columns = AbstractBase.getRowNative("SELECT ID, " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");

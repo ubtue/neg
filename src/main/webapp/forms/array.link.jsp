@@ -1,7 +1,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
-﻿<%
+<%
     if (feldtyp.startsWith("link") && array) {
 
         String[] fields = feldtyp.substring(feldtyp.lastIndexOf('(') + 1, feldtyp.lastIndexOf(')')).split(",");

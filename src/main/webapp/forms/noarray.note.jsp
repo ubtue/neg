@@ -1,6 +1,6 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 
-﻿<%
+<%
     if (feldtyp.equals("note") && !array) {
         String sql = "";
         String note = "";

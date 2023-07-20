@@ -1,7 +1,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 
-﻿<%
+<%
     if (feldtyp.equals("addselect") && !array) {
         out.println("<select name=\"" + datenfeld + "\" id=\"" + datenfeld + "\">");
 

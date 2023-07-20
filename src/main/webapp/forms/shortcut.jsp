@@ -1,7 +1,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
 
-﻿<%@ include file="../configuration.jsp" %>
+<%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp"%>
 
 <%    int id = -1;

@@ -1,6 +1,6 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 
-﻿<%
+<%
     if (feldtyp.equals("checkbox") && !array) {
         out.print("<input name=\"" + datenfeld + "\" ");
         out.print("type=\"checkbox\"");

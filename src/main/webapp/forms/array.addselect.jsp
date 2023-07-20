@@ -1,7 +1,7 @@
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 
-﻿<%
+<%
     if (feldtyp.equals("addselect") && array) {
 
         List<Object[]> rowlist = AbstractBase.getListNative("SELECT ID, " + zielAttribut + " FROM " + zielTabelle + " WHERE " + formular + "ID=\"" + id + "\"");

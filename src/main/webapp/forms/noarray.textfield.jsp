@@ -1,6 +1,6 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 
-﻿<%
+<%
     if (feldtyp.equals("textfield") && !array) {
         if (!isReadOnly) {
             out.print("<input name=\"" + datenfeld + "\" style=\"width: 250px\"");
