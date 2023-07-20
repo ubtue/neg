@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.db;
 
+import de.uni_tuebingen.ub.nppm.model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -7,7 +8,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
-import de.uni_tuebingen.ub.nppm.model.*;
+import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,8 +18,6 @@ import java.util.Properties;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import org.hibernate.Transaction;
-import org.hibernate.query.NativeQuery;
 
 public class AbstractBase {
 
@@ -272,7 +272,7 @@ public class AbstractBase {
 
     protected static List<Map> getMappedList(Query query) throws Exception {
         // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
-        query.setResultTransformer(org.hibernate.transform.AliasToEntityMapResultTransformer.INSTANCE);
+        query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
         return query.list();
     }
 
@@ -288,6 +288,22 @@ public class AbstractBase {
         // to be able to access the result columns by key.
         try (Session session = getSession()) {
             return getMappedList(session.createNativeQuery(query));
+        }
+    }
+
+    protected static Map getMappedRow(Query query) throws Exception {
+        // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
+        query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
+        query.setMaxResults(1);
+        List<Map> rows = query.list();
+        if (rows.isEmpty())
+            return null;
+        return rows.get(0);
+    }
+
+    public static Map getMappedRow(String query) throws Exception {
+        try (Session session = getSession()) {
+            return getMappedRow(session.createNativeQuery(query));
         }
     }
 
