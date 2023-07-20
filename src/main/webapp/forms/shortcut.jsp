@@ -48,9 +48,9 @@
         sql = sql.replace("###", filterParameter);
     }
 
-    String sql1 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID < " + id + " ORDER BY ID DESC LIMIT 0,5;";
-    String sql2 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID = " + id + " ORDER BY ID DESC LIMIT 0,1;";
-    String sql3 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID > " + id + " ORDER BY ID ASC LIMIT 0,5;";
+    String sql1 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID < " + id + " ORDER BY ID DESC LIMIT 0,5";
+    String sql2 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID = " + id + " ORDER BY ID DESC";
+    String sql3 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID > " + id + " ORDER BY ID ASC LIMIT 0,5";
 
     List<Map> rowlist = AbstractBase.getMappedList(sql1);
     int count = 0;
@@ -72,7 +72,7 @@
                 }
             }
             value = value.substring(0, max);
-            value = "<a style='color:#ffffff;' href='?ID=" + rs.getString("ID") + "'>" + value + "..." + "</a>";
+            value = "<a style='color:#ffffff;' href='?ID=" + row.get("ID").toString() + "'>" + value + "..." + "</a>";
             res = value + "\t" + res;
         }
     }
@@ -115,7 +115,7 @@
                 }
             }
             value = value.substring(0, max);
-            value = "<a style='color:#ffffff;' href='?ID=" + rs.getString("ID") + "'>" + value + "..." + "</a>";
+            value = "<a style='color:#ffffff;' href='?ID=" + row3.get("ID").toString() + "'>" + value + "..." + "</a>";
             out.println(value + "\t");
         }
     }
