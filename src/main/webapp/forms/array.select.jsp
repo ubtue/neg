@@ -16,7 +16,7 @@
             String selection = row.get(zielAttribut).toString();
             if (selection != null)
                 selected = Integer.parseInt(selection);
-            out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + rs.getInt("ID") + "\">");
+            out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + row.get("ID").toString() + "\">");
 
             out.println("<tr>");
             out.println("<td>");
