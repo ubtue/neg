@@ -8,8 +8,8 @@
 <%@ include file="functions.jsp" %>
 
 
-<%    if (AuthHelper.isBenutzerLogin(request)) {
-%><jsp:forward page="einzelbeleg" /><%
+<% if (AuthHelper.isBenutzerLogin(request)) {%>
+    <jsp:forward page="einzelbeleg" /><%
 } else if (AuthHelper.isGastLogin(request)) {
     response.sendRedirect("gast/startseite");
 } else {

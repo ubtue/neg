@@ -1,4 +1,5 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
 
@@ -275,7 +276,7 @@
                                 + "]\" style=\"width:8em\">");
                     }
 
-                    if (combinedFeldnamen[j].equals("TKHandschrift")) {
+                    if (combinedFeldnamen[j].equals("TKHandschrift") && row.get("EditionID") != null) {
                         sql = "SELECT handschrift_ueberlieferung.ID, ueberlieferung_edition.Sigle Bezeichnung FROM handschrift_ueberlieferung, einzelbeleg, ueberlieferung_edition WHERE handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID and ueberlieferung_edition.EditionID= "
                                 + row.get("EditionID").toString()
                                 + " AND handschrift_ueberlieferung.QuelleID=einzelbeleg.QuelleID AND einzelbeleg.ID="
@@ -288,15 +289,16 @@
                                 + id
                                 + " ORDER BY Bezeichnung ASC";
                     }
-                    if (combinedFeldnamen[j]
-                            .equals("HSEditionID")) {
+                    if (combinedFeldnamen[j].equals("HSEditionID") && row.get("QuelleID") != null) {
                         sql = "SELECT edition.ID, edition.Titel Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
                                 + row.get("QuelleID").toString()
                                 + " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC";
                     }
-                    //if (!sql.equals("")) {
-                    List<Map> rowlist2 = AbstractBase.getMappedList(sql);
-                    //}
+
+                    List<Map> rowlist2 = new ArrayList<Map>();
+                    if (!sql.equals("")) {
+                        rowlist2 = AbstractBase.getMappedList(sql);
+                    }
                     int selected = (row.get(zielattributArray[j]) != null ? Integer.parseInt(row
                             .get(zielattributArray[j]).toString())
                             : -1);
@@ -356,10 +358,13 @@
                                             .lastIndexOf(')'))
                             .split(",");
 
-                    Map row2 = AbstractBase.getMappedRow("SELECT "
+                    Map row2 = null;
+                    if (row.get(fields[1]) != null)
+                        row2 = AbstractBase.getMappedRow("SELECT "
                             + fields[2] + " FROM "
                             + fields[0] + " WHERE ID="
                             + row.get(fields[1]).toString());
+
                     if (row2 != null) {
 
                         String add = fields[0];
