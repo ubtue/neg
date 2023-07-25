@@ -119,7 +119,18 @@
 								<jsp:param name="cols" value="40" />
 								<jsp:param name="rows" value="5" />
 							</jsp:include></td>
-					</tr>
+					</tr>    
+                                        
+                                        <tr>
+                                            <td width="200" valign="top">
+                                                <% Language.printDatafield(out, session, formular, "KontextSelektion");%>
+                                            </td>
+                                            <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+                                                    <jsp:param name="ID" value="<%=id%>" />
+                                                    <jsp:param name="Formular" value="einzelbeleg" />
+                                                    <jsp:param name="Datenfeld" value="KontextSelektion" />
+                                                </jsp:include></td>
+                                        </tr>
 				</tbody>
 			</table>
 			<br>
@@ -503,7 +514,7 @@
                                                                     <jsp:param name="Formular" value="einzelbeleg" />
                                                                     <jsp:param name="Datenfeld" value="Konvent" />
                                                                 </jsp:include></td>
-                                                        </tr>
+                                                        </tr>                                                        
                                                         
 							<tr>
 								<th width="200" valign="top">
