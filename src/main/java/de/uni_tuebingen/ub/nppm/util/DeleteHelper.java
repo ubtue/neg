@@ -58,6 +58,9 @@ public class DeleteHelper {
                     case "einzelbeleg_textkritik":    
                         EinzelbelegDB.remove(EinzelbelegTextkritik.class,id);
                         break;
+                    case "einzelbeleg_hatfunktion":
+                        EinzelbelegDB.remove(EinzelbelegHatFunktion_MM.class,id);                  
+                        break;
                 }
             } catch (Exception ex) {
                 try {
