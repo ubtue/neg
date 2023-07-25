@@ -1,7 +1,6 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
-import de.uni_tuebingen.ub.nppm.model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +12,7 @@ public class FrontendExtendedSearch extends AbstractBase {
 
     public static List<Map<String, String>> getSearchResult(String fieldsString, String tablesString, String conditionsString, String order, String[] fields) throws Exception {
         String sql = "SELECT DISTINCT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order;
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             //return var
@@ -36,8 +34,6 @@ public class FrontendExtendedSearch extends AbstractBase {
             }
 
             return ret;
-        } finally {
-            session.close();
         }
     }
 }

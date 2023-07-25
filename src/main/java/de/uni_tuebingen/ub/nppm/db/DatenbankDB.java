@@ -30,8 +30,7 @@ public class DatenbankDB extends AbstractBase {
     }
 
     public static String getFilterSql(String formular, Integer filterNumber) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<DatenbankFilter> criteria = criteriaBuilder.createQuery(DatenbankFilter.class);
             Root<DatenbankFilter> root = criteria.from(DatenbankFilter.class);
@@ -46,10 +45,8 @@ public class DatenbankDB extends AbstractBase {
             if (item != null) {
                 return item.getSqlString();
             }
-            
+
             return null;
-        } finally {
-            session.close();
         }
     }
 
@@ -64,8 +61,7 @@ public class DatenbankDB extends AbstractBase {
     }
 
     public static DatenbankTexte getLabel(String formular, String textfeld) throws Exception {
-        Session session = getSession();
-        try {            
+        try (Session session = getSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<DatenbankTexte> criteria = criteriaBuilder.createQuery(DatenbankTexte.class);
             Root<DatenbankTexte> root = criteria.from(DatenbankTexte.class);
@@ -81,14 +77,11 @@ public class DatenbankDB extends AbstractBase {
                 return null;
             }
             return (DatenbankTexte) rows.get(0);
-        } finally {
-            session.close();
         }
     }
 
     public static DatenbankMapping getMapping(String formular, String datafield) throws Exception {
-        Session session = getSession();
-        try {            
+        try (Session session = getSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
             Root<DatenbankMapping> root = criteria.from(DatenbankMapping.class);
@@ -104,8 +97,6 @@ public class DatenbankDB extends AbstractBase {
                 return null;
             }
             return (DatenbankMapping) rows.get(0);
-        } finally {
-            session.close();
         }
     }
 
@@ -120,74 +111,61 @@ public class DatenbankDB extends AbstractBase {
     }
 
     public static Object getSingleResult(String sql) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession();) {
             SQLQuery query = session.createSQLQuery(sql);
             List<Object> rows = query.getResultList();
-            if (rows.size() > 0) {
+            if (!rows.isEmpty()) {
                 return rows.get(0);
             } else {
                 return null;
             }
-        } finally {
-            session.close();
         }
     }
-    
+
     public static List<Object[]> getResult(String sql) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             SQLQuery query = session.createSQLQuery(sql);
             List<Object[]> rows = query.getResultList();
             return rows;
-        } finally {
-            session.close();
         }
     }
-    
+
     public static List<String> getSelektion() throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             String SQL = "SELECT DISTINCT selektion FROM datenbank_selektion ORDER BY selektion ASC";
             NativeQuery query = session.createSQLQuery(SQL);
             List<String> rows = query.getResultList();
             return rows;
-        } finally {
-            session.close();
         }
     }
-    
+
     public static List<Object> getSelektionBezeichnung(String tabelle, String bezeichnung) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             String SQL = "SELECT Bezeichnung FROM selektion_" + tabelle + " where Bezeichnung='" + bezeichnung + "'";
             NativeQuery query = session.createSQLQuery(SQL);
             List<Object> rows = query.getResultList();
             return rows;
-        } finally {
-            session.close();
         }
     }
-    
+
     public static void insertSelektionBezeichnung(String tabelle, String bezeichnung, Integer id) throws Exception {
         String sql = "INSERT INTO selektion_"+tabelle+" (ID, Bezeichnung) VALUES ("+id+", \""+bezeichnung+"\")";
         insertOrUpdate(sql);
     }
-    
+
     public static void updateSelektionBezeichnung(String tabelle, String bezeichnung, String id) throws Exception {
         String sql = "UPDATE selektion_"+tabelle
                         +" SET Bezeichnung=\""+bezeichnung+"\""
                         +" WHERE ID="+id;
         insertOrUpdate(sql);
     }
-    
+
     public static Integer getMaxId(String tabelle) throws Exception {
         return (Integer)DatenbankDB.getSingleResult("SELECT max(ID) max FROM selektion_"+tabelle);
     }
-    
-    public static void updateAuswahlfelder(String tabelle, String feldAlt, String feldNeu) throws Exception {
-        Session session = getSession();        
-        try {
+
+    public static void updateAuswahlfelder(String tabelle, String feldAlt, String feldNeu) throws Exception {;
+        try (Session session = getSession()) {
             String SQL = "SELECT tabelle, spalte FROM datenbank_selektion WHERE selektion ='" + tabelle + "';";
             NativeQuery query = session.createSQLQuery(SQL);
             List<Object[]> rows = query.getResultList();
@@ -198,12 +176,10 @@ public class DatenbankDB extends AbstractBase {
                         + " WHERE " + col + "=" + feldAlt + ";";
                 insertOrUpdate(updateSQL);
             }
-        } finally {
-            session.close();
         }
-        
+
     }
-    
+
     public static void deleteAuswahlfeld(String tabelle, String feldAlt) throws Exception {
         String SQL = "DELETE FROM "+tabelle
                       + " WHERE ID="+feldAlt;

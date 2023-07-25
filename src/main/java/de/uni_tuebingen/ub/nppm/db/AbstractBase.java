@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.db;
 
+import de.uni_tuebingen.ub.nppm.model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -7,15 +8,16 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
-import de.uni_tuebingen.ub.nppm.model.*;
+import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
+import java.net.URI;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import org.hibernate.Transaction;
-import org.hibernate.query.NativeQuery;
 
 public class AbstractBase {
 
@@ -152,6 +154,15 @@ public class AbstractBase {
         return sessionFactory;
     }
 
+    protected static String getDatabaseName() throws Exception {
+        String url = (String) initialContext.lookup("java:comp/env/sqlURL");
+        if (url.startsWith("jdbc:")) {
+            URI uri = URI.create(url.substring("jdbc:".length()));
+            return uri.getPath();
+        }
+        return null;
+    }
+
     // For now, we open a new session each time this method is called.
     // Later, we might try to use a static session similar to the static SessionFactory.
     protected static Session getSession() throws Exception {
@@ -159,8 +170,7 @@ public class AbstractBase {
     }
 
     protected static List getList(Class c, CriteriaQuery criteria) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             if (criteria == null) {
                 criteria = builder.createQuery(c);
@@ -168,8 +178,6 @@ public class AbstractBase {
             Root root = criteria.from(c);
             criteria.select(root);
             return session.createQuery(criteria).getResultList();
-        } finally {
-            session.close();
         }
     }
 
@@ -178,8 +186,7 @@ public class AbstractBase {
     }
 
     public static void remove(Class class_, int id) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             Transaction transaction = session.getTransaction();
             transaction.begin();
             //Load
@@ -188,48 +195,90 @@ public class AbstractBase {
             session.remove(obj);
             //Commit
             transaction.commit();
-        } finally {
-            session.close();
         }
     }
 
     public static List<Object[]> getListNative(String sql) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             return rows;
-        } finally {
-            session.close();
+        }
+    }
+
+    public static Object[] getRowNative(String sql) throws Exception {
+        List<Object[]> list = getListNative(sql);
+        if (!list.isEmpty())
+            return list.get(0);
+
+        return null;
+    }
+
+    public static Integer getIntNative(String sql) throws Exception {
+        // This function is needed because if we use getRowNative or getListNative
+        // we will have problems to cast a BigInteger to an Object, so we cast to
+        // Int instead.
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            //sqlQuery.setMaxResults(1);
+            List<Object> rows = sqlQuery.getResultList();
+            if (!rows.isEmpty() && rows.get(0) != null)
+                return Integer.parseInt(rows.get(0).toString());
         }
 
+        return null;
+    }
+
+    public static String getStringNative(String sql) throws Exception {
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            //sqlQuery.setMaxResults(1);
+            List<Object> rows = sqlQuery.getResultList();
+            if (!rows.isEmpty() && rows.get(0) != null)
+                return rows.get(0).toString();
+        }
+
+        return null;
+    }
+
+    public static List<String> getStringListNative(String sql) throws Exception {
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            List<String> rows = sqlQuery.getResultList();
+            return rows;
+        }
+    }
+
+    public static Timestamp getTimestampNative(String sql) throws Exception {
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            //sqlQuery.setMaxResults(1);
+            List<Timestamp> rows = sqlQuery.getResultList();
+            if (!rows.isEmpty() && rows.get(0) != null)
+                return rows.get(0);
+        }
+
+        return null;
     }
 
     protected static void insertOrUpdate(String sql) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             session.getTransaction().begin();
             NativeQuery query = session.createNativeQuery(sql);
             query.executeUpdate();
             session.getTransaction().commit();
-        } finally {
-            session.close();
         }
     }
 
     protected static List<Map> getMappedList(Query query) throws Exception {
         // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
-        query.setResultTransformer(org.hibernate.transform.AliasToEntityMapResultTransformer.INSTANCE);
+        query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
         return query.list();
     }
 
     protected static List<Map> getMappedList(CriteriaQuery criteria) throws Exception {
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             return getMappedList(session.createQuery(criteria));
-        } finally {
-            session.close();
         }
     }
 
@@ -237,28 +286,34 @@ public class AbstractBase {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             return getMappedList(session.createNativeQuery(query));
-        } finally {
-            session.close();
         }
+    }
 
+    protected static Map getMappedRow(Query query) throws Exception {
+        // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
+        query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
+        query.setMaxResults(1);
+        List<Map> rows = query.list();
+        if (rows.isEmpty())
+            return null;
+        return rows.get(0);
+    }
+
+    public static Map getMappedRow(String query) throws Exception {
+        try (Session session = getSession()) {
+            return getMappedRow(session.createNativeQuery(query));
+        }
     }
 
     public static int getLinecount(String tablesString, String conditionsString) throws Exception {
-        Session session = getSession();
-        try {
-            String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
+        String sql = "SELECT COUNT(*) FROM " + tablesString + " WHERE (" + conditionsString + ")";
+        return getIntNative(sql);
+    }
 
-            NativeQuery sqlQuery = session.createNativeQuery(sql);
-            sqlQuery.setMaxResults(1);
-            List<Object> rows = sqlQuery.getResultList();
-            return (int) Integer.parseInt(rows.get(0).toString());
-        } finally {
-            session.close();
-        }
-
+    public static Integer getMaxCharacterLength(String table, String column) throws Exception {
+        String sql = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" + getDatabaseName() + "' AND TABLE_NAME = '" + table + "' AND COLUMN_NAME='"+ column +"'";
+        return getIntNative(sql);
     }
 }

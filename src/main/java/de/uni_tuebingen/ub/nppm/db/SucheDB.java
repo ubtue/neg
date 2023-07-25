@@ -31,13 +31,10 @@ public class SucheDB extends AbstractBase {
         }
         sql += " ORDER BY " + country;
 
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<String> rows = sqlQuery.getResultList();
             return rows;
-        } finally {
-            session.close();
         }
     }
 
@@ -48,8 +45,7 @@ public class SucheDB extends AbstractBase {
         String attribut = request.getParameter("attribut");
 
         Map<Integer, String> ret = new HashMap<Integer, String>();
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             Transaction tx = session.beginTransaction();
             String sql = "SELECT ID, " + attribut + " FROM " + dbForm + " e WHERE NOT EXISTS (SELECT * FROM " + tabelle + " eh WHERE e.ID=eh." + zwAttribut + ") ORDER BY " + attribut;
             NativeQuery query = session.createNativeQuery(sql);
@@ -62,8 +58,6 @@ public class SucheDB extends AbstractBase {
             }
 
             return ret;
-        } finally {
-            session.close();
         }
     }
 
@@ -72,15 +66,13 @@ public class SucheDB extends AbstractBase {
         if (export != null && (export.equals("liste") || export.equals("browse")) && pageoffset != null && pageLimit != null) {
             sql += " LIMIT " + (pageoffset * pageLimit) + ", " + pageLimit;
         }
-        Session session = getSession();
-        try {
+
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
 
             sqlQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 
             return sqlQuery.getResultList();
-        } finally {
-            session.close();
         }
     }
 
@@ -89,16 +81,16 @@ public class SucheDB extends AbstractBase {
         if (order.equals("")) {
             sql += orderString;
         }
-        Session session = getSession();
-        try {
+
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             //return var
-            List<Map<String, String>> ret = new ArrayList<Map<String, String>>();
+            List<Map<String, String>> ret = new ArrayList<>();
             //loop over the rows
             for (Object[] row : rows) {
                 //convert the fields from the row to a map
-                Map<String, String> fieldVal = new HashMap<String, String>();
+                Map<String, String> fieldVal = new HashMap<>();
                 for (int i = 0; i < fields.length; i++) {
                     String[] name = fields[i].split(" AS ");
                     if (name.length == 2) {
@@ -112,16 +104,14 @@ public class SucheDB extends AbstractBase {
             }
 
             return ret;
-        } finally {
-            session.close();
         }
     }
 
     public static List<Object[]> getSearchCount(String conditionsString, String countString, String tablesString) throws Exception {
         List<Object[]> ret = new ArrayList<>();
         String sql = "SELECT " + countString + " FROM " + tablesString + " WHERE (" + conditionsString + ")";
-        Session session = getSession();
-        try {
+
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List rows = sqlQuery.list();
 
@@ -137,15 +127,11 @@ public class SucheDB extends AbstractBase {
                 }
             }
             return ret;
-        } finally {
-            session.close();
         }
     }
 
     public static List<SucheErgebnis> getExtended(SucheOptionen suchoptionen) throws Exception {
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Tuple> query = builder.createTupleQuery();
 
@@ -182,8 +168,6 @@ public class SucheDB extends AbstractBase {
                 endResultList.add(endResult);
             }
             return endResultList;
-        } finally {
-            session.close();
         }
     }
 

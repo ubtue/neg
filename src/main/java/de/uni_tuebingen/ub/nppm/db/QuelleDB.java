@@ -15,23 +15,15 @@ public class QuelleDB extends AbstractBase {
     }
 
     public static Quelle getFirstPublicQuelle() throws Exception {
-
-        Session session = getSession();
-
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<Quelle> criteria = criteriaBuilder.createQuery(Quelle.class);
             Root<Quelle> quelle = criteria.from(Quelle.class);
 
             criteria.select(quelle).where(criteriaBuilder.equal(quelle.get("zuVeroeffentlichen"), 1));
 
-            Quelle un = new Quelle();
             Query query = session.createQuery(criteria);
-            un = (Quelle) query.setMaxResults(1).uniqueResult();
-            return un;
-        } finally {
-            session.close();
+            return (Quelle)query.setMaxResults(1).uniqueResult();
         }
     }
 }
-
