@@ -13,7 +13,7 @@ public class FrontendExtendedSearch extends AbstractBase {
     public static List<Map<String, String>> getSearchResult(String fieldsString, String tablesString, String conditionsString, String order, String[] fields) throws Exception {
         String sql = "SELECT DISTINCT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order;
         try (Session session = getSession()) {
-            NativeQuery sqlQuery = session.createSQLQuery(sql);
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             //return var
             List<Map<String, String>> ret = new ArrayList<Map<String, String>>();
