@@ -25,7 +25,7 @@
         List<DatenbankFilter> filters = DatenbankDB.getListFilter();
         out.println("<select name=\"filter\">");
         for (DatenbankFilter datenbankFilter : filters) {
-            if (datenbankFilter.getFormular().equals("title")) {
+            if (datenbankFilter.getFormular().equals(title)) {
                 out.println("<option value=\"" + datenbankFilter.getNummer() + "\"" + (datenbankFilter.getNummer() == filter ? " selected" : "") + ">" + DBtoHTML(datenbankFilter.getBezeichnung()) + "</option>");
             }
         }
