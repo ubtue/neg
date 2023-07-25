@@ -10,7 +10,6 @@
 <%@ page import="java.util.StringTokenizer" isThreadSafe="false"%>
 <%@ page import="java.util.regex.Matcher" isThreadSafe="false"%>
 <%@ page import="java.util.regex.Pattern" isThreadSafe="false"%>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false"%>
 

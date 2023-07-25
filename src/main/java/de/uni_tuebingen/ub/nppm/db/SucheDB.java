@@ -1,15 +1,10 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.model.*;
-import static de.uni_tuebingen.ub.nppm.util.Utils.*;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -17,13 +12,11 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspWriter;
 import org.hibernate.Criteria;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.NativeQuery;
 
 public class SucheDB extends AbstractBase {
 
@@ -40,7 +33,7 @@ public class SucheDB extends AbstractBase {
 
         Session session = getSession();
         try {
-            SQLQuery sqlQuery = session.createSQLQuery(sql);
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<String> rows = sqlQuery.getResultList();
             return rows;
         } finally {
@@ -59,7 +52,7 @@ public class SucheDB extends AbstractBase {
         try {
             Transaction tx = session.beginTransaction();
             String sql = "SELECT ID, " + attribut + " FROM " + dbForm + " e WHERE NOT EXISTS (SELECT * FROM " + tabelle + " eh WHERE e.ID=eh." + zwAttribut + ") ORDER BY " + attribut;
-            SQLQuery query = session.createSQLQuery(sql);
+            NativeQuery query = session.createNativeQuery(sql);
             List<Object[]> rows = query.list();
 
             for (Object[] row : rows) {
@@ -81,7 +74,7 @@ public class SucheDB extends AbstractBase {
         }
         Session session = getSession();
         try {
-            NativeQuery sqlQuery = session.createSQLQuery(sql);
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
 
             sqlQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 
@@ -98,7 +91,7 @@ public class SucheDB extends AbstractBase {
         }
         Session session = getSession();
         try {
-            NativeQuery sqlQuery = session.createSQLQuery(sql);
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             //return var
             List<Map<String, String>> ret = new ArrayList<Map<String, String>>();
@@ -129,7 +122,7 @@ public class SucheDB extends AbstractBase {
         String sql = "SELECT " + countString + " FROM " + tablesString + " WHERE (" + conditionsString + ")";
         Session session = getSession();
         try {
-            NativeQuery sqlQuery = session.createSQLQuery(sql);
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
             List rows = sqlQuery.list();
 
             for (Object object : rows) {
