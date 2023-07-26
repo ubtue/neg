@@ -13,9 +13,9 @@ INSERT INTO `neg`.`selektion_kontext` (ID,Bezeichnung) VALUES (-1,'-');
 
 /*Create the datamapping for the kontext attribute of the einzelbeleg form*/
 INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, ZielTabelle, ZielAttribut, Auswahlherkunft, Seite, gb_beschriftung, fr_beschriftung, la_beschriftung)
-VALUES ("einzelbeleg", "KontextSelektion", "TODO", "select", 0, "einzelbeleg", "KontextID", "selektion_kontext", "einzelbeleg", "TODO", "TODO", "TODO");
+VALUES ("einzelbeleg", "KontextSelektion", "Kontext Klassifikation", "select", 0, "einzelbeleg", "KontextID", "selektion_kontext", "einzelbeleg", "Context Classification", "Classification Du Contexte", "Context Genus");
 
 ALTER TABLE einzelbeleg ADD KontextID INT DEFAULT -1;
 
 /*Rename existing kontext Beschriftung*/
-UPDATE datenbank_mapping SET de_Beschriftung = 'TODO', gb_beschriftung = 'TODO', fr_beschriftung = 'TODO', la_beschriftung = 'TODO' WHERE Datenfeld = 'Kontext' AND Feldtyp = 'textarea' AND Formular = 'einzelbeleg';
+UPDATE datenbank_mapping SET de_Beschriftung = 'Kontext Beschreibung', gb_beschriftung = 'Context Description', fr_beschriftung = 'Description Du Contexte', la_beschriftung = 'Contextus Description' WHERE Datenfeld = 'Kontext' AND Feldtyp = 'textarea' AND Formular = 'einzelbeleg';
