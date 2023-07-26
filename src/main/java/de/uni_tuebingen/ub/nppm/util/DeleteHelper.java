@@ -61,6 +61,9 @@ public class DeleteHelper {
                     case "einzelbeleg_hatethnie":    
                         EinzelbelegDB.remove(EinzelbelegHatEthnie_MM.class,id);
                         break;
+                    case "einzelbeleg_hatfunktion":
+                        EinzelbelegDB.remove(EinzelbelegHatFunktion_MM.class,id);                  
+                        break;
                 }
             } catch (Exception ex) {
                 try {
