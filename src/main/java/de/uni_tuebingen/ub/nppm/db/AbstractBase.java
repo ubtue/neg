@@ -133,6 +133,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(EinzelbelegMghLemma_MM.class);
             configuration.addAnnotatedClass(EinzelbelegNamenkommentar_MM.class);
             configuration.addAnnotatedClass(EinzelbelegHatPerson_MM.class);
+            configuration.addAnnotatedClass(EinzelbelegHatEthnie_MM.class);            
 
             configuration.addAnnotatedClass(DatenbankFilter.class);
             configuration.addAnnotatedClass(DatenbankMapping.class);
