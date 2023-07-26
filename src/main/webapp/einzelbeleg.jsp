@@ -514,7 +514,7 @@
                                                                     <jsp:param name="Formular" value="einzelbeleg" />
                                                                     <jsp:param name="Datenfeld" value="Konvent" />
                                                                 </jsp:include></td>
-                                                        </tr>                                                        
+                                                        </tr>
                                                         
 							<tr>
 								<th width="200" valign="top">
