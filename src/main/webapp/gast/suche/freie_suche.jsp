@@ -48,19 +48,19 @@
   if (!request.getParameter("NeGID").trim().equals("")) {
            String newID = request.getParameter("NeGID");
         String newForm = newID.substring(1);
-        if(newID.startsWith("B") || newID.startsWith("b")){ 
+        if(newID.startsWith("B") || newID.startsWith("b")){
                conditions.add("einzelbeleg.ID='"+newForm+"'");
     			einzelbeleg = true;
         }
-        else if(newID.startsWith("P") || newID.startsWith("p")) { 
+        else if(newID.startsWith("P") || newID.startsWith("p")) {
                conditions.add("person.ID='"+newForm+"'");
     			person = true;
         }
-        else if(newID.startsWith("N") || newID.startsWith("n")){ 
+        else if(newID.startsWith("N") || newID.startsWith("n")){
                conditions.add("namenkommentar.ID='"+newForm+"'");
     			namenkommentar = true;
         }
-        else if(newID.startsWith("Q") || newID.startsWith("q")) { 
+        else if(newID.startsWith("Q") || newID.startsWith("q")) {
          conditions.add("quelle.ID='"+newForm+"'");
          if (!tableString.contains("quelle")) { tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
         }}
@@ -178,7 +178,7 @@
         catch (NumberFormatException e) {;}
       }
     }    else if (request.getParameter("PersonZeitraum").toLowerCase().contains("jh")) {
-    
+
              String von = request.getParameter("PersonZeitraum").trim();
         try {
             vonNum = (Integer.parseInt(von.substring(0, von.toLowerCase().indexOf("j")))-1) * 100;
@@ -188,7 +188,7 @@
         if(von.endsWith("2")) vonNum += 51;
         else vonNum += 1;
        } catch (NumberFormatException e) {;}
-    
+
       // Einzelnes Jahrhundert
     }
     else if (request.getParameter("PersonZeitraum").toLowerCase().contains(".")) {
@@ -199,11 +199,11 @@
                    String von = request.getParameter("PersonZeitraum").trim();
          try {
             vonNum = Integer.parseInt(von);
-            bisNum = vonNum;   
+            bisNum = vonNum;
                 } catch (NumberFormatException e) {;}
-         
-    }    
-    
+
+    }
+
     conditions.add("(VON_JAHR_JHDT(einzelbeleg.vonJahr, einzelbeleg.vonJahrhundert, einzelbeleg.bisJahrhundert)<99999 and BIS_JAHR_JHDT(einzelbeleg.bisJahr, einzelbeleg.bisJahrhundert, einzelbeleg.vonJahrhundert)>-99999 and (VON_JAHR_JHDT(einzelbeleg.vonJahr, einzelbeleg.vonJahrhundert, einzelbeleg.bisJahrhundert)>="+vonNum+" and BIS_JAHR_JHDT(einzelbeleg.bisJahr, einzelbeleg.bisJahrhundert, einzelbeleg.vonJahrhundert)<="+bisNum+") OR"+
                                        "(VON_JAHR_JHDT(einzelbeleg.vonJahr, einzelbeleg.vonJahrhundert, einzelbeleg.bisJahrhundert)<="+vonNum+" and BIS_JAHR_JHDT(einzelbeleg.bisJahr, einzelbeleg.bisJahrhundert, einzelbeleg.vonJahrhundert)>="+bisNum+"))");
     einzelbeleg = true;
@@ -267,7 +267,7 @@
         catch (NumberFormatException e) {;}
       }
     }    else if (request.getParameter("QuelleZeitraum").toLowerCase().contains("jh")) {
-    
+
              String von = request.getParameter("QuelleZeitraum").trim();
         try {
             vonNum = (Integer.parseInt(von.substring(0, von.toLowerCase().indexOf("j")))-1) * 100;
@@ -277,7 +277,7 @@
         if(von.endsWith("2")) vonNum += 51;
         else vonNum += 1;
        } catch (NumberFormatException e) {;}
-    
+
       // Einzelnes Jahrhundert
     }
     else if (request.getParameter("QuelleZeitraum").toLowerCase().contains(".")) {
@@ -288,20 +288,20 @@
                    String von = request.getParameter("QuelleZeitraum").trim();
          try {
             vonNum = Integer.parseInt(von);
-            bisNum = vonNum;   
+            bisNum = vonNum;
                 } catch (NumberFormatException e) {;}
-         
-    }    
-    
+
+    }
+
     conditions.add("(VON_JAHR_JHDT(quelle.vonJahr, quelle.vonJahrhundert, quelle.bisJahrhundert)<99999 and BIS_JAHR_JHDT(quelle.bisJahr, quelle.bisJahrhundert, quelle.vonJahrhundert)>-99999 and (VON_JAHR_JHDT(quelle.vonJahr, quelle.vonJahrhundert, quelle.bisJahrhundert)>="+vonNum+" and BIS_JAHR_JHDT(quelle.bisJahr, quelle.bisJahrhundert, quelle.vonJahrhundert)<="+bisNum+") OR"+
                                        "(VON_JAHR_JHDT(quelle.vonJahr, quelle.vonJahrhundert, quelle.bisJahrhundert)<="+vonNum+" and BIS_JAHR_JHDT(quelle.bisJahr, quelle.bisJahrhundert, quelle.vonJahrhundert)>="+bisNum+"))");
    einzelbeleg = true;
   }
-  
-  
-  
+
+
+
   // ######### SUCHANFRAGE ##########
-  
+
     String sprache = "de";
   if (session != null && session.getAttribute("Sprache") != null)
     sprache = (String)session.getAttribute("Sprache");
@@ -338,7 +338,7 @@
      // headlines.add("Namenlemma");
      headlines.add(getLabel("mgh_lemma", "MGHLemma", null, stmt, sprache));
       mghlemma = true;
-}  
+}
   // ### Zur Person ###
   if (request.getParameter("Ausgabe_Person_Standardname") != null && request.getParameter("Ausgabe_Person_Standardname").equals("on")) {
     fields.add("person.Standardname");
@@ -354,21 +354,21 @@
     fields.add("selektion_amtweihe.Bezeichnung");
     fieldNames.add("selektion_amtweihe.Bezeichnung");
     if (!tableString.contains("person_hatamtstandweihe")) {
-      tableString += " LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";   
+      tableString += " LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";
     }
     if (!tableString.contains("selektion_amtweihe")) {
-      tableString += " LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID";   
+      tableString += " LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID";
     }
  //   headlines.add("Amt / Weihe");
      headlines.add(getLabel("freie_suche", "Ausgabe_Person_AmtWeihe", null, stmt, sprache));
- 
+
     person = true;
   }
   if (request.getParameter("Ausgabe_Person_AmtWeiheZeitraum") != null && request.getParameter("Ausgabe_Person_AmtWeiheZeitraum").equals("on")) {
     fields.add("person_hatamtstandweihe.Zeitraum");
     fieldNames.add("person_hatamtstandweihe.Zeitraum");
     if (!tableString.contains("person_hatamtstandweihe")) {
-      tableString += " LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";   
+      tableString += " LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";
     }
  //   headlines.add("Zeitraum Amt/Weihe");
         headlines.add(getLabel("freie_suche", "Ausgabe_Person_AmtWeiheZeitraum", null, stmt, sprache));
@@ -378,10 +378,10 @@
     fields.add("selektion_ethnie.Bezeichnung");
     fieldNames.add("selektion_ethnie.Bezeichnung");
     if (!tableString.contains("person_hatethnie")) {
-      tableString += " LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID";   
+      tableString += " LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID";
     }
     if (!tableString.contains("selektion_ethnie")) {
-      tableString += " LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID";   
+      tableString += " LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID";
     }
  //   headlines.add("Ethnie(n)");
         headlines.add(getLabel("freie_suche", "Ausgabe_Person_Ethnie", null, stmt, sprache));
@@ -391,7 +391,7 @@
     fields.add("selektion_geschlecht.Bezeichnung");
     fieldNames.add("selektion_geschlecht.Bezeichnung");
     if (!tableString.contains("selektion_geschlecht")) {
-      tableString += " LEFT OUTER JOIN selektion_geschlecht ON person.Geschlecht=selektion_geschlecht.ID";   
+      tableString += " LEFT OUTER JOIN selektion_geschlecht ON person.Geschlecht=selektion_geschlecht.ID";
     }
  //   headlines.add("Ethnie(n)");
         headlines.add(getLabel("freie_suche", "Ausgabe_Geschlecht", null, stmt, sprache));
@@ -404,32 +404,32 @@
     fieldNames.add("selektion_verwandtschaftsgrad.Bezeichnung");
     fieldNames.add("perszu.Standardname");
     if (!tableString.contains("person_verwandtmit")) {
-      tableString += " LEFT OUTER JOIN person_verwandtmit ON person.ID=person_verwandtmit.PersonIDvon";   
+      tableString += " LEFT OUTER JOIN person_verwandtmit ON person.ID=person_verwandtmit.PersonIDvon";
     }
     if (!tableString.contains("selektion_verwandtschafsgrad")) {
-      tableString += " LEFT OUTER JOIN selektion_verwandtschaftsgrad ON person_verwandtmit.VerwandtschaftsgradID=selektion_verwandtschaftsgrad.ID";   
+      tableString += " LEFT OUTER JOIN selektion_verwandtschaftsgrad ON person_verwandtmit.VerwandtschaftsgradID=selektion_verwandtschaftsgrad.ID";
     }
     tableString += " LEFT OUTER JOIN person perszu ON person_verwandtmit.PersonIDzu = perszu.ID";
     //headlines.add("Verwandtschaftsgrad");
            headlines.add(getLabel("freie_suche", "Verwandtschaftsgrad", null, stmt, sprache));
-    
+
   //  headlines.add("Verwandte(r)");
          headlines.add(getLabel("freie_suche", "Ausgabe_Person_Verwandte", null, stmt, sprache));
-  
+
     person = true;
   }
   if (request.getParameter("Ausgabe_Person_Areal") != null && request.getParameter("Ausgabe_Person_Areal").equals("on")) {
     fields.add("selektion_areal.Bezeichnung");
     fieldNames.add("selektion_areal.Bezeichnung");
     if (!tableString.contains("person_hatareal")) {
-      tableString += " LEFT OUTER JOIN person_hatareal ON person.ID=person_hatareal.PersonID";   
+      tableString += " LEFT OUTER JOIN person_hatareal ON person.ID=person_hatareal.PersonID";
     }
     if (!tableString.contains("selektion_areal")) {
-      tableString += " LEFT OUTER JOIN selektion_areal ON person_hatareal.ArealID=selektion_areal.ID";   
+      tableString += " LEFT OUTER JOIN selektion_areal ON person_hatareal.ArealID=selektion_areal.ID";
     }
    // headlines.add("Areal");
           headlines.add(getLabel("freie_suche", "Ausgabe_Person_Areal", null, stmt, sprache));
-   
+
     person = true;
   }
 
@@ -444,7 +444,7 @@
     }
     //headlines.add("Quelle");
            headlines.add(getLabel("freie_suche", "Quelle", null, stmt, sprache));
-   
+
     fields.add("edition.Titel");
     //fields.add("edition.ID");
     fieldNames.add("edition.Titel");
@@ -453,28 +453,28 @@
     }
     //headlines.add("Edition");
            headlines.add(getLabel("quelle", "Edition", null, stmt, sprache));
-    
+
     fields.add("einzelbeleg.EditionKapitel");
     fieldNames.add("einzelbeleg.EditionKapitel");
     //headlines.add("Kapitel");
            headlines.add(getLabel("einzelbeleg", "EditionKapitel", null, stmt, sprache));
-    
+
     fields.add("einzelbeleg.EditionSeite");
     fieldNames.add("einzelbeleg.EditionSeite");
    // headlines.add("Seite");
           headlines.add(getLabel("einzelbeleg", "EditionSeite", null, stmt, sprache));
-   
+
     einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Quellengattung") != null && request.getParameter("Ausgabe_Einzelbeleg_Quellengattung").equals("on")) {
     fields.add("selektion_quellengattung.Bezeichnung");
     fieldNames.add("selektion_quellengattung.Bezeichnung");
     if (!tableString.contains("selektion_quellengattung")) {
-      tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";   
+      tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
     }
     //headlines.add("Quellengattung");
            headlines.add(getLabel("freie_suche", "EinzelbelegQuellengattung", null, stmt, sprache));
-    
+
     einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Belegform") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegform").equals("on")) {
@@ -484,7 +484,7 @@
     fieldNames.add("einzelbeleg.Belegform");
     //headlines.add("Belegform");
            headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Belegform", null, stmt, sprache));
-    
+
     einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Kontext") != null && request.getParameter("Ausgabe_Einzelbeleg_Kontext").equals("on")) {
@@ -492,7 +492,7 @@
     fieldNames.add("einzelbeleg.Kontext");
    // headlines.add("Kontext");
           headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Kontext", null, stmt, sprache));
-   
+
     einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Datierung") != null && request.getParameter("Ausgabe_Einzelbeleg_Datierung").equals("on")) {
@@ -526,39 +526,39 @@
     fields.add("selektion_lebendverstorben.Bezeichnung");
     fieldNames.add("selektion_lebendverstorben.Bezeichnung");
     if (!tableString.contains("selektion_lebendverstorben")) {
-      tableString += " LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID";   
+      tableString += " LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID";
     }
     //headlines.add("lebend / verstorben");
            headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Lebend", null, stmt, sprache));
-    
+
     einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Funktion") != null && request.getParameter("Ausgabe_Einzelbeleg_Funktion").equals("on")) {
     fields.add("selektion_funktion.Bezeichnung");
     fieldNames.add("selektion_funktion.Bezeichnung");
     if (!tableString.contains("einzelbeleg_hatfunktion")) {
-      tableString += " LEFT OUTER JOIN einzelbeleg_hatfunktion ON einzelbeleg.ID=einzelbeleg_hatfunktion.EinzelbelegID";   
+      tableString += " LEFT OUTER JOIN einzelbeleg_hatfunktion ON einzelbeleg.ID=einzelbeleg_hatfunktion.EinzelbelegID";
     }
     if (!tableString.contains("selektion_funktion")) {
-      tableString += " LEFT OUTER JOIN selektion_funktion ON einzelbeleg_hatfunktion.FunktionID=selektion_funktion.ID";   
+      tableString += " LEFT OUTER JOIN selektion_funktion ON einzelbeleg_hatfunktion.FunktionID=selektion_funktion.ID";
     }
    // headlines.add("Funktion");
           headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Funktion", null, stmt, sprache));
-   
+
     einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Areal") != null && request.getParameter("Ausgabe_Einzelbeleg_Areal").equals("on")) {
     fields.add("selektion_areal.Bezeichnung");
     fieldNames.add("selektion_areal.Bezeichnung");
     if (!tableString.contains("einzelbeleg_hatareal")) {
-      tableString += " LEFT OUTER JOIN einzelbeleg_hatareal ON einzelbeleg.ID=einzelbeleg_hatareal.EinzelbelegID";   
+      tableString += " LEFT OUTER JOIN einzelbeleg_hatareal ON einzelbeleg.ID=einzelbeleg_hatareal.EinzelbelegID";
     }
     if (!tableString.contains("selektion_areal")) {
-      tableString += " LEFT OUTER JOIN selektion_areal ON einzelbeleg_hatareal.ArealID=selektion_areal.ID";   
+      tableString += " LEFT OUTER JOIN selektion_areal ON einzelbeleg_hatareal.ArealID=selektion_areal.ID";
     }
     //headlines.add("Areal");
            headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Areal", null, stmt, sprache));
-    
+
     einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Varianten") != null && request.getParameter("Ausgabe_Einzelbeleg_Varianten").equals("on")) {
@@ -571,28 +571,28 @@
     fieldNames.add("handschrift_ueberlieferung.VonJahrhundert");
     fieldNames.add("handschrift_ueberlieferung.BisJahrhundert");
     if (!tableString.contains("einzelbeleg_textkritik")) {
-      tableString += " LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID LEFT OUTER JOIN ueberlieferung_edition ON (einzelbeleg_textkritik.EditionID=ueberlieferung_edition.EditionID AND einzelbeleg_textkritik.HandschriftID=ueberlieferung_edition.UeberlieferungID) LEFT OUTER JOIN handschrift_ueberlieferung ON handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID LEFT OUTER JOIN handschrift ON handschrift_ueberlieferung.HandschriftID=handschrift.ID ";   
+      tableString += " LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID LEFT OUTER JOIN ueberlieferung_edition ON (einzelbeleg_textkritik.EditionID=ueberlieferung_edition.EditionID AND einzelbeleg_textkritik.HandschriftID=ueberlieferung_edition.UeberlieferungID) LEFT OUTER JOIN handschrift_ueberlieferung ON handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID LEFT OUTER JOIN handschrift ON handschrift_ueberlieferung.HandschriftID=handschrift.ID ";
     }
    // headlines.add("Variante");
           headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Varianten", null, stmt, sprache));
     headlines.add("Bib.Sig.");
     headlines.add("TZ v. J.");
     headlines.add("TZ b. J.");
-  
+
     einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Einzelbeleg_Textzeuge_Schriftheimat") != null && request.getParameter("Ausgabe_Einzelbeleg_Textzeuge_Schriftheimat").equals("on")) {
     fields.add("handschrift_ueberlieferung.Schriftheimat");
     fieldNames.add("handschrift_ueberlieferung.Schriftheimat");
     if (!tableString.contains("handschrift")) {
-      tableString += " LEFT OUTER JOIN handschrift ON handschrift.ID = einzelbeleg.HandschriftID";   
+      tableString += " LEFT OUTER JOIN handschrift ON handschrift.ID = einzelbeleg.HandschriftID";
     }
     if (!tableString.contains("handschrift_ueberlieferung")) {
-      tableString += " LEFT OUTER JOIN handschrift_ueberlieferung ON handschrift.ID=handschrift_ueberlieferung.HandschriftID";   
+      tableString += " LEFT OUTER JOIN handschrift_ueberlieferung ON handschrift.ID=handschrift_ueberlieferung.HandschriftID";
     }
     //headlines.add("Schriftheimat d. Textzeugen");
            headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Textzeuge_Schriftheimat", null, stmt, sprache));
-    
+
     einzelbeleg = true;
   }
   // ######### AUSGABEFELDER ##########
@@ -620,7 +620,7 @@
         order += " namenkommentar.PLemma";
         orderV[i-1] = "namenkommentar.PLemma";
         namenkommentar = true;
-        
+
         if (request.getParameter("Ausgabe_Namenlemma") == null || !request.getParameter("Ausgabe_Namenlemma").equals("on")) {
            	fields.add("namenkommentar.PLemma");
            	fields.add("namenkommentar.ID");
@@ -636,7 +636,7 @@
           order += " mgh_lemma.MGHLemma";
           orderV[i-1] = "mgh_lemma.MGHLemma";
           mghlemma = true;
-   	  
+
     	   if (request.getParameter("Ausgabe_MGHLemma") == null || !request.getParameter("Ausgabe_MGHLemma").equals("on")) {
     	        fields.add("mgh_lemma.MGHLemma");
     	        fields.add("mgh_lemma.ID");
@@ -646,7 +646,7 @@
     	       // headlines.add("Namenlemma");
     	       headlines.add(getLabel("mgh_lemma", "MGHLemma", null, stmt, sprache));
     	        mghlemma = true;
-    	  }  
+    	  }
 
       }
 
@@ -654,7 +654,7 @@
         order += " Erstglied";
         orderV[i-1] = "Erstglied";
         namenkommentar = true;
-        
+
     	if (request.getParameter("Ausgabe_Erstglied") == null || !request.getParameter("Ausgabe_Erstglied").equals("on")) {
     		fields.add("substring_index(`namenkommentar`.`PLemma`,_utf8'~',1) AS `Erstglied`");
     		fieldNames.add("Erstglied");
@@ -667,7 +667,7 @@
         order += " Zweitglied";
         orderV[i-1] = "Zweitglied";
         namenkommentar = true;
-        
+
     	if (request.getParameter("Ausgabe_Zweitglied") == null || !request.getParameter("Ausgabe_Zweitglied").equals("on")) {
     		fields.add("substring_index(`namenkommentar`.`PLemma`,_utf8'~',-(1)) AS `Zweitglied`");
     		fieldNames.add("Zweitglied");
@@ -680,7 +680,7 @@
         order += " person.Standardname";
         orderV[i-1] = "person.ID";
         person = true;
-        
+
         if (request.getParameter("Ausgabe_Person_Standardname") == null || !request.getParameter("Ausgabe_Person_Standardname").equals("on")) {
     		fields.add("person.Standardname");
     		fields.add("person.ID");
@@ -696,12 +696,12 @@
         order += " selektion_geschlecht.Bezeichnung";
         orderV[i-1] = "selektion_geschlecht.Bezeichnung";
         person = true;
-        
+
        if (request.getParameter("Ausgabe_Geschlecht") == null || !request.getParameter("Ausgabe_Geschlecht").equals("on")) {
     		fields.add("selektion_geschlecht.Bezeichnung");
     		fieldNames.add("selektion_geschlecht.Bezeichnung");
     		if (!tableString.contains("selektion_geschlecht")) {
-      			tableString += " LEFT OUTER JOIN selektion_geschlecht ON person.Geschlecht=selektion_geschlecht.ID";   
+      			tableString += " LEFT OUTER JOIN selektion_geschlecht ON person.Geschlecht=selektion_geschlecht.ID";
     		}
         	headlines.add(getLabel("freie_suche", "Ausgabe_Geschlecht", null, stmt, sprache));
     		person = true;
@@ -711,18 +711,18 @@
         order += " selektion_amtweihe.Bezeichnung";
         orderV[i-1] = "selektion_amtweihe.Bezeichnung";
         person = true;
-        
+
         if (request.getParameter("Ausgabe_Person_AmtWeihe") == null || !request.getParameter("Ausgabe_Person_AmtWeihe").equals("on")) {
     		fields.add("selektion_amtweihe.Bezeichnung");
     		fieldNames.add("selektion_amtweihe.Bezeichnung");
     		if (!tableString.contains("person_hatamtstandweihe")) {
-      			tableString += " LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";   
+      			tableString += " LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";
     		}
     		if (!tableString.contains("selektion_amtweihe")) {
-      			tableString += " LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID";   
+      			tableString += " LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID";
     		}
      		headlines.add(getLabel("freie_suche", "Ausgabe_Person_AmtWeihe", null, stmt, sprache));
- 
+
     		person = true;
   		}
       }
@@ -730,18 +730,18 @@
         order += " selektion_stand.Bezeichnung";
         orderV[i-1] = "selektion_stand.Bezeichnung";
         person = true;
-        
+
   		if (request.getParameter("Ausgabe_Stand") == null || !request.getParameter("Ausgabe_Stand").equals("on")) {
     		fields.add("selektion_stand.Bezeichnung");
     		fieldNames.add("selektion_stand.Bezeichnung");
     		if (!tableString.contains("person_hatstand")) {
-      			tableString += " LEFT OUTER JOIN person_hatstand ON person.ID=person_hatstand.PersonID";   
+      			tableString += " LEFT OUTER JOIN person_hatstand ON person.ID=person_hatstand.PersonID";
     		}
     		if (!tableString.contains("selektion_stand")) {
-      			tableString += " LEFT OUTER JOIN selektion_stand ON person_hatstand.StandID=selektion_stand.ID";   
+      			tableString += " LEFT OUTER JOIN selektion_stand ON person_hatstand.StandID=selektion_stand.ID";
     		}
      		headlines.add(getLabel("freie_suche", "Ausgabe_Stand", null, stmt, sprache));
- 
+
     		person = true;
   		}
       }
@@ -749,15 +749,15 @@
         order += " selektion_ethnie.Bezeichnung";
         orderV[i-1] = "selektion_ethnie.Bezeichnung";
         person = true;
-        
+
   		if (request.getParameter("Ausgabe_Person_Ethnie") == null || !request.getParameter("Ausgabe_Person_Ethnie").equals("on")) {
     		fields.add("selektion_ethnie.Bezeichnung");
     		fieldNames.add("selektion_ethnie.Bezeichnung");
     		if (!tableString.contains("person_hatethnie")) {
-      			tableString += " LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID";   
+      			tableString += " LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID";
     		}
     		if (!tableString.contains("selektion_ethnie")) {
-      			tableString += " LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID";   
+      			tableString += " LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID";
     		}
         	headlines.add(getLabel("freie_suche", "Ausgabe_Person_Ethnie", null, stmt, sprache));
     		person = true;
@@ -767,7 +767,7 @@
         order += " einzelbeleg.Belegform";
         orderV[i-1] = "einzelbeleg.ID";
         einzelbeleg = true;
-        
+
         if (request.getParameter("Ausgabe_Einzelbeleg_Belegform") == null || !request.getParameter("Ausgabe_Einzelbeleg_Belegform").equals("on")) {
     		fields.add("einzelbeleg.Belegform");
     		fields.add("einzelbeleg.ID");
@@ -775,7 +775,7 @@
     		fieldNames.add("einzelbeleg.Belegform");
     //		headlines.add("Belegform");
            	headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Belegform", null, stmt, sprache));
-    
+
     		einzelbeleg = true;
   		}
       }
@@ -783,7 +783,7 @@
         order += " quelle.Bezeichnung";
         orderV[i-1] = "quelle.Bezeichnung";
         einzelbeleg = true;
-        
+
         if (request.getParameter("Ausgabe_Einzelbeleg_Belegstelle") == null || !request.getParameter("Ausgabe_Einzelbeleg_Belegstelle").equals("on")) {
     		fields.add("quelle.Bezeichnung");
     		fields.add("quelle.ID");
@@ -794,7 +794,7 @@
     		}
     //		headlines.add("Quelle");
            	headlines.add(getLabel("freie_suche", "Quelle", null, stmt, sprache));
-   
+
     		einzelbeleg = true;
   		}
       }
@@ -802,16 +802,16 @@
         order += " selektion_quellengattung.Bezeichnung";
         orderV[i-1] = "selektion_quellengattung.Bezeichnung";
         einzelbeleg = true;
-        
+
         if (request.getParameter("Ausgabe_Einzelbeleg_Quellengattung") == null || !request.getParameter("Ausgabe_Einzelbeleg_Quellengattung").equals("on")) {
     		fields.add("selektion_quellengattung.Bezeichnung");
     		fieldNames.add("selektion_quellengattung.Bezeichnung");
     		if (!tableString.contains("selektion_quellengattung")) {
-      			tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";   
+      			tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
     		}
     //		headlines.add("Quellengattung");
            	headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Quellengattung", null, stmt, sprache));
-    
+
     		einzelbeleg = true;
   		}
       }
@@ -819,7 +819,7 @@
         order += " einzelbeleg_textkritik.Variante";
         orderV[i-1] = "einzelbeleg_textkritik.Variante";
         einzelbeleg = true;
-        
+
         if (request.getParameter("Ausgabe_Einzelbeleg_Varianten") == null || !request.getParameter("Ausgabe_Einzelbeleg_Varianten").equals("on")) {
     fields.add("einzelbeleg_textkritik.Variante");
     fields.add("handschrift.Bibliothekssignatur");
@@ -830,14 +830,14 @@
     fieldNames.add("handschrift_ueberlieferung.VonJahrhundert");
     fieldNames.add("handschrift_ueberlieferung.BisJahrhundert");
     if (!tableString.contains("einzelbeleg_textkritik")) {
-      tableString += " LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID LEFT OUTER JOIN ueberlieferung_edition ON (einzelbeleg_textkritik.EditionID=ueberlieferung_edition.EditionID AND einzelbeleg_textkritik.HandschriftID=ueberlieferung_edition.UeberlieferungID) LEFT OUTER JOIN handschrift_ueberlieferung ON handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID LEFT OUTER JOIN handschrift ON handschrift_ueberlieferung.HandschriftID=handschrift.ID ";   
+      tableString += " LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID LEFT OUTER JOIN ueberlieferung_edition ON (einzelbeleg_textkritik.EditionID=ueberlieferung_edition.EditionID AND einzelbeleg_textkritik.HandschriftID=ueberlieferung_edition.UeberlieferungID) LEFT OUTER JOIN handschrift_ueberlieferung ON handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID LEFT OUTER JOIN handschrift ON handschrift_ueberlieferung.HandschriftID=handschrift.ID ";
     }
    // headlines.add("Variante");
           headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Varianten", null, stmt, sprache));
     headlines.add("Bib.Sig.");
     headlines.add("TZ v. J.");
     headlines.add("TZ b. J.");
-   
+
     		einzelbeleg = true;
   		}
       }
@@ -853,7 +853,7 @@
         }
           order += " (VON_JAHR_JHDT(einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisJahrhundert) DIV "+ zeitraum + "), VON_JAHR_JHDT(einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisJahrhundert)"; // Richtung wird spÃ¤ter angefÃ¼gt
         einzelbeleg = true;
-        
+
       //  if (request.getParameter("Ausgabe_Einzelbeleg_Datierung") == null || !request.getParameter("Ausgabe_Einzelbeleg_Datierung").equals("on")) {
     		fields.add("VON_JAHR_JHDT(einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisJahrhundert) AS einzelbelegBerJahr");
     		fieldNames.add("einzelbelegBerJahr");
@@ -870,14 +870,14 @@
         }
         order += " (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) DIV "+ zeitraum + "), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert)"; // Richtung wird spÃ¤ter angefÃ¼gt
         einzelbeleg = true;
-        
+
      //   if (request.getParameter("Ausgabe_Quelle_Datierung") == null || !request.getParameter("Ausgabe_Quelle_Datierung").equals("on")) {
     		fields.add("VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr");
     		fieldNames.add("quelleBerJahr");
     		if (!tableString.contains("quelle")) {
       			tableString += " LEFT OUTER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
     		}
-    		
+
     		headlines.add("Q von J.");
     		einzelbeleg = true;
   	//	}
@@ -891,11 +891,11 @@
       else {
         order +=" ASC";
       }
-    } 
+    }
     else orderV[i] = "-";
-    
+
   //  out.println(order);
-    
+
     // end if
   } // end for
   // ######### ORDER BY ##########
@@ -948,10 +948,10 @@
     conditions = removeDuplicates(conditions);
     fields = removeDuplicates(fields);
     tables = removeDuplicates(tables);
-    
+
     joins = removeDuplicates(joins);
-    
-       
+
+
 
     // Bedingungen
     String conditionsString = "";
@@ -964,7 +964,7 @@
     else {
       conditionsString += "1";
     }
-    
+
       // Ausgabefelder
     String fieldsString = "";
     if (fields.size() > 0) {
@@ -992,7 +992,7 @@
         tablesString += ", "+tables.get(i);
       }
     }
-    
+
     // Joins
     String joinsString = "";
     if (joins.size() > 0) {
@@ -1026,8 +1026,12 @@
       String sql = "SELECT "+countString+" FROM "+tablesString+" WHERE ("+conditionsString+")"; // GROUP BY "+fieldsString;
   //     out.println(sql);
  if(!countString.equals("")){
-      out.println("<p style=\"font-weight: 700; margin-bottom: 20px;\"><b> Insgesamt ");
-      java.util.List<Object[]> lst = DatenbankDB.getListNative(sql);
+ out.println("<p style=\"font-weight: 700; margin-bottom: 20px;\"><b> Insgesamt ");
+
+
+      if(count.size()>1){
+
+       java.util.List<Object[]> lst = DatenbankDB.getListNative(sql);
       for(Object[] obj : lst){
         for (int i=0; i<count.size(); i++) {
            out.println(obj[i].toString());
@@ -1036,14 +1040,27 @@
            else if(count.get(i).startsWith("mgh")) out.print(" Namen (MGH-Lemma)");
           else if(count.get(i).startsWith("quelle")) if(Integer.valueOf(obj[i].toString())==1) out.print(" Quelle"); else out.print(" Quellen");
            else if(count.get(i).startsWith("person")) if(Integer.valueOf(obj[i].toString())==1) out.print(" Person"); else out.print(" Personen");
-           if(i<count.size()-1) out.println(", ");           
+           if(i<count.size()-1) out.println(", ");
         }
       }
-    }
+    }//end if
+    else if(count.size()==1){
+        Object objSingle = DatenbankDB.getSingleResult(sql);
+
+        out.println(objSingle.toString());
+           if(count.get(0).startsWith("einzelbeleg")) if(Integer.valueOf(objSingle.toString())==1) out.print(" Beleg"); else  out.print(" Belege");
+           else if(count.get(0).startsWith("namen")) out.print(" Namen");
+           else if(count.get(0).startsWith("mgh")) out.print(" Namen (MGH-Lemma)");
+          else if(count.get(0).startsWith("quelle")) if(Integer.valueOf(objSingle.toString())==1) out.print(" Quelle"); else out.print(" Quellen");
+           else if(count.get(0).startsWith("person")) if(Integer.valueOf(objSingle.toString())==1) out.print(" Person"); else out.print(" Personen");
+
+    }//end else
+
+    }//if(!countString.equals("")){
       out.println("<br></b></p>");
 
-	 
-      sql = "SELECT DISTINCT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order; //GROUP BY "+fieldsString+" 
+
+      sql = "SELECT DISTINCT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order; //GROUP BY "+fieldsString+"
  //     if (export.equals("liste") || export.equals("browse"))
  //       sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
 
@@ -1051,30 +1068,30 @@
 
       rs = st.executeQuery(sql);
 
- 
+
   //    out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
               int orderSize = 0;
          for(int z = 0; z<orderV.length; z++)
             if(orderV[z]!= null && !orderV[z].equals("-")) orderSize++;
         boolean [] first  = {true, true, true, true, true,true, true, true, true, true,true, true, true, true, true};
       String oldValue [] = new String [15];
-      
-      
+
+
       %>
 
-      
+
       <%
 
       // ########## LISTE/BROWSE ##########
       try{
       if (export.equals("liste") || export.equals("browse")) {
-      
-       
+
+
       String header = "";
-      
+
       out.print("<div id=\"level-functions\"><div class=\"open_next_level\" onClick=\"expandNextLevel('complete')\" >Weitere Ebene aufklappen</div>");
       out.print("<div class=\"close_prev_level\" onClick=\"collapseNextLevel('complete')\">Weitere Ebene zuklappen</div></div>");
-      
+
   //      out.println("<table class=\"resultlist\">");
         header += "<tr>";
         for (int i=0; i<headlines.size(); i++) {
@@ -1113,19 +1130,19 @@
                 header += "</tr>";
         out.print("<p id='result-loading'>Suchergebnis l\u00E4dt...</p>");
         out.print("<ul class=\"mktree\" id=\"complete\" style='display:none'>");
-        
-            
+
+
             if(orderSize == 0) out.print("<table class=\"resultlist\">"+header+"<tr>");
-            
-            
+
+
             boolean found = false;
 
         java.util.List<java.util.Map<String,String>> searchRes = FrontendExtendedSearch.getSearchResult(fieldsString, tablesString, conditionsString, order, fields.toArray(new String[fields.size()]));
 
         for ( java.util.Map row : searchRes) {
         found = true;
-        
-        
+
+
         for(int z = 0; z<orderSize; z++){
            int jahr = 0;
            String jahrV = row.get(orderV[z]).toString();
@@ -1139,34 +1156,34 @@
                jahr = jahr / zeitraum;
                jahrV = "" +  jahr;
            }
-        
-    
+
+
         if(first[z] || rs.getString(orderV[z])!=null && !jahrV.equalsIgnoreCase(oldValue[z])) {
            oldValue[z] = jahrV;
            if(!first[z]){
               out.print("</table>");
                             for(int z2=z; z2<orderSize; z2++)out.print("</ul></li>");
                             //out.println();
-              
+
            }
               first[z] = false;
               for(int z2=z+1; z2<orderSize; z2++) first[z2]=true;
-   
+
             if(z>0)out.print("<li class=\"liClosed\" style=\"font-size:medium\">");
            else out.print("<li class=\"liOpen\" style=\"font-size:large\">");
            //entryCount[z]++;
-           
+
            String text = row.get(orderV[z]).toString();
            if(orderV[z].startsWith("einzelbeleg.ID"))text = row.get("einzelbeleg.Belegform").toString();
            if(orderV[z].startsWith("person.ID"))text = row.get("person.Standardname").toString();
            if(text==null) text="-";
            String titel=orderV[z];
       //     out.println(z + "::" + orderV[z]);
-           
+
            if(orderV[z].startsWith("einzelbeleg.ID")) titel="einzelbeleg.Belegform";
            if(orderV[z].startsWith("person.ID")) titel="person.Standardname";
            titel = headlines.get(fieldNames.indexOf(titel));
-           
+
            out.print(titel + ":");
                            boolean link = false;
            if(export.equals("browse") && !text.equals("-"))
@@ -1206,16 +1223,16 @@
            out.print("<a href=\""+formular+"?ID="+row.get(formular+".ID")+"\">Gehe zu: ");
                               link = true;
                 }
-                
-                
-           if(orderV[z].startsWith("einzelbeleg.ID"))          
+
+
+           if(orderV[z].startsWith("einzelbeleg.ID"))
               out.print(format(DBtoHTML(text), "einzelbeleg.Belegform"));
            else if(orderV[z].endsWith("Jahr")){
               int ja = Integer.parseInt(oldValue[z]);
               out.print("" + (ja* zeitraum) + "-" + ((ja+1)* zeitraum -1));
            }
            else {
-           
+
                String format = orderV[z];
                if(orderV[z].equals("Erstglied") || orderV[z].equals("Zweitglied")) format = "PLemma";
                     out.print(format(DBtoHTML(text), format));
@@ -1223,17 +1240,17 @@
                if (link) {
                  out.print("</a>&nbsp;");
                 }
-                
+
            if(z==orderSize-1){
            out.print("<ul><table class=\"resultlist\">"+header+"<tr>");
            }
            else out.print("<ul>");
         }
-        
-        
+
+
         }
-        
-                     
+
+
           out.print("<tr class=\""+(even?"":"un")+"even\">");
            if (!formular.equals("favorit") && !formular.equals("freie_suche")&& !formular.equals("namenkommentar")&& !formular.equals("literatur")) {
             out.print("<td valign=\"top\" align=\"center\"><a href=\""+formular+"?ID="+row.get(formular+".ID")+"\">Gehe zu</a></td>");
@@ -1292,7 +1309,7 @@
               else{
                 if(fieldNames.get(i).endsWith("PLemma") || fieldNames.get(i).equals("Erstglied") || fieldNames.get(i).equals("Zweitglied"))
                 	cell = format(cell, "PLemma");
-              
+
                 out.print(cell);
               }
             }
@@ -1304,15 +1321,15 @@
           out.print("</tr>");
           even = !even;
         }
-        
+
         out.print("</tr>");
         out.print("</table>");
         for(int z = orderSize-1; z>=0; z--)out.print("</ul></li>");
-        
+
         if(!found)out.println("Kein Eintrag vorhanden, der dem Suchkriterium entspricht.");
-        
+
         out.print("</ul>");
-        
+
                 %>
 <script type="text/javascript">
 	document.addEventListener("DOMContentLoaded", function(e) {
@@ -1325,7 +1342,7 @@
 				var count = 0;
 				if(li.length < 1)
 					count = (array[j].getElementsByTagName("table")[0].rows.length - 2);
-				else 
+				else
 			       count = ul.nextSibling.childNodes.length;
 			    if(count == 1)
 			    	ul.data = ul.data + "("+ count + " Eintrag)";
@@ -1355,13 +1372,13 @@
            titel = headlines.get(fieldNames.indexOf(titel));
            excel.print("\""+titel+"\";");
         }
-        
+
         for (int i=0; i<headlines.size(); i++) {
          if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") ||fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i)))
           excel.print("\""+headlines.get(i)+"\";");
         }
         excel.println();
-        
+
         while ( rs.next() ) {
           for(int z = 0; z<orderSize; z++){
            int jahr = 0;
@@ -1383,12 +1400,12 @@
            first[z] = false;
            for(int z2=z+1; z2<orderSize; z2++) first[z2]=true;
            for(int z2=0; z2<z; z2++) excel.print(";");
-           
+
            String text = rs.getString(orderV[z]);
            if(orderV[z].startsWith("einzelbeleg.ID"))text = rs.getString("einzelbeleg.Belegform");
            if(text==null) text="-";
            String titel=orderV[z];
-           
+
            if(orderV[z].startsWith("einzelbeleg.ID")) titel="einzelbeleg.Belegform";
 
            if(orderV[z].endsWith("Jahr")){
@@ -1402,13 +1419,13 @@
            }
         }
         }
-        
+
          for(int z2=0; z2<orderSize; z2++) excel.print(";");
-         
+
          for(int i=0; i<fieldNames.size(); i++) {
 
             if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))){
-         
+
               if (rs.getString(fieldNames.get(i)) == null || rs.getString(fieldNames.get(i)).equals("null"))
                 excel.print("\"-\";");
               else
@@ -1425,32 +1442,32 @@
       // ########## RTF #########
       if (export.equals("rtf")) {
 		Document document = new Document(PageSize.A4.rotate());
-        
+
 		// step 2:
 		// we create a writer that listens to the document
 		// and directs a RTF-stream to a file
-            
+
 		RtfWriter2.getInstance(document, new FileOutputStream(this.getServletContext().getRealPath("/")+"print/output_"+session.getAttribute("Benutzername")+".rtf"));
-            
+
 		// step 3: we open the document
 		document.open();
-		
+
 		int tabSize = 0;
-		
+
 		        for (int i=0; i<headlines.size(); i++) {
           if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") ||fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i)))
                       tabSize++;
          }
 
-       
+
             Table tab = new Table(tabSize);
                     for (int i=0; i<headlines.size(); i++) {
           if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") ||fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i)))
                        tab.addCell(new Cell(new Paragraph(headlines.get(i), new  Font(Font.TIMES_ROMAN, 10, Font.BOLD, new Color(0, 0, 0)))));
          }
-            
-       
-        
+
+
+
         while ( rs.next() ) {
           for(int z = 0; z<orderSize; z++){
            int jahr = 0;
@@ -1470,30 +1487,30 @@
            if(!first[z]){
             document.add(tab);
              tab = new Table(tabSize);
-            
+
         for (int i=0; i<headlines.size(); i++) {
           if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") ||fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i)))
                        tab.addCell(new Cell(new Paragraph(headlines.get(i), new  Font(Font.TIMES_ROMAN, 10, Font.BOLD, new Color(0, 0, 0)))));
          }
-            
-            
+
+
            }
            first[z] = false;
            for(int z2=z+1; z2<orderSize; z2++) first[z2]=true;
            for(int z2=0; z2<z; z2++) t += "\t";
-           
+
            String text = rs.getString(orderV[z]);
            if(orderV[z].startsWith("einzelbeleg.ID"))text = rs.getString("einzelbeleg.Belegform");
            if(text==null) text="-";
            String titel=orderV[z];
       //     out.println(z + "::" + orderV[z]);
-           
+
            if(orderV[z].startsWith("einzelbeleg.ID")) titel="einzelbeleg.Belegform";
            titel = headlines.get(fieldNames.indexOf(titel));
-           
+
            int fontsize = 16 - 2*z;
            if(fontsize<10) fontsize=10;
-           
+
            if(orderV[z].endsWith("Jahr")){
               int ja = Integer.parseInt(oldValue[z]);
               document.add(new Paragraph(t + titel + ":" + (ja* zeitraum) + "-" + ((ja+1)* zeitraum -1), new  Font(Font.TIMES_ROMAN, fontsize, Font.NORMAL, new Color(0, 0, 0))));
@@ -1505,12 +1522,12 @@
            }
         }
         }
-        
-         
+
+
          for(int i=0; i<fieldNames.size(); i++) {
 
             if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))){
-         
+
               if (rs.getString(fieldNames.get(i)) == null || rs.getString(fieldNames.get(i)).equals("null"))
                 tab.addCell(new Cell(new Paragraph("-", new  Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
               else
