@@ -150,7 +150,7 @@ function CheckAll(index, check, praefix) {
                       <jsp:param name="Formular" value="gast_freie_suche"/>
                       <jsp:param name="Datenfeld" value="Namenkommentar"/>
                     </jsp:include>/
-                    
+
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="gast_freie_suche"/>
                       <jsp:param name="Datenfeld" value="Namenkommentar2"/>
@@ -275,6 +275,17 @@ function CheckAll(index, check, praefix) {
                 </tr>
                 <tr>
                   <th>
+                      <% Language.printDatafield(out, session, formular, "QuelleGattung"); %>
+                  </th>
+                  <td>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="QuelleGattung"/>
+                    </jsp:include>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
                       <% Language.printDatafield(out, session, formular, "QuelleZeitraum"); %>
                   </th>
                   <td>
@@ -305,7 +316,7 @@ function CheckAll(index, check, praefix) {
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Ausgabe_Namenlemma"/>
-                    </jsp:include>                      
+                    </jsp:include>
                   </td>
                   <td>
                       <% Language.printDatafield(out, session, formular, "Ausgabe_Namenlemma"); %>

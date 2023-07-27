@@ -57,9 +57,8 @@ public class Language {
         }
         out.print("</label>");
         if(!isSet)
-            out.println("no datafield available");
+            out.println("no datafield available: " + formular + " " + datenfeld);
     }
-
 
     public static String getTextfield(HttpSession session, String formular, String textfield) throws Exception {
         String lang = getLanguage(session);
@@ -73,7 +72,6 @@ public class Language {
 
         return "no translation found";
     }
-
 
     public static void printTextfield(JspWriter out,HttpSession session, String formular, String textfield) throws Exception{
         out.println(getTextfield(session, formular, textfield));
