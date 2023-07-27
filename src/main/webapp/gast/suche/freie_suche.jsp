@@ -1157,7 +1157,7 @@
                jahrV = "" +  jahr;
            }
 
-
+        rs.next();
         if(first[z] || rs.getString(orderV[z])!=null && !jahrV.equalsIgnoreCase(oldValue[z])) {
            oldValue[z] = jahrV;
            if(!first[z]){
@@ -1188,7 +1188,7 @@
                            boolean link = false;
            if(export.equals("browse") && !text.equals("-"))
                 if (orderV[z].equals("einzelbeleg.ID")) {
-                  out.print("<a href=\"einzelbeleg?ID="+row.get("einzelbelegID")+"\">");
+                  out.print("<a href=\"einzelbeleg?ID="+row.get("einzelbeleg.ID")+"\">");
                   link = true;
                 }
                 else if (orderV[z].equals("person.ID")) {
