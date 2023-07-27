@@ -10,7 +10,6 @@
 <%@ page import="java.util.StringTokenizer" isThreadSafe="false"%>
 <%@ page import="java.util.regex.Matcher" isThreadSafe="false"%>
 <%@ page import="java.util.regex.Pattern" isThreadSafe="false"%>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false"%>
 
@@ -20,21 +19,6 @@ String chop(String text, int letters) {
         return text;
     }
     return text.substring(0, letters) + "...";
-}
-
-boolean isSet(String zielTabelle, String zielAttribut, int id, Statement st) {
-    String sql = "SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"";
-
-    ResultSet rs = null;
-    try {
-        rs = st.executeQuery(sql);
-        if (rs.next() && rs.getString(zielAttribut) != null && rs.getInt(zielAttribut) == 1) {
-            return true;
-        }
-    } catch (Exception e) {
-
-    }
-    return false;
 }
 
 String DBtoDB(String s) {
@@ -157,62 +141,47 @@ String format(String text, String feld) {
     return Utils.format(text, feld);
 }
 
-String[] getdMGHUrl(Connection cn, String einzelbelegID) {
+
+
+String[] getdMGHUrl(String einzelbelegID) throws Exception {
     String dmghUrl = "";
     String linkinfo = "";
-    Statement st = null;
-    ResultSet rs = null;
-    try {
-        st = cn.createStatement();
-        rs = st.executeQuery(
-                "select b.editionseite seite, e.bandnummer band, d.bezeichnung url "
-                + "from einzelbeleg b, edition e, selektion_dmghband d "
-                + "where b.editionid = e.id "
-                + "and d.id > 0 "
-                + "and e.dmghbandid = d.id "
-                + "and b.id = " + einzelbelegID
-        );
-        if (rs.next()) {
-            String seiteZeile = rs.getString("seite").trim();
-            Pattern p = Pattern.compile("^[^\\d]*(?<seite>\\d+)[^\\d]*(?<zeile>\\d+[^-]*)?(?<rest>.*?)$");
-            Matcher m = p.matcher(seiteZeile);
-            m.find();
-            String seite = m.group("seite").replaceAll("^0+", "");
-            String zeile = m.group("zeile").replaceAll("^0+", "");
-            String band = rs.getString("band").trim().replace("/", ",").replace("II", "2").replace("I", "1");
-            String url = rs.getString("url");
-            dmghUrl = String.format("http://www.mgh.de/dmgh/resolving/%s_%s_S._%s",
-                    url, band, seite);
-            linkinfo = String.format("%s %s, S. %s, Zeile %s",
-                    url.replace("_", " "), band, seite, zeile);
-        }
-    } catch (Exception e) {
-        // fall through
-    } finally {
-        try {
-            if (null != rs) {
-                rs.close();
-            }
-        } catch (Exception ex) {
-        }
-        try {
-            if (null != st) {
-                st.close();
-            }
-        } catch (Exception ex) {
-        }
+
+    String sql = "select b.editionseite seite, e.bandnummer band, d.bezeichnung url "
+            + "from einzelbeleg b, edition e, selektion_dmghband d "
+            + "where b.editionid = e.id "
+            + "and d.id > 0 "
+            + "and e.dmghbandid = d.id "
+            + "and b.id = " + einzelbelegID;
+
+    Object[] columns = AbstractBase.getRowNative(sql);
+    if (columns != null && columns.length > 0) {
+        String seiteZeile = columns[0].toString().trim();
+        Pattern p = Pattern.compile("^[^\\d]*(?<seite>\\d+)[^\\d]*(?<zeile>\\d+[^-]*)?(?<rest>.*?)$");
+        Matcher m = p.matcher(seiteZeile);
+        m.find();
+        String seite = m.group("seite").replaceAll("^0+", "");
+        String zeile = m.group("zeile").replaceAll("^0+", "");
+        String band = columns[1].toString().trim().replace("/", ",").replace("II", "2").replace("I", "1");
+        String url = columns[2].toString().trim();
+        dmghUrl = String.format("http://www.mgh.de/dmgh/resolving/%s_%s_S._%s",
+                url, band, seite);
+        linkinfo = String.format("%s %s, S. %s, Zeile %s",
+                url.replace("_", " "), band, seite, zeile);
     }
+
     return new String[]{
         dmghUrl,
         linkinfo
     };
 }
 
-String getBelegformLinked(Connection cn, String einzelbelegID, String belegform) {
-    String[] dmghUrl = getdMGHUrl(cn, einzelbelegID);
+String getBelegformLinked(String einzelbelegID, String belegform) throws Exception {
+    String[] dmghUrl = getdMGHUrl(einzelbelegID);
     if (dmghUrl[0].isEmpty()) {
         return belegform;
     }
     return String.format("<a href='%s' title='%s'>%s</a>", dmghUrl[0], dmghUrl[1], belegform);
 }
+
 %>

@@ -1,5 +1,5 @@
-<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.model.DatenbankMapping" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.*" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
@@ -97,19 +97,7 @@
 
 <% if (visible!=null && visible.equals("hidden")) out.println("<div style=\"visibility:hidden\">");%>
 
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.*" isThreadSafe="false" %>
-<%
-// TODO: These definitions here are still necessary for the forms/templates to work.
-// We should refactor them at a later point.
-Connection cn = null;
-Statement  st = null;
-ResultSet  rs = null;
-%>
 
 <%@ include file="forms/autocomplete.jsp" %>
 <%@ include file="forms/array.addselect.jsp" %>

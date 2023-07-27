@@ -1,9 +1,5 @@
 <%@page import="de.uni_tuebingen.ub.nppm.db.BenutzerDB"%>
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
+
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.model.Benutzer" isThreadSafe="false" %>
@@ -151,14 +147,14 @@ if(isAdmin && request.getParameter("ID")!=null){
                 <jsp:param name="Textfeld" value="PasswortAlt"/>
               </jsp:include>
             </td>
-            <%}%>  
-                
+            <%}%>
+
             <% if(isAdmin == false){%>
               <td><input type="password" name="PasswortAlt" /></td>
             <%}
                else{%>
               <td><input type="hidden" name="PasswortAlt" /></td>
-            <%}%>   
+            <%}%>
           </tr>
           <tr>
             <td>
