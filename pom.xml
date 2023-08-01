@@ -93,6 +93,11 @@
             <artifactId>jquery</artifactId>
             <version>3.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jQuery-Autocomplete</artifactId>
+            <version>1.4.10</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -171,6 +176,25 @@
                                     <groupId>org.webjars</groupId>
                                     <artifactId>jquery</artifactId>
                                     <version>3.7.0</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack-jquery-autocomplete</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <silent>true</silent>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>jQuery-Autocomplete</artifactId>
+                                    <version>1.4.10</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
