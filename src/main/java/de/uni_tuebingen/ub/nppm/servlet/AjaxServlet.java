@@ -1,7 +1,7 @@
 package de.uni_tuebingen.ub.nppm.servlet;
 
 import de.uni_tuebingen.ub.nppm.db.*;
-import de.uni_tuebingen.ub.nppm.util.*;
+import org.json.*;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -20,18 +20,15 @@ public class AjaxServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 response.setHeader("Content-Type", "application/json");
-                String json = "{\"suggestions\": [";
-                List<String> matched = SucheDB.getCountryText(field, form, query);
-                int i=0;
-                for (String match : matched) {
-                    if (i > 0) {
-                        json += ", ";
-                    }
-                    json += "\"" + Utils.escapeJS(match) + "\"";
-                    ++i;
+
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                List<String> matches = SucheDB.getCountryText(field, form, query);
+                for (String match : matches) {
+                    jsonArray.put(match);
                 }
-                json += "]}";
-                response.getWriter().print(json);
+                jsonObject.put("suggestions", jsonArray);
+                response.getWriter().print(jsonObject.toString());
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
