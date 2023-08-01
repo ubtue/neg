@@ -20,6 +20,7 @@ public class AjaxServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 response.setHeader("Content-Type", "application/json");
+                response.setHeader("Charset", "utf-8");
 
                 JSONObject jsonObject = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
