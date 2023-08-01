@@ -1235,7 +1235,7 @@
                                     out.print("<a href=\"mghlemma?ID=" + row.get("mgh_lemmaID") + "\">");
                                     link = true;
                                 } else if (orderV[z].equals("quelle.Bezeichnung")) {
-                                    out.print("<a href=\"quelle?ID=" + row.get("quelleID") + "\">");
+                                    out.print("<a href=\"quelle?ID=" + row.get("quelle.ID") + "\">");
                                     link = true;
                                 } else if (orderV[z].equals("edition.Titel")) {
                                     try {
