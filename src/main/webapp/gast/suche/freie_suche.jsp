@@ -27,16 +27,16 @@
   String formular = request.getParameter("form");
   String tableString = "";
 
-  Vector<String> conditions = new Vector<String> ();
+  Vector<String> conditions = new Vector<> ();
 
-  Vector<String> fields = new Vector<String> ();
-  Vector<String> fieldNames = new Vector<String> ();
-  Vector<String> count = new Vector<String> ();
+  Vector<String> fields = new Vector<> ();
+  Vector<String> fieldNames = new Vector<> ();
+  Vector<String> count = new Vector<>();
 
-  Vector<String> tables = new Vector <String> ();
-  Vector<String> joins = new Vector <String> ();
+  Vector<String> tables = new Vector<> ();
+  Vector<String> joins = new Vector<> ();
 
-  Vector<String> headlines = new Vector<String> ();
+  Vector<String> headlines = new Vector<> ();
 
   // Welche Grund-Tabellen (Einzelbeleg / Person / Namenkommentar) werden benÃ¶tigt...
   boolean einzelbeleg = false;
@@ -135,6 +135,9 @@
     tableString += " INNER JOIN einzelbeleg_hatfunktion ON einzelbeleg.ID=einzelbeleg_hatfunktion.EinzelbelegID";
     conditions.add("einzelbeleg_hatfunktion.FunktionID = '"+request.getParameter("Funktion")+"'");
     einzelbeleg = true;
+  }
+  if (request.getParameter("QuelleGattung")!=null && Integer.parseInt(request.getParameter("QuelleGattung")) > 0) {
+    conditions.add("einzelbeleg.QuelleGattungID = '"+request.getParameter("QuelleGattung")+"'");
   }
   if (!request.getParameter("PersonZeitraum").trim().equals("")) {
         int vonNum = 0;
