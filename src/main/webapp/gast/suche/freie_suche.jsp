@@ -1223,7 +1223,7 @@
                                     out.print("<a href=\"einzelbeleg?ID=" + row.get("einzelbeleg.ID") + "\">");
                                     link = true;
                                 } else if (orderV[z].equals("person.ID")) {
-                                    out.print("<a href=\"person?ID=" + row.get("personID") + "\">");
+                                    out.print("<a href=\"person?ID=" + row.get("person.ID") + "\">");
                                     link = true;
                                 } else if (orderV[z].equals("perszu.Standardname")) {
                                     out.print("<a href=\"person?ID=" + row.get("perszuID") + "\">");
