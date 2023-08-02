@@ -23,7 +23,7 @@ public class AjaxServlet extends HttpServlet {
 
                 JSONObject jsonObject = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
-                List<String> matches = SucheDB.getCountryText(field, form, query);
+                List<String> matches = SucheDB.getAutocompleteText(field, form, query);
                 for (String match : matches) {
                     jsonArray.put(match);
                 }
