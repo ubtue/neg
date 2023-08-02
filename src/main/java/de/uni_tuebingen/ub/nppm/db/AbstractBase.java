@@ -12,6 +12,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import java.net.URI;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -133,7 +134,7 @@ public class AbstractBase {
             configuration.addAnnotatedClass(EinzelbelegMghLemma_MM.class);
             configuration.addAnnotatedClass(EinzelbelegNamenkommentar_MM.class);
             configuration.addAnnotatedClass(EinzelbelegHatPerson_MM.class);
-            configuration.addAnnotatedClass(EinzelbelegHatEthnie_MM.class);            
+            configuration.addAnnotatedClass(EinzelbelegHatEthnie_MM.class);
 
             configuration.addAnnotatedClass(DatenbankFilter.class);
             configuration.addAnnotatedClass(DatenbankMapping.class);
@@ -316,5 +317,41 @@ public class AbstractBase {
     public static Integer getMaxCharacterLength(String table, String column) throws Exception {
         String sql = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" + getDatabaseName() + "' AND TABLE_NAME = '" + table + "' AND COLUMN_NAME='"+ column +"'";
         return getIntNative(sql);
+    }
+
+    protected static List<String> dynamicTablesWhitelist = Arrays.asList("edition", "einzelbeleg", "gast", "handschrift", "mgh_lemma", "namenkommentar", "person", "quelle", "selektion", "ueberlieferung", "urkunde");
+
+    /**
+     * This function is used to verify that a table name given by e.g.
+     * an AJAX call is not abused for SQL injection.
+     *
+     * 1) A table name must only consist of allowed characters
+     *    (e.g. no spaces or colons) to prevent various attempts,
+     *    e.g. by using UNION SELECT or splitting into multiple statements.
+     * 2) A table name must start with a prefix (or exactly match
+     *    an allowed table in a whitelist) to make sure it is not used
+     *    to e.g. select user-related information from the "benutzer" table.
+     */
+    public static void verifyDynamicTable(String table) throws SqlInjectionException {
+        // This function is used to verify that a string only contains characters
+        // that are allowed within MySQL table names
+        // to prevent SQL injection.
+        if (!table.matches("^[a-zA-Z0-9_]+$")) {
+            throw new SqlInjectionException("Invalid table name: " + table);
+        }
+        if (!dynamicTablesWhitelist.stream().anyMatch(s -> table.startsWith(s))) {
+            throw new SqlInjectionException("Using this table in a dynamic SQL query is not allowed: " + table);
+        }
+    }
+
+    /**
+     * Similar to verifyDynamicTable, but here we only check
+     * that only valid characters are used to prevent
+     * UNION SELECT or multi-query attacks.
+     */
+    public static void verifyDynamicColumn(String column) throws SqlInjectionException {
+        if (!column.matches("^[a-zA-Z0-9_]+$")) {
+            throw new SqlInjectionException("Invalid column name: " + column);
+        }
     }
 }

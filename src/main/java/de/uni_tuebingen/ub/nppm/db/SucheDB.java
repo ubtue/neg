@@ -24,15 +24,22 @@ public class SucheDB extends AbstractBase {
         return getList(SucheFavoriten.class);
     }
 
-    public static List<String> getCountryText(String country, String form, String query) throws Exception {
+    public static List<String> getAutocompleteText(String country, String form, String query) throws Exception {
+        verifyDynamicTable(form);
+        verifyDynamicColumn(country);
+
         String sql = "SELECT DISTINCT " + country + " FROM " + form;
-        if (!query.equals("?")) {
-            sql += " WHERE " + country + " LIKE '%" + query + "%' ";
+        boolean addWhereStatement = !query.equals("?");
+        if (addWhereStatement) {
+            sql += " WHERE " + country + " LIKE CONCAT('%', ?1, '%') ";
         }
         sql += " ORDER BY " + country;
 
         try (Session session = getSession()) {
+
             NativeQuery sqlQuery = session.createNativeQuery(sql);
+            if (addWhereStatement)
+                sqlQuery.setParameter(1, query);
             List<String> rows = sqlQuery.getResultList();
             return rows;
         }
@@ -43,6 +50,11 @@ public class SucheDB extends AbstractBase {
         String tabelle = request.getParameter("zwischentabelle");
         String zwAttribut = request.getParameter("zwAttribut");
         String attribut = request.getParameter("attribut");
+
+        verifyDynamicTable(dbForm);
+        verifyDynamicTable(tabelle);
+        verifyDynamicColumn(attribut);
+        verifyDynamicColumn(zwAttribut);
 
         Map<Integer, String> ret = new HashMap<Integer, String>();
         try (Session session = getSession()) {
