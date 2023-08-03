@@ -332,16 +332,21 @@ public class AbstractBase {
      *    an allowed table in a whitelist) to make sure it is not used
      *    to e.g. select user-related information from the "benutzer" table.
      */
-    public static void verifyDynamicTable(String table) throws SqlInjectionException {
+    public static void verifyDynamicTable(String table, String prefix) throws SqlInjectionException {
         // This function is used to verify that a string only contains characters
         // that are allowed within MySQL table names
         // to prevent SQL injection.
         if (!table.matches("^[a-zA-Z0-9_]+$")) {
             throw new SqlInjectionException("Invalid table name: " + table);
         }
-        if (!dynamicTablesWhitelist.stream().anyMatch(s -> table.startsWith(s))) {
+
+        if ((prefix != null && !table.startsWith(prefix)) || !dynamicTablesWhitelist.stream().anyMatch(s -> table.startsWith(s))) {
             throw new SqlInjectionException("Using this table in a dynamic SQL query is not allowed: " + table);
         }
+    }
+
+    public static void verifyDynamicTable(String table) throws SqlInjectionException {
+        verifyDynamicTable(table, null);
     }
 
     /**
