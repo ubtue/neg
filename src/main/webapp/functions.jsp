@@ -1,4 +1,4 @@
-﻿<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
+<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.net.URLEncoder" isThreadSafe="false" %>
 <%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
 <%@ page import="java.sql.Connection" isThreadSafe="false" %>
