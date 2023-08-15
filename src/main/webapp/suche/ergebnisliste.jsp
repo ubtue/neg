@@ -16,7 +16,7 @@
     // Bedingungen
     String conditionsString = "";
     if (conditions.size() > 0) {
-      conditionsString += conditions.firstElement();
+      conditionsString += conditions.get(0);
       for (int i=1; i<conditions.size(); i++) {
         conditionsString += " AND "+conditions.get(i);
       }
@@ -28,7 +28,7 @@
     // Ausgabefelder
     String fieldsString = "";
     if (fields.size() > 0) {
-      fieldsString += fields.firstElement();
+      fieldsString += fields.get(0);
       for (int i=1; i<fields.size(); i++) {
         fieldsString += ", "+fields.get(i) ;
       }
@@ -37,7 +37,7 @@
     // Tabellen
     String tablesString = "";
     if (tables.size() > 0) {
-      tablesString += tables.firstElement();
+      tablesString += tables.get(0);
       for (int i=1; i<tables.size(); i++) {
         tablesString += ", "+tables.get(i);
       }
@@ -46,7 +46,7 @@
     // Joins
     String joinsString = "";
     if (joins.size() > 0) {
-      joinsString += joins.firstElement();
+      joinsString += joins.get(0);
       for (int i=1; i<joins.size(); i++) {
         joinsString += " "+joins.get(i);
       }
@@ -59,7 +59,7 @@
         pageoffset = Integer.parseInt(request.getParameter("pageoffset"));
       }
 
-      
+
 
 	  if(fields.size()==0){
 	  	out.println("Bitte wählen Sie mind. ein Ausgabefeld aus (Schritt 2).");

@@ -4,7 +4,6 @@
 <%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.util.Vector" isThreadSafe="false" %>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.util.StringTokenizer" isThreadSafe="false"%>
@@ -34,8 +33,8 @@ String DBtoJS(String s) {
     return Utils.escapeJS(s);
 }
 
-Vector calcCenturies(int von, int bis) {
-    Vector ret = new Vector();
+List calcCenturies(int von, int bis) {
+    List ret = new ArrayList();
 
     int vonCent = von / 100;
     if (!(von % 100 == 0)) {
@@ -107,16 +106,15 @@ String md5(String input) {
     return "";
 }
 
-Vector removeDuplicates(Vector vector) {
-    for (int i = 0; i < vector.size() - 1; i++) {
-        for (int j = i + 1; j < vector.size(); j++) {
-            if (vector.get(i).equals(vector.get(j))) {
-                vector.removeElementAt(j);
+List removeDuplicates(List list) {
+    for (int i = 0; i < list.size() - 1; i++) {
+        for (int j = i + 1; j < list.size(); j++) {
+            if (list.get(i).equals(list.get(j))) {
+                list.remove(j);
             }
         }
     }
-    vector.trimToSize();
-    return vector;
+    return list;
 }
 
 int min(int a, int b) {
