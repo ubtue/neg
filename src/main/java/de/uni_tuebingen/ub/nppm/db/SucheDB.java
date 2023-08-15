@@ -12,7 +12,6 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
-import org.hibernate.Criteria;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
@@ -79,13 +78,7 @@ public class SucheDB extends AbstractBase {
             sql += " LIMIT " + (pageoffset * pageLimit) + ", " + pageLimit;
         }
 
-        try (Session session = getSession()) {
-            NativeQuery sqlQuery = session.createNativeQuery(sql);
-
-            sqlQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-
-            return sqlQuery.getResultList();
-        }
+        return getMappedList(sql);
     }
 
     public static List<Map<String, String>> getSearchResult(String fieldsString, String tablesString, String conditionsString, String orderString, String order, String[] fields) throws Exception {
