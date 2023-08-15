@@ -79,13 +79,7 @@ public class SucheDB extends AbstractBase {
             sql += " LIMIT " + (pageoffset * pageLimit) + ", " + pageLimit;
         }
 
-        try (Session session = getSession()) {
-            NativeQuery sqlQuery = session.createNativeQuery(sql);
-
-            sqlQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-
-            return sqlQuery.getResultList();
-        }
+        return getMappedList(sql);
     }
 
     public static List<Map<String, String>> getSearchResult(String fieldsString, String tablesString, String conditionsString, String orderString, String order, String[] fields) throws Exception {
