@@ -1,4 +1,4 @@
-<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>﻿
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.Enumeration" isThreadSafe="false"%>

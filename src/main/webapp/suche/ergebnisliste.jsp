@@ -1,6 +1,6 @@
 <%@page import="de.uni_tuebingen.ub.nppm.db.SucheDB"%>
 <%@page import="java.util.*"%>
-﻿<%
+<%
 
 //	out.println(orderV[0]);
 
