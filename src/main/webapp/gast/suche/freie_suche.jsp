@@ -1,19 +1,20 @@
-<%@page import="de.uni_tuebingen.ub.nppm.db.FrontendExtendedSearch"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB"%>
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.FrontendExtendedSearch"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB"%>
+
+<%@ page import="java.io.*" isThreadSafe="false" %>
+<%@ page import="java.awt.Color" isThreadSafe="false" %>
+<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
 <%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
-<%@ page import="java.util.Vector" isThreadSafe="false" %>
+<%@ page import="java.util.List" isThreadSafe="false" %>
 
 <%@ page import="com.lowagie.text.Document" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.*" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false" %>
-<%@ page import="java.io.*" isThreadSafe="false" %>
-<%@ page import="java.awt.Color" isThreadSafe="false" %>
-
 
 <%
 
@@ -27,18 +28,18 @@
   String formular = request.getParameter("form");
   String tableString = "";
 
-  Vector<String> conditions = new Vector<> ();
+  List<String> conditions = new ArrayList<> ();
 
-  Vector<String> fields = new Vector<> ();
-  Vector<String> fieldNames = new Vector<> ();
-  Vector<String> count = new Vector<>();
+  List<String> fields = new ArrayList<> ();
+  List<String> fieldNames = new ArrayList<> ();
+  List<String> count = new ArrayList<>();
 
-  Vector<String> tables = new Vector<> ();
-  Vector<String> joins = new Vector<> ();
+  List<String> tables = new ArrayList<> ();
+  List<String> joins = new ArrayList<> ();
 
-  Vector<String> headlines = new Vector<> ();
+  List<String> headlines = new ArrayList<> ();
 
-  // Welche Grund-Tabellen (Einzelbeleg / Person / Namenkommentar) werden benÃ¶tigt...
+  // Welche Grund-Tabellen (Einzelbeleg / Person / Namenkommentar) werden benötigt...
   boolean einzelbeleg = false;
   boolean person = false;
   boolean namenkommentar = false;
@@ -959,7 +960,7 @@
     // Bedingungen
     String conditionsString = "";
     if (conditions.size() > 0) {
-      conditionsString += conditions.firstElement();
+      conditionsString += conditions.get(0);
       for (int i=1; i<conditions.size(); i++) {
         conditionsString += " AND "+conditions.get(i);
       }
@@ -971,7 +972,7 @@
       // Ausgabefelder
     String fieldsString = "";
     if (fields.size() > 0) {
-      fieldsString += fields.firstElement();
+      fieldsString += fields.get(0);
       for (int i=1; i<fields.size(); i++) {
         fieldsString += ", "+fields.get(i);
       }
@@ -980,7 +981,7 @@
     // ZÃ¤hlfelder
     String countString = "";
     if (count.size() > 0) {
-      countString += "count(DISTINCT " + count.firstElement() + ")";
+      countString += "count(DISTINCT " + count.get(0) + ")";
       for (int i=1; i<count.size(); i++) {
         countString += ", count(DISTINCT "+count.get(i) + ")";
       }
@@ -990,7 +991,7 @@
     // Tabellen
     String tablesString = "";
     if (tables.size() > 0) {
-      tablesString += tables.firstElement();
+      tablesString += tables.get(0);
       for (int i=1; i<tables.size(); i++) {
         tablesString += ", "+tables.get(i);
       }
@@ -999,7 +1000,7 @@
     // Joins
     String joinsString = "";
     if (joins.size() > 0) {
-      joinsString += joins.firstElement();
+      joinsString += joins.get(0);
       for (int i=1; i<joins.size(); i++) {
         joinsString += " "+joins.get(i);
       }

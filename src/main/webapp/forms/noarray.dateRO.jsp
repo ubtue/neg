@@ -1,6 +1,6 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
-<%@ page import="java.util.List" isThreadSafe="false" %>﻿
+<%@ page import="java.util.List" isThreadSafe="false" %>
 
 <%
     if (feldtyp.equals("dateRO") && !array) {

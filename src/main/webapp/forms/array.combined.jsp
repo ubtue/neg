@@ -226,7 +226,7 @@
                                 + row2.get("ID").toString()
                                 + "\">"
                                 + row2.get("Bezeichnung").toString()
-                                + "</a><input type=hidden name=\""
+                                + "</a><input type=\"hidden\" name=\""
                                 + combinedFeldnamen[j]
                                 + "_ed["
                                 + i
@@ -243,14 +243,14 @@
                                 + i2
                                 + "]\""
                                 + " value=\""
-                                + DBtoHTML(row3 != null ? row3.get("Sigle").toString() : ""
+                                + DBtoHTML(row3 != null ? row3.get("Sigle").toString() : "")
                                         + "\""
                                         + " maxlength=\""
                                         + "\" "
                                         + (combinedFeldnamen[j]
                                                 .endsWith("ID") ? " size=\"5\""
                                         : " size=\"10\"")
-                                        + " /></td></tr>"));
+                                        + " /></td></tr>");
                         i2++;
                     }
 

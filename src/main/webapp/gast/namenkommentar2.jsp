@@ -1,9 +1,8 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false"%>
+<%@ page import="java.sql.Connection" isThreadSafe="false"%>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
 <%@ page import="java.sql.SQLException" isThreadSafe="false"%>
 <%@ page import="java.sql.Statement" isThreadSafe="false"%>
-<%@ page import="java.util.Vector" isThreadSafe="false"%>
 <%@ page import="java.util.Enumeration" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
