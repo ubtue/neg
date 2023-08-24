@@ -13,6 +13,9 @@ public class SelektionQuellengattung {
     @Column(name = "Bezeichnung", length=50)
     private String bezeichnung;
 
+    @Column(name = "parentId")
+    private Integer parentId;
+
     public Integer getId() {
         return id;
     }
@@ -23,5 +26,13 @@ public class SelektionQuellengattung {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }
