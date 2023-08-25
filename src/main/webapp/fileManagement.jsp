@@ -24,41 +24,51 @@
         %>
         <title><%= value%></title>
 
+        <style>
+
+            .cell-padding {
+                 padding-top: 5px;
+                padding-bottom: 5px;
+            }
+
+            .full-width-button {
+                display: block;
+                width: 100%;
+                margin-bottom: 2px;
+                box-sizing: border-box;
+            }
+        </style>
+
     </head>
     <body>
         <div id="dynamicContentDiv">
             <%
                 if (AuthHelper.isAdminLogin(request)) {
 
-                    out.println("<h2>Html Dateien & Bilder verwalten</h2>");
-
-                    if (request.getAttribute("message") != null) {
-                        out.println((String) request.getAttribute("message"));
-                    }
-
                     String context = "";
                     if (request.getParameter("context") != null) {
                         context = request.getParameter("context");
                     }
-                   Content.Context contextEnum = null;
+
+                    Content.Context contextEnum = null;
                     if (context.equals("HILFE")) {
-                        contextEnum =Content.Context.HILFE;
+                        contextEnum = Content.Context.HILFE;
                     } else if (context.equals("NAMENKOMMENTAR")) {
-                        contextEnum =Content.Context.NAMENKOMMENTAR;
+                        contextEnum = Content.Context.NAMENKOMMENTAR;
                     }
             %>
-
+            <br>
             <form method="get">
                 <select name="context" onchange="this.form.submit();">
                     <option value="">Context ausw&auml;hlen</option>
-                    <option value="HILFE" <% if (contextEnum ==Content.Context.HILFE) {
+                    <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
                             out.print("selected");
                         } %>>Hilfe</option>
-                            <option value="NAMENKOMMENTAR" <% if (contextEnum ==Content.Context.NAMENKOMMENTAR)
+                            <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR)
                             out.print("selected"); %>>Namenkommentar</option>
                 </select>
             </form>
-            <br><br>
+
             <%
                 try {
                     String fileToDelete = request.getParameter("filename");
@@ -67,7 +77,7 @@
                     if (showPage) {
 
             %>
-            <!-- Attention with enctype="multipart/form-data" type hidden does not work, must with url file? ... be handed over -->
+            <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
             <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
                 <input type="file" name="file[]" value="Datei auswahl" multiple>
                 <br><br>
@@ -77,12 +87,12 @@
             <table style="border-collapse:collapse;" border=1>
                 <tr>
                     <th>Pfad</th>
-                    <th>Load</th>
-                    <th>&nbsp;</th>
+                    <th>Vorschau</th>
+                    <th>Aktionen</th>
                 </tr>
 
                 <%
-                    List<Content> fileList =ContentDB.getList(contextEnum.toString());
+                    List<Content> fileList = ContentDB.getList(contextEnum.toString());
                     for (Content content : fileList) {
                         if (content.getContent_Type().startsWith("text/html")) {
                             String name = content.getName();
@@ -91,10 +101,22 @@
                 %>
                 <tr>
                     <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
-                    <td><a href="edit?loadFile=<%=name%>">Load in TinyMce</a></td>
-                    <td>
-                        <form action="file" method="post" onsubmit="return confirm('Datei wirklich l&ouml;schen?');">
-                            <input type="submit" name="deleteFile" value ="l&ouml;schen">
+                    <td></td>
+                    <td class="cell-padding">
+                        <a href="edit?loadFile=<%=name%>">HTML Bearbeiten (TinyMCE)</a>
+
+                        <hr>
+
+                        <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
+                        <form  action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich ersetzen?');" enctype="multipart/form-data">
+                            <input type="file" name="file" value="Datei auswahl" >
+                            <input  class="full-width-button" type="submit"  value ="Ersetzen">
+                        </form>
+
+                        <hr>
+
+                        <form action="file" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich l&ouml;schen?');">
+                            <input  class="full-width-button" type="submit" name="deleteFile" value ="l&ouml;schen">
                             <input type="hidden" name="fileAccess" value="fileDelete">
                             <input type="hidden" name="id" value="<%=content.getID()%>">
                             <input type="hidden" name="context" value="<%=context%>">
@@ -103,7 +125,6 @@
                 </tr>
                 <%
                     }
-
                     if (content.getContent_Type().startsWith("text/plain") || content.getContent_Type().startsWith("application/vnd.oasis.opendocument.text")
                             || content.getContent_Type().startsWith("application/msword")
                             || content.getContent_Type().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
@@ -114,31 +135,17 @@
                 <tr>
                     <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
                     <td></td>
-                    <td>
-                        <form action="file" method="post" onsubmit="return confirm('Datei wirklich l&ouml;schen?');">
-                            <input type="submit" name="deleteFile" value ="l&ouml;schen">
-                            <input type="hidden" name="fileAccess" value="fileDelete">
-                            <input type="hidden" name="id" value="<%=content.getID()%>">
-                            <input type="hidden" name="context" value="<%=context%>">
+                     <td class="cell-padding">
+                        <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
+                        <form  action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich ersetzen?');" enctype="multipart/form-data">
+                            <input type="file" name="file" value="Datei auswahl" >
+                            <input  class="full-width-button" type="submit"  value ="Ersetzen">
                         </form>
-                    </td>
-                </tr>
-                <%
 
-                        }
-                    }   //end for (Content content : fileList) {
-                    for (Content content : fileList) {
-                        if (content.getContent_Type().startsWith("image")) {
-                            String name = content.getName();
-                            String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+                        <hr>
 
-                %>
-                <tr>
-                    <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
-                    <td><img src="<%=imageUrl%>" height="256px"></td>
-                    <td>
-                        <form action="file" method="post" onsubmit="return confirm('Datei wirklich l&ouml;schen?');">
-                            <input type="submit" name="deleteFile" value ="l&ouml;schen">
+                        <form action="file" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich l&ouml;schen?');">
+                            <input class="full-width-button" type="submit" name="deleteFile" value ="l&ouml;schen">
                             <input type="hidden" name="fileAccess" value="fileDelete">
                             <input type="hidden" name="id" value="<%=content.getID()%>">
                             <input type="hidden" name="context" value="<%=context%>">
@@ -148,7 +155,34 @@
                 <%
                         }
                     }
+                    for (Content content : fileList) {
+                        if (content.getContent_Type().startsWith("image")) {
+                            String name = content.getName();
+                            String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+                %>
+                <tr>
+                    <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
+                    <td><img src="<%=imageUrl%>" height="256px"></td>
+                    <td class="cell-padding">
+                        <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
+                        <form  action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich ersetzen?');" enctype="multipart/form-data">
+                            <input type="file" name="file" value="Datei auswahl" >
+                            <input  class="full-width-button" type="submit"  value ="Ersetzen">
+                        </form>
 
+                        <hr>
+
+                        <form action="file" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich l&ouml;schen?');">
+                            <input class="full-width-button" type="submit" name="deleteFile" value ="l&ouml;schen">
+                            <input type="hidden" name="fileAccess" value="fileDelete">
+                            <input type="hidden" name="id" value="<%=content.getID()%>">
+                            <input type="hidden" name="context" value="<%=context%>">
+                        </form>
+                    </td>
+                </tr>
+                <%
+                        }
+                    }
                 %>
             </table>
             <%                        }//end showPage
@@ -158,10 +192,9 @@
                     out.println("</table>");
                 }//end if (AuthHelper.isAdminLogin(request))
                 else {
-                      // Weiterleitung zur logout.jsp
-                      response.sendRedirect("logout.jsp");
+                    //Redirect to logout.jsp
+                    response.sendRedirect("logout.jsp");
                 }
-
             %>
         </div>
     </body>
