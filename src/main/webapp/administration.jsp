@@ -117,13 +117,12 @@
                                 out.print("<td><a href=\"admin-auswahlfelder?Formular=bearbeiten&Tabelle=" + tbl + "\">bearbeiten</a></td>");
                                 out.print("<td><a href=\"admin-auswahlfelder?Formular=zusammenfuehren&Tabelle=" + tbl + "\">zusammenf&uuml;hren</a></td>");
                                 if (tbl.contentEquals("selektion_quellengattung") ) {
-                                    out.print("<td><a href=\"admin-baumstruktur\">Baumstruktur</a></td>");
+                                    out.print("<td><a href=\"admin-baumstruktur?Formular=baumstruktur&Tabelle=" + tbl + "\">Baumstruktur</a></td>");
                                 }
-                                // out.print("<td><a href=\"admin-baumstruktur\">Baumstrucktur</a></td>");
                                 out.print("</tr>");
                                 out.println("");
-                            } //if
-                        } //for
+                            }
+                        }
                     %>
                 </table>
             </div>

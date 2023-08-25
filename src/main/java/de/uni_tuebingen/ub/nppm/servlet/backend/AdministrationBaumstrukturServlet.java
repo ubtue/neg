@@ -4,9 +4,6 @@ import de.uni_tuebingen.ub.nppm.db.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,24 +40,19 @@ public class AdministrationBaumstrukturServlet extends AbstractBackendServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Integer nodeId = Integer.parseInt(request.getParameter("nodeId")); // Hier die ID des verschobenen Nodes
-
-        Integer newParentId = null;
-        String temp = request.getParameter("newParentId");
+        Integer id = Integer.parseInt(request.getParameter("id")); // Hier die ID des verschobenen Nodes
+        String table = request.getParameter("table");
+        Integer parentId = null;
+        String temp = request.getParameter("parentId");
         if (temp != null && !temp.isEmpty()) {
-            newParentId = Integer.parseInt(temp); // Hier die neue Parent-ID
+            parentId = Integer.parseInt(temp); // Hier die neue Parent-ID
         }
 
         try {
-            SelektionQuellengattungDB.updateParentId(nodeId, newParentId);
-
-        } catch (Exception ex) {
-            Logger.getLogger(AdministrationBaumstrukturServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
+            SelektionDB.updateParentId(table, id, parentId);
             generatePage(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(AdministrationBaumstrukturServlet.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServletException(ex);
         }
     }
 }

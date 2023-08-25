@@ -12,27 +12,25 @@
     <jsp:include page="layout/titel.administration.jsp" />
     <div id="form">
 
-        <h1>Selection Quellengattung</h1>
-
+        <h1>Baumstruktur bearbeiten</h1>
+        <h2>Tabelle: ${param.Tabelle}</h2>
         <p>Bitte verwenden Sie Drag und Drop</p>
 
         <!-- Buttons to Expand and Collapse Tree -->
-        <button id="expandAllButton">Alles aufklappen</button>
         <button id="collapseAllButton">Alles zuklappen</button>
+        <button id="expandAllButton">Alles aufklappen</button>
 
         <br><br>
 
         <div id="data">
             <!-- The jsTree is created here -->
         </div>
-
-
     </div>
 
     <script>
         $(document).ready(function () {
             // Get source data from database
-            let myQuelle = <%= new Gson().toJson(SelektionQuellengattungDB.getAllQuellen())%>;
+            let myQuelle = <%= new Gson().toJson(SelektionDB.getList(request.getParameter("Tabelle")))%>;
 
             // Create jsTree structure from the source data
             let treeData = [];
@@ -79,8 +77,9 @@
                     url: "admin-baumstruktur", //  URL path to the servlet
                     method: "POST",
                     data: {
-                        nodeId: nodeId,
-                        newParentId: newParentId
+                        id: nodeId,
+                        parentId: newParentId,
+                        table: '${param.Tabelle}'
                     },
                     success: function (response) {
                         console.log("Parent ID updated successfully:", response);
