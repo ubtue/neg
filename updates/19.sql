@@ -1,0 +1,1 @@
+ALTER TABLE selektion_quellengattung ADD COLUMN parentId INT DEFAULT NULL;
