@@ -87,8 +87,8 @@
             <table style="border-collapse:collapse;" border=1>
                 <tr>
                     <th>Pfad</th>
-                    <th>Load</th>
-                    <th>&nbsp;</th>
+                    <th>Vorschau</th>
+                    <th>Aktionen</th>
                 </tr>
 
                 <%
@@ -101,19 +101,25 @@
                 %>
                 <tr>
                     <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
-                    <td><a href="edit?loadFile=<%=name%>">Load in TinyMce</a></td>
+                    <td></td>
                     <td class="cell-padding">
+                        <a href="edit?loadFile=<%=name%>">HTML Bearbeiten (TinyMCE)</a>
+
+                        <hr>
+
+                        <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
+                        <form  action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich ersetzen?');" enctype="multipart/form-data">
+                            <input type="file" name="file" value="Datei auswahl" >
+                            <input  class="full-width-button" type="submit"  value ="Ersetzen">
+                        </form>
+
+                        <hr>
+
                         <form action="file" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich l&ouml;schen?');">
                             <input  class="full-width-button" type="submit" name="deleteFile" value ="l&ouml;schen">
                             <input type="hidden" name="fileAccess" value="fileDelete">
                             <input type="hidden" name="id" value="<%=content.getID()%>">
                             <input type="hidden" name="context" value="<%=context%>">
-                        </form>
-
-                       <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
-                        <form  action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich ersetzen?');" enctype="multipart/form-data">
-                            <input type="file" name="file" value="Datei auswahl" >
-                            <input  class="full-width-button" type="submit"  value ="Ersetzen">
                         </form>
                     </td>
                 </tr>
@@ -130,17 +136,19 @@
                     <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
                     <td></td>
                      <td class="cell-padding">
+                        <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
+                        <form  action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich ersetzen?');" enctype="multipart/form-data">
+                            <input type="file" name="file" value="Datei auswahl" >
+                            <input  class="full-width-button" type="submit"  value ="Ersetzen">
+                        </form>
+
+                        <hr>
+
                         <form action="file" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich l&ouml;schen?');">
                             <input class="full-width-button" type="submit" name="deleteFile" value ="l&ouml;schen">
                             <input type="hidden" name="fileAccess" value="fileDelete">
                             <input type="hidden" name="id" value="<%=content.getID()%>">
                             <input type="hidden" name="context" value="<%=context%>">
-                        </form>
-
-                        <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
-                        <form  action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich ersetzen?');" enctype="multipart/form-data">
-                            <input type="file" name="file" value="Datei auswahl" >
-                            <input  class="full-width-button" type="submit"  value ="Ersetzen">
                         </form>
                     </td>
                 </tr>
@@ -156,17 +164,19 @@
                     <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
                     <td><img src="<%=imageUrl%>" height="256px"></td>
                     <td class="cell-padding">
+                        <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
+                        <form  action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich ersetzen?');" enctype="multipart/form-data">
+                            <input type="file" name="file" value="Datei auswahl" >
+                            <input  class="full-width-button" type="submit"  value ="Ersetzen">
+                        </form>
+
+                        <hr>
+
                         <form action="file" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich l&ouml;schen?');">
                             <input class="full-width-button" type="submit" name="deleteFile" value ="l&ouml;schen">
                             <input type="hidden" name="fileAccess" value="fileDelete">
                             <input type="hidden" name="id" value="<%=content.getID()%>">
                             <input type="hidden" name="context" value="<%=context%>">
-                        </form>
-
-                        <!-- Attention with enctype="multipart/form-data" hidden' does not work; parameters can be sent through the URL file.?... -->
-                        <form  action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%= content.getName() %> wirklich ersetzen?');" enctype="multipart/form-data">
-                            <input type="file" name="file" value="Datei auswahl" >
-                            <input  class="full-width-button" type="submit"  value ="Ersetzen">
                         </form>
                     </td>
                 </tr>
