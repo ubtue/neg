@@ -153,7 +153,7 @@
                 <executions>
                     <execution>
                         <id>Restart Tomcat</id>
-                        <phase>generate-sources</phase>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
