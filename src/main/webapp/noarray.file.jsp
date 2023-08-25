@@ -1,4 +1,4 @@
-﻿<%
+<%
   if (feldtyp.equals("file") && !array) {
     try {
       Class.forName( sqlDriver );

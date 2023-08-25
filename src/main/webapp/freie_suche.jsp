@@ -1,5 +1,5 @@
 <%@page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB"%>
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
+<%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
 <%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.sql.SQLException" isThreadSafe="false" %>
@@ -32,11 +32,6 @@
 	    width: 240px;
 	}
 </style>
-<script>
-$(function() {
-	$( document ).tooltip();
-});
-</script>
 
     <script type="text/javascript">
     $(function() { // when document has loaded
@@ -62,12 +57,12 @@ $(function() {
     for(Object[] val : res){
         String textfeld = val[0].toString();
         String lang = val[1].toString();
-        
+
         out.print("<option test=\"test\" value=\"" + textfeld +"\">");
         out.print(lang);
-        out.print("</option>");        
-    }    
-    
+        out.print("</option>");
+    }
+
     out.print("</select>");
 
     out.print("<input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"ASC\" checked/>");
@@ -355,12 +350,12 @@ $(function() {
               </tbody>
             </table>
             <!--p>&nbsp;<font color="red">*</font> <br>
-                    
+
                     <% Language.printTextfield(out,session, formular,"KeineFunktion");%>
             </p-->
             <p align="right">
               <a href="javascript:onoff('tab2','tab1');">
-                
+
                   <% Language.printTextfield(out,session, formular,"LinkWeiter");%>
               </a>
             </p>
@@ -373,25 +368,25 @@ $(function() {
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab2');">
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab1");%>
                 </a>
               </li>
               <li>
                 <span>
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab2");%>
                 </span>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab2');">
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab3");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab4','tab2');">
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab4");%>
                 </a>
               </li>
@@ -399,7 +394,7 @@ $(function() {
           </div>
           <div id="main">
             <h3>
-              
+
                 <% Language.printTextfield(out,session, formular,"Ueberschrift2");%>
             </h3>
             <table>
@@ -717,10 +712,10 @@ $(function() {
               </tbody>
             </table>
             <p>
-              &nbsp;<font color="red">*</font> 
+              &nbsp;<font color="red">*</font>
                     <% Language.printTextfield(out,session, formular,"KeineFunktion");%>
               <br>
-              &nbsp;<font color="blue">**</font> 
+              &nbsp;<font color="blue">**</font>
                     <% Language.printTextfield(out,session, formular,"GroessereAusgabe");%>
             </p>
             <p align="right">
@@ -737,25 +732,25 @@ $(function() {
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab3');">
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab1");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab2','tab3');">
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab2");%>
                 </a>
               </li>
               <li>
                 <span>
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab3");%>
                 </span>
               </li>
               <li>
                 <a href="javascript:onoff('tab4','tab3');">
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab4");%>
                 </a>
               </li>
@@ -763,14 +758,14 @@ $(function() {
           </div>
           <div id="main">
             <h3>
-              
+
                 <% Language.printTextfield(out,session, formular,"Ueberschrift3");%>
             </h3>
             <table>
               <tbody>
                 <tr>
                   <th width="200" valign="top">
-                    
+
                       <% Language.printTextfield(out,session, formular,"Sortierung1");%>
                   </th>
                   <td width="450">
@@ -781,7 +776,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    
+
                       <% Language.printTextfield(out,session, formular,"Sortierung2");%>
                   </th>
                   <td width="450">
@@ -792,7 +787,7 @@ $(function() {
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                    
+
                       <% Language.printTextfield(out,session, formular,"Sortierung3");%>
                   </th>
                   <td width="450">
@@ -808,7 +803,7 @@ $(function() {
             </p>
             <p align="right">
               <a href="javascript:onoff('tab4','tab3');">
-                
+
                   <% Language.printTextfield(out,session, formular,"LinkWeiter");%>
               </a>
             </p>
@@ -821,25 +816,25 @@ $(function() {
             <ul id="primary">
               <li>
                 <a href="javascript:onoff('tab1','tab4');">
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab1");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab2','tab4');">
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab2");%>
                 </a>
               </li>
               <li>
                 <a href="javascript:onoff('tab3','tab4');">
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab3");%>
                 </a>
               </li>
               <li>
                 <span>
-                  
+
                     <% Language.printTextfield(out,session, formular,"Tab4");%>
                 </span>
               </li>
@@ -847,7 +842,7 @@ $(function() {
           </div>
           <div id="main">
             <h3>
-              
+
                 <% Language.printTextfield(out,session, formular,"Ueberschrift4");%>
             </h3>
             <table>
@@ -857,7 +852,7 @@ $(function() {
                     <input type="radio" name="export" value="liste" />
                   </td>
                   <td>
-                    
+
                       <% Language.printTextfield(out,session, formular,"ExportListe");%>
                   </td>
                 </tr>
@@ -866,7 +861,7 @@ $(function() {
                     <input type="radio" name="export" value="excel" />
                   </td>
                   <td>
-                    
+
                       <% Language.printTextfield(out,session, formular,"ExportExcel");%>
                   </td>
                 </tr>
@@ -875,7 +870,7 @@ $(function() {
                     <input type="radio" name="export" value="rtf" />
                   </td>
                   <td>
-                    
+
                       <% Language.printTextfield(out,session, formular,"ExportRtf");%>
                     <font color="red">*</font>
                   </td>
@@ -885,14 +880,14 @@ $(function() {
                     <input type="radio" name="export" value="browse" />
                   </td>
                   <td>
-                    
+
                       <% Language.printTextfield(out,session, formular,"ExportBrowse");%>
                   </td>
                 </tr>
               </tbody>
             </table>
             <p>
-              &nbsp;<font color="red">*</font> 
+              &nbsp;<font color="red">*</font>
                 <% Language.printTextfield(out,session, formular,"KeineFunktion");%>
             </p>
             <p align="right">

@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 <body>
 
 <%@ page import = "java.sql.*" isThreadSafe="false" %>

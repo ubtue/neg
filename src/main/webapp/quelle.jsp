@@ -1,4 +1,4 @@
-﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
+<%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>

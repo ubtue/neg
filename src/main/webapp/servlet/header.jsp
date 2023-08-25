@@ -1,20 +1,14 @@
 <HTML>
   <HEAD>
     <TITLE>Nomen et Gens - ${title}</TITLE>
-    <meta http-equiv="Content-Type" 
+    <meta http-equiv="Content-Type"
       content="text/html; charset=utf-8">
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    
-    <script src="javascript/funktionen.js" type="text/javascript"></script>
 
-    <link rel="stylesheet" href="layout/jquery-ui-1.10.3.css" type="text/css">
-    <link rel="stylesheet" href="layout/jquery.autocomplete.css" type="text/css">
-    
     <script src="javascript/funktionen.js" type="text/javascript"></script>
-    <script src="javascript/jquery-1.11.1.min.js" type="text/javascript"></script>
-    <script src="javascript/jquery-ui-1.10.3.js" type="text/javascript"></script>
-    <script src="javascript/jquery.autocomplete.js" type="text/javascript"></script>
-    
+    <script src="webjars/jquery/3.7.0/jquery.min.js" type="text/javascript"></script>
+    <script src="webjars/jQuery-Autocomplete/1.4.10/jquery.autocomplete.min.js" type="text/javascript"></script>
+
     ${additionalCss}
 
     ${additionalJs}

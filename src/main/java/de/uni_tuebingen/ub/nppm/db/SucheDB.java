@@ -12,7 +12,6 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
-import org.hibernate.Criteria;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
@@ -24,15 +23,22 @@ public class SucheDB extends AbstractBase {
         return getList(SucheFavoriten.class);
     }
 
-    public static List<String> getCountryText(String country, String form, String query) throws Exception {
+    public static List<String> getAutocompleteText(String country, String form, String query) throws Exception {
+        verifyDynamicTable(form);
+        verifyDynamicColumn(country);
+
         String sql = "SELECT DISTINCT " + country + " FROM " + form;
-        if (!query.equals("?")) {
-            sql += " WHERE " + country + " LIKE '%" + query + "%' ";
+        boolean addWhereStatement = !query.equals("?");
+        if (addWhereStatement) {
+            sql += " WHERE " + country + " LIKE CONCAT('%', ?1, '%') ";
         }
         sql += " ORDER BY " + country;
 
         try (Session session = getSession()) {
+
             NativeQuery sqlQuery = session.createNativeQuery(sql);
+            if (addWhereStatement)
+                sqlQuery.setParameter(1, query);
             List<String> rows = sqlQuery.getResultList();
             return rows;
         }
@@ -43,6 +49,11 @@ public class SucheDB extends AbstractBase {
         String tabelle = request.getParameter("zwischentabelle");
         String zwAttribut = request.getParameter("zwAttribut");
         String attribut = request.getParameter("attribut");
+
+        verifyDynamicTable(dbForm);
+        verifyDynamicTable(tabelle);
+        verifyDynamicColumn(attribut);
+        verifyDynamicColumn(zwAttribut);
 
         Map<Integer, String> ret = new HashMap<Integer, String>();
         try (Session session = getSession()) {
@@ -67,13 +78,7 @@ public class SucheDB extends AbstractBase {
             sql += " LIMIT " + (pageoffset * pageLimit) + ", " + pageLimit;
         }
 
-        try (Session session = getSession()) {
-            NativeQuery sqlQuery = session.createNativeQuery(sql);
-
-            sqlQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-
-            return sqlQuery.getResultList();
-        }
+        return getMappedList(sql);
     }
 
     public static List<Map<String, String>> getSearchResult(String fieldsString, String tablesString, String conditionsString, String orderString, String order, String[] fields) throws Exception {

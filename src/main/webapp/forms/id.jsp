@@ -1,4 +1,4 @@
-﻿<%@ include file="../configuration.jsp" %>
+<%@ include file="../configuration.jsp" %>
 
 <%
     String id = request.getParameter("ID");

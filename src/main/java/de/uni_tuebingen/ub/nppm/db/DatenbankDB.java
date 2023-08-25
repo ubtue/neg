@@ -112,7 +112,7 @@ public class DatenbankDB extends AbstractBase {
 
     public static Object getSingleResult(String sql) throws Exception {
         try (Session session = getSession();) {
-            SQLQuery query = session.createSQLQuery(sql);
+            NativeQuery query = session.createNativeQuery(sql);
             List<Object> rows = query.getResultList();
             if (!rows.isEmpty()) {
                 return rows.get(0);
@@ -124,7 +124,7 @@ public class DatenbankDB extends AbstractBase {
 
     public static List<Object[]> getResult(String sql) throws Exception {
         try (Session session = getSession()) {
-            SQLQuery query = session.createSQLQuery(sql);
+            NativeQuery query = session.createNativeQuery(sql);
             List<Object[]> rows = query.getResultList();
             return rows;
         }
@@ -133,7 +133,7 @@ public class DatenbankDB extends AbstractBase {
     public static List<String> getSelektion() throws Exception {
         try (Session session = getSession()) {
             String SQL = "SELECT DISTINCT selektion FROM datenbank_selektion ORDER BY selektion ASC";
-            NativeQuery query = session.createSQLQuery(SQL);
+            NativeQuery query = session.createNativeQuery(SQL);
             List<String> rows = query.getResultList();
             return rows;
         }
@@ -141,8 +141,8 @@ public class DatenbankDB extends AbstractBase {
 
     public static List<Object> getSelektionBezeichnung(String tabelle, String bezeichnung) throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT Bezeichnung FROM selektion_" + tabelle + " where Bezeichnung='" + bezeichnung + "'";
-            NativeQuery query = session.createSQLQuery(SQL);
+            String SQL = "SELECT Bezeichnung FROM selektion_" + tabelle + " WHERE Bezeichnung='" + bezeichnung + "'";
+            NativeQuery query = session.createNativeQuery(SQL);
             List<Object> rows = query.getResultList();
             return rows;
         }
@@ -167,22 +167,24 @@ public class DatenbankDB extends AbstractBase {
     public static void updateAuswahlfelder(String tabelle, String feldAlt, String feldNeu) throws Exception {;
         try (Session session = getSession()) {
             String SQL = "SELECT tabelle, spalte FROM datenbank_selektion WHERE selektion ='" + tabelle + "';";
-            NativeQuery query = session.createSQLQuery(SQL);
+            NativeQuery query = session.createNativeQuery(SQL);
             List<Object[]> rows = query.getResultList();
             for (Object[] row : rows) {
                 String tbl = row[0].toString();
                 String col = row[1].toString();
                 String updateSQL = "UPDATE " + tbl + " SET " + col + "=" + feldNeu
-                        + " WHERE " + col + "=" + feldAlt + ";";
+                        + " WHERE " + col + "=" + feldAlt;
                 insertOrUpdate(updateSQL);
             }
         }
 
     }
 
-    public static void deleteAuswahlfeld(String tabelle, String feldAlt) throws Exception {
-        String SQL = "DELETE FROM "+tabelle
-                      + " WHERE ID="+feldAlt;
+    public static void deleteAuswahlfeld(String tabelle, String ID) throws Exception {
+        verifyDynamicTable(tabelle, "selektion_");
+
+        String SQL = "DELETE FROM " + tabelle
+                      + " WHERE ID=" + ID;
         insertOrUpdate(SQL);
     }
 }

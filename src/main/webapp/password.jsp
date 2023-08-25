@@ -1,4 +1,4 @@
-﻿<%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
+<%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
 <%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 
 <form method="post">
