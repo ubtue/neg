@@ -1,11 +1,10 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 @Table(name = "selektion_quellengattung")
-public class SelektionQuellengattung extends Selektion {
+public class SelektionQuellengattung extends SelektionHierarchy {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
@@ -30,6 +29,7 @@ public class SelektionQuellengattung extends Selektion {
         this.bezeichnung = bezeichnung;
     }
 
+    @Override
     public Integer getParentId() {
         return parentId;
     }
