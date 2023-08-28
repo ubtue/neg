@@ -6,10 +6,10 @@
 
 <%!
 public String RenderHierarchyNode(SelektionHierarchy node, int level) {
-    String s = "<option>";
+    String s = "<option value=\"" + node.getId() + "\">";
 
     for (int i=0;i<level;i++) {
-        s += "&nbsp;";
+        s += "&nbsp;&nbsp;";
     }
     if (level > 0) {
         s += "&gt;&nbsp;";

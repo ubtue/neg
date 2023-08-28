@@ -5,35 +5,13 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_areal")
-public class SelektionAreal extends Selektion {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
-
-    @Column(name = "Bezeichnung", length = 255)
-    private String bezeichnung;
+public class SelektionAreal extends SelektionBezeichnung {
 
     @ManyToMany(mappedBy = "areal")
     private Set<Person> personen = new HashSet<>();
 
     @ManyToMany(mappedBy = "areal")
     private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
-
-    public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
-    }
 
     public Set<Person> getPersonen() {
         return this.personen;

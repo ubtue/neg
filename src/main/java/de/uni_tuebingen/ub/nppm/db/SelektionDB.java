@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import org.json.*;
 import de.uni_tuebingen.ub.nppm.model.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import org.hibernate.Session;
 
 /**
  * Class for functions which can be applied to all Selektion...- tables
@@ -52,7 +56,17 @@ public class SelektionDB extends AbstractBase {
     }
 
     static public List<SelektionHierarchy> getListHierarchy(String selektion) throws Exception {
-        return getList(getClassByString(selektion));
+        Class c = getClassByString(selektion);
+
+        try (Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery query = builder.createQuery(c);
+            Root root = query.from(c);
+            query.select(root);
+            // Order is important for sorting before display rendering the hierarchy
+            query.orderBy(builder.asc(root.get(SelektionBezeichnung_.BEZEICHNUNG)));
+            return session.createQuery(query).getResultList();
+        }
     }
 
     static public String getListHierarchyJson(String selektion) throws Exception {

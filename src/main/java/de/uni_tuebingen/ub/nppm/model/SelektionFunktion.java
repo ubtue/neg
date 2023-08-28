@@ -5,30 +5,9 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_funktion")
-public class SelektionFunktion extends Selektion {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
-
-    @Column(name = "Bezeichnung", length=255)
-    private String bezeichnung;
-
+public class SelektionFunktion extends SelektionBezeichnung {
     @ManyToMany(mappedBy = "funktion")
     private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
-
-    public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
-    }
 
     public void addEinzelbeleg(Einzelbeleg beleg) {
         this.getEinzelbeleg().add(beleg);

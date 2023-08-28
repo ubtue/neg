@@ -4,25 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "selektion_datgenauigkeit")
-public class SelektionDatGenauigkeit extends Selektion {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
+public class SelektionDatGenauigkeit extends SelektionBezeichnung {
 
-    @Column(name = "Bezeichnung", length=255)
-    private String bezeichnung;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
-
-    public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
-    }
 }

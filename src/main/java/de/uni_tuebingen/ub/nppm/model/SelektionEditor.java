@@ -5,13 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_editor")
-public class SelektionEditor extends Selektion {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
-
-    @Column(name = "Bezeichnung", length = 255)
-    private String bezeichnung;
+public class SelektionEditor extends SelektionBezeichnung {
 
     @Column(name = "Nachname", length = 50)
     private String nachname;
@@ -32,20 +26,6 @@ public class SelektionEditor extends Selektion {
 
     public void removeEdition(int id){
         this.getEditions().removeIf(e -> e.getId() == id);
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
-
-    public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
     }
 
     public String getNachname() {

@@ -1,11 +1,9 @@
 package de.uni_tuebingen.ub.nppm.model;
 
-import javax.persistence.*;
 import java.util.Set;
 import org.json.*;
 
-@MappedSuperclass
-abstract public class SelektionHierarchy extends Selektion {
+abstract public class SelektionHierarchy extends SelektionBezeichnung {
     abstract public SelektionHierarchy getParent();
     abstract public Set<? extends SelektionHierarchy> getChildren();
 

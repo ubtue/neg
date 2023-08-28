@@ -4,6 +4,11 @@ import javax.persistence.*;
 
 @MappedSuperclass
 public abstract class Selektion {
-    abstract public Integer getId();
-    abstract public String getBezeichnung();
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
 }
