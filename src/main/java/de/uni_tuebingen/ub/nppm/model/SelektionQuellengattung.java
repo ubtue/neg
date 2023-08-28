@@ -1,7 +1,7 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "selektion_quellengattung")
@@ -17,7 +17,7 @@ public class SelektionQuellengattung extends SelektionHierarchy {
     @JoinColumn(name = "parentId", referencedColumnName = "ID")
     private SelektionQuellengattung parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
     private Set<SelektionQuellengattung> children = new HashSet<>();
 
     @Override

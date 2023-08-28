@@ -41,7 +41,7 @@ public class SelektionDB extends AbstractBase {
         Map.entry("selektion_verwandtschaftsgrad", SelektionVerwandtschaftsgrad.class)
     );
 
-    static protected List<String> hierarchies = new ArrayList<>(Arrays.asList("selektion_quellengattung"));
+    static protected List<String> hierarchies = new ArrayList<>(Arrays.asList("selektion_quellengattung", "gastselektion_quellengattung"));
 
     static public Class getClassByString(String selektion) {
         return selektionen.get(selektion);
