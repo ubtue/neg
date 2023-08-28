@@ -50,7 +50,7 @@
                     "data": treeData,
                     "check_callback": true // Allow moving nodes
                 },
-                "plugins": ["dnd"]
+                "plugins": ["dnd", "sort"]
             });
 
             // Button to expand the tree
