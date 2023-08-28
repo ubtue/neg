@@ -5,7 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_areal")
-public class SelektionAreal {
+public class SelektionAreal extends Selektion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class SelektionAreal {
 
     @ManyToMany(mappedBy = "areal")
     private Set<Person> personen = new HashSet<>();
-    
+
     @ManyToMany(mappedBy = "areal")
     private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
 
@@ -52,7 +52,7 @@ public class SelektionAreal {
     public void removePerson(int id) {
         this.getPersonen().removeIf(e -> e.getId() == id);
     }
-    
+
     public void addEinzelbeleg(Einzelbeleg beleg) {
         this.getEinzelbeleg().add(beleg);
     }

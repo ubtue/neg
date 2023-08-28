@@ -5,14 +5,14 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_ethnienerhalt")
-public class SelektionEthnienErhalt {
+public class SelektionEthnienErhalt extends Selektion {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 
     @Column(name = "Bezeichnung", length=255)
     private String bezeichnung;
-    
+
     @ManyToMany(mappedBy = "ethnieErhalt")
     private Set<Person> personen = new HashSet<>();
 
@@ -27,7 +27,7 @@ public class SelektionEthnienErhalt {
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
     }
-    
+
     public Set<Person> getPersonen() {
         return this.personen;
     }

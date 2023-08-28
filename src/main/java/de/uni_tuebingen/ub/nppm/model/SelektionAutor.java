@@ -5,14 +5,14 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_autor")
-public class SelektionAutor {
+public class SelektionAutor extends Selektion {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 
     @Column(name = "Nachname", length=255)
     private String nachname;
-    
+
     @Column(name = "Vorname", length=255)
     private String vorname;
 

@@ -5,7 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_dmghband")
-public class SelektionDmghBand {
+public class SelektionDmghBand extends Selektion {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;

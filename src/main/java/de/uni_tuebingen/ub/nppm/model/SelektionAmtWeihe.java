@@ -5,7 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_amtweihe")
-public class SelektionAmtWeihe {
+public class SelektionAmtWeihe extends Selektion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +48,7 @@ public class SelektionAmtWeihe {
     public void removePerson(int id) {
         this.getPersonen().removeIf(e -> e.getId() == id);
     }
-    
+
     public void addEinzelbeleg(Einzelbeleg einzelbeleg) {
         this.getEinzelbelege().add(einzelbeleg);
     }

@@ -5,7 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_funktion")
-public class SelektionFunktion {
+public class SelektionFunktion extends Selektion {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
@@ -15,7 +15,7 @@ public class SelektionFunktion {
 
     @ManyToMany(mappedBy = "funktion")
     private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
-    
+
     public Integer getId() {
         return id;
     }

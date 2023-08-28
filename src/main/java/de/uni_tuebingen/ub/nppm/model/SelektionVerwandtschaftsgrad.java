@@ -5,7 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_verwandtschaftsgrad")
-public class SelektionVerwandtschaftsgrad {
+public class SelektionVerwandtschaftsgrad extends Selektion {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
