@@ -5,7 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_ethnie")
-public class SelektionEthnie extends Selektion {
+public class SelektionEthnie extends SelektionBezeichnung {
     @ManyToMany(mappedBy = "ethnie")
     private Set<Person> personen = new HashSet<>();
 
