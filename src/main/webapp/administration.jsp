@@ -116,11 +116,10 @@
                                 out.print("<td>" + tbl + "</td>");
                                 out.print("<td><a href=\"admin-auswahlfelder?Formular=bearbeiten&Tabelle=" + tbl + "\">bearbeiten</a></td>");
                                 out.print("<td><a href=\"admin-auswahlfelder?Formular=zusammenfuehren&Tabelle=" + tbl + "\">zusammenf&uuml;hren</a></td>");
-                                if (tbl.contentEquals("selektion_quellengattung") ) {
+                                if (SelektionDB.isHierarchy(tbl)) {
                                     out.print("<td><a href=\"admin-baumstruktur?Formular=baumstruktur&Tabelle=" + tbl + "\">Baumstruktur</a></td>");
                                 }
                                 out.print("</tr>");
-                                out.println("");
                             }
                         }
                     %>

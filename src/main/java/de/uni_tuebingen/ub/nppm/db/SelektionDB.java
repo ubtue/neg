@@ -1,5 +1,7 @@
 package de.uni_tuebingen.ub.nppm.db;
 
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import de.uni_tuebingen.ub.nppm.model.*;
@@ -38,12 +40,18 @@ public class SelektionDB extends AbstractBase {
         Map.entry("selektion_verwandtschaftsgrad", SelektionVerwandtschaftsgrad.class)
     );
 
+    static protected List<String> hierarchies = new ArrayList<>(Arrays.asList("selektion_quellengattung"));
+
     static public Class getClassByString(String selektion) {
         return selektionen.get(selektion);
     }
 
     static public List getList(String selektion) throws Exception {
         return getList(getClassByString(selektion));
+    }
+
+    static public boolean isHierarchy(String selektion) {
+        return hierarchies.contains(selektion);
     }
 
     static public void updateParentId(String selektion, int id, Integer parentId) throws Exception {
