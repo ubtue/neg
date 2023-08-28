@@ -21,10 +21,12 @@ public class SelektionAreal extends Selektion {
     @ManyToMany(mappedBy = "areal")
     private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public String getBezeichnung() {
         return bezeichnung;
     }

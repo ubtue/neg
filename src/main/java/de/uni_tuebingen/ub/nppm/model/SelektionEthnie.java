@@ -16,10 +16,12 @@ public class SelektionEthnie extends Selektion {
     @ManyToMany(mappedBy = "ethnie")
     private Set<Person> personen = new HashSet<>();
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public String getBezeichnung() {
         return bezeichnung;
     }

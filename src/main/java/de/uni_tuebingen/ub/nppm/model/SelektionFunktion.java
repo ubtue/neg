@@ -16,10 +16,12 @@ public class SelektionFunktion extends Selektion {
     @ManyToMany(mappedBy = "funktion")
     private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public String getBezeichnung() {
         return bezeichnung;
     }

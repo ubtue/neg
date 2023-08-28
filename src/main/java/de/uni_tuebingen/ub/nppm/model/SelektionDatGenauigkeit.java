@@ -1,7 +1,6 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 @Table(name = "selektion_datgenauigkeit")
@@ -13,10 +12,12 @@ public class SelektionDatGenauigkeit extends Selektion {
     @Column(name = "Bezeichnung", length=255)
     private String bezeichnung;
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public String getBezeichnung() {
         return bezeichnung;
     }

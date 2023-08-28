@@ -1,7 +1,6 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 @Table(name = "selektion_autor")
@@ -16,8 +15,14 @@ public class SelektionAutor extends Selektion {
     @Column(name = "Vorname", length=255)
     private String vorname;
 
+    @Override
     public Integer getId() {
         return id;
+    }
+
+    @Override
+    public String getBezeichnung() {
+        return getVorname() + " " + getNachname();
     }
 
     public String getNachname() {

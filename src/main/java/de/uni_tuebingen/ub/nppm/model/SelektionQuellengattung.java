@@ -16,10 +16,12 @@ public class SelektionQuellengattung extends Selektion {
     @Column(name = "parentId")
     private Integer parentId;
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public String getBezeichnung() {
         return bezeichnung;
     }

@@ -21,10 +21,12 @@ public class SelektionStand extends Selektion {
     @ManyToMany(mappedBy = "stand")
     private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public String getBezeichnung() {
         return bezeichnung;
     }

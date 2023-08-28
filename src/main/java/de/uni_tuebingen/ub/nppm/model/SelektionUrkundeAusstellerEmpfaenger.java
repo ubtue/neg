@@ -43,10 +43,12 @@ public class SelektionUrkundeAusstellerEmpfaenger extends Selektion {
         this.getUrkundeAussteller().removeIf(e -> e.getId() == id);
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public String getBezeichnung() {
         return bezeichnung;
     }

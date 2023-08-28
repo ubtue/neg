@@ -34,10 +34,12 @@ public class SelektionEditor extends Selektion {
         this.getEditions().removeIf(e -> e.getId() == id);
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public String getBezeichnung() {
         return bezeichnung;
     }
