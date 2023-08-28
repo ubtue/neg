@@ -1,4 +1,3 @@
-<%@page import="com.google.gson.Gson"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
 ﻿<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.util.*" isThreadSafe="false" %>
@@ -30,7 +29,7 @@
     <script>
         $(document).ready(function () {
             // Get source data from database
-            let myQuelle = <%= new Gson().toJson(SelektionDB.getList(request.getParameter("Tabelle")))%>;
+            let myQuelle = <%=SelektionDB.getListHierarchyJson(request.getParameter("Tabelle"))%>;
 
             // Create jsTree structure from the source data
             let treeData = [];
@@ -39,7 +38,7 @@
                 let node = {
                     id: quelle.id,
                     text: quelle.bezeichnung,
-                    parent: (quelle.parentId !== null && quelle.parentId !== undefined) ? quelle.parentId : "#"
+                    parent: (quelle.parent !== null) ? quelle.parent.id : "#"
                 };
                 treeData.push(node);
             }
@@ -79,11 +78,7 @@
                     data: {
                         id: nodeId,
                         parentId: newParentId,
-                        table: '${param.Tabelle}'
-                    },
-                    success: function (response) {
-                        console.log("Parent ID updated successfully:", response);
-                        console.log("New Parent ID from server:", response.newParentId);
+                        Tabelle: '${param.Tabelle}'
                     },
                     error: function (error) {
 

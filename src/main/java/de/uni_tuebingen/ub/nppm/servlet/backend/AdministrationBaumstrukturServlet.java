@@ -40,8 +40,9 @@ public class AdministrationBaumstrukturServlet extends AbstractBackendServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // This method is called via AJAX to change the parent ID.
         Integer id = Integer.parseInt(request.getParameter("id")); // Hier die ID des verschobenen Nodes
-        String table = request.getParameter("table");
+        String table = request.getParameter("Tabelle");
         Integer parentId = null;
         String temp = request.getParameter("parentId");
         if (temp != null && !temp.isEmpty()) {
@@ -50,7 +51,6 @@ public class AdministrationBaumstrukturServlet extends AbstractBackendServlet {
 
         try {
             SelektionDB.updateParentId(table, id, parentId);
-            generatePage(request, response);
         } catch (Exception ex) {
             throw new ServletException(ex);
         }

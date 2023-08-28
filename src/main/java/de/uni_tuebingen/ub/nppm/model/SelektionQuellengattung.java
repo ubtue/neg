@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "selektion_quellengattung")
@@ -12,8 +13,12 @@ public class SelektionQuellengattung extends SelektionHierarchy {
     @Column(name = "Bezeichnung", length=50)
     private String bezeichnung;
 
-    @Column(name = "parentId")
-    private Integer parentId;
+    @OneToOne(targetEntity = SelektionQuellengattung.class)
+    @JoinColumn(name = "parentId", referencedColumnName = "ID")
+    private SelektionQuellengattung parent;
+
+    @OneToMany(mappedBy = "parent")
+    private Set<SelektionQuellengattung> children = new HashSet<>();
 
     @Override
     public Integer getId() {
@@ -30,11 +35,12 @@ public class SelektionQuellengattung extends SelektionHierarchy {
     }
 
     @Override
-    public Integer getParentId() {
-        return parentId;
+    public SelektionHierarchy getParent() {
+        return parent;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    @Override
+    public Set<? extends SelektionHierarchy> getChildren() {
+        return children;
     }
 }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.json.*;
 import de.uni_tuebingen.ub.nppm.model.*;
 
 /**
@@ -46,8 +47,21 @@ public class SelektionDB extends AbstractBase {
         return selektionen.get(selektion);
     }
 
-    static public List getList(String selektion) throws Exception {
+    static public List<Selektion> getList(String selektion) throws Exception {
         return getList(getClassByString(selektion));
+    }
+
+    static public List<SelektionHierarchy> getListHierarchy(String selektion) throws Exception {
+        return getList(getClassByString(selektion));
+    }
+
+    static public String getListHierarchyJson(String selektion) throws Exception {
+        JSONArray array = new JSONArray();
+        List<SelektionHierarchy> list = getListHierarchy(selektion);
+        for (SelektionHierarchy entry : list) {
+            array.put(entry.toJSONObject());
+        }
+        return array.toString();
     }
 
     static public boolean isHierarchy(String selektion) {
