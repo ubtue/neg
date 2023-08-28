@@ -13,7 +13,7 @@
 
         <h1>Baumstruktur bearbeiten</h1>
         <h2>Tabelle: ${param.Tabelle}</h2>
-        <p>Bitte verwenden Sie Drag und Drop</p>
+        <p>Bitte verwenden Sie Drag-and-Drop zum Verschieben der Einträge auf andere Ebenen.</p>
 
         <!-- Buttons to Expand and Collapse Tree -->
         <button id="collapseAllButton">Alles zuklappen</button>
