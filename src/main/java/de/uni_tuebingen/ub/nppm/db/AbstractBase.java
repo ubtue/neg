@@ -101,6 +101,8 @@ public class AbstractBase {
             configuration.addAnnotatedClass(SelektionBkz.class);
             configuration.addAnnotatedClass(SelektionEditor.class);
 
+            configuration.addAnnotatedClass(SelektionQuellengattungGast.class);
+
             configuration.addAnnotatedClass(MghLemma.class);
             configuration.addAnnotatedClass(MghLemmaBearbeiter.class);
             configuration.addAnnotatedClass(MghLemmaKorrektor.class);

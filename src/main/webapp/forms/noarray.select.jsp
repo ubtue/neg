@@ -1,11 +1,12 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.model.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
-<%@ page import="java.util.List" isThreadSafe="false" %>
-<%@ page import="java.util.Map" isThreadSafe="false" %>
+<%@ page import="java.util.*" isThreadSafe="false" %>
 
 <%!
-public String RenderHierarchyNode(SelektionHierarchy node, int level) {
+public String RenderHierarchyNode(SelektionHierarchy node, Set<Integer> nodeIdsToDisplay, int level) {
+    // Unfortunately <optgroup> cannot be used since the group will not be selectable itself,
+    // so instead we use prefix characters to signalize parent/child relationships.
     String s = "<option value=\"" + node.getId() + "\">";
 
     for (int i=0;i<level;i++) {
@@ -19,10 +20,27 @@ public String RenderHierarchyNode(SelektionHierarchy node, int level) {
     s += "</option>";
 
     for (SelektionHierarchy child : node.getChildren()) {
-        s += RenderHierarchyNode(child, level + 1);
+        if (nodeIdsToDisplay.contains(child.getId()))
+        s += RenderHierarchyNode(child, nodeIdsToDisplay, level + 1);
     }
 
     return s;
+}
+
+public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes) {
+    // Make sure we have all delivered nodes as well as all their parents
+    // (Especially in GAST we only get child nodes linked to quelle.zuVeroeffentlichen=1
+    // and cannot display them properly without adding their parent ids.)
+    Set<Integer> ids = new TreeSet<>();
+    for (SelektionHierarchy node : nodes) {
+        ids.add(node.getId());
+        SelektionHierarchy parent = node.getParent();
+        while (parent != null) {
+            ids.add(parent.getId());
+            parent = parent.getParent();
+        }
+    }
+    return ids;
 }
 %>
 
@@ -50,12 +68,17 @@ public String RenderHierarchyNode(SelektionHierarchy node, int level) {
 
         boolean isHierarchy = SelektionDB.isHierarchy(auswahlherkunft);
         if (isHierarchy) {
-            // Vorsicht GAST berücksichtigen falls notwendig
-            String auswahlherkunftNoGast = auswahlherkunft.replaceAll("^gast", "");
-            for (SelektionHierarchy node : SelektionDB.getListHierarchy(auswahlherkunftNoGast)) {
-                if (node.getParent() == null) {
-                    // Unfortunately <optgroup> cannot be used here since the group will not be selectable itself.
-                    out.println(RenderHierarchyNode(node, 0));
+            // If DB result depends on GAST, we need to do a second query to get all nodes from backend
+            List<SelektionHierarchy> hierarchyNodes = SelektionDB.getListHierarchy(auswahlherkunft);
+            List<SelektionHierarchy> hierarchyNodesAll = hierarchyNodes;
+            if (auswahlherkunft.startsWith("gast")) {
+                String auswahlherkunftBackend = auswahlherkunft.replaceAll("^gast", "");
+                hierarchyNodesAll = SelektionDB.getListHierarchy(auswahlherkunftBackend);
+            }
+            Set<Integer> hierarchyNodeIdsToDisplay = GetHierarchyNodeIDsToDisplay(hierarchyNodes);
+            for (SelektionHierarchy node : hierarchyNodesAll) {
+                if (node.getParent() == null && hierarchyNodeIdsToDisplay.contains(node.getId())) {
+                    out.println(RenderHierarchyNode(node, hierarchyNodeIdsToDisplay, 0));
                 }
             }
         } else {
