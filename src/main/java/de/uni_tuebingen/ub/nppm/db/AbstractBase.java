@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.NamespaceHelper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,6 +13,7 @@ import org.hibernate.query.NativeQuery;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -21,12 +21,15 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 public class AbstractBase {
 
     protected static SessionFactory sessionFactory;
 
     protected static javax.naming.InitialContext initialContext = null;
+
+    public static Map<String,Class> tableNameToEntityMap = initTableNameToEntityMap();
 
     public static void setInitialContext(javax.naming.InitialContext ctx) {
         initialContext = ctx;
@@ -69,8 +72,7 @@ public class AbstractBase {
             configuration.setProperties(settings);
 
             // Add all model classes dynamically
-            List<Class> classes = NamespaceHelper.getClassesOfPackage("de.uni_tuebingen.ub.nppm.model");
-            for (Class c : classes) {
+            for (Class c : NamespaceHelper.getClassesOfPackage("de.uni_tuebingen.ub.nppm.model")) {
                 if (c.isAnnotationPresent(Entity.class)) {
                     configuration.addAnnotatedClass(c);
                 }
@@ -82,6 +84,30 @@ public class AbstractBase {
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
         return sessionFactory;
+    }
+
+    protected static Map<String,Class> initTableNameToEntityMap() throws RuntimeException {
+        Map<String,Class> map = new HashMap<>();
+        try {
+            for (Class<?> c : NamespaceHelper.getClassesOfPackage("de.uni_tuebingen.ub.nppm.model")) {
+                if (c.isAnnotationPresent(Entity.class)) {
+                    Table table = (Table)c.getAnnotation(Table.class);
+                    map.put(table.name(), c);
+                }
+            }
+        } catch (Exception e) {
+            // We need to convert this to a RuntimeException, since it is the only one
+            // that may be used when generating a static class variable.
+            throw new RuntimeException(e);
+        }
+        return map;
+    }
+
+    public static Class getEntityClassByTableName(String tableName) throws Exception {
+        Class c = tableNameToEntityMap.get(tableName);
+        if (c == null)
+            throw new Exception("Entity class not found for table: " + tableName);
+        return c;
     }
 
     protected static String getDatabaseName() throws Exception {

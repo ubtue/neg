@@ -3,7 +3,6 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.json.*;
 import de.uni_tuebingen.ub.nppm.model.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -16,49 +15,14 @@ import org.hibernate.Session;
  * in a similar way
  */
 public class SelektionDB extends AbstractBase {
-    // TODO: Can this instead be taken from the Model annotations?
-    static protected Map<String, Class> selektionen = Map.ofEntries(
-        Map.entry("selektion_amtweihe", SelektionAmtWeihe.class),
-        Map.entry("selektion_areal", SelektionAreal.class),
-        Map.entry("selektion_autor", SelektionAutor.class),
-        Map.entry("selektion_bearbeitungsstatus", SelektionBearbeitungsstatus.class),
-        Map.entry("selektion_bewertung", SelektionBewertung.class),
-        Map.entry("selektion_bkz", SelektionBkz.class),
-        Map.entry("selektion_datgenauigkeit", SelektionDatGenauigkeit.class),
-        Map.entry("selektion_dmghband", SelektionDmghBand.class),
-        Map.entry("selektion_echtheit", SelektionEchtheit.class),
-        Map.entry("selektion_editor", SelektionEditor.class),
-        Map.entry("selektion_ethnie", SelektionEthnie.class),
-        Map.entry("selektion_ethnienerhalt", SelektionEthnienErhalt.class),
-        Map.entry("selektion_funktion", SelektionFunktion.class),
-        Map.entry("selektion_geschlecht", SelektionGeschlecht.class),
-        Map.entry("selektion_grammatikgeschlecht", SelektionGrammatikgeschlecht.class),
-        Map.entry("selektion_janein", SelektionJaNein.class),
-        Map.entry("selektion_kasus", SelektionKasus.class),
-        Map.entry("selektion_lebendverstorben", SelektionLebendVerstorben.class),
-        Map.entry("selektion_ort", SelektionOrt.class),
-        Map.entry("selektion_quellengattung", SelektionQuellengattung.class),
-        Map.entry("selektion_reihe", SelektionReihe.class),
-        Map.entry("selektion_sammelband", SelektionSammelband.class),
-        Map.entry("selektion_stand", SelektionStand.class),
-        Map.entry("selektion_urkundeausstellerempfaenger", SelektionUrkundeAusstellerEmpfaenger.class),
-        Map.entry("selektion_verwandtschaftsgrad", SelektionVerwandtschaftsgrad.class),
-
-        Map.entry("gastselektion_quellengattung", SelektionQuellengattungGast.class)
-    );
-
     static protected List<String> hierarchies = new ArrayList<>(Arrays.asList("selektion_quellengattung", "gastselektion_quellengattung"));
 
-    static public Class getClassByString(String selektion) {
-        return selektionen.get(selektion);
-    }
-
     static public List<Selektion> getList(String selektion) throws Exception {
-        return getList(getClassByString(selektion));
+        return getList(getEntityClassByTableName(selektion));
     }
 
     static public List<SelektionHierarchy> getListHierarchy(String selektion) throws Exception {
-        Class c = getClassByString(selektion);
+        Class c = getEntityClassByTableName(selektion);
 
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -81,7 +45,14 @@ public class SelektionDB extends AbstractBase {
     }
 
     static public boolean isHierarchy(String selektion) {
-        return hierarchies.contains(selektion);
+        try {
+            Class c = getEntityClassByTableName(selektion);
+            return SelektionHierarchy.class.isAssignableFrom(c);
+        } catch (Exception e) {
+            // right now we don't have all gast... views registered as entities yet,
+            // so we simply return false in this case.
+            return false;
+        }
     }
 
     static public void updateParentId(String selektion, int id, Integer parentId) throws Exception {
