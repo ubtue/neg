@@ -271,7 +271,8 @@ function CheckAll(index, check, praefix) {
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Quelle"/>
-                    </jsp:include>                  </td>
+                    </jsp:include>
+                  </td>
                 </tr>
                 <tr>
                   <th>

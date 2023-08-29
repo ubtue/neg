@@ -5,33 +5,13 @@ import java.util.*;
 
 @Entity
 @Table(name = "selektion_amtweihe")
-public class SelektionAmtWeihe {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
-
-    @Column(name = "Bezeichnung", length = 255)
-    private String bezeichnung;
+public class SelektionAmtWeihe extends SelektionBezeichnung {
 
     @ManyToMany(mappedBy = "amtWeihe")
     private Set<Person> personen = new HashSet<>();
 
     @ManyToMany(mappedBy = "amtWeihe")
     private Set<Einzelbeleg> einzelbelege = new HashSet<>();
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
-
-    public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
-    }
 
     public Set<Einzelbeleg> getEinzelbelege() {
         return this.einzelbelege;
@@ -48,7 +28,7 @@ public class SelektionAmtWeihe {
     public void removePerson(int id) {
         this.getPersonen().removeIf(e -> e.getId() == id);
     }
-    
+
     public void addEinzelbeleg(Einzelbeleg einzelbeleg) {
         this.getEinzelbelege().add(einzelbeleg);
     }

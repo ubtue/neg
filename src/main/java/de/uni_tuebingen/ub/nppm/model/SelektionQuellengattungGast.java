@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "selektion_quellengattung")
-public class SelektionQuellengattung extends SelektionHierarchy {
+@Table(name = "gastselektion_quellengattung")
+public class SelektionQuellengattungGast extends SelektionHierarchy {
 
     @OneToOne(targetEntity = SelektionQuellengattung.class)
     @JoinColumn(name = "parentId", referencedColumnName = "ID")

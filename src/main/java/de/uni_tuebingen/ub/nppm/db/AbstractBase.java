@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.NamespaceHelper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -13,18 +13,23 @@ import org.hibernate.query.NativeQuery;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 public class AbstractBase {
 
     protected static SessionFactory sessionFactory;
 
     protected static javax.naming.InitialContext initialContext = null;
+
+    public static Map<String,Class> tableNameToEntityMap = initTableNameToEntityMap();
 
     public static void setInitialContext(javax.naming.InitialContext ctx) {
         initialContext = ctx;
@@ -66,87 +71,12 @@ public class AbstractBase {
 
             configuration.setProperties(settings);
 
-            // TODO: Add all model classes dynamically
-            configuration.addAnnotatedClass(Benutzer.class);
-            configuration.addAnnotatedClass(BenutzerGruppe.class);
-
-            configuration.addAnnotatedClass(Edition.class);
-            configuration.addAnnotatedClass(EditionBand.class);
-            configuration.addAnnotatedClass(EditionBestand.class);
-            configuration.addAnnotatedClass(EditionEditor.class);
-
-            configuration.addAnnotatedClass(SelektionAmtWeihe.class);
-            configuration.addAnnotatedClass(SelektionAreal.class);
-            configuration.addAnnotatedClass(SelektionAutor.class);
-            configuration.addAnnotatedClass(SelektionBearbeitungsstatus.class);
-            configuration.addAnnotatedClass(SelektionBewertung.class);
-            configuration.addAnnotatedClass(SelektionDatGenauigkeit.class);
-            configuration.addAnnotatedClass(SelektionEchtheit.class);
-            configuration.addAnnotatedClass(SelektionEthnie.class);
-            configuration.addAnnotatedClass(SelektionEthnienErhalt.class);
-            configuration.addAnnotatedClass(SelektionFunktion.class);
-            configuration.addAnnotatedClass(SelektionGeschlecht.class);
-            configuration.addAnnotatedClass(SelektionGrammatikgeschlecht.class);
-            configuration.addAnnotatedClass(SelektionJaNein.class);
-            configuration.addAnnotatedClass(SelektionKasus.class);
-            configuration.addAnnotatedClass(SelektionLebendVerstorben.class);
-            configuration.addAnnotatedClass(SelektionQuellengattung.class);
-            configuration.addAnnotatedClass(SelektionStand.class);
-            configuration.addAnnotatedClass(SelektionUrkundeAusstellerEmpfaenger.class);
-            configuration.addAnnotatedClass(SelektionVerwandtschaftsgrad.class);
-            configuration.addAnnotatedClass(SelektionOrt.class);
-            configuration.addAnnotatedClass(SelektionReihe.class);
-            configuration.addAnnotatedClass(SelektionSammelband.class);
-            configuration.addAnnotatedClass(SelektionDmghBand.class);
-            configuration.addAnnotatedClass(SelektionBkz.class);
-            configuration.addAnnotatedClass(SelektionEditor.class);
-
-            configuration.addAnnotatedClass(MghLemma.class);
-            configuration.addAnnotatedClass(MghLemmaBearbeiter.class);
-            configuration.addAnnotatedClass(MghLemmaKorrektor.class);
-
-            configuration.addAnnotatedClass(NamenKommentar.class);
-            configuration.addAnnotatedClass(NamenKommentarBearbeiter.class);
-            configuration.addAnnotatedClass(NamenKommentarKorrektor.class);
-
-            configuration.addAnnotatedClass(Quelle.class);
-            configuration.addAnnotatedClass(QuelleInEdition_MM.class);
-
-            configuration.addAnnotatedClass(Handschrift.class);
-            configuration.addAnnotatedClass(HandschriftUeberlieferung.class);
-
-            configuration.addAnnotatedClass(Urkunde.class);
-            configuration.addAnnotatedClass(UrkundeBetreff.class);
-            configuration.addAnnotatedClass(UrkundeDorsalnotiz.class);
-            configuration.addAnnotatedClass(UrkundeEmpfaenger.class);
-
-            configuration.addAnnotatedClass(Person.class);
-            configuration.addAnnotatedClass(PersonAmtStandWeihe_MM.class);
-            configuration.addAnnotatedClass(PersonQuiet.class);
-            configuration.addAnnotatedClass(PersonVariante.class);
-            configuration.addAnnotatedClass(PersonAreal_MM.class);
-            configuration.addAnnotatedClass(PersonEthnie_MM.class);
-            configuration.addAnnotatedClass(PersonVerwandtMit_MM.class);
-
-            configuration.addAnnotatedClass(Einzelbeleg.class);
-            configuration.addAnnotatedClass(EinzelbelegHatFunktion_MM.class);
-            configuration.addAnnotatedClass(EinzelbelegTextkritik.class);
-            configuration.addAnnotatedClass(EinzelbelegMghLemma_MM.class);
-            configuration.addAnnotatedClass(EinzelbelegNamenkommentar_MM.class);
-            configuration.addAnnotatedClass(EinzelbelegHatPerson_MM.class);
-            configuration.addAnnotatedClass(EinzelbelegHatEthnie_MM.class);
-
-            configuration.addAnnotatedClass(DatenbankFilter.class);
-            configuration.addAnnotatedClass(DatenbankMapping.class);
-            configuration.addAnnotatedClass(DatenbankSelektion.class);
-            configuration.addAnnotatedClass(DatenbankSprache.class);
-            configuration.addAnnotatedClass(DatenbankTexte.class);
-
-            configuration.addAnnotatedClass(SucheFavoriten.class);
-
-            configuration.addAnnotatedClass(Bemerkung.class);
-
-            configuration.addAnnotatedClass(Content.class);
+            // Add all model classes dynamically
+            for (Class c : NamespaceHelper.getClassesOfPackage("de.uni_tuebingen.ub.nppm.model")) {
+                if (c.isAnnotationPresent(Entity.class)) {
+                    configuration.addAnnotatedClass(c);
+                }
+            }
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
@@ -154,6 +84,30 @@ public class AbstractBase {
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
         return sessionFactory;
+    }
+
+    protected static Map<String,Class> initTableNameToEntityMap() throws RuntimeException {
+        Map<String,Class> map = new HashMap<>();
+        try {
+            for (Class<?> c : NamespaceHelper.getClassesOfPackage("de.uni_tuebingen.ub.nppm.model")) {
+                if (c.isAnnotationPresent(Entity.class)) {
+                    Table table = (Table)c.getAnnotation(Table.class);
+                    map.put(table.name(), c);
+                }
+            }
+        } catch (Exception e) {
+            // We need to convert this to a RuntimeException, since it is the only one
+            // that may be used when generating a static class variable.
+            throw new RuntimeException(e);
+        }
+        return map;
+    }
+
+    public static Class getEntityClassByTableName(String tableName) throws Exception {
+        Class c = tableNameToEntityMap.get(tableName);
+        if (c == null)
+            throw new Exception("Entity class not found for table: " + tableName);
+        return c;
     }
 
     protected static String getDatabaseName() throws Exception {
