@@ -71,8 +71,8 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
             // If DB result depends on GAST, we need to do a second query to get all nodes from backend
             List<SelektionHierarchy> hierarchyNodes = SelektionDB.getListHierarchy(auswahlherkunft);
             List<SelektionHierarchy> hierarchyNodesAll = hierarchyNodes;
-            if (auswahlherkunft.startsWith("gast")) {
-                String auswahlherkunftBackend = auswahlherkunft.replaceAll("^gast", "");
+            String auswahlherkunftBackend = SelektionDB.getNonGastTable(auswahlherkunft);
+            if (auswahlherkunftBackend != null) {
                 hierarchyNodesAll = SelektionDB.getListHierarchy(auswahlherkunftBackend);
             }
             Set<Integer> hierarchyNodeIdsToDisplay = GetHierarchyNodeIDsToDisplay(hierarchyNodes);

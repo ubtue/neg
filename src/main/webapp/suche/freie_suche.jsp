@@ -1,5 +1,5 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
-<%@ page import="de.uni_tuebingen.ub.nppm.model.SelektionQuellengattung"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.*"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="java.math.BigInteger" isThreadSafe="false" %>
@@ -88,7 +88,8 @@
   }
   if (Integer.parseInt(request.getParameter("AmtWeihePerson")) > -1) {
     tableString += " INNER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";
-    conditions.add("person_hatamtstandweihe.AmtWeiheID = '"+request.getParameter("AmtWeihePerson")+"'");
+    List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("AmtWeihePerson")), SelektionAmtWeihe.class).getSubtreeIdsRecursive();
+    conditions.add("person_hatamtstandweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     person = true;
   }
   else if (Integer.parseInt(request.getParameter("AmtWeihePerson")) == -2) {
@@ -124,7 +125,8 @@
   }
   if (Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")) > -1) {
     tableString += " INNER JOIN einzelbeleg_hatamtweihe ON einzelbeleg.ID=einzelbeleg_hatamtweihe.EinzelbelegID";
-    conditions.add("einzelbeleg_hatamtweihe.AmtWeiheID = '"+request.getParameter("AmtWeiheEinzelbeleg")+"'");
+    List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")), SelektionAmtWeihe.class).getSubtreeIdsRecursive();
+    conditions.add("einzelbeleg_hatamtweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     einzelbeleg = true;
   }
   else if (Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")) == -2) {
@@ -220,7 +222,6 @@
     einzelbeleg = true;
   }
   if (Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
-    // This is a hierarchy, so we need to consider all children as well
     List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("Quellengattung")), SelektionQuellengattung.class).getSubtreeIdsRecursive();
     conditions.add("einzelbeleg.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     einzelbeleg = true;

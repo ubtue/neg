@@ -1,21 +1,24 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-import org.json.*;
 import de.uni_tuebingen.ub.nppm.model.*;
+import java.util.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
+import org.json.*;
 
 /**
  * Class for functions which can be applied to all Selektion...- tables
  * in a similar way
  */
 public class SelektionDB extends AbstractBase {
-    static protected List<String> hierarchies = new ArrayList<>(Arrays.asList("selektion_quellengattung", "gastselektion_quellengattung"));
+
+    static protected Map<String,String> gastToNonGast = Map.ofEntries(
+        Map.entry("gastselektion_amtweihe_einzelbeleg", "selektion_amtweihe"),
+        Map.entry("gastselektion_amtweihe_person", "selektion_amtweihe"),
+        Map.entry("gastselektion_quellengattung", "selektion_quellengattung")
+    );
 
     static public List<Selektion> getList(String selektion) throws Exception {
         return getList(getEntityClassByTableName(selektion));
@@ -42,6 +45,10 @@ public class SelektionDB extends AbstractBase {
             array.put(entry.toJSONObject());
         }
         return array.toString();
+    }
+
+    static public String getNonGastTable(String selektion) {
+        return gastToNonGast.get(selektion);
     }
 
     static public boolean isHierarchy(String selektion) {

@@ -4,9 +4,8 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "selektion_amtweihe")
-public class SelektionAmtWeihe extends SelektionHierarchy {
-
+@Table(name = "gastselektion_amtweihe_einzelbeleg")
+public class SelektionAmtWeiheGastEinzelbeleg extends SelektionHierarchy {
     @ManyToMany(mappedBy = "amtWeihe")
     private Set<Person> personen = new HashSet<>();
 
@@ -19,22 +18,6 @@ public class SelektionAmtWeihe extends SelektionHierarchy {
 
     public Set<Person> getPersonen() {
         return this.personen;
-    }
-
-    public void addPerson(Person person) {
-        this.getPersonen().add(person);
-    }
-
-    public void removePerson(int id) {
-        this.getPersonen().removeIf(e -> e.getId() == id);
-    }
-
-    public void addEinzelbeleg(Einzelbeleg einzelbeleg) {
-        this.getEinzelbelege().add(einzelbeleg);
-    }
-
-    public void removeEinzelbeleg(int id) {
-        this.getEinzelbelege().removeIf(e -> e.getId() == id);
     }
 
     /* Hierarchy-related */
