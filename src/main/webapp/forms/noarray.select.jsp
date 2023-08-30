@@ -4,10 +4,14 @@
 <%@ page import="java.util.*" isThreadSafe="false" %>
 
 <%!
-public String RenderHierarchyNode(SelektionHierarchy node, Set<Integer> nodeIdsToDisplay, int level) {
+public String RenderHierarchyNode(SelektionHierarchy node, Set<Integer> nodeIdsToDisplay, int selected, int level) {
     // Unfortunately <optgroup> cannot be used since the group will not be selectable itself,
     // so instead we use prefix characters to signalize parent/child relationships.
-    String s = "<option value=\"" + node.getId() + "\">";
+    String s = "<option value=\"" + node.getId() + "\"";
+    if (node.getId().equals(selected)) {
+        s += " selected";
+    }
+    s += ">";
 
     for (int i=0;i<level;i++) {
         s += "&nbsp;&nbsp;";
@@ -21,7 +25,7 @@ public String RenderHierarchyNode(SelektionHierarchy node, Set<Integer> nodeIdsT
 
     for (SelektionHierarchy child : node.getChildren()) {
         if (nodeIdsToDisplay.contains(child.getId()))
-        s += RenderHierarchyNode(child, nodeIdsToDisplay, level + 1);
+        s += RenderHierarchyNode(child, nodeIdsToDisplay, selected, level + 1);
     }
 
     return s;
@@ -78,7 +82,7 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
             Set<Integer> hierarchyNodeIdsToDisplay = GetHierarchyNodeIDsToDisplay(hierarchyNodes);
             for (SelektionHierarchy node : hierarchyNodesAll) {
                 if (node.getParent() == null && hierarchyNodeIdsToDisplay.contains(node.getId())) {
-                    out.println(RenderHierarchyNode(node, hierarchyNodeIdsToDisplay, 0));
+                    out.println(RenderHierarchyNode(node, hierarchyNodeIdsToDisplay, selected, 0));
                 }
             }
         } else {
