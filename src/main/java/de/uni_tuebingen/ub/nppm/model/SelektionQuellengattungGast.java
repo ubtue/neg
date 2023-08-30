@@ -12,6 +12,7 @@ public class SelektionQuellengattungGast extends SelektionHierarchy {
     private SelektionQuellengattung parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+    @OrderBy("Bezeichnung")
     private Set<SelektionQuellengattung> children = new HashSet<>();
 
     @Override

@@ -26,6 +26,7 @@ public class SelektionAmtWeiheGastEinzelbeleg extends SelektionHierarchy {
     private SelektionAmtWeihe parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+    @OrderBy("Bezeichnung")
     private Set<SelektionAmtWeihe> children = new HashSet<>();
 
     @Override
