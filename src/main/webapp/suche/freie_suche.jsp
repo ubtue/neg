@@ -1,4 +1,5 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.SelektionQuellengattung"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="java.math.BigInteger" isThreadSafe="false" %>
@@ -7,6 +8,7 @@
 <%@ page import="com.lowagie.text.*" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.rtf.list.*" isThreadSafe="false" %>
+<%@ page import="org.apache.commons.lang3.StringUtils" isThreadSafe="false" %>
 <%@ page import="java.io.*" isThreadSafe="false" %>
 <%@ page import="java.awt.Color" isThreadSafe="false" %>
 
@@ -218,7 +220,9 @@
     einzelbeleg = true;
   }
   if (Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
-    conditions.add("einzelbeleg.QuelleGattungID = '"+request.getParameter("Quellengattung")+"'");
+    // This is a hierarchy, so we need to consider all children as well
+    List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("Quellengattung")), SelektionQuellengattung.class).getSubtreeIdsRecursive();
+    conditions.add("einzelbeleg.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     einzelbeleg = true;
   }
   else if (Integer.parseInt(request.getParameter("Quellengattung")) == -2) {

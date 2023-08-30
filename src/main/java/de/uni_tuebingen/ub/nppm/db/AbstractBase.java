@@ -103,6 +103,12 @@ public class AbstractBase {
         return map;
     }
 
+    public static <T> T getById(int id, Class<T> class_) throws Exception {
+        try (Session session = getSession()) {
+            return (T)session.get(class_, id);
+        }
+    }
+
     public static Class getEntityClassByTableName(String tableName) throws Exception {
         Class c = tableNameToEntityMap.get(tableName);
         if (c == null)

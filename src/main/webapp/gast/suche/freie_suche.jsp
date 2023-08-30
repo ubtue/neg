@@ -1,5 +1,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.FrontendExtendedSearch"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.SelektionDB"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.SelektionQuellengattung"%>
 
 <%@ page import="java.io.*" isThreadSafe="false" %>
 <%@ page import="java.awt.Color" isThreadSafe="false" %>
@@ -15,6 +17,8 @@
 <%@ page import="com.lowagie.text.Document" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.*" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false" %>
+
+<%@ page import="org.apache.commons.lang3.StringUtils" isThreadSafe="false" %>
 
 <%
 
@@ -138,7 +142,9 @@
     einzelbeleg = true;
   }
   if (request.getParameter("QuelleGattung")!=null && Integer.parseInt(request.getParameter("QuelleGattung")) > 0) {
-    conditions.add("einzelbeleg.QuelleGattungID = '"+request.getParameter("QuelleGattung")+"'");
+    // This is a hierarchy, so we need to consider all children as well
+    List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("QuelleGattung")), SelektionQuellengattung.class).getSubtreeIdsRecursive();
+    conditions.add("einzelbeleg.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
   }
   if (!request.getParameter("PersonZeitraum").trim().equals("")) {
         int vonNum = 0;
