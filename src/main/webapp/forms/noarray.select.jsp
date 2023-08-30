@@ -99,12 +99,14 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
                 String value = row.get("Bezeichnung").toString();
                 if (datenfeld.startsWith("Namenkommentar")) {
                     value = format(value, "PLemma");
+                } else {
+                    value = DBtoHTML(value);
                 }
 
                 if (!isReadOnly) {
-                    out.println("<option value=\"" + Integer.parseInt(row.get("ID").toString()) + "\" " + (Integer.parseInt(row.get("ID").toString()) == selected ? "selected" : "") + ">" + DBtoHTML(value) + "</option>");
+                    out.println("<option value=\"" + Integer.parseInt(row.get("ID").toString()) + "\" " + (Integer.parseInt(row.get("ID").toString()) == selected ? "selected" : "") + ">" + value + "</option>");
                 } else if (Integer.parseInt(row.get("ID").toString()) == selected) {
-                    out.println(DBtoHTML(value));
+                    out.println(value);
                 }
             }
         }
