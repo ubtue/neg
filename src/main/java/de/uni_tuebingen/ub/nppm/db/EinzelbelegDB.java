@@ -1,26 +1,14 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class EinzelbelegDB extends AbstractBase {
 
     public static Einzelbeleg getById(int id) throws Exception {
-        try (Session session = getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Einzelbeleg> criteria = builder.createQuery(Einzelbeleg.class);
-            Root einzelbeleg = criteria.from(Einzelbeleg.class);
-            criteria.select(einzelbeleg);
-            criteria.where(builder.equal(einzelbeleg.get(Einzelbeleg_.ID), id));
-            Einzelbeleg res = session.createQuery(criteria).getSingleResult();
-            return res;
-        }
+        return AbstractBase.getById(id, Einzelbeleg.class);
     }
 
     public static List getList() throws Exception {
