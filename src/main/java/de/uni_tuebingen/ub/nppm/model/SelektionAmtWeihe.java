@@ -2,9 +2,12 @@ package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
 import java.util.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "selektion_amtweihe")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SelektionAmtWeihe extends SelektionHierarchy {
 
     @ManyToMany(mappedBy = "amtWeihe")
@@ -40,10 +43,12 @@ public class SelektionAmtWeihe extends SelektionHierarchy {
     /* Hierarchy-related */
     @OneToOne(targetEntity = SelektionAmtWeihe.class)
     @JoinColumn(name = "parentId", referencedColumnName = "ID")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private SelektionAmtWeihe parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
     @OrderBy("Bezeichnung")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<SelektionAmtWeihe> children = new HashSet<>();
 
     @Override

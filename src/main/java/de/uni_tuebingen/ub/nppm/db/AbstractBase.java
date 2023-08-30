@@ -61,13 +61,17 @@ public class AbstractBase {
             settings.put("hibernate.connection.CharSet", "utf8mb4");
             settings.put("hibernate.connection.useUnicode", true);
             settings.put("hibernate.connection.characterEncoding", "utf-8");
-
             settings.put("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
+
             settings.put("hibernate.c3p0.min_size", "5");
             settings.put("hibernate.c3p0.max_size", "150");
             settings.put("hibernate.c3p0.timeout", "30");
             settings.put("hibernate.c3p0.idle_test_period", "10");
             settings.put("hibernate.c3p0.preferredTestQuery", "SELECT 1");
+
+            settings.put("hibernate.cache.use_query_cache", "true");
+            settings.put("hibernate.cache.use_second_level_cache", "true");
+            settings.put("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
 
             configuration.setProperties(settings);
 
