@@ -6,6 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 
 public class SaveHelper extends AbstractBase {
     public static int getMaxId(String form) throws Exception {
@@ -27,7 +28,22 @@ public class SaveHelper extends AbstractBase {
         insertOrUpdate(sql);
     }
 
-   public static List<DatenbankMapping> getMapping(String formular) throws Exception {
+    public static void updateAttribute(String table, String attribute, String value, int id) throws Exception {
+        try (Session session = getSession()) {
+            session.getTransaction().begin();
+            NativeQuery query = session.createNativeQuery("UPDATE " + table + " SET " + attribute + "= :value WHERE ID= :id");
+            query.setParameter("value", value);
+            query.setParameter("id", id);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
+    public static void updateAttribute(String table, String attribute, String value, String id) throws Exception {
+        updateAttribute(table, attribute, value, Integer.parseInt(id));
+    }
+
+    public static List<DatenbankMapping> getMapping(String formular) throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);

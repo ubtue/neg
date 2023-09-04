@@ -50,9 +50,7 @@
                       // Datensatz ändern
                       if (((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
                               || (request.getParameter(datenfeld) != null && attrVal == null && !request.getParameter(datenfeld).equals("")))) {
-                          SaveHelper.insertOrUpdateSql("UPDATE " + zieltabelle
-                                  + " SET " + zielAttribut + "=\"" + DBtoDB(request.getParameter(datenfeld)) + "\""
-                                  + " WHERE ID=\"" + id + "\"");
+                          SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld), id);
                       } // ENDE Datensatz ändern
 
                   } // ENDE kein Array
@@ -64,10 +62,7 @@
                               // Prüfen, ob Datensatz geändert wurde
                               String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, Integer.valueOf(request.getParameter(datenfeld + "[" + i + "]_entryid")));
                               if (attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld + "[" + i + "]")))) {
-                                  String sql = "UPDATE " + zieltabelle
-                                          + " SET " + zielAttribut + "=\"" + DBtoDB(request.getParameter(datenfeld + "[" + i + "]")) + "\""
-                                          + " WHERE ID=" + request.getParameter(datenfeld + "[" + i + "]_entryid");
-                                  SaveHelper.insertOrUpdateSql(sql);
+                                  SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld + "[" + i + "]"), request.getParameter(datenfeld + "[" + i + "]_entryid"));
                               }
                           } else {
                               // Wenn etwas eingetragen ist, in die Datenbank einfügen
@@ -91,9 +86,7 @@
                           checkbox = 1;
                       }
                       if (attrVal != null && Integer.valueOf(attrVal) != checkbox) {
-                          SaveHelper.insertOrUpdateSql("UPDATE " + zieltabelle
-                                  + " SET " + zielAttribut + "=\"" + checkbox + "\""
-                                  + " WHERE ID='" + id + "';");
+                          SaveHelper.updateAttribute(zieltabelle, zielAttribut, String.valueOf(checkbox), id);
                       } // ENDE Datensatz ändern
                   } // ENDE kein Array
               } //ENDE checkbox
