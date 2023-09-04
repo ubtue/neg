@@ -17,7 +17,8 @@ public class SelektionDB extends AbstractBase {
     static protected Map<String,String> gastToNonGast = Map.ofEntries(
         Map.entry("gastselektion_amtweihe_einzelbeleg", "selektion_amtweihe"),
         Map.entry("gastselektion_amtweihe_person", "selektion_amtweihe"),
-        Map.entry("gastselektion_quellengattung", "selektion_quellengattung")
+        Map.entry("gastselektion_quellengattung", "selektion_quellengattung"),
+        Map.entry("gastselektion_stand", "selektion_stand")
     );
 
     static public List<Selektion> getList(String selektion) throws Exception {

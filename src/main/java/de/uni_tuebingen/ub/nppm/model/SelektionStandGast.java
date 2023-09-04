@@ -5,10 +5,10 @@ import java.util.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "selektion_stand")
+@Table(name = "gastselektion_stand")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class SelektionStand extends SelektionHierarchy {
+public class SelektionStandGast extends SelektionHierarchy {
     @ManyToMany(mappedBy = "stand")
     private Set<Person> personen = new HashSet<>();
 
@@ -21,22 +21,6 @@ public class SelektionStand extends SelektionHierarchy {
 
     public Set<Einzelbeleg> getEinzelbeleg() {
         return einzelbeleg;
-    }
-
-    public void addPerson(Person person) {
-        this.getPersonen().add(person);
-    }
-
-    public void removePerson(int id) {
-        this.getPersonen().removeIf(e -> e.getId() == id);
-    }
-
-    public void addEinzelbeleg(Einzelbeleg beleg) {
-        this.getEinzelbeleg().add(beleg);
-    }
-
-    public void removeEinzelbeleg(int id) {
-        this.getEinzelbeleg().removeIf(e -> e.getId() == id);
     }
 
     /* Hierarchy-related */
