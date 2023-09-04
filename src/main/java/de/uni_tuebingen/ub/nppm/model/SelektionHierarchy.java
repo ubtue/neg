@@ -1,5 +1,8 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.Set;
 import javax.persistence.*;
 import org.json.*;
@@ -8,6 +11,34 @@ import org.json.*;
 abstract public class SelektionHierarchy extends SelektionBezeichnung {
     abstract public SelektionHierarchy getParent();
     abstract public Set<? extends SelektionHierarchy> getChildren();
+
+    public void iterateParents(Consumer<SelektionHierarchy> callback) {
+        SelektionHierarchy parent = getParent();
+        if (parent != null) {
+            callback.accept(parent);
+            parent.iterateParents(callback);
+        }
+    }
+
+    public void iterateChildren(Consumer<SelektionHierarchy> callback) {
+        for (SelektionHierarchy child : getChildren()) {
+            callback.accept(child);
+            child.iterateChildren(callback);
+        }
+    }
+
+    /**
+     * Get list of current ID + all children IDs, useful e.g. for search functionality.
+     */
+    public List<Integer> getSubtreeIdsRecursive() throws Exception {
+        List<Integer> ids = new ArrayList<>();
+        ids.add(getId());
+
+        Consumer<SelektionHierarchy> helper = child -> ids.add(child.getId());
+        iterateChildren(helper);
+
+        return ids;
+    }
 
     public JSONObject toJSONObject(boolean ignore_parents, boolean ignore_children) {
         JSONObject jsonObject = new JSONObject();

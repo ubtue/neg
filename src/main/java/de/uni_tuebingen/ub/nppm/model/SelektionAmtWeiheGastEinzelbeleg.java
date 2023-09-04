@@ -5,20 +5,34 @@ import java.util.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "selektion_quellengattung")
+@Table(name = "gastselektion_amtweihe_einzelbeleg")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class SelektionQuellengattung extends SelektionHierarchy {
+public class SelektionAmtWeiheGastEinzelbeleg extends SelektionHierarchy {
+    @ManyToMany(mappedBy = "amtWeihe")
+    private Set<Person> personen = new HashSet<>();
 
-    @OneToOne(targetEntity = SelektionQuellengattung.class)
+    @ManyToMany(mappedBy = "amtWeihe")
+    private Set<Einzelbeleg> einzelbelege = new HashSet<>();
+
+    public Set<Einzelbeleg> getEinzelbelege() {
+        return this.einzelbelege;
+    }
+
+    public Set<Person> getPersonen() {
+        return this.personen;
+    }
+
+    /* Hierarchy-related */
+    @OneToOne(targetEntity = SelektionAmtWeihe.class)
     @JoinColumn(name = "parentId", referencedColumnName = "ID")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private SelektionQuellengattung parent;
+    private SelektionAmtWeihe parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
     @OrderBy("Bezeichnung")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<SelektionQuellengattung> children = new HashSet<>();
+    private Set<SelektionAmtWeihe> children = new HashSet<>();
 
     @Override
     public SelektionHierarchy getParent() {

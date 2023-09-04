@@ -467,6 +467,20 @@ function CheckAll(index, check, praefix) {
                     <font color="blue"></font>
                   </td>
                 </tr>
+
+                <!-- TODO: Oder als Teil von Belegstelle umsetzen? Außerdem: Label in GAST fehlt! -->
+                <tr>
+                  <td>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Quellengattung"/>
+                    </jsp:include>
+                  </td>
+                  <td>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Quellengattung"); %>
+                    <font color="blue"></font>
+                  </td>
+                </tr>
               </tbody>
             </table>
              <p align="right">

@@ -4,10 +4,14 @@
 <%@ page import="java.util.*" isThreadSafe="false" %>
 
 <%!
-public String RenderHierarchyNode(SelektionHierarchy node, Set<Integer> nodeIdsToDisplay, int level) {
+public String RenderHierarchyNode(SelektionHierarchy node, Set<Integer> nodeIdsToDisplay, int selected, int level) {
     // Unfortunately <optgroup> cannot be used since the group will not be selectable itself,
     // so instead we use prefix characters to signalize parent/child relationships.
-    String s = "<option value=\"" + node.getId() + "\">";
+    String s = "<option value=\"" + node.getId() + "\"";
+    if (node.getId().equals(selected)) {
+        s += " selected";
+    }
+    s += ">";
 
     for (int i=0;i<level;i++) {
         s += "&nbsp;&nbsp;";
@@ -21,7 +25,7 @@ public String RenderHierarchyNode(SelektionHierarchy node, Set<Integer> nodeIdsT
 
     for (SelektionHierarchy child : node.getChildren()) {
         if (nodeIdsToDisplay.contains(child.getId()))
-        s += RenderHierarchyNode(child, nodeIdsToDisplay, level + 1);
+        s += RenderHierarchyNode(child, nodeIdsToDisplay, selected, level + 1);
     }
 
     return s;
@@ -71,14 +75,14 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
             // If DB result depends on GAST, we need to do a second query to get all nodes from backend
             List<SelektionHierarchy> hierarchyNodes = SelektionDB.getListHierarchy(auswahlherkunft);
             List<SelektionHierarchy> hierarchyNodesAll = hierarchyNodes;
-            if (auswahlherkunft.startsWith("gast")) {
-                String auswahlherkunftBackend = auswahlherkunft.replaceAll("^gast", "");
+            String auswahlherkunftBackend = SelektionDB.getNonGastTable(auswahlherkunft);
+            if (auswahlherkunftBackend != null) {
                 hierarchyNodesAll = SelektionDB.getListHierarchy(auswahlherkunftBackend);
             }
             Set<Integer> hierarchyNodeIdsToDisplay = GetHierarchyNodeIDsToDisplay(hierarchyNodes);
             for (SelektionHierarchy node : hierarchyNodesAll) {
                 if (node.getParent() == null && hierarchyNodeIdsToDisplay.contains(node.getId())) {
-                    out.println(RenderHierarchyNode(node, hierarchyNodeIdsToDisplay, 0));
+                    out.println(RenderHierarchyNode(node, hierarchyNodeIdsToDisplay, selected, 0));
                 }
             }
         } else {
@@ -95,12 +99,14 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
                 String value = row.get("Bezeichnung").toString();
                 if (datenfeld.startsWith("Namenkommentar")) {
                     value = format(value, "PLemma");
+                } else {
+                    value = DBtoHTML(value);
                 }
 
                 if (!isReadOnly) {
-                    out.println("<option value=\"" + Integer.parseInt(row.get("ID").toString()) + "\" " + (Integer.parseInt(row.get("ID").toString()) == selected ? "selected" : "") + ">" + DBtoHTML(value) + "</option>");
+                    out.println("<option value=\"" + Integer.parseInt(row.get("ID").toString()) + "\" " + (Integer.parseInt(row.get("ID").toString()) == selected ? "selected" : "") + ">" + value + "</option>");
                 } else if (Integer.parseInt(row.get("ID").toString()) == selected) {
-                    out.println(DBtoHTML(value));
+                    out.println(value);
                 }
             }
         }

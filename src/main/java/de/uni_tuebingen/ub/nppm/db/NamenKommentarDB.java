@@ -34,15 +34,7 @@ public class NamenKommentarDB extends AbstractBase {
     }
 
      public static NamenKommentar getById(int id) throws Exception {
-        try (Session session = getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<NamenKommentar> criteria = builder.createQuery(NamenKommentar .class);
-            Root namenkommentar = criteria.from(NamenKommentar .class);
-            criteria.select(namenkommentar);
-            criteria.where(builder.equal( namenkommentar.get(NamenKommentar_.ID), id));
-            NamenKommentar res = session.createQuery(criteria).getSingleResult();
-            return res;
-        }
+        return AbstractBase.getById(id, NamenKommentar.class);
     }
 
 
