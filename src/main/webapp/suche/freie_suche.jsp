@@ -98,7 +98,8 @@
   }
   if (Integer.parseInt(request.getParameter("StandPerson")) > -1) {
     tableString += " INNER JOIN person_hatstand ON person.ID=person_hatstand.PersonID";
-    conditions.add("person_hatstand.StandID = '"+request.getParameter("StandPerson")+"'");
+    List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("StandPerson")), SelektionStand.class).getSubtreeIdsRecursive();
+    conditions.add("person_hatstand.StandID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     person = true;
   }
  else if (Integer.parseInt(request.getParameter("StandPerson")) == -2) {

@@ -102,7 +102,8 @@
   }
   if (Integer.parseInt(request.getParameter("StandPerson")) > -1) {
     tableString += " INNER JOIN person_hatstand ON person.ID=person_hatstand.PersonID";
-    conditions.add("person_hatstand.StandID = '"+request.getParameter("StandPerson")+"'");
+    List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("StandPerson")), SelektionStand.class).getSubtreeIdsRecursive();
+    conditions.add("person_hatstand.StandID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     person = true;
   }
   if (Integer.parseInt(request.getParameter("EthniePerson")) > -1) {
@@ -383,6 +384,19 @@
         headlines.add(getLabel("freie_suche", "Ausgabe_Person_AmtWeiheZeitraum", null, stmt, sprache));
     person = true;
   }
+  if (request.getParameter("Ausgabe_Stand") != null && request.getParameter("Ausgabe_Stand").equals("on")) {
+    fields.add("selektion_stand.Bezeichnung");
+    fieldNames.add("selektion_stand.Bezeichnung");
+    if (!tableString.contains("person_hatstand")) {
+      tableString += " LEFT OUTER JOIN person_hatstand ON person.ID=person_hatstand.PersonID";
+    }
+    if (!tableString.contains("selektion_stand")) {
+      tableString += " LEFT OUTER JOIN selektion_stand ON person_hatstand.StandID=selektion_stand.ID";
+    }
+ //   headlines.add("Stand");
+        headlines.add(getLabel("freie_suche", "Ausgabe_Stand", null, stmt, sprache));
+    person = true;
+  }
   if (request.getParameter("Ausgabe_Person_Ethnie") != null && request.getParameter("Ausgabe_Person_Ethnie").equals("on")) {
     fields.add("selektion_ethnie.Bezeichnung");
     fieldNames.add("selektion_ethnie.Bezeichnung");
@@ -402,7 +416,7 @@
     if (!tableString.contains("selektion_geschlecht")) {
       tableString += " LEFT OUTER JOIN selektion_geschlecht ON person.Geschlecht=selektion_geschlecht.ID";
     }
- //   headlines.add("Ethnie(n)");
+ //   headlines.add("Geschlecht");
         headlines.add(getLabel("freie_suche", "Ausgabe_Geschlecht", null, stmt, sprache));
     person = true;
   }
