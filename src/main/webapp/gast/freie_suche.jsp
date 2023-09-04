@@ -375,6 +375,18 @@ function CheckAll(index, check, praefix) {
                   <td>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="Ausgabe_Stand"/>
+                    </jsp:include>
+                  </td>
+                  <td>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Stand"); %>
+                    <font color="blue"></font>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Ausgabe_Person_Ethnie"/>
                     </jsp:include>
                   </td>
