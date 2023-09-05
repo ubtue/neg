@@ -1,5 +1,6 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.model.*"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 
 <%@ page import="java.io.*" isThreadSafe="false" %>
 <%@ page import="java.awt.Color" isThreadSafe="false" %>
@@ -30,16 +31,16 @@
   String formular = request.getParameter("form");
   String tableString = "";
 
-  List<String> conditions = new ArrayList<> ();
+  List<String> conditions = new ArrayList<>();
 
-  List<String> fields = new ArrayList<> ();
-  List<String> fieldNames = new ArrayList<> ();
+  List<String> fields = new ArrayList<>();
+  List<String> fieldNames = new ArrayList<>();
   List<String> count = new ArrayList<>();
 
-  List<String> tables = new ArrayList<> ();
-  List<String> joins = new ArrayList<> ();
+  List<String> tables = new ArrayList<>();
+  List<String> joins = new ArrayList<>();
 
-  List<String> headlines = new ArrayList<> ();
+  List<String> headlines = new ArrayList<>();
 
   // Welche Grund-Tabellen (Einzelbeleg / Person / Namenkommentar) werden benötigt...
   boolean einzelbeleg = false;
@@ -983,7 +984,11 @@
     if (fields.size() > 0) {
       fieldsString += fields.get(0);
       for (int i=1; i<fields.size(); i++) {
-        fieldsString += ", "+fields.get(i);
+        if (fields.get(i).contains(" AS ")) {
+          fieldsString += ", "+fields.get(i);
+        } else {
+          fieldsString += ", "+QueryHelper.getFieldAlias(fields.get(i));
+        }
       }
     }
 
