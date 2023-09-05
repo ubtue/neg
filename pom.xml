@@ -258,7 +258,7 @@
                 <executions>
                     <execution>
                         <id>Restart Tomcat</id>
-                        <phase>deploy</phase>
+                        <phase>post-integration-test</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
