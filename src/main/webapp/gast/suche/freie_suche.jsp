@@ -315,16 +315,6 @@
     String sprache = "de";
   if (session != null && session.getAttribute("Sprache") != null)
     sprache = (String)session.getAttribute("Sprache");
-   Connection con = null;
-  Statement  stmt = null;
-   try {
-    Class.forName( sqlDriver );
-    con = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-    stmt = con.createStatement();
-    }
-  catch (Exception e) {
-    out.println(e);
-  }
 
 
   // ######### AUSGABEFELDER ##########
@@ -336,7 +326,7 @@
         count.add("namenkommentar.ID");
     tables.add("namenkommentar");
    // headlines.add("Namenlemma");
-   headlines.add(getLabel("namenkommentar", "PLemma", null, stmt, sprache));
+   headlines.add(DatenbankDB.getMapping(sprache, "namenkommentar", "PLemma"));
     namenkommentar = true;
   }
   if (request.getParameter("Ausgabe_MGHLemma") != null && request.getParameter("Ausgabe_MGHLemma").equals("on")) {
@@ -346,7 +336,7 @@
       count.add("mgh_lemma.ID");
       tables.add("mgh_lemma");
      // headlines.add("Namenlemma");
-     headlines.add(getLabel("mgh_lemma", "MGHLemma", null, stmt, sprache));
+     headlines.add(DatenbankDB.getMapping(sprache, "mgh_lemma", "MGHLemma"));
       mghlemma = true;
 }
   // ### Zur Person ###
@@ -357,7 +347,7 @@
     fieldNames.add("person.Standardname");
     tables.add("person");
  //   headlines.add("Standardname");
-    headlines.add(getLabel("freie_suche", "Ausgabe_Person_Standardname", null, stmt, sprache));
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
     person = true;
   }
   if (request.getParameter("Ausgabe_Person_AmtWeihe") != null && request.getParameter("Ausgabe_Person_AmtWeihe").equals("on")) {
@@ -370,7 +360,7 @@
       tableString += " LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID";
     }
  //   headlines.add("Amt / Weihe");
-     headlines.add(getLabel("freie_suche", "Ausgabe_Person_AmtWeihe", null, stmt, sprache));
+     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
 
     person = true;
   }
@@ -381,7 +371,7 @@
       tableString += " LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";
     }
  //   headlines.add("Zeitraum Amt/Weihe");
-        headlines.add(getLabel("freie_suche", "Ausgabe_Person_AmtWeiheZeitraum", null, stmt, sprache));
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeiheZeitraum"));
     person = true;
   }
   if (request.getParameter("Ausgabe_Stand") != null && request.getParameter("Ausgabe_Stand").equals("on")) {
@@ -394,7 +384,7 @@
       tableString += " LEFT OUTER JOIN selektion_stand ON person_hatstand.StandID=selektion_stand.ID";
     }
  //   headlines.add("Stand");
-        headlines.add(getLabel("freie_suche", "Ausgabe_Stand", null, stmt, sprache));
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Stand"));
     person = true;
   }
   if (request.getParameter("Ausgabe_Person_Ethnie") != null && request.getParameter("Ausgabe_Person_Ethnie").equals("on")) {
@@ -407,7 +397,7 @@
       tableString += " LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID";
     }
  //   headlines.add("Ethnie(n)");
-        headlines.add(getLabel("freie_suche", "Ausgabe_Person_Ethnie", null, stmt, sprache));
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Ethnie"));
     person = true;
   }
   if (request.getParameter("Ausgabe_Geschlecht") != null && request.getParameter("Ausgabe_Geschlecht").equals("on")) {
@@ -417,7 +407,7 @@
       tableString += " LEFT OUTER JOIN selektion_geschlecht ON person.Geschlecht=selektion_geschlecht.ID";
     }
  //   headlines.add("Geschlecht");
-        headlines.add(getLabel("freie_suche", "Ausgabe_Geschlecht", null, stmt, sprache));
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Geschlecht"));
     person = true;
   }
   if (request.getParameter("Ausgabe_Person_Verwandte") != null && request.getParameter("Ausgabe_Person_Verwandte").equals("on")) {
@@ -434,10 +424,10 @@
     }
     tableString += " LEFT OUTER JOIN person perszu ON person_verwandtmit.PersonIDzu = perszu.ID";
     //headlines.add("Verwandtschaftsgrad");
-           headlines.add(getLabel("freie_suche", "Verwandtschaftsgrad", null, stmt, sprache));
+           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Verwandtschaftsgrad"));
 
   //  headlines.add("Verwandte(r)");
-         headlines.add(getLabel("freie_suche", "Ausgabe_Person_Verwandte", null, stmt, sprache));
+         headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Verwandte"));
 
     person = true;
   }
@@ -451,7 +441,7 @@
       tableString += " LEFT OUTER JOIN selektion_areal ON person_hatareal.ArealID=selektion_areal.ID";
     }
    // headlines.add("Areal");
-          headlines.add(getLabel("freie_suche", "Ausgabe_Person_Areal", null, stmt, sprache));
+          headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Areal"));
 
     person = true;
   }
@@ -466,7 +456,7 @@
       tableString += " LEFT OUTER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
     }
     //headlines.add("Quelle");
-           headlines.add(getLabel("freie_suche", "Quelle", null, stmt, sprache));
+           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
 
     fields.add("edition.Titel");
     //fields.add("edition.ID");
@@ -475,17 +465,17 @@
       tableString += " LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID";
     }
     //headlines.add("Edition");
-           headlines.add(getLabel("quelle", "Edition", null, stmt, sprache));
+           headlines.add(DatenbankDB.getMapping(sprache, "quelle", "Edition"));
 
     fields.add("einzelbeleg.EditionKapitel");
     fieldNames.add("einzelbeleg.EditionKapitel");
     //headlines.add("Kapitel");
-           headlines.add(getLabel("einzelbeleg", "EditionKapitel", null, stmt, sprache));
+           headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionKapitel"));
 
     fields.add("einzelbeleg.EditionSeite");
     fieldNames.add("einzelbeleg.EditionSeite");
    // headlines.add("Seite");
-          headlines.add(getLabel("einzelbeleg", "EditionSeite", null, stmt, sprache));
+          headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionSeite"));
 
     einzelbeleg = true;
   }
@@ -496,7 +486,7 @@
       tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
     }
     //headlines.add("Quellengattung");
-           headlines.add(getLabel("freie_suche", "EinzelbelegQuellengattung", null, stmt, sprache));
+           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "EinzelbelegQuellengattung"));
 
     einzelbeleg = true;
   }
@@ -506,7 +496,7 @@
     count.add("einzelbeleg.ID");
     fieldNames.add("einzelbeleg.Belegform");
     //headlines.add("Belegform");
-           headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Belegform", null, stmt, sprache));
+           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Belegform"));
 
     einzelbeleg = true;
   }
@@ -514,7 +504,7 @@
     fields.add("einzelbeleg.Kontext");
     fieldNames.add("einzelbeleg.Kontext");
    // headlines.add("Kontext");
-          headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Kontext", null, stmt, sprache));
+          headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Kontext"));
 
     einzelbeleg = true;
   }
@@ -552,7 +542,7 @@
       tableString += " LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID";
     }
     //headlines.add("lebend / verstorben");
-           headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Lebend", null, stmt, sprache));
+           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Lebend"));
 
     einzelbeleg = true;
   }
@@ -566,7 +556,7 @@
       tableString += " LEFT OUTER JOIN selektion_funktion ON einzelbeleg_hatfunktion.FunktionID=selektion_funktion.ID";
     }
    // headlines.add("Funktion");
-          headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Funktion", null, stmt, sprache));
+          headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Funktion"));
 
     einzelbeleg = true;
   }
@@ -580,7 +570,7 @@
       tableString += " LEFT OUTER JOIN selektion_areal ON einzelbeleg_hatareal.ArealID=selektion_areal.ID";
     }
     //headlines.add("Areal");
-           headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Areal", null, stmt, sprache));
+           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Areal"));
 
     einzelbeleg = true;
   }
@@ -597,7 +587,7 @@
       tableString += " LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID LEFT OUTER JOIN ueberlieferung_edition ON (einzelbeleg_textkritik.EditionID=ueberlieferung_edition.EditionID AND einzelbeleg_textkritik.HandschriftID=ueberlieferung_edition.UeberlieferungID) LEFT OUTER JOIN handschrift_ueberlieferung ON handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID LEFT OUTER JOIN handschrift ON handschrift_ueberlieferung.HandschriftID=handschrift.ID ";
     }
    // headlines.add("Variante");
-          headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Varianten", null, stmt, sprache));
+          headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Varianten"));
     headlines.add("Bib.Sig.");
     headlines.add("TZ v. J.");
     headlines.add("TZ b. J.");
@@ -614,7 +604,7 @@
       tableString += " LEFT OUTER JOIN handschrift_ueberlieferung ON handschrift.ID=handschrift_ueberlieferung.HandschriftID";
     }
     //headlines.add("Schriftheimat d. Textzeugen");
-           headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Textzeuge_Schriftheimat", null, stmt, sprache));
+           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Textzeuge_Schriftheimat"));
 
     einzelbeleg = true;
   }
@@ -651,7 +641,7 @@
     		count.add("namenkommentar.ID");
     		tables.add("namenkommentar");
    			// headlines.add("Namenlemma");
-   			headlines.add(getLabel("namenkommentar", "PLemma", null, stmt, sprache));
+   			headlines.add(DatenbankDB.getMapping(sprache, "namenkommentar", "PLemma"));
     		namenkommentar = true;
   		}
       }
@@ -667,7 +657,7 @@
     	        count.add("mgh_lemma.ID");
     	        tables.add("mgh_lemma");
     	       // headlines.add("Namenlemma");
-    	       headlines.add(getLabel("mgh_lemma", "MGHLemma", null, stmt, sprache));
+    	       headlines.add(DatenbankDB.getMapping(sprache, "mgh_lemma", "MGHLemma"));
     	        mghlemma = true;
     	  }
 
@@ -711,7 +701,7 @@
     		fieldNames.add("person.Standardname");
     		tables.add("person");
  //   		headlines.add("Standardname");
-    		headlines.add(getLabel("freie_suche", "Ausgabe_Person_Standardname", null, stmt, sprache));
+    		headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
     		person = true;
   		}
       }
@@ -726,7 +716,7 @@
     		if (!tableString.contains("selektion_geschlecht")) {
       			tableString += " LEFT OUTER JOIN selektion_geschlecht ON person.Geschlecht=selektion_geschlecht.ID";
     		}
-        	headlines.add(getLabel("freie_suche", "Ausgabe_Geschlecht", null, stmt, sprache));
+        	headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Geschlecht"));
     		person = true;
   		}
       }
@@ -744,7 +734,7 @@
     		if (!tableString.contains("selektion_amtweihe")) {
       			tableString += " LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID";
     		}
-     		headlines.add(getLabel("freie_suche", "Ausgabe_Person_AmtWeihe", null, stmt, sprache));
+     		headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
 
     		person = true;
   		}
@@ -763,7 +753,7 @@
     		if (!tableString.contains("selektion_stand")) {
       			tableString += " LEFT OUTER JOIN selektion_stand ON person_hatstand.StandID=selektion_stand.ID";
     		}
-     		headlines.add(getLabel("freie_suche", "Ausgabe_Stand", null, stmt, sprache));
+     		headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Stand"));
 
     		person = true;
   		}
@@ -782,7 +772,7 @@
     		if (!tableString.contains("selektion_ethnie")) {
       			tableString += " LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID";
     		}
-        	headlines.add(getLabel("freie_suche", "Ausgabe_Person_Ethnie", null, stmt, sprache));
+        	headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Ethnie"));
     		person = true;
   		}
       }
@@ -797,7 +787,7 @@
     		count.add("einzelbeleg.ID");
     		fieldNames.add("einzelbeleg.Belegform");
     //		headlines.add("Belegform");
-           	headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Belegform", null, stmt, sprache));
+           	headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Belegform"));
 
     		einzelbeleg = true;
   		}
@@ -816,7 +806,7 @@
       			tableString += " LEFT OUTER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
     		}
     //		headlines.add("Quelle");
-           	headlines.add(getLabel("freie_suche", "Quelle", null, stmt, sprache));
+           	headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
 
     		einzelbeleg = true;
   		}
@@ -833,7 +823,7 @@
       			tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
     		}
     //		headlines.add("Quellengattung");
-           	headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Quellengattung", null, stmt, sprache));
+           	headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Quellengattung"));
 
     		einzelbeleg = true;
   		}
@@ -856,7 +846,7 @@
       tableString += " LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID LEFT OUTER JOIN ueberlieferung_edition ON (einzelbeleg_textkritik.EditionID=ueberlieferung_edition.EditionID AND einzelbeleg_textkritik.HandschriftID=ueberlieferung_edition.UeberlieferungID) LEFT OUTER JOIN handschrift_ueberlieferung ON handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID LEFT OUTER JOIN handschrift ON handschrift_ueberlieferung.HandschriftID=handschrift.ID ";
     }
    // headlines.add("Variante");
-          headlines.add(getLabel("freie_suche", "Ausgabe_Einzelbeleg_Varianten", null, stmt, sprache));
+          headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Varianten"));
     headlines.add("Bib.Sig.");
     headlines.add("TZ v. J.");
     headlines.add("TZ b. J.");
