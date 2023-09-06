@@ -186,19 +186,22 @@
                             .get(zielattributArray[j]).toString())
                             : -1);
                     for (Map row2 : rowlist2) {
+                        int currentId = Integer.parseInt(row2.get("ID").toString());
                         if (!isReadOnly) {
                             out
                                     .println("<option value='"
                                             + row2.get("ID").toString()
                                             + "' "
-                                            + (Integer.parseInt(row2.get("ID").toString()) == selected ? "selected"
+                                            + (currentId == selected ? "selected"
                                             : "")
                                             + ">"
                                             + row2.get("Bezeichnung").toString()
                                             + "</option>");
-                        } else if (Integer.parseInt(row2.get("ID").toString()) == selected) {
+                        } else if (currentId == selected) {
                             if (!alreadyOne) {
                                 out.println("-");
+                            } else {
+                                out.println(row2.get("Bezeichnung").toString());
                             }
                         }
                     }
