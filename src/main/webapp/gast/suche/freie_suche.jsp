@@ -12,6 +12,7 @@
 <%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
+<%@ page import="java.util.Map" isThreadSafe="false" %>
 
 <%@ page import="com.lowagie.text.Document" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.*" isThreadSafe="false" %>
@@ -1020,20 +1021,12 @@
       }
     }
 
-    Connection cn = null;
-    Statement  st = null;
-    ResultSet  rs = null;
-
     tablesString = tableString;
-    try {
+
       int pageoffset = 0;
       if (request.getParameter("pageoffset") != null) {
         pageoffset = Integer.parseInt(request.getParameter("pageoffset"));
       }
-
-      Class.forName( sqlDriver );
-      cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      st = cn.createStatement();
 
 	  if(fields.size()==0){
 	  	out.println("Bitte w&auml;hlen Sie mind. ein Ausgabefeld aus (Schritt 2).");
@@ -1067,7 +1060,8 @@
 
 //out.println(sql);
 
-      rs = st.executeQuery(sql);
+
+      List<Map> rowlist = SucheDB.getMappedList(sql);
 
 
   //    out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
@@ -1077,14 +1071,7 @@
         boolean [] first  = {true, true, true, true, true,true, true, true, true, true,true, true, true, true, true};
       String oldValue [] = new String [15];
 
-
-      %>
-
-
-      <%
-
       // ########## LISTE/BROWSE ##########
-      try{
       if (export.equals("liste") || export.equals("browse")) {
 
 
@@ -1098,7 +1085,7 @@
         for (int i=0; i<headlines.size(); i++) {
         if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") ||fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))){
           header += "<th>";
-          // Link fÃ¼r Seite erzeugen
+          // Link für Seite erzeugen
           String direction = "";
           if (order.contains(fieldNames.get(i))) {
             direction = order.substring(order.indexOf(fieldNames.get(i)+" ")+fieldNames.get(i).length()+1, min(order.length(), order.indexOf(fieldNames.get(i)+" ")+fieldNames.get(i).length()+5));
@@ -1159,7 +1146,7 @@
            }
 
 
-        if(first[z] || rs.getString(orderV[z])!=null && !jahrV.equalsIgnoreCase(oldValue[z])) {
+        if(first[z] || row.get(orderV[z])!=null && !jahrV.equalsIgnoreCase(oldValue[z])) {
            oldValue[z] = jahrV;
            if(!first[z]){
               out.print("</table>");
@@ -1361,7 +1348,6 @@
 </script>
         <%
       }
-      }catch(Exception ex){out.println(ex.toString());}
       // ########## LISTE/BROWSE #########
 
       // ########## EXCEL #########
@@ -1380,10 +1366,10 @@
         }
         excel.println();
 
-        while ( rs.next() ) {
+        for (Map row : rowlist) {
           for(int z = 0; z<orderSize; z++){
            int jahr = 0;
-           String jahrV = rs.getString(orderV[z]);
+           String jahrV = row.get(orderV[z]).toString();
            int zeitraum = 0;
            if(orderV[z].endsWith("Jahr")){
            	   zeitraum = Integer.parseInt(request.getParameter("order" + (z+1) + "zeit"));
@@ -1393,7 +1379,7 @@
                jahrV = "" +  jahr;
            }
 
-        if(first[z] || rs.getString(orderV[z])!=null && !jahrV.equals(oldValue[z])) {
+        if(first[z] || row.get(orderV[z])!=null && !jahrV.equals(oldValue[z])) {
            oldValue[z] = jahrV;
            if(!first[z]){
               excel.println();
@@ -1402,8 +1388,8 @@
            for(int z2=z+1; z2<orderSize; z2++) first[z2]=true;
            for(int z2=0; z2<z; z2++) excel.print(";");
 
-           String text = rs.getString(orderV[z]);
-           if(orderV[z].startsWith("einzelbeleg.ID"))text = rs.getString("einzelbeleg.Belegform");
+           String text = row.get(orderV[z]).toString();
+           if(orderV[z].startsWith("einzelbeleg.ID"))text = row.get("einzelbeleg.Belegform").toString();
            if(text==null) text="-";
            String titel=orderV[z];
 
@@ -1423,14 +1409,14 @@
 
          for(int z2=0; z2<orderSize; z2++) excel.print(";");
 
-         for(int i=0; i<fieldNames.size(); i++) {
+         for(String fieldName : fieldNames) {
 
-            if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))){
+            if(fieldName.endsWith("Jahrhundert") || fieldName.endsWith("Jahr") || fieldName.endsWith("Monat") || fieldName.endsWith("Tag") || !order.contains(fieldName)){
 
-              if (rs.getString(fieldNames.get(i)) == null || rs.getString(fieldNames.get(i)).equals("null"))
+              if (row.get(fieldName) == null || row.get(fieldName).toString().equals("null"))
                 excel.print("\"-\";");
               else
-                excel.print("\""+rs.getString(fieldNames.get(i))+"\";");
+                excel.print("\""+row.get(fieldName)+"\";");
             }
           }
           excel.println();
@@ -1469,10 +1455,10 @@
 
 
 
-        while ( rs.next() ) {
+        for (Map row : rowlist) {
           for(int z = 0; z<orderSize; z++){
            int jahr = 0;
-           String jahrV = rs.getString(orderV[z]);
+           String jahrV = row.get(orderV[z]).toString();
            int zeitraum = 0;
            if(orderV[z].endsWith("Jahr")){
            	   zeitraum = Integer.parseInt(request.getParameter("order" + (z+1) + "zeit"));
@@ -1482,7 +1468,7 @@
                jahrV = "" +  jahr;
            }
 
-        if(first[z] || rs.getString(orderV[z])!=null && !jahrV.equals(oldValue[z])) {
+        if(first[z] || row.get(orderV[z])!=null && !jahrV.equals(oldValue[z])) {
            oldValue[z] = jahrV;
            String t = "";
            if(!first[z]){
@@ -1500,8 +1486,8 @@
            for(int z2=z+1; z2<orderSize; z2++) first[z2]=true;
            for(int z2=0; z2<z; z2++) t += "\t";
 
-           String text = rs.getString(orderV[z]);
-           if(orderV[z].startsWith("einzelbeleg.ID"))text = rs.getString("einzelbeleg.Belegform");
+           String text = row.get(orderV[z]).toString();
+           if(orderV[z].startsWith("einzelbeleg.ID"))text = row.get("einzelbeleg.Belegform").toString();
            if(text==null) text="-";
            String titel=orderV[z];
       //     out.println(z + "::" + orderV[z]);
@@ -1529,10 +1515,10 @@
 
             if(fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))){
 
-              if (rs.getString(fieldNames.get(i)) == null || rs.getString(fieldNames.get(i)).equals("null"))
+              if (row.get(fieldNames.get(i)) == null || row.get(fieldNames.get(i)).equals("null"))
                 tab.addCell(new Cell(new Paragraph("-", new  Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
               else
-                tab.addCell(new Cell(new Paragraph(rs.getString(fieldNames.get(i)), new  Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
+                tab.addCell(new Cell(new Paragraph(row.get(fieldNames.get(i)).toString(), new  Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
             }
           }
         }
@@ -1579,15 +1565,5 @@
         out.println("</p>");
       }*/
       // ########## SEITENNAVIGATION #########
-    }
-    catch (Exception e) {
-      out.println(e);
-      throw new Exception(e);
-    }
-    finally {
-      try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-      try { if( null != st ) st.close(); } catch( Exception ex ) {}
-      try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-    }
   }
 %>
