@@ -205,10 +205,10 @@
                                             + row2.get("Bezeichnung").toString()
                                             + "</option>");
                         } else if (currentId == selected) {
-                            if (!alreadyOne) {
-                                out.println("-");
-                            } else {
+                            if (repeat) {
                                 out.println(row2.get("Bezeichnung").toString());
+                            } else if (!alreadyOne) {
+                                out.println("-");
                             }
                         }
                     }
