@@ -24,10 +24,13 @@
 
         if (row != null) {
 
-            for (int i = 0; i < zielattributArray.length * 2; i++) {
-                results[i] = null;
-                if (row.get(i + 1) != null)
-                    results[i] = row.get(i + 1).toString();
+            int resultIndex = 0;
+            for (String zielattribut : zielattributArray) {
+                String zielattributGen = "Genauigkeit" + zielattribut;
+                if (row.get(zielattributGen) != null)
+                    results[resultIndex++] = row.get(zielattributGen).toString();
+                if (row.get(zielattribut) != null)
+                    results[resultIndex++] = row.get(zielattribut).toString();
             }
             String von = "";
             String vonGen = "";
@@ -72,7 +75,7 @@
 
             Map row2 = AbstractBase.getMappedRow("SELECT * FROM selektion_datgenauigkeit WHERE ID=" + vonGen);
             if (row2 != null && !vonGen.equals("-1")) {
-                vonGen = row.get("Bezeichnung").toString();
+                vonGen = row2.get("Bezeichnung").toString();
             } else {
                 vonGen = "";
             }
