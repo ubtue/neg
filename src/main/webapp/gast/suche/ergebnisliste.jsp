@@ -1,3 +1,5 @@
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
+
 <%
 
 //	out.println(orderV[0]);
@@ -66,16 +68,11 @@
       st = cn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 	  if(fields.size()==0){
-	  	out.println("Bitte wÃ¤hlen Sie mind. ein Ausgabefeld aus (Schritt 2).");
+	  	out.println("Bitte wählen Sie mind. ein Ausgabefeld aus (Schritt 2).");
 	  	return;
 	  }
 
-
-      String sql = "SELECT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+")"; // GROUP BY "+fieldsString;
-      rs = st.executeQuery(sql);
-      rs.last();
-      int linecount = rs.getRow();
-
+      int linecount = SucheDB.getLinecount(tablesString, conditionsString);
 
       sql = "SELECT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order; //GROUP BY "+fieldsString+"
       if (export.equals("liste") || export.equals("browse"))
