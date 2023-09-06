@@ -78,7 +78,7 @@
                                 + i
                                 + "]\""
                                 + " value=\""
-                                + (row.get(zielattributArray[j]) != null ? DBtoHTML(row
+                                + (row != null && row.get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : "")
                                 + "\""
@@ -491,13 +491,15 @@
                 out.println("</td>");
             }
             if (!isReadOnly) {
-                String href = "javascript:deleteEntry('"
-                        + zielTabelle + "', '" + row.get("ID").toString()
-                        + "', '" + returnpage + "', '" + id + "');";
                 out.println("<td>");
-                out.println("<a href=\"" + href + "\">");
-                out.println(txt_delete);
-                out.println("</a>");
+                if (row != null) {
+                    String href = "javascript:deleteEntry('"
+                            + zielTabelle + "', '" + row.get("ID").toString()
+                            + "', '" + returnpage + "', '" + id + "');";
+                    out.println("<a href=\"" + href + "\">");
+                    out.println(txt_delete);
+                    out.println("</a>");
+                }
                 out.println("</td>");
             }
             /*      else{
