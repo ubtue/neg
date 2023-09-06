@@ -987,7 +987,7 @@
         if (fields.get(i).contains(" AS ")) {
           fieldsString += ", "+fields.get(i);
         } else {
-          fieldsString += ", "+QueryHelper.getFieldAlias(fields.get(i));
+          fieldsString += ", "+QueryHelper.getFieldAliasSelect(fields.get(i));
         }
       }
     }
