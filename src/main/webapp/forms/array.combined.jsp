@@ -39,14 +39,21 @@
         List<Map> rowlist = AbstractBase.getMappedList("SELECT * FROM " + zielTabelle
                 + " WHERE " + formularAttribut + "=\"" + id + "\"");
 
+        boolean repeat = true;
         boolean alreadyOne = false;
         int i = 0;
-        for (Map row : rowlist) {
-            out.println("<input type=\"hidden\" name=\""
+        while (repeat) {
+            Map row = null;
+            if (i < rowlist.size()) {
+                row = rowlist.get(i);
+                out.println("<input type=\"hidden\" name=\""
                     + datenfeld.toLowerCase() + "[" + i
                     + "]_entryid\" value=\"" + row.get("ID").toString()
                     + "\">");
-            alreadyOne = true;
+                alreadyOne = true;
+            } else {
+                repeat = false;
+            }
 
             count++;
             if (count % 2 == 0) {
@@ -83,7 +90,7 @@
                                 : " size=\"10\"")
                                 + " />");
                     } else {
-                        out.println(row
+                        out.println(row != null && row
                                 .get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : (alreadyOne ? "" : "-"));
@@ -99,13 +106,13 @@
                                 : "")
                                 + "</textarea>");
                     } else {
-                        out.println((row
+                        out.println((row != null && row
                                 .get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : (alreadyOne ? "" : "-")));
                     }
                 } else if (combinedFeldtypen[j].equals("addselect")) {
-                    int selected = (row.get(zielattributArray[j]) != null ? Integer.parseInt(row
+                    int selected = (row != null && row.get(zielattributArray[j]) != null ? Integer.parseInt(row
                             .get(zielattributArray[j]).toString())
                             : -1);
                     out.println("<select name=\""
@@ -182,7 +189,7 @@
                             "SELECT * FROM "
                             + auswahlherkunftArray[j]
                             + " ORDER BY Bezeichnung ASC");
-                    int selected = (row.get(zielattributArray[j]) != null ? Integer.parseInt(row
+                    int selected = (row != null && row.get(zielattributArray[j]) != null ? Integer.parseInt(row
                             .get(zielattributArray[j]).toString())
                             : -1);
                     for (Map row2 : rowlist2) {
@@ -302,7 +309,7 @@
                     if (!sql.equals("")) {
                         rowlist2 = AbstractBase.getMappedList(sql);
                     }
-                    int selected = (row.get(zielattributArray[j]) != null ? Integer.parseInt(row
+                    int selected = (row != null && row.get(zielattributArray[j]) != null ? Integer.parseInt(row
                             .get(zielattributArray[j]).toString())
                             : -1);
                     //Map stores the options fields of a select form
@@ -362,7 +369,7 @@
                             .split(",");
 
                     Map row2 = null;
-                    if (row.get(fields[1]) != null)
+                    if (row != null && row.get(fields[1]) != null)
                         row2 = AbstractBase.getMappedRow("SELECT "
                             + fields[2] + " FROM "
                             + fields[0] + " WHERE ID="
