@@ -217,51 +217,53 @@
                         out.println("</select>");
                     }
                 } else if (combinedFeldtypen[j].equals("subtable")) {
-                    out.println("<table>");
-                    String sql = "SELECT edition.ID, edition.Zitierweise Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
-                            + row.get("QuelleID").toString()
-                            + " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC";
+                    if (row != null) {
+                        out.println("<table>");
+                        String sql = "SELECT edition.ID, edition.Zitierweise Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
+                                + row.get("QuelleID").toString()
+                                + " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC";
 
-                    List<Map> rowlist2 = AbstractBase.getMappedList(sql);
+                        List<Map> rowlist2 = AbstractBase.getMappedList(sql);
 
-                    int i2 = 0;
+                        int i2 = 0;
 
-                    for (Map row2 : rowlist2) {
-                        Map row3 = AbstractBase.getMappedRow("SELECT Sigle FROM ueberlieferung_edition WHERE ueberlieferung_edition.editionID="
-                                + row2.get("ID").toString()
-                                + " AND ueberlieferung_edition.ueberlieferungID="
-                                + row.get("ID").toString());
+                        for (Map row2 : rowlist2) {
+                            Map row3 = AbstractBase.getMappedRow("SELECT Sigle FROM ueberlieferung_edition WHERE ueberlieferung_edition.editionID="
+                                    + row2.get("ID").toString()
+                                    + " AND ueberlieferung_edition.ueberlieferungID="
+                                    + row.get("ID").toString());
 
-                        out.println("<tr><td><a href=\"edition?ID="
-                                + row2.get("ID").toString()
-                                + "\">"
-                                + row2.get("Bezeichnung").toString()
-                                + "</a><input type=\"hidden\" name=\""
-                                + combinedFeldnamen[j]
-                                + "_ed["
-                                + i
-                                + "]["
-                                + i2
-                                + "]\""
-                                + " value=\""
-                                + row2.get("ID").toString()
-                                + "\"/></td><td><input name=\""
-                                + combinedFeldnamen[j]
-                                + "["
-                                + i
-                                + "]["
-                                + i2
-                                + "]\""
-                                + " value=\""
-                                + DBtoHTML(row3 != null ? row3.get("Sigle").toString() : "")
-                                        + "\""
-                                        + " maxlength=\""
-                                        + "\" "
-                                        + (combinedFeldnamen[j]
-                                                .endsWith("ID") ? " size=\"5\""
-                                        : " size=\"10\"")
-                                        + " /></td></tr>");
-                        i2++;
+                            out.println("<tr><td><a href=\"edition?ID="
+                                    + row2.get("ID").toString()
+                                    + "\">"
+                                    + row2.get("Bezeichnung").toString()
+                                    + "</a><input type=\"hidden\" name=\""
+                                    + combinedFeldnamen[j]
+                                    + "_ed["
+                                    + i
+                                    + "]["
+                                    + i2
+                                    + "]\""
+                                    + " value=\""
+                                    + row2.get("ID").toString()
+                                    + "\"/></td><td><input name=\""
+                                    + combinedFeldnamen[j]
+                                    + "["
+                                    + i
+                                    + "]["
+                                    + i2
+                                    + "]\""
+                                    + " value=\""
+                                    + DBtoHTML(row3 != null ? row3.get("Sigle").toString() : "")
+                                            + "\""
+                                            + " maxlength=\""
+                                            + "\" "
+                                            + (combinedFeldnamen[j]
+                                                    .endsWith("ID") ? " size=\"5\""
+                                            : " size=\"10\"")
+                                            + " /></td></tr>");
+                            i2++;
+                        }
                     }
 
                     out.println("</table>");
@@ -466,27 +468,29 @@
                                         + "</a>");
                     }
                 } else if (combinedFeldtypen[j].equals("dateinfo")) {
-                    out.println("<label id=\"quelleDate["
-                            + i
-                            + "]\">"
-                            + row.get(combinedFeldnamen[j]
-                                    + "VonJahr").toString()
-                            + "("
-                            + row.get(combinedFeldnamen[j]
-                                    + "VonJahrhundert").toString()
-                            + ". Jhd)-"
-                            + row.get(combinedFeldnamen[j]
-                                    + "BisJahr").toString()
-                            + "("
-                            + row.get(combinedFeldnamen[j]
-                                    + "BisJahrhundert").toString()
-                            + ". Jhd)</label>");
-                    out
-                            .println("<a href=\"javascript:popup('changedate', this, '', 'quelleDate["
-                                    + i
-                                    + "]', '"
-                                    + row.get("ID").toString()
-                                    + "');\"><img src=\"layout/icons/calendar.gif\" border=0></a>");
+                    if (row != null) {
+                        out.println("<label id=\"quelleDate["
+                                + i
+                                + "]\">"
+                                + row.get(combinedFeldnamen[j]
+                                        + "VonJahr").toString()
+                                + "("
+                                + row.get(combinedFeldnamen[j]
+                                        + "VonJahrhundert").toString()
+                                + ". Jhd)-"
+                                + row.get(combinedFeldnamen[j]
+                                        + "BisJahr").toString()
+                                + "("
+                                + row.get(combinedFeldnamen[j]
+                                        + "BisJahrhundert").toString()
+                                + ". Jhd)</label>");
+                        out
+                                .println("<a href=\"javascript:popup('changedate', this, '', 'quelleDate["
+                                        + i
+                                        + "]', '"
+                                        + row.get("ID").toString()
+                                        + "');\"><img src=\"layout/icons/calendar.gif\" border=0></a>");
+                    }
                 } else {
                     out.println("folgt!");
                 }
