@@ -101,7 +101,7 @@
                                 + "["
                                 + i
                                 + "]\"" + disabled + ">"
-                                + (row.get(zielattributArray[j]) != null ? DBtoHTML(row
+                                + (row != null && row.get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : "")
                                 + "</textarea>");
@@ -273,7 +273,7 @@
                                 + i
                                 + "]\""
                                 + " type=\"checkbox\""
-                                + (Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1 ? " checked"
+                                + (row != null && Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1 ? " checked"
                                 : "") + " />");
                     }
 
@@ -286,7 +286,7 @@
                                 + "]\" style=\"width:8em\">");
                     }
 
-                    if (combinedFeldnamen[j].equals("TKHandschrift") && row.get("EditionID") != null) {
+                    if (combinedFeldnamen[j].equals("TKHandschrift") && row != null && row.get("EditionID") != null) {
                         sql = "SELECT handschrift_ueberlieferung.ID, ueberlieferung_edition.Sigle Bezeichnung FROM handschrift_ueberlieferung, einzelbeleg, ueberlieferung_edition WHERE handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID and ueberlieferung_edition.EditionID= "
                                 + row.get("EditionID").toString()
                                 + " AND handschrift_ueberlieferung.QuelleID=einzelbeleg.QuelleID AND einzelbeleg.ID="
@@ -299,7 +299,7 @@
                                 + id
                                 + " ORDER BY Bezeichnung ASC";
                     }
-                    if (combinedFeldnamen[j].equals("HSEditionID") && row.get("QuelleID") != null) {
+                    if (combinedFeldnamen[j].equals("HSEditionID") && row != null && row.get("QuelleID") != null) {
                         sql = "SELECT edition.ID, edition.Titel Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
                                 + row.get("QuelleID").toString()
                                 + " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC";
