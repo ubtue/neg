@@ -139,31 +139,6 @@ public class DatenbankDB extends AbstractBase {
         }
     }
 
-    public static List<Object> getSelektionBezeichnung(String tabelle, String bezeichnung) throws Exception {
-        try (Session session = getSession()) {
-            String SQL = "SELECT Bezeichnung FROM selektion_" + tabelle + " WHERE Bezeichnung='" + bezeichnung + "'";
-            NativeQuery query = session.createNativeQuery(SQL);
-            List<Object> rows = query.getResultList();
-            return rows;
-        }
-    }
-
-    public static void insertSelektionBezeichnung(String tabelle, String bezeichnung, Integer id) throws Exception {
-        String sql = "INSERT INTO selektion_"+tabelle+" (ID, Bezeichnung) VALUES ("+id+", \""+bezeichnung+"\")";
-        insertOrUpdate(sql);
-    }
-
-    public static void updateSelektionBezeichnung(String tabelle, String bezeichnung, String id) throws Exception {
-        String sql = "UPDATE selektion_"+tabelle
-                        +" SET Bezeichnung=\""+bezeichnung+"\""
-                        +" WHERE ID="+id;
-        insertOrUpdate(sql);
-    }
-
-    public static Integer getMaxId(String tabelle) throws Exception {
-        return (Integer)DatenbankDB.getSingleResult("SELECT max(ID) max FROM selektion_"+tabelle);
-    }
-
     public static void updateAuswahlfelder(String tabelle, String feldAlt, String feldNeu) throws Exception {;
         try (Session session = getSession()) {
             String SQL = "SELECT tabelle, spalte FROM datenbank_selektion WHERE selektion ='" + tabelle + "';";
@@ -186,5 +161,10 @@ public class DatenbankDB extends AbstractBase {
         String SQL = "DELETE FROM " + tabelle
                       + " WHERE ID=" + ID;
         insertOrUpdate(SQL);
+    }
+
+    public static void setNull(String tabelle, String ID, String attribute) throws Exception {
+        String sql = "UPDATE "+tabelle+" SET "+attribute+"=NULL WHERE ID="+ID;
+        insertOrUpdate(sql);
     }
 }

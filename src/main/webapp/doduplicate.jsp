@@ -1,3 +1,4 @@
+<%@ page import="de.uni_tuebingen.ub.nppm.db.EinzelbelegDB" isThreadSafe="false" %>
 <%@ page import="java.text.SimpleDateFormat" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
 

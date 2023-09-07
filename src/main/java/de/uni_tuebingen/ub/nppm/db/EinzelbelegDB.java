@@ -31,4 +31,8 @@ public class EinzelbelegDB extends AbstractBase {
             return einzelbeleg;
         }
     }
+
+    public static void insertBySql(String sql) throws Exception {
+        insertOrUpdate(sql);
+    }
 }
