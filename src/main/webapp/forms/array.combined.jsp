@@ -402,16 +402,18 @@
                                             .lastIndexOf(')'))
                             .split(",");
 
-                    Map row2 = AbstractBase.getMappedRow("SELECT "
-                            + fields[2] + " FROM "
-                            + fields[0] + " WHERE ID="
-                            + row.get(fields[1]).toString());
+                    if (row != null) {
+                        Map row2 = AbstractBase.getMappedRow("SELECT "
+                                + fields[2] + " FROM "
+                                + fields[0] + " WHERE ID="
+                                + row.get(fields[1]).toString());
 
-                    if (row2 != null) {
-                        out.println(row2
-                                .get(fields[2]) != null ? DBtoHTML(row2
-                                .get(fields[2]).toString())
-                                : "");
+                        if (row2 != null) {
+                            out.println(row2
+                                    .get(fields[2]) != null ? DBtoHTML(row2
+                                    .get(fields[2]).toString())
+                                    : "");
+                        }
                     }
                 } else if (combinedFeldtypen[j].startsWith("list")) {
                     String[] fields = combinedFeldtypen[j]
@@ -422,16 +424,17 @@
                                             .lastIndexOf(')'))
                             .split(",");
 
-                    List<Map> rowlist2 = AbstractBase.getMappedList("SELECT Bezeichnung FROM selektion_"
-                            + fields[0] + " sel, einzelbeleg_hat" + fields[0] + " zt WHERE zt."
-                            + fields[0] + "ID=sel.ID AND zt." + fields[1] + "="
-                            + row.get(fields[1]).toString());
-                    for (Map row2 : rowlist2) {
-                        out.println((row2.get("Bezeichnung") != null ? DBtoHTML(row2.get("Bezeichnung").toString())
-                                : ""));
-                        out.println("<br>");
+                    if (row != null) {
+                        List<Map> rowlist2 = AbstractBase.getMappedList("SELECT Bezeichnung FROM selektion_"
+                                + fields[0] + " sel, einzelbeleg_hat" + fields[0] + " zt WHERE zt."
+                                + fields[0] + "ID=sel.ID AND zt." + fields[1] + "="
+                                + row.get(fields[1]).toString());
+                        for (Map row2 : rowlist2) {
+                            out.println((row2.get("Bezeichnung") != null ? DBtoHTML(row2.get("Bezeichnung").toString())
+                                    : ""));
+                            out.println("<br>");
+                        }
                     }
-
                 } else if (combinedFeldtypen[j].startsWith("date(")) {
                     String[] fields = combinedFeldtypen[j]
                             .substring(
@@ -463,7 +466,6 @@
                                         + "</a>");
                     }
                 } else if (combinedFeldtypen[j].equals("dateinfo")) {
-
                     out.println("<label id=\"quelleDate["
                             + i
                             + "]\">"
