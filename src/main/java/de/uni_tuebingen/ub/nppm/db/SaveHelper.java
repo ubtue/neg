@@ -9,27 +9,28 @@ import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 
 public class SaveHelper extends AbstractBase {
+
     public static int getMaxId(String form) throws Exception {
-        return (int)DatenbankDB.getSingleResult("SELECT max(ID) ID FROM "+form);
+        return (int) DatenbankDB.getSingleResult("SELECT max(ID) ID FROM " + form);
     }
 
     public static boolean existForm(String form, int id) throws Exception {
-        return DatenbankDB.getSingleResult("SELECT * FROM "+form+" WHERE ID="+id) != null;
+        return DatenbankDB.getSingleResult("SELECT * FROM " + form + " WHERE ID=" + id) != null;
     }
 
     public static void insertMetaData(String form, int id, int benutzerID, int gruppenID) throws Exception {
-        String sql = "INSERT INTO "+form+" (ID, Erstellt, ErstelltVon, GehoertGruppe)"
-                    +" VALUES("+id+", NOW(), "+benutzerID+", "+gruppenID+");";
+        String sql = "INSERT INTO " + form + " (ID, Erstellt, ErstelltVon, GehoertGruppe)"
+                + " VALUES(" + id + ", NOW(), " + benutzerID + ", " + gruppenID + ");";
         insertOrUpdate(sql);
     }
 
     public static void updateMetaData(String form, int id, int benutzerID) throws Exception {
-        String sql = "UPDATE "+form+" SET LetzteAenderung = NOW(), LetzteAenderungVon=\""+benutzerID+"\" WHERE ID="+id+";";
+        String sql = "UPDATE " + form + " SET LetzteAenderung = NOW(), LetzteAenderungVon=\"" + benutzerID + "\" WHERE ID=" + id + ";";
         insertOrUpdate(sql);
     }
 
     public static void updateAttribute(String table, String attribute, String value, int id) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             session.getTransaction().begin();
             NativeQuery query = session.createNativeQuery("UPDATE " + table + " SET " + attribute + "= :value WHERE ID= :id");
             query.setParameter("value", value);
@@ -43,8 +44,42 @@ public class SaveHelper extends AbstractBase {
         updateAttribute(table, attribute, value, Integer.parseInt(id));
     }
 
+    public static void updateAttribute(String table, String attribute, String value, String formularAttribut, int id, String cond) throws Exception {
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+            NativeQuery query = session.createNativeQuery("UPDATE " + table + " SET " + attribute + "= :value WHERE " + formularAttribut + "= :id" + cond);
+            query.setParameter("value", value);
+            query.setParameter("id", id);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
+    public static void updateAttribute(String table, String attribute, String value, String formularAttribut, String id, String cond) throws Exception {
+        updateAttribute(table, attribute, value, formularAttribut, Integer.parseInt(id), cond);
+    }
+
+    public static void insertNewAttribute(String table, String attribute, String formularAttribut, String field, String value, int id, String Idvalue) throws Exception {
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+
+            NativeQuery query = session.createNativeQuery("INSERT INTO " + table
+                    + " (" + attribute + ", " + formularAttribut + field + ")"
+                    + " VALUES (" + ":value" + ", " + ":id" + Idvalue + ")");
+
+            query.setParameter("value", value);
+            query.setParameter("id", id);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
+    public static void insertNewAttribute(String table, String attribute, String formularAttribut, String field, String value, String id, String Idvalue) throws Exception {
+        insertNewAttribute(table, attribute, formularAttribut, field, value, Integer.parseInt(id), Idvalue);
+    }
+
     public static List<DatenbankMapping> getMapping(String formular) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
             Root<DatenbankMapping> root = criteria.from(DatenbankMapping.class);
@@ -68,7 +103,7 @@ public class SaveHelper extends AbstractBase {
             }
             return null;
         } catch (Exception exception) {
-            throw new Exception(exception.getLocalizedMessage()+"\nSQL: "+sql);
+            throw new Exception(exception.getLocalizedMessage() + "\nSQL: " + sql);
         }
     }
 
@@ -76,7 +111,7 @@ public class SaveHelper extends AbstractBase {
         try {
             insertOrUpdate(sql);
         } catch (Exception exception) {
-            throw new Exception(exception.getLocalizedMessage()+"\nSQL: "+sql);
+            throw new Exception(exception.getLocalizedMessage() + "\nSQL: " + sql);
         }
     }
 }
