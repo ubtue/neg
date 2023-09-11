@@ -186,6 +186,10 @@ body.popup {
   width:		45em;
 }
 
+#h1-titel {
+    margin-top: 0 !important;
+}
+
 th {
   text-align:		left;
   font-style:		italic;
