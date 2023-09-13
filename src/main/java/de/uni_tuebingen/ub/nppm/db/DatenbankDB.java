@@ -156,9 +156,17 @@ public class DatenbankDB extends AbstractBase {
         return results;
     }
 
-    public static void insertSelektionBezeichnung(String tabelle, String bezeichnung, Integer id) throws Exception {
-        String sql = "INSERT INTO selektion_"+tabelle+" (ID, Bezeichnung) VALUES ("+id+", \""+bezeichnung+"\")";
-        insertOrUpdate(sql);
+   public static void insertSelektionBezeichnung(String tabelle, String bezeichnung, Integer id) throws Exception {
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+
+            NativeQuery query = session.createNativeQuery("INSERT INTO selektion_" + tabelle  + " (ID, Bezeichnung) VALUES (:id, :bezeichnung)");
+
+            query.setParameter("bezeichnung", bezeichnung);
+            query.setParameter("id", id);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        }
     }
 
     public static void updateSelektionBezeichnung(String tabelle, String bezeichnung, String id) throws Exception {
