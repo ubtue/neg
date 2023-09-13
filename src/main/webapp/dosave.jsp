@@ -170,27 +170,31 @@
             } // ENDE Datum
             // Bemerkungsfeld
             else if (feldtyp != null && feldtyp.equals("note") && zielAttribut != null && zieltabelle != null) {
-                String cond = "";
+                Map<String, String> condMap = new HashMap<>();
+                condMap.put(formularAttribut, String.valueOf(id));
                 if (datenfeld.equals("BemerkungAlle")) {
-                    cond = " AND GruppeID IS NULL AND BenutzerID IS NULL;";
+                    condMap.put("GruppeID", null);
+                    condMap.put("BenutzerID", null);
                 } else if (datenfeld.equals("BemerkungGruppe")) {
-                    cond = " AND GruppeID = " + session.getAttribute("GruppeID") + " AND BenutzerID IS NULL;";
+                    condMap.put("GruppeID", session.getAttribute("GruppeID").toString());
+                    condMap.put("BenutzerID", null);
                 } else if (datenfeld.equals("BemerkungPrivat")) {
-                    cond = " AND GruppeID IS NULL AND BenutzerID = " + session.getAttribute("BenutzerID") + ";";
+                    condMap.put("GruppeID", null);
+                    condMap.put("BenutzerID", session.getAttribute("BenutzerID").toString());
                 }
 
                 // Datensatz ändern
-                List<Map> attributes = SaveHelper.getMappedList("SELECT " + zielAttribut + " FROM " + zieltabelle + " WHERE " + formularAttribut + "='" + id + "'" + cond);
+                List<Map<String, String>> attributes = SaveHelper.selectAttribute(zieltabelle, zielAttribut, condMap);
                 if (formularAttribut != null && zieltabelle != null && (attributes.size() > 0 && request.getParameter(datenfeld) != null)) {
 
                     if (attributes.size() > 0 && request.getParameter(datenfeld) != null) {
                         Map attr = attributes.iterator().next();
                         if (request.getParameter(datenfeld).equals("")) {
-                            SaveHelper.insertOrUpdateSql("DELETE FROM " + zieltabelle + " WHERE " + formularAttribut + "='" + id + "'" + cond);
+                            SaveHelper.deleteAttribute(zieltabelle, condMap);
                         } // ENDE löschen
                         else if (!request.getParameter(datenfeld).equals("") && !DBtoDB(request.getParameter(datenfeld)).equals(attr.get(zielAttribut))) {
 
-                            SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld), formularAttribut, id, cond);
+                             SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
                         } // ENDE ändern
                     } // ENDE Datensatz ändern
 

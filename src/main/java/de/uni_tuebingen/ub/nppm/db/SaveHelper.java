@@ -1,7 +1,10 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.model.DatenbankMapping;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -24,6 +27,31 @@ public class SaveHelper extends AbstractBase {
         insertOrUpdate(sql);
     }
 
+    public static List<Map<String, String>> selectAttribute(String table, String attribute, Map<String, String> andConditions) throws Exception {
+        List<Map<String, String>> results = new ArrayList<>();
+
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+            String sql = "SELECT " + attribute + " FROM " + table; // SQL-Abfrage erstellen
+            sql += buildAndConditions(andConditions); // Bedingungen hinzufügen
+
+            NativeQuery query = session.createNativeQuery(sql);
+            registerAndConditions(andConditions, query);
+
+            List<String> queryResults = query.getResultList(); // Ergebnisse aus der Datenbank
+
+            for (String value : queryResults) {
+                Map<String, String> resultRow = new HashMap<>();
+                resultRow.put(attribute, value); // Wert zur HashMap hinzufügen
+                results.add(resultRow);
+            }
+
+            session.getTransaction().commit();
+        }
+
+        return results;
+    }
+
     public static void updateMetaData(String form, int id, int benutzerID) throws Exception {
         String sql = "UPDATE " + form + " SET LetzteAenderung = NOW(), LetzteAenderungVon=\"" + benutzerID + "\" WHERE ID=" + id + ";";
         insertOrUpdate(sql);
@@ -44,20 +72,22 @@ public class SaveHelper extends AbstractBase {
         updateAttribute(table, attribute, value, Integer.parseInt(id));
     }
 
-    public static void updateAttribute(String table, String attribute, String value, String formularAttribut, int id, String cond) throws Exception {
+     public static void updateAttribute(String table, String attribute, String value, Map<String, String> andConditions) throws Exception {
         try ( Session session = getSession()) {
             session.getTransaction().begin();
-            NativeQuery query = session.createNativeQuery("UPDATE " + table + " SET " + attribute + "= :value WHERE " + formularAttribut + "= :id" + cond);
+            String sql = "UPDATE " + table + " SET " + attribute + "= :value";
+            sql += buildAndConditions(andConditions);
+
+            NativeQuery query = session.createNativeQuery(sql);
             query.setParameter("value", value);
-            query.setParameter("id", id);
+            registerAndConditions(andConditions, query);
+
             query.executeUpdate();
             session.getTransaction().commit();
         }
     }
 
-    public static void updateAttribute(String table, String attribute, String value, String formularAttribut, String id, String cond) throws Exception {
-        updateAttribute(table, attribute, value, formularAttribut, Integer.parseInt(id), cond);
-    }
+
 
     public static void insertNewAttribute(String table, String attribute, String formularAttribut, String field, String value, int id, String Idvalue) throws Exception {
         try ( Session session = getSession()) {
@@ -76,6 +106,51 @@ public class SaveHelper extends AbstractBase {
 
     public static void insertNewAttribute(String table, String attribute, String formularAttribut, String field, String value, String id, String Idvalue) throws Exception {
         insertNewAttribute(table, attribute, formularAttribut, field, value, Integer.parseInt(id), Idvalue);
+    }
+
+    public static void deleteAttribute(String table, Map<String, String> andConditions) throws Exception {
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+            String sql = "DELETE FROM " + table;
+            sql += buildAndConditions(andConditions);
+
+            NativeQuery query = session.createNativeQuery(sql);
+            registerAndConditions(andConditions, query);
+
+            query.executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
+    protected static String buildAndConditions(Map<String, String> andConditions) {
+        String sql = "";
+
+        int i = 0;
+        for (Map.Entry<String, String> andCondition : andConditions.entrySet()) {
+            if (i == 0) {
+                sql += " WHERE ";
+            } else {
+                sql += " AND ";
+            }
+
+            sql += andCondition.getKey();  //z.b PersonID
+            if (andCondition.getValue() == null) {
+                sql += " IS ";
+            } else {
+                sql += " = ";
+            }
+            sql += ":" + andCondition.getKey(); //z.b :PersonID  (kreiere Platzhalter mit .getKey()  nicht .getValue
+            i++;
+        }
+
+        return sql;
+    }
+
+    //Hilsfunktion zum setzen der Parameter
+    protected static void registerAndConditions(Map<String, String> andConditions, NativeQuery query) {
+        for (Map.Entry<String, String> andCondition : andConditions.entrySet()) {
+            query.setParameter(andCondition.getKey(), andCondition.getValue());
+        }
     }
 
     public static List<DatenbankMapping> getMapping(String formular) throws Exception {
