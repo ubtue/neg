@@ -3,6 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
+import java.util.ArrayList;
 import org.hibernate.*;
 import javax.persistence.criteria.*;
 import org.hibernate.query.NativeQuery;
@@ -140,12 +141,19 @@ public class DatenbankDB extends AbstractBase {
     }
 
     public static List<Object> getSelektionBezeichnung(String tabelle, String bezeichnung) throws Exception {
-        try (Session session = getSession()) {
-            String SQL = "SELECT Bezeichnung FROM selektion_" + tabelle + " WHERE Bezeichnung='" + bezeichnung + "'";
-            NativeQuery query = session.createNativeQuery(SQL);
+        List<Object> results = new ArrayList<>();
+
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+
+            String sql = "SELECT Bezeichnung FROM selektion_" + tabelle + " WHERE Bezeichnung= :bezeichnung";
+            NativeQuery query = session.createNativeQuery(sql);
+            query.setParameter("bezeichnung", bezeichnung);
             List<Object> rows = query.getResultList();
-            return rows;
+            results.addAll(rows);
+            session.getTransaction().commit();
         }
+        return results;
     }
 
     public static void insertSelektionBezeichnung(String tabelle, String bezeichnung, Integer id) throws Exception {
@@ -154,10 +162,14 @@ public class DatenbankDB extends AbstractBase {
     }
 
     public static void updateSelektionBezeichnung(String tabelle, String bezeichnung, String id) throws Exception {
-        String sql = "UPDATE selektion_"+tabelle
-                        +" SET Bezeichnung=\""+bezeichnung+"\""
-                        +" WHERE ID="+id;
-        insertOrUpdate(sql);
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+            NativeQuery query = session.createNativeQuery("UPDATE selektion_" + tabelle + " SET Bezeichnung= :bezeichnung WHERE ID= :id");
+            query.setParameter("bezeichnung", bezeichnung);
+            query.setParameter("id", id);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        }
     }
 
     public static Integer getMaxId(String tabelle) throws Exception {
