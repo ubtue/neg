@@ -39,14 +39,21 @@
         List<Map> rowlist = AbstractBase.getMappedList("SELECT * FROM " + zielTabelle
                 + " WHERE " + formularAttribut + "=\"" + id + "\"");
 
+        boolean repeat = true;
         boolean alreadyOne = false;
         int i = 0;
-        for (Map row : rowlist) {
-            out.println("<input type=\"hidden\" name=\""
+        while (repeat) {
+            Map row = null;
+            if (i < rowlist.size()) {
+                row = rowlist.get(i);
+                out.println("<input type=\"hidden\" name=\""
                     + datenfeld.toLowerCase() + "[" + i
                     + "]_entryid\" value=\"" + row.get("ID").toString()
                     + "\">");
-            alreadyOne = true;
+                alreadyOne = true;
+            } else {
+                repeat = false;
+            }
 
             count++;
             if (count % 2 == 0) {
@@ -71,7 +78,7 @@
                                 + i
                                 + "]\""
                                 + " value=\""
-                                + (row.get(zielattributArray[j]) != null ? DBtoHTML(row
+                                + (row != null && row.get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : "")
                                 + "\""
@@ -83,7 +90,7 @@
                                 : " size=\"10\"")
                                 + " />");
                     } else {
-                        out.println(row
+                        out.println(row != null && row
                                 .get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : (alreadyOne ? "" : "-"));
@@ -94,18 +101,18 @@
                                 + "["
                                 + i
                                 + "]\"" + disabled + ">"
-                                + (row.get(zielattributArray[j]) != null ? DBtoHTML(row
+                                + (row != null && row.get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : "")
                                 + "</textarea>");
                     } else {
-                        out.println((row
+                        out.println((row != null && row
                                 .get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : (alreadyOne ? "" : "-")));
                     }
                 } else if (combinedFeldtypen[j].equals("addselect")) {
-                    int selected = (row.get(zielattributArray[j]) != null ? Integer.parseInt(row
+                    int selected = (row != null && row.get(zielattributArray[j]) != null ? Integer.parseInt(row
                             .get(zielattributArray[j]).toString())
                             : -1);
                     out.println("<select name=\""
@@ -182,22 +189,25 @@
                             "SELECT * FROM "
                             + auswahlherkunftArray[j]
                             + " ORDER BY Bezeichnung ASC");
-                    int selected = (row.get(zielattributArray[j]) != null ? Integer.parseInt(row
+                    int selected = (row != null && row.get(zielattributArray[j]) != null ? Integer.parseInt(row
                             .get(zielattributArray[j]).toString())
                             : -1);
                     for (Map row2 : rowlist2) {
+                        int currentId = Integer.parseInt(row2.get("ID").toString());
                         if (!isReadOnly) {
                             out
                                     .println("<option value='"
                                             + row2.get("ID").toString()
                                             + "' "
-                                            + (Integer.parseInt(row2.get("ID").toString()) == selected ? "selected"
+                                            + (currentId == selected ? "selected"
                                             : "")
                                             + ">"
                                             + row2.get("Bezeichnung").toString()
                                             + "</option>");
-                        } else if (Integer.parseInt(row2.get("ID").toString()) == selected) {
-                            if (!alreadyOne) {
+                        } else if (currentId == selected) {
+                            if (repeat) {
+                                out.println(row2.get("Bezeichnung").toString());
+                            } else if (!alreadyOne) {
                                 out.println("-");
                             }
                         }
@@ -207,51 +217,53 @@
                         out.println("</select>");
                     }
                 } else if (combinedFeldtypen[j].equals("subtable")) {
-                    out.println("<table>");
-                    String sql = "SELECT edition.ID, edition.Zitierweise Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
-                            + row.get("QuelleID").toString()
-                            + " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC";
+                    if (row != null) {
+                        out.println("<table>");
+                        String sql = "SELECT edition.ID, edition.Zitierweise Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
+                                + row.get("QuelleID").toString()
+                                + " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC";
 
-                    List<Map> rowlist2 = AbstractBase.getMappedList(sql);
+                        List<Map> rowlist2 = AbstractBase.getMappedList(sql);
 
-                    int i2 = 0;
+                        int i2 = 0;
 
-                    for (Map row2 : rowlist2) {
-                        Map row3 = AbstractBase.getMappedRow("SELECT Sigle FROM ueberlieferung_edition WHERE ueberlieferung_edition.editionID="
-                                + row2.get("ID").toString()
-                                + " AND ueberlieferung_edition.ueberlieferungID="
-                                + row.get("ID").toString());
+                        for (Map row2 : rowlist2) {
+                            Map row3 = AbstractBase.getMappedRow("SELECT Sigle FROM ueberlieferung_edition WHERE ueberlieferung_edition.editionID="
+                                    + row2.get("ID").toString()
+                                    + " AND ueberlieferung_edition.ueberlieferungID="
+                                    + row.get("ID").toString());
 
-                        out.println("<tr><td><a href=\"edition?ID="
-                                + row2.get("ID").toString()
-                                + "\">"
-                                + row2.get("Bezeichnung").toString()
-                                + "</a><input type=\"hidden\" name=\""
-                                + combinedFeldnamen[j]
-                                + "_ed["
-                                + i
-                                + "]["
-                                + i2
-                                + "]\""
-                                + " value=\""
-                                + row2.get("ID").toString()
-                                + "\"/></td><td><input name=\""
-                                + combinedFeldnamen[j]
-                                + "["
-                                + i
-                                + "]["
-                                + i2
-                                + "]\""
-                                + " value=\""
-                                + DBtoHTML(row3 != null ? row3.get("Sigle").toString() : "")
-                                        + "\""
-                                        + " maxlength=\""
-                                        + "\" "
-                                        + (combinedFeldnamen[j]
-                                                .endsWith("ID") ? " size=\"5\""
-                                        : " size=\"10\"")
-                                        + " /></td></tr>");
-                        i2++;
+                            out.println("<tr><td><a href=\"edition?ID="
+                                    + row2.get("ID").toString()
+                                    + "\">"
+                                    + row2.get("Bezeichnung").toString()
+                                    + "</a><input type=\"hidden\" name=\""
+                                    + combinedFeldnamen[j]
+                                    + "_ed["
+                                    + i
+                                    + "]["
+                                    + i2
+                                    + "]\""
+                                    + " value=\""
+                                    + row2.get("ID").toString()
+                                    + "\"/></td><td><input name=\""
+                                    + combinedFeldnamen[j]
+                                    + "["
+                                    + i
+                                    + "]["
+                                    + i2
+                                    + "]\""
+                                    + " value=\""
+                                    + DBtoHTML(row3 != null ? row3.get("Sigle").toString() : "")
+                                            + "\""
+                                            + " maxlength=\""
+                                            + "\" "
+                                            + (combinedFeldnamen[j]
+                                                    .endsWith("ID") ? " size=\"5\""
+                                            : " size=\"10\"")
+                                            + " /></td></tr>");
+                            i2++;
+                        }
                     }
 
                     out.println("</table>");
@@ -263,7 +275,7 @@
                                 + i
                                 + "]\""
                                 + " type=\"checkbox\""
-                                + (Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1 ? " checked"
+                                + (row != null && Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1 ? " checked"
                                 : "") + " />");
                     }
 
@@ -276,7 +288,7 @@
                                 + "]\" style=\"width:8em\">");
                     }
 
-                    if (combinedFeldnamen[j].equals("TKHandschrift") && row.get("EditionID") != null) {
+                    if (combinedFeldnamen[j].equals("TKHandschrift") && row != null && row.get("EditionID") != null) {
                         sql = "SELECT handschrift_ueberlieferung.ID, ueberlieferung_edition.Sigle Bezeichnung FROM handschrift_ueberlieferung, einzelbeleg, ueberlieferung_edition WHERE handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID and ueberlieferung_edition.EditionID= "
                                 + row.get("EditionID").toString()
                                 + " AND handschrift_ueberlieferung.QuelleID=einzelbeleg.QuelleID AND einzelbeleg.ID="
@@ -289,7 +301,7 @@
                                 + id
                                 + " ORDER BY Bezeichnung ASC";
                     }
-                    if (combinedFeldnamen[j].equals("HSEditionID") && row.get("QuelleID") != null) {
+                    if (combinedFeldnamen[j].equals("HSEditionID") && row != null && row.get("QuelleID") != null) {
                         sql = "SELECT edition.ID, edition.Titel Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
                                 + row.get("QuelleID").toString()
                                 + " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC";
@@ -299,7 +311,7 @@
                     if (!sql.equals("")) {
                         rowlist2 = AbstractBase.getMappedList(sql);
                     }
-                    int selected = (row.get(zielattributArray[j]) != null ? Integer.parseInt(row
+                    int selected = (row != null && row.get(zielattributArray[j]) != null ? Integer.parseInt(row
                             .get(zielattributArray[j]).toString())
                             : -1);
                     //Map stores the options fields of a select form
@@ -359,7 +371,7 @@
                             .split(",");
 
                     Map row2 = null;
-                    if (row.get(fields[1]) != null)
+                    if (row != null && row.get(fields[1]) != null)
                         row2 = AbstractBase.getMappedRow("SELECT "
                             + fields[2] + " FROM "
                             + fields[0] + " WHERE ID="
@@ -392,16 +404,18 @@
                                             .lastIndexOf(')'))
                             .split(",");
 
-                    Map row2 = AbstractBase.getMappedRow("SELECT "
-                            + fields[2] + " FROM "
-                            + fields[0] + " WHERE ID="
-                            + row.get(fields[1]).toString());
+                    if (row != null) {
+                        Map row2 = AbstractBase.getMappedRow("SELECT "
+                                + fields[2] + " FROM "
+                                + fields[0] + " WHERE ID="
+                                + row.get(fields[1]).toString());
 
-                    if (row2 != null) {
-                        out.println(row2
-                                .get(fields[2]) != null ? DBtoHTML(row2
-                                .get(fields[2]).toString())
-                                : "");
+                        if (row2 != null) {
+                            out.println(row2
+                                    .get(fields[2]) != null ? DBtoHTML(row2
+                                    .get(fields[2]).toString())
+                                    : "");
+                        }
                     }
                 } else if (combinedFeldtypen[j].startsWith("list")) {
                     String[] fields = combinedFeldtypen[j]
@@ -412,16 +426,17 @@
                                             .lastIndexOf(')'))
                             .split(",");
 
-                    List<Map> rowlist2 = AbstractBase.getMappedList("SELECT Bezeichnung FROM selektion_"
-                            + fields[0] + " sel, einzelbeleg_hat" + fields[0] + " zt WHERE zt."
-                            + fields[0] + "ID=sel.ID AND zt." + fields[1] + "="
-                            + row.get(fields[1]).toString());
-                    for (Map row2 : rowlist2) {
-                        out.println((row2.get("Bezeichnung") != null ? DBtoHTML(row2.get("Bezeichnung").toString())
-                                : ""));
-                        out.println("<br>");
+                    if (row != null) {
+                        List<Map> rowlist2 = AbstractBase.getMappedList("SELECT Bezeichnung FROM selektion_"
+                                + fields[0] + " sel, einzelbeleg_hat" + fields[0] + " zt WHERE zt."
+                                + fields[0] + "ID=sel.ID AND zt." + fields[1] + "="
+                                + row.get(fields[1]).toString());
+                        for (Map row2 : rowlist2) {
+                            out.println((row2.get("Bezeichnung") != null ? DBtoHTML(row2.get("Bezeichnung").toString())
+                                    : ""));
+                            out.println("<br>");
+                        }
                     }
-
                 } else if (combinedFeldtypen[j].startsWith("date(")) {
                     String[] fields = combinedFeldtypen[j]
                             .substring(
@@ -453,41 +468,44 @@
                                         + "</a>");
                     }
                 } else if (combinedFeldtypen[j].equals("dateinfo")) {
-
-                    out.println("<label id=\"quelleDate["
-                            + i
-                            + "]\">"
-                            + row.get(combinedFeldnamen[j]
-                                    + "VonJahr").toString()
-                            + "("
-                            + row.get(combinedFeldnamen[j]
-                                    + "VonJahrhundert").toString()
-                            + ". Jhd)-"
-                            + row.get(combinedFeldnamen[j]
-                                    + "BisJahr").toString()
-                            + "("
-                            + row.get(combinedFeldnamen[j]
-                                    + "BisJahrhundert").toString()
-                            + ". Jhd)</label>");
-                    out
-                            .println("<a href=\"javascript:popup('changedate', this, '', 'quelleDate["
-                                    + i
-                                    + "]', '"
-                                    + row.get("ID").toString()
-                                    + "');\"><img src=\"layout/icons/calendar.gif\" border=0></a>");
+                    if (row != null) {
+                        out.println("<label id=\"quelleDate["
+                                + i
+                                + "]\">"
+                                + row.get(combinedFeldnamen[j]
+                                        + "VonJahr").toString()
+                                + "("
+                                + row.get(combinedFeldnamen[j]
+                                        + "VonJahrhundert").toString()
+                                + ". Jhd)-"
+                                + row.get(combinedFeldnamen[j]
+                                        + "BisJahr").toString()
+                                + "("
+                                + row.get(combinedFeldnamen[j]
+                                        + "BisJahrhundert").toString()
+                                + ". Jhd)</label>");
+                        out
+                                .println("<a href=\"javascript:popup('changedate', this, '', 'quelleDate["
+                                        + i
+                                        + "]', '"
+                                        + row.get("ID").toString()
+                                        + "');\"><img src=\"layout/icons/calendar.gif\" border=0></a>");
+                    }
                 } else {
                     out.println("folgt!");
                 }
                 out.println("</td>");
             }
             if (!isReadOnly) {
-                String href = "javascript:deleteEntry('"
-                        + zielTabelle + "', '" + row.get("ID").toString()
-                        + "', '" + returnpage + "', '" + id + "');";
                 out.println("<td>");
-                out.println("<a href=\"" + href + "\">");
-                out.println(txt_delete);
-                out.println("</a>");
+                if (row != null) {
+                    String href = "javascript:deleteEntry('"
+                            + zielTabelle + "', '" + row.get("ID").toString()
+                            + "', '" + returnpage + "', '" + id + "');";
+                    out.println("<a href=\"" + href + "\">");
+                    out.println(txt_delete);
+                    out.println("</a>");
+                }
                 out.println("</td>");
             }
             /*      else{

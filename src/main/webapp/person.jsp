@@ -1,26 +1,22 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false"%>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
-<%@ page import="java.sql.SQLException" isThreadSafe="false"%>
-<%@ page import="java.sql.Statement" isThreadSafe="false"%>
-<%@ page import="java.util.List" isThreadSafe="false"%>
-<%@ page import="java.math.BigInteger" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="java.util.List" isThreadSafe="false"%>
+<%@ page import="java.math.BigInteger" isThreadSafe="false"%>
+
 <%@ include file="configuration.jsp"%>
 
-<%    
+<%
     int id = Constants.UNDEFINED_ID;
     String formular = "person";
     Language.setLanguage(request);
     Filter.setFilter(request, formular, out);
     id = Utils.determineId(request, response, formular, out);
-    
-        
+
+
 %>
 
 <jsp:include page="dosave.jsp">
@@ -135,23 +131,23 @@
 <div id="tab1">
 <div id="header">
 <ul id="primary">
-	<li><span> 
-            <% Language.printTextfield(out,session, formular,"TabZusatz");%> 
+	<li><span>
+            <% Language.printTextfield(out,session, formular,"TabZusatz");%>
             </span></li>
-	<li><a href="javascript:onoff('tab2','tab1');"> 
-            <% Language.printTextfield(out,session, formular,"TabASW");%> 
+	<li><a href="javascript:onoff('tab2','tab1');">
+            <% Language.printTextfield(out,session, formular,"TabASW");%>
             </a></li>
-	<li><a href="javascript:onoff('tab3','tab1');"> 
-            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%> 
+	<li><a href="javascript:onoff('tab3','tab1');">
+            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%>
             </a></li>
-	<li><a href="javascript:onoff('tab4','tab1');"> 
-            <% Language.printTextfield(out,session, formular,"TabVerwandte");%> 
+	<li><a href="javascript:onoff('tab4','tab1');">
+            <% Language.printTextfield(out,session, formular,"TabVerwandte");%>
             </a></li>
-	<li><a href="javascript:onoff('tab5','tab1');"> 
-            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%> 
+	<li><a href="javascript:onoff('tab5','tab1');">
+            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%>
             </a></li>
-	<li><a href="javascript:onoff('tab6','tab1');"> 
-            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%> 
+	<li><a href="javascript:onoff('tab6','tab1');">
+            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
             </a></li>
 </ul>
 </div>
@@ -166,23 +162,23 @@
 <div id="tab2">
 <div id="header">
 <ul id="primary">
-	<li><a href="javascript:onoff('tab1','tab2');"> 
-            <% Language.printTextfield(out,session, formular,"TabZusatz");%> 
+	<li><a href="javascript:onoff('tab1','tab2');">
+            <% Language.printTextfield(out,session, formular,"TabZusatz");%>
             </a></li>
-	<li><span> 
-            <% Language.printTextfield(out,session, formular,"TabASW");%> 
+	<li><span>
+            <% Language.printTextfield(out,session, formular,"TabASW");%>
             </span></li>
-	<li><a href="javascript:onoff('tab3','tab2');"> 
-            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%> 
+	<li><a href="javascript:onoff('tab3','tab2');">
+            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%>
             </a></li>
-	<li><a href="javascript:onoff('tab4','tab2');"> 
-            <% Language.printTextfield(out,session, formular,"TabVerwandte");%> 
+	<li><a href="javascript:onoff('tab4','tab2');">
+            <% Language.printTextfield(out,session, formular,"TabVerwandte");%>
             </a></li>
-	<li><a href="javascript:onoff('tab5','tab2');"> 
-            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%> 
+	<li><a href="javascript:onoff('tab5','tab2');">
+            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%>
             </a></li>
-	<li><a href="javascript:onoff('tab6','tab2');"> 
-            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%> 
+	<li><a href="javascript:onoff('tab6','tab2');">
+            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
             </a></li>
 </ul>
 </div>
@@ -213,23 +209,23 @@
 <div id="tab3">
 <div id="header">
 <ul id="primary">
-	<li><a href="javascript:onoff('tab1','tab3');"> 
-            <% Language.printTextfield(out,session, formular,"TabZusatz");%> 
+	<li><a href="javascript:onoff('tab1','tab3');">
+            <% Language.printTextfield(out,session, formular,"TabZusatz");%>
             </a></li>
-	<li><a href="javascript:onoff('tab2','tab3');"> 
-            <% Language.printTextfield(out,session, formular,"TabASW");%> 
+	<li><a href="javascript:onoff('tab2','tab3');">
+            <% Language.printTextfield(out,session, formular,"TabASW");%>
             </a></li>
-	<li><span> 
-            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%> 
+	<li><span>
+            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%>
             </span></li>
-	<li><a href="javascript:onoff('tab4','tab3');"> 
-            <% Language.printTextfield(out,session, formular,"TabVerwandte");%> 
+	<li><a href="javascript:onoff('tab4','tab3');">
+            <% Language.printTextfield(out,session, formular,"TabVerwandte");%>
             </a></li>
-	<li><a href="javascript:onoff('tab5','tab3');"> 
-            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%> 
+	<li><a href="javascript:onoff('tab5','tab3');">
+            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%>
             </a></li>
-	<li><a href="javascript:onoff('tab6','tab3');"> 
-            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%> 
+	<li><a href="javascript:onoff('tab6','tab3');">
+            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
             </a></li>
 </ul>
 </div>
@@ -288,23 +284,23 @@
 <div id="tab4">
 <div id="header">
 <ul id="primary">
-	<li><a href="javascript:onoff('tab1','tab4');"> 
-            <% Language.printTextfield(out,session, formular,"TabZusatz");%> 
+	<li><a href="javascript:onoff('tab1','tab4');">
+            <% Language.printTextfield(out,session, formular,"TabZusatz");%>
             </a></li>
-	<li><a href="javascript:onoff('tab2','tab4');"> 
-            <% Language.printTextfield(out,session, formular,"TabASW");%> 
+	<li><a href="javascript:onoff('tab2','tab4');">
+            <% Language.printTextfield(out,session, formular,"TabASW");%>
             </a></li>
-	<li><a href="javascript:onoff('tab3','tab4');"> 
-            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%> 
+	<li><a href="javascript:onoff('tab3','tab4');">
+            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%>
             </a></li>
-	<li><span> 
-            <% Language.printTextfield(out,session, formular,"TabVerwandte");%> 
+	<li><span>
+            <% Language.printTextfield(out,session, formular,"TabVerwandte");%>
             </span></li>
-	<li><a href="javascript:onoff('tab5','tab4');"> 
-            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%> 
+	<li><a href="javascript:onoff('tab5','tab4');">
+            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%>
             </a></li>
-	<li><a href="javascript:onoff('tab6','tab4');"> 
-            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%> 
+	<li><a href="javascript:onoff('tab6','tab4');">
+            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
             </a></li>
 </ul>
 </div>
@@ -318,23 +314,23 @@
 <div id="tab5">
 <div id="header">
 <ul id="primary">
-	<li><a href="javascript:onoff('tab1','tab5');"> 
-            <% Language.printTextfield(out,session, formular,"TabZusatz");%> 
+	<li><a href="javascript:onoff('tab1','tab5');">
+            <% Language.printTextfield(out,session, formular,"TabZusatz");%>
             </a></li>
-	<li><a href="javascript:onoff('tab2','tab5');"> 
-            <% Language.printTextfield(out,session, formular,"TabASW");%> 
+	<li><a href="javascript:onoff('tab2','tab5');">
+            <% Language.printTextfield(out,session, formular,"TabASW");%>
             </a></li>
-	<li><a href="javascript:onoff('tab3','tab5');"> 
-            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%> 
+	<li><a href="javascript:onoff('tab3','tab5');">
+            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%>
             </a></li>
 	<li><a href="javascript:onoff('tab4','tab5');">
-            <% Language.printTextfield(out,session, formular,"TabVerwandte");%> 
+            <% Language.printTextfield(out,session, formular,"TabVerwandte");%>
             </a></li>
-	<li><span> 
-            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%> 
+	<li><span>
+            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%>
             </span></li>
-	<li><a href="javascript:onoff('tab6','tab5');"> 
-            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%> 
+	<li><a href="javascript:onoff('tab6','tab5');">
+            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
             </a></li>
 </ul>
 </div>
@@ -350,23 +346,23 @@
 <div id="tab6">
 <div id="header">
 <ul id="primary">
-	<li><a href="javascript:onoff('tab1','tab6');"> 
-            <% Language.printTextfield(out,session, formular,"TabZusatz");%> 
+	<li><a href="javascript:onoff('tab1','tab6');">
+            <% Language.printTextfield(out,session, formular,"TabZusatz");%>
             </a></li>
-	<li><a href="javascript:onoff('tab2','tab6');"> 
-            <% Language.printTextfield(out,session, formular,"TabASW");%> 
+	<li><a href="javascript:onoff('tab2','tab6');">
+            <% Language.printTextfield(out,session, formular,"TabASW");%>
             </a></li>
-	<li><a href="javascript:onoff('tab3','tab6');"> 
-            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%> 
+	<li><a href="javascript:onoff('tab3','tab6');">
+            <% Language.printTextfield(out,session, formular,"TabEthnieAreal");%>
             </a></li>
-	<li><a href="javascript:onoff('tab4','tab6');"> 
-            <% Language.printTextfield(out,session, formular,"TabVerwandte");%> 
+	<li><a href="javascript:onoff('tab4','tab6');">
+            <% Language.printTextfield(out,session, formular,"TabVerwandte");%>
             </a></li>
-	<li><a href="javascript:onoff('tab5','tab6');"> 
-            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%> 
+	<li><a href="javascript:onoff('tab5','tab6');">
+            <% Language.printTextfield(out,session, formular,"TabEinzelbelege");%>
             </a></li>
-	<li><span> 
-            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%> 
+	<li><span>
+            <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
             </span></li>
 </ul>
 </div>

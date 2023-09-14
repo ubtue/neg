@@ -1,11 +1,14 @@
 package de.uni_tuebingen.ub.nppm.db;
 
+import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import de.uni_tuebingen.ub.nppm.model.*;
 import java.util.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.NoResultException;
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.json.*;
 
 /**
@@ -50,6 +53,47 @@ public class SelektionDB extends AbstractBase {
 
     static public String getNonGastTable(String selektion) {
         return gastToNonGast.get(selektion);
+    }
+
+    static public SelektionBezeichnung getByBezeichnung(String selektion, String Bezeichnung) throws Exception {
+        Class c = getEntityClassByTableName(selektion);
+
+        try (Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery query = builder.createQuery(c);
+            Root root = query.from(c);
+            query.select(root).where(builder.equal(root.get(SelektionBezeichnung_.BEZEICHNUNG), Bezeichnung));
+            try {
+                return (SelektionBezeichnung)session.createQuery(query).getSingleResult();
+            } catch (NoResultException e) {
+                return null;
+            }
+        }
+    }
+
+    public static List<Object> getBezeichnung(String tabelle, String bezeichnung) throws Exception {
+        try (Session session = getSession()) {
+            String SQL = "SELECT Bezeichnung FROM " + tabelle + " WHERE Bezeichnung='" + bezeichnung + "'";
+            NativeQuery query = session.createNativeQuery(SQL);
+            List<Object> rows = query.getResultList();
+            return rows;
+        }
+    }
+
+    public static boolean hasBezeichnung(String selektion, String Bezeichnung) throws Exception {
+        return !getBezeichnung(selektion, Bezeichnung).isEmpty();
+    }
+
+    public static void insertBezeichnung(String tabelle, String bezeichnung) throws Exception {
+        String sql = "INSERT INTO "+tabelle+" (Bezeichnung) VALUES (\""+bezeichnung+"\")";
+        insertOrUpdate(sql);
+    }
+
+    public static void updateBezeichnung(String tabelle, String bezeichnung, String id) throws Exception {
+        String sql = "UPDATE "+tabelle
+                        +" SET Bezeichnung=\""+bezeichnung+"\""
+                        +" WHERE ID="+id;
+        insertOrUpdate(sql);
     }
 
     static public boolean isHierarchy(String selektion) {

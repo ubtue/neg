@@ -12,7 +12,7 @@
             String value2_Bezeichnung = columns2[1].toString();
             out.println("<option value=\"" + value2_id + "\" " + ((value2_id == selected) ? "selected" : "") + ">" + DBtoHTML(value2_Bezeichnung) + "</option>");
         }
-        out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft.substring(10) + "', '" + datenfeld + "', '');\">" + txt_newentry + "</a></td>");
+        out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "', '');\">" + txt_newentry + "</a></td>");
 
         out.println("</select>");
 

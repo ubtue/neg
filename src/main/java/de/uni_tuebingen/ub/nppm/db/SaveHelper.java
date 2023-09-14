@@ -12,11 +12,6 @@ import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 
 public class SaveHelper extends AbstractBase {
-
-    public static int getMaxId(String form) throws Exception {
-        return (int) DatenbankDB.getSingleResult("SELECT max(ID) ID FROM " + form);
-    }
-
     public static boolean existForm(String form, int id) throws Exception {
         return DatenbankDB.getSingleResult("SELECT * FROM " + form + " WHERE ID=" + id) != null;
     }

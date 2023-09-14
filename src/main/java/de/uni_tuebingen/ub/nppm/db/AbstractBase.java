@@ -113,6 +113,11 @@ public class AbstractBase {
         }
     }
 
+
+    public static Integer getMaxId(String tabelle) throws Exception {
+        return getIntNative("SELECT max(ID) FROM "+tabelle);
+    }
+
     public static Class getEntityClassByTableName(String tableName) throws Exception {
         Class c = tableNameToEntityMap.get(tableName);
         if (c == null)
