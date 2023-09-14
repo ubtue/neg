@@ -36,7 +36,9 @@
         if (row != null) {
             boolean empty = true;
             for (int j = 0; j < combinedFeldnamen.length; j++) {
-                if (row.get(1 + 2 * j) != null && !row.get(1 + 2 * j).toString().equals("-1") || (row.get(1 + 2 * j + 1) != null && !row.get(1 + 2 * j + 1).toString().equals("0"))) {
+                String accuracyIndex = "Genauigkeit" + zielattributArray[j]; // e.g. GenauigkeitVonJahr
+                String valueIndex = zielattributArray[j]; // e.g. VonJahr
+                if (row.get(accuracyIndex) != null && !row.get(accuracyIndex).toString().equals("-1") || (row.get(valueIndex) != null && !row.get(valueIndex).toString().equals("0"))) {
                     empty = false;
                     break;
                 }
@@ -45,10 +47,12 @@
                 row = AbstractBase.getMappedRow(defaultValues[0].replaceAll("%id%", id));
             }
             for (int j = 0; j < combinedFeldnamen.length; j++) {
+                String accuracyIndex = "Genauigkeit" + zielattributArray[j]; // e.g. GenauigkeitVonJahr
+                String valueIndex = zielattributArray[j]; // e.g. VonJahr
                 out.println("<td>");
                 int selected = -1;
-                if ((!empty || row != null) && row.get(1 + j * 2) != null) {
-                    selected = Integer.parseInt(row.get(1 + j * 2).toString());
+                if ((!empty || row != null) && row.get(accuracyIndex) != null) {
+                    selected = Integer.parseInt(row.get(accuracyIndex).toString());
                 }
                 if (!isReadOnly) {
                     out.println("<select name=\"Genauigkeit" + combinedFeldnamen[j] + "\">");
@@ -71,12 +75,12 @@
 
                 if (!isReadOnly) {
                     out.println("<input name=\"" + combinedFeldnamen[j] + "\""
-                            + " value=\"" + ((!empty || row != null) && row.get(2 * j + 2) != null ? row.get(2 * j + 2).toString() : "") + "\""
+                            + " value=\"" + ((!empty || row != null) && row.get(valueIndex) != null ? row.get(valueIndex).toString() : "") + "\""
                             + " size=\"10\""
                             + " " + (j == 2 ? "onblur=\"javascript:makeCentury('" + combinedFeldnamen[j] + "', '" + combinedFeldnamen[j + 1] + "')\"" : "")
                             + " />");
                 } else {
-                    out.println(((!empty || row != null) && row.get(2 * j + 2) != null ? row.get(2 * j + 2).toString() : ""));
+                    out.println(((!empty || row != null) && row.get(valueIndex) != null ? row.get(valueIndex).toString() : ""));
                 }
                 out.println("</td>");
             }
