@@ -1,7 +1,5 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="java.util.Map" isThreadSafe="false" %>
 
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
@@ -30,23 +28,20 @@
 
  %>   <h2>Datum &auml;ndern</h2>
     <form method="POST">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
-                  <jsp:param name="Formular" value="handschrift_ueberlieferung"/>
-                  <jsp:param name="Datenfeld" value="DatumVon"/>
-                </jsp:include>
-                <jsp:include page="../inc.erzeugeFormular.jsp">
-                  <jsp:param name="Formular" value="handschrift_ueberlieferung"/>
-                  <jsp:param name="Datenfeld" value="DatumBis"/>
-                </jsp:include>
+        <jsp:include page="../inc.erzeugeFormular.jsp">
+          <jsp:param name="Formular" value="handschrift_ueberlieferung"/>
+          <jsp:param name="Datenfeld" value="DatumVon"/>
+        </jsp:include>
+        <jsp:include page="../inc.erzeugeFormular.jsp">
+          <jsp:param name="Formular" value="handschrift_ueberlieferung"/>
+          <jsp:param name="Datenfeld" value="DatumBis"/>
+        </jsp:include>
     <br/><br/>
     <%
-     Class.forName( sqlDriver );
-    Connection cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      Statement st = cn.createStatement();
-    ResultSet rs = st.executeQuery("SELECT handschrift.GehoertGruppe"
+    Map row = HandschriftDB.getMappedRow("SELECT handschrift.GehoertGruppe"
                            +" FROM handschrift_ueberlieferung, handschrift WHERE handschrift_ueberlieferung.HandschriftID=handschrift.ID AND handschrift_ueberlieferung.ID = "+request.getParameter("ID")
                            +" ");
-    if (rs.next()){// && (rs.getString("GehoertGruppe")==null || rs.getInt("GehoertGruppe")==((Integer) session.getAttribute("GruppeID")).intValue()) ) {
+    if (row != null){// && (rs.getString("GehoertGruppe")==null || rs.getInt("GehoertGruppe")==((Integer) session.getAttribute("GruppeID")).intValue()) ) {
 
     %>
 

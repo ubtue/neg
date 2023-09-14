@@ -1,4 +1,4 @@
-﻿<%
+<%
   request.setCharacterEncoding("UTF-8");
   String sqlDriver  = "com.mysql.cj.jdbc.Driver";
 

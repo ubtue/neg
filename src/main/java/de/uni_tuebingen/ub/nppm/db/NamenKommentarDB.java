@@ -24,38 +24,22 @@ public class NamenKommentarDB extends AbstractBase {
     }
 
     public static NamenKommentar getFirstPublicNamenlemma() throws Exception {
-
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             String SQL = "SELECT * FROM namenkommentar WHERE namenkommentar.ID in (SELECT n.ID FROM einzelbeleg e, quelle q, einzelbeleg_hatnamenkommentar h, namenkommentar n WHERE e.ID=h.einzelbelegID and n.ID=h.namenkommentarID and e.QuelleID=q.ID AND q.ZuVeroeffentlichen=1) order by namenkommentar.ID  ASC";
-            NativeQuery query = session.createSQLQuery(SQL);
+            NativeQuery query = session.createNativeQuery(SQL);
             query.addEntity(NamenKommentar.class);
             query.setMaxResults(1);
             return (NamenKommentar) query.getSingleResult();
-        } finally {
-            session.close();
         }
     }
 
      public static NamenKommentar getById(int id) throws Exception {
-        Session session = getSession();
-        try {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<NamenKommentar> criteria = builder.createQuery(NamenKommentar .class);
-            Root namenkommentar = criteria.from(NamenKommentar .class);
-            criteria.select(namenkommentar);
-            criteria.where(builder.equal( namenkommentar.get(NamenKommentar_.ID), id));
-            NamenKommentar res = session.createQuery(criteria).getSingleResult();
-            return res;
-        } finally {
-            session.close();
-        }
+        return AbstractBase.getById(id, NamenKommentar.class);
     }
 
 
     public static List<NamenKommentar> searchByFileName(String filename) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<NamenKommentar> criteria = builder.createQuery(NamenKommentar .class);
             Root namenkommentar = criteria.from(NamenKommentar .class);
@@ -63,22 +47,19 @@ public class NamenKommentarDB extends AbstractBase {
             criteria.where(builder.equal( namenkommentar.get(NamenKommentar_.DATEINAME), filename));
             List<NamenKommentar> res = session.createQuery(criteria).getResultList();
             return res;
-        } finally {
-            session.close();
         }
     }
 
     public static void saveOrUpdate(NamenKommentar namenkommentar) throws Exception {
-        Session session = getSession();
-        session.getTransaction().begin();
-        session.saveOrUpdate(namenkommentar);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = getSession()) {
+            session.getTransaction().begin();
+            session.saveOrUpdate(namenkommentar);
+            session.getTransaction().commit();
+        }
     }
 
     public static void setDateiname(int id, String dateiname) throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -91,9 +72,6 @@ public class NamenKommentarDB extends AbstractBase {
             session.createQuery(criteriaUpdate).executeUpdate();
 
             session.getTransaction().commit();
-
-        } finally {
-            session.close();
         }
     }
 }

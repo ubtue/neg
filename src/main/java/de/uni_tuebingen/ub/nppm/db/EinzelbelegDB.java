@@ -1,29 +1,14 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class EinzelbelegDB extends AbstractBase {
 
     public static Einzelbeleg getById(int id) throws Exception {
-        Session session = getSession();
-        try {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Einzelbeleg> criteria = builder.createQuery(Einzelbeleg.class);
-            Root einzelbeleg = criteria.from(Einzelbeleg.class);
-            criteria.select(einzelbeleg);
-            criteria.where(builder.equal(einzelbeleg.get(Einzelbeleg_.ID), id));
-            Einzelbeleg res = session.createQuery(criteria).getSingleResult();
-            return res;
-        } finally {
-            session.close();
-        }
+        return AbstractBase.getById(id, Einzelbeleg.class);
     }
 
     public static List getList() throws Exception {
@@ -39,14 +24,15 @@ public class EinzelbelegDB extends AbstractBase {
     }
 
     public static Einzelbeleg getFirstPublicEinzelbeleg() throws Exception {
-        Session session = getSession();
-        try {
+        try (Session session = getSession()) {
             String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
             Query query = session.createQuery(HQL).setMaxResults(1);
             Einzelbeleg einzelbeleg = (Einzelbeleg) query.getSingleResult();
             return einzelbeleg;
-        } finally {
-            session.close();
         }
+    }
+
+    public static void insertBySql(String sql) throws Exception {
+        insertOrUpdate(sql);
     }
 }

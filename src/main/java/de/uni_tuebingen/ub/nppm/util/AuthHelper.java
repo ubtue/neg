@@ -22,29 +22,17 @@ public class AuthHelper {
 
     public static boolean isBenutzerLogin(HttpServletRequest request) throws ServletException, IOException{
         HttpSession session = request.getSession(true);
-        if (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue()) {
-            return true;
-        }else{
-            return false;
-        }
+        return (session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && !((Boolean) session.getAttribute("Gast")).booleanValue());
     }
 
     public static boolean isGastLogin(HttpServletRequest request) throws ServletException, IOException{
         HttpSession session = request.getSession(true);
-        if (session!=null && session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && ((Boolean) session.getAttribute("Gast"))) {
-            return true;
-        }else{
-            return false;
-        }
+        return (session!=null && session.getAttribute("BenutzerID")!=null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && ((Boolean) session.getAttribute("Gast")));
     }
 
     public static boolean isAdminLogin(HttpServletRequest request) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        if (session.getAttribute("BenutzerID") != null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && ((Boolean) session.getAttribute("Administrator")).booleanValue()) {
-            return true;
-        } else {
-            return false;
-        }
+        return (session.getAttribute("BenutzerID") != null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0 && ((Boolean) session.getAttribute("Administrator")).booleanValue());
     }
 
 

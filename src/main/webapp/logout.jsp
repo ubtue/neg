@@ -1,6 +1,6 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 
-﻿<%
+<%
   if (session != null) {
     String sprache = (String) session.getAttribute("Sprache");
     session.invalidate();

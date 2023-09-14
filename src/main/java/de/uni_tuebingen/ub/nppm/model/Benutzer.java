@@ -131,6 +131,10 @@ public class Benutzer {
         return Gruppe;
     }
 
+    public void setGruppe(BenutzerGruppe gruppe) {
+        this.Gruppe = gruppe;
+    }
+
     public String getSprache() {
         return Sprache;
     }

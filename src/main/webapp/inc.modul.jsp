@@ -1,4 +1,4 @@
-﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
+<%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="java.sql.Date" isThreadSafe="false"%>
 <%@ page import="java.sql.Time" isThreadSafe="false"%>
 
@@ -162,7 +162,7 @@
 				cn = DriverManager.getConnection(sqlURL, sqlUser,
 						sqlPassword);
 				st = cn.createStatement();
-								
+
 				rs = st
 						.executeQuery("SELECT count(DISTINCT namenkommentar.ID) FROM einzelbeleg LEFT OUTER JOIN "+
 						"einzelbeleg_hatperson ON "+
@@ -389,7 +389,7 @@
 </jsp:include>
 <%
 	out.println("</a></td>");
-					out.println("<td>" + getBelegformLinked(cn, rs.getString("e.ID"), rs.getString("e.Belegform"))
+					out.println("<td>" + getBelegformLinked(rs.getString("e.ID"), rs.getString("e.Belegform"))
 							+ "</td>");
 
 					String vonTag = rs.getString("e.VonTag");
@@ -642,7 +642,7 @@
 												rs2
 														.getInt("handschrift_ueberlieferung.VonJahr"))
 										+ (rs2.getString("handschrift_ueberlieferung.VonJahrhundert") == null || rs2.getString("handschrift_ueberlieferung.VonJahrhundert").equals("")?"":"("+rs2.getString("handschrift_ueberlieferung.VonJahrhundert")+")")
-										
+
 										+ " - "
 										+ makeDate(
 												rs2
@@ -675,7 +675,7 @@
 					if (null != st)
 						st.close();
 				} catch (Exception ex) {
-				} 
+				}
 				try {
 					if (null != cn)
 						cn.close();
@@ -847,7 +847,7 @@
 												rs2
 														.getInt("handschrift_ueberlieferung.VonJahr"))
 										+ (rs2.getString("handschrift_ueberlieferung.VonJahrhundert") == null || rs2.getString("handschrift_ueberlieferung.VonJahrhundert").equals("")?"":"("+rs2.getString("handschrift_ueberlieferung.VonJahrhundert")+(rs2.getString("handschrift_ueberlieferung.VonJahrhundert").contains("J")?"":" Jh.")+")")
-										
+
 										+ " - "
 										+ makeDate(
 												rs2
@@ -880,7 +880,7 @@
 					if (null != st)
 						st.close();
 				} catch (Exception ex) {
-				} 
+				}
 				try {
 					if (null != cn)
 						cn.close();
@@ -890,7 +890,7 @@
 			out.println("</table>\n");
 		} else if (modul.equals("ueberlieferungRO")) {
 			out.println("<table id=\"ueberlieferung\" class=\"content-table\">\n");
- %>         
+ %>
 <tr>
 	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="quelle" />
@@ -980,7 +980,7 @@ try {
 								.getString("handschrift_ueberlieferung.BisJahr");
 						String bisJhdt = rs2
 								.getString("handschrift_ueberlieferung.BisJahrhundert");
-								
+
 						String von = "";
 
 						if (vonTag != null && !vonTag.equals("")
@@ -994,7 +994,7 @@ try {
 							von = von + vonJahr;
 						if (von.equals("") && vonJhdt != null)
 							von = vonJhdt;
-							
+
 						if(!von.equals("") && !von.contains("J") && (vonTag==null || vonTag.equals("") || vonTag.equals("0")) && (vonMonat==null || vonMonat.equals("") || vonMonat.equals("0")) && (vonJahr==null || vonJahr.equals("") || vonJahr.equals("0"))) von = von + " Jh.";
 
 						String bis = "";
@@ -1187,7 +1187,7 @@ firstEdition = true;
 						.executeQuery("Select e.ID, e.Titel, r.Bezeichnung as Reihe, e.BandNummer as Band, o. Bezeichnung as Ort, e.Jahr, qi.Seiten, e.Seiten, qi.Nummer from ((edition e join quelle_inedition qi on e.ID=qi.EditionID) left join selektion_reihe r on e.ReiheID=r.ID) left join selektion_ort o on e.OrtID=o.ID where qi.QuelleID="
 								+ id + " and qi.Standard=0");
 				while (rs.next()) {
-					
+
 					if(!firstEdition){
 					count++;
 					if (count % 2 == 0)
@@ -1226,7 +1226,7 @@ firstEdition = true;
 					out.println("<td>"
 							+ ((rs.getString("qi.Nummer") == null ||  rs.getString("qi.Nummer").trim().equals(""))? "--"
 									: DBtoHTML(rs.getString("qi.Nummer")))
-							+ "</td>");	
+							+ "</td>");
 					if(rs.getString("qi.Nummer") != null && !rs.getString("qi.Nummer").trim().equals("")) showNummer =true;
 					out.println("<td>");
 
@@ -1265,10 +1265,10 @@ firstEdition = true;
 				} catch (Exception ex) {
 				}
 			}
-			out.println("</tbody valign=\"bottom\">\n"); 
+			out.println("</tbody valign=\"bottom\">\n");
 			out.println("</table>\n");
 			if(!showNummer){
-			%>		
+			%>
 <script type="text/javascript">
    var rows = document.getElementById('edition').getElementsByTagName('tr');
    for (var i = 0; i < rows.length; i++) {
@@ -1276,7 +1276,7 @@ firstEdition = true;
     rows[i].getElementsByTagName('th')[7].style.display='none';
    if(rows[i].getElementsByTagName('td')[7])
     rows[i].getElementsByTagName('td')[7].style.display='none';
-  } 
+  }
 </script>
 	<%	}
 		}

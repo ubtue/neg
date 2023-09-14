@@ -1,7 +1,3 @@
-ALTER TABLE einzelbeleg DROP FOREIGN KEY einzelbeleg_QuelleGattungID;
--- this is necessary because the id column contains 0 values. Otherwise an error appears
-ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_QuelleGattungID FOREIGN KEY (QuelleGattungID) REFERENCES selektion_quellengattung(ID) ON UPDATE CASCADE;
-SET SESSION sql_mode = CONCAT(@@SQL_MODE, ',NO_AUTO_VALUE_ON_ZERO');
-ALTER TABLE selektion_quellengattung MODIFY COLUMN ID INT NOT NULL AUTO_INCREMENT;
--- restore sql mode
-SET SESSION sql_mode=default;
+CREATE VIEW gastselektion_quellengattung AS SELECT DISTINCT selektion_quellengattung.* FROM einzelbeleg LEFT JOIN quelle ON einzelbeleg.QuelleID = quelle.ID LEFT JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID = selektion_quellengattung.ID WHERE quelle.ZuVeroeffentlichen = 1;
+INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, Auswahlherkunft, Seite, de_Tooltip) VALUES ('freie_suche', 'QuelleGattung', 'Quellengattung', 'select', 0, 'gastselektion_quellengattung', 'gast_freie_suche', 'Wählen Sie aus der Ausklappliste');
+INSERT INTO datenbank_texte (Formular, Textfeld, de) VALUES ('gast_freie_suche', 'QuelleGattung', 'Quellengattung');

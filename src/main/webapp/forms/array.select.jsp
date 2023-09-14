@@ -1,22 +1,25 @@
-﻿<%
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="java.util.List" isThreadSafe="false" %>
+<%@ page import="java.util.Map" isThreadSafe="false" %>
+<%
   if (feldtyp.equals("select") && array) {
-    try {
-      Class.forName( sqlDriver );
-      cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      st = cn.createStatement();
-      
-      rs = st.executeQuery("SELECT ID, "+zielAttribut
-                           +" FROM "+zielTabelle
-                           +" WHERE "+formular+"ID='"+id+"'"
-                           +" ORDER BY ID ASC;");
+
+      List<Map> rowlist = AbstractBase.getMappedList("SELECT ID, " + zielAttribut
+                                                   + " FROM " + zielTabelle
+                                                   + " WHERE " + formular + "ID='" + id + "'"
+                                                   + " ORDER BY ID ASC");
+
       out.println("<table>");
       boolean repeat = true;
       int i = 0;
       while (repeat) {
+        Map row = null;
+
         int selected = -1;
-        if (rs.next()) {
-          selected = rs.getInt(zielAttribut);
-          out.println("<input type=\"hidden\" name =\""+datenfeld+"["+i+"]"+"_entryid\" value=\""+rs.getInt("ID")+"\">");
+        if (rowlist.size() > i) {
+          row = rowlist.get(i);
+          selected = Integer.parseInt(row.get(zielAttribut).toString());
+          out.println("<input type=\"hidden\" name =\""+datenfeld+"["+i+"]"+"_entryid\" value=\""+row.get("ID").toString()+"\">");
         }
         else {
           repeat = false;
@@ -26,23 +29,15 @@
         out.println("<td>");
 
         if(!isReadOnly)out.println("<select name='"+datenfeld+"["+i+"]'>");
-        Statement st2 = null;
-        ResultSet rs2 = null;
-        try {
-          st2 = cn.createStatement();
-          rs2 = st2.executeQuery("SELECT * FROM "+auswahlherkunft+" ORDER BY Bezeichnung ASC");
-          while ( rs2.next() ) {
-            if(!isReadOnly)out.println("<option value='"+rs2.getInt("ID")+"' "+(rs2.getInt("ID")==selected?"selected":"")+">"+DBtoHTML(rs2.getString("Bezeichnung"))+"</option>");
-            else if (repeat && rs2.getInt("ID")==selected)out.println(DBtoHTML(rs2.getString("Bezeichnung")));
+          List<Map> rowlist2 = AbstractBase.getMappedList("SELECT * FROM "+auswahlherkunft+" ORDER BY Bezeichnung ASC");
+          for (Map row2 : rowlist2) {
+            if(!isReadOnly)out.println("<option value='"+row2.get("ID").toString()+"' "+(Integer.parseInt(row2.get("ID").toString())==selected?"selected":"")+">"+DBtoHTML(row2.get("Bezeichnung").toString())+"</option>");
+            else if (repeat && Integer.parseInt(row2.get("ID").toString())==selected) out.println(DBtoHTML(row2.get("Bezeichnung").toString()));
           }
-        } finally {
-          try { if( null != rs2 ) rs2.close(); } catch( Exception ex ) {}
-          try { if( null != st2 ) st2.close(); } catch( Exception ex ) {}
-        }
        if(!isReadOnly) out.println("</select>");
         out.println("</td>");
         if (repeat) {
-          String href = "javascript:deleteEntry('"+zielTabelle+"', '"+rs.getInt("ID")+"', '"+returnpage+"', '"+id+"');";
+          String href = "javascript:deleteEntry('"+zielTabelle+"', '"+row.get("ID").toString() +"', '"+returnpage+"', '"+id+"');";
           out.println("<td>");
           if(!isReadOnly){
             out.println("<a href=\""+href+"\">");
@@ -55,11 +50,5 @@
         i++;
       }
       out.println("</table>");
-    } catch (SQLException e) {out.println(e);
-    } finally {
-      try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-      try { if( null != st ) st.close(); } catch( Exception ex ) {}
-      try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-    }
   }
 %>
