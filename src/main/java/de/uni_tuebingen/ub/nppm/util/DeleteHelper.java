@@ -19,11 +19,32 @@ public class DeleteHelper {
             try {
                 int id = Integer.valueOf(request.getParameter("ID"));
                 switch (request.getParameter("table")) {
+                    case "edition_hateditor":
+                        EinzelbelegDB.remove(EditionEditor.class, id);
+                        break;
+                    case "einzelbeleg_hatamtweihe":
+                        EinzelbelegDB.remove(EinzelbelegHatAmtWeihe_MM.class, id);
+                        break;
+                    case "einzelbeleg_hatethnie":
+                        EinzelbelegDB.remove(EinzelbelegHatEthnie_MM.class, id);
+                        break;
+                    case "einzelbeleg_hatfunktion":
+                        EinzelbelegDB.remove(EinzelbelegHatFunktion_MM.class, id);
+                        break;
                     case "einzelbeleg_hatmghlemma":
                         EinzelbelegDB.remove(EinzelbelegMghLemma_MM.class, id);
                         break;
                     case "einzelbeleg_hatnamenkommentar":
                         EinzelbelegDB.remove(EinzelbelegNamenkommentar_MM.class, id);
+                        break;
+                    case "einzelbeleg_hatperson":
+                        EinzelbelegDB.remove(EinzelbelegHatPerson_MM.class, id);
+                        break;
+                    case "einzelbeleg_textkritik":
+                        EinzelbelegDB.remove(EinzelbelegTextkritik.class, id);
+                        break;
+                    case "handschrift_ueberlieferung":
+                        EinzelbelegDB.remove(HandschriftUeberlieferung.class, id);
                         break;
                     case "person_hatamtstandweihe":
                         PersonDB.remove(PersonAmtStandWeihe_MM.class, id);
@@ -37,9 +58,6 @@ public class DeleteHelper {
                     case "person_verwandtmit":
                         PersonDB.remove(PersonVerwandtMit_MM.class, id);
                         break;
-                    case "einzelbeleg_hatperson":
-                        EinzelbelegDB.remove(EinzelbelegHatPerson_MM.class, id);
-                        break;
                     case "quelle_inedition":
                         EinzelbelegDB.remove(QuelleInEdition_MM.class, id);
                         break;
@@ -49,21 +67,8 @@ public class DeleteHelper {
                     case "urkunde_hatempfaenger":
                         EinzelbelegDB.remove(UrkundeEmpfaenger.class, id);
                         break;
-                    case "edition_hateditor":
-                        EinzelbelegDB.remove(EditionEditor.class, id);
-                        break;
-                    case "handschrift_ueberlieferung":
-                        EinzelbelegDB.remove(HandschriftUeberlieferung.class, id);
-                        break;
-                    case "einzelbeleg_textkritik":
-                        EinzelbelegDB.remove(EinzelbelegTextkritik.class, id);
-                        break;
-                    case "einzelbeleg_hatethnie":    
-                        EinzelbelegDB.remove(EinzelbelegHatEthnie_MM.class,id);
-                        break;
-                    case "einzelbeleg_hatfunktion":
-                        EinzelbelegDB.remove(EinzelbelegHatFunktion_MM.class,id);                  
-                        break;
+                    default:
+                        return false;
                 }
             } catch (Exception ex) {
                 try {

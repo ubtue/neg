@@ -49,7 +49,7 @@
             out.println("</td>");
 
             if (!isReadOnly) {
-                out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft.substring(10) + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
+                out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
             }
             out.println("</tr>");
             i++;
