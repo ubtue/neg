@@ -2,7 +2,6 @@ package de.uni_tuebingen.ub.nppm.servlet.backend;
 
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
-import de.uni_tuebingen.ub.nppm.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -213,24 +212,6 @@ public class ContentServlet extends AbstractBackendServlet {
         }
 
         return pathname;
-    }
-
-    protected void initRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Language.setLanguage(request);
-        benutzer = AuthHelper.getBenutzer(request);
-        if (isLoginRequired() && benutzer == null || benutzer.isGast()) {
-            RequestDispatcher rd = request.getRequestDispatcher("logout.jsp");
-            rd.forward(request, response);
-        }
-    }
-
-
-    @Override
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        initRequest(request, response);
-        response.setContentType("text/html; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        generatePage(request, response);
     }
 
     @Override

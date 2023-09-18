@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.Benutzer"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
@@ -7,7 +8,13 @@
 <%@ include file="functions.jsp" %>
 
 
-<%    Language.setLanguage(request);
+<%
+    int benutzerID = ((Integer) session.getAttribute("BenutzerID")).intValue();
+    Benutzer benutzer = BenutzerDB.getById(benutzerID);
+    boolean isAdmin = benutzer.isAdmin();
+    if (isAdmin) {
+
+        Language.setLanguage(request);
 %>
 
 <HEAD>
@@ -129,3 +136,10 @@
         </div>
     </div>
 </div>
+
+<%
+    } else {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/logout.jsp");
+        dispatcher.forward(request, response);
+    }
+%>
