@@ -149,23 +149,38 @@
                     if (changed) {
                         String sql = "UPDATE " + zieltabelle + " SET ";
                         boolean sqlValid = false;
+
                         for (int i = 0; i < zielattributArray.length; i++) {
-                            if (request.getParameter(combinedFeldnamenArray[i]) != null && request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]) != null) {
-                                if (i > 0) {
-                                    sql += ", ";
-                                }
-                                sql += zielattributArray[i] + "=\"" + ((!request.getParameter(combinedFeldnamenArray[i]).equals("")) ? request.getParameter(combinedFeldnamenArray[i]) : "0") + "\", ";
-                                sql += "Genauigkeit" + zielattributArray[i] + "=\"" + ((!request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]).equals("")) ? request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]) : "0") + "\"";
-                                sqlValid = true;
+                            String fieldValue = request.getParameter(combinedFeldnamenArray[i]);
+                            String genauigkeitValue = request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]);
+
+                            if (i > 0 && (fieldValue != null || genauigkeitValue != null)) {
+                                sql += ", ";
                             }
-                            if (i == (zielattributArray.length - 1)) {
-                                sql += " WHERE ID='" + id + "';";
+
+                            // Überprüfen, ob das Feld leer ist und den Wert entsprechend festlegen
+                            if (fieldValue != null && !fieldValue.isEmpty()) {
+                                sql += zielattributArray[i] + "=\"" + fieldValue + "\", ";
+                            } else {
+                                sql += zielattributArray[i] + "=NULL, ";
                             }
+
+                            // Überprüfen, ob Genauigkeitsfeld leer ist und den Wert entsprechend festlegen
+                            if (genauigkeitValue != null && !genauigkeitValue.isEmpty()) {
+                                sql += "Genauigkeit" + zielattributArray[i] + "=\"" + genauigkeitValue + "\"";
+                            } else {
+                                sql += "Genauigkeit" + zielattributArray[i] + "=NULL";
+                            }
+
+                            sqlValid = true;
                         }
+
+                        sql += " WHERE ID='" + id + "';";
+
                         if (sqlValid) {
                             SaveHelper.insertOrUpdateSql(sql);
                         }
-                    }
+                    }  
                 }
             } // ENDE Datum
             // Bemerkungsfeld
