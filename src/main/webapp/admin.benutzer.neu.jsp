@@ -64,7 +64,7 @@
                     password = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), salt);
                     String saltValue = SaltHash.BytesToBase64String(salt);
 
-                    BenutzerGruppe gruppe = BenutzerDB.getGruppeById(Integer.getInteger(request.getParameter("Projektgruppe")));
+                    BenutzerGruppe gruppe = BenutzerDB.getGruppeById(Integer.parseInt(request.getParameter("Projektgruppe")));
 
                     Benutzer benutzer = new Benutzer();
                     benutzer.setLogin(request.getParameter("Benutzername"));
