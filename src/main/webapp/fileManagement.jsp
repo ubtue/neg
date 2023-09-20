@@ -16,7 +16,6 @@
 <%@ include file="configuration.jsp" %>
 
 
-
     <%
         int benutzerID = ((Integer) session.getAttribute("BenutzerID")).intValue();
         Benutzer benutzer = BenutzerDB.getById(benutzerID);
@@ -49,10 +48,6 @@
     </style>
 
 </header>
-<jsp:include page="layout/titel.inhalt.jsp" />
-
-
-<div id="form">
     <div id="dynamicContentDiv">
         <%
 
@@ -206,7 +201,6 @@
         %>
     </div>
 </div>
-
 <%    } else {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logout.jsp");
         dispatcher.forward(request, response);
