@@ -1,62 +1,59 @@
-﻿<%
-  if (feldtyp.equals("addselect") && array) {
-    try {
-      Class.forName( sqlDriver );
-      cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      st = cn.createStatement();
-      rs = st.executeQuery("SELECT ID, "+zielAttribut+" FROM "+zielTabelle+" WHERE "+formular+"ID=\""+id+"\"");
-      int selected = -1;
-      out.println("<table>");
-      int i=0;
-      boolean repeat = true;
-      while (repeat) {
-        out.println("<tr>");
-        out.println("<td>");
-        if (rs.next()) {
-          selected = rs.getInt(zielAttribut);
-          if(!isReadOnly)out.println("<input type=\"hidden\" name =\""+datenfeld+"["+i+"]"+"_entryid\" value=\""+rs.getInt("ID")+"\">");
-        } else {
-          selected = -1;
-          repeat = false;
+<%@ page import="java.util.List" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+
+<%
+    if (feldtyp.equals("addselect") && array) {
+
+        List<Object[]> rowlist = AbstractBase.getListNative("SELECT ID, " + zielAttribut + " FROM " + zielTabelle + " WHERE " + formular + "ID=\"" + id + "\"");
+
+        String selected = "-1";
+        int i = 0;
+        out.println("<table>");
+        for (Object[] columns : rowlist) {
+            out.println("<tr>");
+            out.println("<td>");
+
+            String value_id = columns[0].toString();
+            String value_zielAttribut = columns[1].toString();
+            selected = value_zielAttribut;
+
+            if (!isReadOnly) {
+                out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + value_id + "\">");
+                out.println("<select name=\"" + datenfeld + "[" + i + "]\" id=\"" + datenfeld + "[" + i + "]\">");
+                out.println("<option value=\"-1\">nicht bearbeitet</option>");
+            }
+
+            List<Object[]> rowlist2 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
+            for (Object[] columns2 : rowlist2) {
+                String value2_id = columns2[0].toString();
+                String value2_Bezeichnung = columns2[1].toString();
+
+                if (!isReadOnly) {
+                    out.println("<option value=\"" + value2_id + "\" " + (value2_id.equals(selected) ? "selected" : "") + ">"+ DBtoHTML(value2_Bezeichnung) + "</option>");
+                } else if (value2_id.equals(selected)) {
+                    out.println(DBtoHTML(value2_Bezeichnung));
+                }
+            }
+
+            if (!isReadOnly) {
+                out.println("</select>");
+            }
+            out.println("</td>");
+            String href = "javascript:deleteEntry('" + zielTabelle + "', '" + value_id + "', '" + returnpage + "', '" + id + "');";
+            out.println("<td>");
+            if (!isReadOnly) {
+                out.println("<a href=\"" + href + "\">");
+                out.println(txt_delete);
+                out.println("</a>");
+            }
+            out.println("</td>");
+
+            if (!isReadOnly) {
+                out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
+            }
+            out.println("</tr>");
+            i++;
         }
-        if(!isReadOnly)out.println("<select name=\""+datenfeld+"["+i+"]\" id=\""+datenfeld+"["+i+"]\">");
-        Statement st2 = null;
-        ResultSet rs2 = null;
-        try {
-          st2 = cn.createStatement();
-          rs2 = st2.executeQuery("SELECT * FROM "+auswahlherkunft+" ORDER BY Bezeichnung ASC");
-          if(!isReadOnly){
-             out.println("<option value=\"-1\">nicht bearbeitet</option>");
-          }
-          while ( rs2.next() ) {
-           if(!isReadOnly) out.println("<option value=\""+rs2.getInt("ID")+"\" "+(rs2.getInt("ID")==selected?"selected":"")+">"+DBtoHTML(rs2.getString("Bezeichnung"))+"</option>");
-           else if(repeat && rs2.getInt("ID")==selected) out.println(DBtoHTML(rs2.getString("Bezeichnung")));
-          }
-        } finally {
-          try { if( null != rs2 ) rs2.close(); } catch( Exception ex ) {}
-          try { if( null != st2 ) st2.close(); } catch( Exception ex ) {}
-        }
-        if(!isReadOnly)out.println("</select>");
-        out.println("</td>");
-        if (repeat) {
-          String href = "javascript:deleteEntry('"+zielTabelle+"', '"+rs.getInt("ID")+"', '"+returnpage+"', '"+id+"');";
-          out.println("<td>");
-         if(!isReadOnly){ out.println("<a href=\""+href+"\">");
-          out.println(txt_delete);
-          out.println("</a>");}
-          out.println("</td>");
-        }
-        else {
-          if(!isReadOnly)out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '"+auswahlherkunft.substring(10)+"', '"+datenfeld+"["+i+"]', '');\">"+txt_newentry+"</a></td>");
-        }
-        out.println("</tr>");
-        i++;
-      }
-      out.println("</table>");
-    } finally {
-      try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-      try { if( null != st ) st.close(); } catch( Exception ex ) {}
-      try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
+        out.println("</table>");
     }
-  }
- %>
+%>

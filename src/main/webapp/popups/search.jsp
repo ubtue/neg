@@ -1,7 +1,7 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+
+<%@ page import="java.util.List" isThreadSafe="false" %>
+<%@ page import="java.util.Map" isThreadSafe="false" %>
 
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
@@ -26,9 +26,9 @@
   if (request.getParameter("action") == null && request.getParameter("form") != null) {
     out.println("<h2>Nach \""+request.getParameter("form").substring(0,1).toUpperCase()+request.getParameter("form").substring(1)+"\" suchen</h2>");
     out.println("<form method=\"POST\">");
-    
+
     out.println(request.getParameter("attribut")+":");
-    
+
     out.println("<input type=\"hidden\" name=\"action\" value=\"search\">");
     out.println("<input type=\"hidden\" name=\"form\" value=\""+request.getParameter("form")+"\">");
     out.println("<input type=\"hidden\" name=\"attribut\" value=\""+request.getParameter("attribut")+"\">");
@@ -39,37 +39,20 @@
     out.println("</form>");
   }
   else if (request.getParameter("action").equals("search")) {
-    String sql = "SELECT ID, "+request.getParameter("attribut")+" FROM "+request.getParameter("form")+" WHERE "+request.getParameter("attribut")+" LIKE '%"+DBtoDB(request.getParameter("searchstring"))+"%' ORDER BY "+request.getParameter("attribut")+";";
-    Connection cn = null;
-    Statement  st = null;
-    ResultSet rs = null;
-    try {
-      Class.forName( sqlDriver );
-      cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
+    String sql = "SELECT ID, "+request.getParameter("attribut")+" FROM "+request.getParameter("form")+" WHERE "+request.getParameter("attribut")+" LIKE '%"+DBtoDB(request.getParameter("searchstring"))+"%' ORDER BY "+request.getParameter("attribut");
+    List<Map> rowlist = SucheDB.getMappedList(sql);
 
-      // Neuen Wert eintragen
-      st = cn.createStatement();
-      rs = st.executeQuery(sql);
-      out.println("<table>");
-      out.println("<tr><th width=\"75\">ID</th><th>"+request.getParameter("attribut")+"</th></tr>");
-      while (rs.next()) {
-        out.println("<tr>");
-        out.println("<td width=\"75\">"+rs.getInt("ID")+"</td>");
-        out.println("<td><a href=\"javascript:copySearchedID("+rs.getInt("ID")+", '"+request.getParameter("destination")+"');window.close();\">"+DBtoHTML(rs.getString(request.getParameter("attribut")))+"</a></td>");
-        out.println("</tr>");
-      }
-      out.println("</table>");
-      out.println("<p align=\"center\"><a href=\"javascript:history.back();\">zur&uuml;ck</a></p>");
+    out.println("<table>");
+    out.println("<tr><th width=\"75\">ID</th><th>"+request.getParameter("attribut")+"</th></tr>");
+    for (Map row : rowlist) {
+      out.println("<tr>");
+      out.println("<td width=\"75\">"+row.get("ID").toString()+"</td>");
+      out.println("<td><a href=\"javascript:copySearchedID("+row.get("ID").toString()+", '"+request.getParameter("destination")+"');window.close();\">"+DBtoHTML(row.get(request.getParameter("attribut")).toString())+"</a></td>");
+      out.println("</tr>");
     }
-    catch (Exception e) {
-      out.println(e);
-    }
-    finally {
-      try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-      try { if( null != st ) st.close(); } catch( Exception ex ) {}
-      try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-    }
-//    javascript:addSelection("+newID+", '"+request.getParameter("neuerEintrag")+"', '"+request.getParameter("destination")+"');window.close();\">");
+    out.println("</table>");
+    out.println("<p align=\"center\"><a href=\"javascript:history.back();\">zur&uuml;ck</a></p>");
+//  javascript:addSelection("+newID+", '"+request.getParameter("neuerEintrag")+"', '"+request.getParameter("destination")+"');window.close();\">");
   }
 %>
   </BODY>

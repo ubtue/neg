@@ -74,6 +74,9 @@ Build:
 - Update copying neg.war to /var/lib/tomcat/webapps/ and removing the old unpacked neg/ subdirectory
 - Make sure the file /var/lib/tomcat9/conf/Catalina/localhost/neg.xml exists
 
+Development:
+- Make sure you have git hooks enabled, see git-config/hooks/README.md for further information
+
 Production:
 - https://wiki.owasp.org/index.php/Securing_tomcat
 

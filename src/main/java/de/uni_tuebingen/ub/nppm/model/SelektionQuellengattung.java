@@ -2,26 +2,31 @@ package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
 import java.util.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "selektion_quellengattung")
-public class SelektionQuellengattung {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class SelektionQuellengattung extends SelektionHierarchy {
 
-    @Column(name = "Bezeichnung", length=50)
-    private String bezeichnung;
+    @OneToOne(targetEntity = SelektionQuellengattung.class)
+    @JoinColumn(name = "parentId", referencedColumnName = "ID")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private SelektionQuellengattung parent;
 
-    public Integer getId() {
-        return id;
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+    @OrderBy("Bezeichnung")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<SelektionQuellengattung> children = new HashSet<>();
+
+    @Override
+    public SelektionHierarchy getParent() {
+        return parent;
     }
 
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
-
-    public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
+    @Override
+    public Set<? extends SelektionHierarchy> getChildren() {
+        return children;
     }
 }

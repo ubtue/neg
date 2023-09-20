@@ -1,7 +1,8 @@
-<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>﻿
+<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
-<%@ page import="java.util.Vector" isThreadSafe="false"%>
+<%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.Enumeration" isThreadSafe="false"%>
+<%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp"%>
@@ -21,11 +22,11 @@
     String order = "";
     String export = "browse";
 
-    Vector<String> conditions = new Vector<String>();
+    List<String> conditions = new ArrayList<>();
     conditions.add("quelle.zuVeroeffentlichen=1");
     conditions.add("namenkommentar.ID=" + id);
 
-    Vector<String> fields = new Vector<String>();
+    List<String> fields = new ArrayList<>();
     fields.add("person.Standardname");
     fields.add("person.ID");
     fields.add("selektion_amtweihe.Bezeichnung");
@@ -50,7 +51,7 @@
     fields.add("selektion_lebendverstorben.Bezeichnung");
     fields.add("einzelbeleg_textkritik.Variante");
 
-    Vector<String> fieldNames = new Vector<String>();
+    List<String> fieldNames = new ArrayList<>();
     fieldNames.add("person.Standardname");
     fieldNames.add("selektion_amtweihe.Bezeichnung");
     fieldNames.add("person_hatamtstandweihe.Zeitraum");
@@ -72,7 +73,7 @@
     fieldNames.add("selektion_lebendverstorben.Bezeichnung");
     fieldNames.add("einzelbeleg_textkritik.Variante");
 
-    Vector<String> tables = new Vector<String>();
+    List<String> tables = new ArrayList<>();
     tables.add("namenkommentar");
     tables.add("person");
     String sprache = "de";
@@ -81,12 +82,8 @@
     if (session != null && session.getAttribute("Sprache") != null)
         sprache = (String)session.getAttribute("Sprache");
 
-
-
-
-
-    Vector<String> joins = new Vector<String>();
-    Vector<String> headlines = new Vector<String>();
+    List<String> joins = new ArrayList<>();
+    List<String> headlines = new ArrayList<>();
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeiheZeitraum"));

@@ -18,13 +18,13 @@ public class ContextListener implements ServletContextListener {
         Iterator<Set> it = C3P0Registry.getPooledDataSources().iterator();
         while (it.hasNext()) {
             try {
-                   PooledDataSource dataSource = (PooledDataSource) it.next();
-                   dataSource.close();
+                PooledDataSource dataSource = (PooledDataSource) it.next();
+                dataSource.close();
             } catch (Exception e) {
-                   e.printStackTrace();
+                e.printStackTrace();
             }
         }
-        
+
         /*
             Shutdown AbandonedConnectionCleanupThread
         */
@@ -33,7 +33,7 @@ public class ContextListener implements ServletContextListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         /*
             Deregister drivers
         */
@@ -44,11 +44,11 @@ public class ContextListener implements ServletContextListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }            
+        }
     }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        
+
     }
 }

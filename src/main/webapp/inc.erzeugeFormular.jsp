@@ -1,5 +1,5 @@
-<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.model.DatenbankMapping" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.*" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
@@ -14,6 +14,7 @@
   String emp = request.getParameter("Empty");
   String sorted = request.getParameter("Sorted");
   String klarlemma = request.getParameter("Klarlemma");
+  String typeFile = request.getParameter("type");
   String def = "";
   String disabled = "";
 
@@ -50,13 +51,15 @@
   String sprache = (String)session.getAttribute("Sprache");
   //set standard language
   if(sprache == null)
-    sprache = "de"; 
+    sprache = "de";
   String beschriftung = "";
   String platzhalter = "";
   String tooltip = "";
   String zielTabelle = "";
   String zielAttribut = "";
   String auswahlherkunft = "";
+  String auswahlherkunftFilter = "";
+  String filter = "";
   String formularAttribut = "";
   String buttonAktion = "";
   String returnpage = "";
@@ -79,6 +82,8 @@
     zielTabelle = mapping.getZielTabelle();
     zielAttribut = mapping.getZielAttribut();
     auswahlherkunft = mapping.getAuswahlherkunft();
+    auswahlherkunftFilter = mapping.getAuswahlherkunftFilter();
+    filter = mapping.getFilter();
     formularAttribut = mapping.getFormularAttribut();
     buttonAktion = mapping.getButtonAktion();
     returnpage = mapping.getSeite();
@@ -92,19 +97,7 @@
 
 <% if (visible!=null && visible.equals("hidden")) out.println("<div style=\"visibility:hidden\">");%>
 
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.*" isThreadSafe="false" %>
-<%
-// TODO: These definitions here are still necessary for the forms/templates to work.
-// We should refactor them at a later point.
-Connection cn = null;
-Statement  st = null;
-ResultSet  rs = null;
-%>
 
 <%@ include file="forms/autocomplete.jsp" %>
 <%@ include file="forms/array.addselect.jsp" %>

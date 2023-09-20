@@ -1,159 +1,20 @@
-#provenance
-#
-#add a enum to associated migrated data with a source system (a source system can be for example dmp or batch import)
-#
-ALTER TABLE bemerkung ADD provenance VARCHAR (255);
-ALTER TABLE benutzer ADD provenance VARCHAR (255);
-ALTER TABLE benutzer_gruppe ADD provenance VARCHAR (255);
-ALTER TABLE datenbank_filter ADD provenance VARCHAR (255);
-ALTER TABLE datenbank_mapping ADD provenance VARCHAR (255);
-ALTER TABLE datenbank_selektion ADD provenance VARCHAR (255);
-ALTER TABLE datenbank_sprachen ADD provenance VARCHAR (255);
-ALTER TABLE datenbank_texte ADD provenance VARCHAR (255);
-ALTER TABLE edition ADD provenance VARCHAR (255);
-ALTER TABLE edition_band ADD provenance VARCHAR (255);
-ALTER TABLE edition_bestand ADD provenance VARCHAR (255);
-ALTER TABLE edition_hateditor ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg_hatamtweihe ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg_hatareal ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg_hatethnie ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg_hatfunktion ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg_hatmghlemma ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg_hatnamenkommentar ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg_hatperson ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg_hatstand ADD provenance VARCHAR (255);
-ALTER TABLE einzelbeleg_textkritik ADD provenance VARCHAR (255);
-ALTER TABLE handschrift ADD provenance VARCHAR (255);
-ALTER TABLE handschrift_ueberlieferung ADD provenance VARCHAR (255);
-ALTER TABLE mgh_lemma ADD provenance VARCHAR (255);
-ALTER TABLE mgh_lemma_bearbeiter ADD provenance VARCHAR (255);
-ALTER TABLE mgh_lemma_korrektor ADD provenance VARCHAR (255);
-ALTER TABLE namenkommentar ADD provenance VARCHAR (255);
-ALTER TABLE namenkommentar_bearbeiter ADD provenance VARCHAR (255);
-ALTER TABLE namenkommentar_korrektor ADD provenance VARCHAR (255);
-ALTER TABLE person ADD provenance VARCHAR (255);
-ALTER TABLE person_hatamtstandweihe ADD provenance VARCHAR (255);
-ALTER TABLE person_hatareal ADD provenance VARCHAR (255);
-ALTER TABLE person_hatethnie ADD provenance VARCHAR (255);
-ALTER TABLE person_hatstand ADD provenance VARCHAR (255);
-ALTER TABLE person_quiet ADD provenance VARCHAR (255);
-ALTER TABLE person_variante ADD provenance VARCHAR (255);
-ALTER TABLE person_verwandtmit ADD provenance VARCHAR (255);
-ALTER TABLE quelle ADD provenance VARCHAR (255);
-ALTER TABLE quelle_inedition ADD provenance VARCHAR (255);
-ALTER TABLE selektion_amtstandweihe ADD provenance VARCHAR (255);
-ALTER TABLE selektion_amtweihe ADD provenance VARCHAR (255);
-ALTER TABLE selektion_areal ADD provenance VARCHAR (255);
-ALTER TABLE selektion_autor ADD provenance VARCHAR (255);
-ALTER TABLE selektion_bearbeitungsstatus ADD provenance VARCHAR (255);
-ALTER TABLE selektion_bewertung ADD provenance VARCHAR (255);
-ALTER TABLE selektion_bkz ADD provenance VARCHAR (255);
-ALTER TABLE selektion_datgenauigkeit ADD provenance VARCHAR (255);
-ALTER TABLE selektion_dmghband ADD provenance VARCHAR (255);
-ALTER TABLE selektion_echtheit ADD provenance VARCHAR (255);
-ALTER TABLE selektion_editor ADD provenance VARCHAR (255);
-ALTER TABLE selektion_ethnie ADD provenance VARCHAR (255);
-ALTER TABLE selektion_ethnienerhalt ADD provenance VARCHAR (255);
-ALTER TABLE selektion_funktion ADD provenance VARCHAR (255);
-ALTER TABLE selektion_geschlecht ADD provenance VARCHAR (255);
-ALTER TABLE selektion_grammatikgeschlecht ADD provenance VARCHAR (255);
-ALTER TABLE selektion_janein ADD provenance VARCHAR (255);
-ALTER TABLE selektion_kasus ADD provenance VARCHAR (255);
-ALTER TABLE selektion_konvent ADD provenance VARCHAR (255);
-ALTER TABLE selektion_lebendverstorben ADD provenance VARCHAR (255);
-ALTER TABLE selektion_ort ADD provenance VARCHAR (255);
-ALTER TABLE selektion_quellengattung ADD provenance VARCHAR (255);
-ALTER TABLE selektion_reihe ADD provenance VARCHAR (255);
-ALTER TABLE selektion_sammelband ADD provenance VARCHAR (255);
-ALTER TABLE selektion_stand ADD provenance VARCHAR (255);
-ALTER TABLE selektion_urkundeausstellerempfaenger ADD provenance VARCHAR (255);
-ALTER TABLE selektion_verwandtschaftsgrad ADD provenance VARCHAR (255);
-ALTER TABLE suche_favoriten ADD provenance VARCHAR (255);
-ALTER TABLE tinyMce_content ADD provenance VARCHAR (255);
-ALTER TABLE ueberlieferung_edition ADD provenance VARCHAR (255);
-ALTER TABLE urkunde ADD provenance VARCHAR (255);
-ALTER TABLE urkunde_betreff ADD provenance VARCHAR (255);
-ALTER TABLE urkunde_dorsalnotiz ADD provenance VARCHAR (255);
-ALTER TABLE urkunde_hataussteller ADD provenance VARCHAR (255);
-ALTER TABLE urkunde_hatempfaenger ADD provenance VARCHAR (255);
-#
-#
-#add a field to neg tables to associated migrated rows with dmp rows
-#
-#
-ALTER TABLE bemerkung ADD external_dmp_id VARCHAR (255);
-ALTER TABLE benutzer ADD external_dmp_id VARCHAR (255);
-ALTER TABLE benutzer_gruppe ADD external_dmp_id VARCHAR (255);
-ALTER TABLE datenbank_filter ADD external_dmp_id VARCHAR (255);
-ALTER TABLE datenbank_mapping ADD external_dmp_id VARCHAR (255);
-ALTER TABLE datenbank_selektion ADD external_dmp_id VARCHAR (255);
-ALTER TABLE datenbank_sprachen ADD external_dmp_id VARCHAR (255);
-ALTER TABLE datenbank_texte ADD external_dmp_id VARCHAR (255);
-ALTER TABLE edition ADD external_dmp_id VARCHAR (255);
-ALTER TABLE edition_band ADD external_dmp_id VARCHAR (255);
-ALTER TABLE edition_bestand ADD external_dmp_id VARCHAR (255);
-ALTER TABLE edition_hateditor ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg_hatamtweihe ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg_hatareal ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg_hatethnie ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg_hatfunktion ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg_hatmghlemma ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg_hatnamenkommentar ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg_hatperson ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg_hatstand ADD external_dmp_id VARCHAR (255);
-ALTER TABLE einzelbeleg_textkritik ADD external_dmp_id VARCHAR (255);
-ALTER TABLE handschrift ADD external_dmp_id VARCHAR (255);
-ALTER TABLE handschrift_ueberlieferung ADD external_dmp_id VARCHAR (255);
-ALTER TABLE mgh_lemma ADD external_dmp_id VARCHAR (255);
-ALTER TABLE mgh_lemma_bearbeiter ADD external_dmp_id VARCHAR (255);
-ALTER TABLE mgh_lemma_korrektor ADD external_dmp_id VARCHAR (255);
-ALTER TABLE namenkommentar ADD external_dmp_id VARCHAR (255);
-ALTER TABLE namenkommentar_bearbeiter ADD external_dmp_id VARCHAR (255);
-ALTER TABLE namenkommentar_korrektor ADD external_dmp_id VARCHAR (255);
-ALTER TABLE person ADD external_dmp_id VARCHAR (255);
-ALTER TABLE person_hatamtstandweihe ADD external_dmp_id VARCHAR (255);
-ALTER TABLE person_hatareal ADD external_dmp_id VARCHAR (255);
-ALTER TABLE person_hatethnie ADD external_dmp_id VARCHAR (255);
-ALTER TABLE person_hatstand ADD external_dmp_id VARCHAR (255);
-ALTER TABLE person_quiet ADD external_dmp_id VARCHAR (255);
-ALTER TABLE person_variante ADD external_dmp_id VARCHAR (255);
-ALTER TABLE person_verwandtmit ADD external_dmp_id VARCHAR (255);
-ALTER TABLE quelle ADD external_dmp_id VARCHAR (255);
-ALTER TABLE quelle_inedition ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_amtstandweihe ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_amtweihe ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_areal ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_autor ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_bearbeitungsstatus ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_bewertung ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_bkz ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_datgenauigkeit ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_dmghband ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_echtheit ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_editor ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_ethnie ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_ethnienerhalt ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_funktion ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_geschlecht ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_grammatikgeschlecht ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_janein ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_kasus ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_konvent ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_lebendverstorben ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_ort ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_quellengattung ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_reihe ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_sammelband ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_stand ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_urkundeausstellerempfaenger ADD external_dmp_id VARCHAR (255);
-ALTER TABLE selektion_verwandtschaftsgrad ADD external_dmp_id VARCHAR (255);
-ALTER TABLE suche_favoriten ADD external_dmp_id VARCHAR (255);
-ALTER TABLE tinyMce_content ADD external_dmp_id VARCHAR (255);
-ALTER TABLE ueberlieferung_edition ADD external_dmp_id VARCHAR (255);
-ALTER TABLE urkunde ADD external_dmp_id VARCHAR (255);
-ALTER TABLE urkunde_betreff ADD external_dmp_id VARCHAR (255);
-ALTER TABLE urkunde_dorsalnotiz ADD external_dmp_id VARCHAR (255);
-ALTER TABLE urkunde_hataussteller ADD external_dmp_id VARCHAR (255);
-ALTER TABLE urkunde_hatempfaenger ADD external_dmp_id VARCHAR (255);
+INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('tinyMce', 'Titel', 'TinyMCE', 'TinyMCE', 'TinyMCE', 'TinyMCE');
+
+INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('fileManagement', 'Titel', 'Inhalt', 'Content', 'Contenu', 'Contenta');
+
+ALTER TABLE tinyMce_content CHANGE COLUMN name Bezeichnung VARCHAR(255);
+
+ALTER TABLE tinyMce_content MODIFY contentType VARCHAR(255);
+
+ALTER TABLE tinyMce_content ADD COLUMN context VARCHAR(255) NOT NULL;
+
+UPDATE tinyMce_content SET context = 'HILFE';
+
+RENAME TABLE tinyMce_content TO content;
+
+ALTER TABLE datenbank_mapping ADD COLUMN Auswahlherkunft_Filter VARCHAR(255) AFTER Auswahlherkunft;
+
+ALTER TABLE datenbank_mapping ADD COLUMN Filter VARCHAR(255) AFTER Auswahlherkunft_Filter;
+
+INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, ZielTabelle, ZielAttribut, Auswahlherkunft, Auswahlherkunft_Filter, Filter, Seite)
+VALUES ('namenkommentar', 'DateinameX', 'Dateiname', 'select', 0, 'namenkommentar', 'Dateiname', 'content', 'context', 'NAMENKOMMENTAR', 'namenkommentar');

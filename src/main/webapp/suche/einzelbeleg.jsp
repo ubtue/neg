@@ -1,5 +1,6 @@
+<%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
-<%@ page import="java.util.Vector" isThreadSafe="false" %>
+<%@ page import="java.util.List" isThreadSafe="false" %>
 
 <%
   String formular = request.getParameter("form");
@@ -9,15 +10,15 @@
   }
   String sql = "";
 
-  Vector<String> conditions = new Vector<String> ();
+  List<String> conditions = new ArrayList<>();
 
-  Vector<String> fields = new Vector<String> ();
-  Vector<String> fieldNames = new Vector<String> ();
+  List<String> fields = new ArrayList<>();
+  List<String> fieldNames = new ArrayList<>();
 
-  Vector<String> tables = new Vector <String> ();
-  Vector<String> joins = new Vector <String> ();
+  List<String> tables = new ArrayList<>();
+  List<String> joins = new ArrayList<>();
 
-  Vector<String> headlines = new Vector<String> ();
+  List<String> headlines = new ArrayList<>();
 
   String order = request.getParameter("order");
   String orderdirection = "ASC";
