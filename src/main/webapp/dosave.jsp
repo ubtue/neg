@@ -123,7 +123,8 @@
                     }
                     zielAttributStr += zielattributArray[i] + ", Genauigkeit" + zielattributArray[i];
                 }
-                List<Map> attributes = SaveHelper.getMappedList("SELECT " + zielAttributStr + " FROM " + zieltabelle + " WHERE ID='" + id + "';");
+
+                List<Map>  attributes = SaveHelper.selectAttributeMap(zieltabelle, zielAttributStr, id);
                 if (attributes.size() > 0) {
                     Map attr = attributes.iterator().next();
                     boolean changed = false;
@@ -180,7 +181,7 @@
                         if (sqlValid) {
                             SaveHelper.insertOrUpdateSql(sql);
                         }
-                    }  
+                    }
                 }
             } // ENDE Datum
             // Bemerkungsfeld
@@ -255,7 +256,8 @@
                         if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
                             boolean aenderung = false;
 
-                            List<Map> attributes = SaveHelper.getMappedList("SELECT * FROM " + zieltabelle + " WHERE ID='" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "';");
+                        int mapId = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                        List<Map<String, String>> attributes = SaveHelper.getMapField(zieltabelle, mapId);
                             if (attributes.size() > 0) {
                                 Map attr = attributes.iterator().next();
                                 for (int j = 0; j < combinedFeldnamenArray.length; j++) {

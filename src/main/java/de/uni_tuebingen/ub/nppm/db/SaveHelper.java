@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 
@@ -46,6 +48,57 @@ public class SaveHelper extends AbstractBase {
 
         return results;
     }
+
+     public static List<Map> selectAttributeMap(String table, String attributeString, int id) throws Exception {
+    List<Map> results = new ArrayList<>();
+
+    try (Session session = getSession()) {
+        session.getTransaction().begin();
+        String sql = "SELECT " + attributeString + " FROM " + table + " WHERE ID = " + id; // SQL-Abfrage erstellen
+
+        NativeQuery query = session.createNativeQuery(sql);
+
+        List<Object[]> queryResults = query.getResultList(); // Ergebnisse aus der Datenbank als Liste von Object-Arrays
+
+        for (Object[] row : queryResults) {
+            Map<String, Object> rowMap = new HashMap<>();
+
+            // Die Spaltenwerte in die Map einfügen, wobei die Spaltennamen als Schlüssel verwendet werden
+            for (int i = 0; i < row.length; i++) {
+                String columnName = attributeString.split(",")[i].trim(); // Die Spaltennamen sind mit Kommas getrennt
+                rowMap.put(columnName, row[i]);
+            }
+
+            results.add(rowMap);
+        }
+
+        session.getTransaction().commit();
+    }
+
+    return results;
+}
+
+     public static List<Map<String, String>> getMapField(String zieltabelle, int id) throws Exception {
+    List<Map<String, String>> results = new ArrayList<>();
+
+    try (Session session = getSession()) {
+        session.getTransaction().begin();
+        String sql = "SELECT * FROM " + zieltabelle + " WHERE ID = " + id; // SQL-Abfrage erstellen
+
+        SQLQuery query = session.createSQLQuery(sql);
+        query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+
+        List<Map<String, String>> queryResults = query.list();
+
+        for (Map<String, String> rowMap : queryResults) {
+            results.add(rowMap);
+        }
+
+        session.getTransaction().commit();
+    }
+
+    return results;
+}
 
     public static void updateMetaData(String form, int id, int benutzerID) throws Exception {
         String sql = "UPDATE " + form + " SET LetzteAenderung = NOW(), LetzteAenderungVon=\"" + benutzerID + "\" WHERE ID=" + id + ";";
