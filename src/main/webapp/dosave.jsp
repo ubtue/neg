@@ -124,7 +124,7 @@
                     zielAttributStr += zielattributArray[i] + ", Genauigkeit" + zielattributArray[i];
                 }
 
-                List<Map>  attributes = SaveHelper.selectAttributeMap(zieltabelle, zielAttributStr, id);
+                List<Map> attributes = SaveHelper.selectAttributeMap(zieltabelle, zielAttributStr, id);
                 if (attributes.size() > 0) {
                     Map attr = attributes.iterator().next();
                     boolean changed = false;
@@ -210,7 +210,7 @@
                         } // ENDE löschen
                         else if (!request.getParameter(datenfeld).equals("") && !DBtoDB(request.getParameter(datenfeld)).equals(attr.get(zielAttribut))) {
 
-                             SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
+                            SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
                         } // ENDE ändern
                     } // ENDE Datensatz ändern
 
@@ -256,19 +256,36 @@
                         if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
                             boolean aenderung = false;
 
-                        int mapId = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
-                        List<Map<String, String>> attributes = SaveHelper.getMapField(zieltabelle, mapId);
+                            int mapId = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                            List<Map<String, String>> attributes = SaveHelper.getMapField(zieltabelle, mapId);
                             if (attributes.size() > 0) {
                                 Map attr = attributes.iterator().next();
                                 for (int j = 0; j < combinedFeldnamenArray.length; j++) {
                                     if (combinedFeldtypenArray[j].equals("subtable")) {
                                         for (int j2 = 0; request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") != null; j2++) {
                                             if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
-                                                List<Map> ueberlieferungEdition = SaveHelper.getMappedList("SELECT * FROM ueberlieferung_edition WHERE editionID=" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + " AND ueberlieferungID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+
+                                                Map<String, String> condMap = new HashMap<>();
+                                                condMap.put(formularAttribut, String.valueOf(id));
+                                                condMap.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
+                                                condMap.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+
+                                                List<Map<String, String>> ueberlieferungEdition = SaveHelper.selectAttribute("ueberlieferung_edition", "*", condMap);
+
                                                 if (ueberlieferungEdition.size() > 0) {
-                                                    SaveHelper.insertOrUpdateSql("UPDATE ueberlieferung_edition SET sigle='" + request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") + "' WHERE  editionID=" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + " and ueberlieferungID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+
+                                                    Map<String, String> condMap2 = new HashMap<>();
+                                                    condMap2.put(formularAttribut, String.valueOf(id));
+
+                                                    condMap2.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
+                                                    condMap2.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                                                    SaveHelper.updateAttribute("ueberlieferung_edition", "sigle", request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]"), condMap2);
+
                                                 } else {
-                                                    SaveHelper.insertOrUpdateSql("INSERT into ueberlieferung_edition (UeberlieferungID, EditionID, Sigle) VALUES ('" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "','" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + "','" + request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") + "')");
+                                                    int value_one = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                                                    int value_two = Integer.parseInt(request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
+                                                    String value_three = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
+                                                    SaveHelper.insertNewAttribute("ueberlieferung_edition", "UeberlieferungID", "EditionID", "Sigle", value_one, value_two, value_three);
                                                 }
                                             }
                                         }
