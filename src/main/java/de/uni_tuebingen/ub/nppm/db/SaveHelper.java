@@ -25,11 +25,10 @@ public class SaveHelper extends AbstractBase {
         insertOrUpdate(sql);
     }
 
-    public static List<Map<String, String>> selectAttribute(String table, String attribute, Map<String, String> andConditions) throws Exception {
+    public static List<Map<String, String>> getAttribute(String table, String attribute, Map<String, String> andConditions) throws Exception {
         List<Map<String, String>> results = new ArrayList<>();
 
         try ( Session session = getSession()) {
-            session.getTransaction().begin();
             String sql = "SELECT " + attribute + " FROM " + table; // SQL-Abfrage erstellen
             sql += buildAndConditions(andConditions); // Bedingungen hinzufügen
 
@@ -43,18 +42,15 @@ public class SaveHelper extends AbstractBase {
                 resultRow.put(attribute, value); // Wert zur HashMap hinzufügen
                 results.add(resultRow);
             }
-
-            session.getTransaction().commit();
         }
-
         return results;
     }
 
-    public static List<Map> selectAttributeMap(String table, String attributeString, int id) throws Exception {
+    public static List<Map> getAttributeMap(String table, String attributeString, int id) throws Exception {
         List<Map> results = new ArrayList<>();
 
         try ( Session session = getSession()) {
-            session.getTransaction().begin();
+
             String sql = "SELECT " + attributeString + " FROM " + table + " WHERE ID = " + id; // SQL-Abfrage erstellen
 
             NativeQuery query = session.createNativeQuery(sql);
@@ -72,10 +68,7 @@ public class SaveHelper extends AbstractBase {
 
                 results.add(rowMap);
             }
-
-            session.getTransaction().commit();
         }
-
         return results;
     }
 
@@ -83,7 +76,6 @@ public class SaveHelper extends AbstractBase {
         List<Map<String, String>> results = new ArrayList<>();
 
         try ( Session session = getSession()) {
-            session.getTransaction().begin();
             String sql = "SELECT * FROM " + zieltabelle + " WHERE ID = " + id; // SQL-Abfrage erstellen
 
             SQLQuery query = session.createSQLQuery(sql);
@@ -94,8 +86,6 @@ public class SaveHelper extends AbstractBase {
             for (Map<String, String> rowMap : queryResults) {
                 results.add(rowMap);
             }
-
-            session.getTransaction().commit();
         }
 
         return results;

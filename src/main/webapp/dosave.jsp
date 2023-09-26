@@ -124,7 +124,7 @@
                     zielAttributStr += zielattributArray[i] + ", Genauigkeit" + zielattributArray[i];
                 }
 
-                List<Map> attributes = SaveHelper.selectAttributeMap(zieltabelle, zielAttributStr, id);
+                List<Map> attributes = SaveHelper.getAttributeMap(zieltabelle, zielAttributStr, id);
                 if (attributes.size() > 0) {
                     Map attr = attributes.iterator().next();
                     boolean changed = false;
@@ -200,7 +200,7 @@
                 }
 
                 // Datensatz ändern
-                List<Map<String, String>> attributes = SaveHelper.selectAttribute(zieltabelle, zielAttribut, condMap);
+                List<Map<String, String>> attributes = SaveHelper.getAttribute(zieltabelle, zielAttribut, condMap);
                 if (formularAttribut != null && zieltabelle != null && (attributes.size() > 0 && request.getParameter(datenfeld) != null)) {
 
                     if (attributes.size() > 0 && request.getParameter(datenfeld) != null) {
@@ -270,7 +270,7 @@
                                                 condMap.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
                                                 condMap.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
 
-                                                List<Map<String, String>> ueberlieferungEdition = SaveHelper.selectAttribute("ueberlieferung_edition", "*", condMap);
+                                                List<Map<String, String>> ueberlieferungEdition = SaveHelper.getAttribute("ueberlieferung_edition", "*", condMap);
 
                                                 if (ueberlieferungEdition.size() > 0) {
 
