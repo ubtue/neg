@@ -12,6 +12,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import java.net.URI;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -238,6 +239,36 @@ public class AbstractBase {
             NativeQuery query = session.createNativeQuery(sql);
             query.executeUpdate();
             session.getTransaction().commit();
+        }
+    }
+
+    protected static List<Map<String, String>> getMappedListString(Query query) throws Exception {
+
+    query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
+
+    List<Map<String, String>> resultList = new ArrayList<>();
+    List<Map> rows = query.list();
+
+    for (Map row : rows) {
+        Map<String, String> stringRowMap = new HashMap<>();
+        for (Object entryObject : row.entrySet()) {
+            Map.Entry<String, Object> entry = (Map.Entry<String, Object>) entryObject;
+            String key = entry.getKey();
+            String value = entry.getValue() != null ? entry.getValue().toString() : null;
+            stringRowMap.put(key, value);
+        }
+        resultList.add(stringRowMap);
+    }
+
+    return resultList;
+}
+
+    public static List<Map<String, String>> getMappedListString(String query) throws Exception {
+        // Note: If you wanna use this function properly and your query
+        // contains a JOIN, please make sure to provide aliases (using AS)
+        // to be able to access the result columns by key.
+        try (Session session = getSession()) {
+            return getMappedListString(session.createNativeQuery(query));
         }
     }
 

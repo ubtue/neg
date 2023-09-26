@@ -71,22 +71,9 @@ public class SaveHelper extends AbstractBase {
     }
 
     public static List<Map<String, String>> getMapField(String zieltabelle, int id) throws Exception {
-        List<Map<String, String>> results = new ArrayList<>();
+        String sql = "SELECT * FROM " + zieltabelle + " WHERE ID = " + id; // SQL-Abfrage erstellen
 
-        try ( Session session = getSession()) {
-            String sql = "SELECT * FROM " + zieltabelle + " WHERE ID = " + id; // SQL-Abfrage erstellen
-
-            SQLQuery query = session.createSQLQuery(sql);
-            query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-
-            List<Map<String, String>> queryResults = query.list();
-
-            for (Map<String, String> rowMap : queryResults) {
-                results.add(rowMap);
-            }
-        }
-
-        return results;
+        return AbstractBase.getMappedListString(sql);
     }
 
     public static void updateMetaData(String form, int id, int benutzerID) throws Exception {
