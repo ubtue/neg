@@ -85,9 +85,9 @@
                     int checkbox = 0;
                     if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
                         checkbox = 1;
+                        SaveHelper.updateAttribute(zieltabelle, zielAttribut, String.valueOf(checkbox), id);
                     }
                     if (attrVal != null && Integer.valueOf(attrVal) != checkbox) {
-
                         SaveHelper.updateAttribute(zieltabelle, zielAttribut, String.valueOf(checkbox), id);
                     } // ENDE Datensatz ändern
                 } // ENDE kein Array
