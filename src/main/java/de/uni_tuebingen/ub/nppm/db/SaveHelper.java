@@ -53,9 +53,7 @@ public class SaveHelper extends AbstractBase {
 
             String sql = "SELECT " + attributeString + " FROM " + table + " WHERE ID = " + id; // SQL-Abfrage erstellen
 
-            NativeQuery query = session.createNativeQuery(sql);
-
-            List<Object[]> queryResults = query.getResultList(); // Ergebnisse aus der Datenbank als Liste von Object-Arrays
+            List<Object[]> queryResults =  AbstractBase.getListNative(sql); // Ergebnisse aus der Datenbank als Liste von Object-Arrays
 
             for (Object[] row : queryResults) {
                 Map<String, Object> rowMap = new HashMap<>();
