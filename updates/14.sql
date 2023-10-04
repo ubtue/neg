@@ -1,10 +1,8 @@
 INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('tinyMce', 'Titel', 'TinyMCE', 'TinyMCE', 'TinyMCE', 'TinyMCE');
- 
-INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('fileManagement', 'Titel', 'Inhalt', 'Content', 'Contenu', 'Contenta');
- 
-INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('navigation', 'InhaltBearbeiten', 'Inhalt bearbeiten', 'edit content', 'modifier le contenu', 'recensere content');
 
-ALTER TABLE tinyMce_content CHANGE COLUMN name Bezeichnung VARCHAR(255); 
+INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('fileManagement', 'Titel', 'Inhalt', 'Content', 'Contenu', 'Contenta');
+
+ALTER TABLE tinyMce_content CHANGE COLUMN name Bezeichnung VARCHAR(255);
 
 ALTER TABLE tinyMce_content MODIFY contentType VARCHAR(255);
 

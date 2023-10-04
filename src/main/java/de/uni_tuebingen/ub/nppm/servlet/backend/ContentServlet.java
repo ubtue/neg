@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
@@ -20,35 +19,51 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class ContentServlet extends AbstractBackendServlet {
-     protected Benutzer benutzer;
 
+    protected Benutzer benutzer;
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PrintWriter out = response.getWriter();
 
-        // TinyMCE anzeigen
+        // show TinyMCE
         if (request.getParameter("loadFile") != null) {
             RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
             rd.include(request, response);
         } else {
-            // Aktionen:
+        //show fileManagement
+
+            out.println("<h2>Html Dateien & Bilder verwalten</h2>");
+            out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie eine Datei löschen, dann ist auch jede Verknüpfung im Programm gelöscht, auch wenn Sie </p>");
+            out.println("<p style=\"line-height: 0.2; color: red;\">die Datei mit gleichem Namen hochladen. </p>");
+            out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie aber Ersetzen wählen, dann bleiben die Verknüpfungen im Programm bestehen.</p>");
+            // Actions:
             String fileAccess = request.getParameter("fileAccess");
             if (fileAccess != null) {
 
-                // Aktion (Löschen)
+                //Action (Delete)
                 if (fileAccess.equals("fileDelete")) {
                     if (request.getParameter("id") != null) {
+                        Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                        out.println("Datei " + content.getName() +  " wurde gelöscht");
                         deleteFile(request.getParameter("id"));
+
                     } else {
-                        out.println("Datei kann nicht gelöscht werden");
+                        out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht gelöscht werden");
                     }
-                    // Aktion (Hochladen ODER ersetzen / updaten)
+                    // Action (upload OR replace/update)
                 } else if (fileAccess.equals("fileUpload")) {
                     uploadFile(request, response);
+                } else if(fileAccess.equals("fileReplace")){
+
+                    if (request.getParameter("id") != null) {
+                        replaceFile(request, response, request.getParameter("id"));
+                    } else {
+                        out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht ersetzt werden");
+                    }
                 }
             }
-
-            // Liste anzeigen (z.B. Hilfe, Namenkommentar)
-            // Leere Seite anzeigen
+            // show list (e.g. help, name comment or blank page)
             RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
             rd.include(request, response);
         }
@@ -66,8 +81,69 @@ public class ContentServlet extends AbstractBackendServlet {
             }
         }
         ContentDB.deleteById(id);
-
     }//end function
+
+    public void replaceFile(HttpServletRequest request, HttpServletResponse response, String fileId) throws IOException, FileUploadException, Exception {
+
+        PrintWriter out = response.getWriter();
+
+        String context = request.getParameter("context");
+        Content.Context contextEnum = Content.Context.valueOf(context);
+
+        // Create a new file upload handler
+        ServletFileUpload upload = new ServletFileUpload();
+
+        // Parse the request
+        FileItemIterator iter = upload.getItemIterator(request);
+
+        while (iter.hasNext()) {
+
+            FileItemStream item = iter.next();
+            String contentType = item.getContentType();
+            String errorFileName = item.getName();
+
+            if (!item.isFormField()) {
+
+                if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("")) {
+                     out.println("<span style=\" color: red;\" >Error: </span>Sie haben keine Datei ausgew&auml;hlt!");
+                } else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
+                        || item.getContentType().startsWith("image") || item.getContentType().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+                        || item.getContentType().startsWith("application/msword")) {
+
+                    String fileName = item.getName();
+
+                    boolean fileExists = ContentDB.searchName(fileName);
+                    boolean sameFileName = false;
+                     Content content = ContentDB.getById(Integer.parseInt( request.getParameter("id")));
+                     if(fileName.equals(content.getName()))  //The file name to be uploaded should match the one in the database
+                     {
+                         sameFileName = true;
+                     }
+
+                    String pathname = writeItemToTempFile(item);
+
+                    if (fileExists == true && sameFileName == true) {
+
+                        byte[] bytes = ContentDB.readBytesFromFile(pathname);
+                        content.setContent(bytes);
+                        ContentDB.saveOrUpdate(content);
+                        out.println("Datei " + fileName + " wurde aktualisiert!");
+
+                    } else {
+                        out.println("<span style=\" color: red;\" >Error: </span>Datei Namen stimmen nicht überein:  " + content.getName() + " und " + fileName);
+                        out.println("<br>");
+                    }
+
+                    //Now delete the temporary file again
+                    File myObj = new File(pathname);
+                    myObj.delete();
+                } else {
+                    out.println("<span style=\" color: red;\" >Error: </span>Datei " + errorFileName + " Dateityp nicht erlaubt. Bitte wenden Sie sich an den Administrator");
+                    out.println("<br>");
+                }
+            }
+        }
+    }
 
     public void uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, FileUploadException, Exception {
         PrintWriter out = response.getWriter();
@@ -84,13 +160,13 @@ public class ContentServlet extends AbstractBackendServlet {
 
             FileItemStream item = iter.next();
             String contentType = item.getContentType();
+            String errorFileName = item.getName();
 
             if (!item.isFormField()) {
 
                 if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("")) {
-                    request.setAttribute("message", "<p>Sie haben keine Datei ausgew&auml;hlt!</p>");
-                }
-                else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
+                    out.println("<span style=\" color: red;\" >Error: </span>Sie haben keine Datei ausgew&auml;hlt!");
+                } else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
                         || item.getContentType().startsWith("image") || item.getContentType().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
                         || item.getContentType().startsWith("application/msword")) {
 
@@ -100,22 +176,25 @@ public class ContentServlet extends AbstractBackendServlet {
                     String pathname = writeItemToTempFile(item);
 
                     if (fileExists == true) {
-                        Content content = ContentDB.getByName(fileName);
-                        byte[] bytes = ContentDB.readBytesFromFile(pathname);
-                        content.setContent(bytes);
-                        ContentDB.saveOrUpdate(content);
 
-                        request.setAttribute("message", "<p>Datei existiert bereits + wurde aktualisiert!</p>");
+                        //search file - Context of existing file
+                         String existingFileContext = ContentDB.getByName(fileName).getContext().toString();
+
+                        out.println("<span style=\" color: red;\" >Error: </span>Datei " + fileName + " existiert bereits im Context: " + existingFileContext);
+                        out.println("<br>");
+
                     } else {
                         ContentDB.saveFile(pathname, fileName, contentType, contextEnum);
-                        request.setAttribute("message", "<p>Datei erfolgreich hochgeladen!</p>");
+                        out.println("Datei " + fileName + " erfolgreich hochgeladen!");
+                        out.println("<br>");
                     }
 
                     //Now delete the temporary file again
                     File myObj = new File(pathname);
                     myObj.delete();
                 } else {
-                    request.setAttribute("message", "<p>Dateityp nicht erlaubt. Bitte wenden Sie sich an den Administrator</p>");
+                    out.println("<span style=\" color: red;\" >Error: </span>Datei " + errorFileName + " Dateityp nicht erlaubt. Bitte wenden Sie sich an den Administrator");
+                    out.println("<br>");
                 }
             }
         }
@@ -127,60 +206,36 @@ public class ContentServlet extends AbstractBackendServlet {
         String pathname = tmpDir + "/" + item.getName();
 
         InputStream stream = item.openStream();
-        FileOutputStream file = new FileOutputStream(new File(pathname));
-        for (int data = stream.read(); data >= 0; data = stream.read()) {
-            file.write(data);
+        try (FileOutputStream file = new FileOutputStream(new File(pathname))) {
+            for (int data = stream.read(); data >= 0; data = stream.read()) {
+                file.write(data);
+            }
         }
-        file.close();
 
         return pathname;
     }
 
-     protected void initRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void initRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Language.setLanguage(request);
-         benutzer = AuthHelper.getBenutzer(request);
+        benutzer = AuthHelper.getBenutzer(request);
         if (isLoginRequired() && benutzer == null || benutzer.isGast()) {
-             RequestDispatcher rd = request.getRequestDispatcher("logout.jsp");
-                rd.forward(request, response);
+            RequestDispatcher rd = request.getRequestDispatcher("logout.jsp");
+            rd.forward(request, response);
         }
     }
 
-      protected boolean isLoginRequired() {
-        return true;
-    }
 
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         initRequest(request, response);
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         generatePage(request, response);
-
-    }
-
-    protected void doHelper(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        try {
-            processRequest(request, response);
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doHelper(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        doHelper(request, response);
     }
 
     @Override
     protected String getTitle() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return null;
     }
 
 }//end class

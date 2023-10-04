@@ -1,4 +1,4 @@
-﻿<%@ include file="configuration.jsp" %>
+<%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
     <div onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');">

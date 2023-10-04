@@ -5,11 +5,10 @@ import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 public class Utils {
 
@@ -146,7 +145,7 @@ public class Utils {
         return lemma;
     }
 
-    public static void simpleSearch(JspWriter out, Vector<String> headlines, Vector<String> fieldNames, List<Map> rsMap, String orderV[], String order, String open, boolean countTables) throws IOException {
+    public static void simpleSearch(JspWriter out, List<String> headlines, List<String> fieldNames, List<Map> rsMap, String orderV[], String order, String open, boolean countTables) throws IOException {
 
         int topCount = 0;
 

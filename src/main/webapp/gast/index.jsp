@@ -1,6 +1,6 @@
 <%@page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 
-﻿<html>
+<html>
 <head>
 <title>Datenbank-Umzug</title>
 <meta name="author" content="rst">

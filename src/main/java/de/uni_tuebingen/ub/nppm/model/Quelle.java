@@ -2,11 +2,14 @@ package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
 import java.util.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "quelle")
-public class Quelle {    
-    @Id 
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Quelle {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
@@ -22,94 +25,94 @@ public class Quelle {
 
     @Column(name = "UeberlieferungsKommentarDatei", length=255)
     private String ueberlieferungsKommentarDatei;
-    
+
     @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName="ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
-    
+
     @Column(name = "VonTag")
     private Integer vonTag;
-    
+
     @Column(name = "VonMonat")
     private Integer vonMonat;
-    
+
     @Column(name = "VonJahr")
     private Integer vonJahr;
-    
+
     @Column(name = "VonJahrhundert", length=5)
     private String vonJahrhundert;
-    
+
     @Column(name = "BisTag")
     private Integer bisTag;
-    
+
     @Column(name = "BisMonat")
     private Integer bisMonat;
-    
+
     @Column(name = "BisJahr")
     private Integer bisJahr;
-    
+
     @Column(name = "BisJahrhundert", length=5)
     private String bisJahrhundert;
-    
+
     @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitVonTag", referencedColumnName="ID")
     private SelektionDatGenauigkeit genauigkeitVonTag;
-    
+
     @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitVonMonat", referencedColumnName="ID")
     private SelektionDatGenauigkeit genauigkeitVonMonat;
-    
+
     @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitVonJahr", referencedColumnName="ID")
     private SelektionDatGenauigkeit genauigkeitVonJahr;
-    
+
     @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitVonJahrhundert", referencedColumnName="ID")
     private SelektionDatGenauigkeit genauigkeitVonJahrhundert;
-    
+
     @Column(name = "DatierungUngewiss" , columnDefinition="BIT DEFAULT NULL")
     private Boolean datierungUngewiss;
-    
+
     @Column(name = "KommentarDatierung", length=255)
     private String kommentarDatierung;
-    
+
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
-    
+
     @OneToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "LetzteAenderungVon", referencedColumnName="ID")
     private Benutzer letzteAenderungVon;
-    
+
     @Column(name = "Erstellt")
     private Date erstellt;
-    
+
     @OneToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "ErstelltVon", referencedColumnName="ID")
     private Benutzer erstelltVon;
-    
+
     @OneToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GehoertGruppe", referencedColumnName="ID")
     private BenutzerGruppe gehoertGruppe;
-    
+
     @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitBisTag", referencedColumnName="ID")
     private SelektionDatGenauigkeit genauigkeitBisTag;
-    
+
     @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitBisMonat", referencedColumnName="ID")
     private SelektionDatGenauigkeit genauigkeitBisMonat;
-    
+
     @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitBisJahr", referencedColumnName="ID")
     private SelektionDatGenauigkeit genauigkeitBisJahr;
-    
+
     @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitBisJahrhundert", referencedColumnName="ID")
     private SelektionDatGenauigkeit genauigkeitBisJahrhundert;
-    
+
     @Column(name = "ZuVeroeffentlichen" , columnDefinition="TINYINT(1) DEFAULT NULL")
     private Integer zuVeroeffentlichen;
-    
+
     @ManyToMany(mappedBy = "quellen")
     private Set<Edition> editions = new HashSet<>();
 
@@ -356,9 +359,9 @@ public class Quelle {
     public void addEdition(Edition edition){
         this.getEditions().add(edition);
     }
-      
+
     public void removeEdition(int id){
         this.getEditions().removeIf(e -> e.getId() == id);
     }
-    
+
 }

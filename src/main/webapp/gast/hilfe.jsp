@@ -2,7 +2,7 @@
 <%@page import="java.util.List"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
-﻿<%@page import="java.io.File"%>
+<%@page import="java.io.File"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.net.URL"%>
 <%@page import="java.io.*"%>
