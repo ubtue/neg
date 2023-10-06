@@ -114,6 +114,19 @@
 							</jsp:include>
                                                 </td>
 					</tr>
+                                        <tr>
+						<td width="200">
+                                                    <% Language.printDatafield(out,session, formular,"NrInStrukt");%>
+                                                </td>
+						<td width="450">
+                                                        <jsp:include page="inc.erzeugeFormular.jsp">
+								<jsp:param name="ID" value="<%=id%>" />
+								<jsp:param name="Formular" value="einzelbeleg" />
+								<jsp:param name="Datenfeld" value="NrInStrukt" />
+								<jsp:param name="size" value="5" />
+							</jsp:include>
+                                                </td>
+					</tr>
 					<tr>
 						<td width="200" valign="top">
                                                     <% Language.printDatafield(out,session, formular,"Lemma");%>
