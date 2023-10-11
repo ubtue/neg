@@ -35,12 +35,21 @@ public class SaveHelper extends AbstractBase {
             NativeQuery query = session.createNativeQuery(sql);
             registerAndConditions(andConditions, query);
 
-            List<String> queryResults = query.getResultList(); // Ergebnisse aus der Datenbank
+            if (attribute.equals("*")) {
+                List<Object[]> queryResults = query.getResultList(); // Ergebnisse aus der Datenbank
 
-            for (String value : queryResults) {
-                Map<String, String> resultRow = new HashMap<>();
-                resultRow.put(attribute, value); // Wert zur HashMap hinzufügen
-                results.add(resultRow);
+                for (Object[] row : queryResults) {
+                    Map<String, String> resultRow = new HashMap<>();
+                    resultRow.put(attribute, row[0].toString()); // Wert zur HashMap hinzufügen
+                    results.add(resultRow);
+                }
+            } else {
+                List<String> queryResults = query.getResultList(); // Ergebnisse aus der Datenbank
+                for (String value : queryResults) {
+                    Map<String, String> resultRow = new HashMap<>();
+                    resultRow.put(attribute, value); // Wert zur HashMap hinzufügen
+                    results.add(resultRow);
+                }
             }
         }
         return results;
@@ -53,7 +62,7 @@ public class SaveHelper extends AbstractBase {
 
             String sql = "SELECT " + attributeString + " FROM " + table + " WHERE ID = " + id; // SQL-Abfrage erstellen
 
-            List<Object[]> queryResults =  AbstractBase.getListNative(sql); // Ergebnisse aus der Datenbank als Liste von Object-Arrays
+            List<Object[]> queryResults = AbstractBase.getListNative(sql); // Ergebnisse aus der Datenbank als Liste von Object-Arrays
 
             for (Object[] row : queryResults) {
                 Map<String, Object> rowMap = new HashMap<>();
@@ -81,22 +90,7 @@ public class SaveHelper extends AbstractBase {
         insertOrUpdate(sql);
     }
 
-    public static void updateAttribute(String table, String attribute, String value, int id) throws Exception {
-        try ( Session session = getSession()) {
-            session.getTransaction().begin();
-            NativeQuery query = session.createNativeQuery("UPDATE " + table + " SET " + attribute + "= :value WHERE ID= :id");
-            query.setParameter("value", value);
-            query.setParameter("id", id);
-            query.executeUpdate();
-            session.getTransaction().commit();
-        }
-    }
-
-    public static void updateAttribute(String table, String attribute, String value, String id) throws Exception {
-        updateAttribute(table, attribute, value, Integer.parseInt(id));
-    }
-
-    public static void updateAttribute(String table, String attribute, String value, Map<String, String> andConditions) throws Exception {
+    public static void update(String table, String attribute, String value, Map<String, String> andConditions) throws Exception {
         try ( Session session = getSession()) {
             session.getTransaction().begin();
             String sql = "UPDATE " + table + " SET " + attribute + "= :value";

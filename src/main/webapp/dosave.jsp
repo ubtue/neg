@@ -50,7 +50,9 @@
                     if (((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
                             || (request.getParameter(datenfeld) != null && attrVal == null && !request.getParameter(datenfeld).equals("")))) {
 
-                        SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld), id);
+                        Map<String, String> condMap = new HashMap<>();
+                        condMap.put("ID", String.valueOf(id));
+                        SaveHelper.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
                     } // ENDE Datensatz ändern
 
                 } // ENDE kein Array
@@ -63,7 +65,12 @@
                             String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, Integer.valueOf(request.getParameter(datenfeld + "[" + i + "]_entryid")));
                             if (attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld + "[" + i + "]")))) {
 
-                                SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld + "[" + i + "]"), request.getParameter(datenfeld + "[" + i + "]_entryid"));
+                                String temp_id = request.getParameter(datenfeld + "[" + i + "]_entryid");
+                                String temp_value = request.getParameter(datenfeld + "[" + i + "]");
+
+                                Map<String, String> condMap = new HashMap<>();
+                                condMap.put("ID", temp_id);
+                                SaveHelper.update(zieltabelle, zielAttribut, temp_value, condMap);
                             }
                         } else {
                             // Wenn etwas eingetragen ist, in die Datenbank einfügen
@@ -83,12 +90,15 @@
                 if (!isArray) {
                     String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
                     int checkbox = 0;
+                    Map<String, String> condMap = new HashMap<>();
+                    condMap.put("ID", String.valueOf(id));
+
                     if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
                         checkbox = 1;
-                        SaveHelper.updateAttribute(zieltabelle, zielAttribut, String.valueOf(checkbox), id);
+                        SaveHelper.update(zieltabelle, zielAttribut, String.valueOf(checkbox), condMap);
                     }
                     if (attrVal != null && Integer.valueOf(attrVal) != checkbox) {
-                        SaveHelper.updateAttribute(zieltabelle, zielAttribut, String.valueOf(checkbox), id);
+                        SaveHelper.update(zieltabelle, zielAttribut, String.valueOf(checkbox), condMap);
                     } // ENDE Datensatz ändern
                 } // ENDE kein Array
             } //ENDE checkbox
@@ -186,6 +196,7 @@
             } // ENDE Datum
             // Bemerkungsfeld
             else if (feldtyp != null && feldtyp.equals("note") && zielAttribut != null && zieltabelle != null) {
+                int temp_BenutzerId = Integer.parseInt(session.getAttribute("BenutzerID").toString());
                 Map<String, String> condMap = new HashMap<>();
                 condMap.put(formularAttribut, String.valueOf(id));
                 if (datenfeld.equals("BemerkungAlle")) {
@@ -196,7 +207,7 @@
                     condMap.put("BenutzerID", null);
                 } else if (datenfeld.equals("BemerkungPrivat")) {
                     condMap.put("GruppeID", null);
-                    condMap.put("BenutzerID", session.getAttribute("BenutzerID").toString());
+                    condMap.put("BenutzerID", Integer.toString(temp_BenutzerId));
                 }
 
                 // Datensatz ändern
@@ -210,7 +221,8 @@
                         } // ENDE löschen
                         else if (!request.getParameter(datenfeld).equals("") && !DBtoDB(request.getParameter(datenfeld)).equals(attr.get(zielAttribut))) {
 
-                            SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
+                            SaveHelper.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
+
                         } // ENDE ändern
                     } // ENDE Datensatz ändern
 
@@ -266,7 +278,6 @@
                                             if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
 
                                                 Map<String, String> condMap = new HashMap<>();
-                                                condMap.put(formularAttribut, String.valueOf(id));
                                                 condMap.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
                                                 condMap.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
 
@@ -274,12 +285,12 @@
 
                                                 if (ueberlieferungEdition.size() > 0) {
 
+                                                    String value = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
                                                     Map<String, String> condMap2 = new HashMap<>();
-                                                    condMap2.put(formularAttribut, String.valueOf(id));
-
                                                     condMap2.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
                                                     condMap2.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
-                                                    SaveHelper.updateAttribute("ueberlieferung_edition", "sigle", request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]"), condMap2);
+
+                                                    SaveHelper.update("ueberlieferung_edition", "sigle", value, condMap2);
 
                                                 } else {
                                                     int value_one = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
