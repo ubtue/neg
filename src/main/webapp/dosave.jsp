@@ -231,16 +231,20 @@
                     String field = "";
                     String value = "";
                     if (datenfeld.equals("BemerkungGruppe")) {
-                        field = ", GruppeID";
-                        value = ", " + session.getAttribute("GruppeID");
+                        field = "GruppeID";
+                        value = String.valueOf( session.getAttribute("GruppeID"));
                     } else if (datenfeld.equals("BemerkungPrivat")) {
-                        field = ", BenutzerID";
-                        value = ", " + session.getAttribute("BenutzerID");
+                        field = "BenutzerID";
+                        value = String.valueOf(session.getAttribute("BenutzerID"));
                     }
                     if (formularAttribut != null && zieltabelle != null) {
 
-                        SaveHelper.insertNewAttribute(zieltabelle, zielAttribut, formularAttribut, field, request.getParameter(datenfeld), id, value);
+                        Map<String, String> columnsAndValues = new HashMap<>();
+                        columnsAndValues.put(zielAttribut, request.getParameter(datenfeld));     //Bemerkung
+                        columnsAndValues.put(formularAttribut, String.valueOf(id));             //EinzelbelegID
+                        columnsAndValues.put(field, value);                                     //GruppeID oder BenutzerID
 
+                        SaveHelper.insert(zieltabelle, columnsAndValues);
                     }
                 } // ENDE Datensatz neu
             } // ENDE Bemerkungsfeld
@@ -296,7 +300,13 @@
                                                     int value_one = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
                                                     int value_two = Integer.parseInt(request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
                                                     String value_three = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
-                                                    SaveHelper.insertNewAttribute("ueberlieferung_edition", "UeberlieferungID", "EditionID", "Sigle", value_one, value_two, value_three);
+
+                                                    Map<String, String> condMap2 = new HashMap<>();
+                                                    condMap2.put("UeberlieferungID", String.valueOf(value_one));
+                                                    condMap2.put("EditionID", String.valueOf(value_two));
+                                                    condMap2.put("Sigle", value_three);
+
+                                                    SaveHelper.insert("ueberlieferung_edition", condMap2);
                                                 }
                                             }
                                         }

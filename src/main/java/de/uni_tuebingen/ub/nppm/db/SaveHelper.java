@@ -105,41 +105,38 @@ public class SaveHelper extends AbstractBase {
         }
     }
 
-    public static void insertNewAttribute(String table, String attributeOne, String attributeTwo, String attributeThree, int valueOne, int valueTwo, String valueThree) throws Exception {
-        try ( Session session = getSession()) {
-            session.getTransaction().begin();
+    public static void insert(String table, Map<String, String> columnsAndValues) throws Exception {
+    try (Session session = getSession()) {
+        session.getTransaction().begin();
 
-            NativeQuery query = session.createNativeQuery("INSERT INTO " + table
-                    + " (" + attributeOne + ", " + attributeTwo + ", " + attributeThree + ")"
-                    + " VALUES (:valueOne, :valueTwo, :valueThree)");
+        String sql = "INSERT INTO " + table + " (";
+        List<String> columnNames = new ArrayList<>();
+        List<String> valuePlaceholders = new ArrayList();
 
-            query.setParameter("valueOne", valueOne);
-            query.setParameter("valueTwo", valueTwo);
-            query.setParameter("valueThree", valueThree);
-            query.executeUpdate();
-
-            session.getTransaction().commit();
+        for (Map.Entry<String, String> entry : columnsAndValues.entrySet()) {
+            String value = entry.getValue();
+            if (value != null && !value.isEmpty()) {
+                columnNames.add(entry.getKey());
+                valuePlaceholders.add(":" + entry.getKey());
+            }
         }
-    }
 
-    public static void insertNewAttribute(String table, String attribute, String formularAttribut, String field, String value, int id, String Idvalue) throws Exception {
-        try ( Session session = getSession()) {
-            session.getTransaction().begin();
+        if (!columnNames.isEmpty()) {
+            sql += String.join(", ", columnNames) + ") VALUES (" + String.join(", ", valuePlaceholders) + ")";
 
-            NativeQuery query = session.createNativeQuery("INSERT INTO " + table
-                    + " (" + attribute + ", " + formularAttribut + field + ")"
-                    + " VALUES (" + ":value" + ", " + ":id" + Idvalue + ")");
+            NativeQuery query = session.createNativeQuery(sql);
 
-            query.setParameter("value", value);
-            query.setParameter("id", id);
+            for (Map.Entry<String, String> entry : columnsAndValues.entrySet()) {
+                String value = entry.getValue();
+                if (value != null && !value.isEmpty()) {
+                    query.setParameter(entry.getKey(), value);
+                }
+            }
             query.executeUpdate();
-            session.getTransaction().commit();
         }
+        session.getTransaction().commit();
     }
-
-    public static void insertNewAttribute(String table, String attribute, String formularAttribut, String field, String value, String id, String Idvalue) throws Exception {
-        insertNewAttribute(table, attribute, formularAttribut, field, value, Integer.parseInt(id), Idvalue);
-    }
+}
 
     public static void deleteAttribute(String table, Map<String, String> andConditions) throws Exception {
         try ( Session session = getSession()) {
