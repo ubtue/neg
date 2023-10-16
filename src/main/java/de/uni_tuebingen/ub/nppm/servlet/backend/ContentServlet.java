@@ -25,56 +25,62 @@ public class ContentServlet extends AbstractBackendServlet {
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PrintWriter out = response.getWriter();
 
-        // show TinyMCE
-        if (request.getParameter("loadFile") != null) {
-            RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
-            rd.include(request, response);
+        if (!isAdminRequired(request, response)) {
+            //If the user is not an administrator, redirect them to logout.jsp.
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/logout.jsp");
+            dispatcher.forward(request, response);
         } else {
-            //show fileManagement
-            out.println("<div id=\"titel\">");
-            out.println("  <table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
-            out.println("    <tr>");
-            out.println("      <td align=\"left\">");
-            out.println("        <h1>Inhalt bearbeiten");
-            out.println("        </h1>");
-            out.println("      </td>");
-            out.println("    </tr>");
-            out.println("  </table>");
-            out.println("</div>");
-            out.println("<div id=\"form\">");
-            out.println("<h2>Html Dateien & Bilder verwalten</h2>");
-            out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie eine Datei löschen, dann ist auch jede Verknüpfung im Programm gelöscht, auch wenn Sie </p>");
-            out.println("<p style=\"line-height: 0.2; color: red;\">die Datei mit gleichem Namen hochladen. </p>");
-            out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie aber Ersetzen wählen, dann bleiben die Verknüpfungen im Programm bestehen.</p>");
-            // Actions:
-            String fileAccess = request.getParameter("fileAccess");
-            if (fileAccess != null) {
+            // show TinyMCE
+            if (request.getParameter("loadFile") != null) {
+                RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
+                rd.include(request, response);
+            } else {
+                //show fileManagement
+                out.println("<div id=\"titel\">");
+                out.println("  <table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
+                out.println("    <tr>");
+                out.println("      <td align=\"left\">");
+                out.println("        <h1>Inhalt bearbeiten");
+                out.println("        </h1>");
+                out.println("      </td>");
+                out.println("    </tr>");
+                out.println("  </table>");
+                out.println("</div>");
+                out.println("<div id=\"form\">");
+                out.println("<h2>Html Dateien & Bilder verwalten</h2>");
+                out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie eine Datei löschen, dann ist auch jede Verknüpfung im Programm gelöscht, auch wenn Sie </p>");
+                out.println("<p style=\"line-height: 0.2; color: red;\">die Datei mit gleichem Namen hochladen. </p>");
+                out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie aber Ersetzen wählen, dann bleiben die Verknüpfungen im Programm bestehen.</p>");
+                // Actions:
+                String fileAccess = request.getParameter("fileAccess");
+                if (fileAccess != null) {
 
-                //Action (Delete)
-                if (fileAccess.equals("fileDelete")) {
-                    if (request.getParameter("id") != null) {
-                        Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
-                        out.println("Datei " + content.getName() + " wurde gelöscht");
-                        deleteFile(request.getParameter("id"));
+                    //Action (Delete)
+                    if (fileAccess.equals("fileDelete")) {
+                        if (request.getParameter("id") != null) {
+                            Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                            out.println("Datei " + content.getName() + " wurde gelöscht");
+                            deleteFile(request.getParameter("id"));
 
-                    } else {
-                        out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht gelöscht werden");
-                    }
-                    // Action (upload OR replace/update)
-                } else if (fileAccess.equals("fileUpload")) {
-                    uploadFile(request, response);
-                } else if (fileAccess.equals("fileReplace")) {
+                        } else {
+                            out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht gelöscht werden");
+                        }
+                        // Action (upload OR replace/update)
+                    } else if (fileAccess.equals("fileUpload")) {
+                        uploadFile(request, response);
+                    } else if (fileAccess.equals("fileReplace")) {
 
-                    if (request.getParameter("id") != null) {
-                        replaceFile(request, response, request.getParameter("id"));
-                    } else {
-                        out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht ersetzt werden");
+                        if (request.getParameter("id") != null) {
+                            replaceFile(request, response, request.getParameter("id"));
+                        } else {
+                            out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht ersetzt werden");
+                        }
                     }
                 }
+                // show list (e.g. help, name comment or blank page)
+                RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
+                rd.include(request, response);
             }
-            // show list (e.g. help, name comment or blank page)
-            RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
-            rd.include(request, response);
         }
     }//end function
 

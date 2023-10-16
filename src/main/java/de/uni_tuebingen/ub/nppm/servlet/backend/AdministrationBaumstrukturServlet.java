@@ -18,9 +18,17 @@ public class AdministrationBaumstrukturServlet extends AbstractBackendServlet {
 
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        RequestDispatcher rd = request.getRequestDispatcher("admin.baumstruktur.jsp");
-        rd.include(request, response);
+         //Use isAdminRequired to check if the user is an administrator.
+        if (isAdminRequired(request, response)) {
+            RequestDispatcher rd = request.getRequestDispatcher("admin.baumstruktur.jsp");
+            rd.include(request, response);
+        }else {
+            //If the user is not an administrator, redirect them to logout.jsp.
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/logout.jsp");
+            dispatcher.forward(request, response);
+        }
     }
+
 
     @Override
     protected List<String> getAdditionalCss() {

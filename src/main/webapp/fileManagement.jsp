@@ -17,17 +17,9 @@
 
 
     <%
-        int benutzerID = ((Integer) session.getAttribute("BenutzerID")).intValue();
-        Benutzer benutzer = BenutzerDB.getById(benutzerID);
-        boolean isAdmin = benutzer.isAdmin();
-
-        if (isAdmin) {
-
             DatenbankTexte titel = DatenbankTexteDB.getText("fileManagement", "Titel");
             String value = "Nomen et Gens | " + titel.getDe();
             int id = 1;
-
-
     %>
     <header>
     <title><%= value%></title>
@@ -196,13 +188,6 @@
                 out.println("Error: " + e.toString());
             }
             out.println("</table>");
-
-
         %>
     </div>
 </div>
-<%    } else {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/logout.jsp");
-        dispatcher.forward(request, response);
-    }
-%>

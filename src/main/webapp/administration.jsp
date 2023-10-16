@@ -9,11 +9,6 @@
 
 
 <%
-    int benutzerID = ((Integer) session.getAttribute("BenutzerID")).intValue();
-    Benutzer benutzer = BenutzerDB.getById(benutzerID);
-    boolean isAdmin = benutzer.isAdmin();
-    if (isAdmin) {
-
         Language.setLanguage(request);
 %>
 
@@ -136,10 +131,3 @@
         </div>
     </div>
 </div>
-
-<%
-    } else {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/logout.jsp");
-        dispatcher.forward(request, response);
-    }
-%>

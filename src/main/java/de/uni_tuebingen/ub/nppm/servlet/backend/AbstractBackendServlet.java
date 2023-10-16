@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.servlet.backend;
 
+import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.servlet.AbstractServlet;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
@@ -25,6 +26,19 @@ public abstract class AbstractBackendServlet extends AbstractServlet {
     protected boolean isLoginRequired() {
         return true;
     }
+
+    protected boolean isAdminRequired(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    Integer benutzerID = (Integer) request.getSession().getAttribute("BenutzerID");
+
+    if (benutzerID != null) {
+        Benutzer benutzer = BenutzerDB.getById(benutzerID);
+
+        if (benutzer != null) {
+            return benutzer.isAdmin();
+        }
+    }
+    return false;
+}
 
     @Override
     protected void initRequest(HttpServletRequest request) throws Exception {
