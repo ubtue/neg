@@ -15,49 +15,58 @@ import de.uni_tuebingen.ub.nppm.util.Utils;
 
 public class LoginServlet extends HttpServlet {
 
-    protected void processLoginAction(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String login = request.getParameter("username");
-        String password = request.getParameter("password");
+   protected void processLoginAction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    String login = request.getParameter("username");
+    String password = request.getParameter("password");
 
-        if (login == null || login.isEmpty() || !BenutzerDB.hasLogin(login)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Benutzer existiert nicht");
-        } else {
-            Benutzer benutzer = BenutzerDB.getByLoginAktiv(login);
-            String saltString = benutzer.getSalt();
-            if (saltString == null || saltString.isEmpty()) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Die Sicherheit der Datenbank wurde verbessert. Das Password muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");
-            } else {
-                byte[] saltBytes = SaltHash.Base64StringToBytes(saltString);
-                String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
-                if (!passwordSalted.equals(benutzer.getPassword())) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ungültiges Passwort.");
-                } else {
-                    // Falls Session vorhanden, löschen
-                    HttpSession session = request.getSession();
-                    if (session != null) {
-                        session.invalidate();
-                    }
-
-                    // Neue Session erzeugen
-                    session = request.getSession(true);
-                    session.setAttribute("BenutzerID", benutzer.getID());
-                    session.setAttribute("GruppeID", benutzer.getGruppe().getID());
-                    session.setAttribute("Benutzername", benutzer.getLogin());
-                    session.setAttribute("Administrator", benutzer.isAdmin());
-                    session.setAttribute("Gast", benutzer.isGast());
-                    session.setAttribute("Sprache", benutzer.getSprache());
-                    session.setMaxInactiveInterval(AuthHelper.getSessionTimeout());
-
-                    // Weiterleiten
-                    if ((Boolean) session.getAttribute("Gast")) {
-                        response.sendRedirect("gast/startseite");
-                    } else {
-                        response.sendRedirect("einzelbeleg");
-                    }
-                }
-            }
-        }
+    if (login == null || login.isEmpty() || !BenutzerDB.hasLogin(login)) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Benutzer existiert nicht");
+        return;
     }
+
+    Benutzer benutzer = BenutzerDB.getByLogin(login);
+
+    if (benutzer == null || !benutzer.isAktiv()) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Zugriff nicht erlaubt, Ihr Administrator muss Sie auf aktiv schalten !");
+        return;
+    }
+
+    String saltString = benutzer.getSalt();
+    if (saltString == null || saltString.isEmpty()) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Die Sicherheit der Datenbank wurde verbessert. Das Passwort muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");
+        return;
+    }
+
+    byte[] saltBytes = SaltHash.Base64StringToBytes(saltString);
+    String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
+    if (!passwordSalted.equals(benutzer.getPassword())) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ungültiges Passwort.");
+        return;
+    }
+
+    // Falls Session vorhanden, löschen
+    HttpSession session = request.getSession();
+    if (session != null) {
+        session.invalidate();
+    }
+
+    // Neue Session erzeugen
+    session = request.getSession(true);
+    session.setAttribute("BenutzerID", benutzer.getID());
+    session.setAttribute("GruppeID", benutzer.getGruppe().getID());
+    session.setAttribute("Benutzername", benutzer.getLogin());
+    session.setAttribute("Administrator", benutzer.isAdmin());
+    session.setAttribute("Gast", benutzer.isGast());
+    session.setAttribute("Sprache", benutzer.getSprache());
+    session.setMaxInactiveInterval(AuthHelper.getSessionTimeout());
+
+    // Weiterleiten
+    if (benutzer.isGast()) {
+        response.sendRedirect("gast/startseite");
+    } else {
+        response.sendRedirect("einzelbeleg");
+    }
+}
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {

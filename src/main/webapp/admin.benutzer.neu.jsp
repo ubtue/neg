@@ -76,6 +76,7 @@
                     benutzer.setSprache(request.getParameter("Sprache"));
                     benutzer.setAdmin(request.getParameter("Administrator") != null && request.getParameter("Administrator").equals("on"));
                     benutzer.setGruppe(gruppe);
+                    benutzer.setAktiv(true);
 
                     BenutzerDB.saveOrUpdate(benutzer);
 
