@@ -128,7 +128,20 @@
                                                     <jsp:param name="ID" value="<%=id%>" />
                                                     <jsp:param name="Formular" value="einzelbeleg" />
                                                     <jsp:param name="Datenfeld" value="KontextSelektion" />
-                                                </jsp:include></td>
+                                                </jsp:include>
+                                            </td>
+					</tr>    
+                                        
+                                        <tr>
+                                            <td width="200" valign="top">
+                                                <% Language.printDatafield(out, session, formular, "KritikSelektion");%>
+                                            </td>
+                                            <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+                                                    <jsp:param name="ID" value="<%=id%>" />
+                                                    <jsp:param name="Formular" value="einzelbeleg" />
+                                                    <jsp:param name="Datenfeld" value="KritikSelektion" />
+                                                </jsp:include>
+                                            </td>
                                         </tr>
 				</tbody>
 			</table>

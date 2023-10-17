@@ -1,21 +1,15 @@
-CREATE TABLE IF NOT EXISTS `neg`.`selektion_kontext` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  `Bezeichnung` VARCHAR(50) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci' NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE (`Bezeichnung`)
-  )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
+-- remove FK
+ALTER TABLE einzelbeleg DROP FOREIGN KEY einzelbeleg_QuelleGattungID;
+ALTER TABLE selektion_quellengattung DROP FOREIGN KEY selektion_quellengattung_parentId;
 
-/*Insert a default value*/
-INSERT INTO `neg`.`selektion_kontext` (ID,Bezeichnung) VALUES (-1,'-');
+-- this is necessary because the id column contains 0 values. Otherwise an error appears
+SET SESSION sql_mode = CONCAT(@@SQL_MODE, ',NO_AUTO_VALUE_ON_ZERO');
+-- Change ID Column
+ALTER TABLE selektion_quellengattung MODIFY COLUMN ID INT NOT NULL AUTO_INCREMENT;
+-- restore sql mode
+SET SESSION sql_mode=default;
 
-/*Create the datamapping for the kontext attribute of the einzelbeleg form*/
-INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, ZielTabelle, ZielAttribut, Auswahlherkunft, Seite, gb_beschriftung, fr_beschriftung, la_beschriftung)
-VALUES ("einzelbeleg", "KontextSelektion", "Kontext Klassifikation", "select", 0, "einzelbeleg", "KontextID", "selektion_kontext", "einzelbeleg", "Context Classification", "Classification Du Contexte", "Context Genus");
+-- Add FK
+ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_QuelleGattungID FOREIGN KEY (QuelleGattungID) REFERENCES selektion_quellengattung(ID) ON UPDATE CASCADE;
 
-ALTER TABLE einzelbeleg ADD KontextID INT DEFAULT -1;
-
-/*Rename existing kontext Beschriftung*/
-UPDATE datenbank_mapping SET de_Beschriftung = 'Kontext Beschreibung', gb_beschriftung = 'Context Description', fr_beschriftung = 'Description Du Contexte', la_beschriftung = 'Contextus Description' WHERE Datenfeld = 'Kontext' AND Feldtyp = 'textarea' AND Formular = 'einzelbeleg';
+ALTER TABLE selektion_quellengattung ADD CONSTRAINT selektion_quellengattung_parentId FOREIGN KEY (parentId) REFERENCES selektion_quellengattung(ID) ON UPDATE CASCADE;
