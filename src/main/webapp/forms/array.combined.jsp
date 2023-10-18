@@ -254,7 +254,7 @@
                                     + i2
                                     + "]\""
                                     + " value=\""
-                                    + DBtoHTML(row3 != null ? row3.get("Sigle").toString() : "")
+                                    + DBtoHTML(row3 != null && row3.get("Sigle") != null ? row3.get("Sigle").toString() : "")
                                     + "\""
                                     + " maxlength=\""
                                     + "\" "
@@ -264,9 +264,10 @@
                                     + " /></td></tr>");
                             i2++;
                         }
+                         out.println("</table>");
                     }
 
-                    out.println("</table>");
+
                 } else if (combinedFeldtypen[j].equals("checkbox")) {
                     if (!isReadOnly) {
                         out.println("<input name=\""
