@@ -4,4 +4,4 @@ INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Auswahlherkunft`, `Seite`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('edition', 'Bearbeitungsstatus', 'Bearbeitungsstatus', 'select', '0', 'edition', 'BearbeitungsstatusID', 'selektion_bearbeitungsstatus', 'edition', 'processing status', 'statut de traitement', 'status tractandi');								
 								
 								
-UPDATE namenkommentar SET dateiname = null WHERE Dateiname = '';
+UPDATE namenkommentar SET Dateiname = null WHERE Dateiname = '';
