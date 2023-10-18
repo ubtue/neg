@@ -1,5 +1,15 @@
-# The Dateiname field should be non-empty either a number or null later the programm will write numbers or null inside but this old table and field has to be updated
+-- remove FK
+ALTER TABLE einzelbeleg DROP FOREIGN KEY einzelbeleg_QuelleGattungID;
+ALTER TABLE selektion_quellengattung DROP FOREIGN KEY selektion_quellengattung_parentId;
 
-UPDATE namenkommentar SET Dateiname = NULL WHERE Dateiname = '';
+-- this is necessary because the id column contains 0 values. Otherwise an error appears
+SET SESSION sql_mode = CONCAT(@@SQL_MODE, ',NO_AUTO_VALUE_ON_ZERO');
+-- Change ID Column
+ALTER TABLE selektion_quellengattung MODIFY COLUMN ID INT NOT NULL AUTO_INCREMENT;
+-- restore sql mode
+SET SESSION sql_mode=default;
 
+-- Add FK
+ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_QuelleGattungID FOREIGN KEY (QuelleGattungID) REFERENCES selektion_quellengattung(ID) ON UPDATE CASCADE;
 
+ALTER TABLE selektion_quellengattung ADD CONSTRAINT selektion_quellengattung_parentId FOREIGN KEY (parentId) REFERENCES selektion_quellengattung(ID) ON UPDATE CASCADE;
