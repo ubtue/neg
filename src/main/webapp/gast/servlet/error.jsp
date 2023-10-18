@@ -25,9 +25,9 @@
         <h1 style="color: red;">Ein Fehler ist aufgetreten:</h1>
         <h2 style="color: red;"><b>${requestScope['javax.servlet.error.message']}</h2>
         <% if (exception != null) { %>
-          <h2 style="color: red;"><%= exception.getMessage()%></h2>
+          <h2 style="color: red;"><pre><%= exception.getMessage()%></pre></h2>
           <% // TODO: Show stacktrace only in debug mode %>
-          <p style="color: red;"><% exception.printStackTrace(new java.io.PrintWriter(out)); %></p>
+          <p style="color: red;"><pre><% exception.printStackTrace(new java.io.PrintWriter(out)); %></pre></p>
         <% } %>
     </div>
 
