@@ -24,10 +24,16 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+
         Benutzer benutzer = BenutzerDB.getByLogin(login);
 
-        if (benutzer == null || !benutzer.isAktiv()) {
+        if (!benutzer.isAktiv()) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Zugriff nicht erlaubt, Ihr Administrator muss Sie auf aktiv schalten !");
+            return;
+        }
+
+        if (benutzer == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Zugriff nicht erlaubt");
             return;
         }
 
