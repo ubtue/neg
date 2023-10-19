@@ -5,7 +5,8 @@
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-<%    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
+<%
+    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
         int id = -1;
         String form = request.getParameter("form");
         try {
@@ -197,7 +198,7 @@
             // Bemerkungsfeld
             else if (feldtyp != null && feldtyp.equals("note") && zielAttribut != null && zieltabelle != null) {
                 int temp_BenutzerId = Integer.parseInt(session.getAttribute("BenutzerID").toString());
-                Map<String, String> condMap = new HashMap<>();
+                Map condMap = new HashMap<String, String>();
                 condMap.put(formularAttribut, String.valueOf(id));
                 if (datenfeld.equals("BemerkungAlle")) {
                     condMap.put("GruppeID", null);
@@ -211,7 +212,7 @@
                 }
 
                 // Datensatz ändern
-                List<Map<String, String>> attributes = SaveHelper.getAttribute(zieltabelle, zielAttribut, condMap);
+                List<Map> attributes = SaveHelper.getAttribute(zieltabelle, zielAttribut, condMap);
                 if (formularAttribut != null && zieltabelle != null && (attributes.size() > 0 && request.getParameter(datenfeld) != null)) {
 
                     if (attributes.size() > 0 && request.getParameter(datenfeld) != null) {
@@ -239,7 +240,7 @@
                     }
                     if (formularAttribut != null && zieltabelle != null) {
 
-                        Map<String, String> columnsAndValues = new HashMap<>();
+                        Map columnsAndValues = new HashMap<String, String>();
                         columnsAndValues.put(zielAttribut, request.getParameter(datenfeld));     //Bemerkung
                         columnsAndValues.put(formularAttribut, String.valueOf(id));             //EinzelbelegID
                         columnsAndValues.put(field, value);                                     //GruppeID oder BenutzerID
@@ -273,7 +274,7 @@
                             boolean aenderung = false;
 
                             int mapId = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
-                            List<Map<String, String>> attributes = SaveHelper.getMapField(zieltabelle, mapId);
+                            List<Map> attributes = SaveHelper.getMapField(zieltabelle, mapId);
                             if (attributes.size() > 0) {
                                 Map attr = attributes.iterator().next();
                                 for (int j = 0; j < combinedFeldnamenArray.length; j++) {
@@ -281,16 +282,16 @@
                                         for (int j2 = 0; request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") != null; j2++) {
                                             if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
 
-                                                Map<String, String> condMap = new HashMap<>();
+                                                Map condMap = new HashMap<String, String>();
                                                 condMap.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
                                                 condMap.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
 
-                                                List<Map<String, String>> ueberlieferungEdition = SaveHelper.getAttribute("ueberlieferung_edition", "*", condMap);
+                                                List<Map> ueberlieferungEdition = SaveHelper.getAttribute("ueberlieferung_edition", "*", condMap);
 
                                                 if (ueberlieferungEdition.size() > 0) {
 
                                                     String value = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
-                                                    Map<String, String> condMap2 = new HashMap<>();
+                                                    Map condMap2 = new HashMap<String, String>();
                                                     condMap2.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
                                                     condMap2.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
 
@@ -301,7 +302,7 @@
                                                     int value_two = Integer.parseInt(request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
                                                     String value_three = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
 
-                                                    Map<String, String> condMap2 = new HashMap<>();
+                                                    Map condMap2 = new HashMap<String, String>();
                                                     condMap2.put("UeberlieferungID", String.valueOf(value_one));
                                                     condMap2.put("EditionID", String.valueOf(value_two));
                                                     condMap2.put("Sigle", value_three);

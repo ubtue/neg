@@ -25,8 +25,8 @@ public class SaveHelper extends AbstractBase {
         insertOrUpdate(sql);
     }
 
-    public static List<Map<String, String>> getAttribute(String table, String attribute, Map<String, String> andConditions) throws Exception {
-        List<Map<String, String>> results = new ArrayList<>();
+    public static List<Map> getAttribute(String table, String attribute, Map andConditions) throws Exception {
+        List<Map> results = new ArrayList<>();
 
         try ( Session session = getSession()) {
             String sql = "SELECT " + attribute + " FROM " + table; // SQL-Abfrage erstellen
@@ -79,7 +79,7 @@ public class SaveHelper extends AbstractBase {
         return results;
     }
 
-    public static List<Map<String, String>> getMapField(String zieltabelle, int id) throws Exception {
+    public static List<Map> getMapField(String zieltabelle, int id) throws Exception {
         String sql = "SELECT * FROM " + zieltabelle + " WHERE ID = " + id; // SQL-Abfrage erstellen
 
         return AbstractBase.getMappedListString(sql);
@@ -106,37 +106,37 @@ public class SaveHelper extends AbstractBase {
     }
 
     public static void insert(String table, Map<String, String> columnsAndValues) throws Exception {
-    try (Session session = getSession()) {
-        session.getTransaction().begin();
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
 
-        String sql = "INSERT INTO " + table + " (";
-        List<String> columnNames = new ArrayList<>();
-        List<String> valuePlaceholders = new ArrayList();
-
-        for (Map.Entry<String, String> entry : columnsAndValues.entrySet()) {
-            String value = entry.getValue();
-            if (value != null && !value.isEmpty()) {
-                columnNames.add(entry.getKey());
-                valuePlaceholders.add(":" + entry.getKey());
-            }
-        }
-
-        if (!columnNames.isEmpty()) {
-            sql += String.join(", ", columnNames) + ") VALUES (" + String.join(", ", valuePlaceholders) + ")";
-
-            NativeQuery query = session.createNativeQuery(sql);
+            String sql = "INSERT INTO " + table + " (";
+            List<String> columnNames = new ArrayList<>();
+            List<String> valuePlaceholders = new ArrayList();
 
             for (Map.Entry<String, String> entry : columnsAndValues.entrySet()) {
                 String value = entry.getValue();
                 if (value != null && !value.isEmpty()) {
-                    query.setParameter(entry.getKey(), value);
+                    columnNames.add(entry.getKey());
+                    valuePlaceholders.add(":" + entry.getKey());
                 }
             }
-            query.executeUpdate();
+
+            if (!columnNames.isEmpty()) {
+                sql += String.join(", ", columnNames) + ") VALUES (" + String.join(", ", valuePlaceholders) + ")";
+
+                NativeQuery query = session.createNativeQuery(sql);
+
+                for (Map.Entry<String, String> entry : columnsAndValues.entrySet()) {
+                    String value = entry.getValue();
+                    if (value != null && !value.isEmpty()) {
+                        query.setParameter(entry.getKey(), value);
+                    }
+                }
+                query.executeUpdate();
+            }
+            session.getTransaction().commit();
         }
-        session.getTransaction().commit();
     }
-}
 
     public static void deleteAttribute(String table, Map<String, String> andConditions) throws Exception {
         try ( Session session = getSession()) {

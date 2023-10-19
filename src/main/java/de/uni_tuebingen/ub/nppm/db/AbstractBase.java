@@ -242,11 +242,11 @@ public class AbstractBase {
         }
     }
 
-    protected static List<Map<String, String>> getMappedListString(Query query) throws Exception {
+    protected static List<Map> getMappedListString(Query query) throws Exception {
 
     query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
 
-    List<Map<String, String>> resultList = new ArrayList<>();
+    List<Map> resultList = new ArrayList<>();
     List<Map> rows = query.list();
 
     for (Map row : rows) {
@@ -263,7 +263,7 @@ public class AbstractBase {
     return resultList;
 }
 
-    public static List<Map<String, String>> getMappedListString(String query) throws Exception {
+    public static List<Map> getMappedListString(String query) throws Exception {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
