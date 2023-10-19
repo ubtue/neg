@@ -17,4 +17,4 @@ VALUES ("einzelbeleg", "KritikSelektion", "Textkritische Anmerkung", "select", 0
 
 ALTER TABLE einzelbeleg ADD KritikID INT DEFAULT -1;
 
-ALTER TABLE einzelbeleg ADD CONSTRAINT FK_EinzelbelegKritik_1 FOREIGN KEY (KritikID) REFERENCES selektion_kritik(ID);
+ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_KritikID FOREIGN KEY (KritikID) REFERENCES selektion_kritik(ID);
