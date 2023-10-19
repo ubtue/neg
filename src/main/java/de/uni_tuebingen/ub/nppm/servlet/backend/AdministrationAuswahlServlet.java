@@ -12,15 +12,13 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
     }
 
     @Override
+    protected boolean isAdminRequired() {
+        return true;
+    }
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-          //Use isAdminRequired to check if the user is an administrator.
-        if (isAdminRequired(request, response)) {
-            RequestDispatcher rd = request.getRequestDispatcher("admin.auswahlfelder.jsp");
-            rd.include(request, response);
-        }else {
-            //If the user is not an administrator, redirect them to logout.jsp.
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/logout.jsp");
-            dispatcher.forward(request, response);
-        }
+        RequestDispatcher rd = request.getRequestDispatcher("admin.auswahlfelder.jsp");
+        rd.include(request, response);
     }
 }

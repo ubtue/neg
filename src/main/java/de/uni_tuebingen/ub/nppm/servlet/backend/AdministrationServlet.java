@@ -12,6 +12,11 @@ public class AdministrationServlet extends AbstractBackendServlet {
     }
 
     @Override
+    protected boolean isAdminRequired() {
+        return true;
+    }
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher("administration.jsp");
         rd.include(request, response);

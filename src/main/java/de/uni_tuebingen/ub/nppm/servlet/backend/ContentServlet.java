@@ -22,14 +22,14 @@ public class ContentServlet extends AbstractBackendServlet {
     protected Benutzer benutzer;
 
     @Override
+    protected boolean isAdminRequired() {
+        return true;
+    }
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PrintWriter out = response.getWriter();
 
-        if (!isAdminRequired(request, response)) {
-            //If the user is not an administrator, redirect them to logout.jsp.
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/logout.jsp");
-            dispatcher.forward(request, response);
-        } else {
             // show TinyMCE
             if (request.getParameter("loadFile") != null) {
                 RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
@@ -81,7 +81,6 @@ public class ContentServlet extends AbstractBackendServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
                 rd.include(request, response);
             }
-        }
     }//end function
 
     public void deleteFile(String fileId) throws IOException, Exception {

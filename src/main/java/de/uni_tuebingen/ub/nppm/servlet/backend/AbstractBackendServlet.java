@@ -27,20 +27,7 @@ public abstract class AbstractBackendServlet extends AbstractServlet {
         return true;
     }
 
-    protected boolean isAdminRequired(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Integer benutzerID = (Integer) request.getSession().getAttribute("BenutzerID");
-
-        if (benutzerID != null) {
-            Benutzer benutzer = BenutzerDB.getById(benutzerID);
-
-            if (benutzer != null) {
-                if (!benutzer.isAdmin()) {
-                    //If the user is not an administrator, redirect them to logout.jsp.
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/logout.jsp");
-                }
-                return benutzer.isAdmin();
-            }
-        }
+    protected boolean isAdminRequired() {
         return false;
     }
 
@@ -48,8 +35,16 @@ public abstract class AbstractBackendServlet extends AbstractServlet {
     protected void initRequest(HttpServletRequest request) throws Exception {
         super.initRequest(request);
         benutzer = AuthHelper.getBenutzer(request);
-        if (isLoginRequired() && benutzer == null || benutzer.isGast()) {
+
+        if (isLoginRequired() && (benutzer == null || benutzer.isGast())) {
             throw new BenutzerNotSetException();
+        }
+
+        // Überprüfen, ob die Seite eine Admin-Seite ist
+        if (isAdminRequired()) {
+            if (benutzer == null || !benutzer.isAdmin()) {
+                throw new BenutzerNotAdminException();
+            }
         }
     }
 
