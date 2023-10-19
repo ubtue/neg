@@ -1,6 +1,7 @@
 <%@page isErrorPage="true" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
+<%@page import="org.apache.commons.lang3.exception.ExceptionUtils" isThreadSafe="false" %>
 <!DOCTYPE html>
 <HTML>
   <HEAD>
@@ -25,9 +26,15 @@
         <h1 style="color: red;">Ein Fehler ist aufgetreten:</h1>
         <h2 style="color: red;"><b>${requestScope['javax.servlet.error.message']}</h2>
         <% if (exception != null) { %>
-          <h2 style="color: red;"><pre><%= exception.getMessage()%></pre></h2>
-          <% // TODO: Show stacktrace only in debug mode %>
-          <p style="color: red;"><pre><% exception.printStackTrace(new java.io.PrintWriter(out)); %></pre></p>
+
+          <% Throwable rootCause = ExceptionUtils.getRootCause(exception); %>
+          <% if (rootCause != null) { %>
+            <h2 style="color: red;"><%= rootCause.getMessage() %></h2>
+          <% } %>
+
+          <% // TODO: Show details only in debug mode %>
+          <h3><pre><%= exception.getMessage()%></pre></h3>
+          <p><pre><% exception.printStackTrace(new java.io.PrintWriter(out)); %></pre></p>
         <% } %>
     </div>
 
