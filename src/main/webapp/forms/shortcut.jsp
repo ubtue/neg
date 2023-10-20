@@ -79,7 +79,7 @@
     out.println(res);
 
     Map row = AbstractBase.getMappedRow(sql2);
-    if (row != null) {
+    if (row != null && row.get(bez) != null) {
         String value = format(row.get(bez).toString(), bez);
         if (value != null) {
             int max = Math.min(10, value.length());
@@ -102,9 +102,8 @@
         count++;
         if (count >= 5)
             break;
-
-        String value = format(row3.get(bez).toString(), bez);
-        if (value != null) {
+        if (row3.get(bez) != null) {
+            String value = format(row3.get(bez).toString(), bez);
             int max = Math.min(7, value.length());
             if (bez.equals("PLemma")) {
                 int posAmph = value.substring(0, max).lastIndexOf("&");
