@@ -111,14 +111,6 @@ public class BenutzerDB extends AbstractBase {
         }
     }
 
-    public static void saveOrUpdate(Benutzer b) throws Exception {
-        try (Session session = getSession()) {
-            session.getTransaction().begin();
-            session.saveOrUpdate(b);
-            session.getTransaction().commit();
-        }
-    }
-
     public static BenutzerGruppe getGruppeById(int id) throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();

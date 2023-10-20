@@ -50,14 +50,6 @@ public class NamenKommentarDB extends AbstractBase {
         }
     }
 
-    public static void saveOrUpdate(NamenKommentar namenkommentar) throws Exception {
-        try (Session session = getSession()) {
-            session.getTransaction().begin();
-            session.saveOrUpdate(namenkommentar);
-            session.getTransaction().commit();
-        }
-    }
-
     public static void setDateiname(int id, String dateiname) throws Exception {
         try (Session session = getSession()) {
             session.beginTransaction();

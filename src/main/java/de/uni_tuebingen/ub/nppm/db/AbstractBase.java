@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.db;
 
+import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.util.NamespaceHelper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -326,6 +327,14 @@ public class AbstractBase {
     public static void verifyDynamicColumn(String column) throws SqlInjectionException {
         if (!column.matches("^[a-zA-Z0-9_]+$")) {
             throw new SqlInjectionException("Invalid column name: " + column);
+        }
+    }
+    
+    public static void saveOrUpdate(Object o) throws Exception {
+        try (Session session = getSession()) {
+            session.getTransaction().begin();
+            session.saveOrUpdate(o);
+            session.getTransaction().commit();
         }
     }
 }

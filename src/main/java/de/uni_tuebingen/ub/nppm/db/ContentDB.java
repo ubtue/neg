@@ -167,12 +167,4 @@ public class ContentDB extends AbstractBase {
             return !pictures.isEmpty();
         }
     }
-
-    public static void saveOrUpdate(Content content) throws Exception {
-        try (Session session = getSession()) {
-            session.getTransaction().begin();
-            session.saveOrUpdate(content);
-            session.getTransaction().commit();
-        }
-    }
 }
