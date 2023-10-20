@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.util.NamespaceHelper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
