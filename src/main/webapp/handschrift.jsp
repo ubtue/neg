@@ -1,4 +1,3 @@
-<%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>

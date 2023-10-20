@@ -1,9 +1,6 @@
 <%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.net.URLEncoder" isThreadSafe="false" %>
 <%@ page import="java.security.MessageDigest" isThreadSafe="false" %>
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.util.StringTokenizer" isThreadSafe="false"%>

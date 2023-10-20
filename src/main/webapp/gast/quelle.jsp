@@ -1,7 +1,6 @@
 <%@page import="de.uni_tuebingen.ub.nppm.db.UrkundeDB"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.Urkunde"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.QuelleDB"%>
-<%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp"%>
