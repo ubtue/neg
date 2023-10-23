@@ -69,7 +69,7 @@
                                 String temp_id = request.getParameter(datenfeld + "[" + i + "]_entryid");
                                 String temp_value = request.getParameter(datenfeld + "[" + i + "]");
 
-                                Map<String, String> condMap = new HashMap<>();
+                                Map condMap = new HashMap<String, String>();
                                 condMap.put("ID", temp_id);
                                 SaveHelper.update(zieltabelle, zielAttribut, temp_value, condMap);
                             }
@@ -91,7 +91,7 @@
                 if (!isArray) {
                     String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
                     int checkbox = 0;
-                    Map<String, String> condMap = new HashMap<>();
+                    Map condMap = new HashMap<String, String>();
                     condMap.put("ID", String.valueOf(id));
 
                     if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
