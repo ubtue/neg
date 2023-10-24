@@ -19,6 +19,10 @@
 #     - If they are in a n:m table, they should be NOT NULL without default
 #     - If they are in a column, they should be NOT NULL with default -1 or the corresponding default value matching "-" or "--" (NOT "?"!)
 #   - So far we will NOT set any key to use ON DELETE CASCADE or ON DELETE UPDATE. This might be done at a later point if needed.
+
+#Otherwise an error will appear. Will be restored at the end of the script
+SET FOREIGN_KEY_CHECKS=0;
+
 ALTER TABLE bemerkung MODIFY COLUMN ID INT UNSIGNED AUTO_INCREMENT;
 
 ALTER TABLE benutzer MODIFY COLUMN ID INT UNSIGNED AUTO_INCREMENT;
@@ -470,3 +474,5 @@ ALTER TABLE urkunde_hataussteller MODIFY COLUMN ID INT UNSIGNED AUTO_INCREMENT;
 
 ALTER TABLE urkunde_hatempfaenger MODIFY COLUMN ID INT UNSIGNED AUTO_INCREMENT;
 
+#restore
+SET FOREIGN_KEY_CHECKS=1;
