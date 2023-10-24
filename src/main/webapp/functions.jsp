@@ -122,16 +122,6 @@ int max(int a, int b) {
     return (a > b ? a : b);
 }
 
-String getLabel(String formular, String datenfeld, String textfeld, Statement st, String sprache) throws Exception {
-    if (datenfeld == null && textfeld != null) {
-        return DatenbankDB.getLabel(sprache, formular, textfeld);
-    } else if (datenfeld != null && textfeld == null) {
-        return DatenbankDB.getMapping(sprache, formular, datenfeld);
-    }
-
-    return "";
-}
-
 String format(String text, String feld) {
     return Utils.format(text, feld);
 }
