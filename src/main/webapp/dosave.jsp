@@ -88,21 +88,19 @@
             // checkbox
             else if (feldtyp != null && feldtyp.equals("checkbox") && zielAttribut != null && zieltabelle != null) {
                 // KEIN ARRAY
-                if (!isArray) {
+               if (!isArray) {
                     String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
                     String checkbox = "false";
                     Map<String, String> condMap = new HashMap<>();
                     condMap.put("ID", String.valueOf(id));
 
+                    String temp = checkbox;
+
                     if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
                         SaveHelper.update(zieltabelle, zielAttribut, "1", condMap);
+                    }else{
+                        SaveHelper.update(zieltabelle, zielAttribut, "0", condMap);
                     }
-                    if (attrVal != null && !attrVal.equals(checkbox)) {
-                        if(checkbox.equals("true"))
-                          SaveHelper.update(zieltabelle, zielAttribut, "1", condMap);
-                        else
-                          SaveHelper.update(zieltabelle, zielAttribut, "0", condMap);
-                    } // ENDE Datensatz ändern
                 } // ENDE kein Array
             } //ENDE checkbox
             // Datum
