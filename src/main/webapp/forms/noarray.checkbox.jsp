@@ -5,8 +5,8 @@
         out.print("<input name=\"" + datenfeld + "\" ");
         out.print("type=\"checkbox\"");
         if (zielAttribut != null && zielTabelle != null) {
-            Integer checked = AbstractBase.getIntNative("SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
-            if (checked != null && checked == 1) {
+            String checked = AbstractBase.getStringNative("SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
+            if (checked != null && checked.equals("true")) {
                 out.print(" checked ");
             }
             if (isReadOnly) {
