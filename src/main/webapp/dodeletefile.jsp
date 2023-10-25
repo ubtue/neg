@@ -1,3 +1,5 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.Content"%>
 <%@ page import="java.io.File" isThreadSafe="false" %>
 <%@ page import="java.io.FileNotFoundException" isThreadSafe="false" %>
@@ -35,11 +37,15 @@
     else
     {
         int id = Integer.parseInt(request.getParameter("ID"));
-        String filename = DeleteDB.selectAttribute(request.getParameter("table"), request.getParameter("attribute"), id );
+        String filename = AbstractBase.getSingleField(request.getParameter("attribute"),request.getParameter("table") , id );
         int fileId = Integer.parseInt(filename);
         Content content = ContentDB.getById(fileId);
         filename = content.getName();
-        DeleteDB.updateAttribute(request.getParameter("table"), request.getParameter("attribute"), id );
+
+        Map<String, String> condMap = new HashMap<>();
+        condMap.put("ID", String.valueOf(id));
+
+        AbstractBase.update(request.getParameter("table"),request.getParameter("attribute"), null, condMap);
 
         out.println("<p>Eintrag "+filename+" erfolgreich gel&ouml;scht!</p>");
     }

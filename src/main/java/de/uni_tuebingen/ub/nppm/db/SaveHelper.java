@@ -90,21 +90,6 @@ public class SaveHelper extends AbstractBase {
         insertOrUpdate(sql);
     }
 
-    public static void update(String table, String attribute, String value, Map<String, String> andConditions) throws Exception {
-        try ( Session session = getSession()) {
-            session.getTransaction().begin();
-            String sql = "UPDATE " + table + " SET " + attribute + "= :value";
-            sql += buildAndConditions(andConditions);
-
-            NativeQuery query = session.createNativeQuery(sql);
-            query.setParameter("value", value);
-            registerAndConditions(andConditions, query);
-
-            query.executeUpdate();
-            session.getTransaction().commit();
-        }
-    }
-
     public static void insert(String table, Map<String, String> columnsAndValues) throws Exception {
         try ( Session session = getSession()) {
             session.getTransaction().begin();
@@ -152,37 +137,6 @@ public class SaveHelper extends AbstractBase {
         }
     }
 
-    protected static String buildAndConditions(Map<String, String> andConditions) {
-        String sql = "";
-
-        int i = 0;
-        for (Map.Entry<String, String> andCondition : andConditions.entrySet()) {
-            if (i == 0) {
-                sql += " WHERE ";
-            } else {
-                sql += " AND ";
-            }
-
-            sql += andCondition.getKey();  //z.b PersonID
-            if (andCondition.getValue() == null) {
-                sql += " IS ";
-            } else {
-                sql += " = ";
-            }
-            sql += ":" + andCondition.getKey(); //z.b :PersonID  (kreiere Platzhalter mit .getKey()  nicht .getValue
-            i++;
-        }
-
-        return sql;
-    }
-
-    //Hilsfunktion zum setzen der Parameter
-    protected static void registerAndConditions(Map<String, String> andConditions, NativeQuery query) {
-        for (Map.Entry<String, String> andCondition : andConditions.entrySet()) {
-            query.setParameter(andCondition.getKey(), andCondition.getValue());
-        }
-    }
-
     public static List<DatenbankMapping> getMapping(String formular) throws Exception {
         try ( Session session = getSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -196,19 +150,6 @@ public class SaveHelper extends AbstractBase {
             org.hibernate.query.Query query = session.createQuery(criteria);
             List<DatenbankMapping> rows = query.getResultList();
             return rows;
-        }
-    }
-
-    public static String getSingleField(String zielAttribut, String zieltabelle, int id) throws Exception {
-        String sql = "SELECT " + zielAttribut + " FROM " + zieltabelle + " WHERE ID='" + id + "';";
-        try {
-            Object res = DatenbankDB.getSingleResult(sql);
-            if (res != null) {
-                return res.toString();
-            }
-            return null;
-        } catch (Exception exception) {
-            throw new Exception(exception.getLocalizedMessage() + "\nSQL: " + sql);
         }
     }
 

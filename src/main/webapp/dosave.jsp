@@ -46,14 +46,14 @@
                     || feldtyp.equals("sqlselect"))) {
                 // KEIN ARRAY
                 if (isArray != null && !isArray && zielAttribut != null && zieltabelle != null) {
-                    String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
+                    String attrVal = AbstractBase.getSingleField(zielAttribut, zieltabelle, id);
                     // Datensatz ändern
                     if (((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
                             || (request.getParameter(datenfeld) != null && attrVal == null && !request.getParameter(datenfeld).equals("")))) {
 
                         Map<String, String> condMap = new HashMap<>();
                         condMap.put("ID", String.valueOf(id));
-                        SaveHelper.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
+                        AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
                     } // ENDE Datensatz ändern
 
                 } // ENDE kein Array
@@ -63,7 +63,7 @@
                         // Prüfen, ob aktueller Eintrag bereits vorhanden
                         if (request.getParameter(datenfeld + "[" + i + "]_entryid") != null) {
                             // Prüfen, ob Datensatz geändert wurde
-                            String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, Integer.valueOf(request.getParameter(datenfeld + "[" + i + "]_entryid")));
+                            String attrVal = AbstractBase.getSingleField(zielAttribut, zieltabelle, Integer.valueOf(request.getParameter(datenfeld + "[" + i + "]_entryid")));
                             if (attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld + "[" + i + "]")))) {
 
                                 String temp_id = request.getParameter(datenfeld + "[" + i + "]_entryid");
@@ -71,7 +71,7 @@
 
                                 Map<String, String> condMap = new HashMap<>();
                                 condMap.put("ID", temp_id);
-                                SaveHelper.update(zieltabelle, zielAttribut, temp_value, condMap);
+                                AbstractBase.update(zieltabelle, zielAttribut, temp_value, condMap);
                             }
                         } else {
                             // Wenn etwas eingetragen ist, in die Datenbank einfügen
@@ -89,7 +89,6 @@
             else if (feldtyp != null && feldtyp.equals("checkbox") && zielAttribut != null && zieltabelle != null) {
                 // KEIN ARRAY
                if (!isArray) {
-                    String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
                     String checkbox = "false";
                     Map<String, String> condMap = new HashMap<>();
                     condMap.put("ID", String.valueOf(id));
@@ -97,9 +96,9 @@
                     String temp = checkbox;
 
                     if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
-                        SaveHelper.update(zieltabelle, zielAttribut, "1", condMap);
+                        AbstractBase.update(zieltabelle, zielAttribut, "1", condMap);
                     }else{
-                        SaveHelper.update(zieltabelle, zielAttribut, "0", condMap);
+                        AbstractBase.update(zieltabelle, zielAttribut, "0", condMap);
                     }
                 } // ENDE kein Array
             } //ENDE checkbox
@@ -222,7 +221,7 @@
                         } // ENDE löschen
                         else if (!request.getParameter(datenfeld).equals("") && !DBtoDB(request.getParameter(datenfeld)).equals(attr.get(zielAttribut))) {
 
-                            SaveHelper.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
+                            AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
 
                         } // ENDE ändern
                     } // ENDE Datensatz ändern
@@ -295,7 +294,7 @@
                                                     condMap2.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
                                                     condMap2.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
 
-                                                    SaveHelper.update("ueberlieferung_edition", "sigle", value, condMap2);
+                                                    AbstractBase.update("ueberlieferung_edition", "sigle", value, condMap2);
 
                                                 } else {
                                                     int value_one = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
