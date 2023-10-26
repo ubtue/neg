@@ -158,39 +158,32 @@
                     }
 
                     if (changed) {
-                        String sql = "UPDATE " + zieltabelle + " SET ";
-                        boolean sqlValid = false;
+                         Map<String, String> attributesAndValuesMap = new HashMap<>();
 
                         for (int i = 0; i < zielattributArray.length; i++) {
                             String fieldValue = request.getParameter(combinedFeldnamenArray[i]);
                             String genauigkeitValue = request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]);
 
-                            if (i > 0 && (fieldValue != null || genauigkeitValue != null)) {
-                                sql += ", ";
-                            }
 
                             // Überprüfen, ob das Feld leer ist und den Wert entsprechend festlegen
                             if (fieldValue != null && !fieldValue.isEmpty()) {
-                                sql += zielattributArray[i] + "=\"" + fieldValue + "\", ";
+                                attributesAndValuesMap.put(zielattributArray[i], fieldValue);
                             } else {
-                                sql += zielattributArray[i] + "=NULL, ";
+                                  attributesAndValuesMap.put(zielattributArray[i], null);
                             }
 
                             // Überprüfen, ob Genauigkeitsfeld leer ist und den Wert entsprechend festlegen
                             if (genauigkeitValue != null && !genauigkeitValue.isEmpty()) {
-                                sql += "Genauigkeit" + zielattributArray[i] + "=\"" + genauigkeitValue + "\"";
+                               attributesAndValuesMap.put("Genauigkeit" + zielattributArray[i], genauigkeitValue);
                             } else {
-                                sql += "Genauigkeit" + zielattributArray[i] + "=NULL";
+                                 attributesAndValuesMap.put("Genauigkeit" + zielattributArray[i], "-1");
                             }
-
-                            sqlValid = true;
                         }
 
-                        sql += " WHERE ID='" + id + "';";
+                        Map<String,String> condMap = new HashMap<>();
+                        condMap.put("ID", String.valueOf(id));
 
-                        if (sqlValid) {
-                            SaveHelper.insertOrUpdateSql(sql);
-                        }
+                        AbstractBase.updateMap(zieltabelle, attributesAndValuesMap, condMap);
                     }
                 }
             } // ENDE Datum

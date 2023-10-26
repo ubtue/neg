@@ -23,6 +23,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import org.hibernate.type.StringType;
 
 public class AbstractBase {
 
@@ -260,9 +261,45 @@ public class AbstractBase {
     //Hilsfunktion zum setzen der Parameter
     protected static void registerAndConditions(Map<String, String> andConditions, NativeQuery query) {
         for (Map.Entry<String, String> andCondition : andConditions.entrySet()) {
-            query.setParameter(andCondition.getKey(), andCondition.getValue());
+
+            if (andCondition.getKey().equals("QuelleBisJahrhundert") || andCondition.getKey().equals("QuelleVonJahrhundert") || andCondition.getKey().equals("VonJahrhundert") || andCondition.getKey().equals("BisJahrhundert") ) {
+                query.setParameter(andCondition.getKey(), andCondition.getValue(), StringType.INSTANCE);
+            } else {
+                query.setParameter(andCondition.getKey(), andCondition.getValue());
+            }
         }
     }
+
+     public static void updateMap(String table, Map<String, String> attributesAndValues, Map<String, String> andConditions) throws Exception {
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+            String sql = "UPDATE " + table + " SET ";
+
+            int i = 0;
+            for (Map.Entry<String, String> attributeAndValue : attributesAndValues.entrySet()) {
+                if (i == 0) {
+                    sql += attributeAndValue.getKey() + " = :" + attributeAndValue.getKey();
+                } else {
+                    sql += ", " + attributeAndValue.getKey() + " = :" + attributeAndValue.getKey();
+                }
+                i++;
+
+            }
+
+            sql += buildAndConditions(andConditions);
+
+            NativeQuery query = session.createNativeQuery(sql);
+
+
+            registerAndConditions(attributesAndValues, query);
+
+            registerAndConditions(andConditions, query);
+
+            query.executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
 
      public static void update(String table, String attribute, String value, Map<String, String> andConditions) throws Exception {
         try ( Session session = getSession()) {
