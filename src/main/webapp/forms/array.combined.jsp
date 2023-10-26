@@ -47,9 +47,9 @@
             if (i < rowlist.size()) {
                 row = rowlist.get(i);
                 out.println("<input type=\"hidden\" name=\""
-                    + datenfeld.toLowerCase() + "[" + i
-                    + "]_entryid\" value=\"" + row.get("ID").toString()
-                    + "\">");
+                        + datenfeld.toLowerCase() + "[" + i
+                        + "]_entryid\" value=\"" + row.get("ID").toString()
+                        + "\">");
                 alreadyOne = true;
             } else {
                 repeat = false;
@@ -200,7 +200,7 @@
                                             + row2.get("ID").toString()
                                             + "' "
                                             + (currentId == selected ? "selected"
-                                            : "")
+                                                    : "")
                                             + ">"
                                             + row2.get("Bezeichnung").toString()
                                             + "</option>");
@@ -254,19 +254,20 @@
                                     + i2
                                     + "]\""
                                     + " value=\""
-                                    + DBtoHTML(row3 != null ? row3.get("Sigle").toString() : "")
-                                            + "\""
-                                            + " maxlength=\""
-                                            + "\" "
-                                            + (combinedFeldnamen[j]
-                                                    .endsWith("ID") ? " size=\"5\""
-                                            : " size=\"10\"")
-                                            + " /></td></tr>");
+                                    + DBtoHTML(row3 != null && row3.get("Sigle") != null ? row3.get("Sigle").toString() : "")
+                                    + "\""
+                                    + " maxlength=\""
+                                    + "\" "
+                                    + (combinedFeldnamen[j]
+                                            .endsWith("ID") ? " size=\"5\""
+                                    : " size=\"10\"")
+                                    + " /></td></tr>");
                             i2++;
                         }
+                         out.println("</table>");
                     }
 
-                    out.println("</table>");
+
                 } else if (combinedFeldtypen[j].equals("checkbox")) {
                     if (!isReadOnly) {
                         out.println("<input name=\""
@@ -371,11 +372,12 @@
                             .split(",");
 
                     Map row2 = null;
-                    if (row != null && row.get(fields[1]) != null)
+                    if (row != null && row.get(fields[1]) != null) {
                         row2 = AbstractBase.getMappedRow("SELECT "
-                            + fields[2] + " FROM "
-                            + fields[0] + " WHERE ID="
-                            + row.get(fields[1]).toString());
+                                + fields[2] + " FROM "
+                                + fields[0] + " WHERE ID="
+                                + row.get(fields[1]).toString());
+                    }
 
                     if (row2 != null) {
 
@@ -471,25 +473,39 @@
                     if (row != null) {
                         out.println("<label id=\"quelleDate["
                                 + i
-                                + "]\">"
-                                + row.get(combinedFeldnamen[j]
-                                        + "VonJahr").toString()
-                                + "("
-                                + row.get(combinedFeldnamen[j]
-                                        + "VonJahrhundert").toString()
-                                + ". Jhd)-"
-                                + row.get(combinedFeldnamen[j]
-                                        + "BisJahr").toString()
-                                + "("
-                                + row.get(combinedFeldnamen[j]
-                                        + "BisJahrhundert").toString()
-                                + ". Jhd)</label>");
-                        out
-                                .println("<a href=\"javascript:popup('changedate', this, '', 'quelleDate["
-                                        + i
-                                        + "]', '"
-                                        + row.get("ID").toString()
-                                        + "');\"><img src=\"layout/icons/calendar.gif\" border=0></a>");
+                                + "]\">");
+                        if (row.get(combinedFeldnamen[j] + "VonJahr") != null) {
+                            out.print(row.get(combinedFeldnamen[j] + "VonJahr").toString());
+                        } else {
+                            out.println("0");
+                        }
+                        out.print("(");
+                        if (row.get(combinedFeldnamen[j] + "VonJahrhundert") != null) {
+                            out.print(row.get(combinedFeldnamen[j] + "VonJahrhundert").toString());
+                        } else {
+                            out.println("0");
+                        }
+                        out.print(". Jhd)-");
+                        if (row.get(combinedFeldnamen[j] + "BisJahr") != null) {
+                            out.print(row.get(combinedFeldnamen[j] + "BisJahr").toString());
+                        } else {
+                            out.println("0");
+                        }
+                        out.print("(");
+                        if (row.get(combinedFeldnamen[j] + "BisJahrhundert") != null) {
+                            out.print(row.get(combinedFeldnamen[j] + "BisJahrhundert").toString());
+                        } else {
+                            out.println("0");
+                        }
+                        out.println(". Jhd)</label>");
+
+                        out.println("<a href=\"javascript:popup('changedate', this, '', 'quelleDate["
+                                + i
+                                + "]', '");
+                        if (row.get("ID") != null) {
+                            out.print(row.get("ID").toString());
+                        }
+                        out.println("');\"><img src=\"layout/icons/calendar.gif\" border=0></a>");
                     }
                 } else {
                     out.println("folgt!");

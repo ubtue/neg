@@ -5,7 +5,8 @@
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-<%    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
+<%
+    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
         int id = -1;
         String form = request.getParameter("form");
         try {
@@ -45,12 +46,14 @@
                     || feldtyp.equals("sqlselect"))) {
                 // KEIN ARRAY
                 if (isArray != null && !isArray && zielAttribut != null && zieltabelle != null) {
-                    String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
+                    String attrVal = AbstractBase.getSingleField(zielAttribut, zieltabelle, id);
                     // Datensatz ändern
                     if (((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
                             || (request.getParameter(datenfeld) != null && attrVal == null && !request.getParameter(datenfeld).equals("")))) {
 
-                        SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld), id);
+                        Map<String, String> condMap = new HashMap<>();
+                        condMap.put("ID", String.valueOf(id));
+                        AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
                     } // ENDE Datensatz ändern
 
                 } // ENDE kein Array
@@ -60,10 +63,15 @@
                         // Prüfen, ob aktueller Eintrag bereits vorhanden
                         if (request.getParameter(datenfeld + "[" + i + "]_entryid") != null) {
                             // Prüfen, ob Datensatz geändert wurde
-                            String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, Integer.valueOf(request.getParameter(datenfeld + "[" + i + "]_entryid")));
+                            String attrVal = AbstractBase.getSingleField(zielAttribut, zieltabelle, Integer.valueOf(request.getParameter(datenfeld + "[" + i + "]_entryid")));
                             if (attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld + "[" + i + "]")))) {
 
-                                SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld + "[" + i + "]"), request.getParameter(datenfeld + "[" + i + "]_entryid"));
+                                String temp_id = request.getParameter(datenfeld + "[" + i + "]_entryid");
+                                String temp_value = request.getParameter(datenfeld + "[" + i + "]");
+
+                                Map<String, String> condMap = new HashMap<>();
+                                condMap.put("ID", temp_id);
+                                AbstractBase.update(zieltabelle, zielAttribut, temp_value, condMap);
                             }
                         } else {
                             // Wenn etwas eingetragen ist, in die Datenbank einfügen
@@ -80,16 +88,18 @@
             // checkbox
             else if (feldtyp != null && feldtyp.equals("checkbox") && zielAttribut != null && zieltabelle != null) {
                 // KEIN ARRAY
-                if (!isArray) {
-                    String attrVal = SaveHelper.getSingleField(zielAttribut, zieltabelle, id);
-                    int checkbox = 0;
-                    if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
-                        checkbox = 1;
-                    }
-                    if (attrVal != null && Integer.valueOf(attrVal) != checkbox) {
+               if (!isArray) {
+                    String checkbox = "false";
+                    Map<String, String> condMap = new HashMap<>();
+                    condMap.put("ID", String.valueOf(id));
 
-                        SaveHelper.updateAttribute(zieltabelle, zielAttribut, String.valueOf(checkbox), id);
-                    } // ENDE Datensatz ändern
+                    String temp = checkbox;
+
+                    if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
+                        AbstractBase.update(zieltabelle, zielAttribut, "1", condMap);
+                    }else{
+                        AbstractBase.update(zieltabelle, zielAttribut, "0", condMap);
+                    }
                 } // ENDE kein Array
             } //ENDE checkbox
             // Datum
@@ -123,7 +133,8 @@
                     }
                     zielAttributStr += zielattributArray[i] + ", Genauigkeit" + zielattributArray[i];
                 }
-                List<Map> attributes = SaveHelper.getMappedList("SELECT " + zielAttributStr + " FROM " + zieltabelle + " WHERE ID='" + id + "';");
+
+                List<Map> attributes = SaveHelper.getAttributeMap(zieltabelle, zielAttributStr, id);
                 if (attributes.size() > 0) {
                     Map attr = attributes.iterator().next();
                     boolean changed = false;
@@ -149,19 +160,34 @@
                     if (changed) {
                         String sql = "UPDATE " + zieltabelle + " SET ";
                         boolean sqlValid = false;
+
                         for (int i = 0; i < zielattributArray.length; i++) {
-                            if (request.getParameter(combinedFeldnamenArray[i]) != null && request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]) != null) {
-                                if (i > 0) {
-                                    sql += ", ";
-                                }
-                                sql += zielattributArray[i] + "=\"" + ((!request.getParameter(combinedFeldnamenArray[i]).equals("")) ? request.getParameter(combinedFeldnamenArray[i]) : "0") + "\", ";
-                                sql += "Genauigkeit" + zielattributArray[i] + "=\"" + ((!request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]).equals("")) ? request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]) : "0") + "\"";
-                                sqlValid = true;
+                            String fieldValue = request.getParameter(combinedFeldnamenArray[i]);
+                            String genauigkeitValue = request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]);
+
+                            if (i > 0 && (fieldValue != null || genauigkeitValue != null)) {
+                                sql += ", ";
                             }
-                            if (i == (zielattributArray.length - 1)) {
-                                sql += " WHERE ID='" + id + "';";
+
+                            // Überprüfen, ob das Feld leer ist und den Wert entsprechend festlegen
+                            if (fieldValue != null && !fieldValue.isEmpty()) {
+                                sql += zielattributArray[i] + "=\"" + fieldValue + "\", ";
+                            } else {
+                                sql += zielattributArray[i] + "=NULL, ";
                             }
+
+                            // Überprüfen, ob Genauigkeitsfeld leer ist und den Wert entsprechend festlegen
+                            if (genauigkeitValue != null && !genauigkeitValue.isEmpty()) {
+                                sql += "Genauigkeit" + zielattributArray[i] + "=\"" + genauigkeitValue + "\"";
+                            } else {
+                                sql += "Genauigkeit" + zielattributArray[i] + "=NULL";
+                            }
+
+                            sqlValid = true;
                         }
+
+                        sql += " WHERE ID='" + id + "';";
+
                         if (sqlValid) {
                             SaveHelper.insertOrUpdateSql(sql);
                         }
@@ -170,6 +196,7 @@
             } // ENDE Datum
             // Bemerkungsfeld
             else if (feldtyp != null && feldtyp.equals("note") && zielAttribut != null && zieltabelle != null) {
+                int temp_BenutzerId = Integer.parseInt(session.getAttribute("BenutzerID").toString());
                 Map<String, String> condMap = new HashMap<>();
                 condMap.put(formularAttribut, String.valueOf(id));
                 if (datenfeld.equals("BemerkungAlle")) {
@@ -180,11 +207,11 @@
                     condMap.put("BenutzerID", null);
                 } else if (datenfeld.equals("BemerkungPrivat")) {
                     condMap.put("GruppeID", null);
-                    condMap.put("BenutzerID", session.getAttribute("BenutzerID").toString());
+                    condMap.put("BenutzerID", Integer.toString(temp_BenutzerId));
                 }
 
                 // Datensatz ändern
-                List<Map<String, String>> attributes = SaveHelper.selectAttribute(zieltabelle, zielAttribut, condMap);
+                List<Map> attributes = SaveHelper.getAttribute(zieltabelle, zielAttribut, condMap);
                 if (formularAttribut != null && zieltabelle != null && (attributes.size() > 0 && request.getParameter(datenfeld) != null)) {
 
                     if (attributes.size() > 0 && request.getParameter(datenfeld) != null) {
@@ -194,7 +221,8 @@
                         } // ENDE löschen
                         else if (!request.getParameter(datenfeld).equals("") && !DBtoDB(request.getParameter(datenfeld)).equals(attr.get(zielAttribut))) {
 
-                             SaveHelper.updateAttribute(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
+                            AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
+
                         } // ENDE ändern
                     } // ENDE Datensatz ändern
 
@@ -203,16 +231,20 @@
                     String field = "";
                     String value = "";
                     if (datenfeld.equals("BemerkungGruppe")) {
-                        field = ", GruppeID";
-                        value = ", " + session.getAttribute("GruppeID");
+                        field = "GruppeID";
+                        value = String.valueOf( session.getAttribute("GruppeID"));
                     } else if (datenfeld.equals("BemerkungPrivat")) {
-                        field = ", BenutzerID";
-                        value = ", " + session.getAttribute("BenutzerID");
+                        field = "BenutzerID";
+                        value = String.valueOf(session.getAttribute("BenutzerID"));
                     }
                     if (formularAttribut != null && zieltabelle != null) {
 
-                        SaveHelper.insertNewAttribute(zieltabelle, zielAttribut, formularAttribut, field, request.getParameter(datenfeld), id, value);
+                        Map<String, String> columnsAndValues = new HashMap<>();
+                        columnsAndValues.put(zielAttribut, request.getParameter(datenfeld));     //Bemerkung
+                        columnsAndValues.put(formularAttribut, String.valueOf(id));             //EinzelbelegID
+                        columnsAndValues.put(field, value);                                     //GruppeID oder BenutzerID
 
+                        SaveHelper.insert(zieltabelle, columnsAndValues);
                     }
                 } // ENDE Datensatz neu
             } // ENDE Bemerkungsfeld
@@ -240,18 +272,41 @@
                         if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
                             boolean aenderung = false;
 
-                            List<Map> attributes = SaveHelper.getMappedList("SELECT * FROM " + zieltabelle + " WHERE ID='" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "';");
+                            int mapId = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                            List<Map> attributes = SaveHelper.getMapField(zieltabelle, mapId);
                             if (attributes.size() > 0) {
                                 Map attr = attributes.iterator().next();
                                 for (int j = 0; j < combinedFeldnamenArray.length; j++) {
                                     if (combinedFeldtypenArray[j].equals("subtable")) {
                                         for (int j2 = 0; request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") != null; j2++) {
                                             if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
-                                                List<Map> ueberlieferungEdition = SaveHelper.getMappedList("SELECT * FROM ueberlieferung_edition WHERE editionID=" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + " AND ueberlieferungID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+
+                                                Map<String, String> condMap = new HashMap<>();
+                                                condMap.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
+                                                condMap.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+
+                                                List<Map> ueberlieferungEdition = SaveHelper.getAttribute("ueberlieferung_edition", "*", condMap);
+
                                                 if (ueberlieferungEdition.size() > 0) {
-                                                    SaveHelper.insertOrUpdateSql("UPDATE ueberlieferung_edition SET sigle='" + request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") + "' WHERE  editionID=" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + " and ueberlieferungID=" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+
+                                                    String value = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
+                                                    Map<String, String> condMap2 = new HashMap<>();
+                                                    condMap2.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
+                                                    condMap2.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+
+                                                    AbstractBase.update("ueberlieferung_edition", "sigle", value, condMap2);
+
                                                 } else {
-                                                    SaveHelper.insertOrUpdateSql("INSERT into ueberlieferung_edition (UeberlieferungID, EditionID, Sigle) VALUES ('" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "','" + request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]") + "','" + request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") + "')");
+                                                    int value_one = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                                                    int value_two = Integer.parseInt(request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
+                                                    String value_three = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
+
+                                                    Map<String, String> condMap2 = new HashMap<>();
+                                                    condMap2.put("UeberlieferungID", String.valueOf(value_one));
+                                                    condMap2.put("EditionID", String.valueOf(value_two));
+                                                    condMap2.put("Sigle", value_three);
+
+                                                    SaveHelper.insert("ueberlieferung_edition", condMap2);
                                                 }
                                             }
                                         }

@@ -100,7 +100,7 @@
     </a>
     <br>
     <hr>
-    <a href="file" target="_blank">
+    <a href="file">
         <%
             DatenbankTexte label = DatenbankTexteDB.getText("navigation", "InhaltBearbeiten");
         %>

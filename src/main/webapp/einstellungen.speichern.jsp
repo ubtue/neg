@@ -69,7 +69,7 @@
       benutzer.setLogin(request.getParameter("Benutzername"));
       benutzer.setVorname(request.getParameter("Vorname"));
       benutzer.setNachname(request.getParameter("Nachname"));
-      benutzer.setAdmin(request.getParameter("Administrator").equals("on"));
+      benutzer.setAdmin("on".equals(request.getParameter("Administrator")));
       benutzer.setAktiv(request.getParameter("Aktiv")!=null && request.getParameter("Aktiv").equals("on"));
       BenutzerDB.saveOrUpdate(benutzer);
       actionDone = true;

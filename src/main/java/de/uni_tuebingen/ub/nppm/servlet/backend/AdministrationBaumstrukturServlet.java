@@ -17,10 +17,16 @@ public class AdministrationBaumstrukturServlet extends AbstractBackendServlet {
     }
 
     @Override
+    protected boolean isAdminRequired() {
+        return true;
+    }
+    
+     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher("admin.baumstruktur.jsp");
         rd.include(request, response);
     }
+
 
     @Override
     protected List<String> getAdditionalCss() {
