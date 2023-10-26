@@ -5,8 +5,7 @@
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-<%
-    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
+<%    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
         int id = -1;
         String form = request.getParameter("form");
         try {
@@ -88,7 +87,7 @@
             // checkbox
             else if (feldtyp != null && feldtyp.equals("checkbox") && zielAttribut != null && zieltabelle != null) {
                 // KEIN ARRAY
-               if (!isArray) {
+                if (!isArray) {
                     String checkbox = "false";
                     Map<String, String> condMap = new HashMap<>();
                     condMap.put("ID", String.valueOf(id));
@@ -97,7 +96,7 @@
 
                     if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
                         AbstractBase.update(zieltabelle, zielAttribut, "1", condMap);
-                    }else{
+                    } else {
                         AbstractBase.update(zieltabelle, zielAttribut, "0", condMap);
                     }
                 } // ENDE kein Array
@@ -158,29 +157,28 @@
                     }
 
                     if (changed) {
-                         Map<String, String> attributesAndValuesMap = new HashMap<>();
+                        Map<String, String> attributesAndValuesMap = new HashMap<>();
 
                         for (int i = 0; i < zielattributArray.length; i++) {
                             String fieldValue = request.getParameter(combinedFeldnamenArray[i]);
                             String genauigkeitValue = request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]);
 
-
                             // Überprüfen, ob das Feld leer ist und den Wert entsprechend festlegen
                             if (fieldValue != null && !fieldValue.isEmpty()) {
                                 attributesAndValuesMap.put(zielattributArray[i], fieldValue);
                             } else {
-                                  attributesAndValuesMap.put(zielattributArray[i], null);
+                                attributesAndValuesMap.put(zielattributArray[i], null);
                             }
 
                             // Überprüfen, ob Genauigkeitsfeld leer ist und den Wert entsprechend festlegen
                             if (genauigkeitValue != null && !genauigkeitValue.isEmpty()) {
-                               attributesAndValuesMap.put("Genauigkeit" + zielattributArray[i], genauigkeitValue);
+                                attributesAndValuesMap.put("Genauigkeit" + zielattributArray[i], genauigkeitValue);
                             } else {
-                                 attributesAndValuesMap.put("Genauigkeit" + zielattributArray[i], "-1");
+                                attributesAndValuesMap.put("Genauigkeit" + zielattributArray[i], "-1");
                             }
                         }
 
-                        Map<String,String> condMap = new HashMap<>();
+                        Map<String, String> condMap = new HashMap<>();
                         condMap.put("ID", String.valueOf(id));
 
                         AbstractBase.updateMap(zieltabelle, attributesAndValuesMap, condMap);
@@ -225,7 +223,7 @@
                     String value = "";
                     if (datenfeld.equals("BemerkungGruppe")) {
                         field = "GruppeID";
-                        value = String.valueOf( session.getAttribute("GruppeID"));
+                        value = String.valueOf(session.getAttribute("GruppeID"));
                     } else if (datenfeld.equals("BemerkungPrivat")) {
                         field = "BenutzerID";
                         value = String.valueOf(session.getAttribute("BenutzerID"));
@@ -398,11 +396,20 @@
                                                 || combinedFeldtypenArray[j].equals("select")
                                                 || combinedFeldtypenArray[j].equals("sqlselect")
                                                 || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
-                                            sql += ", " + zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + "'";
+
+                                            String parameterValue = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]");
+                                            if (parameterValue != null) {
+                                                if (parameterValue.equals("NULL")) {
+                                                    sql += ", " + zielattributArray[j] + " = NULL";
+                                                } else {
+                                                    sql += ", " + zielattributArray[j] + " = '" + DBtoDB(parameterValue) + "'";
+                                                }
+                                            }
                                         } else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                                            sql += ", " + zielattributArray[j] + " = '"
-                                                    + (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j]
-                                                    + "[" + i + "]").equals("on") ? "1" : "0") + "'";
+                                            String checkboxValue = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]");
+                                            if (checkboxValue != null) {
+                                                sql += ", " + zielattributArray[j] + " = '" + (checkboxValue.equals("on") ? "1" : "0") + "'";
+                                            }
                                         }
                                     }
                                 }
