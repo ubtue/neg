@@ -75,10 +75,14 @@
                         } else {
                             // Wenn etwas eingetragen ist, in die Datenbank einfügen
                             if (formularAttribut != null && request.getParameter(datenfeld + "[" + i + "]") != null && !request.getParameter(datenfeld + "[" + i + "]").equals("") && !request.getParameter(datenfeld + "[" + i + "]").equals("-1")) {
-                                String sql = "INSERT INTO " + zieltabelle
-                                        + " (" + formularAttribut + ", " + zielAttribut + ")"
-                                        + " VALUES (" + id + ", \"" + DBtoDB(request.getParameter(datenfeld + "[" + i + "]")) + "\" );";
-                                SaveHelper.insertOrUpdateSql(sql);
+
+                                String tempValue = request.getParameter(datenfeld + "[" + i + "]");
+
+                                Map<String, String> columnsAndValues = new HashMap<>();
+                                columnsAndValues.put(formularAttribut,String.valueOf(id));
+                                columnsAndValues.put(zielAttribut, tempValue);
+
+                                SaveHelper.insert(zieltabelle, columnsAndValues);
                             }
                         }
                     }
