@@ -181,7 +181,14 @@
                         Map<String, String> condMap = new HashMap<>();
                         condMap.put("ID", String.valueOf(id));
 
-                        AbstractBase.updateMap(zieltabelle, attributesAndValuesMap, condMap);
+                       // From the table einzelbeleg and quelle the only exceptions are e.g. QuelleBisJahrhundert = "9Jh2"
+                        List<String> stringColumns = new ArrayList<>();
+                        stringColumns.add("QuelleBisJahrhundert");
+                        stringColumns.add("QuelleVonJahrhundert");
+                        stringColumns.add("VonJahrhundert");
+                        stringColumns.add("BisJahrhundert");
+
+                        AbstractBase.update(zieltabelle, attributesAndValuesMap, condMap, stringColumns);
                     }
                 }
             } // ENDE Datum
