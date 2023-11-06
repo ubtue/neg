@@ -23,6 +23,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import org.hibernate.type.StringType;
 
 public class AbstractBase {
 
@@ -30,7 +31,7 @@ public class AbstractBase {
 
     protected static javax.naming.InitialContext initialContext = null;
 
-    public static Map<String,Class> tableNameToEntityMap = initTableNameToEntityMap();
+    public static Map<String, Class> tableNameToEntityMap = initTableNameToEntityMap();
 
     public static void setInitialContext(javax.naming.InitialContext ctx) {
         initialContext = ctx;
@@ -91,12 +92,12 @@ public class AbstractBase {
         return sessionFactory;
     }
 
-    protected static Map<String,Class> initTableNameToEntityMap() throws RuntimeException {
-        Map<String,Class> map = new HashMap<>();
+    protected static Map<String, Class> initTableNameToEntityMap() throws RuntimeException {
+        Map<String, Class> map = new HashMap<>();
         try {
             for (Class<?> c : NamespaceHelper.getClassesOfPackage("de.uni_tuebingen.ub.nppm.model")) {
                 if (c.isAnnotationPresent(Entity.class)) {
-                    Table table = (Table)c.getAnnotation(Table.class);
+                    Table table = (Table) c.getAnnotation(Table.class);
                     map.put(table.name(), c);
                 }
             }
@@ -109,20 +110,20 @@ public class AbstractBase {
     }
 
     public static <T> T getById(int id, Class<T> class_) throws Exception {
-        try (Session session = getSession()) {
-            return (T)session.get(class_, id);
+        try ( Session session = getSession()) {
+            return (T) session.get(class_, id);
         }
     }
 
-
     public static Integer getMaxId(String tabelle) throws Exception {
-        return getIntNative("SELECT max(ID) FROM "+tabelle);
+        return getIntNative("SELECT max(ID) FROM " + tabelle);
     }
 
     public static Class getEntityClassByTableName(String tableName) throws Exception {
         Class c = tableNameToEntityMap.get(tableName);
-        if (c == null)
+        if (c == null) {
             throw new Exception("Entity class not found for table: " + tableName);
+        }
         return c;
     }
 
@@ -142,7 +143,7 @@ public class AbstractBase {
     }
 
     protected static List getList(Class c, CriteriaQuery criteria) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             if (criteria == null) {
                 criteria = builder.createQuery(c);
@@ -158,7 +159,7 @@ public class AbstractBase {
     }
 
     public static void remove(Class class_, int id) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             Transaction transaction = session.getTransaction();
             transaction.begin();
             //Load
@@ -171,7 +172,7 @@ public class AbstractBase {
     }
 
     public static List<Object[]> getListNative(String sql) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             return rows;
@@ -180,8 +181,9 @@ public class AbstractBase {
 
     public static Object[] getRowNative(String sql) throws Exception {
         List<Object[]> list = getListNative(sql);
-        if (!list.isEmpty())
+        if (!list.isEmpty()) {
             return list.get(0);
+        }
 
         return null;
     }
@@ -190,31 +192,33 @@ public class AbstractBase {
         // This function is needed because if we use getRowNative or getListNative
         // we will have problems to cast a BigInteger to an Object, so we cast to
         // Int instead.
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             //sqlQuery.setMaxResults(1);
             List<Object> rows = sqlQuery.getResultList();
-            if (!rows.isEmpty() && rows.get(0) != null)
+            if (!rows.isEmpty() && rows.get(0) != null) {
                 return Integer.parseInt(rows.get(0).toString());
+            }
         }
 
         return null;
     }
 
     public static String getStringNative(String sql) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             //sqlQuery.setMaxResults(1);
             List<Object> rows = sqlQuery.getResultList();
-            if (!rows.isEmpty() && rows.get(0) != null)
+            if (!rows.isEmpty() && rows.get(0) != null) {
                 return rows.get(0).toString();
+            }
         }
 
         return null;
     }
 
     public static List<String> getStringListNative(String sql) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<String> rows = sqlQuery.getResultList();
             return rows;
@@ -222,18 +226,19 @@ public class AbstractBase {
     }
 
     public static Timestamp getTimestampNative(String sql) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             //sqlQuery.setMaxResults(1);
             List<Timestamp> rows = sqlQuery.getResultList();
-            if (!rows.isEmpty() && rows.get(0) != null)
+            if (!rows.isEmpty() && rows.get(0) != null) {
                 return rows.get(0);
+            }
         }
 
         return null;
     }
 
-     protected static String buildAndConditions(Map<String, String> andConditions) {
+    protected static String buildAndConditions(Map<String, String> andConditions) {
         String sql = "";
 
         int i = 0;
@@ -258,13 +263,49 @@ public class AbstractBase {
     }
 
     //Hilsfunktion zum setzen der Parameter
-    protected static void registerAndConditions(Map<String, String> andConditions, NativeQuery query) {
-        for (Map.Entry<String, String> andCondition : andConditions.entrySet()) {
-            query.setParameter(andCondition.getKey(), andCondition.getValue());
+    protected static void registerParameters(Map<String, String> andConditions, NativeQuery query) {
+        registerParameters(andConditions, query, null);
+    }
+
+    protected static void registerParameters(Map<String, String> conditions, NativeQuery query, List<String> stringColumns) {
+        for (Map.Entry<String, String> andCondition : conditions.entrySet()) {
+            if (stringColumns != null && stringColumns.contains(andCondition.getKey())) {
+                query.setParameter(andCondition.getKey(), andCondition.getValue(), StringType.INSTANCE);
+            } else {
+                query.setParameter(andCondition.getKey(), andCondition.getValue());
+            }
         }
     }
 
-     public static void update(String table, String attribute, String value, Map<String, String> andConditions) throws Exception {
+    public static void update(String table, Map<String, String> attributesAndValues, Map<String, String> andConditions, List<String> specialColumns) throws Exception {
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+            String sql = "UPDATE " + table + " SET ";
+
+            int i = 0;
+            for (Map.Entry<String, String> attributeAndValue : attributesAndValues.entrySet()) {
+                if (i == 0) {
+                    sql += attributeAndValue.getKey() + " = :" + attributeAndValue.getKey();
+                } else {
+                    sql += ", " + attributeAndValue.getKey() + " = :" + attributeAndValue.getKey();
+                }
+                i++;
+
+            }
+
+            sql += buildAndConditions(andConditions);
+
+            NativeQuery query = session.createNativeQuery(sql);
+
+            registerParameters(attributesAndValues, query, specialColumns);
+            registerParameters(andConditions, query);
+
+            query.executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
+    public static void update(String table, String attribute, String value, Map<String, String> andConditions) throws Exception {
         try ( Session session = getSession()) {
             session.getTransaction().begin();
             String sql = "UPDATE " + table + " SET " + attribute + "= :value";
@@ -272,14 +313,14 @@ public class AbstractBase {
 
             NativeQuery query = session.createNativeQuery(sql);
             query.setParameter("value", value);
-            registerAndConditions(andConditions, query);
+            registerParameters(andConditions, query);
 
             query.executeUpdate();
             session.getTransaction().commit();
         }
     }
 
-     public static String getSingleField(String zielAttribut, String zieltabelle, int id) throws Exception {
+    public static String getSingleField(String zielAttribut, String zieltabelle, int id) throws Exception {
         String sql = "SELECT " + zielAttribut + " FROM " + zieltabelle + " WHERE ID='" + id + "';";
         try {
             Object res = DatenbankDB.getSingleResult(sql);
@@ -293,7 +334,7 @@ public class AbstractBase {
     }
 
     protected static void insertOrUpdate(String sql) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             session.getTransaction().begin();
             NativeQuery query = session.createNativeQuery(sql);
             query.executeUpdate();
@@ -303,30 +344,30 @@ public class AbstractBase {
 
     protected static List<Map> getMappedListString(Query query) throws Exception {
 
-    query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
+        query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
 
-    List<Map> resultList = new ArrayList<>();
-    List<Map> rows = query.list();
+        List<Map> resultList = new ArrayList<>();
+        List<Map> rows = query.list();
 
-    for (Map row : rows) {
-        Map<String, String> stringRowMap = new HashMap<>();
-        for (Object entryObject : row.entrySet()) {
-            Map.Entry<String, Object> entry = (Map.Entry<String, Object>) entryObject;
-            String key = entry.getKey();
-            String value = entry.getValue() != null ? entry.getValue().toString() : null;
-            stringRowMap.put(key, value);
+        for (Map row : rows) {
+            Map<String, String> stringRowMap = new HashMap<>();
+            for (Object entryObject : row.entrySet()) {
+                Map.Entry<String, Object> entry = (Map.Entry<String, Object>) entryObject;
+                String key = entry.getKey();
+                String value = entry.getValue() != null ? entry.getValue().toString() : null;
+                stringRowMap.put(key, value);
+            }
+            resultList.add(stringRowMap);
         }
-        resultList.add(stringRowMap);
-    }
 
-    return resultList;
-}
+        return resultList;
+    }
 
     public static List<Map> getMappedListString(String query) throws Exception {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             return getMappedListString(session.createNativeQuery(query));
         }
     }
@@ -338,7 +379,7 @@ public class AbstractBase {
     }
 
     protected static List<Map> getMappedList(CriteriaQuery criteria) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             return getMappedList(session.createQuery(criteria));
         }
     }
@@ -347,7 +388,7 @@ public class AbstractBase {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             return getMappedList(session.createNativeQuery(query));
         }
     }
@@ -357,13 +398,14 @@ public class AbstractBase {
         query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
         query.setMaxResults(1);
         List<Map> rows = query.list();
-        if (rows.isEmpty())
+        if (rows.isEmpty()) {
             return null;
+        }
         return rows.get(0);
     }
 
     public static Map getMappedRow(String query) throws Exception {
-        try (Session session = getSession()) {
+        try ( Session session = getSession()) {
             return getMappedRow(session.createNativeQuery(query));
         }
     }
@@ -374,22 +416,22 @@ public class AbstractBase {
     }
 
     public static Integer getMaxCharacterLength(String table, String column) throws Exception {
-        String sql = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" + getDatabaseName() + "' AND TABLE_NAME = '" + table + "' AND COLUMN_NAME='"+ column +"'";
+        String sql = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" + getDatabaseName() + "' AND TABLE_NAME = '" + table + "' AND COLUMN_NAME='" + column + "'";
         return getIntNative(sql);
     }
 
     protected static List<String> dynamicTablesWhitelist = Arrays.asList("edition", "einzelbeleg", "gast", "handschrift", "mgh_lemma", "namenkommentar", "person", "quelle", "selektion", "ueberlieferung", "urkunde");
 
     /**
-     * This function is used to verify that a table name given by e.g.
-     * an AJAX call is not abused for SQL injection.
+     * This function is used to verify that a table name given by e.g. an AJAX
+     * call is not abused for SQL injection.
      *
-     * 1) A table name must only consist of allowed characters
-     *    (e.g. no spaces or colons) to prevent various attempts,
-     *    e.g. by using UNION SELECT or splitting into multiple statements.
-     * 2) A table name must start with a prefix (or exactly match
-     *    an allowed table in a whitelist) to make sure it is not used
-     *    to e.g. select user-related information from the "benutzer" table.
+     * 1) A table name must only consist of allowed characters (e.g. no spaces
+     * or colons) to prevent various attempts, e.g. by using UNION SELECT or
+     * splitting into multiple statements. 2) A table name must start with a
+     * prefix (or exactly match an allowed table in a whitelist) to make sure it
+     * is not used to e.g. select user-related information from the "benutzer"
+     * table.
      */
     public static void verifyDynamicTable(String table, String prefix) throws SqlInjectionException {
         // This function is used to verify that a string only contains characters
@@ -409,9 +451,8 @@ public class AbstractBase {
     }
 
     /**
-     * Similar to verifyDynamicTable, but here we only check
-     * that only valid characters are used to prevent
-     * UNION SELECT or multi-query attacks.
+     * Similar to verifyDynamicTable, but here we only check that only valid
+     * characters are used to prevent UNION SELECT or multi-query attacks.
      */
     public static void verifyDynamicColumn(String column) throws SqlInjectionException {
         if (!column.matches("^[a-zA-Z0-9_]+$")) {

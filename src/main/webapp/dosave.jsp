@@ -5,8 +5,7 @@
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-<%
-    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
+<%    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
         int id = -1;
         String form = request.getParameter("form");
         try {
@@ -76,10 +75,14 @@
                         } else {
                             // Wenn etwas eingetragen ist, in die Datenbank einfügen
                             if (formularAttribut != null && request.getParameter(datenfeld + "[" + i + "]") != null && !request.getParameter(datenfeld + "[" + i + "]").equals("") && !request.getParameter(datenfeld + "[" + i + "]").equals("-1")) {
-                                String sql = "INSERT INTO " + zieltabelle
-                                        + " (" + formularAttribut + ", " + zielAttribut + ")"
-                                        + " VALUES (" + id + ", \"" + DBtoDB(request.getParameter(datenfeld + "[" + i + "]")) + "\" );";
-                                SaveHelper.insertOrUpdateSql(sql);
+
+                                String tempValue = request.getParameter(datenfeld + "[" + i + "]");
+
+                                Map<String, String> columnsAndValues = new HashMap<>();
+                                columnsAndValues.put(formularAttribut,String.valueOf(id));
+                                columnsAndValues.put(zielAttribut, tempValue);
+
+                                SaveHelper.insert(zieltabelle, columnsAndValues);
                             }
                         }
                     }
@@ -88,7 +91,7 @@
             // checkbox
             else if (feldtyp != null && feldtyp.equals("checkbox") && zielAttribut != null && zieltabelle != null) {
                 // KEIN ARRAY
-               if (!isArray) {
+                if (!isArray) {
                     String checkbox = "false";
                     Map<String, String> condMap = new HashMap<>();
                     condMap.put("ID", String.valueOf(id));
@@ -97,7 +100,7 @@
 
                     if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
                         AbstractBase.update(zieltabelle, zielAttribut, "1", condMap);
-                    }else{
+                    } else {
                         AbstractBase.update(zieltabelle, zielAttribut, "0", condMap);
                     }
                 } // ENDE kein Array
@@ -158,39 +161,38 @@
                     }
 
                     if (changed) {
-                        String sql = "UPDATE " + zieltabelle + " SET ";
-                        boolean sqlValid = false;
+                        Map<String, String> attributesAndValuesMap = new HashMap<>();
 
                         for (int i = 0; i < zielattributArray.length; i++) {
                             String fieldValue = request.getParameter(combinedFeldnamenArray[i]);
                             String genauigkeitValue = request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]);
 
-                            if (i > 0 && (fieldValue != null || genauigkeitValue != null)) {
-                                sql += ", ";
-                            }
-
                             // Überprüfen, ob das Feld leer ist und den Wert entsprechend festlegen
                             if (fieldValue != null && !fieldValue.isEmpty()) {
-                                sql += zielattributArray[i] + "=\"" + fieldValue + "\", ";
+                                attributesAndValuesMap.put(zielattributArray[i], fieldValue);
                             } else {
-                                sql += zielattributArray[i] + "=NULL, ";
+                                attributesAndValuesMap.put(zielattributArray[i], null);
                             }
 
                             // Überprüfen, ob Genauigkeitsfeld leer ist und den Wert entsprechend festlegen
                             if (genauigkeitValue != null && !genauigkeitValue.isEmpty()) {
-                                sql += "Genauigkeit" + zielattributArray[i] + "=\"" + genauigkeitValue + "\"";
+                                attributesAndValuesMap.put("Genauigkeit" + zielattributArray[i], genauigkeitValue);
                             } else {
-                                sql += "Genauigkeit" + zielattributArray[i] + "=NULL";
+                                attributesAndValuesMap.put("Genauigkeit" + zielattributArray[i], "-1");
                             }
-
-                            sqlValid = true;
                         }
 
-                        sql += " WHERE ID='" + id + "';";
+                        Map<String, String> condMap = new HashMap<>();
+                        condMap.put("ID", String.valueOf(id));
 
-                        if (sqlValid) {
-                            SaveHelper.insertOrUpdateSql(sql);
-                        }
+                       // From the table einzelbeleg and quelle the only exceptions are e.g. QuelleBisJahrhundert = "9Jh2"
+                        List<String> stringColumns = new ArrayList<>();
+                        stringColumns.add("QuelleBisJahrhundert");
+                        stringColumns.add("QuelleVonJahrhundert");
+                        stringColumns.add("VonJahrhundert");
+                        stringColumns.add("BisJahrhundert");
+
+                        AbstractBase.update(zieltabelle, attributesAndValuesMap, condMap, stringColumns);
                     }
                 }
             } // ENDE Datum
@@ -232,7 +234,7 @@
                     String value = "";
                     if (datenfeld.equals("BemerkungGruppe")) {
                         field = "GruppeID";
-                        value = String.valueOf( session.getAttribute("GruppeID"));
+                        value = String.valueOf(session.getAttribute("GruppeID"));
                     } else if (datenfeld.equals("BemerkungPrivat")) {
                         field = "BenutzerID";
                         value = String.valueOf(session.getAttribute("BenutzerID"));
@@ -405,11 +407,20 @@
                                                 || combinedFeldtypenArray[j].equals("select")
                                                 || combinedFeldtypenArray[j].equals("sqlselect")
                                                 || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
-                                            sql += ", " + zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + "'";
+
+                                            String parameterValue = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]");
+                                            if (parameterValue != null) {
+                                                if (parameterValue.equals("NULL")) {
+                                                    sql += ", " + zielattributArray[j] + " = NULL";
+                                                } else {
+                                                    sql += ", " + zielattributArray[j] + " = '" + DBtoDB(parameterValue) + "'";
+                                                }
+                                            }
                                         } else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                                            sql += ", " + zielattributArray[j] + " = '"
-                                                    + (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j]
-                                                    + "[" + i + "]").equals("on") ? "1" : "0") + "'";
+                                            String checkboxValue = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]");
+                                            if (checkboxValue != null) {
+                                                sql += ", " + zielattributArray[j] + " = '" + (checkboxValue.equals("on") ? "1" : "0") + "'";
+                                            }
                                         }
                                     }
                                 }
