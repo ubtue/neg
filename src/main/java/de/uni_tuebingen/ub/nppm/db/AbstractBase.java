@@ -263,20 +263,13 @@ public class AbstractBase {
     }
 
     //Hilsfunktion zum setzen der Parameter
-    protected static void registerAndConditions(Map<String, String> andConditions, NativeQuery query) {
-        for (Map.Entry<String, String> andCondition : andConditions.entrySet()) {
-
-            if (andCondition.getKey().equals("QuelleBisJahrhundert") || andCondition.getKey().equals("QuelleVonJahrhundert") || andCondition.getKey().equals("VonJahrhundert") || andCondition.getKey().equals("BisJahrhundert")) {
-                query.setParameter(andCondition.getKey(), andCondition.getValue(), StringType.INSTANCE);
-            } else {
-                query.setParameter(andCondition.getKey(), andCondition.getValue());
-            }
-        }
+    protected static void registerParameters(Map<String, String> andConditions, NativeQuery query) {
+        registerParameters(andConditions, query, null);
     }
 
-    protected static void registerAndConditions(Map<String, String> conditions, NativeQuery query, List<String> specialColumns) {
+    protected static void registerParameters(Map<String, String> conditions, NativeQuery query, List<String> stringColumns) {
         for (Map.Entry<String, String> andCondition : conditions.entrySet()) {
-            if (specialColumns != null && specialColumns.contains(andCondition.getKey())) {
+            if (stringColumns != null && stringColumns.contains(andCondition.getKey())) {
                 query.setParameter(andCondition.getKey(), andCondition.getValue(), StringType.INSTANCE);
             } else {
                 query.setParameter(andCondition.getKey(), andCondition.getValue());
@@ -304,8 +297,8 @@ public class AbstractBase {
 
             NativeQuery query = session.createNativeQuery(sql);
 
-            registerAndConditions(attributesAndValues, query, specialColumns);
-            registerAndConditions(andConditions, query);
+            registerParameters(attributesAndValues, query, specialColumns);
+            registerParameters(andConditions, query);
 
             query.executeUpdate();
             session.getTransaction().commit();
@@ -320,7 +313,7 @@ public class AbstractBase {
 
             NativeQuery query = session.createNativeQuery(sql);
             query.setParameter("value", value);
-            registerAndConditions(andConditions, query);
+            registerParameters(andConditions, query);
 
             query.executeUpdate();
             session.getTransaction().commit();

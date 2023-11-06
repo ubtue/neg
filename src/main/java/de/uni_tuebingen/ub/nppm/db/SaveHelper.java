@@ -33,7 +33,7 @@ public class SaveHelper extends AbstractBase {
             sql += buildAndConditions(andConditions); // Bedingungen hinzufügen
 
             NativeQuery query = session.createNativeQuery(sql);
-            registerAndConditions(andConditions, query);
+            registerParameters(andConditions, query);
 
             if (attribute.equals("*")) {
                 List<Object[]> queryResults = query.getResultList(); // Ergebnisse aus der Datenbank
@@ -130,7 +130,7 @@ public class SaveHelper extends AbstractBase {
             sql += buildAndConditions(andConditions);
 
             NativeQuery query = session.createNativeQuery(sql);
-            registerAndConditions(andConditions, query);
+            registerParameters(andConditions, query);
 
             query.executeUpdate();
             session.getTransaction().commit();
