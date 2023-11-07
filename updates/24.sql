@@ -1,21 +1,7 @@
-CREATE TABLE IF NOT EXISTS `neg`.`selektion_kontext` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  `Bezeichnung` VARCHAR(50) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci' NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE (`Bezeichnung`)
-  )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-/*Insert a default value*/
-INSERT INTO `neg`.`selektion_kontext` (ID,Bezeichnung) VALUES (-1,'-');
-
-/*Create the datamapping for the kontext attribute of the einzelbeleg form*/
-INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, ZielTabelle, ZielAttribut, Auswahlherkunft, Seite, gb_beschriftung, fr_beschriftung, la_beschriftung)
-VALUES ("einzelbeleg", "KontextSelektion", "Kontext Klassifikation", "select", 0, "einzelbeleg", "KontextID", "selektion_kontext", "einzelbeleg", "Context Classification", "Classification Du Contexte", "Context Genus");
-
-ALTER TABLE einzelbeleg ADD KontextID INT DEFAULT -1;
-
-/*Rename existing kontext Beschriftung*/
-UPDATE datenbank_mapping SET de_Beschriftung = 'Kontext Beschreibung', gb_beschriftung = 'Context Description', fr_beschriftung = 'Description Du Contexte', la_beschriftung = 'Contextus Description' WHERE Datenfeld = 'Kontext' AND Feldtyp = 'textarea' AND Formular = 'einzelbeleg';
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Auswahlherkunft`, `Seite`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('handschrift', 'Bearbeitungsstatus', 'Bearbeitungsstatus', 'select', '0', 'handschrift_ueberlieferung', 'BearbeitungsstatusID', 'selektion_bearbeitungsstatus', 'handschrift', 'processing status', 'statut de traitement', 'status tractandi');
+								
+								
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Auswahlherkunft`, `Seite`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('edition', 'Bearbeitungsstatus', 'Bearbeitungsstatus', 'select', '0', 'edition', 'BearbeitungsstatusID', 'selektion_bearbeitungsstatus', 'edition', 'processing status', 'statut de traitement', 'status tractandi');								
+								
+								
+UPDATE namenkommentar SET Dateiname = null WHERE Dateiname = '';

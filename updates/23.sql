@@ -16,3 +16,5 @@ INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Ar
 VALUES ("einzelbeleg", "KritikSelektion", "Textkritische Anmerkung", "select", 0, "einzelbeleg", "KritikID", "selektion_kritik", "einzelbeleg", "Text-critical note", "Note critique sur le texte", "Nota cum textu critico");
 
 ALTER TABLE einzelbeleg ADD KritikID INT DEFAULT -1;
+
+ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_KritikID FOREIGN KEY (KritikID) REFERENCES selektion_kritik(ID);
