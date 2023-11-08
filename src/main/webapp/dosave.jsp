@@ -254,10 +254,8 @@
             else if (feldtyp != null && feldtyp.equals("nkeditor") && zieltabelle != null) {
                 String temp_datenfeld = request.getParameter(datenfeld);
 
-                if (temp_datenfeld != null) {
-                    if (temp_datenfeld.equals("on")) {
+                if (temp_datenfeld != null && temp_datenfeld.equals("on")) {
 
-                        if (zieltabelle.equals("namenkommentar_bearbeiter")) {
                             Date d = new Date();
                             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String formattedDate = sf.format(d);
@@ -267,19 +265,6 @@
                             valueMap.put("BenutzerID", String.valueOf(session.getAttribute("BenutzerID")));
                             valueMap.put("Zeitstempel", formattedDate);
                             SaveHelper.insert(zieltabelle, valueMap);
-
-                        } else if (zieltabelle.equals("namenkommentar_korrektor")) {
-                            Date d = new Date();
-                            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            String formattedDate = sf.format(d);
-
-                            Map<String, String> valueMap = new HashMap<>();
-                            valueMap.put("NamenkommentarID", String.valueOf(id));
-                            valueMap.put("BenutzerID", String.valueOf(session.getAttribute("BenutzerID")));
-                            valueMap.put("Zeitstempel", formattedDate);
-                            SaveHelper.insert(zieltabelle, valueMap);
-                        }
-                    }
                 }
             } // ENDE NamenkommentarEditor
             // combined
