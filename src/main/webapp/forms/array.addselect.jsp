@@ -29,7 +29,7 @@
                 String value2_Bezeichnung = columns2[1].toString();
 
                 if (!isReadOnly) {
-                    out.println("<option value=\"" + value2_id + "\" " + (value2_id.equals(selected) ? "selected" : "") + ">"+ DBtoHTML(value2_Bezeichnung) + "</option>");
+                    out.println("<option value=\"" + value2_id + "\" " + (value2_id.equals(selected) ? "selected" : "") + ">" + DBtoHTML(value2_Bezeichnung) + "</option>");
                 } else if (value2_id.equals(selected)) {
                     out.println(DBtoHTML(value2_Bezeichnung));
                 }
@@ -48,12 +48,31 @@
             }
             out.println("</td>");
 
-            if (!isReadOnly) {
-                out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
-            }
             out.println("</tr>");
             i++;
         }
+
+        //Create new drop down list
+        out.println("<tr>");
+        out.println("<td>");
+        out.println("<select name=\"" + datenfeld + "[" + i + "]\" id=\"" + datenfeld + "[" + i + "]\">");
+        out.println("<option value=\"-1\"> - </option>");
+
+        List<Object[]> rowlist3 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
+
+        for (Object[] columns2 : rowlist3) {
+            String value2_id = columns2[0].toString();
+            String value2_Bezeichnung = columns2[1].toString();
+
+            if (!isReadOnly) {
+                out.print("<option value=\"" + value2_id + "\">" + DBtoHTML(value2_Bezeichnung) + "</option>");
+            }
+        }
+
+        out.println("</select>");
+        out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
+        out.println("</td>");
+        out.println("</tr>");
         out.println("</table>");
     }
 %>
