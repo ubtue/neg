@@ -79,7 +79,7 @@
                                 String tempValue = request.getParameter(datenfeld + "[" + i + "]");
 
                                 Map<String, String> columnsAndValues = new HashMap<>();
-                                columnsAndValues.put(formularAttribut,String.valueOf(id));
+                                columnsAndValues.put(formularAttribut, String.valueOf(id));
                                 columnsAndValues.put(zielAttribut, tempValue);
 
                                 SaveHelper.insert(zieltabelle, columnsAndValues);
@@ -185,7 +185,7 @@
                         Map<String, String> condMap = new HashMap<>();
                         condMap.put("ID", String.valueOf(id));
 
-                       // From the table einzelbeleg and quelle the only exceptions are e.g. QuelleBisJahrhundert = "9Jh2"
+                        // From the table einzelbeleg and quelle the only exceptions are e.g. QuelleBisJahrhundert = "9Jh2"
                         List<String> stringColumns = new ArrayList<>();
                         stringColumns.add("QuelleBisJahrhundert");
                         stringColumns.add("QuelleVonJahrhundert");
@@ -251,13 +251,20 @@
                 } // ENDE Datensatz neu
             } // ENDE Bemerkungsfeld
             // Namenkommentar Editor
-            else if (feldtyp != null && feldtyp.equals("nkeditor") && zielAttribut != null && zieltabelle != null) {
-                if (request.getParameter(datenfeld) != null && request.getParameter(datenfeld).equals("on")) {
-                    Date d = new Date();
-                    SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
-                    String sql = "INSERT INTO " + zieltabelle + " (" + (zieltabelle.equals("namenkommentar") ? "NamenkommentarID" : "MGHLemmaID") + ", BenutzerID, Zeitstempel) VALUES ";
-                    sql += "(" + id + ", " + session.getAttribute("BenutzerID") + ", " + sf.format(d) + ")";
-                    SaveHelper.insertOrUpdateSql(sql);
+            else if (feldtyp != null && feldtyp.equals("nkeditor") && zieltabelle != null) {
+                String temp_datenfeld = request.getParameter(datenfeld);
+
+                if (temp_datenfeld != null && temp_datenfeld.equals("on")) {
+
+                            Date d = new Date();
+                            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String formattedDate = sf.format(d);
+
+                            Map<String, String> valueMap = new HashMap<>();
+                            valueMap.put("NamenkommentarID", String.valueOf(id));
+                            valueMap.put("BenutzerID", String.valueOf(session.getAttribute("BenutzerID")));
+                            valueMap.put("Zeitstempel", formattedDate);
+                            SaveHelper.insert(zieltabelle, valueMap);
                 }
             } // ENDE NamenkommentarEditor
             // combined
