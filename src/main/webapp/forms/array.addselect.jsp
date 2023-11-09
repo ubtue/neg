@@ -20,7 +20,6 @@
             if (!isReadOnly) {
                 out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + value_id + "\">");
                 out.println("<select name=\"" + datenfeld + "[" + i + "]\" id=\"" + datenfeld + "[" + i + "]\">");
-                out.println("<option value=\"-1\">nicht bearbeitet</option>");
             }
 
             List<Object[]> rowlist2 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
@@ -56,7 +55,6 @@
         out.println("<tr>");
         out.println("<td>");
         out.println("<select name=\"" + datenfeld + "[" + i + "]\" id=\"" + datenfeld + "[" + i + "]\">");
-        out.println("<option value=\"-1\"> - </option>");
 
         List<Object[]> rowlist3 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
 

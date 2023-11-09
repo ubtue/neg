@@ -1,5 +1,1 @@
-SET FOREIGN_KEY_CHECKS = 0;
-
-DELETE FROM selektion_areal where ID = -1;
-
-SET FOREIGN_KEY_CHECKS = 1;
+UPDATE selektion_areal SET Bezeichnung = 'D: Zarten, Baden-Württemberg, Landkr. Breisgau-Hochschwarzwald, Gem. Kirchzarten' WHERE ID = 2841;
