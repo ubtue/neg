@@ -15,3 +15,5 @@ ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_GenauigkeitQuelleBisTag FOREI
 ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_GenauigkeitQuelleBisMonat FOREIGN KEY (GenauigkeitQuelleBisMonat) REFERENCES selektion_datgenauigkeit(ID);
 ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_GenauigkeitQuelleBisJahr FOREIGN KEY (GenauigkeitQuelleBisJahr) REFERENCES selektion_datgenauigkeit(ID);
 ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_GenauigkeitQuelleBisJahrhundert FOREIGN KEY (GenauigkeitQuelleBisJahrhundert) REFERENCES selektion_datgenauigkeit(ID);
+
+ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_GeschlechtID FOREIGN KEY (GeschlechtID) REFERENCES selektion_geschlecht(ID);
