@@ -19,3 +19,6 @@ ALTER TABLE einzelbeleg ADD KritikID INT DEFAULT -1;
 
 /*add to administration menu*/
 INSERT INTO datenbank_selektion (selektion, tabelle, spalte) VALUES ("selektion_kritik", "einzelbeleg", "KritikID");
+
+ALTER TABLE einzelbeleg ADD CONSTRAINT einzelbeleg_KritikID FOREIGN KEY (KritikID) REFERENCES selektion_kritik(ID);
+

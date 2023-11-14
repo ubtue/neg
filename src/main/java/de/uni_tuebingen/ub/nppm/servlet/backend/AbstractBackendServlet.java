@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.servlet.backend;
 
+import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.servlet.AbstractServlet;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
@@ -26,12 +27,24 @@ public abstract class AbstractBackendServlet extends AbstractServlet {
         return true;
     }
 
+    protected boolean isAdminRequired() {
+        return false;
+    }
+
     @Override
     protected void initRequest(HttpServletRequest request) throws Exception {
         super.initRequest(request);
         benutzer = AuthHelper.getBenutzer(request);
-        if (isLoginRequired() && benutzer == null || benutzer.isGast()) {
+
+        if (isLoginRequired() && (benutzer == null || benutzer.isGast())) {
             throw new BenutzerNotSetException();
+        }
+
+        // Überprüfen, ob die Seite eine Admin-Seite ist
+        if (isAdminRequired()) {
+            if (benutzer == null || !benutzer.isAdmin()) {
+                throw new BenutzerNotAdminException();
+            }
         }
     }
 

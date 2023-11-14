@@ -4,11 +4,16 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AdministrationAuswahlServlet extends AbstractBackendServlet { 
-    
+public class AdministrationAuswahlServlet extends AbstractBackendServlet {
+
     @Override
     protected String getTitle() {
         return "administration";
+    }
+
+    @Override
+    protected boolean isAdminRequired() {
+        return true;
     }
 
     @Override
