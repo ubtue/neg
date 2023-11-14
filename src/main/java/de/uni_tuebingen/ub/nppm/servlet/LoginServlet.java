@@ -21,41 +21,56 @@ public class LoginServlet extends HttpServlet {
 
         if (login == null || login.isEmpty() || !BenutzerDB.hasLogin(login)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Benutzer existiert nicht");
+            return;
+        }
+
+
+        Benutzer benutzer = BenutzerDB.getByLogin(login);
+
+        if (!benutzer.isAktiv()) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Zugriff nicht erlaubt, Ihr Administrator muss Sie auf aktiv schalten !");
+            return;
+        }
+
+        if (benutzer == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Zugriff nicht erlaubt");
+            return;
+        }
+
+        String saltString = benutzer.getSalt();
+        if (saltString == null || saltString.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Die Sicherheit der Datenbank wurde verbessert. Das Passwort muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");
+            return;
+        }
+
+        byte[] saltBytes = SaltHash.Base64StringToBytes(saltString);
+        String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
+        if (!passwordSalted.equals(benutzer.getPassword())) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ungültiges Passwort.");
+            return;
+        }
+
+        // Falls Session vorhanden, löschen
+        HttpSession session = request.getSession();
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // Neue Session erzeugen
+        session = request.getSession(true);
+        session.setAttribute("BenutzerID", benutzer.getID());
+        session.setAttribute("GruppeID", benutzer.getGruppe().getID());
+        session.setAttribute("Benutzername", benutzer.getLogin());
+        session.setAttribute("Administrator", benutzer.isAdmin());
+        session.setAttribute("Gast", benutzer.isGast());
+        session.setAttribute("Sprache", benutzer.getSprache());
+        session.setMaxInactiveInterval(AuthHelper.getSessionTimeout());
+
+        // Weiterleiten
+        if (benutzer.isGast()) {
+            response.sendRedirect("gast/startseite");
         } else {
-            Benutzer benutzer = BenutzerDB.getByLoginAktiv(login);
-            String saltString = benutzer.getSalt();
-            if (saltString == null || saltString.isEmpty()) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Die Sicherheit der Datenbank wurde verbessert. Das Password muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");
-            } else {
-                byte[] saltBytes = SaltHash.Base64StringToBytes(saltString);
-                String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
-                if (!passwordSalted.equals(benutzer.getPassword())) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ungültiges Passwort.");
-                } else {
-                    // Falls Session vorhanden, löschen
-                    HttpSession session = request.getSession();
-                    if (session != null) {
-                        session.invalidate();
-                    }
-
-                    // Neue Session erzeugen
-                    session = request.getSession(true);
-                    session.setAttribute("BenutzerID", benutzer.getID());
-                    session.setAttribute("GruppeID", benutzer.getGruppe().getID());
-                    session.setAttribute("Benutzername", benutzer.getLogin());
-                    session.setAttribute("Administrator", benutzer.isAdmin());
-                    session.setAttribute("Gast", benutzer.isGast());
-                    session.setAttribute("Sprache", benutzer.getSprache());
-                    session.setMaxInactiveInterval(AuthHelper.getSessionTimeout());
-
-                    // Weiterleiten
-                    if ((Boolean) session.getAttribute("Gast")) {
-                        response.sendRedirect("gast/startseite");
-                    } else {
-                        response.sendRedirect("einzelbeleg");
-                    }
-                }
-            }
+            response.sendRedirect("einzelbeleg");
         }
     }
 
@@ -63,8 +78,6 @@ public class LoginServlet extends HttpServlet {
         try {
             if (AuthHelper.isBenutzerLogin(request)) {
                 response.sendRedirect("einzelbeleg");
-            } else if (AuthHelper.isGastLogin(request)) {
-                response.sendRedirect("gast/startseite");
             } else if (request.getParameter("action") != null) {
                 if (request.getParameter("action").equals("login")) {
                     processLoginAction(request, response);

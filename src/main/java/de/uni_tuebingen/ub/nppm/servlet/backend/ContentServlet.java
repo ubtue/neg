@@ -2,7 +2,6 @@ package de.uni_tuebingen.ub.nppm.servlet.backend;
 
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
-import de.uni_tuebingen.ub.nppm.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,50 +22,65 @@ public class ContentServlet extends AbstractBackendServlet {
     protected Benutzer benutzer;
 
     @Override
+    protected boolean isAdminRequired() {
+        return true;
+    }
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PrintWriter out = response.getWriter();
 
-        // show TinyMCE
-        if (request.getParameter("loadFile") != null) {
-            RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
-            rd.include(request, response);
-        } else {
-        //show fileManagement
+            // show TinyMCE
+            if (request.getParameter("loadFile") != null) {
+                RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
+                rd.include(request, response);
+            } else {
+                //show fileManagement
+                out.println("<div id=\"titel\">");
+                out.println("  <table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
+                out.println("    <tr>");
+                out.println("      <td align=\"left\">");
+                out.println("        <h1>Inhalt bearbeiten");
+                out.println("        </h1>");
+                out.println("      </td>");
+                out.println("    </tr>");
+                out.println("  </table>");
+                out.println("</div>");
+                out.println("<div id=\"form\">");
+                out.println("<h2>Html Dateien & Bilder verwalten</h2>");
+                out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie eine Datei löschen, dann ist auch jede Verknüpfung im Programm gelöscht, auch wenn Sie </p>");
+                out.println("<p style=\"line-height: 0.2; color: red;\">die Datei mit gleichem Namen hochladen. </p>");
+                out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie aber Ersetzen wählen, dann bleiben die Verknüpfungen im Programm bestehen.</p>");
+                // Actions:
+                String fileAccess = request.getParameter("fileAccess");
+                if (fileAccess != null) {
 
-            out.println("<h2>Html Dateien & Bilder verwalten</h2>");
-            out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie eine Datei löschen, dann ist auch jede Verknüpfung im Programm gelöscht, auch wenn Sie </p>");
-            out.println("<p style=\"line-height: 0.2; color: red;\">die Datei mit gleichem Namen hochladen. </p>");
-            out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie aber Ersetzen wählen, dann bleiben die Verknüpfungen im Programm bestehen.</p>");
-            // Actions:
-            String fileAccess = request.getParameter("fileAccess");
-            if (fileAccess != null) {
+                    //Action (Delete)
+                    if (fileAccess.equals("fileDelete")) {
+                        if (request.getParameter("id") != null) {
+                            Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                            out.println("Datei " + content.getName() + " wurde gelöscht");
+                            deleteFile(request.getParameter("id"));
 
-                //Action (Delete)
-                if (fileAccess.equals("fileDelete")) {
-                    if (request.getParameter("id") != null) {
-                        Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
-                        out.println("Datei " + content.getName() +  " wurde gelöscht");
-                        deleteFile(request.getParameter("id"));
+                        } else {
+                            out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht gelöscht werden");
+                        }
+                        // Action (upload OR replace/update)
+                    } else if (fileAccess.equals("fileUpload")) {
+                        uploadFile(request, response);
+                    } else if (fileAccess.equals("fileReplace")) {
 
-                    } else {
-                        out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht gelöscht werden");
-                    }
-                    // Action (upload OR replace/update)
-                } else if (fileAccess.equals("fileUpload")) {
-                    uploadFile(request, response);
-                } else if(fileAccess.equals("fileReplace")){
-
-                    if (request.getParameter("id") != null) {
-                        replaceFile(request, response, request.getParameter("id"));
-                    } else {
-                        out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht ersetzt werden");
+                        if (request.getParameter("id") != null) {
+                            replaceFile(request, response, request.getParameter("id"));
+                        } else {
+                            out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht ersetzt werden");
+                        }
                     }
                 }
+                // show list (e.g. help, name comment or blank page)
+                RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
+                rd.include(request, response);
             }
-            // show list (e.g. help, name comment or blank page)
-            RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
-            rd.include(request, response);
-        }
     }//end function
 
     public void deleteFile(String fileId) throws IOException, Exception {
@@ -105,7 +119,7 @@ public class ContentServlet extends AbstractBackendServlet {
             if (!item.isFormField()) {
 
                 if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("")) {
-                     out.println("<span style=\" color: red;\" >Error: </span>Sie haben keine Datei ausgew&auml;hlt!");
+                    out.println("<span style=\" color: red;\" >Error: </span>Sie haben keine Datei ausgew&auml;hlt!");
                 } else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
                         || item.getContentType().startsWith("image") || item.getContentType().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
                         || item.getContentType().startsWith("application/msword")) {
@@ -114,11 +128,11 @@ public class ContentServlet extends AbstractBackendServlet {
 
                     boolean fileExists = ContentDB.searchName(fileName);
                     boolean sameFileName = false;
-                     Content content = ContentDB.getById(Integer.parseInt( request.getParameter("id")));
-                     if(fileName.equals(content.getName()))  //The file name to be uploaded should match the one in the database
-                     {
-                         sameFileName = true;
-                     }
+                    Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                    if (fileName.equals(content.getName())) //The file name to be uploaded should match the one in the database
+                    {
+                        sameFileName = true;
+                    }
 
                     String pathname = writeItemToTempFile(item);
 
@@ -178,7 +192,7 @@ public class ContentServlet extends AbstractBackendServlet {
                     if (fileExists == true) {
 
                         //search file - Context of existing file
-                         String existingFileContext = ContentDB.getByName(fileName).getContext().toString();
+                        String existingFileContext = ContentDB.getByName(fileName).getContext().toString();
 
                         out.println("<span style=\" color: red;\" >Error: </span>Datei " + fileName + " existiert bereits im Context: " + existingFileContext);
                         out.println("<br>");
@@ -200,37 +214,17 @@ public class ContentServlet extends AbstractBackendServlet {
         }
     }
 
-
     protected String writeItemToTempFile(FileItemStream item) throws FileNotFoundException, IOException {
         String tmpDir = System.getProperty("java.io.tmpdir");
         String pathname = tmpDir + "/" + item.getName();
 
         InputStream stream = item.openStream();
-        try (FileOutputStream file = new FileOutputStream(new File(pathname))) {
+        try ( FileOutputStream file = new FileOutputStream(new File(pathname))) {
             for (int data = stream.read(); data >= 0; data = stream.read()) {
                 file.write(data);
             }
         }
-
         return pathname;
-    }
-
-    protected void initRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Language.setLanguage(request);
-        benutzer = AuthHelper.getBenutzer(request);
-        if (isLoginRequired() && benutzer == null || benutzer.isGast()) {
-            RequestDispatcher rd = request.getRequestDispatcher("logout.jsp");
-            rd.forward(request, response);
-        }
-    }
-
-
-    @Override
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        initRequest(request, response);
-        response.setContentType("text/html; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        generatePage(request, response);
     }
 
     @Override

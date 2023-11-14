@@ -110,6 +110,28 @@
       </td>
     </tr>
     <tr>
+      <th><% Language.printDatafield(out, session, "einzelbeleg", "KontextSelektion"); %></th>
+      <td>
+        <jsp:include page="../inc.erzeugeFormular.jsp">
+          <jsp:param name="ID" value="<%= id %>"/>
+          <jsp:param name="Formular" value="einzelbeleg"/>
+          <jsp:param name="Datenfeld" value="KontextSelektion"/>
+          <jsp:param name="Readonly" value="yes"/>
+        </jsp:include>
+      </td>
+    </tr>
+    <tr>
+        <th><% Language.printDatafield(out, session, "einzelbeleg", "KritikSelektion"); %></th>
+        <td>
+        <jsp:include page="../inc.erzeugeFormular.jsp">
+          <jsp:param name="ID" value="<%= id %>"/>
+          <jsp:param name="Formular" value="einzelbeleg"/>
+          <jsp:param name="Datenfeld" value="KritikSelektion"/>
+          <jsp:param name="Readonly" value="yes"/>
+        </jsp:include>
+        </td>
+    </tr>
+    <tr>
       <th><% Language.printDatafield(out, session, "einzelbeleg", "LebendVerstorben"); %></th>
       <td>
         <jsp:include page="../inc.erzeugeFormular.jsp">
