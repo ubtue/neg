@@ -53,7 +53,12 @@
                 contextEnum = Content.Context.HILFE;
             } else if (context.equals("NAMENKOMMENTAR")) {
                 contextEnum = Content.Context.NAMENKOMMENTAR;
+            }else if (context.equals("QUELLENKOMMENTAR")) {
+                contextEnum = Content.Context.QUELLENKOMMENTAR;
+            }else if (context.equals("UEBERLIEFERUNGSKOMMENTAR")) {
+                contextEnum = Content.Context.UEBERLIEFERUNGSKOMMENTAR;
             }
+
         %>
         <br>
         <form method="get">
@@ -64,6 +69,10 @@
                     } %>>Hilfe</option>
                         <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR)
                         out.print("selected"); %>>Namenkommentar</option>
+                        <option value="QUELLENKOMMENTAR" <% if (contextEnum == Content.Context.QUELLENKOMMENTAR)
+                        out.print("selected"); %>>Quellenkommentar</option>
+                         <option value="UEBERLIEFERUNGSKOMMENTAR" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR)
+                        out.print("selected"); %>>Überlieferungskommentar</option>
             </select>
         </form>
 
