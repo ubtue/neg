@@ -254,7 +254,7 @@
 		</tr>
 		<tr>
 			<th width="200" valign="top">
-                        <% Language.printDatafield(out,session, formular,"MGHLemma");%>
+                        <% Language.printDatafield(out,session, formular,"KommentarEthnie");%>
                         </th>
 			<td><jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
