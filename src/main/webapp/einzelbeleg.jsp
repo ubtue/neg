@@ -88,6 +88,45 @@
 									<jsp:param name="title" value="einzelbeleg" />
 								</jsp:include></span></td>
 					</tr>
+                                        <tr>
+						<td width="200">
+                                                    <% Language.printDatafield(out,session, formular,"PalAbgrenzung");%>
+                                                </td>
+						<td width="450">
+                                                        <jsp:include page="inc.erzeugeFormular.jsp">
+								<jsp:param name="ID" value="<%=id%>" />
+								<jsp:param name="Formular" value="einzelbeleg" />
+								<jsp:param name="Datenfeld" value="PalAbgrenzung" />
+								<jsp:param name="size" value="5" />
+							</jsp:include>
+                                                </td>
+					</tr>
+                                        <tr>
+						<td width="200">
+                                                    <% Language.printDatafield(out,session, formular,"InhAbgrenzung");%>
+                                                </td>
+						<td width="450">
+                                                        <jsp:include page="inc.erzeugeFormular.jsp">
+								<jsp:param name="ID" value="<%=id%>" />
+								<jsp:param name="Formular" value="einzelbeleg" />
+								<jsp:param name="Datenfeld" value="InhAbgrenzung" />
+								<jsp:param name="size" value="5" />
+							</jsp:include>
+                                                </td>
+					</tr>
+                                        <tr>
+						<td width="200">
+                                                    <% Language.printDatafield(out,session, formular,"NrInStrukt");%>
+                                                </td>
+						<td width="450">
+                                                        <jsp:include page="inc.erzeugeFormular.jsp">
+								<jsp:param name="ID" value="<%=id%>" />
+								<jsp:param name="Formular" value="einzelbeleg" />
+								<jsp:param name="Datenfeld" value="NrInStrukt" />
+								<jsp:param name="size" value="5" />
+							</jsp:include>
+                                                </td>
+					</tr>
 					<tr>
 						<td width="200" valign="top">
                                                     <% Language.printDatafield(out,session, formular,"Lemma");%>
@@ -143,6 +182,58 @@
                                                 </jsp:include>
                                             </td>
                                         </tr>
+				</tbody>
+			</table>
+                        <br>
+                        <!-- Raster Group (same style as date group)-->
+                        <table class="date">
+				<tbody>
+					<tr>
+						<th class="date" colspan="2">
+                                                    <% Language.printTextfield(out, session, formular, "Grid"); %>
+                                                </th>
+					</tr>
+                                        <tr>
+						<td width="200">
+                                                    <% Language.printDatafield(out,session, formular,"Seite");%>
+                                                </td>
+						<td width="450">
+                                                        <jsp:include page="inc.erzeugeFormular.jsp">
+								<jsp:param name="ID" value="<%=id%>" />
+								<jsp:param name="Formular" value="einzelbeleg" />
+								<jsp:param name="Datenfeld" value="Seite" />
+								<jsp:param name="size" value="5" />
+							</jsp:include>
+                                                </td>
+					</tr>
+                                        
+                                        <tr>
+						<td width="200">
+                                                    <% Language.printDatafield(out,session, formular,"Raster");%>
+                                                </td>
+						<td width="450">
+                                                        <jsp:include page="inc.erzeugeFormular.jsp">
+								<jsp:param name="ID" value="<%=id%>" />
+								<jsp:param name="Formular" value="einzelbeleg" />
+								<jsp:param name="Datenfeld" value="Raster" />
+								<jsp:param name="size" value="5" />
+							</jsp:include>
+                                                </td>
+					</tr>
+                                        
+                                        <tr>
+						<td width="200">
+                                                    <% Language.printDatafield(out,session, formular,"Schreiber");%>
+                                                </td>
+						<td width="450">
+                                                        <jsp:include page="inc.erzeugeFormular.jsp">
+								<jsp:param name="ID" value="<%=id%>" />
+								<jsp:param name="Formular" value="einzelbeleg" />
+								<jsp:param name="Datenfeld" value="Schreiber" />
+								<jsp:param name="size" value="5" />
+							</jsp:include>
+                                                </td>
+					</tr>
 				</tbody>
 			</table>
 			<br>
