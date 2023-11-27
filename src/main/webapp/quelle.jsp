@@ -11,8 +11,7 @@
 <%@ include file="functions.jsp" %>
 <%@ include file="configuration.jsp"%>
 
-<%
-    int id = Constants.UNDEFINED_ID;
+<%    int id = Constants.UNDEFINED_ID;
     int urkundeid = Constants.UNDEFINED_ID;
     String formular = "quelle";
     Filter.setFilter(request, formular, out);
@@ -75,24 +74,28 @@
                         </td>
 
                         <%
-                            if (id != -1 && QuelleDB.getById(id).getQuellenKommentarDatei() != null && !QuelleDB.getById(id).getQuellenKommentarDatei().equals("")) {
-                                int fileId = 1;
-                                boolean fileExist = false;
+                            //Verübergehend ausgeschaltet
+                            boolean off = true;
+                            if (off == false) {
 
-                                Content content = new Content();
+                                if (id != -1 && QuelleDB.getById(id).getQuellenKommentarDatei() != null && !QuelleDB.getById(id).getQuellenKommentarDatei().equals("")) {
+                                    int fileId = 1;
+                                    boolean fileExist = false;
 
-                                if (!QuelleDB.getById(id).getQuellenKommentarDatei().equals("")) {
+                                    Content content = new Content();
 
-                                    fileId = Integer.parseInt(QuelleDB.getById(id).getQuellenKommentarDatei());
-                                    fileExist = ContentDB.searchId(fileId);  //serachID(fileName)
+                                    if (!QuelleDB.getById(id).getQuellenKommentarDatei().equals("")) {
 
-                                    if (fileExist) {
+                                        fileId = Integer.parseInt(QuelleDB.getById(id).getQuellenKommentarDatei());
+                                        fileExist = ContentDB.searchId(fileId);  //serachID(fileName)
+
                                         if (fileExist) {
-                                            content = ContentDB.getById(fileId);  //getByIde(fileID)
-                                        }
+                                            if (fileExist) {
+                                                content = ContentDB.getById(fileId);  //getByIde(fileID)
+                                            }
 
-                                        String name = content.getName();
-                                        String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+                                            String name = content.getName();
+                                            String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
 
                         %>
                         <td width="450">
@@ -119,13 +122,24 @@
                         <td>&nbsp;</td>
                         <%
                             }
-                        %>
+
+                        }//end if off vorübergehend ausgeschaltet
+ %>
+
+
+
+
+
                     </tr>
                     <tr>
                         <td width="200">
                             <% Language.printDatafield(out, session, formular, "Ueberlieferungskommentar");%>
                         </td>
                         <%
+                             //Verübergehend ausgeschaltet
+                            boolean off2 = true;
+                            if (off2 == false) {
+
                             if (id != -1 && QuelleDB.getById(id).getUeberlieferungsKommentarDatei() != null && !QuelleDB.getById(id).getUeberlieferungsKommentarDatei().equals("")) {
                                 int fileId = 1;
                                 boolean fileExist = false;
@@ -170,6 +184,8 @@
                         <td>&nbsp;</td>
                         <%
                             }
+
+                            } //end if off2 vorübergehend ausgeschaltet
                         %>
                     </tr>
                     <tr>
