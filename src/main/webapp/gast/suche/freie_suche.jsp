@@ -1357,12 +1357,7 @@
                                 out.print("<a href=\"quelle?ID=" + row.get("quelleID") + "\">");
                                 link = true;
                             } else if (fieldNames.get(i).contains("edition.Titel")) {
-                                try {
-                                    out.print("<a href=\"edition?ID=" + row.get("edition.ID") + "\">");
-                                    link = true;
-                                } catch (Exception e) {
-                                    link = false;
-                                }
+                                link = false;
                             } else if (fieldNames.get(i).contains("ID")) {
                                 out.print("<a href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu: ");
                                 link = true;
