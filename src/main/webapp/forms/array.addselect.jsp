@@ -51,24 +51,26 @@
             i++;
         }
 
-        //Create new drop down list
-        out.println("<tr>");
-        out.println("<td>");
-        out.println("<select name=\"" + datenfeld + "[" + i + "]\" id=\"" + datenfeld + "[" + i + "]\">");
+        //Create new drop down list when Backend/Admin, not Guest
+        if ((!isReadOnly)) {
 
-        List<Object[]> rowlist3 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
+            out.println("<tr>");
+            out.println("<td>");
+            out.println("<select name=\"" + datenfeld + "[" + i + "]\" id=\"" + datenfeld + "[" + i + "]\">");
 
-        for (Object[] columns2 : rowlist3) {
-            String value2_id = columns2[0].toString();
-            String value2_Bezeichnung = columns2[1].toString();
+            List<Object[]> rowlist3 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
 
-            if (!isReadOnly) {
+            for (Object[] columns2 : rowlist3) {
+                String value2_id = columns2[0].toString();
+                String value2_Bezeichnung = columns2[1].toString();
                 out.print("<option value=\"" + value2_id + "\">" + DBtoHTML(value2_Bezeichnung) + "</option>");
             }
         }
-
         out.println("</select>");
-        out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
+        if (!isReadOnly) {
+            out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
+        }
+
         out.println("</td>");
         out.println("</tr>");
         out.println("</table>");
