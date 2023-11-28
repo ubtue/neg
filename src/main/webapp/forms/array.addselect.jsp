@@ -65,10 +65,8 @@
                 String value2_Bezeichnung = columns2[1].toString();
                 out.print("<option value=\"" + value2_id + "\">" + DBtoHTML(value2_Bezeichnung) + "</option>");
             }
-        }
-        out.println("</select>");
-        if (!isReadOnly) {
-            out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
+             out.println("</select>");
+             out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
         }
 
         out.println("</td>");

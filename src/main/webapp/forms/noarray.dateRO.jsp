@@ -103,8 +103,6 @@
             } else {
                 if (von != null) {
                     out.println(vonGen + " " + von);
-                } else if (bis != null) {
-                    // Füge hier die Behandlung ein, falls von null ist, aber bis nicht null ist
                 }
             }
         }
