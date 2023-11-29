@@ -250,7 +250,7 @@
                     }
                 } // ENDE Datensatz neu
             } // ENDE Bemerkungsfeld
-            // Namenkommentar Editor
+           // Namenkommentar Editor
             else if (feldtyp != null && feldtyp.equals("nkeditor") && zieltabelle != null) {
                 String temp_datenfeld = request.getParameter(datenfeld);
 
@@ -260,11 +260,22 @@
                             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String formattedDate = sf.format(d);
 
-                            Map<String, String> valueMap = new HashMap<>();
-                            valueMap.put("NamenkommentarID", String.valueOf(id));
-                            valueMap.put("BenutzerID", String.valueOf(session.getAttribute("BenutzerID")));
-                            valueMap.put("Zeitstempel", formattedDate);
-                            SaveHelper.insert(zieltabelle, valueMap);
+                            if(formularAttribut.equals("NamenkommentarID"))
+                            {
+                                Map<String, String> valueMap = new HashMap<>();
+                                valueMap.put("NamenkommentarID", String.valueOf(id));
+                                valueMap.put("BenutzerID", String.valueOf(session.getAttribute("BenutzerID")));
+                                valueMap.put("Zeitstempel", formattedDate);
+                                SaveHelper.insert(zieltabelle, valueMap);
+                            }
+                            else if(formularAttribut.equals("MGHLemmaID"))
+                            {
+                                Map<String, String> valueMap = new HashMap<>();
+                                valueMap.put("MGHLemmaID", String.valueOf(id));
+                                valueMap.put("BenutzerID", String.valueOf(session.getAttribute("BenutzerID")));
+                                valueMap.put("Zeitstempel", formattedDate);
+                                SaveHelper.insert(zieltabelle, valueMap);
+                            }
                 }
             } // ENDE NamenkommentarEditor
             // combined
