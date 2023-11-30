@@ -50,7 +50,7 @@
         }
 
          //Create new drop down list when Backend/Admin, not Guest
-        if ((!isReadOnly)) {
+        if (!isReadOnly) {
             Integer maxLength = AbstractBase.getMaxCharacterLength(zielTabelle, zielAttribut);
             out.println("<tr>");
             out.println("<td>");
@@ -60,6 +60,5 @@
         }
 
         out.println("</table>");
-
     }
 %>
