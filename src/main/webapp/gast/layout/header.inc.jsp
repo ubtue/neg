@@ -49,6 +49,13 @@
                                 </jsp:include>
                             </a>
                         </li>
+                        <li><a class="${param.current eq 'stat' ? 'current' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/stat">
+                                <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
+                                    <jsp:param name="Formular" value="stat"/>
+                                    <jsp:param name="Textfeld" value="Titel"/>
+                                </jsp:include>
+                            </a>
+                        </li>
                     </ul>
                     <div id="search-wrap">
                         <div id="search">
