@@ -14,6 +14,19 @@ public class QuelleDB extends AbstractBase {
     public static List getList() throws Exception {
         return getList(Quelle.class);
     }
+    
+    public static List getList(Integer currentPage, Integer recordsPerPage) throws Exception {
+        try (Session session = getSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Quelle> criteria = criteriaBuilder.createQuery(Quelle.class);            
+            Root<Quelle> quelle = criteria.from(Quelle.class);
+            criteria.select(quelle);
+            Query query = session.createQuery(criteria);
+            query.setFirstResult(currentPage);
+            query.setMaxResults(recordsPerPage);
+            return query.getResultList();
+        }
+    }
 
     public static Quelle getFirstPublicQuelle() throws Exception {
         try (Session session = getSession()) {
