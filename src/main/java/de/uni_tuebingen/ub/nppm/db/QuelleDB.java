@@ -14,17 +14,26 @@ public class QuelleDB extends AbstractBase {
     public static List getList() throws Exception {
         return getList(Quelle.class);
     }
-    
-    public static List getList(Integer currentPage, Integer recordsPerPage) throws Exception {
+
+    public static List getList(Integer currentPage, Integer recordsPerPage, String filterTitle) throws Exception {
+        Integer start = null;
+        if(currentPage != null && recordsPerPage != null)
+            start = currentPage * recordsPerPage - recordsPerPage;
+        
         try (Session session = getSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Quelle> criteria = criteriaBuilder.createQuery(Quelle.class);            
-            Root<Quelle> quelle = criteria.from(Quelle.class);
-            criteria.select(quelle);
-            Query query = session.createQuery(criteria);
-            query.setFirstResult(currentPage);
+            Query query = session.createQuery("from Quelle q where q.bezeichnung like :bez");
+            query.setFirstResult(start);
             query.setMaxResults(recordsPerPage);
-            return query.getResultList();
+            query.setParameter("bez", "%" + filterTitle + "%");
+            return query.list();
+        }
+    }
+        
+    public static Long countStat(String filterTitle) throws Exception {
+        try (Session session = getSession()) {
+            Query query = session.createQuery("select count(*) from Quelle q where q.bezeichnung like :bez");            
+            query.setParameter("bez", "%" + filterTitle + "%");
+            return (Long)query.uniqueResult();
         }
     }
 

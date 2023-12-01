@@ -3,6 +3,11 @@
 <%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@page import="java.util.*"%>
 <%
+    /*Set filterTitle for Quelle*/
+    String filterTitle = "";
+    if (request.getParameter("filterTitle") != null) {
+       filterTitle = request.getParameter("filterTitle");
+    }
     /*
     Calcualtion for pagination of source rows
      */
@@ -18,7 +23,7 @@
         recordsPerPage = Integer.parseInt(request.getParameter("recordsPerPage"));
     }
 
-    int rows = QuelleDB.getLinecount("quelle", "1");
+    int rows = QuelleDB.countStat(filterTitle).intValue();
 
     int nOfPages = rows / recordsPerPage;
 
@@ -26,36 +31,36 @@
         nOfPages++;
     }
     
-    List<Quelle> lst = QuelleDB.getList(currentPage, recordsPerPage);
+    List<Quelle> lst = QuelleDB.getList(currentPage, recordsPerPage,filterTitle);
 %>
 <%!
         
     /*
     Functions that helps to print pagination
      */
-    public String html_prev_button(String tablesID, String recordsPerPage, Integer currentPage) {
-        return "<li class=\"page-item\"><a class=\"page-link\" href=\"?id=" + tablesID + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage - 1) + "\">Previous</a></li>";
+    public String html_prev_button(String filterTitle, String recordsPerPage, Integer currentPage) {
+        return "<li class=\"page-item\"><a class=\"page-link\" href=\"?filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage - 1) + "\">Previous</a></li>";
     }
 
-    public String html_next_button(String tablesID, String recordsPerPage, Integer currentPage) {
-        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?id=" + tablesID + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage + 1) + "\">Next</a></li>";
+    public String html_next_button(String filterTitle, String recordsPerPage, Integer currentPage) {
+        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage + 1) + "\">Next</a></li>";
     }
 
     public String html_page_item_current(int page) {
         return "<li class=\"page-item active\"><a class=\"page-link\">" + page + "</a></li>";
     }
 
-    public String html_page_item(int page, int tablesID, int recordsPerPage) {
-        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?id=" + tablesID + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + page + "</a></li>";
+    public String html_page_item(int page, String filterTitle, int recordsPerPage) {
+        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + page + "</a></li>";
     }
 
-    public void print_pagination(JspWriter out, int currentPage, int recordsPerPage, int tablesID, int nOfPages) throws Exception {
+    public void print_pagination(JspWriter out, int currentPage, int recordsPerPage, String filterTitle, int nOfPages) throws Exception {
         out.println("<nav aria-label=\"Navigation for rows\">");
         out.println("<ul class=\"pagination\">");
 
         /*Print Previous Button*/
         if (currentPage != 1) {
-            out.println(html_prev_button(String.valueOf(tablesID), String.valueOf(recordsPerPage), currentPage));
+            out.println(html_prev_button(filterTitle, String.valueOf(recordsPerPage), currentPage));
         }
 
         /*Print Pages and highlight current page*/
@@ -63,41 +68,18 @@
             if (currentPage == i) {
                 out.println(html_page_item_current(i));
             } else {
-                out.println(html_page_item(i, tablesID, recordsPerPage));
+                out.println(html_page_item(i, filterTitle, recordsPerPage));
             }
         }
 
         /*Print Next Button*/
         if (currentPage < nOfPages) {
-            out.println(html_next_button(String.valueOf(tablesID), String.valueOf(recordsPerPage), currentPage));
+            out.println(html_next_button(filterTitle, String.valueOf(recordsPerPage), currentPage));
         }
         out.println("</ul>");
         out.println("</nav>");
     }
 %>
-<script type="text/javascript">
-    function search() {
-      // Declare variables
-      var input, filter, table, tr, td, i, txtValue;
-      input = document.getElementById("searchInput");
-      filter = input.value.toUpperCase();
-      table = document.getElementById("stat1");
-      tr = table.getElementsByTagName("tr");
-
-      // Loop through all table rows, and hide those who don't match the search query
-      for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[1];
-        if (td) {
-          txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
-        }
-      }
-    }
-</script>
 <p>
         
     <h1>Statistik</h1>
@@ -106,13 +88,23 @@
     </h3>
     <br>
     <%
-        print_pagination(out, currentPage, recordsPerPage, 1, nOfPages);
+        print_pagination(out, currentPage, recordsPerPage, filterTitle, nOfPages);
     %> 
     <table id="stat1" class="table">
         <thead>        
-            <th><b>ID</b></th>
-            <th><b>Titel der Quelle</b><input size="20" type="text" id="searchInput" class="form-control" onkeyup="search()" placeholder="filter.."></th>
-            <th><b>Anzahl Belege</b></th>
+            <th>
+                <b>ID</b>
+            </th>
+            <th>
+                <b>Titel der Quelle</b>
+                <form method="GET">
+                    <input name="filterTitle" type="text" size="40" value="<%=filterTitle %>" placeholder="Titel Filter"/>
+                    <input type="submit" />
+                </form>
+            </th>
+            <th>
+                <b>Anzahl Belege</b>
+            </th>
         </thead>
        <tbody>
             <%
@@ -134,6 +126,6 @@
     </table>
     
     <%
-        print_pagination(out, currentPage, recordsPerPage, 1, nOfPages);
+        print_pagination(out, currentPage, recordsPerPage, filterTitle, nOfPages);
     %>
 </p>
