@@ -132,6 +132,33 @@ transition: all 0.5s ease; }
 #line-after-menu { border-top: 6px solid #4f4f4f; *margin-bottom: 20px; }
 
 #emotion-pic { height: 200px; background: url(../layout/images/header_bg.jpg) no-repeat; background-size: 100%; margin-bottom: 20px; }
+/* Pagination
+******************************
+*/
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.page-item {
+    margin-right: 10px;
+}
+
+.sort-link {
+    font-size: 12px !important;
+}
+
+.active {
+    text-decoration: underline #bf3d3d;
+}
+
+.statTable th,td {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+}
 
 /* Search
 ******************************

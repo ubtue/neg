@@ -26,20 +26,18 @@ public class StatistikServlet extends AbstractGastServlet {
         }else {
             RequestDispatcher rd = request.getRequestDispatcher("stat_overview.jsp");
             rd.include(request, response);
-        }        
+        }
     }
      
     @Override
     protected List<String> getAdditionalCss() {
         List<String> additionalCss = new ArrayList<>();
-        additionalCss.add("../webjars/bootstrap/5.3.1/css/bootstrap.min.css");
         return additionalCss;
     }
 
     @Override
     protected List<String> getAdditionalJavaScript() {
         List<String> additionalJs = new ArrayList<>();
-        additionalJs.add("../webjars/bootstrap/5.3.1/js/bootstrap.bundle.min.js");
         return additionalJs;
     }
 }
