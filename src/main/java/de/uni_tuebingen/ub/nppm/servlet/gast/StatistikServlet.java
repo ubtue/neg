@@ -20,8 +20,13 @@ public class StatistikServlet extends AbstractGastServlet {
 
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        RequestDispatcher rd = request.getRequestDispatcher("stat.jsp");
-        rd.include(request, response);
+        if(request.getParameter("page") != null && request.getParameter("page").equals("anzahl_belege")) {
+            RequestDispatcher rd = request.getRequestDispatcher("stat.jsp");
+            rd.include(request, response);
+        }else {
+            RequestDispatcher rd = request.getRequestDispatcher("stat_overview.jsp");
+            rd.include(request, response);
+        }        
     }
      
     @Override

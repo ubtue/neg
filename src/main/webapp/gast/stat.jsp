@@ -39,11 +39,11 @@
     Functions that helps to print pagination
      */
     public String html_prev_button(String filterTitle, String recordsPerPage, Integer currentPage) {
-        return "<li class=\"page-item\"><a class=\"page-link\" href=\"?filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage - 1) + "\">Previous</a></li>";
+        return "<li class=\"page-item\"><a class=\"page-link\" href=\"?page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage - 1) + "\">Previous</a></li>";
     }
 
     public String html_next_button(String filterTitle, String recordsPerPage, Integer currentPage) {
-        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage + 1) + "\">Next</a></li>";
+        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage + 1) + "\">Next</a></li>";
     }
 
     public String html_page_item_current(int page) {
@@ -51,7 +51,7 @@
     }
 
     public String html_page_item(int page, String filterTitle, int recordsPerPage) {
-        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + page + "</a></li>";
+        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + page + "</a></li>";
     }
 
     public void print_pagination(JspWriter out, int currentPage, int recordsPerPage, String filterTitle, int nOfPages) throws Exception {
@@ -83,7 +83,8 @@
 <p>
         
     <h1>Statistik</h1>
-
+    <a href="/neg/gast/stat">Übersicht</a>
+    <br>
     <h3>Liste der Quellen mit Anzahl der Belege
     </h3>
     <br>
