@@ -276,7 +276,7 @@
                                 + i
                                 + "]\""
                                 + " type=\"checkbox\""
-                                + (row != null && Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1 ? " checked"
+                                + (row != null && row.get(zielattributArray[j]) != null && Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1 ? " checked"
                                 : "") + " />");
                     }
 
