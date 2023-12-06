@@ -48,7 +48,17 @@
             out.println("</tr>");
             i++;
         }
-        out.println("</table>");
 
+         //Create new drop down list when Backend/Admin, not Guest
+        if (!isReadOnly) {
+            Integer maxLength = AbstractBase.getMaxCharacterLength(zielTabelle, zielAttribut);
+            out.println("<tr>");
+            out.println("<td>");
+            out.print("<input name=\"" + datenfeld + "[" + i + "]\" " + (size > 0 ? "size=\"" + size + "\" " : "") + "maxlength=\"" + ((maxLength != null) ? maxLength : "") + "\" />");
+            out.println("</td>");
+            out.println("</tr>");
+        }
+
+        out.println("</table>");
     }
 %>

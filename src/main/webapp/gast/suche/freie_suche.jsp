@@ -499,9 +499,9 @@
         fieldNames.add("selektion_quellengattung.Bezeichnung");
         if (!tableString.contains("selektion_quellengattung")) {
             tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
-        }
-        //headlines.add("Quellengattung");
-        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "EinzelbelegQuellengattung"));
+    }
+
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "QuelleGattung"));
 
         einzelbeleg = true;
     }

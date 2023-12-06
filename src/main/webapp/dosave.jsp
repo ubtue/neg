@@ -250,7 +250,7 @@
                     }
                 } // ENDE Datensatz neu
             } // ENDE Bemerkungsfeld
-            // Namenkommentar Editor
+          // Namenkommentar Editor
             else if (feldtyp != null && feldtyp.equals("nkeditor") && zieltabelle != null) {
                 String temp_datenfeld = request.getParameter(datenfeld);
 
@@ -261,7 +261,16 @@
                             String formattedDate = sf.format(d);
 
                             Map<String, String> valueMap = new HashMap<>();
-                            valueMap.put("NamenkommentarID", String.valueOf(id));
+
+                            if(formularAttribut.equals("NamenkommentarID"))
+                            {
+                                valueMap.put("NamenkommentarID", String.valueOf(id));
+                            }
+                            else if(formularAttribut.equals("MGHLemmaID"))
+                            {
+                                valueMap.put("MGHLemmaID", String.valueOf(id));
+                            }
+
                             valueMap.put("BenutzerID", String.valueOf(session.getAttribute("BenutzerID")));
                             valueMap.put("Zeitstempel", formattedDate);
                             SaveHelper.insert(zieltabelle, valueMap);

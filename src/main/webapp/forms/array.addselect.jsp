@@ -38,21 +38,27 @@
                 out.println("</select>");
             }
             out.println("</td>");
-            String href = "javascript:deleteEntry('" + zielTabelle + "', '" + value_id + "', '" + returnpage + "', '" + id + "');";
-            out.println("<td>");
+
             if (!isReadOnly) {
-                out.println("<a href=\"" + href + "\">");
-                out.println(txt_delete);
-                out.println("</a>");
+
+                if (!selected.equals("1")) {
+                    String href = "javascript:deleteEntry('" + zielTabelle + "', '" + value_id + "', '" + returnpage + "', '" + id + "');";
+                    out.println("<td>");
+                    out.println("<a href=\"" + href + "\">");
+                    out.println(txt_delete);
+                    out.println("</a>");
+                    out.println("</td>");
+                } else {
+                    out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
+                }
             }
-            out.println("</td>");
 
             out.println("</tr>");
             i++;
         }
 
         //Create new drop down list when Backend/Admin, not Guest
-        if ((!isReadOnly)) {
+        if (!isReadOnly && !selected.equals("1")) {
 
             out.println("<tr>");
             out.println("<td>");
@@ -65,8 +71,8 @@
                 String value2_Bezeichnung = columns2[1].toString();
                 out.print("<option value=\"" + value2_id + "\">" + DBtoHTML(value2_Bezeichnung) + "</option>");
             }
-             out.println("</select>");
-             out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
+            out.println("</select>");
+            out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
         }
 
         out.println("</td>");
