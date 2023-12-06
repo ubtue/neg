@@ -15,29 +15,34 @@ public class QuelleDB extends AbstractBase {
         return getList(Quelle.class);
     }
 
-    public static List getList(Integer currentPage, Integer recordsPerPage, String filterTitle, String sort) throws Exception {
+    public static List getList(Integer currentPage, Integer recordsPerPage, String filterTitle, String sort, String jumpToID) throws Exception {
         Integer start = null;
+        Query query;
         if(currentPage != null && recordsPerPage != null)
             start = currentPage * recordsPerPage - recordsPerPage;
         
-        try (Session session = getSession()) {            
-            String q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez";
-            if(sort.compareTo("titleDown") == 0){
-                q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.bezeichnung DESC";
-            }else
-            if(sort.compareTo("titleUp") == 0){
-                q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.bezeichnung ASC";
-            }else 
-            if(sort.compareTo("idDown") == 0){
-                q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.id DESC";
-            }else
-            if(sort.compareTo("idUp") == 0){
-                q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.id ASC";
+        try (Session session = getSession()) {          
+            String q = "";
+            if(jumpToID != null && jumpToID.length() > 0){
+                q = "FROM Quelle q WHERE q.id = :id";
+                query = session.createQuery(q);
+                query.setParameter("id", Integer.valueOf(jumpToID));
+            }else{
+                q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez";
+                if(sort.compareTo("titleDown") == 0){
+                    q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.bezeichnung DESC";
+                }else if(sort.compareTo("titleUp") == 0){
+                    q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.bezeichnung ASC";
+                }else  if(sort.compareTo("idDown") == 0){
+                    q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.id DESC";
+                }else if(sort.compareTo("idUp") == 0){
+                    q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.id ASC";
+                }
+                query = session.createQuery(q);
+                query.setFirstResult(start);
+                query.setMaxResults(recordsPerPage);
+                query.setParameter("bez", "%" + filterTitle + "%");
             }
-            Query query = session.createQuery(q);
-            query.setFirstResult(start);
-            query.setMaxResults(recordsPerPage);
-            query.setParameter("bez", "%" + filterTitle + "%");
             return query.list();
         }
     }
