@@ -326,6 +326,12 @@
         einzelbeleg = true;
     }
 
+    String pageString = request.getParameter("Seite");
+    if (pageString != null && !pageString.isEmpty()) {
+            conditions.add("einzelbeleg.EditionSeite = '" + request.getParameter("Seite") + "'");
+            einzelbeleg = true;
+    }
+
     // ######### SUCHANFRAGE ##########
     String sprache = "de";
     if (session != null && session.getAttribute("Sprache") != null) {

@@ -1,0 +1,1 @@
+INSERT INTO datenbank_mapping(Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, Seite, gb_beschriftung, fr_beschriftung, la_beschriftung)  VALUES ("freie_suche", "Seite", "Seite", "textfield", 0, "freie_suche", "page", "page", "pagina");
