@@ -11,3 +11,6 @@ ALTER TABLE ueberlieferung_edition
 ALTER TABLE ueberlieferung_edition
 	DROP FOREIGN KEY ueberlieferung_edition_UeberlieferungID,    
      	ADD CONSTRAINT neu_ueberlieferung_edition_UeberlieferungID FOREIGN KEY (UeberlieferungID) REFERENCES handschrift_ueberlieferung (ID) ON DELETE CASCADE; 
+
+
+UPDATE datenbank_mapping SET Seite = "einzelbeleg"  WHERE ID = 293;
