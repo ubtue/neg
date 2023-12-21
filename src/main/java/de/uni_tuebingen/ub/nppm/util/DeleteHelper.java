@@ -40,6 +40,9 @@ public class DeleteHelper {
                     case "einzelbeleg_hatperson":
                         EinzelbelegDB.remove(EinzelbelegHatPerson_MM.class, id);
                         break;
+                    case "einzelbeleg_hatstand":
+                        EinzelbelegDB.remove(EinzelbelegHatStand.class, id);
+                        break;
                     case "einzelbeleg_textkritik":
                         EinzelbelegDB.remove(EinzelbelegTextkritik.class, id);
                         break;
