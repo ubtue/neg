@@ -52,11 +52,17 @@ public class DeleteHelper {
                     case "person_hatareal":
                         PersonDB.remove(PersonAreal_MM.class, id);
                         break;
-                    case "person_variante":
-                        PersonDB.remove(PersonVariante.class, id);
-                        break;
                     case "person_hatethnie":
                         PersonDB.remove(PersonEthnie_MM.class, id);
+                        break;
+                    case "person_hatstand":
+                        PersonDB.remove(PersonHatStand.class, id);
+                        break;
+                    case "person_quiet":
+                        PersonDB.remove(PersonQuiet.class, id);
+                        break;
+                    case "person_variante":
+                        PersonDB.remove(PersonVariante.class, id);
                         break;
                     case "person_verwandtmit":
                         PersonDB.remove(PersonVerwandtMit_MM.class, id);
