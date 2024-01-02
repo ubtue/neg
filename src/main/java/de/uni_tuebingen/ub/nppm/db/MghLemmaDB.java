@@ -29,4 +29,16 @@ public class MghLemmaDB extends AbstractBase {
             return (MghLemma) query.getSingleResult();
         }
     }
+    
+    public static List<MghLemma> getByName(String name) throws Exception{
+        String sql = "SELECT * FROM mgh_lemma WHERE MGHLemma" + " LIKE '%" + name + "%' ";
+        sql += " ORDER BY MGHLemma";
+
+        try ( Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            sqlQuery.addEntity(MghLemma.class);
+            List<MghLemma> rows = sqlQuery.getResultList();
+            return rows;
+        }
+    }
 }
