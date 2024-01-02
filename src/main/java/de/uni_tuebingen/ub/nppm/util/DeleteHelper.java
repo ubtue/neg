@@ -73,6 +73,9 @@ public class DeleteHelper {
                     case "quelle_inedition":
                         EinzelbelegDB.remove(QuelleInEdition_MM.class, id);
                         break;
+                    case "urkunde_hataussteller":
+                        EinzelbelegDB.remove(UrkundeAussteller.class, id);
+                        break;
                     case "urkunde_betreff":
                         EinzelbelegDB.remove(UrkundeBetreff.class, id);
                         break;
