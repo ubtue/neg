@@ -323,6 +323,7 @@
                                 <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="ID" value="<%= urkundeid%>" />
                                         <jsp:param name="Formular" value="urkunde" />
+                                        <jsp:param name="returnID" value="<%= id%>" />
                                         <jsp:param name="Datenfeld" value="Betreff" />
                                         <jsp:param name="size" value="50" />
                                     </jsp:include></td>

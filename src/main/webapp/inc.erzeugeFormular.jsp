@@ -7,6 +7,7 @@
 <%
 
   String id = "-1";
+  String returnId = "-1";
   String formular = request.getParameter("Formular");
   String datenfeld = request.getParameter("Datenfeld");
   String visible = request.getParameter("Visibility");
@@ -26,6 +27,9 @@
 
   if (request.getParameter("ID") != null)
     id = request.getParameter("ID");
+
+  if (request.getParameter("returnID") != null)
+    returnId = request.getParameter("returnID");
 
   int size = 0;
   int rows = 0;
