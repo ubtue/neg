@@ -82,4 +82,16 @@ public class NamenKommentarDB extends AbstractBase {
             session.getTransaction().commit();
         }
     }
+    
+    public static List<NamenKommentar> getByName(String name) throws Exception{
+        String sql = "SELECT * FROM namenkommentar WHERE ELemma" + " LIKE '%" + name + "%' OR PLemma" + " LIKE '%" + name + "%' ";
+        sql += " ORDER BY PLemma";
+
+        try ( Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            sqlQuery.addEntity(NamenKommentar.class);
+            List<NamenKommentar> rows = sqlQuery.getResultList();
+            return rows;
+        }
+    }
 }
