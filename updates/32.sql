@@ -14,3 +14,5 @@ ALTER TABLE ueberlieferung_edition
 
 
 UPDATE datenbank_mapping SET Seite = "einzelbeleg"  WHERE ID = 293;
+
+ALTER TABLE  einzelbeleg_textkritik DROP FOREIGN KEY einzelbeleg_textkritik_HandschriftID;
