@@ -26,9 +26,9 @@ public class EinzelbelegTextkritik {
     @JoinColumn(name = "EditionID", referencedColumnName = "ID")
     private Edition edition;
 
-    @OneToOne(targetEntity = Handschrift.class)
+    @OneToOne(targetEntity = HandschriftUeberlieferung.class)
     @JoinColumn(name = "HandschriftID", referencedColumnName = "ID")
-    private Handschrift handschrift;
+    private HandschriftUeberlieferung handschrift;
 
     public Integer getId() {
         return id;
@@ -66,11 +66,11 @@ public class EinzelbelegTextkritik {
         this.edition = edition;
     }
 
-    public Handschrift getHandschrift() {
+   public HandschriftUeberlieferung getHandschrift() {
         return handschrift;
     }
 
-    public void setHandschrift(Handschrift handschrift) {
+    public void setHandschrift(HandschriftUeberlieferung handschrift) {
         this.handschrift = handschrift;
     }
 }
