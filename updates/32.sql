@@ -10,7 +10,7 @@ ALTER TABLE ueberlieferung_edition
 ADD CONSTRAINT ueberlieferung_edition_EditionID FOREIGN KEY (EditionID) REFERENCES edition (ID) ON DELETE CASCADE;  
 
 ALTER TABLE ueberlieferung_edition
-	DROP FOREIGN KEY ueberlieferung_edition_UeberlieferungI;
+	DROP FOREIGN KEY ueberlieferung_edition_UeberlieferungID;
 
 ALTER TABLE ueberlieferung_edition	    
      	ADD CONSTRAINT ueberlieferung_edition_UeberlieferungID FOREIGN KEY (UeberlieferungID) REFERENCES handschrift_ueberlieferung (ID) ON DELETE CASCADE; 
