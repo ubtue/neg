@@ -40,6 +40,9 @@ public class DeleteHelper {
                     case "einzelbeleg_hatperson":
                         EinzelbelegDB.remove(EinzelbelegHatPerson_MM.class, id);
                         break;
+                    case "einzelbeleg_hatstand":
+                        EinzelbelegDB.remove(EinzelbelegHatStand.class, id);
+                        break;
                     case "einzelbeleg_textkritik":
                         EinzelbelegDB.remove(EinzelbelegTextkritik.class, id);
                         break;
@@ -52,17 +55,29 @@ public class DeleteHelper {
                     case "person_hatareal":
                         PersonDB.remove(PersonAreal_MM.class, id);
                         break;
-                    case "person_variante":
-                        PersonDB.remove(PersonVariante.class, id);
-                        break;
                     case "person_hatethnie":
                         PersonDB.remove(PersonEthnie_MM.class, id);
+                        break;
+                    case "person_hatstand":
+                        PersonDB.remove(PersonHatStand.class, id);
+                        break;
+                    case "person_quiet":
+                        PersonDB.remove(PersonQuiet.class, id);
+                        break;
+                    case "person_variante":
+                        PersonDB.remove(PersonVariante.class, id);
                         break;
                     case "person_verwandtmit":
                         PersonDB.remove(PersonVerwandtMit_MM.class, id);
                         break;
                     case "quelle_inedition":
                         EinzelbelegDB.remove(QuelleInEdition_MM.class, id);
+                        break;
+                    case "urkunde_dorsalnotiz":
+                        EinzelbelegDB.remove(UrkundeDorsalnotiz.class, id);
+                        break;
+                    case "urkunde_hataussteller":
+                        EinzelbelegDB.remove(UrkundeAussteller.class, id);
                         break;
                     case "urkunde_betreff":
                         EinzelbelegDB.remove(UrkundeBetreff.class, id);

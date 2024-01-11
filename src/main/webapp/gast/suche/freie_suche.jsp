@@ -62,9 +62,19 @@
             if (!tableString.contains("quelle")) {
                 tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
             }
+        }else if (newID.startsWith("E") || newID.startsWith("e")) {
+            conditions.add("edition.ID='" + newForm + "'");
+
+            if (!tableString.contains("edition")) {
+                tableString += " INNER JOIN edition ON einzelbeleg.EditionID = edition.ID";
+            }
+        }else if (newID.startsWith("M") || newID.startsWith("m")) {
+            conditions.add("mgh_lemma.ID='" + newForm + "'");
+            mghlemma = true;
         }
 
-    }
+
+    }//ce end
 
     // ######### SUCHANFRAGE ##########
     // ### ZUM NAMEN ###
@@ -324,6 +334,12 @@
         conditions.add("(VON_JAHR_JHDT(quelle.vonJahr, quelle.vonJahrhundert, quelle.bisJahrhundert)<99999 and BIS_JAHR_JHDT(quelle.bisJahr, quelle.bisJahrhundert, quelle.vonJahrhundert)>-99999 and (VON_JAHR_JHDT(quelle.vonJahr, quelle.vonJahrhundert, quelle.bisJahrhundert)>=" + vonNum + " and BIS_JAHR_JHDT(quelle.bisJahr, quelle.bisJahrhundert, quelle.vonJahrhundert)<=" + bisNum + ") OR"
                 + "(VON_JAHR_JHDT(quelle.vonJahr, quelle.vonJahrhundert, quelle.bisJahrhundert)<=" + vonNum + " and BIS_JAHR_JHDT(quelle.bisJahr, quelle.bisJahrhundert, quelle.vonJahrhundert)>=" + bisNum + "))");
         einzelbeleg = true;
+    }
+
+    String pageString = request.getParameter("Seite");
+    if (pageString != null && !pageString.isEmpty()) {
+            conditions.add("einzelbeleg.EditionSeite = '" + request.getParameter("Seite") + "'");
+            einzelbeleg = true;
     }
 
     // ######### SUCHANFRAGE ##########

@@ -9,6 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SelektionStand extends SelektionHierarchy {
+
     @ManyToMany(mappedBy = "stand")
     private Set<Person> personen = new HashSet<>();
 

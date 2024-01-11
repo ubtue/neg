@@ -36,7 +36,15 @@
             }
             out.println("</td>");
 
-            String href = "javascript:deleteEntry('" + zielTabelle + "', '" + row_id + "', '" + returnpage + "', '" + id + "');";
+            String href = "";
+            if(returnId.equals("-1"))
+            {
+                href = "javascript:deleteEntry('" + zielTabelle + "', '" + row_id + "', '" + returnpage + "', '" + id + "');";
+            }
+            else{
+                href = "javascript:deleteEntry('" + zielTabelle + "', '" + row_id + "', '" + returnpage + "', '" + returnId + "');";
+            }
+            
             out.println("<td>");
             if (!isReadOnly) {
                 out.println("<a href=\"" + href + "\">");

@@ -42,7 +42,13 @@
             if (!isReadOnly) {
 
                 if (!selected.equals("1")) {
-                    String href = "javascript:deleteEntry('" + zielTabelle + "', '" + value_id + "', '" + returnpage + "', '" + id + "');";
+                    String href = "";
+                    if (returnId.equals("-1")) {
+                        href = "javascript:deleteEntry('" + zielTabelle + "', '" + value_id + "', '" + returnpage + "', '" + id + "');";
+                    } else {
+                        href = "javascript:deleteEntry('" + zielTabelle + "', '" + value_id + "', '" + returnpage + "', '" + returnId + "');";
+                    }
+
                     out.println("<td>");
                     out.println("<a href=\"" + href + "\">");
                     out.println(txt_delete);
