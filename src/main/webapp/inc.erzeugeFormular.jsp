@@ -130,5 +130,6 @@
 <%@ include file="forms/noarray.sqlselect.jsp" %>
 <%@ include file="forms/noarray.textarea.jsp" %>
 <%@ include file="forms/noarray.textfield.jsp" %>
+<%@ include file="forms/noarray.gnd.jsp" %>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("</div>");%>
