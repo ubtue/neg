@@ -65,10 +65,16 @@ public abstract class AbstractServlet extends HttpServlet {
     abstract protected String getFooterTemplate();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // Since the header is very large using the UB navigation,
+        // we need to increase the buffer size so no packages will be sent
+        // during rendering the navigation. Else it would not be possible to
+        // send a redirect when rendering the content, e.g. if "gast/einzelbeleg" page is called
+        // without an ID.
+        response.setBufferSize(1024*1024);
         request.setCharacterEncoding("UTF-8");
         initRequest(request);
         response.setContentType("text/html; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");        
+        response.setCharacterEncoding("UTF-8");
         addResponseHeader(request, response);
         generatePage(request, response);
         addResponseFooter(request, response);
