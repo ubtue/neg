@@ -7,7 +7,7 @@
 
         if (gndId != null && !gndId.trim().equals("")) {
 
-        String link = "<a href=\"https://portal.dnb.de/opac/simpleSearch?query=idn%3D" + gndId + "&cqlMode=true" + "\" style=\"display: inline-block; line-height: 40px; vertical-align: middle; margin-top: 10px;\"> " + gnd + "</a>";
+        String link = "<a href=\"https://explore.gnd.network/gnd/" + DBtoHTML(gndId) + "\" style=\"display: inline-block; line-height: 40px; vertical-align: middle; margin-top: 10px;\"> " + gndIcon + "</a>";
 
         out.println(link);
         }

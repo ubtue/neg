@@ -28,7 +28,7 @@
   String txt_search = "<img src=\"layout/icons/search2.gif\" border=\"0\" alt=\"suchen\" title=\"suchen\">";  // "suchen";
   String txt_delete = "<img src=\"layout/icons/delete2.gif\" border=\"0\" alt=\"l&ouml;schen\" title=\"l&ouml;schen\">";  // "l&ouml;schen";
   String txt_newentry = "<img src=\"layout/icons/newentry2.gif\" border=\"0\" alt=\"neuer Eintrag\" title=\"neuer Eintrag\">";  // "neuer Eintrag";
-  String gnd = "<img src=\"layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">";   // "GND Link"	
+  String gndIcon = "<img src=\"layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">";   // "GND Link"
 
   String commentFolder_personenkommentar = "personenkommentar";
   String commentFolder_namenkommentar = "namenkommentar";
