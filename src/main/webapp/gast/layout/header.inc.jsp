@@ -114,48 +114,60 @@
                         <div class="lory-frame js_frame">
                             <!-- ###TOPNAV### Start -->
                             <ul class="ut-nav__list ut-nav__list--level-1 lory-slides js_slides">
-                                <li class="ut-nav__item ut-nav__item--level-1" data-level-count="1">
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'startseite' ? 'ut-nav__link--is-active' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/startseite" tabindex="0">Startseite</a>
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="1">
+                                    ${param.current eq 'startseite' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
+                                        <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'startseite' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/startseite" tabindex="0">Startseite</a>
+                                    ${param.current eq 'startseite' ? '</div>' : ''}
                                 </li>
-                                <li class="ut-nav__item ut-nav__item--level-1 " data-level-count="2">
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einzelbeleg' ? 'ut-nav__link--is-active' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/einzelbeleg" tabindex="0">
-                                        <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
-                                            <jsp:param name="Formular" value="einzelbeleg"/>
-                                            <jsp:param name="Textfeld" value="Titel"/>
-                                        </jsp:include>
-                                    </a>
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="2">
+                                    ${param.current eq 'einzelbeleg' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
+                                        <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einzelbeleg' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einzelbeleg" tabindex="0">
+                                            <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
+                                                <jsp:param name="Formular" value="einzelbeleg"/>
+                                                <jsp:param name="Textfeld" value="Titel"/>
+                                            </jsp:include>
+                                        </a>
+                                    ${param.current eq 'einzelbeleg' ? '</div>' : ''}
                                 </li>
-                                <li class="ut-nav__item ut-nav__item--level-1 " data-level-count="3">
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'person' ? 'ut-nav__link--is-active' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/person" tabindex="0">
-                                        <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
-                                            <jsp:param name="Formular" value="person"/>
-                                            <jsp:param name="Textfeld" value="Titel"/>
-                                        </jsp:include>
-                                    </a>
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="3">
+                                    ${param.current eq 'person' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
+                                        <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'person' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/person" tabindex="0">
+                                            <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
+                                                <jsp:param name="Formular" value="person"/>
+                                                <jsp:param name="Textfeld" value="Titel"/>
+                                            </jsp:include>
+                                        </a>
+                                    ${param.current eq 'person' ? '</div>' : ''}
                                 </li>
-                                <li class="ut-nav__item ut-nav__item--level-1 " data-level-count="4">
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'namenkommentar' ? 'ut-nav__link--is-active' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/mghlemma" tabindex="0">
-                                        <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
-                                            <jsp:param name="Formular" value="namenkommentar"/>
-                                            <jsp:param name="Textfeld" value="Titel"/>
-                                        </jsp:include>
-                                    </a>
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="4">
+                                    ${param.current eq 'namenkommentar' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
+                                        <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'namenkommentar' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/mghlemma" tabindex="0">
+                                            <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
+                                                <jsp:param name="Formular" value="namenkommentar"/>
+                                                <jsp:param name="Textfeld" value="Titel"/>
+                                            </jsp:include>
+                                        </a>
+                                    ${param.current eq 'namenkommentar' ? '</div>' : ''}
                                 </li>
-                                <li class="ut-nav__item ut-nav__item--level-1 " data-level-count="5">
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'quelle' ? 'ut-nav__link--is-active' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/quelle" tabindex="0">
-                                        <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
-                                            <jsp:param name="Formular" value="quelle"/>
-                                            <jsp:param name="Textfeld" value="Titel"/>
-                                        </jsp:include>
-                                    </a>
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="5">
+                                    ${param.current eq 'quelle' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
+                                        <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'quelle' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/quelle" tabindex="0">
+                                            <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
+                                                <jsp:param name="Formular" value="quelle"/>
+                                                <jsp:param name="Textfeld" value="Titel"/>
+                                            </jsp:include>
+                                        </a>
+                                    ${param.current eq 'quelle' ? '</div>' : ''}
                                 </li>
-                                <li class="ut-nav__item ut-nav__item--level-1 " data-level-count="6">
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'erweiterte_suche' ? 'ut-nav__link--is-active' : ''}" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche" tabindex="0">
-                                        <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
-                                            <jsp:param name="Formular" value="gast_freie_suche"/>
-                                            <jsp:param name="Textfeld" value="Titel"/>
-                                        </jsp:include>
-                                    </a>
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="6">
+                                    ${param.current eq 'freie_suche' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
+                                        <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche" tabindex="0">
+                                            <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
+                                                <jsp:param name="Formular" value="gast_freie_suche"/>
+                                                <jsp:param name="Textfeld" value="Titel"/>
+                                            </jsp:include>
+                                        </a>
+                                    ${param.current eq 'freie_suche' ? '</div>' : ''}
                                 </li>
                             </ul>
                             <!-- ###TOPNAV### End -->
