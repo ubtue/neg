@@ -12,7 +12,6 @@
     <title><%=fullTitle%></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
     <!-- CSS includes (vendor) -->
     <link rel="stylesheet" type="text/css" href="vendor/ut-typo3/css/merged.css" media="all">
@@ -27,9 +26,13 @@
 
     <!-- ut dependencies (rest of UT is behind navigation, needs to stay there or navigation cannot be rendered correctly -->
     <script src="vendor/ut-typo3/js/merged_top.js"></script>
+
+    <!-- (these ut-typo3 dependencies are currently not needed and can be added later if necessary) -->
+    <!--
     <script src="vendor/modernizr/modernizr.min.js"></script>
     <script src="vendor/popper/popper.js"></script>
     <script src="vendor/yepnope/yepnope-2.0.0.min.js"></script>
+    -->
 
     <!-- other local JS dependencies -->
     <script src="../javascript/jquery-1.11.1.min.js" type="text/javascript"></script>
