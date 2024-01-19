@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <a href="#top" title="To top" class="top-link cd-is-visible cd-fade-out">
+    <a href="#top" title="To top" class="top-link">
 	<span class="ut-icon ut-icon-up-big ut-icon__to-top" role="img" aria-label="Nach oben scrollen"></span>
     </a>
 </footer>
