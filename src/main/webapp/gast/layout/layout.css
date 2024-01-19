@@ -50,7 +50,8 @@ right: 350px; top: 10px; display: none; }
 
     .prev { margin-left: 10px; background: url(../layout/images/prev.png); }
     .next { margin-right: 10px; background: url(../layout/images/next.png); }
-    .prev, .next { width: 20px; height: 20px; background-size: 20px; }
+     /* note: "position: static !important" has been added here else we might get conflicts with ut-typo3 */
+    .prev, .next { width: 20px; height: 20px; background-size: 20px; position: static !important }
     .prev_end { margin-left: 20px; background: url(../layout/images/prev_end.png); }
     .next_end { margin-right: 20px; background: url(../layout/images/next_end.png); }
     .prev_end, .next_end { width: 28px; height: 20px; background-size: 28px; }
