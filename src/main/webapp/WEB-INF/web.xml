@@ -35,6 +35,14 @@
         <url-pattern>/gast/person</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>RedirectServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.RedirectServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RedirectServlet</servlet-name>
+        <url-pattern>/id</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>SucheServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.SucheServlet</servlet-class>
     </servlet>
