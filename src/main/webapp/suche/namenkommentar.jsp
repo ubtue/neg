@@ -1,5 +1,6 @@
+<%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
-<%@ page import="java.util.Vector" isThreadSafe="false" %>
+<%@ page import="java.util.List" isThreadSafe="false" %>
 
 <%
   String formular = request.getParameter("form");
@@ -8,7 +9,7 @@
 //    pageoffset = Integer.parseInt(request.getParameter("pageoffset"));
 //  }
 //  String sql = "";
-  
+
     String tableString = "";
   String export = "browse";
     String order = "";
@@ -20,17 +21,17 @@
     else
       order += "ASC";
   }
-  
 
-  Vector<String> conditions = new Vector<String> ();
 
-  Vector<String> fields = new Vector<String> ();
-  Vector<String> fieldNames = new Vector<String> ();
+  List<String> conditions = new ArrayList<>();
 
-  Vector<String> tables = new Vector <String> ();
-  Vector<String> joins = new Vector <String> ();
+  List<String> fields = new ArrayList<>();
+  List<String> fieldNames = new ArrayList<>();
 
-  Vector<String> headlines = new Vector<String> ();
+  List<String> tables = new ArrayList<>();
+  List<String> joins = new ArrayList<>();
+
+  List<String> headlines = new ArrayList<>();
 
   if(request.getParameter("order")!=null) order = request.getParameter("order");
   String orderdirection = "ASC";
@@ -58,11 +59,11 @@
       fieldNames.add("Suffix");
       headlines.add("Namenelement");
     }
-    
+
         // Tabellen
     tableString = "";
     if (tables.size() > 0) {
-      tableString += tables.firstElement();
+      tableString += tables.get(0);
       for (int i=1; i<tables.size(); i++) {
         tableString += ", "+tables.get(i);
       }

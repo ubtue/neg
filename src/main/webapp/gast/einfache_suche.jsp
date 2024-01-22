@@ -1,8 +1,3 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp" %>
@@ -30,7 +25,8 @@
     </TITLE>
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
     <script src="../javascript/funktionen.js" type="text/javascript"></script>
-    <script src="../javascript/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="../webjars/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="../webjars/jQuery-Autocomplete/1.4.10/jquery.autocomplete.min.js" type="text/javascript"></script>
 
  </HEAD>
 

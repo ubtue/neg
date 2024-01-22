@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="vendor/ut-typo3/css/ut.fixes.local.css" media="all">
     <link rel="stylesheet" type="text/css" href="layout/fonts/open-sans.css" >
     <link rel="stylesheet" type="text/css" href="layout/fonts/alegreya-sans-sc.css">
-    <link rel="stylesheet" type="text/css" href="../layout/jquery-ui-1.10.3.css">
+    <link rel="stylesheet" type="text/css" href="../webjars/jquery-ui/1.13.2/jquery-ui.min.css">
 
     <!-- CSS includes (local) -->
     <link rel="icon" href="layout/images/nomen_et_gens_icon.gif" type="image/gif">
@@ -35,8 +35,9 @@
     -->
 
     <!-- other local JS dependencies -->
-    <script src="../javascript/jquery-1.11.1.min.js" type="text/javascript"></script>
-    <script src="../javascript/jquery-ui-1.10.3.js" type="text/javascript"></script>
+    <script src="../webjars/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="../webjars/jquery-ui/1.13.2/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="../webjars/jQuery-Autocomplete/1.4.10/jquery.autocomplete.min.js" type="text/javascript"></script>
     <script src="../javascript/funktionen.js" type="text/javascript"></script>
     <script src="../javascript/javascript.js" type="text/javascript"></script>
 

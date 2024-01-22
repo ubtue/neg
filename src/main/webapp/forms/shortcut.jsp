@@ -1,125 +1,128 @@
-﻿<%@ include file="../configuration.jsp" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="java.util.Map" isThreadSafe="false" %>
+
+<%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp"%>
 
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
+<%    int id = -1;
+    String formular = request.getParameter("formular");
 
-<%
-
-  int id = -1;
-    String formular = request.getParameter("formular"); 
- 
-  String title = request.getParameter("title");
-  String guest = "";
-  if (title.contains("gast_")) {
-    title = title.substring(5);
-    guest = "gast_";
-  }
-  String bez = "Belegform";
-  if(title.toLowerCase().equals("person")) bez = "Standardname";
-  else if(title.toLowerCase().equals("namenkommentar")) bez = "PLemma";
-  else if(title.toLowerCase().equals("quelle")) bez = "Bezeichnung";
-  else if(title.toLowerCase().equals("edition")) bez = "Titel";
-  else if(title.toLowerCase().equals("handschrift")) bez = "Bibliothekssignatur";
-  else if(title.toLowerCase().equals("literatur")) bez = "Kurzzitierweise";
-  else if(title.toLowerCase().equals("mgh_lemma")) bez = "MGHLemma";
-  int filter = 0;
-  String filterParameter = null;
-  try {
-    id = Integer.parseInt(request.getParameter("ID"));
-    filter = ((Integer)session.getAttribute(formular+"filter")).intValue();
-    filterParameter = (String)(session.getAttribute(formular+"filterParameter"));
-  } catch (Exception e) {}
-
-  int newid = id;
-  String label = "";
-
-  Connection cn = null;
-  Statement st = null;
-  ResultSet rs = null;
-
-  try {
-    String sql = "SELECT * FROM "+title;
-
-    Class.forName( sqlDriver );
-    cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-    st = cn.createStatement();
-
-    rs = st.executeQuery("SELECT * FROM datenbank_filter WHERE Formular='"+guest+title+"' AND Nummer='"+filter+"';");
-    if (rs.next()) {
-      sql = rs.getString("SQLString");
+    String title = request.getParameter("title");
+    String guest = "";
+    if (title.contains("gast_")) {
+        title = title.substring(5);
+        guest = "gast_";
     }
-      sql = sql.replace("*", bez + ", " + title+".ID");
-    if (filterParameter != null){
-      sql = sql.replace("###", filterParameter);
+    String bez = "Belegform";
+    if (title.toLowerCase().equals("person")) {
+        bez = "Standardname";
+    } else if (title.toLowerCase().equals("namenkommentar")) {
+        bez = "PLemma";
+    } else if (title.toLowerCase().equals("quelle")) {
+        bez = "Bezeichnung";
+    } else if (title.toLowerCase().equals("edition")) {
+        bez = "Titel";
+    } else if (title.toLowerCase().equals("handschrift")) {
+        bez = "Bibliothekssignatur";
+    } else if (title.toLowerCase().equals("literatur")) {
+        bez = "Kurzzitierweise";
+    } else if (title.toLowerCase().equals("mgh_lemma")) {
+        bez = "MGHLemma";
+    }
+    int filter = 0;
+    String filterParameter = null;
+    try {
+        id = Integer.parseInt(request.getParameter("ID"));
+        filter = ((Integer) session.getAttribute(formular + "filter")).intValue();
+        filterParameter = (String) (session.getAttribute(formular + "filterParameter"));
+    } catch (Exception e) {
     }
 
-      String sql1 = sql +  (sql.contains("WHERE")?" AND":" WHERE")+" "+title+".ID < "+id+" ORDER BY ID DESC LIMIT 0,5;";
-      String sql2 = sql +  (sql.contains("WHERE")?" AND":" WHERE")+" "+title+".ID = "+id+" ORDER BY ID DESC LIMIT 0,1;";
-      String sql3 = sql +  (sql.contains("WHERE")?" AND":" WHERE")+" "+title+".ID > "+id+" ORDER BY ID ASC LIMIT 0,5;";
- 
-    rs = st.executeQuery(sql1);
+    int newid = id;
+    String label = "";
+
+
+    String sql = DatenbankDB.getFilterSql(guest + title, filter);
+    sql = sql.replace("*", bez + ", " + title + ".ID");
+    if (filterParameter != null) {
+        sql = sql.replace("###", filterParameter);
+    }
+
+    String sql1 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID < " + id + " ORDER BY ID DESC LIMIT 0,5";
+    String sql2 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID = " + id + " ORDER BY ID DESC";
+    String sql3 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID > " + id + " ORDER BY ID ASC LIMIT 0,5";
+
+   List<Map> rowlist = AbstractBase.getMappedList(sql1);
     int count = 0;
     String res = "";
-    while (count <5 && rs.next()) {
-      count++;
-      String value = format(rs.getString(bez),bez);
-      if(value != null){
-        int max = Math.min(7,value.length());
-        if(bez.equals("PLemma")){
-        int posAmph = value.substring(0,max).lastIndexOf("&");
-        int posSem = value.substring(0,max).lastIndexOf(";");
-        if(posAmph>posSem){ 
-           posSem = value.indexOf(";", posAmph);
-           max = value.indexOf(";", posAmph)+1;
-        }}
-        value = value.substring(0,max);
-        value = "<a style='color:#ffffff;' href='?ID="+rs.getString("ID")+"'>"+value+"..."+"</a>";
-        res = value + "\t" + res;
-      }
+    for (Map row : rowlist) {
+        count++;
+        if (count >= 5) {
+            break;
+        }
+
+        Object valueObj = row.get(bez);
+        if (valueObj != null && !valueObj.toString().equals("")) {
+            String value = format(valueObj.toString(), bez);
+            if (value != null) {
+                int max = Math.min(7, value.length());
+                if (bez.equals("PLemma")) {
+                    int posAmph = value.substring(0, max).lastIndexOf("&");
+                    int posSem = value.substring(0, max).lastIndexOf(";");
+                    if (posAmph > posSem) {
+                        posSem = value.indexOf(";", posAmph);
+                        max = value.indexOf(";", posAmph) + 1;
+                    }
+                }
+                value = value.substring(0, max);
+                value = "<a style='color:#ffffff;' href='?ID=" + row.get("ID").toString() + "'>" + value + "..." + "</a>";
+                res = value + "\t" + res;
+            }
+        }
     }
     out.println(res);
-        rs = st.executeQuery(sql2);
-    if (rs.next()) {
-      String value = format(rs.getString(bez),bez);
-      if(value != null){
-        int max = Math.min(10,value.length());
-        if(bez.equals("PLemma")){
-        int posAmph = value.substring(0,max).lastIndexOf("&");
-        int posSem = value.substring(0,max).lastIndexOf(";");
-        if(posAmph>posSem){ 
-           posSem = value.indexOf(";", posAmph);
-           max = value.indexOf(";", posAmph)+1;
-        }}
-        value = value.substring(0,max);
-        out.println("<span style=\"color:white;\"><b>"+value + "...</b></span>\t");
-      }
-    }    rs = st.executeQuery(sql3);
-    count = 0;
-    while (count <5 && rs.next()) {
-      count++;
-      String value = format(rs.getString(bez),bez);
-      if(value != null){
-        int max = Math.min(7,value.length());
-        if(bez.equals("PLemma")){
-        int posAmph = value.substring(0,max).lastIndexOf("&");
-        int posSem = value.substring(0,max).lastIndexOf(";");
-        if(posAmph>posSem){ 
-           posSem = value.indexOf(";", posAmph);
-           max = value.indexOf(";", posAmph)+1;
-        }}
-        value = value.substring(0,max);
-        value = "<a style='color:#ffffff;' href='?ID="+rs.getString("ID")+"'>"+value+"..."+"</a>";
-        out.println(value + "\t");
-      }
+
+    Map row = AbstractBase.getMappedRow(sql2);
+    if (row != null) {
+        String value = format(row.get(bez).toString(), bez);
+        if (value != null) {
+            int max = Math.min(10, value.length());
+            if (bez.equals("PLemma")) {
+                int posAmph = value.substring(0, max).lastIndexOf("&");
+                int posSem = value.substring(0, max).lastIndexOf(";");
+                if (posAmph > posSem) {
+                    posSem = value.indexOf(";", posAmph);
+                    max = value.indexOf(";", posAmph) + 1;
+                }
+            }
+            value = value.substring(0, max);
+            out.println("<span style=\"color:white;\"><b>" + value + "...</b></span>\t");
+        }
     }
-  }  finally {
-    try { if( null != rs ) rs.close(); } catch( Exception ex ) {}
-    try { if( null != st ) st.close(); } catch( Exception ex ) {}
-    try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-  }
+
+    List<Map> rowlist3 = AbstractBase.getMappedList(sql3);
+    count = 0;
+    for (Map row3 : rowlist3) {
+        count++;
+        if (count >= 5)
+            break;
+
+        String value = format(row3.get(bez).toString(), bez);
+        if (value != null) {
+            int max = Math.min(7, value.length());
+            if (bez.equals("PLemma")) {
+                int posAmph = value.substring(0, max).lastIndexOf("&");
+                int posSem = value.substring(0, max).lastIndexOf(";");
+                if (posAmph > posSem) {
+                    posSem = value.indexOf(";", posAmph);
+                    max = value.indexOf(";", posAmph) + 1;
+                }
+            }
+            value = value.substring(0, max);
+            value = "<a style='color:#ffffff;' href='?ID=" + row3.get("ID").toString() + "'>" + value + "..." + "</a>";
+            out.println(value + "\t");
+        }
+    }
+
 //  out.println("<a style='color:#ffffff;' href='?ID="+(request.getParameter("Command").equals("new")?"-1":newid)+"'>"+label+"</a>");
 %>

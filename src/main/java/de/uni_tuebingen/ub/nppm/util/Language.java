@@ -59,20 +59,22 @@ public class Language {
         if(!isSet)
             out.println("no datafield available: " + formular + " " + datenfeld);
     }
-    public static void printTextfield(JspWriter out,HttpSession session, String formular, String textfield) throws Exception{
+
+    public static String getTextfield(HttpSession session, String formular, String textfield) throws Exception {
         String lang = getLanguage(session);
         String[] langArray = {lang, Constants.DEFAULT_LANG};
-        boolean isSet = false;
         for(String l : langArray){
-            String print = DatenbankDB.getLabel(l, formular, textfield);
-            if(print != null){
-                out.println(print);
-                isSet = true;
-                break;
+            String label = DatenbankDB.getLabel(l, formular, textfield);
+            if(label != null){
+                return label;
             }
         }
-        if(!isSet)
-            out.println("no translation found");
+
+        return "no translation found";
+    }
+
+    public static void printTextfield(JspWriter out,HttpSession session, String formular, String textfield) throws Exception{
+        out.println(getTextfield(session, formular, textfield));
     }
 
     private static String getLanguage(HttpSession session) {

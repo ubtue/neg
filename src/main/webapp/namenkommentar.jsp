@@ -1,19 +1,13 @@
-<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
-<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false"%>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
-<%@ page import="java.sql.SQLException" isThreadSafe="false"%>
-<%@ page import="java.sql.Statement" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.*"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
-<%@include file="functions.jsp" %>
+<%@ include file="functions.jsp" %>
 <%@ include file="configuration.jsp"%>
 
 

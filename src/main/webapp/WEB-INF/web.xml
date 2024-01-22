@@ -11,6 +11,14 @@
         <url-pattern>/TestServlet</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>AjaxServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.AjaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AjaxServlet</servlet-name>
+        <url-pattern>/ajax</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>EinzelbelegServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.EinzelbelegServlet</servlet-class>
     </servlet>
@@ -220,6 +228,14 @@
     <servlet-mapping>
         <servlet-name>BackendQuelleServlet</servlet-name>
         <url-pattern>/quelle</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>BackendAdministrationBaumstrukturServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.AdministrationBaumstrukturServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BackendAdministrationBaumstrukturServlet</servlet-name>
+        <url-pattern>/admin-baumstruktur</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>ForgotPasswordServlet</servlet-name>
