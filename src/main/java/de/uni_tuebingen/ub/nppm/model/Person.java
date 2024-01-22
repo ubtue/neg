@@ -324,6 +324,14 @@ public class Person {
         this.getAreal().removeIf(e -> e.getId() == id);
     }
 
+    public void addArealGruppe(SelektionAreal selA) {
+        this.getArealGruppe().add(selA);
+    }
+
+    public void removeArealGruppe(int id) {
+        this.getArealGruppe().removeIf(e -> e.getId() == id);
+    }
+
     public void addVariante(PersonVariante pV) {
         this.getVariante().add(pV);
     }
