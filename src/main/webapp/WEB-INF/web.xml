@@ -40,7 +40,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>RedirectServlet</servlet-name>
-        <url-pattern>/id</url-pattern>
+        <url-pattern>/id/*</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>SucheServlet</servlet-name>

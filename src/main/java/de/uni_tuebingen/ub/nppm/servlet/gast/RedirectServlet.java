@@ -1,22 +1,23 @@
 package de.uni_tuebingen.ub.nppm.servlet.gast;
 
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class RedirectServlet extends AbstractGastServlet {
-    @Override
-    protected String getTitle() {
-        return "redirect";
-    }
+// Note: due to the dynamic URL schema configured in web.xml, this may not extend our regular
+// abstract servlet classes.
+public class RedirectServlet extends HttpServlet {
 
     @Override
-    protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (request.getParameter("ID") == null) {
-            throw new Exception("Missing ID");
-        }
-        String PID = (String)request.getParameter("ID");
-        String type = PID.substring(0,1);
-        String ID = PID.substring(1);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String URI = request.getRequestURI();                 // e.g. /neg/id/P7404
+        String PID = URI.substring(URI.lastIndexOf("/") + 1); // e.g. P7404
+        String type = PID.substring(0,1);                     // e.g. P
+        String ID = PID.substring(1);                         // e.g. 7404
 
         if (type.equals("B")) {
             response.sendRedirect(request.getContextPath() + "/gast/einzelbeleg?ID=" + ID);
@@ -33,7 +34,7 @@ public class RedirectServlet extends AbstractGastServlet {
         } else if (type.equals("M")) {
             response.sendRedirect(request.getContextPath() + "/gast/mghlemma?ID=" + ID);
         } else {
-            throw new Exception("Invalid ID: " + PID);
+            throw new ServletException("Invalid ID: " + PID);
         }
     }
 }
