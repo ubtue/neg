@@ -1,1 +1,0 @@
-DELETE FROM selektion_ort WHERE ID BETWEEN 39 AND 60;

@@ -90,12 +90,22 @@ public class Person {
     )
     Set<SelektionAreal> areal = new HashSet<>();
 
+     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @JoinTable(
+            name = "person_hatgruppeherkunftareal",
+            joinColumns = {
+                @JoinColumn(name = "PersonID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "ArealID")}
+    )
+    Set<SelektionAreal> arealGruppe = new HashSet<>();
+
     @OneToMany(mappedBy = "person", cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     private List<PersonQuiet> quiet = new ArrayList<>();
 
     @OneToMany(mappedBy = "person", cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     private List<PersonVariante> variante = new ArrayList<>();
-    
+
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "person_hatethnie",
@@ -105,7 +115,7 @@ public class Person {
                 @JoinColumn(name = "EthnieID")}
     )
     Set<SelektionEthnie> ethnie = new HashSet<>();
-    
+
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "person_hatethnie",
@@ -115,7 +125,7 @@ public class Person {
                 @JoinColumn(name = "EthnienerhaltID")}
     )
     Set<SelektionEthnienErhalt> ethnieErhalt = new HashSet<>();
-    
+
     @ManyToMany(mappedBy = "person")
     private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
 
@@ -234,7 +244,7 @@ public class Person {
     public void setGehoertGruppe(BenutzerGruppe gehoertGruppe) {
         this.gehoertGruppe = gehoertGruppe;
     }
-    
+
     public Set<SelektionStand> getStand() {
         return stand;
     }
@@ -245,6 +255,10 @@ public class Person {
 
     public Set<SelektionAreal> getAreal() {
         return areal;
+    }
+
+     public Set<SelektionAreal> getArealGruppe() {
+        return arealGruppe;
     }
 
     public List<PersonQuiet> getQuiet() {
@@ -262,7 +276,7 @@ public class Person {
     public Set<SelektionEthnienErhalt> getEthnieErhalt() {
         return ethnieErhalt;
     }
-    
+
     public Set<Einzelbeleg> getEinzelbeleg() {
         return einzelbeleg;
     }
@@ -270,7 +284,7 @@ public class Person {
     public void setEinzelbeleg(Set<Einzelbeleg> einzelbeleg) {
         this.einzelbeleg = einzelbeleg;
     }
-    
+
     public void addStand(SelektionStand s) {
         this.getStand().add(s);
     }
@@ -324,7 +338,7 @@ public class Person {
             }
         }
     }
-    
+
     public void addEthnie(SelektionEthnie ethnie) {
         this.getEthnie().add(ethnie);
     }
@@ -332,7 +346,7 @@ public class Person {
     public void removeEthnie(int id) {
         this.getEthnie().removeIf(e -> e.getId() == id);
     }
-    
+
     public void addEthnieErhalt(SelektionEthnienErhalt ethnieErhalt) {
         this.getEthnieErhalt().add(ethnieErhalt);
     }
@@ -340,7 +354,7 @@ public class Person {
     public void removeEthnieErhalt(int id) {
         this.getEthnieErhalt().removeIf(e -> e.getId() == id);
     }
-    
+
     public void addEinzelbeleg(Einzelbeleg beleg) {
         this.getEinzelbeleg().add(beleg);
     }
