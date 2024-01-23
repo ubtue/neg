@@ -7,7 +7,7 @@
 
         if (gndId != null && !gndId.trim().equals("")) {
 
-        String link = "<a href=\"https://d-nb.info/gnd/" + DBtoHTML(gndId) + "\" style=\"display: inline-block; line-height: 40px; vertical-align: middle; margin-top: 10px;\"> " + gndIcon + "</a>";
+        String link = "<a href=\"https://d-nb.info/gnd/" + DBtoHTML(gndId) + "\" target=\"_blank\" style=\"display: inline-block; line-height: 40px; vertical-align: middle; margin-top: 10px;\"> " + gndIcon + "</a>";
 
         out.println(link);
         }
