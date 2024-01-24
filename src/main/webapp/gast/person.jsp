@@ -166,7 +166,7 @@
 
 
 <!----------Einzelbelege---------->
-<h3><% Language.printTextfield(out, session, "person", "TabEinzelbelege"); %></h3>
+<h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "person", "TabEinzelbelege"); %></h3>
   <jsp:include page="../inc.modul.jsp">
     <jsp:param name="ID" value="<%= id %>" />
     <jsp:param name="Formular" value="person" />

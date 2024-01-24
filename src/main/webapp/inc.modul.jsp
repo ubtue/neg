@@ -13,30 +13,44 @@
 	if (formular.equals("einzelbeleg")) {
 		if (modul.equals("lesartenRO")) {
 
-			out.println("<table class=\"content-table\" width=\"100%\">\n");
+			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
 %>
-<tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+<thead class="ut-table__header ">
+    <tr class="ut-table__row">
+
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="einzelbeleg" />
 		<jsp:param name="Textfeld" value="Edition" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="einzelbeleg" />
 		<jsp:param name="Textfeld" value="Sigle" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="einzelbeleg" />
 		<jsp:param name="Textfeld" value="Varianten" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="einzelbeleg" />
 		<jsp:param name="Textfeld" value="DatierungTextzeuge" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="einzelbeleg" />
 		<jsp:param name="Textfeld" value="Bemerkung" />
-	</jsp:include></th>
-</tr>
+            </jsp:include>
+        </th>
+     </tr>
+</thead>
+
 
 <%
 	Connection cn = null;
@@ -325,34 +339,51 @@
 			out.println("</table>\n");
 		}
 		if (modul.equals("nachweiseRO")) {
-			out.println("<table \"width=100%\" id=\"einzelbelege\" class=\"content-table\">\n");
+			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
 %>
-<tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+<thead class="ut-table__header ">
+    <tr class="ut-table__row">
+
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Beleg" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Belegform" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="AmtWeihe" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Stand" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+        <th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Kontext" />
-	</jsp:include></th>
-</tr>
+            </jsp:include>
+        </th>
+    </tr>
+</thead>
+
+
 <%
 	Connection cn = null;
 			Statement st = null;
@@ -374,13 +405,19 @@
 								+ "\""
 								+ " ORDER BY e.vonJahr ASC, e.vonMonat ASC, e.vonTag ASC");
 				int count = 0;
+
+                                out.println("<tbody class=\"ut-table__body \">");
+
+
+
 				while (rs.next()) {
 					count++;
 					if (count % 2 == 0)
-						out.println("<tr>");
+						out.println("<tr class=\"ut-table__row\">");
 					else
-						out.println("<tr bgcolor='#AACCDD'>");
-					out.println("<td><a href=\"einzelbeleg?ID="
+                                                out.println("<tr class=\"ut-table__row\">");
+						//out.println("<tr bgcolor='#AACCDD'>");
+					out.println("<td class=\"ut-table__item ut-table__body__item\"><a href=\"einzelbeleg?ID="
 							+ rs.getInt("e.ID") + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -389,7 +426,7 @@
 </jsp:include>
 <%
 	out.println("</a></td>");
-					out.println("<td>" + getBelegformLinked(rs.getString("e.ID"), rs.getString("e.Belegform"))
+					out.println("<td class=\"ut-table__item ut-table__body__item\">" + getBelegformLinked(rs.getString("e.ID"), rs.getString("e.Belegform"))
 							+ "</td>");
 
 					String vonTag = rs.getString("e.VonTag");
@@ -430,21 +467,21 @@
 						bis = bisJhdt;
 
 					if (!bis.equals(von) && !bis.equals(""))
-						out.println("<td>" + von + " - " + bis
+						out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + " - " + bis
 								+ "</td>");
 					else
-						out.println("<td>" + von + "</td>");
+						out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + "</td>");
 					out
-							.println("<td>"
+							.println("<td class=\"ut-table__item ut-table__body__item\">"
 									+ (rs.getString("sew.Bezeichnung") != null ? rs
 											.getString("sew.Bezeichnung")
 											: "-") + "</td>");
 					out
-							.println("<td>"
+							.println("<td class=\"ut-table__item ut-table__body__item\">"
 									+ (rs.getString("ss.Bezeichnung") != null ? rs
 											.getString("ss.Bezeichnung")
 											: "-") + "</td>");
-					out.println("<td>"
+					out.println("<td class=\"ut-table__item ut-table__body__item\">"
 							+ (rs.getString("e.Kontext") != null ? rs
 									.getString("e.Kontext") : "-")
 							+ "</td>");
@@ -469,6 +506,7 @@
 				} catch (Exception ex) {
 				}
 			}
+                        out.println("</tbody>\n");
 			out.println("</table>\n");
 		}
 		if (modul.equals("Verwandte")) {
