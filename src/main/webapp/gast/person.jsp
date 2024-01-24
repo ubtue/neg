@@ -39,49 +39,63 @@
   <!----------Prosopographisches---------->
 
   <!----------Has to be put inside of database/table: "datenbank_texte" -- (not present till now)---------->
-  <h3> Prosopographisches </h3>
-  <table id="personen-table" class="content-table">
-	<tbody>
-		<tr>
-                    <th><% Language.printTextfield(out, session, "person", "Person"); %></th>
+  <h3 class="ut-heading ut-heading--h3"> Prosopographisches </h3>
 
-			
-			<td><jsp:include page="../inc.erzeugeFormular.jsp">
+  <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+
+            <thead class="ut-table__header ">
+
+                <tr class="ut-table__row">
+                    <th class="ut-table__item ut-table__header__item" scope="col">
+                        <% Language.printTextfield(out, session, "person", "Person"); %>
+                    </th>
+                     <td class="ut-table__item ut-table__header__item" scope="col">
+                        <jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Standardname" />
 				<jsp:param name="size" value="50" />
 				<jsp:param name="Readonly" value="yes" />
 			</jsp:include>
-              <span style="float:right;display:block;font-weight:bold;">
-              </span></td>
-		</tr>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "person", "Varianten"); %></th>
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
+
+                    </td>
+                </tr>
+
+                <tr class="ut-table__row">
+                    <th class="ut-table__item ut-table__header__item" scope="col">
+                        <% Language.printDatafield(out, session, "person", "Varianten"); %>
+                    </th>
+                     <td class="ut-table__item ut-table__header__item" scope="col">
+                        <jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Varianten" />
 				<jsp:param name="size" value="50" />
 				<jsp:param name="Readonly" value="yes" />
-              </jsp:include></span></td>
-		</tr>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "person", "Geschlecht"); %></th>
-                    <td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
+                        </jsp:include>
+                    </td>
+                </tr>
+
+                <tr class="ut-table__row">
+                    <th class="ut-table__item ut-table__header__item" scope="col">
+                        <% Language.printDatafield(out, session, "person", "Geschlecht"); %>
+                    </th>
+                     <td class="ut-table__item ut-table__header__item" scope="col">
+                        <jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Geschlecht" />
 				<jsp:param name="Readonly" value="yes" />
-			 </jsp:include></td>
-		</tr>
-		<tr>
-                <!----------Has to be put inside of database/table: "datenbank_texte" -- (not present till now)---------->
-			<th>Kommentar</th>
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
+			 </jsp:include>
+                    </td>
+                </tr>
+
+                <tr class="ut-table__row">
+                    <th class="ut-table__item ut-table__header__item" scope="col">
+                        Kommentar
+                    </th>
+                     <td class="ut-table__item ut-table__header__item" scope="col">
+                        <jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Identifizierungsproblem" />
@@ -89,52 +103,67 @@
 				<jsp:param name="rows" value="5" />
 				<jsp:param name="Readonly" value="yes" />
 			 </jsp:include>
-            </td>
+                    </td>
                 </tr>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "person", "Stand"); %></th>
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
+
+                <tr class="ut-table__row">
+                    <th class="ut-table__item ut-table__header__item" scope="col">
+                        <% Language.printDatafield(out, session, "person", "Stand"); %>
+                    </th>
+                     <td class="ut-table__item ut-table__header__item" scope="col">
+                        <jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Stand" />
 				<jsp:param name="Readonly" value="yes" />
 			</jsp:include>
-          </td>
-		</tr>
-		<tr>
-                    <th><% Language.printTextfield(out, session, "person", "Aemter"); %></th>
-			<td><jsp:include page="../inc.erzeugeFormular.jsp">
+                    </td>
+                </tr>
+
+                <tr class="ut-table__row">
+                    <th class="ut-table__item ut-table__header__item" scope="col">
+                        <% Language.printTextfield(out, session, "person", "Aemter"); %>
+                    </th>
+                     <td class="ut-table__item ut-table__header__item" scope="col">
+                        <jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="AmtWeihe" />
 				<jsp:param name="Readonly" value="yes" />
-			</jsp:include></td>
-		</tr>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "person", "Ethnie"); %></th>
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
+			</jsp:include>
+                    </td>
+                </tr>
+
+                <tr class="ut-table__row">
+                    <th class="ut-table__item ut-table__header__item" scope="col">
+                        <% Language.printDatafield(out, session, "person", "Ethnie"); %>
+                    </th>
+                     <td class="ut-table__item ut-table__header__item" scope="col">
+                        <jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Ethnie" />
 				<jsp:param name="Readonly" value="yes" />
 			  </jsp:include>
-            </td>
-		</tr>
-		<tr>
-			<th><% Language.printTextfield(out, session, "person", "TabVerwandte"); %></th>
-          <td>
-            <jsp:include page="../inc.modul.jsp">
-              <jsp:param name="ID" value="<%= id %>" />
-              <jsp:param name="Formular" value="person" />
-              <jsp:param name="Modul" value="Verwandte" />
-              <jsp:param name="Readonly" value="yes" />
-            </jsp:include>
-          </td>
-		</tr>
-	</tbody>
+                    </td>
+                </tr>
+
+                <tr class="ut-table__row">
+                    <th class="ut-table__item ut-table__header__item" scope="col">
+                        <% Language.printTextfield(out, session, "person", "TabVerwandte"); %>
+                    </th>
+                     <td class="ut-table__item ut-table__header__item" scope="col">
+                        <jsp:include page="../inc.modul.jsp">
+                            <jsp:param name="ID" value="<%= id %>" />
+                            <jsp:param name="Formular" value="person" />
+                            <jsp:param name="Modul" value="Verwandte" />
+                            <jsp:param name="Readonly" value="yes" />
+                        </jsp:include>
+                    </td>
+                </tr>
+            </thead>
   </table>
+
 
 <!----------Einzelbelege---------->
 <h3><% Language.printTextfield(out, session, "person", "TabEinzelbelege"); %></h3>
