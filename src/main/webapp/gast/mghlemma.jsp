@@ -12,10 +12,9 @@
 <%@ page import="java.io.*" isThreadSafe="false"%>
 <jsp:include page="../dofilter.jsp" />
 
-<%
-    int id = Integer.parseInt(request.getParameter("ID"));
+<%    int id = Integer.parseInt(request.getParameter("ID"));
 
-    String formular ="mgh_lemma";
+    String formular = "mgh_lemma";
 
     String tableString = "einzelbeleg LEFT OUTER JOIN einzelbeleg_hatperson ON einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID LEFT OUTER JOIN person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN einzelbeleg_hatmghlemma ON einzelbeleg_hatmghlemma.EinzelbelegID=einzelbeleg.ID LEFT OUTER JOIN mgh_lemma ON mgh_lemma.ID=einzelbeleg_hatmghlemma.MGHLemmaID INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID";
     String order = "";
@@ -76,21 +75,20 @@
     tables.add("mghlemma");
     tables.add("person");
 
-   String sprache = "de";
+    String sprache = "de";
 
+    //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
+    if (session != null && session.getAttribute("Sprache") != null) {
+        sprache = (String) session.getAttribute("Sprache");
+    }
 
-   //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
-   if (session != null && session.getAttribute("Sprache") != null)
-         sprache = (String)session.getAttribute("Sprache");
-
-
-   List<String> joins = new ArrayList<>();
-   List<String> headlines = new ArrayList<>();
+    List<String> joins = new ArrayList<>();
+    List<String> headlines = new ArrayList<>();
 
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
-    headlines.add(DatenbankDB.getMapping( sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeiheZeitraum"));
-    headlines.add(DatenbankDB.getMapping(sprache,"freie_suche", "Ausgabe_Person_Ethnie"));
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Ethnie"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
     headlines.add(DatenbankDB.getMapping(sprache, "quelle", "Edition"));
     headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionKapitel"));
@@ -111,73 +109,62 @@
 %>
 
 <jsp:include page="../dojump.jsp">
-	<jsp:param name="form" value="gast_mgh_lemma" />
+    <jsp:param name="form" value="gast_mgh_lemma" />
 </jsp:include>
 
 <jsp:include page="layout/titel.inc.jsp">
-	<jsp:param name="title" value="mgh_lemma" />
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="size" value="" />
-	<jsp:param name="Formular" value="mgh_lemma" />
+    <jsp:param name="title" value="mgh_lemma" />
+    <jsp:param name="ID" value="<%= id%>" />
+    <jsp:param name="size" value="" />
+    <jsp:param name="Formular" value="mgh_lemma" />
 </jsp:include>
 
 
 
 
 <!----------ID---------->
-  <div id="id">
+<div id="id">
     <jsp:include page="../forms/id.jsp">
-      <jsp:param name="ID" value="<%=id%>"/>
-      <jsp:param name="title" value="gast_mghlemma"/>
+        <jsp:param name="ID" value="<%=id%>"/>
+        <jsp:param name="title" value="gast_mghlemma"/>
     </jsp:include>
-  </div>
+</div>
 
 <!---------- ---------->
-<table class="content-table">
-	<tbody>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma"); %></th>
-			<td>
-			<jsp:include page="../inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="mgh_lemma" />
-				<jsp:param name="Datenfeld" value="MGHLemma" />
-				<jsp:param name="Klarlemma" value="yes"/>
-				<jsp:param name="size" value="25" />
-			    <jsp:param name="Readonly" value="yes" />
-			  </jsp:include>
-            </td>
-		</tr>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO"); %></th>
-
-
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="mgh_lemma" />
-				<jsp:param name="Datenfeld" value="EinzelbelegRO" />
-				<jsp:param name="Readonly" value="yes" />
-			  </jsp:include>
-            </td>
-		</tr>
-		<!--  tr>
-              <td width="200"><% Language.printTextfield(out, session, "namenkommentar", "BemerkungRO"); %></td>
-              <td width="450">
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+    <tbody class="ut-table__body ">
+        <tr class="ut-table__row">
+            <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma");%></th>
+            <td class="ut-table__item ut-table__body__item">
                 <jsp:include page="../inc.erzeugeFormular.jsp">
-                  <jsp:param name="ID" value="<%=id%>"/>
-                  <jsp:param name="Formular" value="namenkommentar"/>
-                  <jsp:param name="Datenfeld" value="BemerkungAlle"/>
-                  <jsp:param name="Readonly" value="yes"/>
+                    <jsp:param name="ID" value="<%= id%>" />
+                    <jsp:param name="Formular" value="mgh_lemma" />
+                    <jsp:param name="Datenfeld" value="MGHLemma" />
+                    <jsp:param name="Klarlemma" value="yes"/>
+                    <jsp:param name="size" value="25" />
+                    <jsp:param name="Readonly" value="yes" />
                 </jsp:include>
-              </td>
-            </tr-->
-	</tbody>
+            </td>
+        </tr>
+        <tr class="ut-table__row">
+            <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%></th>
+
+
+            <td class="ut-table__item ut-table__body__item">
+                <jsp:include page="../inc.erzeugeFormular.jsp">
+                    <jsp:param name="ID" value="<%= id%>" />
+                    <jsp:param name="Formular" value="mgh_lemma" />
+                    <jsp:param name="Datenfeld" value="EinzelbelegRO" />
+                    <jsp:param name="Readonly" value="yes" />
+                </jsp:include>
+            </td>
+        </tr>
+    </tbody>
 </table>
 <!----------Treffer insgesamt---------->
 <div style="overflow:auto;">
 
-<%@ include file="suche/ergebnisliste.jsp"%>
+    <%@ include file="suche/ergebnisliste.jsp"%>
 
 </div>
 

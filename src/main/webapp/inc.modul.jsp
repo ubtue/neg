@@ -927,25 +927,35 @@
 			}
 			out.println("</table>\n");
 		} else if (modul.equals("ueberlieferungRO")) {
-			out.println("<table id=\"ueberlieferung\" class=\"content-table\">\n");
+			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
  %>
-<tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+
+ <thead class="ut-table__header ">
+ <tr class="ut-table__row">
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="quelle" />
 		<jsp:param name="Textfeld" value="Signatur" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="quelle" />
 		<jsp:param name="Textfeld" value="Sigle" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="quelle" />
 		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="quelle" />
 		<jsp:param name="Textfeld" value="Schriftheimat" />
-	</jsp:include></th>
+            </jsp:include>
+        </th>
 </tr>
 <%
 Connection cn = null;
@@ -976,7 +986,8 @@ try {
 									+ " ORDER BY ueberlieferung_edition.Sigle ASC");
 
 
-					out.println("<tr><th colspan=4><b>");
+                                        out.println("<tr class=\"ut-table__row\"><th class=\"ut-table__item ut-table__header__item\" scope=\"col\" colspan=\"4\"><b>");
+
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
 	<jsp:param name="Formular" value="quelle" />
@@ -986,16 +997,16 @@ try {
 <%
 	out.println(": " + bez + "</b></td></tr>");
 					while (rs2.next()) {
-						out.println("<tr>");
+						out.println("<tr class=\"ut-table__row\">");
 						out
-								.println("<td>"
+								.println("<td class=\"ut-table__item ut-table__body__item\">"
 										+ (rs2
 												.getString("handschrift.Bibliothekssignatur") == null ? ""
 												: rs2
 														.getString("handschrift.Bibliothekssignatur"))
 										+ "</td>");
 						out
-								.println("<td>"
+								.println("<td class=\"ut-table__item ut-table__body__item\">"
 										+ (rs2
 												.getString("ueberlieferung_edition.Sigle") == null ? ""
 												: rs2
@@ -1053,13 +1064,13 @@ try {
 
 
 						if (!bis.equals(von) && !bis.equals(""))
-							out.println("<td>" + von + " - " + bis
+							out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + " - " + bis
 									+ "</td>");
 						else
-							out.println("<td>" + von + "</td>");
+							out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + "</td>");
 
 						out
-								.println("<td>"
+								.println("<td class=\"ut-table__item ut-table__body__item\">"
 										+ (rs2
 												.getString("selektion_ort.Bezeichnung") == null ? ""
 												: rs2
@@ -1087,6 +1098,7 @@ try {
 				} catch (Exception ex) {
 				}
 			}
+                        out.println("</tbody>\n");
 			out.println("</table>\n");
 		} else if (modul.equals("edition")) {
 			out.println("<table id=\"edition\">\n");
