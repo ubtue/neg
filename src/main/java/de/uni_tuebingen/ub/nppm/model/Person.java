@@ -15,6 +15,9 @@ public class Person {
     @Column(name = "PKZ", length = 10)
     private String pkz;
 
+    @Column(name = "GND", length = 255)
+    private String gnd;
+
     @Column(name = "Standardname", length = 255)
     private String standardname;
 
@@ -139,6 +142,14 @@ public class Person {
 
     public void setPkz(String pkz) {
         this.pkz = pkz;
+    }
+
+    public String getGnd() {
+        return gnd;
+    }
+
+    public void setGnd(String gnd) {
+        this.gnd = gnd;
     }
 
     public String getStandardname() {
