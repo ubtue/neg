@@ -1,7 +1,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 
 <%
-    if (feldtyp.equals("gnd") && !array) {
+    if (feldtyp.equals("gndlink") && !array) {
 
         String gndId = AbstractBase.getStringNative("SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
 
