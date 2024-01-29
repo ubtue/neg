@@ -70,7 +70,7 @@
             out.println("<td>");
             out.println("<select name=\"" + datenfeld + "[" + i + "]\" id=\"" + datenfeld + "[" + i + "]\">");
 
-            List<Object[]> rowlist3 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
+            List<Object[]> rowlist3 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft);
 
             for (Object[] columns2 : rowlist3) {
                 String value2_id = columns2[0].toString();
