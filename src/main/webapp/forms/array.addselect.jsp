@@ -41,7 +41,7 @@
 
             if (!isReadOnly) {
 
-                if (!selected.equals("1")) {
+                if (!selected.equals("-1")) {
                     String href = "";
                     if (returnId.equals("-1")) {
                         href = "javascript:deleteEntry('" + zielTabelle + "', '" + value_id + "', '" + returnpage + "', '" + id + "');";
@@ -64,7 +64,7 @@
         }
 
         //Create new drop down list when Backend/Admin, not Guest
-        if (!isReadOnly && !selected.equals("1")) {
+        if (!isReadOnly) {
 
             out.println("<tr>");
             out.println("<td>");
