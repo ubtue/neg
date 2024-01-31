@@ -41,7 +41,7 @@
 
             if (!isReadOnly) {
 
-                if (!selected.equals("1")) {
+                if (!selected.equals("-1")) {
                     String href = "";
                     if (returnId.equals("-1")) {
                         href = "javascript:deleteEntry('" + zielTabelle + "', '" + value_id + "', '" + returnpage + "', '" + id + "');";
@@ -64,13 +64,19 @@
         }
 
         //Create new drop down list when Backend/Admin, not Guest
-        if (!isReadOnly && !selected.equals("1")) {
+        if (!isReadOnly) {
 
             out.println("<tr>");
             out.println("<td>");
             out.println("<select name=\"" + datenfeld + "[" + i + "]\" id=\"" + datenfeld + "[" + i + "]\">");
 
-            List<Object[]> rowlist3 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
+            List<Object[]> rowlist3 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY "
+        + "CASE "
+        + "    WHEN id = -1 THEN 0 "
+        + "    WHEN id = 1 THEN 1 "
+        + "    ELSE 2 "
+        + "END, "
+        + "Bezeichnung ASC;");
 
             for (Object[] columns2 : rowlist3) {
                 String value2_id = columns2[0].toString();

@@ -50,7 +50,7 @@
 		</jsp:include>
 
 		<div id="form">
-			<a href="einzelbeleg_comp?ID=<%=id%>"> 
+			<a href="einzelbeleg_comp?ID=<%=id%>">
                             <% Language.printTextfield(out,session, formular,"KompakteSicht");%>
 			</a>
 			<table style="width: 100%;">
@@ -169,8 +169,8 @@
                                                     <jsp:param name="Datenfeld" value="KontextSelektion" />
                                                 </jsp:include>
                                             </td>
-					</tr>    
-                                        
+					</tr>
+
                                         <tr>
                                             <td width="200" valign="top">
                                                 <% Language.printDatafield(out, session, formular, "KritikSelektion");%>
@@ -179,6 +179,17 @@
                                                     <jsp:param name="ID" value="<%=id%>" />
                                                     <jsp:param name="Formular" value="einzelbeleg" />
                                                     <jsp:param name="Datenfeld" value="KritikSelektion" />
+                                                </jsp:include>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200" valign="top">
+                                                <% Language.printDatafield(out, session, formular, "AngabenPerson");%>
+                                            </td>
+                                            <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+                                                    <jsp:param name="ID" value="<%=id%>" />
+                                                    <jsp:param name="Formular" value="einzelbeleg" />
+                                                    <jsp:param name="Datenfeld" value="AngabenPerson" />
                                                 </jsp:include>
                                             </td>
                                         </tr>
@@ -206,7 +217,7 @@
 							</jsp:include>
                                                 </td>
 					</tr>
-                                        
+
                                         <tr>
 						<td width="200">
                                                     <% Language.printDatafield(out,session, formular,"Raster");%>
@@ -220,7 +231,7 @@
 							</jsp:include>
                                                 </td>
 					</tr>
-                                        
+
                                         <tr>
 						<td width="200">
                                                     <% Language.printDatafield(out,session, formular,"Schreiber");%>
@@ -298,7 +309,7 @@
                                                     </span>
                                                 </li>
 						<li>
-                                                    <a href="javascript:onoff('tab2','tab1');"> 
+                                                    <a href="javascript:onoff('tab2','tab1');">
                                                         <% Language.printTextfield(out, session, formular, "TabTextkritik"); %>
                                                     </a>
                                                 </li>
@@ -349,8 +360,8 @@
 										<jsp:param name="ID" value="<%=id%>" />
 										<jsp:param name="Formular" value="einzelbeleg" />
 										<jsp:param name="Datenfeld" value="Edition" />
-									</jsp:include> 
-                                                                                
+									</jsp:include>
+
                                                                         <jsp:include page="inc.erzeugeFormular.jsp">
 										<jsp:param name="ID" value="<%=id%>" />
 										<jsp:param name="Formular" value="einzelbeleg" />
@@ -565,11 +576,11 @@
                                                 <% Language.printTextfield(out, session, formular, "TabTextkritik"); %>
                                             </a>
                                         </li>
-                                        <li><a href="javascript:onoff('tab3','tab4');"> 
+                                        <li><a href="javascript:onoff('tab3','tab4');">
                                                 <% Language.printTextfield(out, session, formular, "TabNamen"); %>
                                             </a>
                                         </li>
-                                        <li><span> 
+                                        <li><span>
                                                 <% Language.printTextfield(out, session, formular, "TabPerson"); %>
                                             </span>
                                         </li>
@@ -607,7 +618,7 @@
 										<jsp:param name="Datenfeld" value="AmtWeihe" />
 									</jsp:include></td>
 							</tr>
-                                                        
+
                                                         <tr>
                                                             <th width="200" valign="top">
                                                                 <% Language.printDatafield(out, session, formular, "Konvent");%>
@@ -618,7 +629,7 @@
                                                                     <jsp:param name="Datenfeld" value="Konvent" />
                                                                 </jsp:include></td>
                                                         </tr>
-                                                        
+
 							<tr>
 								<th width="200" valign="top">
                                                                     <% Language.printDatafield(out,session, formular,"Ethnie");%>
@@ -678,7 +689,7 @@
                                                 <% Language.printTextfield(out, session, formular, "TabNamen"); %>
                                             </a>
                                         </li>
-                                        <li><a href="javascript:onoff('tab4','tab5');"> 
+                                        <li><a href="javascript:onoff('tab4','tab5');">
                                                 <% Language.printTextfield(out, session, formular, "TabPerson"); %>
                                             </a>
                                         </li>
