@@ -14,4 +14,8 @@ CREATE TABLE person_hatgruppeherkunftareal (
     COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, ZielTabelle, ZielAttribut, FormularAttribut, Auswahlherkunft, Seite, gb_beschriftung, fr_beschriftung, la_beschriftung) VALUES ("person", "GruppeHerkunft", "Gruppe Herkunft", "addselect", 1, "person_hatgruppeherkunftareal", "ArealID", "PersonID", "selektion_areal", "person", "Group origin", "Groupe Origine", "Gruppus Originis");
+
+UPDATE `neg`.`datenbank_mapping` SET `FormularAttribut` = 'NULL' WHERE (`ID` = '315');
+
+UPDATE `neg`.`datenbank_mapping` SET `FormularAttribut` = 'PersonID' WHERE (`ID` = '272');
 	
