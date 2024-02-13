@@ -14,9 +14,10 @@ INSERT INTO `neg`.`selektion_angabe` (ID,Bezeichnung) VALUES (-1,'-');
 INSERT INTO `neg`.`selektion_angabe` (ID,Bezeichnung) VALUES (1,'?');
 
 CREATE TABLE einzelbeleg_hatangabe (
-    ID int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    ID int unsigned NOT NULL AUTO_INCREMENT,
     EinzelbelegID int unsigned NOT NULL,
     AngabeID int NOT NULL,
+    PRIMARY KEY (ID),
     CONSTRAINT einzelbeleg_hatangabe_EinzelbelegID 
         FOREIGN KEY (EinzelbelegID) REFERENCES einzelbeleg(ID),
     CONSTRAINT einzelbeleg_hatangabe_AngabeID 
