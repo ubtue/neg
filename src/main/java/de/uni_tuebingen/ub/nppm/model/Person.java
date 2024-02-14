@@ -93,6 +93,16 @@ public class Person {
     )
     Set<SelektionAreal> areal = new HashSet<>();
 
+     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @JoinTable(
+            name = "person_hatgruppeherkunftareal",
+            joinColumns = {
+                @JoinColumn(name = "PersonID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "ArealID")}
+    )
+    Set<SelektionAreal> arealGruppe = new HashSet<>();
+
     @OneToMany(mappedBy = "person", cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     private List<PersonQuiet> quiet = new ArrayList<>();
 
@@ -258,6 +268,10 @@ public class Person {
         return areal;
     }
 
+     public Set<SelektionAreal> getArealGruppe() {
+        return arealGruppe;
+    }
+
     public List<PersonQuiet> getQuiet() {
         return quiet;
     }
@@ -319,6 +333,14 @@ public class Person {
 
     public void removeAreal(int id) {
         this.getAreal().removeIf(e -> e.getId() == id);
+    }
+
+    public void addArealGruppe(SelektionAreal selA) {
+        this.getArealGruppe().add(selA);
+    }
+
+    public void removeArealGruppe(int id) {
+        this.getArealGruppe().removeIf(e -> e.getId() == id);
     }
 
     public void addVariante(PersonVariante pV) {
