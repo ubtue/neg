@@ -18,9 +18,6 @@ import de.uni_tuebingen.ub.nppm.util.Constants;
  * might be restarted, so the neg/WEB-INF directory will be recreated
  * and you have to change the working directory again so the call works.
  *
- * Another problem might be that you cannot access the database yet,
- * because the access credentials are stored in the tomcat / catalina conf,
- * so we still have to find a way to inject them when using the CLI entry point.
  */
 public class HelloWorld extends AbstractBase {
     public static void main (String[] args) throws Exception {

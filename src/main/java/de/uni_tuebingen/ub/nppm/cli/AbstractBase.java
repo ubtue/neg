@@ -4,6 +4,12 @@ import java.util.Properties;
 import java.io.FileInputStream;
 
 public class AbstractBase {
+    /**
+     * Note: The properties are stored in a separate file right now.
+     *       Later on we might try to get the information either from the
+     *       existing tomcat configuration file,
+     *       or merge both files together somehow.
+     */
     protected static String propertiesPath = "/root/.neg.properties";
 
     /**
