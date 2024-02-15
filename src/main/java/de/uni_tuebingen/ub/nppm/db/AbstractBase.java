@@ -29,12 +29,21 @@ public class AbstractBase {
 
     protected static SessionFactory sessionFactory;
 
+    protected static Properties cliProperties = null;
+
     protected static javax.naming.InitialContext initialContext = null;
 
     public static Map<String, Class> tableNameToEntityMap = initTableNameToEntityMap();
 
     public static void setInitialContext(javax.naming.InitialContext ctx) {
         initialContext = ctx;
+    }
+
+    // This can be used to override certain properties like DB access credentials
+    // when running in CLI mode. If not present, we will try to take the properties
+    // later from the tomcat application context.
+    public static void setCliProperties(Properties newCliProperties) {
+        cliProperties = newCliProperties;
     }
 
     // Example taken from: https://www.javaguides.net/2019/08/hibernate-5-one-to-many-mapping-annotation-example.html
@@ -51,9 +60,16 @@ public class AbstractBase {
                 initialContext = new javax.naming.InitialContext();
             }
             settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-            settings.put(Environment.URL, (String) initialContext.lookup("java:comp/env/sqlURL"));
-            settings.put(Environment.USER, (String) initialContext.lookup("java:comp/env/sqlUser"));
-            settings.put(Environment.PASS, (String) initialContext.lookup("java:comp/env/sqlPassword"));
+
+            if (cliProperties != null) {
+                settings.put(Environment.URL, cliProperties.get("sqlURL"));
+                settings.put(Environment.USER, cliProperties.get("sqlUser"));
+                settings.put(Environment.PASS, cliProperties.get("sqlPassword"));
+            } else {
+                settings.put(Environment.URL, (String) initialContext.lookup("java:comp/env/sqlURL"));
+                settings.put(Environment.USER, (String) initialContext.lookup("java:comp/env/sqlUser"));
+                settings.put(Environment.PASS, (String) initialContext.lookup("java:comp/env/sqlPassword"));
+            }
 
             settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
             settings.put(Environment.SHOW_SQL, "true");

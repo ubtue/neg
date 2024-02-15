@@ -1,5 +1,9 @@
 package de.uni_tuebingen.ub.nppm.cli;
 
+import de.uni_tuebingen.ub.nppm.db.PersonDB;
+import de.uni_tuebingen.ub.nppm.model.Person;
+import de.uni_tuebingen.ub.nppm.util.Constants;
+
 /**
  * Hello World CLI Example
  *
@@ -18,8 +22,17 @@ package de.uni_tuebingen.ub.nppm.cli;
  * because the access credentials are stored in the tomcat / catalina conf,
  * so we still have to find a way to inject them when using the CLI entry point.
  */
-public class HelloWorld {
-    public static void main (String[] args) {
+public class HelloWorld extends AbstractBase {
+    public static void main (String[] args) throws Exception {
         System.out.println("Hello World");
+        System.out.println("Default Language is: " + Constants.DEFAULT_LANG);
+
+        System.out.println("Loading Properties file...");
+        LoadProperties();
+        System.out.println("Finished Loading Properties file");
+
+        System.out.println("Loading First Public Person...");
+        Person person = PersonDB.getFirstPublicPerson();
+        System.out.println("First Public Person is: " + person.getStandardname());
     }
 }
