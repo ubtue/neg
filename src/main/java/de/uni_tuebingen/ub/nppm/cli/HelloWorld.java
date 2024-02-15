@@ -1,0 +1,25 @@
+package de.uni_tuebingen.ub.nppm.cli;
+
+/**
+ * Hello World CLI Example
+ *
+ * This is just a first test to prove that classes inside a WAR file
+ * can be run via command line.
+ *
+ * To call the main function via CLI, execute the following shell commands:
+ * - `cd /var/lib/tomcat9/webapps/neg/WEB-INF`
+ * - `java -classpath "lib/*:classes/." de.uni_tuebingen.ub.nppm.cli.HelloWorld`
+ *
+ * Be aware that everytime you rebuild / redeploy the project, your tomcat
+ * might be restarted, so the neg/WEB-INF directory will be recreated
+ * and you have to change the working directory again so the call works.
+ *
+ * Another problem might be that you cannot access the database yet,
+ * because the access credentials are stored in the tomcat / catalina conf,
+ * so we still have to find a way to inject them when using the CLI entry point.
+ */
+public class HelloWorld {
+    public static void main (String[] args) {
+        System.out.println("Hello World");
+    }
+}
