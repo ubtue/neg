@@ -14,3 +14,35 @@ ADD CONSTRAINT `einzelbeleg_BeziehungGemeinschaftID` FOREIGN KEY (`BeziehungGeme
 
 
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Auswahlherkunft`, `Seite`, `gb_beschriftung`, `fr_beschriftung`) VALUES ('einzelbeleg', 'BeziehungGemeinschaft', 'Beziehung zur Gemeinschaft', 'select', '0', 'einzelbeleg', 'BeziehungGemeinschaftID', 'selektion_beziehung', 'einzelbeleg', 'Relationship with the community', 'Relation avec la communauté');
+
+ALTER TABLE selektion_amtstandweihe MODIFY Bezeichnung varchar(255);   
+
+ALTER TABLE selektion_angabe MODIFY Bezeichnung varchar(255); 
+
+ALTER TABLE selektion_bearbeitungsstatus MODIFY Bezeichnung varchar(255); 
+
+ALTER TABLE selektion_bewertung MODIFY Bezeichnung varchar(255); 
+
+ALTER TABLE selektion_echtheit MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE selektion_ethnie MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE selektion_geschlecht MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE selektion_grammatikgeschlecht MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE selektion_janein MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE  selektion_kasus MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE  selektion_kontext MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE  selektion_konvent MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE  selektion_kritik MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE  selektion_lebendverstorben MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE  selektion_quellengattung MODIFY Bezeichnung varchar(255);
+
+ALTER TABLE  selektion_verwandtschaftsgrad MODIFY Bezeichnung varchar(255);
