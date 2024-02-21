@@ -25,6 +25,9 @@ public class DeleteHelper {
                     case "einzelbeleg_hatamtweihe":
                         EinzelbelegDB.remove(EinzelbelegHatAmtWeihe_MM.class, id);
                         break;
+                    case "einzelbeleg_hatangabe":								//Das hier Kommt neu dazu "einzelbeleg_hatangabe":
+                        EinzelbelegDB.remove(EinzelbelegHatAngabe.class, id);
+                        break;
                     case "einzelbeleg_hatethnie":
                         EinzelbelegDB.remove(EinzelbelegHatEthnie_MM.class, id);
                         break;
@@ -57,6 +60,9 @@ public class DeleteHelper {
                         break;
                     case "person_hatethnie":
                         PersonDB.remove(PersonEthnie_MM.class, id);
+                        break;
+                    case "person_hatgruppeherkunftareal":
+                        PersonDB.remove(PersonGruppeHerkunftAreal_MM.class, id);
                         break;
                     case "person_hatstand":
                         PersonDB.remove(PersonHatStand.class, id);

@@ -74,6 +74,7 @@ public class AbstractBase {
             settings.put("hibernate.cache.use_query_cache", "true");
             settings.put("hibernate.cache.use_second_level_cache", "true");
             settings.put("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
+            settings.put("hibernate.cache.ehcache.missing_cache_strategy", "create");
 
             configuration.setProperties(settings);
 

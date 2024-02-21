@@ -50,6 +50,7 @@
         </th>
      </tr>
 </thead>
+<tbody class="ut-table__body ">
 
 
 <%
@@ -74,20 +75,20 @@
 				while (rs.next()) {
 					count++;
 
-					if (count % 2 == 0)
-						out.println("<tr>");
-					else
-						out.println("<tr bgcolor='#AACCDD'>");
+					//if (count % 2 == 0)  //Auskommentiert, da es nicht dem Stil der Universität Tübingen entspricht
+						out.println("<tr class=\"ut-table__row\">");
+                                        //else
+						//out.println("<tr class=\"ut-table__row\" bgcolor='#AACCDD'>");
 
-					out.println("<td>" + rs.getString("ed.Zitierweise")
+					out.println("<td class=\"ut-table__item ut-table__body__item\">" + rs.getString("ed.Zitierweise")
 							+ "</td>");
 					String sigle = rs.getString("ue.Sigle");
 
 					if (sigle == null)
 						sigle = "";
 
-					out.println("<td>" + sigle + "</td>");
-					out.println("<td>" + rs.getString("et.Variante")
+					out.println("<td class=\"ut-table__item ut-table__body__item\">" + sigle + "</td>");
+					out.println("<td class=\"ut-table__item ut-table__body__item\">" + rs.getString("et.Variante")
 							+ "</td>");
 
 					String vonTag = rs.getString("h.VonTag");
@@ -128,17 +129,17 @@
 						bis = bisJhdt;
 
 					if (!bis.equals(von) && !bis.equals(""))
-						out.println("<td>" + von + " - " + bis
+						out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + " - " + bis
 								+ "</td>");
 					else
-						out.println("<td>" + von + "</td>");
+						out.println("<td class=\"ut-table__item ut-table__body__item\">" + von + "</td>");
 
 					String bem = rs.getString("et.Bemerkung");
 
 					if (bem == null)
 						bem = "";
 
-					out.println("<td>" + bem + "</td>");
+					out.println("<td class=\"ut-table__item ut-table__body__item\">" + bem + "</td>");
 					out.println("</tr>");
 				}
 			} catch (Exception e) {
@@ -160,13 +161,14 @@
 				} catch (Exception ex) {
 				}
 			}
+                        out.println("</tbody>");
 			out.println("</table>\n");
 		}
 	}
 
-	else if (formular.equals("person")) {
+	else if (formular.equals("person")) {  //hier fehlt eventuel <table> und <tbody> ... ?
 		if (modul.equals("namen")) {
-			out.println("<tr><td>\n");
+			out.println("<tr class=\"ut-table__row\"><td class=\"ut-table__item ut-table__body__item\">\n");
 
 	Connection cn = null;
 			Statement st = null;
@@ -189,7 +191,7 @@
 								+ id + "\"");
 				out.print("<label>Name");
 				if(rs.next() && rs.getInt(1)>1) out.println("n");
-				out.println("</label></td><td>");
+				out.println("</label></td><td class=\"ut-table__item ut-table__body__item\">");
 				rs = st
 						.executeQuery("SELECT DISTINCT namenkommentar.PLemma, "+
 						"namenkommentar.ID FROM einzelbeleg LEFT OUTER JOIN "+
@@ -202,7 +204,7 @@
 						"namenkommentar.ID=einzelbeleg_hatnamenkommentar.NamenkommentarID WHERE person.ID=\""
 								+ id + "\"");
 				while (rs.next()  && rs.getString("namenkommentar.PLemma") !=null) {
-					out.println("<a href=\"namenkommentar?ID="+rs.getString("namenkommentar.ID")+"\">"+format(rs.getString("namenkommentar.PLemma"),"PLemma")+"<br>");
+					out.println("<a class=\"ut-link\" href=\"namenkommentar?ID="+rs.getString("namenkommentar.ID")+"\">"+format(rs.getString("namenkommentar.PLemma"),"PLemma")+"<br>");
 				}
 				out.println("</td></tr>");
 			} catch (Exception e) {
@@ -226,34 +228,47 @@
 			}
 			out.println("</ul>\n");
 		}if (modul.equals("nachweise")) {
-			out.println("<table>\n");
+			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
+                        out.println("<thead class=\"ut-table__header\">");
 %>
-<tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+    <tr class="ut-table__row">
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Beleg" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Belegform" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="AmtWeihe" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Stand" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            </jsp:include>
+        </th>
+	<th class="ut-table__item ut-table__header__item" scope="col">
+            <jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="person" />
 		<jsp:param name="Textfeld" value="Kontext" />
-	</jsp:include></th>
-</tr>
+            </jsp:include>
+        </th>
+    </tr>
 
 <%
 	Connection cn = null;

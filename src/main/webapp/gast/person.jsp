@@ -57,7 +57,13 @@
 				<jsp:param name="size" value="50" />
 				<jsp:param name="Readonly" value="yes" />
 			</jsp:include>
-
+                        <span style="margin-left: 5px;>
+                            <jsp:include page="../inc.erzeugeFormular.jsp">
+                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="Formular" value="person" />
+                                <jsp:param name="Datenfeld" value="GNDLink" />
+                            </jsp:include>
+                        </span>
                     </td>
                 </tr>
 

@@ -67,22 +67,23 @@
 
       int linecount = SucheDB.getLinecount(tablesString, conditionsString);
 
-      out.println("<h3>Gesamte Treffer: "+linecount+"</h3>");
+      out.println("<h3 class=\"ut-heading ut-heading--h3\">Gesamte Treffer: "+linecount+"</h3>");
 
       String sql = "SELECT "+fieldsString+" FROM "+tablesString+" WHERE ("+conditionsString+") "+order; //GROUP BY "+fieldsString+"
       if (export.equals("liste") || export.equals("browse"))
         sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
-      //out.println(sql);
+
       List<Map> rowlist = SucheDB.getMappedList(sql);
 
       // ########## LISTE/BROWSE ##########
       if (export.equals("liste") || export.equals("browse")) {
       String oldValue [] = new String [5];
 
-        out.println("<table id=\"namen-insgesamt\" class=\"resultlist content-table\">");
-        out.println("<tr>");
+        out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">");
+        out.println("<tbody class=\"ut-table__body\">");
+        out.println("<tr class=\"ut-table__row\">");
         for (int i=0; i<headlines.size(); i++) {
-          out.println("<th class=\"resultlist\">");
+          out.println("<th class=\"ut-table__item ut-table__header__item\" scope=\"col\">");
           // Link für Seite erzeugen
           String direction = "";
           if (order.contains(fieldNames.get(i))) {
@@ -107,7 +108,7 @@
               parameter += "&"+paramName+"="+urlEncode(request.getParameter(paramName));
           }
 
-          out.print("<a href=\""+parameter+"\">");
+          out.print("<a class=\"ut-link\" href=\""+parameter+"\">");
           out.print(headlines.get(i));
           if (direction.equals("ASC"))
             out.print("<img src='layout/icons/arrowup.gif'>");
@@ -122,13 +123,13 @@
 
     //    if(!row.get(orderV[0]).toString().equals(oldValue[0])) out.println();
 
-          out.println("<tr class=\""+(even?"":"un")+"even\">");
+          out.println("<tr class=\"ut-table__row\" ");
           if (!formular.equals("favorit") && !formular.equals("freie_suche")&&  !formular.equals("mgh_lemma") &&!formular.equals("namenkommentar")&& !formular.equals("literatur")) {
-            out.println("<td class=\"resultlist\" valign=\"top\" align=\"center\"><a href=\""+formular+".jsp?ID="+ row.get(formular+".ID").toString()+"\">Gehe zu</a></td>");
+            out.println("<td class=\"ut-table__item ut-table__body__item\" valign=\"top\" align=\"center\"><a class=\"ut-link\" href=\""+formular+".jsp?ID="+ row.get(formular+".ID").toString()+"\">Gehe zu</a></td>");
           }
 
           for(int i=0; i<fieldNames.size(); i++) {
-            out.println("<td class=\"resultlist\" valign=\"top\">");
+            out.println("<td class=\"ut-table__item ut-table__body__item\" valign=\"top\">");
             String fieldName = fieldNames.get(i);
             String fieldAlias = QueryHelper.getFieldAliasResult(fieldName);
             if (row.get(fieldAlias) != null && !String.valueOf(row.get(fieldAlias)).equals("")) {
@@ -137,35 +138,35 @@
               if (export.equals("browse")) {
                 boolean link = false;
                 if (fieldName.contains("einzelbeleg.Belegform") && row.get(QueryHelper.getFieldAliasResult("einzelbeleg.ID")) != null) {
-                  out.print("<a href=\"einzelbeleg?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("einzelbeleg.ID")))+"\">");
+                  out.print("<a class=\"ut-link\" href=\"einzelbeleg?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("einzelbeleg.ID")))+"\">");
                   link = true;
                 }
                 else if (fieldName.contains("person.Standardname") && row.get(QueryHelper.getFieldAliasResult("person.ID")) != null) {
-                  out.print("<a href=\"person?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("person.ID")))+"\">");
+                  out.print("<a class=\"ut-link\" href=\"person?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("person.ID")))+"\">");
                   link = true;
                 }
                 else if (fieldName.contains("perszu.Standardname") && row.get(QueryHelper.getFieldAliasResult("perszu.ID")) != null) {
-                  out.print("<a href=\"person?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("perszu.ID")))+"\">");
+                  out.print("<a class=\"ut-link\" href=\"person?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("perszu.ID")))+"\">");
                   link = true;
                 }
                 else if (fieldName.contains("namenkommentar.PLemma") && row.get(QueryHelper.getFieldAliasResult("namenkommentar.ID")) != null) {
-                  out.print("<a href=\"namenkommentar?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("namenkommentar.ID")))+"\">");
+                  out.print("<a class=\"ut-link\" href=\"namenkommentar?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("namenkommentar.ID")))+"\">");
                   link = true;
                 }
                 else if (fieldName.contains("quelle.Bezeichnung") && row.get(QueryHelper.getFieldAliasResult("quelle.ID")) != null) {
-                  out.print("<a href=\"quelle?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("quelle.ID")))+"\">");
+                  out.print("<a class=\"ut-link\" href=\"quelle?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("quelle.ID")))+"\">");
                   link = true;
                 }
                 else if (fieldName.contains("edition.Titel") && row.get(QueryHelper.getFieldAliasResult("edition.ID")) != null) {
                   try{
-                  out.print("<a href=\"edition?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("edition.ID")))+"\">");
+                  out.print("<a class=\"ut-link\" href=\"edition?ID="+String.valueOf(row.get(QueryHelper.getFieldAliasResult("edition.ID")))+"\">");
                   link = true;
                   }catch(Exception e){
                      link=false;
                   }
                 }
                 else if (fieldName.contains("ID")) {
-                    out.println("<a href=\""+formular+".jsp?ID="+row.get(formular+".ID").toString()+"\">Gehe zu: ");
+                    out.println("<a class=\"ut-link\" href=\""+formular+".jsp?ID="+row.get(formular+".ID").toString()+"\">Gehe zu: ");
                               link = true;
                 }
                 out.print(cell);
@@ -205,7 +206,7 @@
           excel.println();
         }
         excel.close();
-        out.println("<a href='../../print/output_"+session.getAttribute("Benutzername")+".csv'>herunterladen</a>");
+        out.println("<a  class=\"ut-link\" href='../../print/output_"+session.getAttribute("Benutzername")+".csv'>herunterladen</a>");
       }
       // ########## EXCEL #########
 
@@ -225,7 +226,7 @@
 
           // Link zur ersten Seite anzeigen falls nÃ¶tig
           if (i ==  0 && i <= pageoffset - 10) {
-            out.println("<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;...&nbsp;");
+            out.println("<a class=\"ut-link\" href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;...&nbsp;");
           }
 
           // gelinkte Seitennummer anzeigen
@@ -233,14 +234,14 @@
             if (i==pageoffset) {
               out.println("<b>");
             }
-            out.println("<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;");
+            out.println("<a class=\"ut-link\" href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;");
             if (i==pageoffset) {
               out.println("</b>");
             }
           }
           // Link zur letzten Seite anzeigen falls nÃ¶tig
           if (i ==  pages-1 && i >= pageoffset + 10) {
-            out.println("...&nbsp;<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;");
+            out.println("...&nbsp;<a class=\"ut-link\" href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;");
           }
         }
         out.println("</p>");
