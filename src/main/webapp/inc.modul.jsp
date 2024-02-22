@@ -168,6 +168,7 @@
 
 	else if (formular.equals("person")) {  //hier fehlt eventuel <table> und <tbody> ... ?
 		if (modul.equals("namen")) {
+                        out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
 			out.println("<tr class=\"ut-table__row\"><td class=\"ut-table__item ut-table__body__item\">\n");
 
 	Connection cn = null;
@@ -226,11 +227,12 @@
 				} catch (Exception ex) {
 				}
 			}
-			out.println("</ul>\n");
+
+                        out.println("</table>");
 		}if (modul.equals("nachweise")) {
 			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
-                        out.println("<thead class=\"ut-table__header\">");
 %>
+<thead class="ut-table__header ">
     <tr class="ut-table__row">
 	<th class="ut-table__item ut-table__header__item" scope="col">
             <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -269,6 +271,9 @@
             </jsp:include>
         </th>
     </tr>
+</thead>
+<tbody class="ut-table__body ">
+
 
 <%
 	Connection cn = null;
@@ -293,12 +298,10 @@
 				int count = 0;
 				while (rs.next()) {
 					count++;
-					if (count % 2 == 0)
-						out.println("<tr>");
-					else
-						out.println("<tr bgcolor='#AACCDD'>");
-					out.println("<td><a href=\"einzelbeleg?ID="
-							+ rs.getInt("e.ID") + "\">");
+					out.println("<tr class=\"ut-table__row\">");
+					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+                                        + "<a class=\"ut-link\" href=\"einzelbeleg?ID=" + rs.getInt("e.ID") + "\">");
+
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
 	<jsp:param name="Formular" value="person" />
@@ -306,9 +309,9 @@
 </jsp:include>
 <%
 	out.println("</a></td>");
-					out.println("<td>" + rs.getString("e.Belegform")
+					out.println("<td class=\"ut-table__item ut-table__body__item\">" + rs.getString("e.Belegform")
 							+ "</td>");
-					out.println("<td> "
+					out.println("<td class=\"ut-table__item ut-table__body__item\"> "
 							+ makeDate(rs.getInt("e.VonTag"), rs
 									.getInt("e.VonMonat"), rs
 									.getInt("e.VonJahr"))
@@ -317,16 +320,16 @@
 									.getInt("e.BisMonat"), rs
 									.getInt("e.BisJahr")) + "</td>");
 					out
-							.println("<td>"
+							.println("<td class=\"ut-table__item ut-table__body__item \">"
 									+ (rs.getString("sew.Bezeichnung") != null ? rs
 											.getString("sew.Bezeichnung")
 											: "-") + "</td>");
 					out
-							.println("<td>"
+							.println("<td class=\"ut-table__item ut-table__body__item\">"
 									+ (rs.getString("st.Bezeichnung") != null ? rs
 											.getString("st.Bezeichnung")
 											: "-") + "</td>");
-					out.println("<td>"
+					out.println("<td class=\"ut-table__item ut-table__body__item\">"
 							+ (rs.getString("e.Kontext") != null ? rs
 									.getString("e.Kontext") : "-")
 							+ "</td>");
@@ -351,10 +354,12 @@
 				} catch (Exception ex) {
 				}
 			}
+                        out.println("</tbody>");
 			out.println("</table>\n");
 		}
 		if (modul.equals("nachweiseRO")) {
-			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
+			 out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
+
 %>
 <thead class="ut-table__header ">
     <tr class="ut-table__row">
@@ -397,7 +402,7 @@
         </th>
     </tr>
 </thead>
-
+<tbody class="ut-table__body ">
 
 <%
 	Connection cn = null;
@@ -525,7 +530,8 @@
 			out.println("</table>\n");
 		}
 		if (modul.equals("Verwandte")) {
-			out.println("<table>\n");
+			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
+                        out.println("<thead class=\"ut-table__header \">");
 %>
 <tr>
 	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -601,7 +607,8 @@
 
 	else if (formular.equals("edition")) {
 		if (modul.equals("ueberlieferung")) {
-			out.println("<table>\n");
+			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
+            out.println("<thead class=\"ut-table__header \">");
 %>
 <tr>
 	<th></th>
@@ -738,9 +745,10 @@
 			out.println("</table>\n");
 		}
 		else if (modul.equals("quellen")) {
-			out.println("<table>\n");
-			out
-					.println("<tr><th>Quelle</th><th>Sigle</th><th>Standard</th></tr>\n");
+			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
+                        out.println("<thead class=\"ut-table__header \">");
+			out.println("<tr><th>Quelle</th><th>Sigle</th><th>Standard</th></tr>\n");
+
 			Connection cn = null;
 			Statement st = null;
 			ResultSet rs = null;
