@@ -11,7 +11,7 @@
 	String modul = request.getParameter("Modul");
 
 	if (formular.equals("einzelbeleg")) {
-		if (modul.equals("lesartenRO")) {
+		if (modul.equals("lesartenRO")) {  // gast/einzelbeleg.jsp
 
 			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
 %>
@@ -166,8 +166,8 @@
 		}
 	}
 
-	else if (formular.equals("person")) {  //hier fehlt eventuel <table> und <tbody> ... ?
-		if (modul.equals("namen")) {
+	else if (formular.equals("person")) {  //Table wid in person.jsp erstellt
+		if (modul.equals("namen")) {     //person.jsp
                         out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
 			out.println("<tr class=\"ut-table__row\"><td class=\"ut-table__item ut-table__body__item\">\n");
 
@@ -229,7 +229,7 @@
 			}
 
                         out.println("</table>");
-		}if (modul.equals("nachweise")) {
+		}if (modul.equals("nachweise")) {   //wird nicht benutzt  grep -r nachweise  kein Modul hinzugeführt
 			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
 %>
 <thead class="ut-table__header ">
@@ -357,7 +357,7 @@
                         out.println("</tbody>");
 			out.println("</table>\n");
 		}
-		if (modul.equals("nachweiseRO")) {
+		if (modul.equals("nachweiseRO")) {   //gast-person.jsp
 			 out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
 
 %>
@@ -529,7 +529,7 @@
                         out.println("</tbody>\n");
 			out.println("</table>\n");
 		}
-		if (modul.equals("Verwandte")) {
+		if (modul.equals("Verwandte")) {  //gast/person.jsp
 			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
                         out.println("<thead class=\"ut-table__header \">");
 %>
@@ -606,7 +606,7 @@
 	}
 
 	else if (formular.equals("edition")) {
-		if (modul.equals("ueberlieferung")) {
+		if (modul.equals("ueberlieferung")) {  // quelle.jsp und edition.jsp
 			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
             out.println("<thead class=\"ut-table__header \">");
 %>
@@ -744,7 +744,7 @@
 			}
 			out.println("</table>\n");
 		}
-		else if (modul.equals("quellen")) {
+		else if (modul.equals("quellen")) {  // edition.jsp
 			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
                         out.println("<thead class=\"ut-table__header \">");
 			out.println("<tr><th>Quelle</th><th>Sigle</th><th>Standard</th></tr>\n");
@@ -809,7 +809,7 @@
 	}
 
 	else if (formular.equals("quelle")) {
-		if (modul.equals("ueberlieferung")) {
+		if (modul.equals("ueberlieferung")) {  //quellen.jsp und edition.jsp
 			out.println("<table>\n");
 %>
 <tr>
@@ -949,7 +949,7 @@
 				}
 			}
 			out.println("</table>\n");
-		} else if (modul.equals("ueberlieferungRO")) {
+		} else if (modul.equals("ueberlieferungRO")) { //gast quelle.jsp
 			out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
  %>
 
@@ -1123,7 +1123,7 @@ try {
 			}
                         out.println("</tbody>\n");
 			out.println("</table>\n");
-		} else if (modul.equals("edition")) {
+		} else if (modul.equals("edition")) { // gast/quelle.jsp
 			out.println("<table id=\"edition\">\n");
 %>
 <tbody  valign="bottom">
@@ -1354,7 +1354,7 @@ firstEdition = true;
 	<%	}
 		}
 	}
-	else if (formular.equals("mgh_lemma")) {
+	else if (formular.equals("mgh_lemma")) {  //namenkommentar.jsp  und mghlemma.jsp
 		if (modul.equals("bearbeiter") || modul.equals("korrektor")) {
 			out.println("<table>\n");
 			out.print("<tr><th width=\"200\">");
@@ -1459,7 +1459,7 @@ firstEdition = true;
 				}
 			}
 			out.println("</table>\n");
-		}		else if (modul.equals("belege")) {
+		}		else if (modul.equals("belege")) {  //namenkommentar.jsp und mghlemma.jsp
 			out.println("<table>\n");
 %>
 <tr>
@@ -1578,7 +1578,7 @@ firstEdition = true;
 }
 
 	else if (formular.equals("namenkommentar")) {
-		if (modul.equals("bearbeiter") || modul.equals("korrektor")) {
+		if (modul.equals("bearbeiter") || modul.equals("korrektor")) {  //namenkommentar und mghlemma.jsp
 			out.println("<table>\n");
 			out.print("<tr><th width=\"200\">");
 			if (modul.equals("bearbeiter")) {
@@ -1684,7 +1684,7 @@ firstEdition = true;
 			out.println("</table>\n");
 		}
 
-		else if (modul.equals("belege")) {
+		else if (modul.equals("belege")) {  //namenkommentar.jsp und mghlemma.jsp
 			out.println("<table>\n");
 %>
 <tr>
@@ -1801,7 +1801,7 @@ firstEdition = true;
 			out.println("</table>\n");
 		}
 
-		else if (modul.equals("PLemma")) {
+		else if (modul.equals("PLemma")) {  // !!! gast/namenkommentar.jsp und namenkommentar.jsp  baut keine Tabelle Aus sondern berechnet ergebnisse und printet sie aus als Text
 
 			Connection cn = null;
 			Statement st = null;
