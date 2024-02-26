@@ -20,4 +20,12 @@ public class AbstractBase {
         props.load(new FileInputStream(propertiesPath));
         de.uni_tuebingen.ub.nppm.db.AbstractBase.setCliProperties(props);
     }
+
+    /**
+     * Print usage information & exit with error code
+     */
+    protected static void Usage(String usage) {
+        System.out.println(usage);
+        System.exit(1);
+    }
 }
