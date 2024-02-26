@@ -1,12 +1,15 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.Benutzer"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.SelektionDB" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.model.DatenbankSelektion" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
 
-<%    Language.setLanguage(request);
+<%
+        Language.setLanguage(request);
 %>
 
 <HEAD>

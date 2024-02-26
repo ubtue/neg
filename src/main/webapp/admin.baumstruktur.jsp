@@ -1,5 +1,5 @@
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
-﻿<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
+<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
 <%@ page import="java.util.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>

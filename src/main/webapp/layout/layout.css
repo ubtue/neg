@@ -81,6 +81,7 @@ body.popup {
   padding-top:		1em;
   padding-bottom:	1em;
   width:		100%;
+  min-width:		min-content;
  }
 
 #header {
@@ -184,6 +185,10 @@ body.popup {
   visibility:		hidden;
   position:		absolute;
   width:		45em;
+}
+
+#h1-titel {
+    margin-top: 0 !important;
 }
 
 th {

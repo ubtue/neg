@@ -2,6 +2,7 @@
 <%@ page import="java.util.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.SelektionDB" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 
   <div>
@@ -15,23 +16,22 @@
 
   if (request.getParameter("action") == null && request.getParameter("Tabelle") != null && request.getParameter("Formular").equals("bearbeiten")) {
     String tbl = request.getParameter("Tabelle");
-    String tblshort = tbl.substring((new String("selektion_")).length());
 %>
     <FORM method="POST" action="admin-auswahlfelder">
-      <input type="hidden" name="Tabelle" value="<%= tblshort %>">
+      <input type="hidden" name="Tabelle" value="<%= tbl %>">
       <table>
         <tr>
           <th width="200"><%= tbl %></th>
           <td width="450">
             <jsp:include page="administration/select.jsp">
               <jsp:param name="Tabelle" value="<%= tbl %>" />
-              <jsp:param name="Feldname" value="<%= tblshort %>" />
+              <jsp:param name="Feldname" value="<%= tbl %>" />
             </jsp:include>
           </td>
         </tr>
         <tr>
          <td width="200">Beschriftung</td>
-         <td width="450"><input name="<%= tblshort %>_Bezeichnung" size="50" maxlength="255"></td>
+         <td width="450"><input name="<%= tbl %>_Bezeichnung" size="50" maxlength="255"></td>
         </tr>
       </table>
       <p>
@@ -89,19 +89,18 @@
     }
     else {
         int id = 1;
-        List<Object> result = DatenbankDB.getSelektionBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"));
-        if(!result.isEmpty()){
-             out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"exisitiert bereits und wurde daher nicht angelegt.</p>");
-            out.println("<a href=\"administration\">zur&uuml;ck</a>");
-           
-        }
-        else{
+        if(SelektionDB.hasBezeichnung(request.getParameter("Tabelle"), request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"))){
+            out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"exisitiert bereits und wurde daher nicht angelegt.</p>");
+            out.println("<a href=\"admin-auswahlfelder?Formular=bearbeiten&Tabelle="+request.getParameter("Tabelle")+"\">Weitere Elemente bearbeiten</a><br><br>");
+            out.println("<a href=\"administration\">zur&uuml;ck zur Administration</a>");
+        } else {
+          SelektionDB.insertBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"));
           Integer maxId = DatenbankDB.getMaxId(request.getParameter("Tabelle"));
           if (maxId != null) {
-            id += maxId;
-            DatenbankDB.insertSelektionBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"),id);
+            id = maxId;
             out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"erfolgreich angelegt.</p>");
-            out.println("<a href=\"administration\">zur&uuml;ck</a>");
+            out.println("<a href=\"admin-auswahlfelder?Formular=bearbeiten&Tabelle="+request.getParameter("Tabelle")+"\">Weitere Elemente bearbeiten</a><br><br>");
+           out.println("<a href=\"administration\">zur&uuml;ck zur Administration</a>");
           }
         }
     }
@@ -116,27 +115,29 @@
       out.println("<a href=\"javascript:history.back()\">zur&uuml;ck</a>");
     }
     else {
-        List<Object> result = DatenbankDB.getSelektionBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"));
+        List<Object> result = SelektionDB.getBezeichnung(request.getParameter("Tabelle"),request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"));
         if(!result.isEmpty() && result.get(0).toString().equals(request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"))){
-            out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"exisitiert bereits, benutzen Sie bitte die Funktion 'zusammenführen' um beide Auswahl zusammenzuführen.</p>");
+            out.println("<p>Auswahl \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\"exisitiert bereits, benutzen Sie bitte die Funktion 'zusammenf&uuml;hren' um beide Auswahl zusammenzuführen.</p>");
             out.println("<a href=\"administration\">zur&uuml;ck</a>");
         }
         else{
-            DatenbankDB.updateSelektionBezeichnung(request.getParameter("Tabelle"), 
-                request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"), 
+            SelektionDB.updateBezeichnung(request.getParameter("Tabelle"),
+                request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung"),
                 request.getParameter(request.getParameter("Tabelle"))
             );
             out.println("<p>Auswahl erfolgreich nach"
                         +" \""+request.getParameter(request.getParameter("Tabelle")+"_Bezeichnung")+"\" umbenannt.</p>");
+            out.println("<a href=\"admin-auswahlfelder?Formular=bearbeiten&Tabelle="+request.getParameter("Tabelle")+"\">Weitere Elemente bearbeiten</a><br><br>");
             out.println("<a href=\"administration\">zur&uuml;ck zur Administration</a>");
         }
     }
   }
 
   else if (request.getParameter("action")!=null && request.getParameter("action").equals("verschieben")) {
-    
+
       if(request.getParameter("Feld_neu").equals(request.getParameter("Feld_alt"))){
-        out.println("<p>Auswahl kann nicht mit sich selbst zusammengeführt werden.</p>");
+        out.println("<p>Auswahl kann nicht mit sich selbst zusammengeführt werden.</p><br><br>");
+        out.println("<a href=\"admin-auswahlfelder?Formular=zusammenfuehren&Tabelle="+request.getParameter("Tabelle")+"\">zur&uuml;ck zu Elemente zusammenf&uuml;hren</a><br><br>");
         out.println("<a href=\"administration\">zur&uuml;ck zur Administration</a>");
       }
       else
@@ -144,7 +145,7 @@
         DatenbankDB.updateAuswahlfelder(request.getParameter("Tabelle"), request.getParameter("Feld_alt"), request.getParameter("Feld_neu"));
         DatenbankDB.deleteAuswahlfeld(request.getParameter("Tabelle"), request.getParameter("Feld_alt"));
         out.println("<p>Auswahl erfolgreich zusammengef&uuml;hrt.</p>");
-        out.println("<a href=\"admin-auswahlfelder?Formular=zusammenfuehren&Tabelle="+request.getParameter("Tabelle")+"\">Weitere Elemente zusammenführen</a>");
+        out.println("<a href=\"admin-auswahlfelder?Formular=zusammenfuehren&Tabelle="+request.getParameter("Tabelle")+"\">Weitere Elemente zusammenf&uuml;hren</a><br><br>");
         out.println("<a href=\"administration\">zur&uuml;ck zur Administration</a>");
       }
     }

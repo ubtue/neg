@@ -31,9 +31,9 @@ function admin_copy(name) {
 }
 
 /*
- *   @param typ          Typ des Popups (search f�r Suche oder addselect)
+ *   @param typ          Typ des Popups (search für Suche oder addselect)
  *   @param parent       Link zum "Elternfenster" des Popups
- *   @param table        Name der Tabelle in der Gesucht oder Eingef�gt werden soll (Bei Selektionen ab _)
+ *   @param table        Name der Tabelle in der Gesucht oder Eingefügt werden soll (Bei Selektionen ab _)
  *   @param destination  Name des Textfelds / der Selektion wo das Ergebnis hingeschrieben werden soll
  *   @param attribut     Attribut, nach dem gesucht werden soll (nur Suche)
  */
@@ -42,15 +42,15 @@ function popup(typ, parent, table, destination, attribut) {
 
   optionen = "height=300,location=no,menubar=no,resizable=no,scrollbars="+(typ=="search"?"yes":"no")+",status=no,toolbar=no,width=600";
   if (typ == "search") {
-    url = "popups/search.jsp?form="+table+"&parent="+parent+"&destination="+destination+"&attribut="+attribut;
+    url = "popups/search.jsp?form="+encodeURIComponent(table)+"&parent="+encodeURIComponent(parent)+"&destination="+encodeURIComponent(destination)+"&attribut="+encodeURIComponent(attribut);
   }
 
   else if (typ == "addselect") {
-    url = "popups/addselect.jsp?selektion="+table+"&parent="+parent+"&destination="+destination;
+    url = "popups/addselect.jsp?selektion="+encodeURIComponent(table)+"&parent="+encodeURIComponent(parent)+"&destination="+encodeURIComponent(destination);
   }
 
   else if (typ == "changedate") {
-    url = "popups/changedate.jsp?ID="+attribut+"&destination="+destination;
+    url = "popups/changedate.jsp?ID="+encodeURIComponent(attribut)+"&destination="+encodeURIComponent(destination);
   }
 
   window.open(url, name, optionen);
@@ -58,7 +58,7 @@ function popup(typ, parent, table, destination, attribut) {
 
 function uploadFile(parent, table, attribute, id) {
   if (confirm(unescape("Bitte getrennt von anderen Eingaben hochladen. Alle bisherigen %C4nderungen in diesem Formular werden verworfen!"))) {
-    url = "popups/uploadfile.jsp?table="+table+"&attribute="+attribute+"&ID="+id+"&parent="+parent;
+    url = "popups/uploadfile.jsp?table="+encodeURIComponent(table)+"&attribute="+encodeURIComponent(attribute)+"&ID="+encodeURIComponent(id)+"&parent="+encodeURIComponent(parent);
     optionen = "height=300,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,width=600";
     window.open(url, name, optionen);
   }
@@ -66,7 +66,7 @@ function uploadFile(parent, table, attribute, id) {
 
 function addSelection (source_value, source_text, destination_select ) {
   var selection = opener.document.getElementsByName(destination_select)[0];
-  
+
   var entry = new Option(source_text, source_value, false, true);
   selection.options[selection.length] = entry;
 }
@@ -77,13 +77,13 @@ function copySearchedID(id, destination) {
 
 function deleteEntry (table, id, returnpage, returnid) {
   if (confirm (unescape("Soll dieser Eintrag wirklich gel%F6scht werden? Alle bisherigen %C4nderungen in diesem Formular werden verworfen!"))) {
-    location.href = "dodelete.jsp?table="+table+"&ID="+id+"&returnpage="+returnpage+"&returnid="+returnid;
+    location.href = "dodelete.jsp?table="+encodeURIComponent(table)+"&ID="+encodeURIComponent(id)+"&returnpage="+encodeURIComponent(returnpage)+"&returnid="+encodeURIComponent(returnid);
   }
 }
 
 function deleteFile (table, attribute, id, returnpage) {
   if (confirm (unescape("Soll dieser Eintrag wirklich gel%F6scht werden? Alle bisherigen %C4nderungen in diesem Formular werden verworfen!"))) {
-    location.href = "dodeletefile.jsp?table="+table+"&attribute="+attribute+"&ID="+id+"&returnpage="+returnpage;
+    location.href = "dodeletefile.jsp?table="+encodeURIComponent(table)+"&attribute="+encodeURIComponent(attribute)+"&ID="+encodeURIComponent(id)+"&returnpage="+encodeURIComponent(returnpage);
   }
 }
 
@@ -125,12 +125,12 @@ function generiereZitierweiseLit() {
   }
   if(zw!="")zw += ", ";
   zw +=  document.getElementsByName("Jahr")[0].value;
- 
+
   ziel.value = zw;
 }
 
 // Diese Methode �ndert die Angezeigte URL ins Format "?ID=..:"
 function urlRewrite(id) {
   if(location.search.length == 0)
-    location.replace(window.location.protocol+'//'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+id);
+    location.replace(window.location.protocol+'//'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+encodeURIComponent(id));
 }

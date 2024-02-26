@@ -36,7 +36,15 @@
             }
             out.println("</td>");
 
-            String href = "javascript:deleteEntry('" + zielTabelle + "', '" + row_id + "', '" + returnpage + "', '" + id + "');";
+            String href = "";
+            if(returnId.equals("-1"))
+            {
+                href = "javascript:deleteEntry('" + zielTabelle + "', '" + row_id + "', '" + returnpage + "', '" + id + "');";
+            }
+            else{
+                href = "javascript:deleteEntry('" + zielTabelle + "', '" + row_id + "', '" + returnpage + "', '" + returnId + "');";
+            }
+            
             out.println("<td>");
             if (!isReadOnly) {
                 out.println("<a href=\"" + href + "\">");
@@ -48,7 +56,17 @@
             out.println("</tr>");
             i++;
         }
-        out.println("</table>");
 
+         //Create new drop down list when Backend/Admin, not Guest
+        if (!isReadOnly) {
+            Integer maxLength = AbstractBase.getMaxCharacterLength(zielTabelle, zielAttribut);
+            out.println("<tr>");
+            out.println("<td>");
+            out.print("<input name=\"" + datenfeld + "[" + i + "]\" " + (size > 0 ? "size=\"" + size + "\" " : "") + "maxlength=\"" + ((maxLength != null) ? maxLength : "") + "\" />");
+            out.println("</td>");
+            out.println("</tr>");
+        }
+
+        out.println("</table>");
     }
 %>

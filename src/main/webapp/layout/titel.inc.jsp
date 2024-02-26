@@ -24,7 +24,7 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr>
             <td align="left">
-                <h1>
+                <h1 id="h1-titel">
                     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
                         <jsp:param name="Formular" value="<%= request.getParameter("title")%>"/>
                         <jsp:param name="Textfeld" value="Titel"/>
