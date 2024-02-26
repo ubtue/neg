@@ -31,5 +31,8 @@ public class HelloWorld extends AbstractBase {
         System.out.println("Loading First Public Person...");
         Person person = PersonDB.getFirstPublicPerson();
         System.out.println("First Public Person is: " + person.getStandardname());
+
+        // Without this line, the program will just hang and never terminate
+        System.exit(0);
     }
 }
