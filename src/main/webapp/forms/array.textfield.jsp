@@ -20,7 +20,16 @@
             if (!isReadOnly) {
                 out.print("value=\"");
             }
-            out.print(DBtoHTML(row_zielAttribut));
+
+            if (!isReadOnly) {
+                out.print(DBtoHTML(row_zielAttribut));
+            } else {
+                String output = DBtoHTML(row_zielAttribut);
+                if (schemaOrgProperty != null && !schemaOrgProperty.isEmpty()) {
+                    output = "<span property=\"" + schemaOrgProperty + "\">" + output + "</span>";
+                }
+                out.print(output);
+            }
             if (!isReadOnly) {
                 out.println("\" ");
             }
@@ -44,7 +53,7 @@
             else{
                 href = "javascript:deleteEntry('" + zielTabelle + "', '" + row_id + "', '" + returnpage + "', '" + returnId + "');";
             }
-            
+
             out.println("<td>");
             if (!isReadOnly) {
                 out.println("<a href=\"" + href + "\">");
