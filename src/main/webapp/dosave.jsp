@@ -52,7 +52,7 @@
 
                         Map<String, String> condMap = new HashMap<>();
                         condMap.put("ID", String.valueOf(id));
-                        AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
+                        AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld).trim(), condMap);
                     } // ENDE Datensatz ändern
 
                 } // ENDE kein Array
@@ -66,7 +66,7 @@
                             if (attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld + "[" + i + "]")))) {
 
                                 String temp_id = request.getParameter(datenfeld + "[" + i + "]_entryid");
-                                String temp_value = request.getParameter(datenfeld + "[" + i + "]");
+                                String temp_value = request.getParameter(datenfeld + "[" + i + "]").trim();
 
                                 Map<String, String> condMap = new HashMap<>();
                                 condMap.put("ID", temp_id);
@@ -76,7 +76,7 @@
                             // Wenn etwas eingetragen ist, in die Datenbank einfügen
                             if (formularAttribut != null && request.getParameter(datenfeld + "[" + i + "]") != null && !request.getParameter(datenfeld + "[" + i + "]").equals("") && !request.getParameter(datenfeld + "[" + i + "]").equals("-1")) {
 
-                                String tempValue = request.getParameter(datenfeld + "[" + i + "]");
+                                String tempValue = request.getParameter(datenfeld + "[" + i + "]").trim();
 
                                 Map<String, String> columnsAndValues = new HashMap<>();
                                 columnsAndValues.put(formularAttribut, String.valueOf(id));
@@ -223,7 +223,7 @@
                         } // ENDE löschen
                         else if (!request.getParameter(datenfeld).equals("") && !DBtoDB(request.getParameter(datenfeld)).equals(attr.get(zielAttribut))) {
 
-                            AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld), condMap);
+                            AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld).trim(), condMap);
 
                         } // ENDE ändern
                     } // ENDE Datensatz ändern
@@ -242,7 +242,7 @@
                     if (formularAttribut != null && zieltabelle != null) {
 
                         Map<String, String> columnsAndValues = new HashMap<>();
-                        columnsAndValues.put(zielAttribut, request.getParameter(datenfeld));     //Bemerkung
+                        columnsAndValues.put(zielAttribut, request.getParameter(datenfeld).trim());     //Bemerkung
                         columnsAndValues.put(formularAttribut, String.valueOf(id));             //EinzelbelegID
                         columnsAndValues.put(field, value);                                     //GruppeID oder BenutzerID
 
@@ -317,7 +317,7 @@
                                                 } else {
                                                     int value_one = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
                                                     int value_two = Integer.parseInt(request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
-                                                    String value_three = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
+                                                    String value_three = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]").trim();
 
                                                     Map<String, String> condMap2 = new HashMap<>();
                                                     condMap2.put("UeberlieferungID", String.valueOf(value_one));
@@ -361,13 +361,13 @@
                                             || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
                                         //Dont Quote NULL values
                                         if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").compareTo("NULL") == 0) {
-                                            sql += zielattributArray[j] + " = " + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + ", ";
+                                            sql += zielattributArray[j] + " = " + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").trim()) + ", ";
                                         } else {
-                                            sql += zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]")) + "', ";
+                                            sql += zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").trim()) + "', ";
                                         }
 
                                         if (zieltabelle.equals("quelle_inedition") && zielattributArray[j].equals("EditionID")) {
-                                            ed = DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]"));
+                                            ed = DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").trim());
                                         }
                                     } else if (combinedFeldtypenArray[j].equals("checkbox")) {
                                         sql += zielattributArray[j] + " = '" + (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j]
@@ -389,17 +389,17 @@
                                 if (!ed.equals("")) {
                                     SaveHelper.insertOrUpdateSql("Update ueberlieferung_edition set EditionID='" + ed + "' where EditionID=" + old_ed
                                             + " and UeberlieferungID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID="
-                                            + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)"
+                                            + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid").trim() + " and q_i.QuelleID=h_u.QuelleID)"
                                     );
 
                                     SaveHelper.insertOrUpdateSql("Update einzelbeleg_textkritik set EditionID='" + ed + "' where EditionID=" + old_ed
-                                            + " and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + request.getParameter(datenfeld.toLowerCase()
+                                            + " and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + request.getParameter(datenfeld.toLowerCase().trim()
                                                     + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)"
                                     );
 
                                     SaveHelper.insertOrUpdateSql(" Update einzelbeleg set EditionID ='" + ed + "' where EditionID=" + old_ed
                                             + " and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID="
-                                            + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)"
+                                            + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid").trim() + " and q_i.QuelleID=h_u.QuelleID)"
                                     );
                                 }
                             }
@@ -429,7 +429,7 @@
                                                 if (parameterValue.equals("NULL")) {
                                                     sql += ", " + zielattributArray[j] + " = NULL";
                                                 } else {
-                                                    sql += ", " + zielattributArray[j] + " = '" + DBtoDB(parameterValue) + "'";
+                                                    sql += ", " + zielattributArray[j] + " = '" + DBtoDB(parameterValue.trim()) + "'";
                                                 }
                                             }
                                         } else if (combinedFeldtypenArray[j].equals("checkbox")) {

@@ -630,6 +630,17 @@
                                                                 </jsp:include></td>
                                                         </tr>
 
+                                                        <tr>
+                                                            <th width="200" valign="top">
+                                                                <% Language.printDatafield(out, session, formular, "BeziehungGemeinschaft");%>
+                                                            </th>
+                                                            <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+                                                                    <jsp:param name="ID" value="<%=id%>" />
+                                                                    <jsp:param name="Formular" value="einzelbeleg" />
+                                                                    <jsp:param name="Datenfeld" value="BeziehungGemeinschaft" />
+                                                                </jsp:include></td>
+                                                        </tr>
+
 							<tr>
 								<th width="200" valign="top">
                                                                     <% Language.printDatafield(out,session, formular,"Ethnie");%>

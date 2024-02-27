@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @MappedSuperclass
 public abstract class SelektionBezeichnung extends Selektion {
-    @Column(name = "Bezeichnung", length=50)
+    @Column(name = "Bezeichnung", length=255)
     private String bezeichnung;
 
     public String getBezeichnung() {

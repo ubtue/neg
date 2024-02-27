@@ -45,17 +45,20 @@
 	<tbody>
 		<tr>
                     <th><% Language.printTextfield(out, session, "person", "Person"); %></th>
-
-
 			<td><jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Standardname" />
 				<jsp:param name="size" value="50" />
 				<jsp:param name="Readonly" value="yes" />
-			</jsp:include>
-              <span style="float:right;display:block;font-weight:bold;">
-              </span></td>
+                            </jsp:include>
+
+                            <jsp:include page="../inc.erzeugeFormular.jsp">
+                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="Formular" value="person" />
+                                <jsp:param name="Datenfeld" value="GNDLink" />
+                            </jsp:include>
+                        </td>
 		</tr>
 		<tr>
                     <th><% Language.printDatafield(out, session, "person", "Varianten"); %></th>

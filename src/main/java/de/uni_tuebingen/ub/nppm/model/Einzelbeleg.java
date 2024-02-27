@@ -239,6 +239,10 @@ public class Einzelbeleg {
     @Column(name = "MGHLemmaKorrigiert", columnDefinition = "BIT DEFAULT NULL")
     private Boolean mghLemmaKorrigiert;
 
+    @ManyToOne(targetEntity = SelektionBeziehungGemeinschaft.class)
+    @JoinColumn(name = "BeziehungGemeinschaftID", referencedColumnName="ID")
+    private SelektionBeziehungGemeinschaft beziehungGemeinschaft;
+
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatamtweihe",
@@ -894,5 +898,13 @@ public class Einzelbeleg {
 
     public void removeAngabe(int id) {
         this.getAngaben().removeIf(e -> e.getId() == id);
+    }
+
+    public SelektionBeziehungGemeinschaft getBeziehungGemeinschaft() {
+        return beziehungGemeinschaft;
+    }
+
+    public void setBeziehungGemeinschaft(SelektionBeziehungGemeinschaft beziehungGemeinschaft) {
+        this.beziehungGemeinschaft = beziehungGemeinschaft;
     }
 }
