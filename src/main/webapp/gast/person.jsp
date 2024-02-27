@@ -26,7 +26,8 @@
 	<jsp:param name="size" value="11" />
 </jsp:include>
 
-
+<!---------- schema.org RDFa wrapper ---------->
+<div vocab="https://schema.org/" typeof="Person">
 
 <!----------ID---------->
   <div id="id">
@@ -138,6 +139,8 @@
 		</tr>
 	</tbody>
   </table>
+
+</div>
 
 <!----------Einzelbelege---------->
 <h3><% Language.printTextfield(out, session, "person", "TabEinzelbelege"); %></h3>
