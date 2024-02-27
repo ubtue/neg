@@ -1092,49 +1092,51 @@ try {
 			out.println("</table>\n");
 		}  else if (modul.equals("edition")) {  //gast/quelle.jsp
 
+			out.println("<table id=\"edition\">\n");
 %>
-<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
-    <thead class="ut-table__header ">
+<tbody  valign="bottom">
 
-        <tr>
-            <th class="date">&nbsp;</th>
-            <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="quelle" />
-                    <jsp:param name="Textfeld" value="Titel" />
-            </jsp:include></th>
-            <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="quelle" />
-                    <jsp:param name="Textfeld" value="Reihe" />
-            </jsp:include></th>
-            <th class="date">Bd.</th>
-            <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="quelle" />
-                    <jsp:param name="Textfeld" value="Ort" />
-            </jsp:include></th>
-            <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="quelle" />
-                    <jsp:param name="Textfeld" value="Jahr" />
-            </jsp:include></th>
-            <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="quelle" />
-                    <jsp:param name="Textfeld" value="Seiten" />
-            </jsp:include></th>
-            <th class="date">Nummer</th>
-            <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-                    <jsp:param name="Formular" value="quelle" />
-                    <jsp:param name="Textfeld" value="Herausgeber" />
-            </jsp:include></th>
-        </tr>
-    </thead>
-<tbody class="ut-table__body">
+<tr>
+	<th class="date">&nbsp;</th>
+	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+		<jsp:param name="Formular" value="quelle" />
+		<jsp:param name="Textfeld" value="Titel" />
+	</jsp:include></th>
+	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+		<jsp:param name="Formular" value="quelle" />
+		<jsp:param name="Textfeld" value="Reihe" />
+	</jsp:include></th>
+	<th class="date">Bd.</th>
+	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+		<jsp:param name="Formular" value="quelle" />
+		<jsp:param name="Textfeld" value="Ort" />
+	</jsp:include></th>
+	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+		<jsp:param name="Formular" value="quelle" />
+		<jsp:param name="Textfeld" value="Jahr" />
+	</jsp:include></th>
+	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+		<jsp:param name="Formular" value="quelle" />
+		<jsp:param name="Textfeld" value="Seiten" />
+	</jsp:include></th>
+	<th class="date">Nummer</th>
+	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+		<jsp:param name="Formular" value="quelle" />
+		<jsp:param name="Textfeld" value="Herausgeber" />
+	</jsp:include></th>
+</tr>
+<%
+				int count = 0;
+					count++;
+					if (count % 2 == 0)
+						out.println("<tr>");
+					else
+						out.println("<tr bgcolor='#AACCDD'>");
 
-     <tr class="ut-table__row">
-	<td class="ut-table__item ut-table__body__item">
-            <strong><jsp:include page="inc.erzeugeBeschriftung.jsp">
+%>	<td><strong><jsp:include page="inc.erzeugeBeschriftung.jsp">
 		<jsp:param name="Formular" value="quelle" />
 		<jsp:param name="Textfeld" value="StandardEdition" />
-            </jsp:include></strong>
-        </td>
+	</jsp:include></strong></td>
 
 
 <%
@@ -1153,42 +1155,46 @@ try {
 								+ id + " and qi.Standard=1");
 				while (rs.next()) {
 					if(!firstEdition){
-					out.println("<tr class=\"ut-table__row\">");
-					out.println("<td class=\"ut-table__item ut-table__body__item\"></td>");
+					count++;
+					if (count % 2 == 0)
+						out.println("<tr>");
+					else
+						out.println("<tr bgcolor='#AACCDD'>");
+					   out.println("<td></td>");
 					}
 					firstEdition = false;
-					out.println("<td class=\"ut-table__item ut-table__body__item\">" + rs.getString("e.Titel")
+					out.println("<td>" + rs.getString("e.Titel")
 							+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ (rs.getString("Reihe") == null ? "--"
 									: DBtoHTML(rs.getString("Reihe")))
 							+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ (rs.getString("Band") == null ? "--"
 									: DBtoHTML(rs.getString("Band")))
 							+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ (rs.getString("Ort") == null ? "--"
 									: DBtoHTML(rs.getString("Ort")))
 							+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ (rs.getString("e.Jahr") == null ? "--"
 									: DBtoHTML(rs.getString("e.Jahr")))
 							+ "</td>");
 					out
-							.println("<td class=\"ut-table__item ut-table__body__item\"> "
+							.println("<td> "
 									+ (rs.getString("qi.Seiten") == null ? (rs.getString("e.Seiten") == null ? "--"
 											: DBtoHTML(rs
 													.getString("e.Seiten")))
 											: DBtoHTML(rs
 													.getString("qi.Seiten")))
 									+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ ((rs.getString("qi.Nummer") == null ||  rs.getString("qi.Nummer").trim().equals(""))? "--"
 									: DBtoHTML(rs.getString("qi.Nummer")))
 							+ "</td>");
 					if(rs.getString("qi.Nummer") != null && !rs.getString("qi.Nummer").trim().equals("")) showNummer =true;
-					out.println("<td class=\"ut-table__item ut-table__body__item\">");
+					out.println("<td>");
 					Statement st2 = cn.createStatement();
 					ResultSet rs2 = st2
 							.executeQuery("select s.Bezeichnung from selektion_editor s, edition_hateditor ehe where ehe.EditionID="
@@ -1205,7 +1211,18 @@ try {
 					out.println("</tr>");
 				}
 				if(firstEdition)out.println("<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-					
+					count++;
+					if (count % 2 == 0)
+						out.println("<tr>");
+					else
+						out.println("<tr bgcolor='#AACCDD'>");
+%>
+	<td><jsp:include page="inc.erzeugeBeschriftung.jsp">
+		<jsp:param name="Formular" value="quelle" />
+		<jsp:param name="Textfeld" value="WeitereEditionen" />
+	</jsp:include></td>
+
+<%
 firstEdition = true;
 	rs = st
 						.executeQuery("Select e.ID, e.Titel, r.Bezeichnung as Reihe, e.BandNummer as Band, o. Bezeichnung as Ort, e.Jahr, qi.Seiten, e.Seiten, qi.Nummer from ((edition e join quelle_inedition qi on e.ID=qi.EditionID) left join selektion_reihe r on e.ReiheID=r.ID) left join selektion_ort o on e.OrtID=o.ID where qi.QuelleID="
@@ -1213,37 +1230,41 @@ firstEdition = true;
 				while (rs.next()) {
 
 					if(!firstEdition){
-
-                                            out.println("<tr class=\"ut-table__row\">");
-					   out.println("<td class=\"ut-table__item ut-table__body__item\"></td>");
+					count++;
+					if (count % 2 == 0)
+						out.println("<tr>");
+					else
+						out.println("<tr bgcolor='#AACCDD'>");
+					   out.println("<td></td>");
 					}
  				    firstEdition = false;
-					out.println("<td class=\"ut-table__item ut-table__body__item\">" + rs.getString("e.Titel")
+					out.println("<td>" + rs.getString("e.Titel")
 							+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ (rs.getString("Reihe") == null ? "--"
 									: DBtoHTML(rs.getString("Reihe")))
 							+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ (rs.getString("Band") == null ? "--"
 									: DBtoHTML(rs.getString("Band")))
 							+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ (rs.getString("Ort") == null ? "--"
 									: DBtoHTML(rs.getString("Ort")))
 							+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ (rs.getString("e.Jahr") == null ? "--"
 									: DBtoHTML(rs.getString("e.Jahr")))
 							+ "</td>");
-				out.println("<td class=\"ut-table__item ut-table__body__item\">"
+				out
+							.println("<td> "
 									+ (rs.getString("qi.Seiten") == null ? (rs.getString("e.Seiten") == null ? "--"
 											: DBtoHTML(rs
 													.getString("e.Seiten")))
 											: DBtoHTML(rs
 													.getString("qi.Seiten")))
 									+ "</td>");
-					out.println("<td class=\"ut-table__item ut-table__body__item\">"
+					out.println("<td>"
 							+ ((rs.getString("qi.Nummer") == null ||  rs.getString("qi.Nummer").trim().equals(""))? "--"
 									: DBtoHTML(rs.getString("qi.Nummer")))
 							+ "</td>");
@@ -1285,7 +1306,7 @@ firstEdition = true;
 				} catch (Exception ex) {
 				}
 			}
-			out.println("</tbody>");
+			out.println("</tbody valign=\"bottom\">\n");
 			out.println("</table>\n");
 			if(!showNummer){
 			%>
