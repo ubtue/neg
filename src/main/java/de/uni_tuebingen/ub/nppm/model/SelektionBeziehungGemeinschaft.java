@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "selektion_beziehung")
+@Table(name = "selektion_beziehung_gemeinschaft")
 public class SelektionBeziehungGemeinschaft extends SelektionBezeichnung{
 
 }
