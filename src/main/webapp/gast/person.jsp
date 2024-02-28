@@ -44,7 +44,7 @@
   <table id="personen-table" class="content-table">
 	<tbody>
 		<tr>
-                    <th><% Language.printTextfield(out, session, "person", "Person"); %></th>
+                    <th style="vertical-align: middle;"><% Language.printTextfield(out, session, "person", "Person"); %></th>
 			<td><jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
