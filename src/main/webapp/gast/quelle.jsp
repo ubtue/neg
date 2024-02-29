@@ -77,17 +77,14 @@
                 </jsp:include>
             </td>
         </tr>
-        <tr class="ut-table__row">
-            <td class="ut-table__item ut-table__body__item" colspan="2">
+    </tbody>
+</table>
+
                 <jsp:include page="../inc.modul.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="quelle"/>
                     <jsp:param name="Modul" value="edition"/>
                 </jsp:include>
-            </td>
-        </tr>
-    </tbody>
-</table>
 
 <!----------Ueberlieferung---------->
 <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "quelle", "TabUeberlieferung");%></h3>
