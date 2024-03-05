@@ -239,6 +239,10 @@ public class Einzelbeleg {
     @Column(name = "MGHLemmaKorrigiert", columnDefinition = "BIT DEFAULT NULL")
     private Boolean mghLemmaKorrigiert;
 
+    @ManyToOne(targetEntity = SelektionBeziehungGemeinschaft.class)
+    @JoinColumn(name = "BeziehungGemeinschaftID", referencedColumnName="ID")
+    private SelektionBeziehungGemeinschaft beziehungGemeinschaft;
+
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatamtweihe",
@@ -308,6 +312,15 @@ public class Einzelbeleg {
                 @JoinColumn(name = "StandID")}
     )
     Set<SelektionStand> stand = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @JoinTable(
+        name = "einzelbeleg_hatangabe",
+        joinColumns = @JoinColumn(name = "EinzelbelegID"),
+        inverseJoinColumns = @JoinColumn(name = "AngabeID")
+    )
+    private Set<SelektionAngabe> angaben = new HashSet<>();
+
 
     public Integer getId() {
         return id;
@@ -871,5 +884,27 @@ public class Einzelbeleg {
 
     public void setMghLemma(Set<MghLemma> mghLemma) {
         this.mghLemma = mghLemma;
+    }
+
+    public Set<SelektionAngabe> getAngaben() {
+        return angaben;
+    }
+
+    public void addAngabe(SelektionAngabe selektionAngabe) {
+        if (selektionAngabe != null) {
+            this.getAngaben().add(selektionAngabe);
+        }
+    }
+
+    public void removeAngabe(int id) {
+        this.getAngaben().removeIf(e -> e.getId() == id);
+    }
+
+    public SelektionBeziehungGemeinschaft getBeziehungGemeinschaft() {
+        return beziehungGemeinschaft;
+    }
+
+    public void setBeziehungGemeinschaft(SelektionBeziehungGemeinschaft beziehungGemeinschaft) {
+        this.beziehungGemeinschaft = beziehungGemeinschaft;
     }
 }
