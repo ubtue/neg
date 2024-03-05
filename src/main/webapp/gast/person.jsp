@@ -29,7 +29,7 @@
 
 
 <!----------ID---------->
-  <div id="id">
+  <div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
       <jsp:param name="ID" value="<%=id%>"/>
       <jsp:param name="title" value="gast_person"/>
@@ -42,9 +42,7 @@
   <h3 class="ut-heading ut-heading--h3"> Prosopographisches </h3>
 
   <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
-
             <tbody class="ut-table__body">
-
                 <tr class="ut-table__row">
                     <th class="ut-table__item ut-table__header__item" scope="col">
                         <% Language.printTextfield(out, session, "person", "Person"); %>

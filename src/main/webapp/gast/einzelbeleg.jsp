@@ -28,7 +28,7 @@
 </jsp:include>
 
 <!----------ID---------->
-<div id="id">
+<div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
         <jsp:param name="ID" value="<%=id%>"/>
         <jsp:param name="title" value="gast_einzelbeleg"/>
@@ -366,7 +366,7 @@
 </table>
 
 <!----------Textkritik---------->
-<div>
+<div class="container">
     <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "TabTextkritik");%></h3>
     <jsp:include page="../inc.modul.jsp">
         <jsp:param name="ID" value="<%= id%>"/>

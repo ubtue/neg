@@ -33,7 +33,7 @@
 </jsp:include>
 
 <!----------ID---------->
-<div id="id">
+<div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
         <jsp:param name="ID" value="<%=id%>"/>
         <jsp:param name="title" value="gast_quelle"/>
@@ -80,11 +80,11 @@
     </tbody>
 </table>
 
-                <jsp:include page="../inc.modul.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="Formular" value="quelle"/>
-                    <jsp:param name="Modul" value="edition"/>
-                </jsp:include>
+<jsp:include page="../inc.modul.jsp">
+    <jsp:param name="ID" value="<%= id%>"/>
+    <jsp:param name="Formular" value="quelle"/>
+    <jsp:param name="Modul" value="edition"/>
+</jsp:include>
 
 <!----------Ueberlieferung---------->
 <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "quelle", "TabUeberlieferung");%></h3>
@@ -97,7 +97,7 @@
 
 <!----------Bei Urkunden---------->
 <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "quelle", "TabUrkunde"); %></h3>
-<div id="urkunden">
+<div class="container" id="urkunden">
     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
         <tbody class="ut-table__body ">
             <tr class="ut-table__row">

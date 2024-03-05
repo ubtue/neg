@@ -362,7 +362,7 @@
             }
             out.println("</table>\n");
         }
-        if (modul.equals("nachweiseRO")) {
+        if (modul.equals("nachweiseRO")) { //gast/person.jsp
 
     %>
 <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
@@ -1381,7 +1381,7 @@
                             first = false;
                         }
                         out.println("</td>");
-                        out.println("</tr>"); 
+                        out.println("</tr>");
 
                     }while (rs.next());
                 } else {

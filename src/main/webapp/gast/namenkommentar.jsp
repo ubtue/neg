@@ -113,7 +113,6 @@
 </jsp:include>
 
 
-
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="namenkommentar" />
     <jsp:param name="ID" value="<%= id%>" />
@@ -121,11 +120,8 @@
     <jsp:param name="Formular" value="namenkommentar" />
 </jsp:include>
 
-
-
-
 <!----------ID---------->
-<div id="id">
+<div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
         <jsp:param name="ID" value="<%=id%>"/>
         <jsp:param name="title" value="gast_namenkommentar"/>
@@ -161,7 +157,7 @@
     </tbody>
 </table>
 <!----------Treffer insgesamt---------->
-<div style="overflow:auto;">
+<div class="container" style="overflow:auto;">
 
     <%@ include file="suche/ergebnisliste.jsp"%>
 
