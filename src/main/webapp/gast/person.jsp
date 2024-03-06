@@ -27,7 +27,6 @@
 </jsp:include>
 
 
-
 <!----------ID---------->
   <div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
@@ -167,7 +166,6 @@
                 </tr>
             </tbody>
   </table>
-
 
 <!----------Einzelbelege---------->
 <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "person", "TabEinzelbelege"); %></h3>

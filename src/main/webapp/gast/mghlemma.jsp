@@ -120,8 +120,6 @@
 </jsp:include>
 
 
-
-
 <!----------ID---------->
 <div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
@@ -148,8 +146,6 @@
         </tr>
         <tr class="ut-table__row">
             <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%></th>
-
-
             <td class="ut-table__item ut-table__body__item">
                 <jsp:include page="../inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
