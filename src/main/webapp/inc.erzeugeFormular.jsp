@@ -67,6 +67,7 @@
   String formularAttribut = "";
   String buttonAktion = "";
   String returnpage = "";
+  String schemaOrgProperty = "";
 
   String[] defaultValues = null;
   String[] combinedFeldnamen = null;
@@ -91,6 +92,7 @@
     formularAttribut = mapping.getFormularAttribut();
     buttonAktion = mapping.getButtonAktion();
     returnpage = mapping.getSeite();
+    schemaOrgProperty = mapping.getSchemaOrgProperty();
 
     defaultValues = mapping.getAltAsArray();
     combinedFeldnamen = mapping.getCombinedFeldnamenAsArray();
@@ -130,5 +132,6 @@
 <%@ include file="forms/noarray.sqlselect.jsp" %>
 <%@ include file="forms/noarray.textarea.jsp" %>
 <%@ include file="forms/noarray.textfield.jsp" %>
+<%@ include file="forms/noarray.gndlink.jsp" %>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("</div>");%>
