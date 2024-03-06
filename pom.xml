@@ -298,7 +298,7 @@
                 </executions>
             </plugin>
             <!-- Configure the maven-surefire-plugin and maven-failsafe-plugin to be at version 2.22.2 so that they can run JUnit5 -->
-            <plugin>
+             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>

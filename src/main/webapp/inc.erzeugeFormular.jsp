@@ -101,7 +101,7 @@
   }
 %>
 
-<% if (visible!=null && visible.equals("hidden")) out.println("<div style=\"visibility:hidden\">");%>
+<% if (visible!=null && visible.equals("hidden")) out.println("<div class=\"container\" style=\"visibility:hidden\">");%>
 
 <%@ page import="java.util.*" isThreadSafe="false" %>
 
