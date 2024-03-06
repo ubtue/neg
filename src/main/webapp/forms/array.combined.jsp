@@ -59,7 +59,7 @@
             if (count % 2 == 0) {
                 out.println("<tr>");
             } else {
-                out.println("<tr bgcolor='#AACCDD'>");
+                out.println("<tr bgcolor='#AACCDD'>"); 
             }
 
             for (int j = 0; j < combinedFeldtypen.length; j++) {
