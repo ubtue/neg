@@ -19,7 +19,7 @@
 	<jsp:param name="Formular" value="person" />
 </jsp:include>
 
-<jsp:include page="../inc.erzeugeFormular.jsp">
+<jsp:include page="inc.erzeugeFormular.jsp">
 	<jsp:param name="ID" value="<%= id %>" />
 	<jsp:param name="Formular" value="person" />
 	<jsp:param name="Datenfeld" value="ID" />
@@ -49,7 +49,7 @@
                         <% Language.printTextfield(out, session, "person", "Person"); %>
                     </th>
                      <td class="ut-table__item ut-table__body__item">
-                        <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Standardname" />
@@ -57,7 +57,7 @@
 				<jsp:param name="Readonly" value="yes" />
 			</jsp:include>
                         <span style="margin-left: 5px;>
-                            <jsp:include page="../inc.erzeugeFormular.jsp">
+                            <jsp:include page="inc.erzeugeFormular.jsp">
                                 <jsp:param name="ID" value="<%=id%>" />
                                 <jsp:param name="Formular" value="person" />
                                 <jsp:param name="Datenfeld" value="GNDLink" />
@@ -71,7 +71,7 @@
                         <% Language.printDatafield(out, session, "person", "Varianten"); %>
                     </th>
                      <td class="ut-table__item ut-table__body__item">
-                        <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Varianten" />
@@ -86,7 +86,7 @@
                         <% Language.printDatafield(out, session, "person", "Geschlecht"); %>
                     </th>
                      <td class="ut-table__item ut-table__body__item">
-                        <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Geschlecht" />
@@ -100,7 +100,7 @@
                         Kommentar
                     </th>
                      <td class="ut-table__item ut-table__body__item">
-                        <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Identifizierungsproblem" />
@@ -116,7 +116,7 @@
                         <% Language.printDatafield(out, session, "person", "Stand"); %>
                     </th>
                      <td class="ut-table__item ut-table__body__item">
-                        <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Stand" />
@@ -130,7 +130,7 @@
                         <% Language.printTextfield(out, session, "person", "Aemter"); %>
                     </th>
                      <td class="ut-table__item ut-table__body__item">
-                        <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="AmtWeihe" />
@@ -144,7 +144,7 @@
                         <% Language.printDatafield(out, session, "person", "Ethnie"); %>
                     </th>
                      <td class="ut-table__item ut-table__body__item">
-                        <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Ethnie" />
