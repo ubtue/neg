@@ -65,13 +65,7 @@
                     <jsp:param name="size" value="50"/>
                     <jsp:param name="Readonly" value="yes"/>
                 </jsp:include>
-                <jsp:include page="../inc.erzeugeFormular.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="Formular" value="einzelbeleg"/>
-                    <jsp:param name="Datenfeld" value="Griechisch"/>
-                    <jsp:param name="size" value="50"/>
-                    <jsp:param name="Readonly" value="yes"/>
-                </jsp:include>
+                Professor Futura
             </td>
         </tr>
         <tr class="ut-table__row">
