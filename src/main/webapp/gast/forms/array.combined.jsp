@@ -6,10 +6,11 @@
 <%
     if (feldtyp.equals("combined") && array) {
         int count = 0;
-        out.println("<table " + (isReadOnly ? "width=\"100%\"" : "") + ">\n");
-        out.println("<tr>\n");
+        out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\"" + (isReadOnly ? "width=\"100%\"" : "") + ">\n");
+        out.println("<tbody class=\"ut-table__body\">");
+        out.println("<tr class=\"ut-table__row\">\n");
         for (int i = 0; i < combinedAnzeigenamen.length; i++) {
-            out.println("<th>");
+            out.println("<th class=\"ut-table__header\">");
             if (!isReadOnly || combinedFeldtypen[i].equals("sqlselect")
                     || combinedFeldtypen[i].equals("select")
                     || combinedFeldtypen[i].equals("textfield")
@@ -55,62 +56,30 @@
                 repeat = false;
             }
 
-            count++;
-            if (count % 2 == 0) {
-                out.println("<tr>");
-            } else {
-                out.println("<tr bgcolor='#AACCDD'>"); 
-            }
+            out.println("<tr class=\"ut-table__row\">");
 
             for (int j = 0; j < combinedFeldtypen.length; j++) {
                 if (combinedFeldtypen[j].equals("dateinfo")
                         || combinedFeldtypen[j].equals("addselect")) {
-                    out.println("<td nowrap>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\" nowrap>");
                 } else {
-                    out.println("<td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">");
                 }
 
                 if (combinedFeldtypen[j].equals("textfield")) {
-                    if (!isReadOnly) {
-                        out.println("<input name=\""
-                                + combinedFeldnamen[j]
-                                + "["
-                                + i
-                                + "]\""
-                                + " value=\""
-                                + (row != null && row.get(zielattributArray[j]) != null ? DBtoHTML(row
-                                .get(zielattributArray[j]).toString())
-                                : "")
-                                + "\""
-                                + " maxlength=\""
-                                + AbstractBase.getMaxCharacterLength(zielTabelle, zielattributArray[j])
-                                + "\" "
-                                + (combinedFeldnamen[j]
-                                        .endsWith("ID") ? " size=\"5\""
-                                : " size=\"10\"")
-                                + " />");
-                    } else {
+
                         out.println(row != null && row
                                 .get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : (alreadyOne ? "" : "-"));
-                    }
+
                 } else if (combinedFeldtypen[j].equals("textarea")) {
-                    if (!isReadOnly) {
-                        out.println("<textarea name=\"" + combinedFeldnamen[j]
-                                + "["
-                                + i
-                                + "]\"" + disabled + ">"
-                                + (row != null && row.get(zielattributArray[j]) != null ? DBtoHTML(row
-                                .get(zielattributArray[j]).toString())
-                                : "")
-                                + "</textarea>");
-                    } else {
+
                         out.println((row != null && row
                                 .get(zielattributArray[j]) != null ? DBtoHTML(row
                                 .get(zielattributArray[j]).toString())
                                 : (alreadyOne ? "" : "-")));
-                    }
+
                 } else if (combinedFeldtypen[j].equals("addselect")) {
                     int selected = (row != null && row.get(zielattributArray[j]) != null ? Integer.parseInt(row
                             .get(zielattributArray[j]).toString())
@@ -168,7 +137,7 @@
                                 + "</option>");
                     }
                     out.print("</select>");
-                    out.println("<a href=\"javascript:popup('addselect', this, '"
+                    out.println("<a class=\"ut-link\" href=\"javascript:popup('addselect', this, '"
                             + auswahlherkunftArray[j]
                                     .substring(10)
                             + "', '"
@@ -179,11 +148,6 @@
                             + txt_newentry + "</a>");
 
                 } else if (combinedFeldtypen[j].equals("select")) {
-                    if (!isReadOnly) {
-                        out.println("<select name=\""
-                                + combinedFeldnamen[j] + "[" + i
-                                + "]\" style=\"width:8em\">");
-                    }
 
                     List<Map> rowlist2 = AbstractBase.getMappedList(
                             "SELECT * FROM "
@@ -194,17 +158,8 @@
                             : -1);
                     for (Map row2 : rowlist2) {
                         int currentId = Integer.parseInt(row2.get("ID").toString());
-                        if (!isReadOnly) {
-                            out
-                                    .println("<option value='"
-                                            + row2.get("ID").toString()
-                                            + "' "
-                                            + (currentId == selected ? "selected"
-                                                    : "")
-                                            + ">"
-                                            + row2.get("Bezeichnung").toString()
-                                            + "</option>");
-                        } else if (currentId == selected) {
+
+                        if (currentId == selected) {
                             if (repeat) {
                                 out.println(row2.get("Bezeichnung").toString());
                             } else if (!alreadyOne) {
@@ -213,12 +168,10 @@
                         }
                     }
 
-                    if (!isReadOnly) {
-                        out.println("</select>");
-                    }
                 } else if (combinedFeldtypen[j].equals("subtable")) {
                     if (row != null) {
-                        out.println("<table>");
+                        out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">");
+                        out.println("<tbody class=\"ut-table__body\">");
                         String sql = "SELECT edition.ID, edition.Zitierweise Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
                                 + row.get("QuelleID").toString()
                                 + " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC";
@@ -233,7 +186,7 @@
                                     + " AND ueberlieferung_edition.ueberlieferungID="
                                     + row.get("ID").toString());
 
-                            out.println("<tr><td><a href=\"edition?ID="
+                            out.println("<tr class=\"ut-table__row\"><td class=\"ut-table__item ut-table__body__item\"><a class=\"ut-link\" href=\"edition?ID="
                                     + row2.get("ID").toString()
                                     + "\">"
                                     + row2.get("Bezeichnung").toString()
@@ -246,7 +199,7 @@
                                     + "]\""
                                     + " value=\""
                                     + row2.get("ID").toString()
-                                    + "\"/></td><td><input name=\""
+                                    + "\"/></td><td class=\"ut-table__item ut-table__body__item\"><input name=\""
                                     + combinedFeldnamen[j]
                                     + "["
                                     + i
@@ -264,30 +217,13 @@
                                     + " /></td></tr>");
                             i2++;
                         }
-                         out.println("</table>");
+                        out.println("</tbody");
+                        out.println("</table>");
                     }
 
-
-                } else if (combinedFeldtypen[j].equals("checkbox")) {
-                    if (!isReadOnly) {
-                        out.println("<input name=\""
-                                + combinedFeldnamen[j]
-                                + "["
-                                + i
-                                + "]\""
-                                + " type=\"checkbox\""
-                                + (row != null && row.get(zielattributArray[j]) != null && Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1 ? " checked"
-                                : "") + " />");
-                    }
 
                 } else if (combinedFeldtypen[j].equals("sqlselect")) {
                     String sql = "";
-
-                    if (!isReadOnly) {
-                        out.println("<select name=\""
-                                + combinedFeldnamen[j] + "[" + i
-                                + "]\" style=\"width:8em\">");
-                    }
 
                     if (combinedFeldnamen[j].equals("TKHandschrift") && row != null && row.get("EditionID") != null) {
                         sql = "SELECT handschrift_ueberlieferung.ID, ueberlieferung_edition.Sigle Bezeichnung FROM handschrift_ueberlieferung, einzelbeleg, ueberlieferung_edition WHERE handschrift_ueberlieferung.ID=ueberlieferung_edition.UeberlieferungID and ueberlieferung_edition.EditionID= "
@@ -329,40 +265,17 @@
                         selectForm.put(-1, "selected");
                     }
 
-                    if (!isReadOnly) {
-                        out.println("<option value=\"NULL\" " + selectForm.get(-1) + ">nicht bearbeitet</option>");
-                    }
-                    //if (!sql.equals("")) {
+
                     for (Map row2 : rowlist2) {
-                        if (!isReadOnly) {
-                            out.println("<option value='"
-                                    + row2.get("ID").toString()
-                                    + "' "
-                                    + (Integer.parseInt(row2.get("ID").toString()) == selected ? "selected"
-                                    : "")
-                                    + ">"
-                                    + row2.get("Bezeichnung").toString()
-                                    + "</option>");
-                        } else if (Integer.parseInt(row2.get("ID").toString()) == selected
+                        if (Integer.parseInt(row2.get("ID").toString()) == selected
                                 && combinedFeldnamen[j].equals("TKHandschrift")) {
                             out.println(row2.get("Bezeichnung").toString());
                         }
                     }
-                    //}
 
                     out.println("</select>");
-                } else if (combinedFeldtypen[j].equals("checkbox")) {
-                    if (!isReadOnly) {
-                        out.println("<input name=\""
-                                + combinedFeldnamen[j]
-                                + "["
-                                + i
-                                + "]\""
-                                + " type=\"checkbox\""
-                                + ((Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1) ? " checked"
-                                : "") + " />");
-                    }
                 } else if (combinedFeldtypen[j].startsWith("link")) {
+
                     String[] fields = combinedFeldtypen[j]
                             .substring(
                                     combinedFeldtypen[j]
@@ -386,7 +299,7 @@
                             add = "mghlemma";
                         }
 
-                        out.println("<a href=\""
+                        out.println("<a class=\"ut-link\" href=\""
                                 + add
                                 + "?ID="
                                 + row.get(fields[1]).toString()
@@ -429,11 +342,11 @@
                             .split(",");
 
                     if (row != null) {
-                        List<Map> rowlist2 = AbstractBase.getMappedList("SELECT Bezeichnung FROM selektion_"
+                        List<Map> rowlist5 = AbstractBase.getMappedList("SELECT Bezeichnung FROM selektion_"
                                 + fields[0] + " sel, einzelbeleg_hat" + fields[0] + " zt WHERE zt."
                                 + fields[0] + "ID=sel.ID AND zt." + fields[1] + "="
                                 + row.get(fields[1]).toString());
-                        for (Map row2 : rowlist2) {
+                        for (Map row2 : rowlist5) {
                             out.println((row2.get("Bezeichnung") != null ? DBtoHTML(row2.get("Bezeichnung").toString())
                                     : ""));
                             out.println("<br>");
@@ -455,23 +368,10 @@
                                     combinedFeldtypen[j]
                                             .lastIndexOf(')'))
                             .split(",");
-                    if (!isReadOnly) {
-                        out
-                                .println("<a href=\"javascript:popup('search', this, '"
-                                        + fields[0]
-                                        + "', '"
-                                        + fields[2]
-                                        + "["
-                                        + i
-                                        + "]', '"
-                                        + fields[1]
-                                        + "');\">"
-                                        + txt_search
-                                        + "</a>");
-                    }
+
                 } else if (combinedFeldtypen[j].equals("dateinfo")) {
                     if (row != null) {
-                        out.println("<label id=\"quelleDate["
+                        out.println("<label class=\"ut-form__label\" id=\"quelleDate["
                                 + i
                                 + "]\">");
                         if (row.get(combinedFeldnamen[j] + "VonJahr") != null) {
@@ -499,7 +399,7 @@
                         }
                         out.println(". Jhd)</label>");
 
-                        out.println("<a href=\"javascript:popup('changedate', this, '', 'quelleDate["
+                        out.println("<a class=\"ut-link\" href=\"javascript:popup('changedate', this, '', 'quelleDate["
                                 + i
                                 + "]', '");
                         if (row.get("ID") != null) {
@@ -507,31 +407,15 @@
                         }
                         out.println("');\"><img src=\"layout/icons/calendar.gif\" border=0></a>");
                     }
-                } else {
-                    out.println("folgt!");
-                }
+                } 
                 out.println("</td>");
             }
-            if (!isReadOnly) {
-                out.println("<td>");
-                if (row != null) {
-                    String href = "javascript:deleteEntry('"
-                            + zielTabelle + "', '" + row.get("ID").toString()
-                            + "', '" + returnpage + "', '" + id + "');";
-                    out.println("<a href=\"" + href + "\">");
-                    out.println(txt_delete);
-                    out.println("</a>");
-                }
-                out.println("</td>");
-            }
-            /*      else{
-                                        out.println("<td>");
-                                        out.println("<input type=\"checkbox\" name=\"" + beschriftung + "Speichern\" value=\"1\">Hinzuf&uuml;gen<br>");
-                                        out.println("</td>");
-                                      }*/
+
             out.println("</tr>");
             i++;
         }
+
+        out.println("</tbody>");
         out.println("</table>\n");
     }
 %>

@@ -8,7 +8,7 @@
             if (schemaOrgProperty != null && !schemaOrgProperty.isEmpty()) {
                 schemaOrgAttribute = " property=\"" + schemaOrgProperty + "\"";
             }
-            String link = "<a href=\"https://d-nb.info/gnd/" + DBtoHTML(gndId) + "\" target=\"_blank\" style=\"display: inline-block; vertical-align: middle;\"" + schemaOrgAttribute + "> " + gndIcon + "</a>";
+            String link = "<a class=\"ut-link ut-link--external ut-link--context-icon\" href=\"https://d-nb.info/gnd/" + DBtoHTML(gndId) + "\" target=\"_blank\"" + schemaOrgAttribute + "> " + gndIcon + "</a>";
             out.println(link);
         }
     }
