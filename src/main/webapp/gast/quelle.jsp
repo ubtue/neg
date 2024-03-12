@@ -25,7 +25,7 @@
     <jsp:param name="Formular" value="quelle" />
 </jsp:include>
 
-<jsp:include page="../inc.erzeugeFormular.jsp">
+<jsp:include page="inc.erzeugeFormular.jsp">
     <jsp:param name="ID" value="<%= id%>"/>
     <jsp:param name="Formular" value="quelle"/>
     <jsp:param name="Datenfeld" value="ID"/>
@@ -43,7 +43,7 @@
 <!----------Quelle---------->
 <h3 class="ut-heading ut-heading--h3">
     Quelle:
-    <jsp:include page="../inc.erzeugeFormular.jsp">
+    <jsp:include page="inc.erzeugeFormular.jsp">
         <jsp:param name="ID" value="<%= id%>"/>
         <jsp:param name="Formular" value="quelle"/>
         <jsp:param name="Datenfeld" value="Bezeichnung"/>
@@ -56,7 +56,7 @@
         <tr class="ut-table__row">
             <th class="ut-table__item ut-table__header__item"><% Language.printTextfield(out, session, "quelle", "Datierung");%></th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="gast_quelle"/>
                     <jsp:param name="Datenfeld" value="Datierung"/>
@@ -67,7 +67,7 @@
         <tr class="ut-table__row">
             <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "quelle", "KommentarDatierung");%></th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="quelle"/>
                     <jsp:param name="Datenfeld" value="KommentarDatierung"/>
@@ -103,7 +103,7 @@
             <tr class="ut-table__row">
                 <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "urkunde", "Actumort");%></th>
                 <td class="ut-table__item ut-table__body__item">
-                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= urkundeid%>" />
                         <jsp:param name="Formular" value="urkunde" />
                         <jsp:param name="Datenfeld" value="Actumort" />
@@ -115,7 +115,7 @@
             <tr class="ut-table__row">
                 <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "urkunde", "Betreff");%> </th>
                 <td class="ut-table__item ut-table__body__item">
-                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= urkundeid%>" />
                         <jsp:param name="Formular" value="urkunde" />
                         <jsp:param name="Datenfeld" value="Betreff" />
@@ -127,7 +127,7 @@
             <tr class="ut-table__row">
                 <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "urkunde", "Aussteller");%></th>
                 <td class="ut-table__item ut-table__body__item">
-                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= urkundeid%>" />
                         <jsp:param name="Formular" value="urkunde" />
                         <jsp:param name="Datenfeld" value="Aussteller" />
@@ -138,7 +138,7 @@
             <tr class="ut-table__row">
                 <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "urkunde", "Empfaenger");%></th>
                 <td class="ut-table__item ut-table__body__item">
-                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= urkundeid%>" />
                         <jsp:param name="Formular" value="urkunde" />
                         <jsp:param name="Datenfeld" value="Empfaenger" />
@@ -149,7 +149,7 @@
             <tr class="ut-table__row">
                 <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "urkunde", "Dorsalnotiz");%> </th>
                 <td class="ut-table__item ut-table__body__item">
-                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= urkundeid%>" />
                         <jsp:param name="Formular" value="urkunde" />
                         <jsp:param name="Datenfeld" value="Dorsalnotiz" />

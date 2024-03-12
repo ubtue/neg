@@ -146,7 +146,7 @@
         <tr class="ut-table__row">
             <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "namenkommentar", "EinzelbelegRO");%> </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
                     <jsp:param name="Formular" value="namenkommentar" />
                     <jsp:param name="Datenfeld" value="EinzelbelegRO" />

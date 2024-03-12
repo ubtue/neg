@@ -20,7 +20,7 @@
     <jsp:param name="Formular" value="einzelbeleg" />
 </jsp:include>
 
-<jsp:include page="../inc.erzeugeFormular.jsp">
+<jsp:include page="inc.erzeugeFormular.jsp">
     <jsp:param name="ID" value="<%= id%>"/>
     <jsp:param name="Formular" value="einzelbeleg"/>
     <jsp:param name="Datenfeld" value="ID"/>
@@ -45,7 +45,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "PersonRO");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="PersonRO"/>
@@ -58,14 +58,13 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "Belegform");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="Belegform"/>
                     <jsp:param name="size" value="50"/>
                     <jsp:param name="Readonly" value="yes"/>
                 </jsp:include>
-                Professor Futura
             </td>
         </tr>
         <tr class="ut-table__row">
@@ -73,7 +72,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "LemmaRO");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="LemmaRO"/>
@@ -87,7 +86,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "MGHLemmaRO");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="MGHLemmaRO"/>
@@ -102,7 +101,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "Kontext");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="Kontext"/>
@@ -117,7 +116,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "KontextSelektion");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="KontextSelektion"/>
@@ -130,7 +129,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "KritikSelektion");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="KritikSelektion"/>
@@ -143,7 +142,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "LebendVerstorben");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="LebendVerstorben"/>
@@ -156,7 +155,7 @@
                 <% Language.printTextfield(out, session, "einzelbeleg", "DatierungNennung");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="Formular" value="gast_einzelbeleg"/>
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Datenfeld" value="Datierung"/>
@@ -169,7 +168,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "DatierungUngewiss");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="DatierungUngewiss"/>
@@ -182,7 +181,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "KommentarDatierung");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="KommentarDatierung"/>
@@ -197,7 +196,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "Konvent");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="Konvent"/>
@@ -210,7 +209,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "PalAbgrenzung");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="PalAbgrenzung"/>
@@ -223,7 +222,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "InhAbgrenzung");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="InhAbgrenzung"/>
@@ -236,7 +235,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "NrInStrukt");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="NrInStrukt"/>
@@ -249,7 +248,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "Seite");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="Seite"/>
@@ -262,7 +261,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "Raster");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="Raster"/>
@@ -275,7 +274,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "Schreiber");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="Schreiber"/>
@@ -295,7 +294,7 @@
                 <% Language.printTextfield(out, session, "einzelbeleg", "Kurztitel");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="QuelleLink"/>
@@ -307,7 +306,7 @@
                 <% Language.printTextfield(out, session, "einzelbeleg", "Edition");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="Edition"/>
@@ -320,7 +319,7 @@
                 <% Language.printTextfield(out, session, "einzelbeleg", "Kapitel");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="EditionKapitel"/>
@@ -334,7 +333,7 @@
                 <% Language.printTextfield(out, session, "einzelbeleg", "Seite");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="einzelbeleg"/>
                     <jsp:param name="Datenfeld" value="EditionSeite"/>
@@ -348,7 +347,7 @@
                 <% Language.printDatafield(out, session, "einzelbeleg", "QuelleDatierung");%>
             </th>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="Formular" value="gast_einzelbeleg"/>
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Datenfeld" value="QuelleDatierung"/>
