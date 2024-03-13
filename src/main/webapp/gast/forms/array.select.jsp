@@ -8,8 +8,9 @@
                                                    + " FROM " + zielTabelle
                                                    + " WHERE " + formular + "ID='" + id + "'"
                                                    + " ORDER BY ID ASC");
-
+    if (!rowlist.isEmpty()) {
       out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">");
+      out.println("<tbody class=\"ut-table__body\">");
       boolean repeat = true;
       int i = 0;
       while (repeat) {
@@ -39,6 +40,9 @@
         out.println("</tr>");
         i++;
       }
+      out.println("</tbody>");
       out.println("</table>");
+    }
+
   }
 %>

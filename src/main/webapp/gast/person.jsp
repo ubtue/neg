@@ -45,9 +45,9 @@
   <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
             <tbody class="ut-table__body">
                 <tr class="ut-table__row">
-                    <th class="ut-table__item ut-table__header__item" scope="col">
+                     <td class="ut-table__item ut-table__body__item">
                         <% Language.printTextfield(out, session, "person", "Person"); %>
-                    </th>
+                    </td>
                      <td class="ut-table__item ut-table__body__item">
                         <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
@@ -66,9 +66,9 @@
                 </tr>
 
                 <tr class="ut-table__row">
-                    <th class="ut-table__item ut-table__header__item" scope="col">
+                     <td class="ut-table__item ut-table__body__item">
                         <% Language.printDatafield(out, session, "person", "Varianten"); %>
-                    </th>
+                    </td>
                      <td class="ut-table__item ut-table__body__item">
                         <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
@@ -81,9 +81,9 @@
                 </tr>
 
                 <tr class="ut-table__row">
-                    <th class="ut-table__item ut-table__header__item" scope="col">
+                     <td class="ut-table__item ut-table__body__item">
                         <% Language.printDatafield(out, session, "person", "Geschlecht"); %>
-                    </th>
+                    </td>
                      <td class="ut-table__item ut-table__body__item">
                         <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
@@ -95,9 +95,9 @@
                 </tr>
 
                 <tr class="ut-table__row">
-                    <th class="ut-table__item ut-table__header__item" scope="col">
+                     <td class="ut-table__item ut-table__body__item">
                         Kommentar
-                    </th>
+                    </td>
                      <td class="ut-table__item ut-table__body__item">
                         <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
@@ -111,9 +111,9 @@
                 </tr>
 
                 <tr class="ut-table__row">
-                    <th class="ut-table__item ut-table__header__item" scope="col">
+                     <td class="ut-table__item ut-table__body__item">
                         <% Language.printDatafield(out, session, "person", "Stand"); %>
-                    </th>
+                    </td>
                      <td class="ut-table__item ut-table__body__item">
                         <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
@@ -125,9 +125,9 @@
                 </tr>
 
                 <tr class="ut-table__row">
-                    <th class="ut-table__item ut-table__header__item" scope="col">
+                     <td class="ut-table__item ut-table__body__item">
                         <% Language.printTextfield(out, session, "person", "Aemter"); %>
-                    </th>
+                    </td>
                      <td class="ut-table__item ut-table__body__item">
                         <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
@@ -139,9 +139,9 @@
                 </tr>
 
                 <tr class="ut-table__row">
-                    <th class="ut-table__item ut-table__header__item" scope="col">
+                     <td class="ut-table__item ut-table__body__item">
                         <% Language.printDatafield(out, session, "person", "Ethnie"); %>
-                    </th>
+                    </td>
                      <td class="ut-table__item ut-table__body__item">
                         <jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
@@ -153,9 +153,9 @@
                 </tr>
 
                 <tr class="ut-table__row">
-                    <th class="ut-table__item ut-table__header__item" scope="col">
+                     <td class="ut-table__item ut-table__body__item">
                         <% Language.printTextfield(out, session, "person", "TabVerwandte"); %>
-                    </th>
+                    </td>
                      <td class="ut-table__item ut-table__body__item">
                         <jsp:include page="../inc.modul.jsp">
                             <jsp:param name="ID" value="<%= id %>" />

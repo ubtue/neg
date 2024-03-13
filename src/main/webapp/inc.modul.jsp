@@ -1138,7 +1138,7 @@
                 } catch (Exception ex) {
                 }
             }
-            out.println("</tbody>\n");
+            out.println("</tbody>");
             out.println("</table>\n");
         } else if (modul.equals("edition")) {  //gast/quelle.jsp
 
@@ -1422,7 +1422,7 @@
                     } catch (Exception ex) {
                     }
                 }
-                out.println("</tbody>\n");
+                out.println("</tbody>");
                 out.println("</table>\n");
                 if (!showNummer) {
             %>

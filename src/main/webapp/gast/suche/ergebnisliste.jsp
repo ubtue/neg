@@ -172,6 +172,7 @@
                 out.println("</tr>");
             }
             out.println("</tr>");
+            out.println("</tbody>");
             out.println("</table>");
         }
         // ########## LISTE/BROWSE #########
