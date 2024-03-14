@@ -14,7 +14,7 @@
     }
 %>
 
-<div class="form-container" style="display: flex; align-items: center;">
+<div  style="display: flex; align-items: center; ">
     <span>Springe zu NeG-ID:</span>
     <input class="ut-form__input ut-form__field " id="id_field" type="text" name="jumpValueID" size="5">
     <input type="hidden" name="jumpTable" value="<%= title%>">

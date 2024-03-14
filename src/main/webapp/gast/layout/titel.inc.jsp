@@ -22,8 +22,8 @@
 
 %>
 
-<div id="jump-to-wrap">
-<div id="jump-to">
+<div class="ut-wrapper ut-wrapper--color-components-1" style="padding-top: 10px; padding-bottom: 10px;">
+<div class="container" id="jump-to" >
 <form method="post" >
 <%
 if(request.getParameter("title").equals("mgh_lemma")){
@@ -33,7 +33,7 @@ if(request.getParameter("title").equals("namenkommentar")){
 	  out.println("<div style='display: inline-block;padding:0px;margin-right: 40px;  border: 1px solid #999;background: #cccccc;'><div style='box-shadow: -1px -1px #ccc inset;z-index:50;display: inline-block;margin:0px;padding:5px;background: #ccc;'><a href='mghlemma?fromLemma=Namenlemma' style='color:#666;text-decoration:none;font-weight:normal;'>MGH-Lemma</a></div><div style='border: 1px solid #666;box-shadow: 2px 2px #999;display: inline-block;margin-left:5px;padding:7px;z-index:1;background: #fff;font-weight:bold;'>Namenlemma</div></div>");
 }
 %>
-<div id="jump-1">
+<div id="jump-1" >
   <!------------Jump1------------>
   <jsp:include page="../forms/jumpID.jsp">
     <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>

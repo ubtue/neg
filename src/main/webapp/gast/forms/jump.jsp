@@ -13,7 +13,7 @@
     } catch (NumberFormatException e) {
     }
 %>
-<div class="form-container" style="display: flex; align-items: center;">
+<div  style="display: flex; align-items: center;">
     <select class="ut-form__select ut-form__field" name="jumpType" id="id_field">
         <option value="1">
             <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
