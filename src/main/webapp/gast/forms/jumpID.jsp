@@ -13,8 +13,13 @@
     } catch (NumberFormatException e) {
     }
 %>
-<span>Springe zu NeG-ID:</span>
-<input type="text" name="jumpValueID" size="5">
-<input type="hidden" name="jumpTable" value="<%= title%>">
-<input type="hidden" name="akt" value="<%= id%>">
-<input type="submit" name="jumpID" value="los">
+
+<div class="form-container" style="display: flex; align-items: center;">
+    <span>Springe zu NeG-ID:</span>
+    <input class="ut-form__input ut-form__field " id="id_field" type="text" name="jumpValueID" size="5">
+    <input type="hidden" name="jumpTable" value="<%= title%>">
+    <input type="hidden" name="akt" value="<%= id%>">
+    <button class="ut-btn" type="submit" name="jumpID" value="los" aria-label="los">los</button>
+</div>
+
+
