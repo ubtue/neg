@@ -64,7 +64,7 @@ if(request.getParameter("title").equals("namenkommentar")){
 </div>
 
 <!------------prev-next------------>
-<div class="pager-wrap">
+<div class="container" style="display: flex; justify-content: center; padding-top: 10px ">
   <jsp:include page="../forms/link.jsp">
     <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
     <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>

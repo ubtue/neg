@@ -48,12 +48,32 @@ right: 350px; top: 10px; display: none; }
         padding: 5px 0; width: 400px; margin-bottom: 20px; }
 	.pager-wrap a { *background: #6e6e6e; *padding: 5px 6px; *margin: 0 5px; text-decoration: none; *color: #fff; }
 
-    .prev { margin-left: 10px; background: url(../layout/images/prev.png); }
-    .next { margin-right: 10px; background: url(../layout/images/next.png); }
+    .prev::before {
+    content: "<";
+    font-size: 20px; /* Anpassen der Schriftgröße */
+    padding: 1px 0 0 5px; /* 5px oben, 0 rechts, 3px unten, 5px links */
+}
+
+
+
+    .next::before {
+    content: ">";
+    font-size: 20px; /* Anpassen der Schriftgröße */
+    padding: 1px 0 0 5px; /* 5px oben, 0 rechts, 3px unten, 5px links */
+}
      /* note: "position: static !important" has been added here else we might get conflicts with ut-typo3 */
     .prev, .next { width: 20px; height: 20px; background-size: 20px; position: static !important }
-    .prev_end { margin-left: 20px; background: url(../layout/images/prev_end.png); }
-    .next_end { margin-right: 20px; background: url(../layout/images/next_end.png); }
+    .prev_end::before {
+    content: "<<";
+    font-size: 20px; /* Anpassen der Schriftgröße */
+   padding: 1px 0 0 5px; /* 5px oben, 0 rechts, 3px unten, 5px links */
+}
+
+    .next_end::before{
+    content: ">>";
+    font-size: 20px; /* Anpassen der Schriftgröße */
+    padding: 1px 0 0 5px; /* 5px oben, 0 rechts, 3px unten, 5px links */
+}
     .prev_end, .next_end { width: 28px; height: 20px; background-size: 28px; }
     .prev, .next, .prev_end, .next_end { vertical-align: middle; display: inline-block; background-repeat: no-repeat; cursor: pointer; }
 
