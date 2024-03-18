@@ -82,6 +82,7 @@ if(request.getParameter("title").equals("namenkommentar")){
   </jsp:include>
 
     <!------------Eintraege------------>
+  
   <span class="counter">
   <jsp:include page="../../forms/filter.jsp">
     <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
@@ -96,6 +97,7 @@ if(request.getParameter("title").equals("namenkommentar")){
       <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
     </jsp:include>
     </span>
+
 
   <jsp:include page="../forms/link.jsp">
     <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>

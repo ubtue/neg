@@ -49,33 +49,37 @@ right: 350px; top: 10px; display: none; }
 	.pager-wrap a { *background: #6e6e6e; *padding: 5px 6px; *margin: 0 5px; text-decoration: none; *color: #fff; }
 
     .prev::before {
-    content: "<";
-    font-size: 20px; /* Anpassen der Schriftgröße */
-    padding: 1px 0 0 5px; /* 5px oben, 0 rechts, 3px unten, 5px links */
+    content: "\00a0<";
 }
 
 
 
     .next::before {
     content: ">";
-    font-size: 20px; /* Anpassen der Schriftgröße */
-    padding: 1px 0 0 5px; /* 5px oben, 0 rechts, 3px unten, 5px links */
 }
      /* note: "position: static !important" has been added here else we might get conflicts with ut-typo3 */
     .prev, .next { width: 20px; height: 20px; background-size: 20px; position: static !important }
     .prev_end::before {
     content: "<<";
-    font-size: 20px; /* Anpassen der Schriftgröße */
-   padding: 1px 0 0 5px; /* 5px oben, 0 rechts, 3px unten, 5px links */
 }
 
     .next_end::before{
-    content: ">>";
-    font-size: 20px; /* Anpassen der Schriftgröße */
-    padding: 1px 0 0 5px; /* 5px oben, 0 rechts, 3px unten, 5px links */
+    content: "\00a0>>";
 }
     .prev_end, .next_end { width: 28px; height: 20px; background-size: 28px; }
-    .prev, .next, .prev_end, .next_end { vertical-align: middle; display: inline-block; background-repeat: no-repeat; cursor: pointer; }
+    .prev, .next, .prev_end, .next_end { vertical-align: top; display: flex; background-repeat: no-repeat; cursor: pointer; }
+    
+    .prev::before,
+.next::before,
+.prev_end::before,
+.next_end::before {
+    display: inline-block;
+    width: 20px; /* Breite des Pseudoelements */
+    height: 20px; /* Höhe des Pseudoelements */
+    transform: scale(1.5); /* Ändert die Größe um 1.5 */
+     margin-right: 5px; /* Fügt rechts 5px Abstand hinzu */
+     margin-left: 5px; /* Fügt rechts 5px Abstand hinzu */
+}
 
     .pager { opacity: 0.8; }
     .pager:hover { opacity: 1; }
