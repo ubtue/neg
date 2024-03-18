@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ include file="../../configuration.jsp" %>
 
 <%
@@ -82,7 +83,7 @@ if(request.getParameter("title").equals("namenkommentar")){
   </jsp:include>
 
     <!------------Eintraege------------>
-  
+
   <span class="counter">
   <jsp:include page="../../forms/filter.jsp">
     <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
@@ -90,7 +91,8 @@ if(request.getParameter("title").equals("namenkommentar")){
     <jsp:param name="filter" value="<%= filter %>"/>
     <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
   </jsp:include>
-  Eintrag <jsp:include page="../../forms/counter.jsp">
+      <% Language.printTextfield(out, session, "titel_inc", "Eintrag");%>
+  <jsp:include page="../../forms/counter.jsp">
       <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
       <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
       <jsp:param name="filter" value="<%= filter %>"/>
