@@ -77,10 +77,10 @@ function CheckAll(index, check, praefix) {
 
   </div>
 
-  <div>
+  <div class="wrapper">
 
-<div id="content">
-<div id="erweiterte-suche">
+<div class="container" >
+<div class="container">
         <ul id="tabs">
             <li><a data-id="tab-1" class="tab-1 current-search search-button" href="#">
                     <% Language.printTextfield(out, session, formular, "Tab1"); %>
@@ -92,7 +92,7 @@ function CheckAll(index, check, praefix) {
                     <% Language.printTextfield(out, session, formular, "Tab3"); %>
             </a></li>
         </ul>
-        <div class="clear"></div>
+
 
     <FORM method="POST" action="suchergebnis">
       <input type="hidden" name="form" value="freie_suche">
@@ -577,69 +577,9 @@ function CheckAll(index, check, praefix) {
             <input class="search-next" type="submit" value="Suchen">
             <input class="search-next marginRight" type="reset" value="Zur&uuml;cksetzen">
             <div class="clear"> </div>
-<!--
-           <p align="right">
-               <a href="#" id="add">Weitere Gruppierung hinzufÃ¼gen</a>
-              <input type="reset">
-              <input type="submit">
 
-            </p>
--->
         </div>
 
-<!-- ##### AUSGABEFORMAT ##### -->
-        <!--div id="tab4">
-          <div id="header">
-            <ul id="primary">
-              <li>
-                <a href="javascript:onoff('tab1','tab4');">
-                    <% Language.printTextfield(out, session, formular, "Tab1"); %>
-                </a>
-              </li>
-              <li>
-                <a href="javascript:onoff('tab2','tab4');">
-                    <% Language.printTextfield(out, session, formular, "Tab2"); %>
-                </a>
-              </li>
-              <li>
-                <a href="javascript:onoff('tab3','tab4');">
-                    <% Language.printTextfield(out, session, formular, "Tab3"); %>
-                </a>
-              </li>
-              <li>
-                <span>
-                    <% Language.printTextfield(out, session, formular, "Tab4"); %>
-                </span>
-              </li>
-            </ul>
-          </div>
-          <div id="main">
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <input type="radio" name="export" value="liste" />
-                  </td>
-                  <td>
-                    <% Language.printTextfield(out, session, formular, "ExportListe"); %>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="radio" name="export" value="browse" />
-                  </td>
-                  <td>
-                    <% Language.printTextfield(out, session, formular, "ExportBrowse"); %>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <p align="right">
-              <input type="reset">
-              <input type="submit">
-            </p>
-          </div>
-        </div-->
       </div>
 </div>
     </FORM>
@@ -648,4 +588,3 @@ function CheckAll(index, check, praefix) {
       enableTooltips();
     </script>
 
-  </div>
