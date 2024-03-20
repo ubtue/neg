@@ -169,11 +169,10 @@ right: 350px; top: 10px; display: none; }
     /* Erweiterte Suche
     ******************************
     */
-   
-   
     
-    .hide { display: none; }
-
+    .hide { display: none; }  
+    
+    #erweiterte-suche .gruppierung label { cursor: pointer; }  
 
 
 /* Footer

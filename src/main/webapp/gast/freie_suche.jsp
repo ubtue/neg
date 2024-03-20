@@ -27,7 +27,7 @@
             // <<
 
             var i = 4; // check how many input exists on the document and add 1 for the add command to work
-            $('a#add').click(function () { // when you click the add link
+             $('#addButton').click(function () { // when you click the add button
                 if (i < 15) {
         <%
     out.print("$('<tr><th>Dann nach</th><td>");
@@ -97,7 +97,7 @@
                 <div class="container" id="tab-1" >
                     <div  style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="truncate-hint"><% Language.printTextfield(out, session, formular, "TruncateHint"); %></span>
-                        <h5 class="ut-heading ut-heading--h5" style="margin: 0;">Schritt 1 von 3</h5>
+                        <h5 class="ut-heading ut-heading--h5" style="margin: 0;"> <% Language.printTextfield(out, session, "gast_freie_suche", "Schritt1Von3"); %></h5>
                     </div>
                     <div class="clear"> </div>
                     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
@@ -319,7 +319,7 @@
                 <!-- ##### AUSGABEFELDER ##### -->
                 <div class="container hide" id="tab-2">
                     <div style="text-align: right;">
-                        <h5 class="ut-heading ut-heading--h5" style="margin: 0;">Schritt 2 von 3</h5>
+                        <h5 class="ut-heading ut-heading--h5" style="margin: 0;"><% Language.printTextfield(out, session, "gast_freie_suche", "Schritt2Von3"); %></h5>
                     </div>
                     <div class="clear"> </div>
                     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
@@ -548,39 +548,41 @@
                 </div>
 
                 <!-- ##### SORTIERUNG ##### -->
-                <div id="tab-3" class="hide gruppierung">
-                    <span class="move"> Schritt 3 von 3 </span>
+                <div class="container hide gruppierung" id="tab-3">
+                     <div style="text-align: right;">
+                        <h5 class="ut-heading ut-heading--h5" style="margin: 0;"><% Language.printTextfield(out, session, "gast_freie_suche", "Schritt3Von3"); %></h5>
+                    </div>
                     <div class="clear"> </div>
-                    <h3>
+                    <h3 class="ut-heading ut-heading--h3">
                         <% Language.printTextfield(out, session, formular, "Ueberschrift3"); %>
                     </h3>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>
+                    <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+                        <tbody class="ut-table__body">
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item">
                                     <% Language.printTextfield(out, session, formular, "Sortierung1"); %>
-                                </th>
-                                <td>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../forms/search.order.jsp">
                                         <jsp:param name="name" value="order1"/>
                                     </jsp:include>
                                 </td>
                             </tr>
-                            <tr>
-                                <th>
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item">
                                     <% Language.printTextfield(out, session, formular, "Sortierung2"); %>
-                                </th>
-                                <td>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../forms/search.order.jsp">
                                         <jsp:param name="name" value="order2"/>
                                     </jsp:include>
                                 </td>
                             </tr>
-                            <tr>
-                                <th>
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item">
                                     <% Language.printTextfield(out, session, formular, "Sortierung3");%>
-                                </th>
-                                <td>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../forms/search.order.jsp">
                                         <jsp:param name="name" value="order3"/>
                                     </jsp:include>
@@ -588,16 +590,30 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a href="#" id="add" class="search-next search-functions"> Weitere Gruppierung hinzuf&uuml;gen </a>
+                    <div style="text-align: right;">
+                        <button id="addButton" class="ut-btn search-next search-functions" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "WeitereGruppierung"); %>">
+                            <% Language.printTextfield(out, session, "gast_freie_suche", "WeitereGruppierung"); %>
+                        </button>
+                    </div>
                     <div class="clear"></div>
                     <p> &nbsp; </p>
-                    <a href="#erweiterte-suche" class="search-next search-button left erweiterte_suche_prev" data-id="tab-2"> Zur&uuml;ck zu Schritt 2 </a>
-                    <input class="search-next" type="submit" value="Suchen">
-                    <input class="search-next marginRight" type="reset" value="Zur&uuml;cksetzen">
+
+                    <div class="container" style="display: flex; justify-content: space-between; padding: 0;">
+                        <button data-id="tab-2" class="ut-btn ut-btn--color-primary-1 search-next search-button left erweiterte_suche_prev" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt2"); %>" onclick="window.location.href = '#erweiterte-suche';">
+                             <% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt2"); %>
+                        </button>
+                        <div style="flex-grow: 1;"></div> <!-- Fügt flexibles Leerzeichen hinzu -->
+                        <button  class="ut-btn ut-btn--color-primary-1" type="reset" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %>" >
+                            <% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %>
+                        </button>
+                        <span style="margin-right: 10px;"></span>
+                        <button  class="ut-btn ut-btn--color-primary-1" type="submit" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Suchen"); %>" >
+                            <% Language.printTextfield(out, session, "gast_freie_suche", "Suchen"); %>
+                        </button>
+
+                    </div>
                     <div class="clear"> </div>
-
                 </div>
-
         </div>
     </div>
 </FORM>
