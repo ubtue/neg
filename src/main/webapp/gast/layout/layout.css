@@ -169,57 +169,10 @@ right: 350px; top: 10px; display: none; }
     /* Erweiterte Suche
     ******************************
     */
-    #erweiterte-suche { margin-bottom: 40px; }
-    #erweiterte-suche a { text-decoration: none; font-size: 18px; }
-
-    /*    //#search-buttons { display: inline-block; margin: 0; padding: 0; } */
-    #tabs { position: relative; bottom: -1px; }
-    #tabs li { float: left; }
-    #tabs li a { background: #525252; color: #fff; padding: 5px 4px; margin-right: 5px; border-bottom: none; display: inline-block; border: 1px solid #d6d6d6; border-bottom: none;
-    }
-    #tabs .current-search, #tabs li a:hover { background: #f3f3f3; border-bottom: none; color: #535353; }
-    #tabs a:hover { text-decoration: none; }
-
-    .search-next { float: right; background: #717171; color: #fff; padding: 3px 6px; margin-bottom: 10px; border: none; }
-    .search-next:hover { background: #525252; }
-    .search-functions { background: #fff; color: #525252; border: 1px solid #d8d8d8; }
-    .search-functions:hover { *background: #d6d6d6; background: #fff;  border: 1px solid #000; }
+   
+   
+    
     .hide { display: none; }
-
-    #erweiterte-suche form { padding: 30px 20px; background: #f3f3f3; width: 700px; border: 1px solid #d6d6d6; }
-    #erweiterte-suche label, #erweiterte-suche td, #erweiterte-suche th { color: #535353; }
-    #erweiterte-suche input[type="text"], #erweiterte-suche select { font-size: 14px; width: 200px; color: #6c6c6c; font-family: 'Open Sans', sans-serif; }
-    #erweiterte-suche select {  }
-    #erweiterte-suche input[type="text"] { width: 188px; border: none; box-shadow: inset 0px 1px 3px #898989; border-radius: 3px; padding: 4px 6px; font-family: 'Open Sans', sans-serif; }
-
-    .erweiterte_suche_prev { background: #717171 url(images/left.png) no-repeat left center; background-size: 22px;
-    padding: 5px 8px; padding-left: 30px; }
-    .erweiterte_suche_next { background: #717171 url(images/right.png) no-repeat right center; background-size: 22px;
-    padding: 5px 8px; padding-right: 30px; }
-
-    .erweiterte_suche_prev:hover { background: #525252 url(images/left.png) no-repeat left center; background-size: 22px; }
-    .erweiterte_suche_next:hover { background: #525252 url(images/right.png) no-repeat right center; background-size: 22px; }
-
-    #erweiterte-suche table { }
-    #erweiterte-suche tr {  }
-    #erweiterte-suche td, #erweiterte-suche th { text-align: left; padding-bottom: 10px; }
-    #erweiterte-suche th { padding-right: 20px; width: 200px; font-weight: 700; }
-    #erweiterte-suche td { }
-
-    #erweiterte-suche input[type="submit"], #erweiterte-suche input[type="reset"] { padding: 4px 6px; font-family: 'Open Sans', sans-serif; font-size: 16px; font-weight: 700; box-shadow: 0px 0px 2px 0px #000; cursor: pointer; }
-
-    #erweiterte_suche_title:hover { background: #000; }
-
-    .marginRight { margin-right: 10px; }
-
-    #erweiterte-suche .gruppierung label { cursor: pointer; }
-
-    .ask { padding: 0px; cursor: pointer; display: inline-block; }
-    .hint { display: none; position: absolute; background: #9d9d9d; color: #fff; border: 1px solid #393939; padding: 10px 5px; font-size: 12px; width: 200px; line-height: 16px; }
-    .ask:hover .hint { display: inline-block; }
-
-    .move { float: right; background: #fff; color: #818181; padding: 3px 6px; margin-bottom: 10px; }
-    .left { float: left; }
 
 
 
