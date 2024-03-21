@@ -107,7 +107,7 @@
                                     <% Language.printDatafield(out, session, formular, "NeGID"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="NeGID"/>
                                         <jsp:param name="size" value="75"/>
@@ -120,7 +120,7 @@
                                     <% Language.printDatafield(out, session, formular, "Belegform"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Belegform"/>
                                     </jsp:include>
@@ -131,7 +131,7 @@
                                     <% Language.printDatafield(out, session, formular, "Kontext"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Kontext"/>
                                     </jsp:include>
@@ -142,12 +142,12 @@
                                     <% Language.printDatafield(out, session, formular, "Namenlemma"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Namenkommentar"/>
                                     </jsp:include>/
 
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Namenkommentar2"/>
                                         <jsp:param name="Sorted" value="yes"/>
@@ -159,7 +159,7 @@
                                     <% Language.printDatafield(out, session, formular, "MGHLemma"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="MGHLemma"/>
                                     </jsp:include>
@@ -171,7 +171,7 @@
                                     <% Language.printDatafield(out, session, formular, "Personenname"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Personenname"/>
                                     </jsp:include>
@@ -182,7 +182,7 @@
                                     <% Language.printDatafield(out, session, formular, "Geschlecht"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Geschlecht"/>
                                     </jsp:include>
@@ -193,7 +193,7 @@
                                     <% Language.printDatafield(out, session, formular, "PersonZeitraum"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="PersonZeitraum"/>
                                     </jsp:include>
@@ -205,7 +205,7 @@
                                     <% Language.printDatafield(out, session, formular, "AmtWeihePerson"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="AmtWeihePerson"/>
                                     </jsp:include>
@@ -216,7 +216,7 @@
                                     <% Language.printDatafield(out, session, formular, "StandPerson"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="StandPerson"/>
                                     </jsp:include>
@@ -227,7 +227,7 @@
                                     <% Language.printDatafield(out, session, formular, "EthniePerson"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="EthniePerson"/>
                                     </jsp:include>
@@ -238,7 +238,7 @@
                                     <% Language.printDatafield(out, session, formular, "AmtWeiheEinzelbeleg"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="AmtWeiheEinzelbeleg"/>
                                     </jsp:include>
@@ -249,7 +249,7 @@
                                     <% Language.printDatafield(out, session, formular, "EthnieEinzelbeleg"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="EthnieEinzelbeleg"/>
                                     </jsp:include>
@@ -261,11 +261,11 @@
                                     <% Language.printDatafield(out, session, formular, "Quelle"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Quellenliste"/>
                                     </jsp:include>
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Quelle"/>
                                     </jsp:include>
@@ -276,7 +276,7 @@
                                     <% Language.printDatafield(out, session, formular, "QuelleGattung"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="QuelleGattung"/>
                                     </jsp:include>
@@ -287,7 +287,7 @@
                                     <% Language.printDatafield(out, session, formular, "QuelleZeitraum"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="QuelleZeitraum"/>
                                     </jsp:include>
@@ -298,7 +298,7 @@
                                     <% Language.printDatafield(out, session, formular, "Seite"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Seite"/>
                                     </jsp:include>
@@ -330,7 +330,7 @@
                                     </h3></td></tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Namenlemma"/>
                                     </jsp:include>
@@ -341,7 +341,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_MGHLemma"/>
                                     </jsp:include>
@@ -357,7 +357,7 @@
                                     </h3></td></tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Person_Standardname"/>
                                     </jsp:include>
@@ -368,7 +368,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeihe"/>
                                     </jsp:include>
@@ -381,7 +381,7 @@
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item"></td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeiheZeitraum"/>
                                     </jsp:include>
@@ -390,7 +390,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Stand"/>
                                     </jsp:include>
@@ -402,7 +402,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Person_Ethnie"/>
                                     </jsp:include>
@@ -414,7 +414,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Geschlecht"/>
                                     </jsp:include>
@@ -432,7 +432,7 @@
                                     </h3></td></tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Belegform"/>
                                     </jsp:include>
@@ -443,7 +443,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Belegstelle"/>
                                     </jsp:include>
@@ -454,7 +454,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Kontext"/>
                                     </jsp:include>
@@ -465,7 +465,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Datierung"/>
                                     </jsp:include>
@@ -476,7 +476,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_lebend"/>
                                     </jsp:include>
@@ -487,7 +487,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Varianten"/>
                                     </jsp:include>
@@ -501,7 +501,7 @@
                             <!-- TODO: Oder als Teil von Belegstelle umsetzen? Außerdem: Label in GAST fehlt! -->
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                    <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Quellengattung"/>
                                     </jsp:include>
