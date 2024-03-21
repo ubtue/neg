@@ -27,39 +27,39 @@
             // <<
 
             var i = 4; // check how many input exists on the document and add 1 for the add command to work
-             $('#addButton').click(function () { // when you click the add button
+            $('#addButton').click(function () { // when you click the add button
                 if (i < 15) {
         <%
-    out.print("$('<tr><th>Dann nach</th><td>");
-    out.print("<select name=\"order'+i+'\">");
-    out.print("  <option value=\"-1\">--</option>");
+            out.print("$('<tr><th>Dann nach</th><td>");
+            out.print("<select name=\"order'+i+'\">");
+            out.print("  <option value=\"-1\">--</option>");
 
-    String sprache = "de";
-    if (session != null && session.getAttribute("Sprache") != null) {
-        sprache = (String) session.getAttribute("Sprache");
-    }
+            String sprache = "de";
+            if (session != null && session.getAttribute("Sprache") != null) {
+                sprache = (String) session.getAttribute("Sprache");
+            }
 
-    try {
-        List<java.util.Map> result = DatenbankDB.getMappedList("SELECT * FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
-        for (java.util.Map map : result) {
-            out.print("<option value=\"" + map.get("Textfeld") + "\">");
-            out.print(map.get(sprache));
-            out.print("</option>");
-        }
-        out.print("</select>");
+            try {
+                List<java.util.Map> result = DatenbankDB.getMappedList("SELECT * FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
+                for (java.util.Map map : result) {
+                    out.print("<option value=\"" + map.get("Textfeld") + "\">");
+                    out.print(map.get(sprache));
+                    out.print("</option>");
+                }
+                out.print("</select>");
 
-        out.print("<input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"ASC\" checked/>");
-        out.print("aufsteigend");
-        out.print(" &nbsp;");
-        out.print(" <input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"DESC\" />");
-        out.print("absteigend");
-        out.print("<br>Zeitraum (nur f&uuml;r Datierung): <input type=\"text\" name=\"order'+i+'zeit\" />  ");
+                out.print("<input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"ASC\" checked/>");
+                out.print("aufsteigend");
+                out.print(" &nbsp;");
+                out.print(" <input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"DESC\" />");
+                out.print("absteigend");
+                out.print("<br>Zeitraum (nur f&uuml;r Datierung): <input type=\"text\" name=\"order'+i+'zeit\" />  ");
 
-    } catch (Exception ex) {
-        ex.printStackTrace();
-    }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
-    out.print("</td></tr>').appendTo('div#tab-3 table tbody');");
+            out.print("</td></tr>').appendTo('div#tab-3 table tbody');");
 //    out.print("</td></tr>').appendTo('div#tab3 div#main table tbody');");
         %>
                     // if you have the input inside a form, change body to form in the appendTo
@@ -380,12 +380,16 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item"></td>
-                                <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="Formular" value="freie_suche"/>
-                                        <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeiheZeitraum"/>
-                                    </jsp:include>
-                                    <% Language.printDatafield(out, session, formular, "Ausgabe_Person_AmtWeiheZeitraum"); %>
+                                <td class="ut-table__item ut-table__body__item" colspan="2">
+                                    <div style="display: flex;">
+                                        <jsp:include page="inc.erzeugeFormular.jsp">
+                                            <jsp:param name="Formular" value="freie_suche"/>
+                                            <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeiheZeitraum"/>
+                                        </jsp:include>
+                                        <div style="padding-left: 5px;">
+                                            <% Language.printDatafield(out, session, formular, "Ausgabe_Person_AmtWeiheZeitraum"); %>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr class="ut-table__row">
@@ -537,7 +541,7 @@
                     <div class="clear"></div>
                     <div class="container" style="display: flex; justify-content: space-between; padding: 0;">
                         <button data-id="tab-1" class="ut-btn ut-btn--color-primary-1 search-next search-button left erweiterte_suche_prev" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt1"); %>" onclick="window.location.href = '#erweiterte-suche';">
-                             <% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt1"); %>
+                            <% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt1"); %>
                         </button>
                         <div style="flex-grow: 1;"></div> <!-- Fügt flexibles Leerzeichen hinzu -->
                         <button data-id="tab-3" class="ut-btn ut-btn--color-primary-1 search-next search-button erweiterte_suche_next" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "WeiterZuSchritt3"); %>" href="#erweiterte-suche">
@@ -549,7 +553,7 @@
 
                 <!-- ##### SORTIERUNG ##### -->
                 <div class="container hide gruppierung" id="tab-3">
-                     <div style="text-align: right;">
+                    <div style="text-align: right;">
                         <h5 class="ut-heading ut-heading--h5" style="margin: 0;"><% Language.printTextfield(out, session, "gast_freie_suche", "Schritt3Von3"); %></h5>
                     </div>
                     <div class="clear"> </div>
@@ -600,7 +604,7 @@
 
                     <div class="container" style="display: flex; justify-content: space-between; padding: 0;">
                         <button data-id="tab-2" class="ut-btn ut-btn--color-primary-1 search-next search-button left erweiterte_suche_prev" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt2"); %>" onclick="window.location.href = '#erweiterte-suche';">
-                             <% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt2"); %>
+                            <% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt2"); %>
                         </button>
                         <div style="flex-grow: 1;"></div> <!-- Fügt flexibles Leerzeichen hinzu -->
                         <button  class="ut-btn ut-btn--color-primary-1" type="reset" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %>" >
@@ -608,7 +612,7 @@
                         </button>
                         <span style="margin-right: 10px;"></span>
                         <button  class="ut-btn ut-btn--color-primary-1" type="submit" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Suchen"); %>" >
-                            <% Language.printTextfield(out, session, "gast_freie_suche", "Suchen"); %>
+                            <% Language.printTextfield(out, session, "gast_freie_suche", "Suchen");%>
                         </button>
 
                     </div>
