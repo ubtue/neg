@@ -563,7 +563,7 @@
                                     <% Language.printTextfield(out, session, formular, "Sortierung1"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../forms/search.order.jsp">
+                                    <jsp:include page="forms/search.order.jsp">
                                         <jsp:param name="name" value="order1"/>
                                     </jsp:include>
                                 </td>
@@ -573,7 +573,7 @@
                                     <% Language.printTextfield(out, session, formular, "Sortierung2"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../forms/search.order.jsp">
+                                    <jsp:include page="forms/search.order.jsp">
                                         <jsp:param name="name" value="order2"/>
                                     </jsp:include>
                                 </td>
@@ -583,7 +583,7 @@
                                     <% Language.printTextfield(out, session, formular, "Sortierung3");%>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../forms/search.order.jsp">
+                                    <jsp:include page="forms/search.order.jsp">
                                         <jsp:param name="name" value="order3"/>
                                     </jsp:include>
                                 </td>
