@@ -147,8 +147,9 @@
                                     <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Namenkommentar"/>
+                                        <jsp:param name="FolgendeAuswahl" value="Yes"/>
                                     </jsp:include>
-                                    /
+                                     <div style="height: 5px;"></div>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Namenkommentar2"/>
@@ -159,7 +160,7 @@
 
 
                             <tr class="ut-table__row">
-                                <td class="ut-table__item ut-table__body__item">
+                                <td class="ut-table__item ut-table__body__item" >
                                     <% Language.printDatafield(out, session, formular, "MGHLemma"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
@@ -268,6 +269,7 @@
                                     <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Quellenliste"/>
+                                        <jsp:param name="FolgendeAuswahl" value="Yes"/>
                                     </jsp:include>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>

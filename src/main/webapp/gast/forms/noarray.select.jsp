@@ -120,7 +120,15 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
             }
         }
         if (!tooltip.equals("")) {
-            out.println("<a class=\"ut-link\" href=\"javascript:return false;\" style=\"text-decoration:none;color:gray; margin-left: 5px;\" title=\"" + tooltip + "\"> ? </a>");
+
+            String folgendeAuswahl = request.getParameter("FolgendeAuswahl");
+
+            if(folgendeAuswahl != null && folgendeAuswahl.equals("Yes")) {
+                out.println("<a class=\"ut-link\" href=\"javascript:return false;\" style=\"text-decoration:none;color:gray; margin-left: 5px;\" title=\"" + tooltip + "\"> ? \\ </a>");
+            }
+            else{
+                out.println("<a class=\"ut-link\" href=\"javascript:return false;\" style=\"text-decoration:none;color:gray; margin-left: 5px;\" title=\"" + tooltip + "\"> ? </a>");
+            }
             out.println("</div>");
         }
 
