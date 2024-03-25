@@ -137,6 +137,8 @@
                                     </jsp:include>
                                 </td>
                             </tr>
+
+
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
                                     <% Language.printDatafield(out, session, formular, "Namenlemma"); %>
@@ -145,8 +147,8 @@
                                     <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Namenkommentar"/>
-                                    </jsp:include>/
-
+                                    </jsp:include>
+                                    /
                                     <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Namenkommentar2"/>
@@ -154,6 +156,8 @@
                                     </jsp:include>
                                 </td>
                             </tr>
+
+
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
                                     <% Language.printDatafield(out, session, formular, "MGHLemma"); %>

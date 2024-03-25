@@ -3,7 +3,8 @@
 <%
     if (feldtyp.equals("textfield") && !array) {
         if (!isReadOnly) {
-            out.print("<input name=\"" + datenfeld + "\" style=\"width: 250px\"");
+            out.print("<div  style=\"display: flex; align-items: center; \">");
+            out.print("<input class=\"ut-form__input ut-form__field\" id=\"id_field\" type=\"text\" name=\"" + datenfeld + "\" style=\"width: 350px\"");
             if (formular.endsWith("freie_suche")) {
                 out.print(" placeholder=\"" + platzhalter + "\" ");
             }
@@ -43,9 +44,15 @@
 
         if (!isReadOnly) {
             out.println(">");
+
+            if(tooltip.equals("")) {
+                out.println("</div>");
+            }
+
         }
         if (!tooltip.equals("")) {
-            out.println("<a class=\"ut-link\" href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\"" + tooltip + "\"> ? </a>");
+            out.println("<a class=\"ut-link\" href=\"javascript:return false;\" style=\"text-decoration:none;color:gray; margin-left: 5px;\" title=\"" + tooltip + "\"> ? </a>");
+            out.println("</div>");
         }
 
     }

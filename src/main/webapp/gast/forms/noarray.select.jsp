@@ -60,7 +60,9 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
             }
         }
         if (!isReadOnly) {
-            out.println("<select name=\"" + datenfeld + "\"  style=\"width: 250px\"");
+
+            out.println("<div class = \"wrapper\" style=\"display: flex; align-items: center;\">");
+            out.println("<select class=\"ut-form__select ut-form__field\"  id=\"id_field\" name=\"" + datenfeld + "\"  style=\"width: 350px\"");
             out.println(">");
             if (typeFile != null) {
                 out.println("<option value=\"\">Datei ausw&auml;hlen</option>");
@@ -113,9 +115,13 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
 
         if (!isReadOnly) {
             out.println("</select>");
+            if(tooltip.equals("")) {
+                out.println("</div>");
+            }
         }
         if (!tooltip.equals("")) {
-            out.println("<a class=\"ut-link\" href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\"" + tooltip + "\"> ? </a>");
+            out.println("<a class=\"ut-link\" href=\"javascript:return false;\" style=\"text-decoration:none;color:gray; margin-left: 5px;\" title=\"" + tooltip + "\"> ? </a>");
+            out.println("</div>");
         }
 
     }
