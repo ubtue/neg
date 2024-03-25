@@ -4,9 +4,7 @@
     if (feldtyp.equals("checkbox") && !array) {
 
 %>
-<div class="ut-form__checkbox  ">
     <label class="" for="checkbox1">
-
 <%
 
        out.print("<input id=\"checkbox1\" name=\"" + datenfeld + "\" ");
@@ -24,4 +22,3 @@
     }
 %>
  </label>
-</div>
