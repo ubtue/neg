@@ -9,7 +9,7 @@
          if (!rowlist.isEmpty()) {
             String selected = "-1";
 
-            out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">");
+            out.println("<table class=\"ut-table \">");
             for (Object[] columns : rowlist) {
                 out.println("<tr class=\"ut-table__row\">");
                 out.println("<td class=\"ut-table__item ut-table__body__item\">");

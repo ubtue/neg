@@ -271,6 +271,7 @@
                                         <jsp:param name="Datenfeld" value="Quellenliste"/>
                                         <jsp:param name="FolgendeAuswahl" value="Yes"/>
                                     </jsp:include>
+                                    <div style="height: 5px;"></div>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Quelle"/>

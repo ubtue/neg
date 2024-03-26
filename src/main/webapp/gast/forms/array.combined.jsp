@@ -6,7 +6,7 @@
 <%
     if (feldtyp.equals("combined") && array) {
         int count = 0;
-        out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\"" + (isReadOnly ? "width=\"100%\"" : "") + ">\n");
+        out.println("<table class=\"ut-table\"" + (isReadOnly ? "width=\"100%\"" : "") + ">\n");
         out.println("<tbody class=\"ut-table__body\">");
         out.println("<tr class=\"ut-table__row\">\n");
         for (int i = 0; i < combinedAnzeigenamen.length; i++) {
@@ -170,7 +170,7 @@
 
                 } else if (combinedFeldtypen[j].equals("subtable")) {
                     if (row != null) {
-                        out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">");
+                        out.println("<table class=\"ut-table\">");
                         out.println("<tbody class=\"ut-table__body\">");
                         String sql = "SELECT edition.ID, edition.Zitierweise Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
                                 + row.get("QuelleID").toString()
@@ -407,7 +407,7 @@
                         }
                         out.println("');\"><img src=\"layout/icons/calendar.gif\" border=0></a>");
                     }
-                } 
+                }
                 out.println("</td>");
             }
 

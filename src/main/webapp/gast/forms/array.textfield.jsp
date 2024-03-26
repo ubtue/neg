@@ -6,7 +6,7 @@
         List<Object[]> rowlist = AbstractBase.getListNative("SELECT ID, " + zielAttribut + " FROM " + zielTabelle + " WHERE " + formular + "ID=\"" + id + "\"");
 
         if (!rowlist.isEmpty()) {
-            out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">");
+            out.println("<table class=\"ut-table \">");
 
 
             for (Object[] row : rowlist) {
