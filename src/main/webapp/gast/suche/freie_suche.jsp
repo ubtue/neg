@@ -1159,13 +1159,12 @@
 
         String header = "";
 
-        out.print("<div id=\"level-functions\"><div class=\"open_next_level\" onClick=\"expandNextLevel('complete')\" >Weitere Ebene aufklappen</div>");
-        out.print("<div class=\"close_prev_level\" onClick=\"collapseNextLevel('complete')\">Weitere Ebene zuklappen</div></div>");
+       out.println("<div id=\"level-functions\">");
+       out.println("<button class=\"ut-btn \" type=\"button\"  aria-label=\"Aktion des Buttons\" onClick=\"expandNextLevel('complete')\" style=\"margin-right: 10px;\"><img src=\"layout/images/open_next_level.png\" alt=\"Aufklappen\" style=\"vertical-align: middle height: 23px; width: 30px; margin-right: 5px;\">Weitere Ebene aufklappen</button>");
+       out.println("<button class=\"ut-btn \" type=\"button\"  aria-label=\"Aktion des Buttons\" onClick=\"collapseNextLevel('complete')\"><img src=\"layout/images/close_next_level.png\" alt=\"Zuklappen\" style=\"vertical-align: middle height: 23px; width: 30px; margin-right: 5px;\">Weitere Ebene zuklappen</button>");
+       out.println("</div>");
 
-        //      out.println("<table class=\"resultlist\">");
-     //   out.println("<table class= class=\"ut-table ut-table--striped ut-table--striped--color-primary-3 resultlist\" >");
-     //   out.println("<thead class=\"ut-table__header \">");
-         header += "<thead class=\"ut-table__header \">";
+        header += "<thead class=\"ut-table__header \">";
         header += "<tr class=\"ut-table__row\">";
         for (int i = 0; i < headlines.size(); i++) {
             if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
