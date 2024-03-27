@@ -92,23 +92,22 @@ right: 350px; top: 10px; display: none; }
 	******************************
 	*/
     #level_function { margin-bottom: 40px; }
-    .open_next_level { background: #f2f2f2 url(images/open_next_level.png) no-repeat; margin-right: 20px; }
-    .close_prev_level { background: #f2f2f2 url(images/close_next_level.png) no-repeat; }
+    .open_next_level {  url(images/open_next_level.png) no-repeat; margin-right: 20px; }
+    .close_prev_level { url(images/close_next_level.png) no-repeat; }
     .open_next_level, .close_prev_level { height: 23px; cursor: pointer; display: inline-block; background-position: center;
     background-position: 5px 6px;
-    background-size: 30px 18px; padding: 8px 10px 0px 40px; font-size: 14px; color: #333; font-weight: 700;
+    background-size: 30px 18px; padding: 8px 10px 0px 40px; font-size: 14px;  font-weight: 700;
     border: 1px solid #d2d2d2;
     border-radius: 6px; }
-    .open_next_level:hover { background: #eaeaea url(images/open_next_level.png) no-repeat; border: 1px solid #b9b9b9; background-size: 30px 18px; background-position: 5px 6px; }
-    .close_prev_level:hover { background: #eaeaea url(images/close_next_level.png) no-repeat; border: 1px solid #b9b9b9; background-size: 30px 18px; background-position: 5px 6px; }
+    .open_next_level:hover { url(images/open_next_level.png) no-repeat; border: 1px solid #b9b9b9; background-size: 30px 18px; background-position: 5px 6px; }
+    .close_prev_level:hover { url(images/close_next_level.png) no-repeat; border: 1px solid #b9b9b9; background-size: 30px 18px; background-position: 5px 6px; }
 
 	/* Content-Table
 	******************************
 	*/
-	.content-table { width: 1100px; margin-bottom: 40px; overflow: hidden; }
+	.content-table { width: 1100px; margin-bottom: 40px; overflow: visible; }
 	.content-table p { padding: 3px 6px; text-align: left; }
-	.content-table tr { background: #dbdbdb; }
-	.content-table tr:nth-child(even) { background: #f7f7f7; }
+	
 	.content-table th { width: 200px; vertical-align: top; font-weight: 700; text-align: left; }
     .content-table tr td, .content-table tr th { padding: 10px 6px; }
     .content-table table td, .content-table table th { padding: 0 6px; padding-bottom: 5px; }
@@ -116,7 +115,7 @@ right: 350px; top: 10px; display: none; }
 	.content-table tr th p { font-weight: 700; }
 	.content-table tr td p {  }
 
-    .content-table .id-bg { *background: #f2d1a3; }
+    
     /*    //.content-table tr:hover { background: #bfbfbf; }   */
 
 		/* Einzelbelege
