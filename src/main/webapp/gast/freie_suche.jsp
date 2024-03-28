@@ -78,15 +78,14 @@
     <div class="container" >
         <div class="container" id="erweiterte-suche">
             <div class="container">
-                <button data-id="tab-1" class="ut-btn ut-btn--color-primary-1 tab-1 current-search search-button" type="button" aria-label="Aktion des Buttons" href="#">
-                    <% Language.printTextfield(out, session, formular, "Tab1"); %>
-                </button>
-                <button data-id="tab-2" class="ut-btn ut-btn--color-primary-2 tab-2 search-button" type="button" aria-label="Aktion des Buttons" href="#">
-                    <% Language.printTextfield(out, session, formular, "Tab2"); %>
-                </button>
-                <button data-id="tab-3" class="ut-btn ut-btn--color-primary-3 tab-3 search-button" type="button" aria-label="Aktion des Buttons" href="#">
-                    <% Language.printTextfield(out, session, formular, "Tab3"); %>
-                </button>
+                <ul class="ut-tab-list ut-tab-list--color-primary-1" role="tablist" id="tab-list">
+                    <li data-id="tab-1" class="ut-tab-list__item tab-1 search-button" role="presentation">
+                        <a class="ut-link ut-tab-list__link active" href="#" aria-role="<% Language.printTextfield(out, session, formular, "Tab1"); %>"><% Language.printTextfield(out, session, formular, "Tab1"); %></a></li>
+                    <li data-id="tab-2" class="ut-tab-list__item tab-2 search-button" role="presentation">
+                        <a class="ut-link ut-tab-list__link" href="#" aria-role="<% Language.printTextfield(out, session, formular, "Tab2"); %>"><% Language.printTextfield(out, session, formular, "Tab2"); %></a></li>
+                    <li data-id="tab-3" class="ut-tab-list__item tab-3 search-button" role="presentation">
+                        <a class="ut-link ut-tab-list__link" href="#" aria-role="<% Language.printTextfield(out, session, formular, "Tab3"); %>"><% Language.printTextfield(out, session, formular, "Tab3"); %></a></li>
+                </ul>
             </div>
 
 
@@ -629,6 +628,26 @@
     </div>
 </FORM>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var tabs = document.querySelectorAll('.ut-tab-list__item');
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                var tabId = this.getAttribute('data-id');
+
+                // Alle Tabs inaktiv setzen
+                tabs.forEach(function(tab) {
+                    tab.querySelector('a').classList.remove('active');
+                });
+
+                // Den angeklickten Tab aktiv setzen
+                this.querySelector('a').classList.add('active');
+            });
+        });
+    });
+</script>
+
 <script type="text/javascript">
     enableTooltips();
 </script>
