@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.SucheDB"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ page import="java.util.Map"%>
@@ -69,8 +70,14 @@
         }
         out.println("<script>console.log('Using query term: " + query_like.replaceAll("'", "\\'") + "')</script>");
 
-        out.println("<div id=\"level_function\"> <div class=\"open_next_level\" onClick=\"expandNextLevel('complete')\">Weitere Ebene aufklappen</div>");
-        out.print("<div class=\"close_prev_level\" onClick=\"collapseNextLevel('complete')\">Weitere Ebene zuklappen</div></div>");
+        String aufklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneAufklappen");
+
+        String zuklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneZuklappen");
+
+        out.println("<div id=\"level-function\">");
+        out.println("<button class=\"ut-btn \" type=\"button\"  aria-label=\"" + aufklappen + "\" onClick=\"expandNextLevel('complete')\"><img src=\"layout/images/open_next_level.png\" alt=\"Aufklappen\" style=\"vertical-align: middle height: 23px; width: 30px; margin-right: 5px;\">" + aufklappen + "</button>");
+        out.println("<button class=\"ut-btn \" type=\"button\"  aria-label=\"" + zuklappen + "\" onClick=\"collapseNextLevel('complete')\"><img src=\"layout/images/close_next_level.png\"  style=\"vertical-align: middle height: 23px; width: 30px; margin-right: 5px;\">" + zuklappen + "</button>");
+        out.println("</div>");
 
         //Part 1 of the query
         headlines = new ArrayList<>();

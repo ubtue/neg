@@ -132,9 +132,9 @@
 <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
     <tbody class="ut-table__body ">
         <tr class="ut-table__row">
-            <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma");%></th>
+            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma");%></td>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
                     <jsp:param name="Formular" value="mgh_lemma" />
                     <jsp:param name="Datenfeld" value="MGHLemma" />
@@ -145,9 +145,9 @@
             </td>
         </tr>
         <tr class="ut-table__row">
-            <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%></th>
+            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%></td>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
                     <jsp:param name="Formular" value="mgh_lemma" />
                     <jsp:param name="Datenfeld" value="EinzelbelegRO" />

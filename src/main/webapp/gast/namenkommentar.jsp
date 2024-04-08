@@ -132,7 +132,7 @@
 <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
     <tbody class="ut-table__body ">
         <tr class="ut-table__row">
-            <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "namenkommentar", "Plemma");%> </th>
+            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "namenkommentar", "Plemma");%> </td>
             <td class="ut-table__item ut-table__body__item">
                 <jsp:include page="../inc.modul.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
@@ -144,9 +144,9 @@
             </td>
         </tr>
         <tr class="ut-table__row">
-            <th class="ut-table__item ut-table__header__item"><% Language.printDatafield(out, session, "namenkommentar", "EinzelbelegRO");%> </th>
+            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "namenkommentar", "EinzelbelegRO");%> </td>
             <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="../inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
                     <jsp:param name="Formular" value="namenkommentar" />
                     <jsp:param name="Datenfeld" value="EinzelbelegRO" />

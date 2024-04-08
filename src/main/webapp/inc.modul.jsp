@@ -525,7 +525,7 @@
                 out.println("</table>\n");
             }
             if (modul.equals("Verwandte")) {  //gast/person.jsp
-                out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
+                out.println("<table class=\"ut-table \">\n");
                 out.println("<thead class=\"ut-table__header \">");
         %>
         <tr class="ut-table__row">
@@ -1138,11 +1138,11 @@
                 } catch (Exception ex) {
                 }
             }
-            out.println("</tbody>\n");
+            out.println("</tbody>");
             out.println("</table>\n");
         } else if (modul.equals("edition")) {  //gast/quelle.jsp
 
-            out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\" id=\"edition\">\n");
+            out.println("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3\">\n");
         %>
 
     <thead class="ut-table__header ">
@@ -1422,7 +1422,7 @@
                     } catch (Exception ex) {
                     }
                 }
-                out.println("</tbody>\n");
+                out.println("</tbody>");
                 out.println("</table>\n");
                 if (!showNummer) {
             %>
