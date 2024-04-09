@@ -1159,10 +1159,13 @@
 
         String header = "";
 
-       out.println("<div id=\"level-functions\">");
-       out.println("<button class=\"ut-btn \" type=\"button\"  aria-label=\"Aktion des Buttons\" onClick=\"expandNextLevel('complete')\" style=\"margin-right: 10px;\"><img src=\"layout/images/open_next_level.png\" alt=\"Aufklappen\" style=\"vertical-align: middle height: 23px; width: 30px; margin-right: 5px;\">Weitere Ebene aufklappen</button>");
-       out.println("<button class=\"ut-btn \" type=\"button\"  aria-label=\"Aktion des Buttons\" onClick=\"collapseNextLevel('complete')\"><img src=\"layout/images/close_next_level.png\" alt=\"Zuklappen\" style=\"vertical-align: middle height: 23px; width: 30px; margin-right: 5px;\">Weitere Ebene zuklappen</button>");
-       out.println("</div>");
+        String aufklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneAufklappen");
+        String zuklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneZuklappen");
+
+        out.println("<div id=\"level-functions\">");
+        out.println("<button class=\"ut-btn \" type=\"button\"  aria-label=\"" + aufklappen + "\" onClick=\"expandNextLevel('complete')\"><img src=\"layout/images/open_next_level.png\" alt=\"Aufklappen\" style=\"vertical-align: middle height: 23px; width: 30px; margin-right: 5px;\">" + aufklappen + "</button>");
+        out.println("<button class=\"ut-btn \" type=\"button\"  aria-label=\"" + zuklappen + "\" onClick=\"collapseNextLevel('complete')\"><img src=\"layout/images/close_next_level.png\"  style=\"vertical-align: middle height: 23px; width: 30px; margin-right: 5px;\">" + zuklappen + "</button>");
+        out.println("</div>");
 
         header += "<thead class=\"ut-table__header \">";
         header += "<tr class=\"ut-table__row\">";
