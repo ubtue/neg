@@ -97,7 +97,7 @@
                 </a>
             </h4>
             <h2 class="ut-heading ut-nav-area__current-level">
-                <a class="ut-link ut-nav-area__link" title="Nomen et Gens" href="/">
+                <a class="ut-link ut-nav-area__link" title="Nomen et Gens" href="/neg">
                     Nomen et Gens
                 </a>
             </h2>
