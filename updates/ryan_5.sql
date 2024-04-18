@@ -35,3 +35,5 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('gast_freie_suche', 'EbeneAufklappen', 'Weitere Ebene aufklappen', 'Expand further level', 'Développer un autre niveau', 'Alterum expand level');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('gast_freie_suche', 'EbeneZuklappen', 'Weitere Ebene zuklappen', 'Collapse further level', 'Replier un autre niveau', 'Alterum contrahere level');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('startseite', 'Titel', 'Startseite', 'Home page', 'Page d\'accueil', 'Pagina domestica');

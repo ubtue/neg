@@ -116,7 +116,12 @@
                             <ul class="ut-nav__list ut-nav__list--level-1 lory-slides js_slides">
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="1">
                                     ${param.current eq 'startseite' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                        <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'startseite' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/startseite" tabindex="0">Startseite</a>
+                                        <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'startseite' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/startseite" tabindex="0">
+                                            <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
+                                                <jsp:param name="Formular" value="startseite"/>
+                                                <jsp:param name="Textfeld" value="Titel"/>
+                                            </jsp:include>
+                                        </a>
                                     ${param.current eq 'startseite' ? '</div>' : ''}
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="2">
@@ -160,6 +165,16 @@
                                     ${param.current eq 'quelle' ? '</div>' : ''}
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="6">
+                                    ${param.current eq 'einfaches_ergebnis' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
+                                        <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einfaches_ergebnis' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis" tabindex="0">
+                                            <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
+                                                <jsp:param name="Formular" value="gast_freie_suche"/>
+                                                <jsp:param name="Textfeld" value="Suchen"/>
+                                            </jsp:include>
+                                        </a>
+                                    ${param.current eq 'einfaches_ergebnis' ? '</div>' : ''}
+                                </li>
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="7">
                                     ${param.current eq 'freie_suche' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
                                         <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche" tabindex="0">
                                             <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
