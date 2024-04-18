@@ -22,11 +22,11 @@
         $(function () { // when document has loaded
 
             // replace [help] with link to help >>
-            var p = $('.truncate-hint');
+            let p = $('.truncate-hint');
             p.html(p.text().trim().replace(/\[(.+)\]/, "<a class=\"ut-link\" href='hilfe'>$1</a>"));
             // <<
 
-            var i = 4; // check how many input exists on the document and add 1 for the add command to work
+            let i = 4; // check how many input exists on the document and add 1 for the add command to work
             $('#addButton').click(function () { // when you click the add button
                 if (i < 15) {
         <%
@@ -630,22 +630,38 @@
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var tabs = document.querySelectorAll('.ut-tab-list__item');
+    let tabs = document.querySelectorAll('.ut-tab-list__item');
+    let buttons = document.querySelectorAll('.search-next');
 
+    // Funktion zum Aktivieren des Tabs und Deaktivieren der anderen Tabs
+    function activateTab(tabId) {
+        // Alle Tabs inaktiv setzen
         tabs.forEach(function(tab) {
-            tab.addEventListener('click', function() {
-                var tabId = this.getAttribute('data-id');
+            tab.querySelector('a').classList.remove('active');
+        });
+        // Den angeklickten Tab aktiv setzen
+        let activeTab = document.querySelector('[data-id="' + tabId + '"]');
+        if (activeTab) {
+            activeTab.querySelector('a').classList.add('active');
+        }
+    }
 
-                // Alle Tabs inaktiv setzen
-                tabs.forEach(function(tab) {
-                    tab.querySelector('a').classList.remove('active');
-                });
-
-                // Den angeklickten Tab aktiv setzen
-                this.querySelector('a').classList.add('active');
-            });
+    // Event Listener für die Buttons hinzufügen
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            let tabId = this.getAttribute('data-id');
+            activateTab(tabId);
         });
     });
+
+    // Event Listener für die Tabs hinzufügen
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            let tabId = this.getAttribute('data-id');
+            activateTab(tabId);
+        });
+    });
+});
 </script>
 
 <script type="text/javascript">
