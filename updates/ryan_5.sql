@@ -37,3 +37,18 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('gast_freie_suche', 'EbeneZuklappen', 'Weitere Ebene zuklappen', 'Collapse further level', 'Replier un autre niveau', 'Alterum contrahere level');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('startseite', 'Titel', 'Startseite', 'Home page', 'Page d\'accueil', 'Pagina domestica');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ziele', 'Titel', 'Ziele', 'Goals', 'Objectifs', 'Scopos');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('datenbank', 'Titel', 'Datenbank', 'Database', 'Base de données', 'Tabula');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('quellenliste', 'Titel', 'Quellenliste', 'Source list', 'Liste des sources', 'Index fontium');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('tagungen', 'Titel', 'Tagungen', 'Meetings', 'Réunions', 'Conventūs');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('mitglieder', 'Titel', 'Mitglieder', 'Members', 'Membres', 'Membra');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('projekte', 'Titel', 'Projekte', 'Projects', 'Projets', 'Opera');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('publikationen', 'Titel', 'Publicationen', 'Publications', 'Publications', 'Publicationes');
+

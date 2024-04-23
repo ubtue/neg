@@ -29,12 +29,13 @@
                             <div class="ut-link-register ut-link-register--color-text ut-link-register--without-icons">
                                 <div class="ut-link-register ut-page-footer__link-list">
                                     <div class="ut-link-register__link-list">
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/quellenliste">Quellenliste</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/tagungen">Tagungen</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/mitglieder">Mitglieder</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/projekte">Projekte</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/publikationen">Publikationen</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/ziele">Ziele</a>
+                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/ziele">Ziele</a>
+                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/datenbank">Datenbank</a>
+                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/quellenliste">Quellenliste</a>
+                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/tagungen">Tagungen</a>
+                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/mitglieder">Mitglieder</a>
+                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/projekte">Projekte</a>
+                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/publikationen">Publikationen</a>
                                     </div>
                                 </div>
                             </div>
@@ -72,7 +73,7 @@
         </div>
     </div>
     <a href="#top" title="To top" class="top-link">
-	<span class="ut-icon ut-icon-up-big ut-icon__to-top" role="img" aria-label="Nach oben scrollen"></span>
+        <span class="ut-icon ut-icon-up-big ut-icon__to-top" role="img" aria-label="Nach oben scrollen"></span>
     </a>
 </footer>
 

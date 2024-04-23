@@ -110,6 +110,62 @@
         <url-pattern>/gast/impressum</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>ZieleServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ZieleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ZieleServlet</servlet-name>
+        <url-pattern>/gast/ziele</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DatenbankServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.DatenbankServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DatenbankServlet</servlet-name>
+        <url-pattern>/gast/datenbank</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>QuellenlisteServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.QuellenlisteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QuellenlisteServlet</servlet-name>
+        <url-pattern>/gast/quellenliste</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>TagungenServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.TagungenServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TagungenServlet</servlet-name>
+        <url-pattern>/gast/tagungen</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>MitgliederServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.MitgliederServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MitgliederServlet</servlet-name>
+        <url-pattern>/gast/mitglieder</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ProjekteServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ProjekteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProjekteServlet</servlet-name>
+        <url-pattern>/gast/projekte</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PublikationenServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.PublikationenServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PublikationenServlet</servlet-name>
+        <url-pattern>/gast/publikationen</url-pattern>
+    </servlet-mapping> 
+    <servlet>
         <servlet-name>EinstellungenServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinstellungenServlet</servlet-class>
     </servlet>
