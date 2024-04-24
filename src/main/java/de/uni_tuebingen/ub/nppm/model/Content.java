@@ -19,7 +19,8 @@ public class Content {
         HILFE,
         NAMENKOMMENTAR,
         QUELLENKOMMENTAR,
-        UEBERLIEFERUNGSKOMMENTAR  
+        UEBERLIEFERUNGSKOMMENTAR,
+        WEITEREINFORMATIONEN
     }
 
     @Id

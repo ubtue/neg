@@ -48,7 +48,7 @@
                 context = request.getParameter("context");
             }
 
-            Content.Context contextEnum = null;
+           Content.Context contextEnum = null;
             if (context.equals("HILFE")) {
                 contextEnum = Content.Context.HILFE;
             } else if (context.equals("NAMENKOMMENTAR")) {
@@ -57,6 +57,8 @@
                 contextEnum = Content.Context.QUELLENKOMMENTAR;
             }else if (context.equals("UEBERLIEFERUNGSKOMMENTAR")) {
                 contextEnum = Content.Context.UEBERLIEFERUNGSKOMMENTAR;
+            }else if (context.equals("WEITEREINFORMATIONEN")) {
+                contextEnum = Content.Context.WEITEREINFORMATIONEN;
             }
 
         %>
@@ -73,8 +75,11 @@
                         out.print("selected"); %>>Quellenkommentar</option>
                          <option value="UEBERLIEFERUNGSKOMMENTAR" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR)
                         out.print("selected"); %>>Überlieferungskommentar</option>
+                         <option value="WEITEREINFORMATIONEN" <% if (contextEnum == Content.Context.WEITEREINFORMATIONEN)
+                        out.print("selected"); %>>Weitere Informationen</option>
             </select>
         </form>
+
 
         <%
             try {

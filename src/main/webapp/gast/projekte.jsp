@@ -1,10 +1,22 @@
-<h2 class="ut-heading ut-heading--h2">Projekte</h2>
-<p> Update: 2. Februar 2019 - 23:18 - Published: 8. August 2009 - 14:36 </p>
-<p>„Nomen et Gens“ kooperiert mit weiteren Forschungsprojekten zur Prosopographie und Onomastik des Früh- und Hochmittelalters. Einige dieser Projekte arbeiten selbst mit Material der „Nomen et Gens“-Datenbank. Andere ergänzen das von uns bearbeitete Material in räumlicher oder zeitlicher Hinsicht. Zu diesen verwandten Projekten gehören insbesondere:</p>
-<p><a class="ut-link ut-link--external ut-link--context-icon" target="_blank" title="Zur Website des Projekts" href="http://www.uni-paderborn.de/fileadmin/kw/institute-einrichtungen/ieman/Forschung/Merowingische_Monetarmuenzen.pdf">Merowingische Monetarmünzen</a> (Berlin, Paderborn, Regensburg)</p>
-<p><a class="ut-link ut-link--external ut-link--context-icon" target="_blank" title="Informationen zum Projekt" href="http://www.mittelalter.uni-tuebingen.de/?q=forsch/forschung.htm#pge">Prosopographie des gallischen Episkopats 400-700</a> (Tübingen)</p>
-<p><a class="ut-link ut-link--external ut-link--context-icon" target="_blank" title="Website des Projekts" href="http://www.uni-saarland.de/fak4/fr41/haubrichs/html/onomastik_und_akkulturation.html">Onomastik und Akkulturation</a> (Saarbrücken)</p>
-<p><a class="ut-link ut-link--external ut-link--context-icon" target="_blank" title="Zur Website des Projekts" href="http://www.mgh.de/das-institut/editionsvorhaben/">Untersuchungen zu den St. Galler Verbrüderungsbüchern und Edition in den Monumenta Germaniae Historica</a> (Duisburg-Essen, St. Gallen, Dortmund)</p>
-<p><a class="ut-link ut-link--external ut-link--context-icon" target="_blank" title="Zur Website des Projekts" href="http://www.pase.ac.uk/">Prosopography of Anglo-Saxon England</a> (PASE)</p>
-<p><a class="ut-link ut-link--external ut-link--context-icon" target="_blank" title="Zur Website des Projekts" href="http://www.researchportal.be/en/project/anthroponymy-of-the-historical-low-countries-till-1225--(UA_21881)/">Antroponymie van de historische Nederlanden tot 1225</a> (Antwerpen)</p>
-<p>&nbsp;</p>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Content"%>
+<%@page import="java.util.List"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
+<%@page import="java.io.File"%>
+<%@page import="java.io.InputStreamReader"%>
+<%@page import="java.net.URL"%>
+<%@page import="java.io.*"%>
+<%@page import="java.nio.*"%>
+<%@page import="org.apache.commons.fileupload.*" isThreadSafe="false" %>
+<%@page import="org.apache.commons.fileupload.disk.*" isThreadSafe="false" %>
+<%@page import="org.apache.commons.fileupload.servlet.*" isThreadSafe="false" %>
+<%@page import="org.apache.commons.fileupload.util.*" isThreadSafe="false" %>
+
+<%
+    //When the page is accessed, the help.html is read from the database
+    String myFile = "projekte.html";
+    Content content = ContentDB.getByName(myFile);
+    byte[] htmlBytes = content.getContent();
+    String utf8String = new String(htmlBytes, java.nio.charset.StandardCharsets.UTF_8);
+    out.println(utf8String);
+%>
