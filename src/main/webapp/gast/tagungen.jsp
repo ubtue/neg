@@ -21,7 +21,7 @@
     {
         myFile = "tagungen.html";
     }
-    else if(language.equals("gb")){
+    else{
         myFile = "conferences.html";
     }
 

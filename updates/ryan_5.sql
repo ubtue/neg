@@ -50,5 +50,19 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('projekte', 'Titel', 'Projekte', 'Projects', 'Projets', 'Opera');
 
-INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('publikationen', 'Titel', 'Publicationen', 'Publications', 'Publications', 'Publicationes');
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('publikationen', 'Titel', 'Publikationen', 'Publications', 'Publications', 'Publicationes');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprachauswahl', 'Sprachauswahl', 'Language selection', 'Sélection de langue', 'Selectio linguae');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_de', 'Deutsch', 'German', 'Allemand', 'Germanicus');
+  
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_en', 'Englisch', 'English', 'Anglais', 'Anglicus');
+  
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_fr', 'Französisch (nur Felder', 'French (fields only)', 'Français (champs uniquement)', ' Gallica (agros tantum)');
+  
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_la', 'Latein (nur Felder)', 'Latin (fields only)', 'Latin (champs uniquement)', 'Latina (agros tantum)');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('inhaltBearbeiten', 'Titel', 'Inhalt bearbeiten', 'Edit content', 'Modifier le contenu', 'Materia componere');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('openLink', 'Titel', 'offene Verknüpfung', 'Open link', 'Lien ouvert', 'Nexus patens');
 

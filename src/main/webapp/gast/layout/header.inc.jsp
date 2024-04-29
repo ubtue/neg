@@ -87,23 +87,23 @@
                         </a>
                         <div class="ut-switchblock__item ut-switchblock__item--dropdown" id="switchblock-language">
                             <div class="ut-switchblock__header">
-                                <span class="ut-switchblock__title">Sprachauswahl</span>
+                                <span class="ut-switchblock__title"><% Language.printTextfield(out, session, "sprachauswahl", "Sprachauswahl"); %></span>
                                 <span class="ut-switchblock__close-icon ut-icon ut-icon-cancel" role="button"></span>
                             </div>
                             <div class="ut-switchblock__content">
                                 <nav class="ut-nav ut-nav--language" aria-label="bobo">
                                     <ul class="ut-nav__list ">
                                         <li class="ut-nav__item " data-level-count="1">
-                                            <a class="ut-link ut-nav__link" href="?language=de" title="Sprache Deutsch wählen">Deutsch</a>
+                                            <a class="ut-link ut-nav__link" href="?language=de" title="Sprache Deutsch wählen"><% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de"); %></a>
                                         </li>
                                         <li class="ut-nav__item " data-level-count="2">
-                                            <a class="ut-link ut-nav__link" href="?language=gb" title="Sprache Englisch wählen">Englisch</a>
+                                            <a class="ut-link ut-nav__link" href="?language=gb" title="Sprache Englisch wählen"><% Language.printTextfield(out, session, "sprachauswahl", "Sprache_en"); %></a>
                                         </li>
                                         <li class="ut-nav__item " data-level-count="2">
-                                            <a class="ut-link ut-nav__link" href="?language=fr" title="Sprache Französisch wählen">Französisch (nur Felder)</a>
+                                            <a class="ut-link ut-nav__link" href="?language=fr" title="Sprache Französisch wählen"><% Language.printTextfield(out, session, "sprachauswahl", "Sprache_fr"); %></a>
                                         </li><!-- comment -->
                                         <li class="ut-nav__item " data-level-count="2">
-                                            <a class="ut-link ut-nav__link" href="?language=la" title="Sprache Latein wählen">Latein (nur Felder)</a>
+                                            <a class="ut-link ut-nav__link" href="?language=la" title="Sprache Latein wählen"><% Language.printTextfield(out, session, "sprachauswahl", "Sprache_la"); %></a>
                                         </li>
                                     </ul>
                                 </nav>

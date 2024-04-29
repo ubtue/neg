@@ -21,7 +21,7 @@
     {
         myFile = "quellenliste.html";
     }
-    else if(language.equals("gb")){
+    else{
         myFile = "sourcelist.html";
     }
 

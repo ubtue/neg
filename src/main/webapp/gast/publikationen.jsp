@@ -21,7 +21,7 @@
     {
         myFile = "publikationen.html";
     }
-    else if(language.equals("gb")){
+    else{
         myFile = "publications.html";
     }
 

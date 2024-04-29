@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <footer id="ut-identifier--footer" class="ut-page__footer ut-page-footer">
     <div class="container">
@@ -27,52 +28,17 @@
                     <div class="ut-panel__collapse collapse" id="footerpanel-2-pc">
                         <div class="ut-panel__body">
                             <div class="ut-link-register ut-link-register--color-text ut-link-register--without-icons">
-
-
                                <div class="ut-link-register ut-page-footer__link-list">
-
-                                    <%
-                                        String language = (String) session.getAttribute("Sprache");
-
-                                        if(language.equals("de")){
-                                        %>
-
-                                        <div class="ut-link-register__link-list">
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/ziele">Ziele</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/datenbank">Datenbank</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/quellenliste">Quellenliste</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/tagungen">Tagungen</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/mitglieder">Mitglieder</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/projekte">Projekte</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/publikationen">Publikationen</a>
+                                    <div class="ut-link-register__link-list">
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/ziele"><% Language.printTextfield(out, session, "ziele", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/datenbank"><% Language.printTextfield(out, session, "datenbank", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/quellenliste"><% Language.printTextfield(out, session, "quellenliste", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/tagungen"><% Language.printTextfield(out, session, "tagungen", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/mitglieder"><% Language.printTextfield(out, session, "mitglieder", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/projekte"><% Language.printTextfield(out, session, "projekte", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/publikationen"><% Language.printTextfield(out, session, "publikationen", "Titel"); %></a>
                                         </div>
-
-                                        <%
-                                        }else if(language.equals("gb")){
-                                        %>
-
-                                        <div class="ut-link-register__link-list">
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/ziele">Goals</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/datenbank">Database</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/quellenliste">Sourcelist</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/tagungen">Conferences</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/mitglieder">Members</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/projekte">Cooperations</a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/publikationen">Publications</a>
-                                        </div>
-
-                                        <%
-                                            }
-
-                                    %>
-
-
-
-
                                 </div>
-
-
-
                             </div>
                         </div>
                     </div>

@@ -21,7 +21,7 @@
     {
         myFile = "ziele.html";
     }
-    else if(language.equals("gb")){
+    else{
         myFile = "goals.html";
     }
 

@@ -21,7 +21,7 @@
     {
         myFile = "datenbank.html";
     }
-    else if(language.equals("gb")){
+    else{
         myFile = "database.html";
     }
 
