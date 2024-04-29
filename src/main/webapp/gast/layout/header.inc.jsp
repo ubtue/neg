@@ -2,14 +2,68 @@
 
 <%@ include file="../../configuration.jsp" %>
 <%@ include file="../../functions.jsp" %>
+<%@ page language="java" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.util.Arrays" %>
+<%@ page import="java.util.List" %>
 
-<%// Wenn ein Link geklickt wurde, setzen Sie die Sprache entsprechend
+<%
+
+    // Wenn ein Link geklickt wurde, setzen Sie die Sprache entsprechend
     if (request.getParameter("language") != null) {
         String selectedLanguage = request.getParameter("language");
         session.setAttribute("Sprache", selectedLanguage);
+    } else if (session.getAttribute("Sprache") == null) {
+        // Holen Sie sich den Accept-Language-Header-Wert
+        String acceptLanguage = request.getHeader("Accept-Language");
+
+        // Teilen Sie die Sprachen auf der Grundlage von Kommata
+        String[] languages = acceptLanguage.split(",");
+
+        // Erstellen Sie eine Liste von bevorzugten Sprachen
+        List<String> preferredLanguages = Arrays.asList(languages);
+
+        // Gehen Sie durch die bevorzugten Sprachen und extrahieren Sie die primäre Sprache
+        String primaryLanguage = null;
+        for (String lang : preferredLanguages) {
+            String[] parts = lang.split(";");
+            primaryLanguage = parts[0];
+            break; // Nur die erste Sprache berücksichtigen
+        }
+
+        // Erstellen Sie ein Locale-Objekt aus der primären Sprache
+        Locale userLocale = new Locale(primaryLanguage);
+
+        // Sie können dann die Sprache und das Land aus dem Locale-Objekt erhalten
+        String language = userLocale.getLanguage(); // Sprache (z. B. "en" für Englisch)
+        String country = userLocale.getCountry();   // Land (z. B. "US" für die Vereinigten Staaten)
+
+        if(language.startsWith("de"))
+        {
+            language = "de";
+            session.setAttribute("Sprache", language);
+        }
+        else if(language.startsWith("en"))
+        {
+            language = "gb";
+            session.setAttribute("Sprache", language);
+        }
+        else if(language.startsWith("la"))
+        {
+            language = "la";
+            session.setAttribute("Sprache", language);
+        }
+        else if(language.startsWith("fr"))
+        {
+            language = "fr";
+            session.setAttribute("Sprache", language);
+        }else{
+            language = "gb";
+            session.setAttribute("Sprache", language);
+        }
     }
 
-// Hole die aktuelle Spracheinstellung aus der Session
+    // Hole die aktuelle Spracheinstellung aus der Session
     String language = (String) session.getAttribute("Sprache");
 %>
 
