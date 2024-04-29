@@ -3,6 +3,16 @@
 <%@ include file="../../configuration.jsp" %>
 <%@ include file="../../functions.jsp" %>
 
+<%// Wenn ein Link geklickt wurde, setzen Sie die Sprache entsprechend
+    if (request.getParameter("language") != null) {
+        String selectedLanguage = request.getParameter("language");
+        session.setAttribute("Sprache", selectedLanguage);
+    }
+
+// Hole die aktuelle Spracheinstellung aus der Session
+    String language = (String) session.getAttribute("Sprache");
+%>
+
 <header>
     <nav class="ut-nav ut-nav--skipanchors" aria-label="Bereiche überspringen">
         <ul class="ut-nav__list">
@@ -66,6 +76,39 @@
                             <span class="ut-switchbar__icon ut-icon ut-icon-login"></span>
                             <span class="ut-switchbar__label">Interner Bereich</span>
                         </a>
+                    </li>
+
+                    <!-- Language -->
+                    <li class="ut-switchbar__item" id="switchbar-language">
+                        <a href="#" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-language"
+                           title="Sprache wählen" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="ut-switchbar__icon ut-icon ut-icon-globe"></span>
+                            <span class="ut-switchbar__label">Language</span>
+                        </a>
+                        <div class="ut-switchblock__item ut-switchblock__item--dropdown" id="switchblock-language">
+                            <div class="ut-switchblock__header">
+                                <span class="ut-switchblock__title">Sprachauswahl</span>
+                                <span class="ut-switchblock__close-icon ut-icon ut-icon-cancel" role="button"></span>
+                            </div>
+                            <div class="ut-switchblock__content">
+                                <nav class="ut-nav ut-nav--language" aria-label="bobo">
+                                    <ul class="ut-nav__list ">
+                                        <li class="ut-nav__item " data-level-count="1">
+                                            <a class="ut-link ut-nav__link" href="?language=de" title="Sprache Deutsch wählen">Deutsch</a>
+                                        </li>
+                                        <li class="ut-nav__item " data-level-count="2">
+                                            <a class="ut-link ut-nav__link" href="?language=gb" title="Sprache Englisch wählen">Englisch</a>
+                                        </li>
+                                        <li class="ut-nav__item " data-level-count="2">
+                                            <a class="ut-link ut-nav__link" href="?language=fr" title="Sprache Französisch wählen">Französisch (nur Felder)</a>
+                                        </li><!-- comment -->
+                                        <li class="ut-nav__item " data-level-count="2">
+                                            <a class="ut-link ut-nav__link" href="?language=la" title="Sprache Latein wählen">Latein (nur Felder)</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
                     </li>
 
                     <!-- Switchbar Menu (for low resolutions) -->

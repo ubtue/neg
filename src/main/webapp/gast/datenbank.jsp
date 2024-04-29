@@ -13,8 +13,18 @@
 <%@page import="org.apache.commons.fileupload.util.*" isThreadSafe="false" %>
 
 <%
-    //When the page is accessed, the help.html is read from the database
-    String myFile = "datenbank.html";
+    String language = (String) session.getAttribute("Sprache");
+
+    String myFile = null;
+
+    if(language.equals("de"))
+    {
+        myFile = "datenbank.html";
+    }
+    else if(language.equals("gb")){
+        myFile = "database.html";
+    }
+
     Content content = ContentDB.getByName(myFile);
     byte[] htmlBytes = content.getContent();
     String utf8String = new String(htmlBytes, java.nio.charset.StandardCharsets.UTF_8);

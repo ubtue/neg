@@ -59,6 +59,8 @@
                 contextEnum = Content.Context.UEBERLIEFERUNGSKOMMENTAR;
             }else if (context.equals("WEITEREINFORMATIONEN")) {
                 contextEnum = Content.Context.WEITEREINFORMATIONEN;
+            }else if (context.equals("WEITEREINFORMATIONEN_EN")) {
+                contextEnum = Content.Context.WEITEREINFORMATIONEN_EN;
             }
 
         %>
@@ -77,6 +79,8 @@
                         out.print("selected"); %>>Überlieferungskommentar</option>
                          <option value="WEITEREINFORMATIONEN" <% if (contextEnum == Content.Context.WEITEREINFORMATIONEN)
                         out.print("selected"); %>>Weitere Informationen</option>
+                         <option value="WEITEREINFORMATIONEN_EN" <% if (contextEnum == Content.Context.WEITEREINFORMATIONEN_EN)
+                        out.print("selected"); %>>Weitere Informationen_en</option>
             </select>
         </form>
 

@@ -27,17 +27,52 @@
                     <div class="ut-panel__collapse collapse" id="footerpanel-2-pc">
                         <div class="ut-panel__body">
                             <div class="ut-link-register ut-link-register--color-text ut-link-register--without-icons">
-                                <div class="ut-link-register ut-page-footer__link-list">
-                                    <div class="ut-link-register__link-list">
-                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/ziele">Ziele</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/datenbank">Datenbank</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/quellenliste">Quellenliste</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/tagungen">Tagungen</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/mitglieder">Mitglieder</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/projekte">Projekte</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/publikationen">Publikationen</a>
-                                    </div>
+
+
+                               <div class="ut-link-register ut-page-footer__link-list">
+
+                                    <%
+                                        String language = (String) session.getAttribute("Sprache");
+
+                                        if(language.equals("de")){
+                                        %>
+
+                                        <div class="ut-link-register__link-list">
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/ziele">Ziele</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/datenbank">Datenbank</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/quellenliste">Quellenliste</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/tagungen">Tagungen</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/mitglieder">Mitglieder</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/projekte">Projekte</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/publikationen">Publikationen</a>
+                                        </div>
+
+                                        <%
+                                        }else if(language.equals("gb")){
+                                        %>
+
+                                        <div class="ut-link-register__link-list">
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/ziele">Goals</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/datenbank">Database</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/quellenliste">Sourcelist</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/tagungen">Conferences</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/mitglieder">Members</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/projekte">Cooperations</a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/publikationen">Publications</a>
+                                        </div>
+
+                                        <%
+                                            }
+
+                                    %>
+
+
+
+
                                 </div>
+
+
+
                             </div>
                         </div>
                     </div>
