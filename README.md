@@ -31,7 +31,7 @@ Prerequisites:
 ```
 - Java >= 1.8.0_77
 - MySQL >= 5.7
-  - innodb_buffer_pool_size=256M
+  - innodb_buffer_pool_size=512M
   - collation-server = utf8_unicode_ci
   - character-set-server = utf8mb4
   - group_concat_max_len = 100000000
