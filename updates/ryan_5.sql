@@ -68,4 +68,12 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 UPDATE `neg`.`datenbank_texte` SET `fr` = 'Recherche Avancée', `la` = 'Excogitata Inquisitio' WHERE (`ID` = '158');
 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sucheEinzelbeleg', 'Titel', 'Suche (in Einzelbeleg)', 'search (in Single reference)', 'in référence individuelle', 'in testimonium personae');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('suche', 'Start', 'Suchen starten', 'Start search', 'Démarrer la recherche', 'Satus quaerere');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('hilfe', 'Titel', 'Hilfe', 'Help', 'Aide', 'Auxilium');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('internerBereich', 'Titel', 'Interner Bereich', 'Internal Area', 'Zone Interne', 'Internum Area');
+
 

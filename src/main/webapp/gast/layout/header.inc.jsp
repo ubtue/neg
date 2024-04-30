@@ -90,22 +90,22 @@
                     <li class="ut-switchbar__item" id="switchbar-search">
                         <button class="ut-switchbar__toggle" id="ut-identifier--search-toggle" data-toggle="switchbar" data-target="#switchblock-search" title="Suchen" aria-haspopup="true" aria-expanded="false" tabindex="0">
                             <span class="ut-switchbar__icon ut-icon ut-icon-search"></span>
-                            <span class="ut-switchbar__label">Suchen</span>
+                            <span class="ut-switchbar__label"><% Language.printTextfield(out, session, "suche", "Titel"); %></span>
                         </button>
                         <div class="ut-switchblock__item ut-switchblock__item--dropdown" id="switchblock-search" style="right: 381px;">
                             <div class="ut-switchblock__header">
-                                <span class="ut-switchblock__title">Suche (in Einzelbelegen)</span>
+                                <span class="ut-switchblock__title"><% Language.printTextfield(out, session, "sucheEinzelbeleg", "Titel"); %></span>
                             </div>
                             <div class="ut-switchblock__content">
                                 <form class="ut-form ut-form--search ut-form--small" name="searchForm" role="search" action="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis" onsubmit="appendSiteToQuery()">
                                     <fieldset>
                                         <div class="ut-form__row row ">
-                                            <input class="ut-form__input ut-form__field" id="search" type="search" name="query" placeholder="Ihre Suchanfrage" value="" aria-label="Suchanfrage eingeben" required="">
+                                            <input class="ut-form__input ut-form__field" id="search" type="search" name="query" placeholder="<% Language.printTextfield(out, session, "gast_freie_suche", "IhreSuchanfrage"); %>" value="" aria-label=<% Language.printTextfield(out, session, "gast_freie_suche", "IhreSuchanfrage"); %> required="">
                                             <input type="hidden" name="form" value="einfache_suche">
                                         </div>
                                         <div class="ut-form__actions row ">
-                                            <button type="submit" class="ut-btn ut-btn--outline ut-btn--color-primary-1 ut-form__action" aria-label="Suche starten">
-                                                Suchen
+                                            <button type="submit" class="ut-btn ut-btn--outline ut-btn--color-primary-1 ut-form__action" aria-label="<% Language.printTextfield(out, session, "suche", "Start"); %>" >
+                                                <% Language.printTextfield(out, session, "suche", "Titel"); %>
                                                 <span class="ut-btn__icon ut-btn__icon--right ut-icon ut-icon-right-big"></span>
                                             </button>
                                         </div>
@@ -120,7 +120,7 @@
                     <li class="ut-switchbar__item" id="switchbar-help">
                         <a href="<%=Utils.getBaseUrl(request)%>/gast/hilfe" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-help" title="Hilfe" role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="ut-switchbar__icon ut-icon ut-icon-info-circled"></span>
-                            <span class="ut-switchbar__label">Hilfe</span>
+                            <span class="ut-switchbar__label"><% Language.printTextfield(out, session, "hilfe", "Titel"); %></span>
                         </a>
                     </li>
 
@@ -128,7 +128,7 @@
                     <li class="ut-switchbar__item" id="switchbar-login">
                         <a href="<%=Utils.getBaseUrl(request)%>/logout?go=intern" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-login" title="Interner Bereich" role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="ut-switchbar__icon ut-icon ut-icon-login"></span>
-                            <span class="ut-switchbar__label">Interner Bereich</span>
+                            <span class="ut-switchbar__label"><% Language.printTextfield(out, session, "internerBereich", "Titel"); %></span>
                         </a>
                     </li>
 
