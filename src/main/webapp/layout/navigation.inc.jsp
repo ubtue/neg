@@ -150,8 +150,10 @@
         }
     %>
     <br>
-    <jsp:include page="../forms/language.jsp">
-        <jsp:param name="ID" value="<%= request.getParameter("ID")%>"/>
-        <jsp:param name="title" value="<%= request.getParameter("title")%>"/>
-    </jsp:include>
+    <FORM method="POST">
+        <jsp:include page="../forms/language.jsp">
+            <jsp:param name="ID" value="<%= request.getParameter("ID")%>"/>
+            <jsp:param name="title" value="<%= request.getParameter("title")%>"/>
+        </jsp:include>
+    </form>
 </div>
