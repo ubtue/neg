@@ -241,7 +241,7 @@ public class ContentServlet extends AbstractBackendServlet {
 
     @Override
     protected String getTitle() {
-        return null;
+        return "fileManagement";
     }
 
 }//end class

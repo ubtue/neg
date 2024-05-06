@@ -10,14 +10,7 @@
 <%@ include file="functions.jsp" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
 
-
-
-<%
-        DatenbankTexte titel = DatenbankTexteDB.getText("tinyMce", "Titel");
-        String value = "Nomen et Gens | " + titel.getDe();
-%>
 <header>
-    <title><%= value%></title>
     <script type="text/javascript" src="layout/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
         tinymce.init({
