@@ -20,8 +20,8 @@ public class Content {
         NAMENKOMMENTAR,
         QUELLENKOMMENTAR,
         UEBERLIEFERUNGSKOMMENTAR,
-        WEITEREINFORMATIONEN,
-        WEITEREINFORMATIONEN_EN
+        CMS
+
     }
 
     @Id
@@ -44,6 +44,9 @@ public class Content {
     @Column(name = "context", nullable = false)
     private Context context;
 
+    @Column(name = "language", length = 255)
+    String language;
+
     //Constructors
     //Default Constructor is neccessary !!! - don delete
     public Content() {
@@ -54,6 +57,15 @@ public class Content {
         this.content_Type = content_Type;
         this.content = content;
         this.context = context;
+    }
+
+    public Content(String name, String content_Type, byte[] content, Context context, String language) {
+        this.ID = ID;
+        this.name = name;
+        this.content_Type = content_Type;
+        this.content = content;
+        this.context = context;
+        this.language = language;
     }
 
     public int getID() {
@@ -95,4 +107,14 @@ public class Content {
     public void setContext(Context context) {
         this.context = context;
     }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+
 }//end Class

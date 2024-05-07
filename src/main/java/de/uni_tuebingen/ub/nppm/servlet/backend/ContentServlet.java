@@ -80,6 +80,7 @@ public class ContentServlet extends AbstractBackendServlet {
             // show list (e.g. help, name comment or blank page)
             RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
             rd.include(request, response);
+
         }
     }//end function
 
@@ -175,6 +176,9 @@ public class ContentServlet extends AbstractBackendServlet {
         PrintWriter out = response.getWriter();
         String context = request.getParameter("context");
         Content.Context contextEnum = Content.Context.valueOf(context);
+      //  String language = request.getParameter("language");
+         String language = "Yetisch";
+
 
         // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload();
@@ -210,7 +214,7 @@ public class ContentServlet extends AbstractBackendServlet {
                         out.println("<br>");
 
                     } else {
-                        ContentDB.saveFile(pathname, fileName, contentType, contextEnum);
+                        ContentDB.saveFile(pathname, fileName, contentType, contextEnum, language);
                         out.println("Datei " + fileName + " erfolgreich hochgeladen!");
                         out.println("<br>");
                     }

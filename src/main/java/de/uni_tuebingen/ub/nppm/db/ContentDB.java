@@ -29,6 +29,15 @@ public class ContentDB extends AbstractBase {
         }
     }
 
+    //überladet nur zur zeit
+    public static void saveFile(String path, String name, String content_Type, Context context, String language) throws Exception {
+        try (Session session = getSession()) {
+            byte[] contentBytes = readBytesFromFile(path);
+            Content content = new Content(name, content_Type, contentBytes, context, language);
+            putToDatabase(content);
+        }
+    }
+
     public static byte[] readBytesFromFile(String filePath) throws Exception {
         File inputFile = new File(filePath);
         try (FileInputStream inputStream = new FileInputStream(inputFile)) {

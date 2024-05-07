@@ -69,10 +69,8 @@
             contextEnum = Content.Context.QUELLENKOMMENTAR;
         } else if (context.equals("UEBERLIEFERUNGSKOMMENTAR")) {
             contextEnum = Content.Context.UEBERLIEFERUNGSKOMMENTAR;
-        } else if (context.equals("WEITEREINFORMATIONEN")) {
-            contextEnum = Content.Context.WEITEREINFORMATIONEN;
-        } else if (context.equals("WEITEREINFORMATIONEN_EN")) {
-            contextEnum = Content.Context.WEITEREINFORMATIONEN_EN;
+        } else if (context.equals("CMS")) {
+            contextEnum = Content.Context.CMS;
         }
     %>
     <br>
@@ -91,11 +89,9 @@
             <option value="UEBERLIEFERUNGSKOMMENTAR" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR) {
                     out.print("selected");
                 } %>>Überlieferungskommentar</option>
-            <option value="WEITEREINFORMATIONEN" <% if (contextEnum == Content.Context.WEITEREINFORMATIONEN) {
+            <option value="CMS" <% if (contextEnum == Content.Context.CMS) {
                     out.print("selected");
-                } %>>Weitere Informationen</option>
-            <option value="WEITEREINFORMATIONEN_EN" <% if (contextEnum == Content.Context.WEITEREINFORMATIONEN_EN)
-                            out.print("selected"); %>>Weitere Informationen_en</option>
+                } %>>Content Management System</option>
         </select>
     </form>
     <br>
@@ -247,52 +243,6 @@
         out.println("</table>");
     %>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let buttons = document.querySelectorAll('.select-language');
+    
 
-            // Funktion zum Aktivieren des Buttons basierend auf der Sprache
-            function activateTabByLanguage(language) {
-                let tabId;
-                // Sprachcode mit Tab-ID vergleichen und die entsprechende Tab-ID auswählen
-                if (language === 'de') {
-                    tabId = 'tab-1';
-                } else if (language === 'gb') {
-                    tabId = 'tab-2';
-                } else if (language === 'fr') {
-                    tabId = 'tab-3';
-                } else if (language === 'la') {
-                    tabId = 'tab-4';
-                }
-
-                // Aktiviere den entsprechenden Tab
-                activateTab(tabId);
-            }
-
-            // Die Sprache aus der Session abrufen
-            let language = '<%= language%>';
-
-            // Den entsprechenden Button aktivieren
-            activateTabByLanguage(language);
-
-            function activateTab(tabId) {
-                buttons.forEach(function (button) {
-                    if (button.getAttribute('data-id') === tabId) {
-                        button.classList.add('active');
-                    } else {
-                        button.classList.remove('active');
-                    }
-                });
-            }
-
-            buttons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    let tabId = this.getAttribute('data-id');
-                    activateTab(tabId);
-                });
-            });
-        });
-    </script>
-
-</div>
 </div>
