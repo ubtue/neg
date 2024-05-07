@@ -50,10 +50,11 @@
             color: white;
         }
     </style>
-    </style>
+</style>
 </header>
 <div id="dynamicContentDiv">
-    <%            int id = 1;
+    <%        String language = (String) session.getAttribute("Sprache");
+        int id = 1;
         String context = "";
         if (request.getParameter("context") != null) {
             context = request.getParameter("context");
@@ -73,15 +74,14 @@
         } else if (context.equals("WEITEREINFORMATIONEN_EN")) {
             contextEnum = Content.Context.WEITEREINFORMATIONEN_EN;
         }
-
     %>
     <br>
     <form method="get">
         <select name="context" onchange="this.form.submit();">
             <option value="">Context ausw&auml;hlen</option>
-                    <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
-                    out.print("selected");
-                } %>>Hilfe</option>
+            <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
+                            out.print("selected");
+                        } %>>Hilfe</option>
             <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
                     out.print("selected");
                 } %>>Namenkommentar</option>
@@ -98,6 +98,7 @@
                             out.print("selected"); %>>Weitere Informationen_en</option>
         </select>
     </form>
+    <br>
 
 
     <%
@@ -105,9 +106,7 @@
             String fileToDelete = request.getParameter("filename");
             boolean deleteConfirmation = (fileToDelete != null && !fileToDelete.isEmpty());
             boolean showPage = (!context.isEmpty());
-            int count = 0;
-            String tab_name = "tab-";
-            String tab_name_new = "";
+
             if (showPage) {
 
     %>
@@ -118,23 +117,37 @@
         <input type="submit" value="hochladen">
     </form>
 
+    <br>
+
+    <div class="tab-container">
+        <button data-id="tab-1" class="select-language" type="button" aria-label="Deutsch">
+            Deutsch
+        </button>
+
+        <button data-id="tab-2" class="select-language" type="button" aria-label="Englisch">
+            Englisch
+        </button>
+
+        <button data-id="tab-3" class="select-language" type="button" aria-label="Französisch">
+            Französisch
+        </button>
+
+        <button data-id="tab-4" class="select-language" type="button" aria-label="Latein">
+            Latein
+        </button>
+    </div>
+
     <table style="border-collapse:collapse;" border=1>
         <tr>
             <th>Pfad</th>
             <th>Vorschau</th>
             <th>Aktionen</th>
-            <th>Language</th>
         </tr>
 
         <%
             List<Content> fileList = ContentDB.getList(contextEnum.toString());
             for (Content content : fileList) {
-                count++;
-                tab_name_new = tab_name + String.valueOf(count);
-                String tab1 = tab_name_new + "tab-1";
-                String tab2 = tab_name_new + "tab-2";
-                String tab3 = tab_name_new + "tab-3";
-                String tab4 = tab_name_new + "tab-4";
+
                 if (content.getContent_Type().startsWith("text/html")) {
                     String name = content.getName();
                     String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
@@ -163,27 +176,7 @@
                     <input type="hidden" name="context" value="<%=context%>">
                 </form>
             </td>
-            <td class="tab-container" style="vertical-align: top;">
 
-
-                <button data-id=<%= tab1 %> class="select-language" type="button" aria-label="Deutsch">
-                    Deutsch
-                </button>
-
-                <button data-id=<%= tab2 %> class="select-language" type="button" aria-label="Englisch">
-                    Englisch
-                </button>
-
-                <button data-id=<%= tab3 %> class="select-language" type="button" aria-label="Französisch">
-                    Französisch
-                </button>
-
-                <button data-id=<%= tab4 %> class="select-language" type="button" aria-label="Latein">
-                    Latein
-                </button>
-
-
-            </td>
         </tr>
         <%
             }
@@ -254,28 +247,52 @@
         out.println("</table>");
     %>
 
- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let buttons = document.querySelectorAll('.select-language');
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let buttons = document.querySelectorAll('.select-language');
 
-        function activateTab(tabId) {
-            buttons.forEach(function (button) {
-                if (button.getAttribute('data-id') === tabId) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
+            // Funktion zum Aktivieren des Buttons basierend auf der Sprache
+            function activateTabByLanguage(language) {
+                let tabId;
+                // Sprachcode mit Tab-ID vergleichen und die entsprechende Tab-ID auswählen
+                if (language === 'de') {
+                    tabId = 'tab-1';
+                } else if (language === 'gb') {
+                    tabId = 'tab-2';
+                } else if (language === 'fr') {
+                    tabId = 'tab-3';
+                } else if (language === 'la') {
+                    tabId = 'tab-4';
                 }
-            });
-        }
 
-        buttons.forEach(function (button) {
-            button.addEventListener('click', function () {
-                let tabId = this.getAttribute('data-id');
+                // Aktiviere den entsprechenden Tab
                 activateTab(tabId);
+            }
+
+            // Die Sprache aus der Session abrufen
+            let language = '<%= language%>';
+
+            // Den entsprechenden Button aktivieren
+            activateTabByLanguage(language);
+
+            function activateTab(tabId) {
+                buttons.forEach(function (button) {
+                    if (button.getAttribute('data-id') === tabId) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    let tabId = this.getAttribute('data-id');
+                    activateTab(tabId);
+                });
             });
         });
-    });
-</script>
+    </script>
 
 </div>
 </div>
