@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,15 +17,15 @@ public class MghLemmaKorrektor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
-    
+
     @Column(name = "Zeitstempel", columnDefinition = "DATETIME DEFAULT")
     private Date zeitstempel;
-    
-    @OneToOne(targetEntity = Benutzer.class)
+
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "BenutzerID", referencedColumnName="ID")
-    private Benutzer benutzer; 
-    
-    @OneToOne(targetEntity = MghLemma.class)
+    private Benutzer benutzer;
+
+    @ManyToOne(targetEntity = MghLemma.class)
     @JoinColumn(name = "MGHLemmaID", referencedColumnName="ID")
     private MghLemma mghLemma;
 

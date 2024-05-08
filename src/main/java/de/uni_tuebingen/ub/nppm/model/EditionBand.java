@@ -10,7 +10,7 @@ public class EditionBand {
     @Column(name = "ID")
     private Integer id;
 
-    @OneToOne(targetEntity = Edition.class)
+    @ManyToOne(targetEntity = Edition.class)
     @JoinColumn(name = "EditionID", referencedColumnName="ID")
     private Edition edition;
 
@@ -21,7 +21,7 @@ public class EditionBand {
     private String jahr;
 
     @Column(name = "Standard", columnDefinition="INTEGER DEFAULT NULL")
-    private Boolean standard;  
+    private Boolean standard;
 
     public Integer getId() {
         return id;
@@ -58,5 +58,5 @@ public class EditionBand {
     public void setStandard(Boolean standard) {
         this.standard = standard;
     }
-    
+
 }
