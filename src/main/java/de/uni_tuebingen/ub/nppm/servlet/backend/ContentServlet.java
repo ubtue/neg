@@ -214,7 +214,7 @@ public class ContentServlet extends AbstractBackendServlet {
 
                     String fileName = item.getName();
 
-                    boolean fileExists = ContentDB.searchName(fileName);
+                    boolean fileExists = ContentDB.searchNameAndLanguage(fileName, selectedLanguage);
                     String pathname = writeItemToTempFile(item);
 
                     if (fileExists == true) {
