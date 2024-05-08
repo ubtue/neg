@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -177,13 +178,18 @@ public class ContentServlet extends AbstractBackendServlet {
         PrintWriter out = response.getWriter();
         String context = request.getParameter("context");
         Content.Context contextEnum = Content.Context.valueOf(context);
-      //  String language = request.getParameter("language_neu");
 
-      // Session-Objekt aus dem Request erhalten
-    HttpSession session = request.getSession();
+        Cookie[] cookies = request.getCookies();
+        String selectedLanguage = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("selectedLanguage")) {
+                    selectedLanguage = cookie.getValue();
+                    break;
+                }
+            }
+        }
 
-        String language = (String) session.getAttribute("language_neu");
-        // String language = "Yetisch";
 
 
         // Create a new file upload handler
@@ -220,7 +226,7 @@ public class ContentServlet extends AbstractBackendServlet {
                         out.println("<br>");
 
                     } else {
-                        ContentDB.saveFile(pathname, fileName, contentType, contextEnum, language);
+                        ContentDB.saveFile(pathname, fileName, contentType, contextEnum, selectedLanguage);
                         out.println("Datei " + fileName + " erfolgreich hochgeladen!");
                         out.println("<br>");
                     }

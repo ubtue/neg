@@ -245,21 +245,11 @@
 
     <script>
         function setLanguage(languageCode) {
-            fetch('file?language_neu=' + languageCode, {
-                method: 'POST',
-                credentials: 'same-origin' // Sendet Cookies mit der Anforderung
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // Sprachinformation in der Session speichern
-                sessionStorage.setItem('language_neu', languageCode);
-                console.log('Sprache erfolgreich festgelegt: ' + languageCode);
-            }).catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+            document.cookie = "selectedLanguage=" + languageCode;
         }
+
     </script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
