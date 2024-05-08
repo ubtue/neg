@@ -77,9 +77,9 @@
     <form method="get">
         <select name="context" onchange="this.form.submit();">
             <option value="">Context ausw&auml;hlen</option>
-            <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
-                            out.print("selected");
-                        } %>>Hilfe</option>
+                    <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
+                    out.print("selected");
+                } %>>Hilfe</option>
             <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
                     out.print("selected");
                 } %>>Namenkommentar</option>
@@ -116,19 +116,19 @@
     <br>
 
     <div class="tab-container">
-        <button data-id="tab-1" class="select-language" type="button" aria-label="Deutsch">
+        <button data-id="tab-1" class="select-language" type="button" aria-label="Deutsch" onclick="setLanguage('de')">
             Deutsch
         </button>
 
-        <button data-id="tab-2" class="select-language" type="button" aria-label="Englisch">
+        <button data-id="tab-2" class="select-language" type="button" aria-label="Englisch" onclick="setLanguage('gb')">
             Englisch
         </button>
 
-        <button data-id="tab-3" class="select-language" type="button" aria-label="Französisch">
+        <button data-id="tab-3" class="select-language" type="button" aria-label="Französisch" onclick="setLanguage('fr')">
             Französisch
         </button>
 
-        <button data-id="tab-4" class="select-language" type="button" aria-label="Latein">
+        <button data-id="tab-4" class="select-language" type="button" aria-label="Latein" onclick="setLanguage('la')">
             Latein
         </button>
     </div>
@@ -243,6 +243,68 @@
         out.println("</table>");
     %>
 
-    
+    <script>
+        function setLanguage(languageCode) {
+            fetch('file?language_neu=' + languageCode, {
+                method: 'POST',
+                credentials: 'same-origin' // Sendet Cookies mit der Anforderung
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Sprachinformation in der Session speichern
+                sessionStorage.setItem('language_neu', languageCode);
+                console.log('Sprache erfolgreich festgelegt: ' + languageCode);
+            }).catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+    </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let buttons = document.querySelectorAll('.select-language');
+
+            // Funktion zum Aktivieren des Buttons basierend auf der Sprache
+            function activateTabByLanguage(language_neu) {
+                let tabId;
+                // Sprachcode mit Tab-ID vergleichen und die entsprechende Tab-ID auswählen
+                if (language_neu === 'de') {
+                    tabId = 'tab-1';
+                } else if (language_neu === 'gb') {
+                    tabId = 'tab-2';
+                } else if (language_neu === 'fr') {
+                    tabId = 'tab-3';
+                } else if (language_neu === 'la') {
+                    tabId = 'tab-4';
+                }
+
+                // Aktiviere den entsprechenden Tab
+                activateTab(tabId);
+            }
+
+            // Die Sprache aus der Session abrufen
+            let language_neu = '<%= language%>';
+
+            // Den entsprechenden Button aktivieren
+            activateTabByLanguage(language_neu);
+
+            function activateTab(tabId) {
+                buttons.forEach(function (button) {
+                    if (button.getAttribute('data-id') === tabId) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    let tabId = this.getAttribute('data-id');
+                    activateTab(tabId);
+                });
+            });
+        });
+    </script>
 </div>

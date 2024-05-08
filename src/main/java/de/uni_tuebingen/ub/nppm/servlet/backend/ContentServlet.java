@@ -12,6 +12,7 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
@@ -176,8 +177,13 @@ public class ContentServlet extends AbstractBackendServlet {
         PrintWriter out = response.getWriter();
         String context = request.getParameter("context");
         Content.Context contextEnum = Content.Context.valueOf(context);
-      //  String language = request.getParameter("language");
-         String language = "Yetisch";
+      //  String language = request.getParameter("language_neu");
+
+      // Session-Objekt aus dem Request erhalten
+    HttpSession session = request.getSession();
+
+        String language = (String) session.getAttribute("language_neu");
+        // String language = "Yetisch";
 
 
         // Create a new file upload handler
