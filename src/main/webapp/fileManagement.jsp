@@ -116,19 +116,20 @@
     <br>
 
     <div class="tab-container">
-        <button data-id="tab-1" class="select-language" type="button" aria-label="Deutsch" onclick="setLanguage('de')">
+        <button data-language="de" class="select-language" type="button" aria-label="Deutsch" onclick="setLanguage('de')">
             Deutsch
         </button>
 
-        <button data-id="tab-2" class="select-language" type="button" aria-label="Englisch" onclick="setLanguage('gb')">
+        <button data-language="gb" class="select-language" type="button" aria-label="Englisch" onclick="setLanguage('gb')">
             Englisch
         </button>
 
-        <button data-id="tab-3" class="select-language" type="button" aria-label="Französisch" onclick="setLanguage('fr')">
+        <button data-language="fr" class="select-language" type="button" aria-label="Französisch" onclick="setLanguage('gb')">
             Französisch
         </button>
 
-        <button data-id="tab-4" class="select-language" type="button" aria-label="Latein" onclick="setLanguage('la')">
+
+        <button data-language="la" class="select-language" type="button" aria-label="Latein" onclick="setLanguage('la')">
             Latein
         </button>
     </div>
@@ -244,44 +245,42 @@
     %>
 
     <script>
-        function setLanguage(languageCode) {
-            document.cookie = "selectedLanguage=" + languageCode;
-        }
-
-    </script>
-
-
-    <script>
         document.addEventListener("DOMContentLoaded", function () {
             let buttons = document.querySelectorAll('.select-language');
+
+            function setLanguage(languageCode) {
+                document.cookie = "selectedLanguage=" + languageCode;
+            }
 
             // Funktion zum Aktivieren des Buttons basierend auf der Sprache
             function activateTabByLanguage(language_neu) {
                 let tabId;
                 // Sprachcode mit Tab-ID vergleichen und die entsprechende Tab-ID auswählen
                 if (language_neu === 'de') {
-                    tabId = 'tab-1';
+                    tabId = 'de';
                 } else if (language_neu === 'gb') {
-                    tabId = 'tab-2';
+                    tabId = 'gb';
                 } else if (language_neu === 'fr') {
-                    tabId = 'tab-3';
+                    tabId = 'fr';
                 } else if (language_neu === 'la') {
-                    tabId = 'tab-4';
+                    tabId = 'la';
                 }
-
                 // Aktiviere den entsprechenden Tab
                 activateTab(tabId);
             }
 
-            // Die Sprache aus der Session abrufen
-            let language_neu = '<%= language%>';
-
+            // Die Sprache aus dem Cookie abrufen
+            let languageCookie = document.cookie.replace(/(?:(?:^|.*;\s*)selectedLanguage\s*=\s*([^;]*).*$)|^.*$/, "$1");
+            if (!languageCookie) {
+                // Wenn das Cookie nicht gesetzt ist, Standardwert "de" verwenden
+                languageCookie = 'de';
+            }
             // Den entsprechenden Button aktivieren
-            activateTabByLanguage(language_neu);
+            activateTabByLanguage(languageCookie);
 
-            function activateTab(tabId) {
+            function activateTab(tabLanguage) {
                 buttons.forEach(function (button) {
-                    if (button.getAttribute('data-id') === tabId) {
+                    if (button.getAttribute('data-language') === tabLanguage) {
                         button.classList.add('active');
                     } else {
                         button.classList.remove('active');
@@ -291,10 +290,13 @@
 
             buttons.forEach(function (button) {
                 button.addEventListener('click', function () {
-                    let tabId = this.getAttribute('data-id');
-                    activateTab(tabId);
+                    let languageCode = this.getAttribute('data-language');
+                    activateTabByLanguage(languageCode);
+                    setLanguage(languageCode);
                 });
             });
+
         });
     </script>
+
 </div>

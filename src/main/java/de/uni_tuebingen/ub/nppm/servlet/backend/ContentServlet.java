@@ -180,7 +180,7 @@ public class ContentServlet extends AbstractBackendServlet {
         Content.Context contextEnum = Content.Context.valueOf(context);
 
         Cookie[] cookies = request.getCookies();
-        String selectedLanguage = null;
+        String selectedLanguage = "de";  //Standardwert wenn kein Cookie gesetzt worden ist
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("selectedLanguage")) {
@@ -189,8 +189,6 @@ public class ContentServlet extends AbstractBackendServlet {
                 }
             }
         }
-
-
 
         // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload();
@@ -214,20 +212,39 @@ public class ContentServlet extends AbstractBackendServlet {
 
                     String fileName = item.getName();
 
-                    boolean fileExists = ContentDB.searchNameAndLanguage(fileName, selectedLanguage);
+                    boolean fileExists = true;
+
+                    if (contentType.equals("text/html")) {
+                        fileExists = ContentDB.searchNameAndLanguage(fileName, selectedLanguage);
+                    } else {
+                        fileExists = ContentDB.searchName(fileName);
+                    }
+
                     String pathname = writeItemToTempFile(item);
 
                     if (fileExists == true) {
 
                         //search file - Context of existing file
-                        String existingFileContext = ContentDB.getByName(fileName).getContext().toString();
+                        String existingFileContext = "";
+                        if (contentType.equals("text/html")) {
+                            existingFileContext = ContentDB.getByNameAndLanguage(fileName, selectedLanguage).getContext().toString();
+                            out.println("<span style=\" color: red;\" >Error: </span>Datei " + fileName + " existiert bereits im Context: " + existingFileContext + "(" + selectedLanguage + ")");
+                        } else {
+                            existingFileContext = ContentDB.getByName(fileName).getContext().toString();
+                            out.println("<span style=\" color: red;\" >Error: </span>Datei " + fileName + " existiert bereits im Context: " + existingFileContext);
+                        }
 
-                        out.println("<span style=\" color: red;\" >Error: </span>Datei " + fileName + " existiert bereits im Context: " + existingFileContext);
                         out.println("<br>");
 
                     } else {
-                        ContentDB.saveFile(pathname, fileName, contentType, contextEnum, selectedLanguage);
-                        out.println("Datei " + fileName + " erfolgreich hochgeladen!");
+
+                        if (contentType.equals("text/html")) {
+                            ContentDB.saveFile(pathname, fileName, contentType, contextEnum, selectedLanguage);
+                            out.println("Datei " + fileName + "(" + selectedLanguage + ")" + " erfolgreich hochgeladen!");
+                        } else {
+                            ContentDB.saveFile(pathname, fileName, contentType, contextEnum);
+                            out.println("Datei " + fileName + " erfolgreich hochgeladen!");
+                        }
                         out.println("<br>");
                     }
 

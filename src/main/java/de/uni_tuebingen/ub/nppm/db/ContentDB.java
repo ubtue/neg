@@ -63,6 +63,24 @@ public class ContentDB extends AbstractBase {
         }
     }
 
+    public static Content getByNameAndLanguage(String name, String language) throws Exception {
+        try ( Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+            Root myImage = criteria.from(Content.class);
+            criteria.select(myImage);
+            criteria.where(
+                    builder.and(
+                            builder.equal(myImage.get(Content_.NAME), name),
+                            builder.equal(myImage.get(Content_.LANGUAGE), language)
+                    )
+            );
+
+            Content content = session.createQuery(criteria).getSingleResult();
+            return content;
+        }
+    }
+
     public static List<Content> getList() throws Exception {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -164,7 +182,6 @@ public class ContentDB extends AbstractBase {
         }
     }
 
-    //Search if name and language exists in database
     //Search if name and language exists in database
     public static boolean searchNameAndLanguage(String name, String language) throws Exception {
         try ( Session session = getSession()) {
