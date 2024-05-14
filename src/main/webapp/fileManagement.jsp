@@ -77,9 +77,9 @@
     <form method="get">
         <select name="context" onchange="this.form.submit();">
             <option value="">Context ausw&auml;hlen</option>
-                    <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
-                    out.print("selected");
-                } %>>Hilfe</option>
+            <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
+                            out.print("selected");
+                        } %>>Hilfe</option>
             <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
                     out.print("selected");
                 } %>>Namenkommentar</option>
@@ -142,12 +142,19 @@
         </tr>
 
         <%
+            boolean isFirstOccurrence = true;
             List<Content> fileList = ContentDB.getList(contextEnum.toString());
             for (Content content : fileList) {
 
                 if (content.getContent_Type().startsWith("text/html")) {
-                    String name = content.getName();
-                    String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+
+                    // Prüfen, ob der Name bereits in der Datenbank vorhanden ist
+                    Content firstResult = ContentDB.getFirstResultByName(content.getName());
+
+                    if (firstResult != null && firstResult.getID() == content.getID()) {
+
+                        String name = content.getName();
+                        String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
 
         %>
         <tr>
@@ -176,6 +183,10 @@
 
         </tr>
         <%
+                } else {
+                    // Nicht der erste Treffer für den Namen, überspringen
+                    continue;
+                }
             }
             if (content.getContent_Type().startsWith("text/plain") || content.getContent_Type().startsWith("application/vnd.oasis.opendocument.text")
                     || content.getContent_Type().startsWith("application/msword")
