@@ -21,15 +21,15 @@ public class Person {
     @Column(name = "Standardname", length = 255)
     private String standardname;
 
-    @OneToOne(targetEntity = SelektionGeschlecht.class)
+    @ManyToOne(targetEntity = SelektionGeschlecht.class)
     @JoinColumn(name = "Geschlecht", referencedColumnName = "ID")
     private SelektionGeschlecht geschlecht;
 
-    @OneToOne(targetEntity = SelektionJaNein.class)
+    @ManyToOne(targetEntity = SelektionJaNein.class)
     @JoinColumn(name = "Fiktiv", referencedColumnName = "ID")
     private SelektionJaNein fiktiv;
 
-    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+    @ManyToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
 
@@ -48,18 +48,18 @@ public class Person {
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
 
-    @OneToOne(targetEntity = Benutzer.class)
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "LetzteAenderungVon", referencedColumnName = "ID")
     private Benutzer letzteAenderungVon;
 
     @Column(name = "Erstellt")
     private Date erstellt;
 
-    @OneToOne(targetEntity = Benutzer.class)
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "ErstelltVon", referencedColumnName = "ID")
     private Benutzer erstelltVon;
 
-    @OneToOne(targetEntity = BenutzerGruppe.class)
+    @ManyToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
 
@@ -93,7 +93,7 @@ public class Person {
     )
     Set<SelektionAreal> areal = new HashSet<>();
 
-     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "person_hatgruppeherkunftareal",
             joinColumns = {
