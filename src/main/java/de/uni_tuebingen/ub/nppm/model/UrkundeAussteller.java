@@ -12,11 +12,11 @@ public class UrkundeAussteller {
     @Column(name = "ID")
     private Integer id;
 
-    @OneToOne(targetEntity = Urkunde.class)
+    @ManyToOne(targetEntity = Urkunde.class)
     @JoinColumn(name = "UrkundeID", referencedColumnName = "ID")
     private Urkunde urkunde;
 
-    @OneToOne(targetEntity = SelektionUrkundeAusstellerEmpfaenger.class)
+    @ManyToOne(targetEntity = SelektionUrkundeAusstellerEmpfaenger.class)
     @JoinColumn(name = "AusstellerID", referencedColumnName = "ID")
     private SelektionUrkundeAusstellerEmpfaenger aussteller;
 

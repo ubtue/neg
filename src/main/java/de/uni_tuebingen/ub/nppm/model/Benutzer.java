@@ -30,7 +30,7 @@ public class Benutzer {
     @Column(name = "IstAdmin")
     private boolean IstAdmin;
 
-    @OneToOne(targetEntity = BenutzerGruppe.class)
+    @ManyToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GruppeID", referencedColumnName = "ID")
     private BenutzerGruppe Gruppe;
 
