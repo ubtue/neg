@@ -273,7 +273,7 @@
                 return false;
             } else {
                 var http = new XMLHttpRequest();
-                http.open("POST", "file", true);
+                http.open("POST", "berechne", true);
                 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 var params = "param1=" + encodeURIComponent(n) + "&param2=" + encodeURIComponent(content_language);
                 http.send(params);

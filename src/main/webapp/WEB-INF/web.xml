@@ -213,6 +213,18 @@
         <servlet-name>BackendPersonServlet</servlet-name>
         <url-pattern>/person</url-pattern>
     </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>BackendBerechneDateiSpracheServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.BerechneDateiSpracheServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BackendBerechneDateiSpracheServlet</servlet-name>
+        <url-pattern>/berechne</url-pattern>
+    </servlet-mapping>
+    
+    
     <servlet>
         <servlet-name>BackendEditionServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EditionServlet</servlet-class>
