@@ -77,9 +77,9 @@
     <form method="get">
         <select name="context" onchange="this.form.submit();">
             <option value="">Context ausw&auml;hlen</option>
-            <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
-                            out.print("selected");
-                        } %>>Hilfe</option>
+                    <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
+                    out.print("selected");
+                } %>>Hilfe</option>
             <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
                     out.print("selected");
                 } %>>Namenkommentar</option>
@@ -155,13 +155,24 @@
 
                         String name = content.getName();
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+                        String tab_sprache = "de";
 
         %>
         <tr>
             <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
             <td></td>
             <td class="cell-padding">
-                <a href="edit?loadFile=<%=name%>">HTML Bearbeiten (TinyMCE)</a>
+
+                <form name="formFileLanguage">
+                    <input type="hidden"  name="content_name" value="<%= name%>">
+                    <input type="hidden"  name="content_language" value="<%= tab_sprache%>">
+                    <!-- Dieses Submit-Input ist unsichtbar und wird automatisch geklickt -->
+                    <input type="submit" style="display:none;">
+                </form>
+
+                <button id="createFileButton_<%=id%>" style="display: none;">Datei erstellen</button>
+                <a id="showTinyLink_<%=id%>" style="display: none;" href="edit?loadFile=<%=name%>">HTML Bearbeiten (TinyMCE)</a>
+
 
                 <hr>
 
@@ -256,58 +267,97 @@
     %>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let buttons = document.querySelectorAll('.select-language');
+        var buttons = document.querySelectorAll('.select-language');
+        // Funktion zum Aktualisieren der Schaltflächen basierend auf der Antwort des Servers
+        function updateButtons(answer) {
+            if (answer === "true") {
+                // Antwort ist true, also Link zur HTML-Bearbeitung anzeigen
+                document.getElementById("createFileButton_<%=id%>").style.display = "none";
+                document.getElementById("showTinyLink_<%=id%>").style.display = "inline-block";
+            } else {
+                // Antwort ist false, also Datei erstellen Button anzeigen
+                document.getElementById("createFileButton_<%=id%>").style.display = "inline-block";
+                document.getElementById("showTinyLink_<%=id%>").style.display = "none";
+            }
+        }
 
-            function setLanguage(languageCode) {
+        function setLanguage(languageCode) {
                 document.cookie = "selectedLanguage=" + languageCode;
             }
 
-            // Funktion zum Aktivieren des Buttons basierend auf der Sprache
-            function activateTabByLanguage(language_neu) {
-                let tabId;
-                // Sprachcode mit Tab-ID vergleichen und die entsprechende Tab-ID auswählen
-                if (language_neu === 'de') {
-                    tabId = 'de';
-                } else if (language_neu === 'gb') {
-                    tabId = 'gb';
-                } else if (language_neu === 'fr') {
-                    tabId = 'fr';
-                } else if (language_neu === 'la') {
-                    tabId = 'la';
+        // Funktion zum Aktivieren des Tabs basierend auf der Sprache
+        function activateTab(tabLanguage) {
+            buttons.forEach(function (button) {
+                if (button.getAttribute('data-language') === tabLanguage) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
                 }
-                // Aktiviere den entsprechenden Tab
-                activateTab(tabId);
-            }
+            });
+        }
 
-            // Die Sprache aus dem Cookie abrufen
-            let languageCookie = document.cookie.replace(/(?:(?:^|.*;\s*)selectedLanguage\s*=\s*([^;]*).*$)|^.*$/, "$1");
+        // Event-Listener für die Sprachauswahlbuttons
+        // Event-Listener für die Sprachauswahlbuttons
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                let languageCode = this.getAttribute('data-language');
+                activateTab(languageCode);
+                setLanguage(languageCode); // Hier wird die setLanguage-Funktion verwendet
+                tab_sprache = languageCode;
+                take_values(languageCode); // Überprüfen, ob Datei in der Datenbank vorhanden ist
+                setCookie("selectedLanguage", languageCode); // Aktualisiere das Cookie
+                //window.location.reload(); // Seite neu laden
+                  updateButtons(answer); // Aktualisiere die Schaltflächen basierend auf der Antwort
+            });
+        });
+
+        // Funktion zur Überprüfung der Datei in der Datenbank
+        function take_values(content_language) {
+            let n = document.forms["formFileLanguage"]["content_name"].value;
+            let n2 = content_language; // Verwende den übergebenen Wert für die Sprache
+
+            if (n == null || n == "") {
+                alert("Please enter a value");
+                return false;
+            } else {
+                var http = new XMLHttpRequest();
+                http.open("POST", "file", true);
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                var params = "param1=" + encodeURIComponent(n) + "&param2=" + encodeURIComponent(n2);
+                http.send(params);
+                http.onload = function () {
+                    let answer = http.responseText;
+                    updateButtons(answer); // Aktualisiere die Schaltflächen basierend auf der Antwort
+                };
+            }
+        }
+
+        // Aktualisiere die Schaltflächen beim Laden der Seite
+        document.addEventListener("DOMContentLoaded", function () {
+            let languageCookie = getCookie("selectedLanguage");
             if (!languageCookie) {
-                // Wenn das Cookie nicht gesetzt ist, Standardwert "de" verwenden
                 languageCookie = 'de';
             }
-            // Den entsprechenden Button aktivieren
             activateTabByLanguage(languageCookie);
-
-            function activateTab(tabLanguage) {
-                buttons.forEach(function (button) {
-                    if (button.getAttribute('data-language') === tabLanguage) {
-                        button.classList.add('active');
-                    } else {
-                        button.classList.remove('active');
-                    }
-                });
-            }
-
-            buttons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    let languageCode = this.getAttribute('data-language');
-                    activateTabByLanguage(languageCode);
-                    setLanguage(languageCode);
-                });
-            });
-
+            setLanguage(languageCookie);
+            tab_sprache = languageCookie;
+            take_values(languageCookie); // Überprüfen, ob Datei in der Datenbank vorhanden ist
         });
+
+        // Funktion zum Abrufen des Cookie-Werts
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2)
+                return parts.pop().split(';').shift();
+        }
+
+        // Funktion zum Setzen des Cookie-Werts
+        function setCookie(name, value) {
+            document.cookie = `${name}=${value}`;
+                }
+
+
     </script>
 
 </div>
