@@ -279,39 +279,38 @@ public class ContentServlet extends AbstractBackendServlet {
         return "fileManagement";
     }
 
-   @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String fileName = request.getParameter("param1");
-    String fileLanguage = request.getParameter("param2");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String fileName = request.getParameter("param1");
+        String fileLanguage = request.getParameter("param2");
 
-    // Überprüfen, ob fileName und fileLanguage nicht null und nicht leer sind
-    if (fileName != null && !fileName.equals("") && fileLanguage != null && !fileLanguage.equals("")) {
-        try {
-            // Suchen Sie in der Datenbank nach der Datei basierend auf dem Namen und der Sprache
-            boolean fileExist = ContentDB.searchNameAndLanguage(fileName, fileLanguage);
+        // Überprüfen, ob fileName und fileLanguage nicht null und nicht leer sind
+        if (fileName != null && !fileName.equals("") && fileLanguage != null && !fileLanguage.equals("")) {
+            try {
+                // Suchen Sie in der Datenbank nach der Datei basierend auf dem Namen und der Sprache
+                boolean fileExist = ContentDB.searchNameAndLanguage(fileName, fileLanguage);
 
-            // Setzen des Antwortinhalts
-            response.setContentType("text/plain");
-            response.setCharacterEncoding("UTF-8");
+                // Setzen des Antwortinhalts
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("UTF-8");
 
-            // Senden der Antwort basierend auf dem Ergebnis der Suche
-            if (fileExist) {
-                response.getWriter().write("true");
-            } else {
-                response.getWriter().write("false");
+                // Senden der Antwort basierend auf dem Ergebnis der Suche
+                if (fileExist) {
+                    response.getWriter().write("true");
+                } else {
+                    response.getWriter().write("false");
+                }
+            } catch (Exception ex) {
+                // Fehlerbehandlung bei auftretenden Ausnahmen
+                ex.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Setzen des HTTP-Statuscodes für interne Serverfehler
+                response.getWriter().write("Error occurred: " + ex.getMessage()); // Senden einer Fehlermeldung als Antwort
             }
-        } catch (Exception ex) {
-            // Fehlerbehandlung bei auftretenden Ausnahmen
-            ex.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Setzen des HTTP-Statuscodes für interne Serverfehler
-            response.getWriter().write("Error occurred: " + ex.getMessage()); // Senden einer Fehlermeldung als Antwort
+        } else {
+            // Senden einer Fehlermeldung, wenn fileName oder fileLanguage null oder leer sind
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Setzen des HTTP-Statuscodes für eine ungültige Anfrage
+            response.getWriter().write("Both fileName and fileLanguage parameters are required.");
         }
-    } else {
-        // Senden einer Fehlermeldung, wenn fileName oder fileLanguage null oder leer sind
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Setzen des HTTP-Statuscodes für eine ungültige Anfrage
-        response.getWriter().write("Both fileName and fileLanguage parameters are required.");
     }
-}
-
 
 }//end class
