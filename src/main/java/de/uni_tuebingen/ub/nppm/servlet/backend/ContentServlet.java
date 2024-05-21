@@ -63,8 +63,28 @@ public class ContentServlet extends AbstractBackendServlet {
                 if (fileAccess.equals("fileDelete")) {
                     if (request.getParameter("id") != null) {
                         Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
-                        out.println("Datei " + content.getName() + " wurde gelöscht");
-                        deleteFile(request.getParameter("id"));
+
+                        if (content.getContext().equals(Content.Context.CMS) && content.getContent_Type().equals("text/html")) {
+
+                            Cookie[] cookies = request.getCookies();
+                            String selectedLanguage = "dontDelete";  //Standardwert wenn kein Cookie gesetzt worden ist
+                            if (cookies != null) {
+                                for (Cookie cookie : cookies) {
+                                    if (cookie.getName().equals("selectedLanguage")) {
+                                        selectedLanguage = cookie.getValue();
+                                        break;
+                                    }
+                                }
+                            }
+
+                            String fileName = content.getName();
+                            deleteFileByNameAndLanguage(fileName, selectedLanguage);
+                            out.println("Datei " + content.getName() + " (" + selectedLanguage + ") wurde gelöscht");
+
+                        } else {
+                            deleteFile(request.getParameter("id"));
+                            out.println("Datei " + content.getName() + " wurde gelöscht");
+                        }
 
                     } else {
                         out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht gelöscht werden");
@@ -112,6 +132,22 @@ public class ContentServlet extends AbstractBackendServlet {
             }
         }
         ContentDB.deleteById(id);
+    }//end function
+
+    public void deleteFileByNameAndLanguage(String fileName, String selectedLanguage) throws IOException, Exception {
+
+        if (!selectedLanguage.equals("dontDelete")) {
+
+            try {
+                Content content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
+                if (content != null) {
+                    ContentDB.deleteByNameAndLanguage(fileName, selectedLanguage);
+                }
+            } catch (javax.persistence.NoResultException e) {
+                // Kein Eintrag gefunden, nichts zu löschen
+
+            }
+        }
     }//end function
 
     public void replaceFile(HttpServletRequest request, HttpServletResponse response, String fileId) throws IOException, FileUploadException, Exception {
@@ -278,7 +314,5 @@ public class ContentServlet extends AbstractBackendServlet {
     protected String getTitle() {
         return "fileManagement";
     }
-
-
 
 }//end class

@@ -72,20 +72,20 @@
         <select name="context">
             <option value="">Context ausw&auml;hlen</option>
             <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
-                out.print("selected");
-            } %>>Hilfe</option>
+                    out.print("selected");
+                } %>>Hilfe</option>
             <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
-                out.print("selected");
-            } %>>Namenkommentar</option>
+                    out.print("selected");
+                } %>>Namenkommentar</option>
             <option value="QUELLENKOMMENTAR" <% if (contextEnum == Content.Context.QUELLENKOMMENTAR) {
-                out.print("selected");
-            } %>>Quellenkommentar</option>
+                    out.print("selected");
+                } %>>Quellenkommentar</option>
             <option value="UEBERLIEFERUNGSKOMMENTAR" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR) {
-                out.print("selected");
-            } %>>Überlieferungskommentar</option>
+                    out.print("selected");
+                } %>>Überlieferungskommentar</option>
             <option value="CMS" <% if (contextEnum == Content.Context.CMS) {
-                out.print("selected");
-            } %>>Content Management System</option>
+                    out.print("selected");
+                } %>>Content Management System</option>
         </select>
     </form>
 
@@ -98,7 +98,7 @@
             boolean showPage = (!context.isEmpty());
             if (showPage) {
                 List<Integer> ids = new ArrayList<>(); // IDs-Liste initialisieren
-%>
+    %>
     <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
         <input type="file" name="file[]" value="Datei auswahl" multiple>
         <br><br>
@@ -130,8 +130,7 @@
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                         id++;
                         ids.add(id); // ID zur Liste hinzufügen
-
-        %>
+%>
 
 
         <tr>
@@ -145,18 +144,21 @@
                 </form>
                 <button id="createFileButton_<%=id%>" style="display: none;">Datei erstellen</button>
                 <a id="showTinyLink_<%=id%>" style="display: none;" href="edit?loadFile=<%=name%>">HTML Bearbeiten (TinyMCE)</a>
+
                 <a><%=id%></a>
+
                 <hr>
                 <form action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich ersetzen?');" enctype="multipart/form-data">
                     <input type="file" name="file" value="Datei auswahl">
                     <input class="full-width-button" type="submit" value="Ersetzen">
                 </form>
                 <hr>
-                <form action="file" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich l&ouml;schen?');">
+                <form action="file" method="post" onsubmit="return confirmDelete();">
                     <input class="full-width-button" type="submit" name="deleteFile" value="l&ouml;schen">
                     <input type="hidden" name="fileAccess" value="fileDelete">
                     <input type="hidden" name="id" value="<%=content.getID()%>">
                     <input type="hidden" name="context" value="<%=context%>">
+                    <input type="hidden" id="contentName" value="<%= content.getName() %>">
                 </form>
             </td>
         </tr>
@@ -325,6 +327,17 @@
                 }
             }
             return null;
+        }
+
+        function confirmDelete() {
+            // Abrufen des aktuellen Werts des Cookies
+            var selectedLanguage = getCookie('selectedLanguage');
+
+            // Abrufen des Namens des Inhalts aus dem versteckten HTML-Element
+            var contentName = document.getElementById('contentName').value;
+
+            // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
+            return confirm('Datei ' + contentName + ' (' + selectedLanguage + ') wirklich löschen?');
         }
     </script>
 </div>

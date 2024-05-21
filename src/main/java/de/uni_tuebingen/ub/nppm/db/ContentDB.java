@@ -64,29 +64,29 @@ public class ContentDB extends AbstractBase {
     }
 
     public static Content getFirstResultByName(String name) throws Exception {
-    try (Session session = getSession()) {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-        Root<Content> root = criteria.from(Content.class);
-        criteria.select(root);
-        criteria.where(builder.equal(root.get(Content_.NAME), name));
+        try ( Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+            Root<Content> root = criteria.from(Content.class);
+            criteria.select(root);
+            criteria.where(builder.equal(root.get(Content_.NAME), name));
 
-        List<Content> resultList = session.createQuery(criteria).getResultList();
+            List<Content> resultList = session.createQuery(criteria).getResultList();
 
-        // Überprüfen, ob die Ergebnisliste leer ist oder mehr als ein Element enthält
-        if (resultList.isEmpty()) {
-            // Kein Ergebnis gefunden, geben Sie null zurück oder werfen Sie eine Ausnahme
-            return null;
-        } else if (resultList.size() > 1) {
-            // Mehr als ein Ergebnis gefunden, hier können Sie entscheiden, wie Sie damit umgehen möchten
-            // Zum Beispiel könnten Sie das erste Element zurückgeben und die anderen ignorieren
-            return resultList.get(0);
-        } else {
-            // Genau ein Ergebnis gefunden, geben Sie es zurück
-            return resultList.get(0);
+            // Überprüfen, ob die Ergebnisliste leer ist oder mehr als ein Element enthält
+            if (resultList.isEmpty()) {
+                // Kein Ergebnis gefunden, geben Sie null zurück oder werfen Sie eine Ausnahme
+                return null;
+            } else if (resultList.size() > 1) {
+                // Mehr als ein Ergebnis gefunden, hier können Sie entscheiden, wie Sie damit umgehen möchten
+                // Zum Beispiel könnten Sie das erste Element zurückgeben und die anderen ignorieren
+                return resultList.get(0);
+            } else {
+                // Genau ein Ergebnis gefunden, geben Sie es zurück
+                return resultList.get(0);
+            }
         }
     }
-}
 
 
     public static Content getByNameAndLanguage(String name, String language) throws Exception {
@@ -188,6 +188,25 @@ public class ContentDB extends AbstractBase {
             Root myImage = criteria.from(Content.class);
             criteria.select(myImage);
             criteria.where(builder.equal(myImage.get(Content_.NAME), name));
+            Content image = session.createQuery(criteria).getSingleResult();
+            session.beginTransaction();
+            session.delete(image);
+            session.getTransaction().commit();
+        }
+    }
+
+    public static void deleteByNameAndLanguage(String name, String language) throws Exception {
+        try ( Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
+            Root myImage = criteria.from(Content.class);
+            criteria.select(myImage);
+            criteria.where(
+                    builder.and(
+                            builder.equal(myImage.get(Content_.NAME), name),
+                            builder.equal(myImage.get(Content_.LANGUAGE), language)
+                    )
+            );
             Content image = session.createQuery(criteria).getSingleResult();
             session.beginTransaction();
             session.delete(image);
