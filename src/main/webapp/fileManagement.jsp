@@ -134,7 +134,10 @@
 
 
         <tr>
-            <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
+            <td>
+                <a id="fileLink_<%=id%>" style="display: none;" href="<%=fileUrl%>" target="_blank"><%=name%></a>
+                <p id="fileParagraph_<%=id%>" style="display: none;"><%=name%></p>
+            </td>
             <td></td>
             <td class="cell-padding">
                 <form name="formFileLanguage_<%=id%>">
@@ -148,12 +151,12 @@
                 <a><%=id%></a>
 
                 <hr>
-                <form action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich ersetzen?');" enctype="multipart/form-data">
+                <form id="chooseFileForm_<%=id%>" style="display: none;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich ersetzen?');" enctype="multipart/form-data">
                     <input type="file" name="file" value="Datei auswahl">
                     <input class="full-width-button" type="submit" value="Ersetzen">
                 </form>
                 <hr>
-                <form action="file" method="post" onsubmit="return confirmDelete();">
+                <form id="deleteFileForm_<%=id%>" style="display: none;"  action="file" method="post" onsubmit="return confirmDelete();">
                     <input class="full-width-button" type="submit" name="deleteFile" value="l&ouml;schen">
                     <input type="hidden" name="fileAccess" value="fileDelete">
                     <input type="hidden" name="id" value="<%=content.getID()%>">
@@ -246,9 +249,19 @@
             if (answer === "true") {
                 document.getElementById("createFileButton_" + id).style.display = "none";
                 document.getElementById("showTinyLink_" + id).style.display = "inline-block";
+                document.getElementById("chooseFileForm_" + id).style.display = "inline-block";
+                document.getElementById("deleteFileForm_" + id).style.display = "inline-block";
+                document.getElementById("fileLink_" + id).style.display = "inline-block";
+                document.getElementById("fileParagraph_" + id).style.display = "none";
+
+
             } else {
                 document.getElementById("createFileButton_" + id).style.display = "inline-block";
                 document.getElementById("showTinyLink_" + id).style.display = "none";
+                document.getElementById("chooseFileForm_" + id).style.display = "none";
+                document.getElementById("deleteFileForm_" + id).style.display = "none";
+                document.getElementById("fileLink_" + id).style.display = "none";
+                document.getElementById("fileParagraph_" + id).style.display = "inline-block";
             }
         }
 
