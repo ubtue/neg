@@ -48,36 +48,47 @@
 
 <div id="dynamicContentDiv">
     <% String language = (String) session.getAttribute("Sprache");
-       int id = 0;
-       String context = "";
-       if (request.getParameter("context") != null) {
-           context = request.getParameter("context");
-       }
-       Content.Context contextEnum = null;
-       if (context.equals("HILFE")) {
-           contextEnum = Content.Context.HILFE;
-       } else if (context.equals("NAMENKOMMENTAR")) {
-           contextEnum = Content.Context.NAMENKOMMENTAR;
-       } else if (context.equals("QUELLENKOMMENTAR")) {
-           contextEnum = Content.Context.QUELLENKOMMENTAR;
-       } else if (context.equals("UEBERLIEFERUNGSKOMMENTAR")) {
-           contextEnum = Content.Context.UEBERLIEFERUNGSKOMMENTAR;
-       } else if (context.equals("CMS")) {
-           contextEnum = Content.Context.CMS;
-       }
+        int id = 0;
+        String context = "";
+        if (request.getParameter("context") != null) {
+            context = request.getParameter("context");
+        }
+        Content.Context contextEnum = null;
+        if (context.equals("HILFE")) {
+            contextEnum = Content.Context.HILFE;
+        } else if (context.equals("NAMENKOMMENTAR")) {
+            contextEnum = Content.Context.NAMENKOMMENTAR;
+        } else if (context.equals("QUELLENKOMMENTAR")) {
+            contextEnum = Content.Context.QUELLENKOMMENTAR;
+        } else if (context.equals("UEBERLIEFERUNGSKOMMENTAR")) {
+            contextEnum = Content.Context.UEBERLIEFERUNGSKOMMENTAR;
+        } else if (context.equals("CMS")) {
+            contextEnum = Content.Context.CMS;
+        }
     %>
 
     <br>
-    <form method="get">
-        <select name="context" onchange="this.form.submit();">
+    <form method="get" id="contextForm" onchange="this.submit();">
+        <select name="context">
             <option value="">Context ausw&auml;hlen</option>
-            <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) { out.print("selected"); } %>>Hilfe</option>
-            <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) { out.print("selected"); } %>>Namenkommentar</option>
-            <option value="QUELLENKOMMENTAR" <% if (contextEnum == Content.Context.QUELLENKOMMENTAR) { out.print("selected"); } %>>Quellenkommentar</option>
-            <option value="UEBERLIEFERUNGSKOMMENTAR" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR) { out.print("selected"); } %>>Überlieferungskommentar</option>
-            <option value="CMS" <% if (contextEnum == Content.Context.CMS) { out.print("selected"); } %>>Content Management System</option>
+            <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
+                out.print("selected");
+            } %>>Hilfe</option>
+            <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
+                out.print("selected");
+            } %>>Namenkommentar</option>
+            <option value="QUELLENKOMMENTAR" <% if (contextEnum == Content.Context.QUELLENKOMMENTAR) {
+                out.print("selected");
+            } %>>Quellenkommentar</option>
+            <option value="UEBERLIEFERUNGSKOMMENTAR" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR) {
+                out.print("selected");
+            } %>>Überlieferungskommentar</option>
+            <option value="CMS" <% if (contextEnum == Content.Context.CMS) {
+                out.print("selected");
+            } %>>Content Management System</option>
         </select>
     </form>
+
     <br>
 
     <%
@@ -87,7 +98,7 @@
             boolean showPage = (!context.isEmpty());
             if (showPage) {
                 List<Integer> ids = new ArrayList<>(); // IDs-Liste initialisieren
-    %>
+%>
     <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
         <input type="file" name="file[]" value="Datei auswahl" multiple>
         <br><br>
@@ -150,11 +161,11 @@
             </td>
         </tr>
         <%
-                    }
-                } else if (content.getContent_Type().startsWith("text/plain") || content.getContent_Type().startsWith("application/vnd.oasis.opendocument.text")
-                        || content.getContent_Type().startsWith("application/msword") || content.getContent_Type().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-                    String name = content.getName();
-                    String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+            }
+        } else if (content.getContent_Type().startsWith("text/plain") || content.getContent_Type().startsWith("application/vnd.oasis.opendocument.text")
+                || content.getContent_Type().startsWith("application/msword") || content.getContent_Type().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+            String name = content.getName();
+            String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
         %>
         <tr>
             <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
@@ -177,12 +188,10 @@
                 }
             }
             String idsJson = new Gson().toJson(ids);
-%>
+        %>
 
-     <input type="hidden" id="idsArray" value="<%= idsJson %>">
-<%
-
-
+        <input type="hidden" id="idsArray" value="<%= idsJson%>">
+        <%
 
             for (Content content : fileList) {
                 if (content.getContent_Type().startsWith("image")) {
@@ -225,11 +234,11 @@
 
 
     <script>
-      var idsJsonString = document.getElementById('idsArray').value;
-    var ids = JSON.parse(idsJsonString);
+        var idsJsonString = document.getElementById('idsArray').value;
+        var ids = JSON.parse(idsJsonString);
 
-    // Jetzt kannst du die IDs in JavaScript verwenden
-    console.log(ids); // Zum Beispiel, um die IDs in der Konsole anzuzeigen
+        // Jetzt kannst du die IDs in JavaScript verwenden
+        console.log(ids); // Zum Beispiel, um die IDs in der Konsole anzuzeigen
 
         function updateButtons(answer, id) {
             if (answer === "true") {
@@ -246,7 +255,7 @@
         }
 
         function activateTab(tabLanguage) {
-            document.querySelectorAll('.select-language').forEach(function(button) {
+            document.querySelectorAll('.select-language').forEach(function (button) {
                 if (button.getAttribute('data-language') === tabLanguage) {
                     button.classList.add('active');
                 } else {
@@ -255,12 +264,12 @@
             });
         }
 
-        document.querySelectorAll('.select-language').forEach(function(button) {
-            button.addEventListener('click', function() {
+        document.querySelectorAll('.select-language').forEach(function (button) {
+            button.addEventListener('click', function () {
                 let languageCode = this.getAttribute('data-language');
                 activateTab(languageCode);
                 setLanguage(languageCode);
-                ids.forEach(function(id) {
+                ids.forEach(function (id) {
                     take_values(languageCode, id);
                 });
             });
@@ -277,29 +286,45 @@
                 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 var params = "param1=" + encodeURIComponent(n) + "&param2=" + encodeURIComponent(content_language);
                 http.send(params);
-                http.onload = function() {
+                http.onload = function () {
                     let answer = http.responseText;
                     updateButtons(answer, id);
                 };
             }
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
+        function setContextCookie() {
+            var selectElement = document.getElementById('contextSelect');
+            var selectedContext = selectElement.value;
+
+            // Prüfen, ob sich der ausgewählte Kontext geändert hat
+            var previousContext = getCookie('selectedContext');
+            if (selectedContext !== previousContext) {
+                document.cookie = "selectedContext=" + selectedContext + "; path=/";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
             let languageCookie = getCookie("selectedLanguage");
             if (!languageCookie) {
                 languageCookie = 'de';
             }
             activateTab(languageCookie);
             setLanguage(languageCookie);
-            ids.forEach(function(id) {
+            ids.forEach(function (id) {
                 take_values(languageCookie, id);
             });
         });
 
         function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    return cookie.substring(name.length + 1);
+                }
+            }
+            return null;
         }
     </script>
 </div>
