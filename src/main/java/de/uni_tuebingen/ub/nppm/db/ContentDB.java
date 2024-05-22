@@ -9,6 +9,8 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import org.hibernate.Session;
 
 public class ContentDB extends AbstractBase {
@@ -264,5 +266,19 @@ public class ContentDB extends AbstractBase {
             session.saveOrUpdate(content);
             session.getTransaction().commit();
         }
+    }
+
+    public static String getCookieLanguage(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String selectedLanguage = "dontDelete";  // Standardwert, wenn kein Cookie gesetzt ist
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("selectedLanguage")) {
+                    selectedLanguage = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        return selectedLanguage;
     }
 }

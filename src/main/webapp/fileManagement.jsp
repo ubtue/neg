@@ -147,9 +147,6 @@
                 </form>
                 <button id="createFileButton_<%=id%>" style="display: none;">Datei erstellen</button>
                 <a id="showTinyLink_<%=id%>" style="display: none;" href="edit?loadFile=<%=name%>">HTML Bearbeiten (TinyMCE)</a>
-
-                <a><%=id%></a>
-
                 <hr>
                 <form id="chooseFileForm_<%=id%>" style="display: none;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace();" enctype="multipart/form-data">
                     <input type="file" name="file" value="Datei auswahl">
@@ -232,12 +229,6 @@
             out.println("Error: " + e.toString());
         }
     %>
-
-
-
-
-
-
 
     <script>
         var idsJsonString = document.getElementById('idsArray').value;

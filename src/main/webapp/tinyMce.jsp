@@ -40,17 +40,22 @@
     <%
         String helpFileName = request.getParameter("loadFile").toString();
 
+        //Finde die richtige Datei mit dazugehöriger Sprache
+        String selectedLanguage = ContentDB.getCookieLanguage(request);
+
+
         if (request.getParameter("speichern") != null) {
             String html = request.getParameter("area");
 
-            Content content = ContentDB.getByName(helpFileName);
+            //Content content = ContentDB.getByName(helpFileName);
+            Content content = ContentDB.getByNameAndLanguage(helpFileName, selectedLanguage);
             byte[] htmlBytes = html.getBytes(java.nio.charset.StandardCharsets.UTF_8);
             content.setContent(htmlBytes);
             ContentDB.saveOrUpdate(content);
             out.println("<span style=\"color:green\">Erfolgreich gespeichert</span>");
         }
 
-        Content content = ContentDB.getByName(helpFileName);
+        Content content = ContentDB.getByNameAndLanguage(helpFileName, selectedLanguage);
         byte[] htmlBytes = content.getContent();
         String utf8String = new String(htmlBytes, java.nio.charset.StandardCharsets.UTF_8);
 
