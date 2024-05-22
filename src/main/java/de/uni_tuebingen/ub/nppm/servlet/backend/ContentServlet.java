@@ -103,7 +103,7 @@ public class ContentServlet extends AbstractBackendServlet {
                 } else if (fileAccess.equals("fileReplace")) {
 
                     if (request.getParameter("id") != null) {
-                        replaceFile(request, response, request.getParameter("id"));
+                        replaceFile(request, response);
                     } else {
                         out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht ersetzt werden");
                     }
@@ -163,73 +163,82 @@ public class ContentServlet extends AbstractBackendServlet {
         }
     }//end function
 
-    public void replaceFile(HttpServletRequest request, HttpServletResponse response, String fileId) throws IOException, FileUploadException, Exception {
+   public void replaceFile(HttpServletRequest request, HttpServletResponse response) throws IOException, FileUploadException, Exception {
 
-        PrintWriter out = response.getWriter();
+    PrintWriter out = response.getWriter();
 
-        String context = request.getParameter("context");
-        Content.Context contextEnum = Content.Context.valueOf(context);
+    String context = request.getParameter("context");
+    Content.Context contextEnum = Content.Context.valueOf(context);
 
-        // Create a new file upload handler
-        ServletFileUpload upload = new ServletFileUpload();
+    // Create a new file upload handler
+    ServletFileUpload upload = new ServletFileUpload();
 
-        // Parse the request
-        FileItemIterator iter = upload.getItemIterator(request);
+    // Parse the request
+    FileItemIterator iter = upload.getItemIterator(request);
 
-        while (iter.hasNext()) {
+    while (iter.hasNext()) {
 
-            FileItemStream item = iter.next();
-            String contentType = item.getContentType();
-            String errorFileName = item.getName();
+        FileItemStream item = iter.next();
+        String contentType = item.getContentType();
+        String errorFileName = item.getName();
 
-            if (!item.isFormField()) {
+        if (!item.isFormField()) {
 
-                if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("")) {
-                    out.println("<span style=\" color: red;\" >Error: </span>Sie haben keine Datei ausgew&auml;hlt!");
-                } else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
-                        || item.getContentType().startsWith("image") || item.getContentType().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-                        || item.getContentType().startsWith("application/msword")) {
+            if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("")) {
+                out.println("<span style=\" color: red;\" >Error: </span>Sie haben keine Datei ausgew&auml;hlt!");
+            } else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
+                    || item.getContentType().startsWith("image") || item.getContentType().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+                    || item.getContentType().startsWith("application/msword")) {
 
-                    String fileName = item.getName();
+                String fileName = item.getName();
 
-                    boolean fileExists = ContentDB.searchName(fileName);
-                    boolean sameFileName = false;
-                    Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
-                    if (fileName.equals(content.getName())) //The file name to be uploaded should match the one in the database
-                    {
-                        sameFileName = true;
+                boolean fileExists = ContentDB.searchName(fileName);
+                boolean sameFileName = false;
+                Content content = null;
+                 String selectedLanguage = getCookieLanguage(request, response);
+
+                 if (contentType.equals("text/html")) {
+                     content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
+                 }else{
+                     content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                 }
+
+
+                if (fileName.equals(content.getName())) //The file name to be uploaded should match the one in the database
+                {
+                    sameFileName = true;
+                }
+
+                String pathname = writeItemToTempFile(item);
+
+                if (fileExists == true && sameFileName == true) {
+
+                    byte[] bytes = ContentDB.readBytesFromFile(pathname);
+                    content.setContent(bytes);
+                    ContentDB.saveOrUpdate(content);
+
+                    if (contentType.equals("text/html")) {
+
+                        out.println("Datei " + fileName + "(" + selectedLanguage + ")" + " wurde aktualisiert!");
+                    }else{
+                        out.println("Datei " + fileName + " wurde aktualisiert!");
                     }
 
-                    String pathname = writeItemToTempFile(item);
-
-                    if (fileExists == true && sameFileName == true) {
-
-                        byte[] bytes = ContentDB.readBytesFromFile(pathname);
-                        content.setContent(bytes);
-                        ContentDB.saveOrUpdate(content);
-
-                        if (contentType.equals("text/html")) {
-                            String selectedLanguage = getCookieLanguage(request, response);
-                            out.println("Datei " + fileName + "(" + selectedLanguage + ")" + " wurde aktualisiert!");
-                        } else {
-                            out.println("Datei " + fileName + " wurde aktualisiert!");
-                        }
-
-                    } else {
-                        out.println("<span style=\" color: red;\" >Error: </span>Datei Namen stimmen nicht überein:  " + content.getName() + " und " + fileName);
-                        out.println("<br>");
-                    }
-
-                    //Now delete the temporary file again
-                    File myObj = new File(pathname);
-                    myObj.delete();
                 } else {
-                    out.println("<span style=\" color: red;\" >Error: </span>Datei " + errorFileName + " Dateityp nicht erlaubt. Bitte wenden Sie sich an den Administrator");
+                    out.println("<span style=\" color: red;\" >Error: </span>Datei Namen stimmen nicht überein:  " + content.getName() + " und " + fileName);
                     out.println("<br>");
                 }
+
+                //Now delete the temporary file again
+                File myObj = new File(pathname);
+                myObj.delete();
+            } else {
+                out.println("<span style=\" color: red;\" >Error: </span>Datei " + errorFileName + " Dateityp nicht erlaubt. Bitte wenden Sie sich an den Administrator");
+                out.println("<br>");
             }
         }
     }
+}
 
     public void uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, FileUploadException, Exception {
         PrintWriter out = response.getWriter();
