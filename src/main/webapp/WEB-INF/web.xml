@@ -164,7 +164,7 @@
     <servlet-mapping>
         <servlet-name>PublikationenServlet</servlet-name>
         <url-pattern>/gast/publikationen</url-pattern>
-    </servlet-mapping> 
+    </servlet-mapping>
     <servlet>
         <servlet-name>EinstellungenServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinstellungenServlet</servlet-class>
@@ -213,8 +213,6 @@
         <servlet-name>BackendPersonServlet</servlet-name>
         <url-pattern>/person</url-pattern>
     </servlet-mapping>
-    
-    
     <servlet>
         <servlet-name>BackendBerechneDateiSpracheServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.BerechneDateiSpracheServlet</servlet-class>
@@ -223,8 +221,6 @@
         <servlet-name>BackendBerechneDateiSpracheServlet</servlet-name>
         <url-pattern>/berechne</url-pattern>
     </servlet-mapping>
-    
-    
     <servlet>
         <servlet-name>BackendEditionServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EditionServlet</servlet-class>
@@ -339,7 +335,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ShowContentServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ShowContentServlet</servlet-class>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ShowContentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ShowContentServlet</servlet-name>

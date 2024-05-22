@@ -1,4 +1,4 @@
-package de.uni_tuebingen.ub.nppm.servlet.gast;
+package de.uni_tuebingen.ub.nppm.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
 import java.io.OutputStream;
+import javax.persistence.NoResultException;
 import javax.servlet.http.Cookie;
 
 public class ShowContentServlet extends HttpServlet {
@@ -17,7 +18,7 @@ public class ShowContentServlet extends HttpServlet {
         String name = req.getParameter("name");
 
         Cookie[] cookies = req.getCookies();
-        String selectedLanguage = "de";  //Standardwert wenn kein Cookie gesetzt worden ist
+        String selectedLanguage = "null";  //Standardwert wenn kein Cookie gesetzt worden ist
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("selectedLanguage")) {
@@ -28,7 +29,14 @@ public class ShowContentServlet extends HttpServlet {
         }
 
         try {
-            Content content = ContentDB.getByNameAndLanguage(name, selectedLanguage);
+            Content content = null;
+            try {
+                content = ContentDB.getByNameAndLanguage(name, selectedLanguage);
+            } catch (NoResultException e) {
+                // Falls keine Datei für die angegebene Sprache gefunden wird, die Standarddatei abrufen
+                content = ContentDB.getByName(name);
+            }
+
             if (content != null) {
                 resp.setContentType(content.getContent_Type());
 
@@ -44,6 +52,8 @@ public class ShowContentServlet extends HttpServlet {
                 os.write(photoBytes);
                 os.flush();
                 os.close();
+            } else {
+                resp.sendRedirect("file?context=CMS");
             }
         } catch (Exception e) {
             resp.sendRedirect("file?context=CMS");
