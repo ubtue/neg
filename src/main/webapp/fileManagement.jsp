@@ -151,9 +151,10 @@
                 <a><%=id%></a>
 
                 <hr>
-                <form id="chooseFileForm_<%=id%>" style="display: none;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich ersetzen?');" enctype="multipart/form-data">
+                <form id="chooseFileForm_<%=id%>" style="display: none;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace();" enctype="multipart/form-data">
                     <input type="file" name="file" value="Datei auswahl">
                     <input class="full-width-button" type="submit" value="Ersetzen">
+                    <input type="hidden" id="contentNameReplace" value="<%= content.getName() %>">
                 </form>
                 <hr>
                 <form id="deleteFileForm_<%=id%>" style="display: none;"  action="file" method="post" onsubmit="return confirmDelete();">
@@ -351,6 +352,17 @@
 
             // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
             return confirm('Datei ' + contentName + ' (' + selectedLanguage + ') wirklich löschen?');
+        }
+
+        function confirmReplace() {
+            // Abrufen des aktuellen Werts des Cookies
+            var selectedLanguage = getCookie('selectedLanguage');
+
+            // Abrufen des Namens des Inhalts aus dem versteckten HTML-Element
+            var contentName = document.getElementById('contentNameReplace').value;
+
+            // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
+            return confirm('Datei ' + contentName + ' (' + selectedLanguage + ') wirklich ersetzen?');
         }
     </script>
 </div>

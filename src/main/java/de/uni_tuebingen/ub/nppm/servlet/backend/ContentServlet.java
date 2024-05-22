@@ -66,16 +66,7 @@ public class ContentServlet extends AbstractBackendServlet {
 
                         if (content.getContext().equals(Content.Context.CMS) && content.getContent_Type().equals("text/html")) {
 
-                            Cookie[] cookies = request.getCookies();
-                            String selectedLanguage = "dontDelete";  //Standardwert wenn kein Cookie gesetzt worden ist
-                            if (cookies != null) {
-                                for (Cookie cookie : cookies) {
-                                    if (cookie.getName().equals("selectedLanguage")) {
-                                        selectedLanguage = cookie.getValue();
-                                        break;
-                                    }
-                                }
-                            }
+                            String selectedLanguage = getCookieLanguage(request, response);
 
                             String fileName = content.getName();
                             deleteFileByNameAndLanguage(fileName, selectedLanguage);
@@ -194,7 +185,13 @@ public class ContentServlet extends AbstractBackendServlet {
                         byte[] bytes = ContentDB.readBytesFromFile(pathname);
                         content.setContent(bytes);
                         ContentDB.saveOrUpdate(content);
-                        out.println("Datei " + fileName + " wurde aktualisiert!");
+
+                        if (contentType.equals("text/html")) {
+                            String selectedLanguage = getCookieLanguage(request, response);
+                            out.println("Datei " + fileName + "(" + selectedLanguage + ")" + " wurde aktualisiert!");
+                        }else{
+                            out.println("Datei " + fileName + " wurde aktualisiert!");
+                        }
 
                     } else {
                         out.println("<span style=\" color: red;\" >Error: </span>Datei Namen stimmen nicht überein:  " + content.getName() + " und " + fileName);
@@ -217,16 +214,7 @@ public class ContentServlet extends AbstractBackendServlet {
         String context = request.getParameter("context");
         Content.Context contextEnum = Content.Context.valueOf(context);
 
-        Cookie[] cookies = request.getCookies();
-        String selectedLanguage = "de";  //Standardwert wenn kein Cookie gesetzt worden ist
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("selectedLanguage")) {
-                    selectedLanguage = cookie.getValue();
-                    break;
-                }
-            }
-        }
+        String selectedLanguage = getCookieLanguage(request, response);
 
         // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload();
@@ -313,6 +301,20 @@ public class ContentServlet extends AbstractBackendServlet {
     @Override
     protected String getTitle() {
         return "fileManagement";
+    }
+
+    public String getCookieLanguage(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        String selectedLanguage = "dontDelete";  //Standardwert wenn kein Cookie gesetzt worden ist
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("selectedLanguage")) {
+                    selectedLanguage = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        return selectedLanguage;
     }
 
 }//end class
