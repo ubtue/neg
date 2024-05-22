@@ -38,7 +38,23 @@ public class ContentServlet extends AbstractBackendServlet {
         if (request.getParameter("loadFile") != null) {
             RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
             rd.include(request, response);
-        } else {
+        } else if ("HtmlSaveToDatabase".equals(request.getParameter("htmlFileAccess"))) {
+            String fileName = request.getParameter("tinyFileName");
+            String language = request.getParameter("tinyLanguage");
+            String newHtmlContent = request.getParameter("htmlContent");
+
+            try {
+                Content content = ContentDB.getByNameAndLanguage(fileName, language);
+                if (content != null) {
+                    ContentDB.updateHtmlFile(content, newHtmlContent);
+                    // Redirect to the tinyMce.jsp page after saving
+                    response.sendRedirect("edit?loadFile=" + fileName + "&language=" + language);
+                    return;  // Important to return after redirect to stop further execution
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (request.getParameter("loadFile") == null && !"HtmlSaveToDatabase".equals(request.getParameter("htmlFileAccess"))) {
             //show fileManagement
             out.println("<div id=\"titel\">");
             out.println("  <table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
@@ -56,6 +72,7 @@ public class ContentServlet extends AbstractBackendServlet {
             out.println("<p style=\"line-height: 0.2; color: red;\">die Datei mit gleichem Namen hochladen. </p>");
             out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie aber Ersetzen wählen, dann bleiben die Verknüpfungen im Programm bestehen.</p>");
             // Actions:
+
             String fileAccess = request.getParameter("fileAccess");
             if (fileAccess != null) {
 
@@ -90,6 +107,11 @@ public class ContentServlet extends AbstractBackendServlet {
                     } else {
                         out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht ersetzt werden");
                     }
+                } else if (fileAccess.equals("HtmlFileCreate")) {
+                    String selectedLanguage = getCookieLanguage(request, response);
+                    String fileName = request.getParameter("CreateHTMLFileName");
+
+                    ContentDB.createHtmlFile(fileName, Content.Context.CMS, selectedLanguage);
                 }
             }
             // show list (e.g. help, name comment or blank page)
@@ -189,7 +211,7 @@ public class ContentServlet extends AbstractBackendServlet {
                         if (contentType.equals("text/html")) {
                             String selectedLanguage = getCookieLanguage(request, response);
                             out.println("Datei " + fileName + "(" + selectedLanguage + ")" + " wurde aktualisiert!");
-                        }else{
+                        } else {
                             out.println("Datei " + fileName + " wurde aktualisiert!");
                         }
 

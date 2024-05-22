@@ -38,41 +38,30 @@
 <jsp:include page="layout/titel.inhalt.jsp" />
 <div id="form">
     <%
-        String helpFileName = request.getParameter("loadFile").toString();
-
-        //Finde die richtige Datei mit dazugehöriger Sprache
+        String helpFileName = request.getParameter("loadFile");
         String selectedLanguage = ContentDB.getCookieLanguage(request);
-
-
-        if (request.getParameter("speichern") != null) {
-            String html = request.getParameter("area");
-
-            //Content content = ContentDB.getByName(helpFileName);
-            Content content = ContentDB.getByNameAndLanguage(helpFileName, selectedLanguage);
-            byte[] htmlBytes = html.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-            content.setContent(htmlBytes);
-            ContentDB.saveOrUpdate(content);
-            out.println("<span style=\"color:green\">Erfolgreich gespeichert</span>");
-        }
 
         Content content = ContentDB.getByNameAndLanguage(helpFileName, selectedLanguage);
         byte[] htmlBytes = content.getContent();
         String utf8String = new String(htmlBytes, java.nio.charset.StandardCharsets.UTF_8);
 
+
     %>
 
-    <form method="post">
-        <textarea id="mytextarea" name="area">
-            <%                    out.println(utf8String);
-            %>
+    <form method="post" action="edit">
+        <textarea id="mytextarea" name="htmlContent">
+            <%= utf8String %>
         </textarea>
+        <input type="hidden" name="tinyFileName" value="<%= helpFileName %>">
+        <input type="hidden" name="tinyLanguage" value="<%= selectedLanguage %>">
 
         <div style="display: flex;">
-            <div style="margin-right: 10px;" method="post">
-                <input type="submit" name="speichern" value="speichern"/>
+            <div style="margin-right: 10px;">
+                <input class="full-width-button" type="submit" value="speichern">
+                <input type="hidden" name="htmlFileAccess" value="HtmlSaveToDatabase">
             </div>
-
             <a href="file" style="margin-right: 10px;">Datei <%= DBtoHTML("&")%> Bild Verwaltung</a>
         </div>
     </form>
 </div>
+

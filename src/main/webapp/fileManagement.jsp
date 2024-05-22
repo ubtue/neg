@@ -98,7 +98,7 @@
             boolean showPage = (!context.isEmpty());
             if (showPage) {
                 List<Integer> ids = new ArrayList<>(); // IDs-Liste initialisieren
-    %>
+%>
     <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
         <input type="file" name="file[]" value="Datei auswahl" multiple>
         <br><br>
@@ -130,7 +130,7 @@
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                         id++;
                         ids.add(id); // ID zur Liste hinzufügen
-%>
+        %>
 
 
         <tr>
@@ -145,13 +145,20 @@
                     <input type="hidden" name="content_language" value="de">
                     <input type="submit" style="display:none;">
                 </form>
-                <button id="createFileButton_<%=id%>" style="display: none;">Datei erstellen</button>
+
+                <form id="createFileForm_<%=id%>" action="file" method="post">
+                    <input type="hidden" name="CreateHTMLFileName" value="<%=name%>">
+                    <input type="hidden" name="fileAccess" value="HtmlFileCreate">
+                    <button type="submit" id="createFileButton_<%=id%>">Datei erstellen</button>
+                </form>
+
+
                 <a id="showTinyLink_<%=id%>" style="display: none;" href="edit?loadFile=<%=name%>">HTML Bearbeiten (TinyMCE)</a>
                 <hr>
                 <form id="chooseFileForm_<%=id%>" style="display: none;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace();" enctype="multipart/form-data">
                     <input type="file" name="file" value="Datei auswahl">
                     <input class="full-width-button" type="submit" value="Ersetzen">
-                    <input type="hidden" id="contentNameReplace" value="<%= content.getName() %>">
+                    <input type="hidden" id="contentNameReplace" value="<%= content.getName()%>">
                 </form>
                 <hr>
                 <form id="deleteFileForm_<%=id%>" style="display: none;"  action="file" method="post" onsubmit="return confirmDelete();">
@@ -159,7 +166,7 @@
                     <input type="hidden" name="fileAccess" value="fileDelete">
                     <input type="hidden" name="id" value="<%=content.getID()%>">
                     <input type="hidden" name="context" value="<%=context%>">
-                    <input type="hidden" id="contentName" value="<%= content.getName() %>">
+                    <input type="hidden" id="contentName" value="<%= content.getName()%>">
                 </form>
             </td>
         </tr>

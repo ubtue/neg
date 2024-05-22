@@ -15,6 +15,21 @@ import org.hibernate.Session;
 
 public class ContentDB extends AbstractBase {
 
+    public static void createHtmlFile(String fileName, Content.Context context, String language) throws Exception {
+        String htmlTemplate = "<!DOCTYPE html><html><head><title>Empty HTML</title></head><body></body></html>";
+        byte[] contentBytes = htmlTemplate.getBytes("UTF-8");
+        Content content = new Content(fileName, "text/html", contentBytes, context, language);
+        putToDatabase(content);
+
+    }
+
+    public static void updateHtmlFile(Content content, String newHtmlContent) throws Exception {
+        String htmlTemplate = "<!DOCTYPE html><html><head><title>Updated HTML</title></head><body>" + newHtmlContent + "</body></html>";
+        byte[] contentBytes = htmlTemplate.getBytes("UTF-8");
+        content.setContent(contentBytes);
+        saveOrUpdate(content);
+    }
+
     public static void putToDatabase(Content imageContent) throws Exception {
         try ( Session session = getSession()) {
             session.beginTransaction();
@@ -89,7 +104,6 @@ public class ContentDB extends AbstractBase {
             }
         }
     }
-
 
     public static Content getByNameAndLanguage(String name, String language) throws Exception {
         try ( Session session = getSession()) {
