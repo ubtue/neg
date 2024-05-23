@@ -149,6 +149,7 @@
                 <form id="createFileForm_<%=id%>" action="file" method="post" onsubmit="setActionUrl(event, this, '<%= content.getContext() %>')">
                     <input type="hidden" name="CreateHTMLFileName" value="<%=name%>">
                     <input type="hidden" name="fileAccess" value="HtmlFileCreate">
+                    <input type="hidden" name="HtmlContext" value="<%= content.getContext()%>">
                     <button type="submit" id="createFileButton_<%=id%>">Datei erstellen</button>
                 </form>
 
