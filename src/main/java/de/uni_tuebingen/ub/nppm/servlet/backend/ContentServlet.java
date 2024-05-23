@@ -81,7 +81,7 @@ public class ContentServlet extends AbstractBackendServlet {
                     if (request.getParameter("id") != null) {
                         Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
 
-                        if (content.getContext().equals(Content.Context.CMS) && content.getContent_Type().equals("text/html")) {
+                        if (content.getContext() != null && content.getContent_Type().equals("text/html")) {
 
                             String selectedLanguage = getCookieLanguage(request, response);
 
@@ -115,6 +115,9 @@ public class ContentServlet extends AbstractBackendServlet {
 
                     if (fileName != null && context != null && selectedLanguage != null) {
                         ContentDB.createHtmlFile(fileName, context, selectedLanguage);
+
+                        out.println("Datei " + fileName + " (" + selectedLanguage + ") wurde erstellt");
+
                     }
                 }
             }
@@ -222,7 +225,7 @@ public class ContentServlet extends AbstractBackendServlet {
 
                         if (contentType.equals("text/html")) {
 
-                            out.println("Datei " + fileName + "(" + selectedLanguage + ")" + " wurde aktualisiert!");
+                            out.println("Datei " + fileName + " (" + selectedLanguage + ")" + " wurde aktualisiert!");
                         } else {
                             out.println("Datei " + fileName + " wurde aktualisiert!");
                         }
