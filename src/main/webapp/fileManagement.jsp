@@ -98,7 +98,7 @@
             boolean showPage = (!context.isEmpty());
             if (showPage) {
                 List<Integer> ids = new ArrayList<>(); // IDs-Liste initialisieren
-%>
+    %>
     <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
         <input type="file" name="file[]" value="Datei auswahl" multiple>
         <br><br>
@@ -130,7 +130,7 @@
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                         id++;
                         ids.add(id); // ID zur Liste hinzufügen
-        %>
+%>
 
 
         <tr>
@@ -146,7 +146,7 @@
                     <input type="submit" style="display:none;">
                 </form>
 
-                <form id="createFileForm_<%=id%>" action="file" method="post">
+                <form id="createFileForm_<%=id%>" action="file" method="post" onsubmit="setActionUrl(event, this, '<%= content.getContext() %>')">
                     <input type="hidden" name="CreateHTMLFileName" value="<%=name%>">
                     <input type="hidden" name="fileAccess" value="HtmlFileCreate">
                     <button type="submit" id="createFileButton_<%=id%>">Datei erstellen</button>
@@ -361,6 +361,10 @@
 
             // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
             return confirm('Datei ' + contentName + ' (' + selectedLanguage + ') wirklich ersetzen?');
+        }
+
+        function setActionUrl(event, form, context) {
+            form.action += '?context=' + encodeURIComponent(context);
         }
     </script>
 </div>
