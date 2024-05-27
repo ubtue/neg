@@ -109,7 +109,7 @@
 
                     <!-- Help -->
                     <li class="ut-switchbar__item" id="switchbar-help">
-                        <a href="<%=Utils.getBaseUrl(request)%>/gast/hilfe" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-help" title="Hilfe" role="button" aria-haspopup="false" aria-expanded="false">
+                        <a href="/neg/gast/infos?sharedHtml=hilfe" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-help" title="Hilfe" role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="ut-switchbar__icon ut-icon ut-icon-info-circled"></span>
                             <span class="ut-switchbar__label"><% Language.printTextfield(out, session, "hilfe", "Titel");%></span>
                         </a>

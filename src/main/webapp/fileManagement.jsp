@@ -54,16 +54,14 @@
             context = request.getParameter("context");
         }
         Content.Context contextEnum = null;
-        if (context.equals("HILFE")) {
-            contextEnum = Content.Context.HILFE;
+        if (context.equals("CMS")) {
+             contextEnum = Content.Context.CMS;
         } else if (context.equals("NAMENKOMMENTAR")) {
             contextEnum = Content.Context.NAMENKOMMENTAR;
         } else if (context.equals("QUELLENKOMMENTAR")) {
             contextEnum = Content.Context.QUELLENKOMMENTAR;
         } else if (context.equals("UEBERLIEFERUNGSKOMMENTAR")) {
             contextEnum = Content.Context.UEBERLIEFERUNGSKOMMENTAR;
-        } else if (context.equals("CMS")) {
-            contextEnum = Content.Context.CMS;
         }
     %>
 
@@ -71,9 +69,6 @@
     <form method="get" id="contextForm" onchange="this.submit();">
         <select name="context">
             <option value="">Context ausw&auml;hlen</option>
-            <option value="HILFE" <% if (contextEnum == Content.Context.HILFE) {
-                    out.print("selected");
-                } %>>Hilfe</option>
             <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
                     out.print("selected");
                 } %>>Namenkommentar</option>

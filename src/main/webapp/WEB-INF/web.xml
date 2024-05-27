@@ -84,15 +84,7 @@
     <servlet-mapping>
         <servlet-name>QuelleServlet</servlet-name>
         <url-pattern>/gast/quelle</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>HilfeServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.HilfeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>HilfeServlet</servlet-name>
-        <url-pattern>/gast/hilfe</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>    
     <servlet>
         <servlet-name>StartseiteServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.StartseiteServlet</servlet-class>

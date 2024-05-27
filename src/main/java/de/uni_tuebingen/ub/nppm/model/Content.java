@@ -16,12 +16,10 @@ import org.hibernate.annotations.Type;
 public class Content {
 
     public enum Context {
-        HILFE,
         NAMENKOMMENTAR,
         QUELLENKOMMENTAR,
         UEBERLIEFERUNGSKOMMENTAR,
         CMS
-
     }
 
     @Id
