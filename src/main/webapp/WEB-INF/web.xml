@@ -133,14 +133,19 @@
         <servlet-name>QuellenlisteServlet</servlet-name>
         <url-pattern>/gast/quellenliste</url-pattern>
     </servlet-mapping>
+    
     <servlet>
-        <servlet-name>TagungenServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.TagungenServlet</servlet-class>
+        <servlet-name>SharedHtmlServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.SharedHtmlServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>TagungenServlet</servlet-name>
-        <url-pattern>/gast/tagungen</url-pattern>
+        <servlet-name>SharedHtmlServlet</servlet-name>
+        <url-pattern>/gast/infos</url-pattern>
     </servlet-mapping>
+    
+    
+    
+    
     <servlet>
         <servlet-name>MitgliederServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.MitgliederServlet</servlet-class>

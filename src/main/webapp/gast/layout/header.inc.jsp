@@ -145,7 +145,7 @@
                                 <span class="ut-switchblock__close-icon ut-icon ut-icon-cancel" role="button"></span>
                             </div>
                             <div class="ut-switchblock__content">
-                                <nav class="ut-nav ut-nav--language" aria-label="bobo">
+                                <nav class="ut-nav ut-nav--language" aria-label="language">
                                     <ul class="ut-nav__list ">
                                         <li class="ut-nav__item " data-level-count="1">
                                             <a class="ut-link ut-nav__link" href="?language=de" title="Sprache Deutsch wählen"><% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de"); %></a>

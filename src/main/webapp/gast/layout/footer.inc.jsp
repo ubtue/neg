@@ -33,7 +33,9 @@
                                             <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/ziele"><% Language.printTextfield(out, session, "ziele", "Titel"); %></a>
                                             <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/datenbank"><% Language.printTextfield(out, session, "datenbank", "Titel"); %></a>
                                             <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/quellenliste"><% Language.printTextfield(out, session, "quellenliste", "Titel"); %></a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/tagungen"><% Language.printTextfield(out, session, "tagungen", "Titel"); %></a>
+
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=tagungen.html"><% Language.printTextfield(out, session, "tagungen", "Titel"); %></a>
+
                                             <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/mitglieder"><% Language.printTextfield(out, session, "mitglieder", "Titel"); %></a>
                                             <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/projekte"><% Language.printTextfield(out, session, "projekte", "Titel"); %></a>
                                             <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/publikationen"><% Language.printTextfield(out, session, "publikationen", "Titel"); %></a>
