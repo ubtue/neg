@@ -2,20 +2,23 @@ package de.uni_tuebingen.ub.nppm.servlet.gast;
 
 import de.uni_tuebingen.ub.nppm.db.ContentDB;
 import de.uni_tuebingen.ub.nppm.model.Content;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-
-import javax.persistence.NoResultException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 public class SharedHtmlServlet extends AbstractGastServlet {
 
     @Override
     protected String getTitle() {
+        return setTitel(currentRequest, currentResponse);
+    }
 
-        return "ziele";
+    private String setTitel(HttpServletRequest request, HttpServletResponse response) {
+        if (request != null) {
+            String myFile = request.getParameter("sharedHtml");
+            return myFile != null ? myFile : "";
+        }
+        return "";
     }
 
     @Override
@@ -57,7 +60,7 @@ public class SharedHtmlServlet extends AbstractGastServlet {
             }
 
         } catch (Exception e) {
-            // Fehlerbehandlung benutze Standard Sprache Deutsch, da für nicht alle wie Hilfe.html eine Englische Version Vorhanden ist
+            // Fehlerbehandlung benutze Standard Sprache Deutsch, da für nicht alle wie Hilfe.html eine Englische Version vorhanden ist
             Content content = ContentDB.getByNameAndLanguage(myFile, "de");
 
             response.setContentType("text/html; charset=UTF-8");
@@ -67,5 +70,4 @@ public class SharedHtmlServlet extends AbstractGastServlet {
             writer.flush();
         }
     }
-
 }
