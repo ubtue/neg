@@ -30,15 +30,13 @@
                             <div class="ut-link-register ut-link-register--color-text ut-link-register--without-icons">
                                <div class="ut-link-register ut-page-footer__link-list">
                                     <div class="ut-link-register__link-list">
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/ziele"><% Language.printTextfield(out, session, "ziele", "Titel"); %></a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/datenbank"><% Language.printTextfield(out, session, "datenbank", "Titel"); %></a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/quellenliste"><% Language.printTextfield(out, session, "quellenliste", "Titel"); %></a>
-
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=tagungen.html"><% Language.printTextfield(out, session, "tagungen", "Titel"); %></a>
-
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/mitglieder"><% Language.printTextfield(out, session, "mitglieder", "Titel"); %></a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/projekte"><% Language.printTextfield(out, session, "projekte", "Titel"); %></a>
-                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/publikationen"><% Language.printTextfield(out, session, "publikationen", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=ziele"><% Language.printTextfield(out, session, "ziele", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=datenbank"><% Language.printTextfield(out, session, "datenbank", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=quellenliste"><% Language.printTextfield(out, session, "quellenliste", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=tagungen"><% Language.printTextfield(out, session, "tagungen", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=mitglieder"><% Language.printTextfield(out, session, "mitglieder", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=projekte"><% Language.printTextfield(out, session, "projekte", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=publikationen"><% Language.printTextfield(out, session, "publikationen", "Titel"); %></a>
                                         </div>
                                 </div>
                             </div>
