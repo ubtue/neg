@@ -30,10 +30,10 @@ public class ContentDB extends AbstractBase {
         saveOrUpdate(content);
     }
 
-    public static void putToDatabase(Content imageContent) throws Exception {
+    public static void putToDatabase(Content dataContent) throws Exception {
         try ( Session session = getSession()) {
             session.beginTransaction();
-            session.save(imageContent);
+            session.save(dataContent);
             session.getTransaction().commit();
         }
     }
@@ -72,9 +72,9 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myImage = criteria.from(Content.class);
-            criteria.select(myImage);
-            criteria.where(builder.equal(myImage.get(Content_.NAME), name));
+            Root myContent = criteria.from(Content.class);
+            criteria.select(myContent);
+            criteria.where(builder.equal(myContent.get(Content_.NAME), name));
             Content content = session.createQuery(criteria).getSingleResult();
             return content;
         }
@@ -90,16 +90,12 @@ public class ContentDB extends AbstractBase {
 
             List<Content> resultList = session.createQuery(criteria).getResultList();
 
-            // Überprüfen, ob die Ergebnisliste leer ist oder mehr als ein Element enthält
             if (resultList.isEmpty()) {
-                // Kein Ergebnis gefunden, geben Sie null zurück oder werfen Sie eine Ausnahme
                 return null;
             } else if (resultList.size() > 1) {
-                // Mehr als ein Ergebnis gefunden, hier können Sie entscheiden, wie Sie damit umgehen möchten
-                // Zum Beispiel könnten Sie das erste Element zurückgeben und die anderen ignorieren
+                //Return first result
                 return resultList.get(0);
             } else {
-                // Genau ein Ergebnis gefunden, geben Sie es zurück
                 return resultList.get(0);
             }
         }
@@ -109,12 +105,12 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myImage = criteria.from(Content.class);
-            criteria.select(myImage);
+            Root myContent = criteria.from(Content.class);
+            criteria.select(myContent);
             criteria.where(
                     builder.and(
-                            builder.equal(myImage.get(Content_.NAME), name),
-                            builder.equal(myImage.get(Content_.LANGUAGE), language)
+                            builder.equal(myContent.get(Content_.NAME), name),
+                            builder.equal(myContent.get(Content_.LANGUAGE), language)
                     )
             );
 
@@ -127,10 +123,10 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myImage = criteria.from(Content.class);
+            Root myContent = criteria.from(Content.class);
             criteria.getOrderList();
-            List<Content> images = (List<Content>) session.createQuery(criteria).list();
-            return images;
+            List<Content> contents = (List<Content>) session.createQuery(criteria).list();
+            return contents;
         }
     }
 
@@ -138,19 +134,20 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root<Content> myImage = criteria.from(Content.class);
-            criteria.select(myImage);
+            Root<Content> myContent = criteria.from(Content.class);
+            criteria.select(myContent);
 
             // Filter hinzufügen basierend auf dem übergebenen Kontext
             if (context != null && !context.isEmpty()) {
-                criteria.where(builder.equal(myImage.get("context"), Context.valueOf(context)));
+                criteria.where(builder.equal(myContent.get("context"), Context.valueOf(context)));
             }
 
-            List<Content> images = session.createQuery(criteria).getResultList();
-            return images;
+            List<Content> contents = session.createQuery(criteria).getResultList();
+            return contents;
         }
     }
 
+    // unused function for future use ...
     public static void copyPicturesFromDatabaseTableToTempFolder(String outputDirectory) throws Exception {
         List<Content> pictures = ContentDB.getList();
         for (Content ic : pictures) {
@@ -166,9 +163,9 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myImage = criteria.from(Content.class);
-            criteria.select(myImage);
-            criteria.where(builder.equal(myImage.get(Content_.NAME), name));
+            Root myContent = criteria.from(Content.class);
+            criteria.select(myContent);
+            criteria.where(builder.equal(myContent.get(Content_.NAME), name));
             Content content = session.createQuery(criteria).getSingleResult();
             String filePathToSave = outputDirectory + name;
             byte[] HtmlBytes = content.getContent();
