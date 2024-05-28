@@ -147,14 +147,16 @@ public class ContentDB extends AbstractBase {
         }
     }
 
+
+
     // unused function for future use ...
-    public static void copyPicturesFromDatabaseTableToTempFolder(String outputDirectory) throws Exception {
-        List<Content> pictures = ContentDB.getList();
-        for (Content ic : pictures) {
+    public static void copyContentFromDatabaseTableToTempFolder(String outputDirectory) throws Exception {
+        List<Content> contents = ContentDB.getList();
+        for (Content ic : contents) {
             String name = ic.getName();
             String filePathToSave = outputDirectory + name;
-            byte[] photoBytes = ic.getContent();
-            saveBytesToFile(filePathToSave, photoBytes);
+            byte[] contentBytes = ic.getContent();
+            saveBytesToFile(filePathToSave, contentBytes);
         }
     }
 
@@ -173,6 +175,8 @@ public class ContentDB extends AbstractBase {
         }
     }
 
+
+
     private static void saveBytesToFile(String filePath, byte[] fileBytes) throws Exception {
         try ( FileOutputStream outputStream = new FileOutputStream(filePath)) {
             outputStream.write(fileBytes);
@@ -183,12 +187,12 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myImage = criteria.from(Content.class);
-            criteria.select(myImage);
-            criteria.where(builder.equal(myImage.get(Content_.ID), id));
-            Content image = session.createQuery(criteria).getSingleResult();
+            Root myContent = criteria.from(Content.class);
+            criteria.select(myContent);
+            criteria.where(builder.equal(myContent.get(Content_.ID), id));
+            Content content = session.createQuery(criteria).getSingleResult();
             session.beginTransaction();
-            session.delete(image);
+            session.delete(content);
             session.getTransaction().commit();
             session.close();
         }
@@ -198,12 +202,12 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myImage = criteria.from(Content.class);
-            criteria.select(myImage);
-            criteria.where(builder.equal(myImage.get(Content_.NAME), name));
-            Content image = session.createQuery(criteria).getSingleResult();
+            Root myContent = criteria.from(Content.class);
+            criteria.select(myContent);
+            criteria.where(builder.equal(myContent.get(Content_.NAME), name));
+            Content content = session.createQuery(criteria).getSingleResult();
             session.beginTransaction();
-            session.delete(image);
+            session.delete(content);
             session.getTransaction().commit();
         }
     }
@@ -212,17 +216,17 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myImage = criteria.from(Content.class);
-            criteria.select(myImage);
+            Root myContent = criteria.from(Content.class);
+            criteria.select(myContent);
             criteria.where(
                     builder.and(
-                            builder.equal(myImage.get(Content_.NAME), name),
-                            builder.equal(myImage.get(Content_.LANGUAGE), language)
+                            builder.equal(myContent.get(Content_.NAME), name),
+                            builder.equal(myContent.get(Content_.LANGUAGE), language)
                     )
             );
-            Content image = session.createQuery(criteria).getSingleResult();
+            Content content = session.createQuery(criteria).getSingleResult();
             session.beginTransaction();
-            session.delete(image);
+            session.delete(content);
             session.getTransaction().commit();
         }
     }
@@ -232,11 +236,11 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root picture = criteria.from(Content.class);
-            criteria.select(picture);
-            criteria.where(builder.equal(picture.get(Content_.NAME), name));
-            List<Content> pictures = (List<Content>) session.createQuery(criteria).list();
-            return !pictures.isEmpty();
+            Root myContent = criteria.from(Content.class);
+            criteria.select(myContent);
+            criteria.where(builder.equal(myContent.get(Content_.NAME), name));
+            List<Content> contents = (List<Content>) session.createQuery(criteria).list();
+            return !contents.isEmpty();
         }
     }
 
@@ -245,16 +249,16 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root<Content> picture = criteria.from(Content.class);
-            criteria.select(picture);
+            Root<Content> content = criteria.from(Content.class);
+            criteria.select(content);
             criteria.where(
                     builder.and(
-                            builder.equal(picture.get(Content_.NAME), name),
-                            builder.equal(picture.get(Content_.LANGUAGE), language)
+                            builder.equal(content.get(Content_.NAME), name),
+                            builder.equal(content.get(Content_.LANGUAGE), language)
                     )
             );
-            List<Content> pictures = session.createQuery(criteria).getResultList();
-            return !pictures.isEmpty();
+            List<Content> contents = session.createQuery(criteria).getResultList();
+            return !contents.isEmpty();
         }
     }
 
@@ -263,11 +267,11 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root picture = criteria.from(Content.class);
-            criteria.select(picture);
-            criteria.where(builder.equal(picture.get(Content_.ID), id));
-            List<Content> pictures = (List<Content>) session.createQuery(criteria).list();
-            return !pictures.isEmpty();
+            Root content = criteria.from(Content.class);
+            criteria.select(content);
+            criteria.where(builder.equal(content.get(Content_.ID), id));
+            List<Content> contents = (List<Content>) session.createQuery(criteria).list();
+            return !contents.isEmpty();
         }
     }
 
