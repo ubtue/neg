@@ -15,3 +15,5 @@ UPDATE datenbank_mapping SET de_combinedAnzeigenamen = 'Lemma;;Link',gb_combined
 UPDATE datenbank_mapping SET de_combinedAnzeigenamen = 'Philologisches-Lemma;;Link',gb_combinedAnzeigenamen = 'Philological-Lemma;;Link',fr_combinedAnzeigenamen = 'Lemme-Philologique;;Link',la_combinedAnzeigenamen = 'Lemma-Philologicum;;Link' WHERE formular = 'einzelbeleg' AND Datenfeld = 'Lemma';
 
 UPDATE `datenbank_mapping` SET `de_Beschriftung` = 'Philologisches-Lemma',`gb_Beschriftung` = 'Philological lemma',`fr_Beschriftung` = 'Lemme philologique',`la_Beschriftung` = 'Lemma philologicum'  WHERE Datenfeld = 'PLemma' AND formular = 'namenkommentar';
+
+UPDATE `datenbank_mapping` SET `de_Beschriftung` = 'Philologisches-Lemma',`gb_Beschriftung` = 'Philological lemma',`fr_Beschriftung` = 'Lemme philologique',`la_Beschriftung` = 'Lemma philologicum' WHERE Datenfeld = 'LemmaRO' AND formular = 'einzelbeleg';
