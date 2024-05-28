@@ -24,7 +24,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void updateHtmlFile(Content content, String newHtmlContent) throws Exception {
-        String htmlTemplate = "<!DOCTYPE html><html><head><title>Updated HTML</title></head><body>" + newHtmlContent + "</body></html>";
+        String htmlTemplate = newHtmlContent;
         byte[] contentBytes = htmlTemplate.getBytes("UTF-8");
         content.setContent(contentBytes);
         saveOrUpdate(content);
