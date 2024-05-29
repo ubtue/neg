@@ -204,11 +204,7 @@ public class ContentServlet extends AbstractBackendServlet {
                     Content content = null;
                     String selectedLanguage = getCookieLanguage(request, response);
 
-                    if (contentType.equals("text/html")) {
-                        content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
-                    } else {
-                        content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
-                    }
+                    content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
 
                     if (fileName.equals(content.getName())) //The file name to be uploaded should match the one in the database
                     {

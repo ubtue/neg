@@ -31,7 +31,7 @@
 <header>
     <script type="text/javascript" src="layout/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
-                var language = '<%= myLanguage%>';
+                let language = '<%= myLanguage%>';
                 tinymce.init({
                     selector: '#mytextarea',
                     themes: 'modern',
