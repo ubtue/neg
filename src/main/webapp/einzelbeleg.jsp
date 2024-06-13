@@ -180,12 +180,12 @@
                             </tr>
                             <tr>
                                 <td width="200" valign="top">
-                                    <% Language.printDatafield(out, session, formular, "PreKontext");%>
+                                    <% Language.printDatafield(out, session, formular, "Kontext_vor");%>
                                 </td>
                                 <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="ID" value="<%=id%>" />
                                         <jsp:param name="Formular" value="einzelbeleg" />
-                                        <jsp:param name="Datenfeld" value="PreKontext" />
+                                        <jsp:param name="Datenfeld" value="Kontext_vor" />
                                         <jsp:param name="cols" value="40" />
                                         <jsp:param name="rows" value="5" />
                                     </jsp:include></td>
@@ -204,12 +204,12 @@
                             </tr>
                             <tr>
                                 <td width="200" valign="top">
-                                    <% Language.printDatafield(out, session, formular, "PostKontext");%>
+                                    <% Language.printDatafield(out, session, formular, "Kontext_nach");%>
                                 </td>
                                 <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="ID" value="<%=id%>" />
                                         <jsp:param name="Formular" value="einzelbeleg" />
-                                        <jsp:param name="Datenfeld" value="PostKontext" />
+                                        <jsp:param name="Datenfeld" value="Kontext_nach" />
                                         <jsp:param name="cols" value="40" />
                                         <jsp:param name="rows" value="5" />
                                     </jsp:include></td>
