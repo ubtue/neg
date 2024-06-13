@@ -27,10 +27,10 @@
 <form method="post" >
 <%
 if(request.getParameter("title").equals("mgh_lemma")){
-	  out.println("<div style='display: inline-block;padding:0px;margin-right: 40px;  border: 1px solid #999;background: #cccccc;'><div style='border: 1px solid #666;box-shadow: 2px 2px #999;display: inline-block;margin-right:5px;padding:7px;z-index:1;background: #fff;font-weight:bold;'>Lemma</div><div style='box-shadow: -1px -1px #ccc inset;z-index:50;display: inline-block;margin:0px;padding:5px;background: #ccc;'><a href='namenkommentar?fromLemma=MGH-Lemma' style='color:#666;text-decoration:none;font-weight:normal;'>Philologisches-Lemma</a></div></div>");
+	  out.println("<div style='display: inline-block;padding:0px;margin-right: 40px;  border: 1px solid #999;background: #cccccc;'><div style='border: 1px solid #666;box-shadow: 2px 2px #999;display: inline-block;margin-right:5px;padding:7px;z-index:1;background: #fff;font-weight:bold;'>Lemma</div><div style='box-shadow: -1px -1px #ccc inset;z-index:50;display: inline-block;margin:0px;padding:5px;background: #ccc;'><a href='namenkommentar?fromLemma=MGH-Lemma' style='color:#666;text-decoration:none;font-weight:normal;'>Philologisches Lemma</a></div></div>");
 }
 if(request.getParameter("title").equals("namenkommentar")){
-	  out.println("<div style='display: inline-block;padding:0px;margin-right: 40px;  border: 1px solid #999;background: #cccccc;'><div style='box-shadow: -1px -1px #ccc inset;z-index:50;display: inline-block;margin:0px;padding:5px;background: #ccc;'><a href='mghlemma?fromLemma=Namenlemma' style='color:#666;text-decoration:none;font-weight:normal;'>Lemma</a></div><div style='border: 1px solid #666;box-shadow: 2px 2px #999;display: inline-block;margin-left:5px;padding:7px;z-index:1;background: #fff;font-weight:bold;'>Philologisches-Lemma</div></div>");
+	  out.println("<div style='display: inline-block;padding:0px;margin-right: 40px;  border: 1px solid #999;background: #cccccc;'><div style='box-shadow: -1px -1px #ccc inset;z-index:50;display: inline-block;margin:0px;padding:5px;background: #ccc;'><a href='mghlemma?fromLemma=Namenlemma' style='color:#666;text-decoration:none;font-weight:normal;'>Lemma</a></div><div style='border: 1px solid #666;box-shadow: 2px 2px #999;display: inline-block;margin-left:5px;padding:7px;z-index:1;background: #fff;font-weight:bold;'>Philologisches Lemma</div></div>");
 }
 %>
 <div id="jump-1">
