@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>8.3.0</version>
+            <version>8.4.0</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -101,7 +101,7 @@
         <dependency>
             <groupId>com.mchange</groupId>
             <artifactId>c3p0</artifactId>
-            <version>0.10.0</version>
+            <version>0.10.1</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
