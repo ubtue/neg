@@ -147,30 +147,6 @@
 								<jsp:param name="Datenfeld" value="MGHLemma" />
 							</jsp:include></td>
 					</tr>
-					<tr>
-						<td width="200" valign="top">
-                                                    <% Language.printDatafield(out,session, formular,"Kontext");%>
-                                                </td>
-						<td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
-								<jsp:param name="ID" value="<%=id%>" />
-								<jsp:param name="Formular" value="einzelbeleg" />
-								<jsp:param name="Datenfeld" value="Kontext" />
-								<jsp:param name="cols" value="40" />
-								<jsp:param name="rows" value="5" />
-							</jsp:include></td>
-					</tr>
-                                        <tr>
-                                            <td width="200" valign="top">
-                                                <% Language.printDatafield(out, session, formular, "KontextSelektion");%>
-                                            </td>
-                                            <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
-                                                    <jsp:param name="ID" value="<%=id%>" />
-                                                    <jsp:param name="Formular" value="einzelbeleg" />
-                                                    <jsp:param name="Datenfeld" value="KontextSelektion" />
-                                                </jsp:include>
-                                            </td>
-					</tr>
-
                                         <tr>
                                             <td width="200" valign="top">
                                                 <% Language.printDatafield(out, session, formular, "KritikSelektion");%>
@@ -195,6 +171,61 @@
                                         </tr>
 				</tbody>
 			</table>
+                        <br>
+                        <table class="date">
+                            <tr>
+                                <th class="date" colspan="2">
+                                    <% Language.printTextfield(out, session, formular, "Kontext"); %>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td width="200" valign="top">
+                                    <% Language.printDatafield(out, session, formular, "Kontext_vor");%>
+                                </td>
+                                <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="Formular" value="einzelbeleg" />
+                                        <jsp:param name="Datenfeld" value="Kontext_vor" />
+                                        <jsp:param name="cols" value="40" />
+                                        <jsp:param name="rows" value="5" />
+                                    </jsp:include></td>
+                            </tr>
+                            <tr>
+                                <td width="200" valign="top">
+                                    <% Language.printDatafield(out, session, formular, "Kontext");%>
+                                </td>
+                                <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="Formular" value="einzelbeleg" />
+                                        <jsp:param name="Datenfeld" value="Kontext" />
+                                        <jsp:param name="cols" value="40" />
+                                        <jsp:param name="rows" value="5" />
+                                    </jsp:include></td>
+                            </tr>
+                            <tr>
+                                <td width="200" valign="top">
+                                    <% Language.printDatafield(out, session, formular, "Kontext_nach");%>
+                                </td>
+                                <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="Formular" value="einzelbeleg" />
+                                        <jsp:param name="Datenfeld" value="Kontext_nach" />
+                                        <jsp:param name="cols" value="40" />
+                                        <jsp:param name="rows" value="5" />
+                                    </jsp:include></td>
+                            </tr>
+                            <tr>
+                                <td width="200" valign="top">
+                                    <% Language.printDatafield(out, session, formular, "KontextSelektion");%>
+                                </td>
+                                <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="Formular" value="einzelbeleg" />
+                                        <jsp:param name="Datenfeld" value="KontextSelektion" />
+                                    </jsp:include>
+                                </td>
+                            </tr>
+                        </table>
                         <br>
                         <!-- Raster Group (same style as date group)-->
                         <table class="date">
