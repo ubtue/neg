@@ -68,7 +68,7 @@
     <br>
     <form method="get" id="contextForm" onchange="this.submit();">
         <select name="context">
-            <option value="">Context ausw&auml;hlen</option>
+            <option value=""><% Language.printTextfield(out, session, "fileManagement", "ContextWahl"); %></option>
             <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
                     out.print("selected");
                 } %>>Namenkommentar</option>

@@ -24,5 +24,30 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'ErrorDateiWahl', 'Sie haben keine Datei ausgewählt', 'You have not selected a file', 'Vous n\'avez pas sélectionné de fichier', 'Tabellam non selegeris');
 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'ContextWahl', 'Context auswählen', 'Select context', 'Sélectionnez le contexte', 'Contextum selige');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'Datei', 'Datei', 'File', 'Le Ficher', 'Tabella');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'BeenDeleted', 'wurde gelöscht', 'has been deleted', 'a été supprimé', 'deleta est');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'FileNotDeleted', 'Datei kann nicht gelöscht werden', 'File cannot be deleted', 'Le fichier ne peut pas être supprimé', 'Tabella deleri non potest');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'FileNotReplaced', 'kann nicht ersetzt werden', 'cannot be replaced', 'ne peut pas être remplacé', 'non potest substitui');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'FileCreated', 'wurde erstellt', 'has been created', 'a été créé', 'creata est');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet ', 'NoFile', 'Sie haben keine Datei ausgewählt !', 'You have not selected a file !', 'Vous n\'avez pas sélectionné de fichier !', 'Non tabellam elegisti !');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'FileUpdate', 'wurde aktualisiert', 'has been updated', 'a été mis à jour', 'renovata est');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'FilesDontMatch', 'Dateinamen stimmen nicht überein', 'File names do not match', 'Les noms de fichier ne correspondent pas', 'Nomina tabellarum non congruunt');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'Und', 'und', 'and', 'et', 'et');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'FileNotAllowed', 'Dateityp nicht erlaubt. Bitte wenden Sie sich an den Administrator.', 'file type not allowed. Please contact the administrator.', 'Type de fichier non autorisé. Veuillez contacter l\'administrateur.', 'Genus tabellae non licet. Quaeso contactu administrator.');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'FileExist', 'existiert bereits im Context:', 'already exists in the context:', 'existe déjà dans le contexte:', 'iam exstat in contextu:');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'FileSuccess', 'erfolgreich hochgeladen !', 'uploaded successfully !', 'téléchargé avec succès !', 'feliciter sublata est !');
 
 
