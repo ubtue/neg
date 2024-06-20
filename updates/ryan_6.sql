@@ -77,3 +77,7 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Ersetzen', 'Ersetzen', 'Replace', 'Remplacer', 'Reponere');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'ChooseFile', 'Datei auswählen', 'Choose file', 'Choisir un fichier', 'Elige fasciculum');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'reallyDelete', 'wirklich löschen?', 'really delete?', 'vraiment supprimer?', 'vere delere?');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'reallyReplace', 'wirklich ersetzen?', 'really replace?', 'vraiment remplacer?', 'vere reponere?');

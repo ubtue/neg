@@ -383,8 +383,11 @@
             // Abrufen des Namens des Inhalts aus dem versteckten HTML-Element
             let contentName = document.getElementById('contentName_' + id).value;
 
+            let messageStart = '<%= Language.getTextfield(session, "contentServlet", "Datei") %>' + " ";
+            let messageEnd = '<%= Language.getTextfield(session, "fileManagement", "reallyDelete") %>';
+
             // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
-            return confirm('Datei ' + contentName + ' (' + selectedLanguage + ') wirklich löschen?');
+            return confirm(messageStart + contentName + ' (' + selectedLanguage + ') ' + messageEnd);
         }
 
         function confirmReplace(id) {
@@ -394,8 +397,11 @@
             // Abrufen des Namens des Inhalts aus dem versteckten HTML-Element
             let contentName = document.getElementById('contentNameReplace_' + id).value;
 
+            let messageStart = '<%= Language.getTextfield(session, "contentServlet", "Datei") %>' + " ";
+            let messageEnd = '<%= Language.getTextfield(session, "fileManagement", "reallyReplace") %>';
+
             // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
-            return confirm('Datei ' + contentName + ' (' + selectedLanguage + ') wirklich ersetzen?');
+            return confirm(messageStart + contentName + ' (' + selectedLanguage + ') ' + messageEnd);
         }
 
         function setActionUrl(event, form, context) {
