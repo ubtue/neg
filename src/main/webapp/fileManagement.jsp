@@ -186,7 +186,12 @@
                 <a id="showTinyLink_<%=id%>" style="display: none;" href="edit?loadFile=<%=name%>" aria-label="<%= Language.getTextfield(session, "fileManagement", "HtmlBearbeiten")%>"><%= Language.getTextfield(session, "fileManagement", "HtmlBearbeiten")%></a>
                 <hr>
                 <form id="chooseFileForm_<%=id%>" style="display: none;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
-                    <input type="file" name="file" value="Datei auswahl">
+                    <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label-replace">
+                        <label id="file-upload-label-replace" for="file-upload-replace" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFile")%></label>
+
+                        <input type="file" id="file-upload-replace" name="file" onchange="updateFileNameReplace()" aria-describedby="file-name-replace">
+                        <span id="file-name-replace" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
+                    </div>
                     <input class="full-width-button" type="submit" aria-label="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>" value="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>">
                     <input type="hidden" id="contentNameReplace_<%=id%>" name="contentNameReplace" value="<%= content.getName()%>">
                 </form>
@@ -406,6 +411,16 @@
                     fileNames.push(input.files[i].name);
                 }
                 fileNameSpan.textContent = fileNames.join(', ');
+            } else {
+                fileNameSpan.textContent = '<%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%>';
+            }
+        }
+
+        function updateFileNameReplace() {
+            var input = document.getElementById('file-upload-replace');    //file-upload_oneFile
+            var fileNameSpan = document.getElementById('file-name-replace');
+            if (input.files.length > 0) {
+                fileNameSpan.textContent = input.files[0].name;
             } else {
                 fileNameSpan.textContent = '<%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%>';
             }
