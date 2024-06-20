@@ -50,7 +50,7 @@ public class ContentServlet extends AbstractBackendServlet {
                 if (content != null) {
                     ContentDB.updateHtmlFile(content, newHtmlContent);
                     // Redirect to the tinyMce.jsp page after saving
-                    response.sendRedirect("edit?loadFile=" + fileName + "&language=" + language);
+                    response.sendRedirect("edit?loadFile=" + fileName);
                     return;  // Important to return after redirect to stop further execution
                 }
             } catch (Exception e) {
