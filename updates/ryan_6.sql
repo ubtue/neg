@@ -50,4 +50,30 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('contentServlet', 'FileSuccess', 'erfolgreich hochgeladen !', 'uploaded successfully !', 'téléchargé avec succès !', 'feliciter sublata est !');
 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'NoFileChosen', 'keine Datei ausgewählt', 'No file chosen', 'Aucun fichier sélectionné', 'Nullus fasciculus electus');
 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'ChooseFiles', 'Dateien auswählen', 'Choose files', 'Choisir des fichiers', 'Fasciculos eligere');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Upload', 'Hochladen', 'Upload', 'Télécharger', 'Uploadare');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_fr_2', 'Französisch', 'French', 'Français', 'Gallica');
+
+UPDATE `neg`.`datenbank_texte` SET `la` = 'Gallica (agros tantum)' WHERE (`ID` = '234');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_la_2', 'Latein', 'Latin', 'Latin', 'Latina');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Pfad', 'Pfad', 'Path', 'Chemin', 'Semita');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Vorschau', 'Vorschau', 'Preview', 'Aperçu', 'Praevideo');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Aktionen', 'Aktionen', 'Actions', 'Actions', 'Actiones');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'DateiErstellen', 'Datei erstellen', 'Create file', 'Créer un fichier', 'tabellam creare');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'HtmlBearbeiten', 'HTML Bearbeiten (TinyMCE)', 'Edit HTML (TinyMCE)', 'Modifier HTML (TinyMCE)', 'HTML Edere (TinyMCE)');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Delete', 'Löschen', 'Delete', 'Supprimer', 'Delere');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Ersetzen', 'Ersetzen', 'Replace', 'Remplacer', 'Reponere');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'ChooseFile', 'Datei auswählen', 'Choose file', 'Choisir un fichier', 'Elige fasciculum');
