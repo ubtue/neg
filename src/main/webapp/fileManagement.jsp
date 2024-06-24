@@ -122,7 +122,7 @@
             boolean showPage = (!context.isEmpty());
             if (showPage) {
                 List<Integer> ids = new ArrayList<>(); // IDs-Liste initialisieren
-    %>
+%>
     <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
         <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label">
             <label id="file-upload-label" for="file-upload" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFiles")%></label>
@@ -159,7 +159,7 @@
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                         id++;
                         ids.add(id); // ID zur Liste hinzufügen
-%>
+        %>
 
 
         <tr>
@@ -210,6 +210,8 @@
                 || content.getContent_Type().startsWith("application/msword") || content.getContent_Type().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
             String name = content.getName();
             String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+            id++;
+            ids.add(id); // ID zur Liste hinzufügen
         %>
         <tr>
             <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
@@ -246,18 +248,26 @@
                 if (content.getContent_Type().startsWith("image")) {
                     String name = content.getName();
                     String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+                    id++;
+                    ids.add(id); // ID zur Liste hinzufügen
         %>
         <tr>
             <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
             <td><img src="<%=imageUrl%>" height="256px"></td>
             <td class="cell-padding">
-                <form action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich ersetzen?');" enctype="multipart/form-data">
-                    <input type="file" name="file" value="Datei auswahl">
-                    <input class="full-width-button" type="submit" value="Ersetzen">
+                <form id="chooseFileForm_<%=id%>" style="display: block;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
+                    <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label-replace_<%=id%>">
+                        <label id="file-upload-label-replace_<%=id%>" for="file-upload-replace_<%=id%>" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFile")%></label>
+                        <input type="file" id="file-upload-replace_<%=id%>" name="file" onchange="updateFileNameReplace('<%=id%>')" aria-describedby="file-name-replace_<%=id%>">
+                        <span id="file-name-replace_<%=id%>" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
+                    </div>
+                    <input class="full-width-button" type="submit" aria-label="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>" value="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>">
+                    <input type="hidden" id="contentNameReplace_<%=id%>" name="contentNameReplace" value="<%= content.getName()%>">
                 </form>
+
                 <hr>
-                <form action="file" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich l&ouml;schen?');">
-                    <input class="full-width-button" type="submit" name="deleteFile" value="l&ouml;schen">
+                <form action="file" method="post" onsubmit="return confirm('<%= Language.getTextfield(session, "contentServlet", "Datei")%> <%=content.getName()%> <%= Language.getTextfield(session, "fileManagement", "reallyDelete")%>');">
+                    <input class="full-width-button" type="submit" name="deleteFile" aria-label="<%= Language.getTextfield(session, "fileManagement", "Delete")%>" value="<%= Language.getTextfield(session, "fileManagement", "Delete")%>">
                     <input type="hidden" name="fileAccess" value="fileDelete">
                     <input type="hidden" name="id" value="<%=content.getID()%>">
                     <input type="hidden" name="context" value="<%=context%>">
