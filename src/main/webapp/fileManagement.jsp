@@ -188,7 +188,6 @@
                 <form id="chooseFileForm_<%=id%>" style="display: none;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
                     <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label-replace">
                         <label id="file-upload-label-replace" for="file-upload-replace" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFile")%></label>
-
                         <input type="file" id="file-upload-replace" name="file" onchange="updateFileNameReplace()" aria-describedby="file-name-replace">
                         <span id="file-name-replace" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
                     </div>
@@ -216,9 +215,14 @@
             <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
             <td></td>
             <td class="cell-padding">
-                <form action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich ersetzen?');" enctype="multipart/form-data">
-                    <input type="file" name="file" value="Datei auswahl">
-                    <input class="full-width-button" type="submit" value="Ersetzen">
+                <form id="chooseFileForm_<%=id%>" style="display: block;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
+                    <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label-replace_<%=id%>">
+                        <label id="file-upload-label-replace_<%=id%>" for="file-upload-replace_<%=id%>" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFile")%></label>
+                        <input type="file" id="file-upload-replace_<%=id%>" name="file" onchange="updateFileNameReplace('<%=id%>')" aria-describedby="file-name-replace_<%=id%>">
+                        <span id="file-name-replace_<%=id%>" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
+                    </div>
+                    <input class="full-width-button" type="submit" aria-label="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>" value="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>">
+                    <input type="hidden" id="contentNameReplace_<%=id%>" name="contentNameReplace" value="<%= content.getName()%>">
                 </form>
                 <hr>
                 <form action="file" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich l&ouml;schen?');">
@@ -383,8 +387,8 @@
             // Abrufen des Namens des Inhalts aus dem versteckten HTML-Element
             let contentName = document.getElementById('contentName_' + id).value;
 
-            let messageStart = '<%= Language.getTextfield(session, "contentServlet", "Datei") %>' + " ";
-            let messageEnd = '<%= Language.getTextfield(session, "fileManagement", "reallyDelete") %>';
+            let messageStart = '<%= Language.getTextfield(session, "contentServlet", "Datei")%>' + " ";
+            let messageEnd = '<%= Language.getTextfield(session, "fileManagement", "reallyDelete")%>';
 
             // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
             return confirm(messageStart + contentName + ' (' + selectedLanguage + ') ' + messageEnd);
@@ -397,8 +401,8 @@
             // Abrufen des Namens des Inhalts aus dem versteckten HTML-Element
             let contentName = document.getElementById('contentNameReplace_' + id).value;
 
-            let messageStart = '<%= Language.getTextfield(session, "contentServlet", "Datei") %>' + " ";
-            let messageEnd = '<%= Language.getTextfield(session, "fileManagement", "reallyReplace") %>';
+            let messageStart = '<%= Language.getTextfield(session, "contentServlet", "Datei")%>' + " ";
+            let messageEnd = '<%= Language.getTextfield(session, "fileManagement", "reallyReplace")%>';
 
             // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
             return confirm(messageStart + contentName + ' (' + selectedLanguage + ') ' + messageEnd);
@@ -422,13 +426,26 @@
             }
         }
 
-        function updateFileNameReplace() {
-            var input = document.getElementById('file-upload-replace');    //file-upload_oneFile
-            var fileNameSpan = document.getElementById('file-name-replace');
-            if (input.files.length > 0) {
-                fileNameSpan.textContent = input.files[0].name;
+
+        function updateFileNameReplace(suffix) {
+            var input, fileNameSpan;
+
+            if (suffix) {
+                input = document.getElementById('file-upload-replace_' + suffix);
+                fileNameSpan = document.getElementById('file-name-replace_' + suffix);
             } else {
-                fileNameSpan.textContent = '<%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%>';
+                input = document.getElementById('file-upload-replace');
+                fileNameSpan = document.getElementById('file-name-replace');
+            }
+
+            if (input && fileNameSpan) {
+                if (input.files.length > 0) {
+                    fileNameSpan.textContent = input.files[0].name;
+                } else {
+                    fileNameSpan.textContent = '<%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%>';
+                }
+            } else {
+                console.error('Input element or fileNameSpan element not found.');
             }
         }
     </script>
