@@ -122,7 +122,7 @@
             boolean showPage = (!context.isEmpty());
             if (showPage) {
                 List<Integer> ids = new ArrayList<>(); // IDs-Liste initialisieren
-%>
+    %>
     <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
         <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label">
             <label id="file-upload-label" for="file-upload" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFiles")%></label>
@@ -159,9 +159,7 @@
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                         id++;
                         ids.add(id); // ID zur Liste hinzufügen
-        %>
-
-
+%>
         <tr>
             <td>
                 <a id="fileLink_<%=id%>" style="display: none;" href="<%=fileUrl%>" target="_blank"><%=name%></a>
@@ -182,14 +180,13 @@
                     <button type="submit" id="createFileButton_<%=id%>" aria-label="<%= Language.getTextfield(session, "fileManagement", "DateiErstellen")%>"><%= Language.getTextfield(session, "fileManagement", "DateiErstellen")%></button>
                 </form>
 
-
                 <a id="showTinyLink_<%=id%>" style="display: none;" href="edit?loadFile=<%=name%>" aria-label="<%= Language.getTextfield(session, "fileManagement", "HtmlBearbeiten")%>"><%= Language.getTextfield(session, "fileManagement", "HtmlBearbeiten")%></a>
                 <hr>
-                <form id="chooseFileForm_<%=id%>" style="display: none;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
-                    <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label-replace">
-                        <label id="file-upload-label-replace" for="file-upload-replace" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFile")%></label>
-                        <input type="file" id="file-upload-replace" name="file" onchange="updateFileNameReplace()" aria-describedby="file-name-replace">
-                        <span id="file-name-replace" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
+                <form id="chooseFileForm_<%=id%>" style="display: block;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
+                    <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label-replace_<%=id%>">
+                        <label id="file-upload-label-replace_<%=id%>" for="file-upload-replace_<%=id%>" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFile")%></label>
+                        <input type="file" id="file-upload-replace_<%=id%>" name="file" onchange="updateFileNameReplace('<%=id%>')" aria-describedby="file-name-replace_<%=id%>">
+                        <span id="file-name-replace_<%=id%>" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
                     </div>
                     <input class="full-width-button" type="submit" aria-label="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>" value="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>">
                     <input type="hidden" id="contentNameReplace_<%=id%>" name="contentNameReplace" value="<%= content.getName()%>">
@@ -212,7 +209,7 @@
             String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
             id++;
             ids.add(id); // ID zur Liste hinzufügen
-        %>
+%>
         <tr>
             <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
             <td></td>
@@ -250,7 +247,7 @@
                     String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                     id++;
                     ids.add(id); // ID zur Liste hinzufügen
-        %>
+%>
         <tr>
             <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
             <td><img src="<%=imageUrl%>" height="256px"></td>
