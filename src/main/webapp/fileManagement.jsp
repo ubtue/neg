@@ -208,7 +208,6 @@
             String name = content.getName();
             String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
             id++;
-            ids.add(id); // ID zur Liste hinzufügen
 %>
         <tr>
             <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
@@ -246,7 +245,6 @@
                     String name = content.getName();
                     String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                     id++;
-                    ids.add(id); // ID zur Liste hinzufügen
 %>
         <tr>
             <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
