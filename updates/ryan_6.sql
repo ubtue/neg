@@ -81,3 +81,10 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'reallyDelete', 'wirklich löschen?', 'really delete?', 'vraiment supprimer?', 'vere delere?');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'reallyReplace', 'wirklich ersetzen?', 'really replace?', 'vraiment remplacer?', 'vere reponere?');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Namenkommentar', 'NAMENKOMMENTAR', 'NAME COMMENT', 'COMMENTAIRE DE NOM', 'COMMENTARIUS NOMINIS');
+		
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Quellenkommentar', 'QUELLENKOMMENTAR', 'SOURCE COMMENT', 'COMMENTAIRE SOURCE', 'COMMENTARIUS FONTIUM');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Überlieferungskommentar', 'ÜBERLIEFERUNGSKOMMENTAR', 'TRANSMISSION COMMENTARY', 'COMMENTAIRE DE TRANSMISSION', 'COMMENTARIUS TRADITIONIS');
+

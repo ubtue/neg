@@ -93,28 +93,31 @@
             contextEnum = Content.Context.UEBERLIEFERUNGSKOMMENTAR;
         }
     %>
-
     <br>
     <form method="get" id="contextForm" onchange="this.submit();">
         <select name="context">
-            <option value=""><% Language.printTextfield(out, session, "fileManagement", "ContextWahl"); %></option>
-            <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
-                    out.print("selected");
-                } %>>Namenkommentar</option>
-            <option value="QUELLENKOMMENTAR" <% if (contextEnum == Content.Context.QUELLENKOMMENTAR) {
-                    out.print("selected");
-                } %>>Quellenkommentar</option>
-            <option value="UEBERLIEFERUNGSKOMMENTAR" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR) {
-                    out.print("selected");
-                } %>>Überlieferungskommentar</option>
+            <option value="" aria-label="<% Language.printTextfield(out, session, "fileManagement", "ContextWahl"); %>" >
+                <% Language.printTextfield(out, session, "fileManagement", "ContextWahl");%>
+            </option>
+            <option value="NAMENKOMMENTAR" aria-label="<%= Language.getTextfield(session, "fileManagement", "Namenkommentar")%>" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
+                    out.print("selected"); }%>>
+                <%= Language.getTextfield(session, "fileManagement", "Namenkommentar")%>
+            </option>
+            <option value="QUELLENKOMMENTAR" aria-label="<%= Language.getTextfield(session, "fileManagement", "Quellenkommentar")%>" <% if (contextEnum == Content.Context.QUELLENKOMMENTAR) {
+                    out.print("selected"); }%>>
+                <%= Language.getTextfield(session, "fileManagement", "Quellenkommentar")%>
+            </option>
+            <option value="UEBERLIEFERUNGSKOMMENTAR" aria-label="<%= Language.getTextfield(session, "fileManagement", "Überlieferungskommentar")%>" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR) {
+                    out.print("selected"); }%>>
+                <%= Language.getTextfield(session, "fileManagement", "Überlieferungskommentar")%>
+            </option>
             <option value="CMS" <% if (contextEnum == Content.Context.CMS) {
-                    out.print("selected");
-                } %>>Content Management System</option>
+                    out.print("selected"); } %>>
+                CONTENT MANAGEMENT SYSTEM
+            </option>
         </select>
     </form>
-
     <br>
-
     <%
         try {
             String fileToDelete = request.getParameter("filename");
@@ -122,7 +125,7 @@
             boolean showPage = (!context.isEmpty());
             if (showPage) {
                 List<Integer> ids = new ArrayList<>(); // IDs-Liste initialisieren
-    %>
+%>
     <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
         <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label">
             <label id="file-upload-label" for="file-upload" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFiles")%></label>
@@ -159,7 +162,7 @@
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                         id++;
                         ids.add(id); // ID zur Liste hinzufügen
-%>
+        %>
         <tr>
             <td>
                 <a id="fileLink_<%=id%>" style="display: none;" href="<%=fileUrl%>" target="_blank"><%=name%></a>
@@ -208,7 +211,7 @@
             String name = content.getName();
             String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
             id++;
-%>
+        %>
         <tr>
             <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
             <td></td>
@@ -245,7 +248,7 @@
                     String name = content.getName();
                     String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                     id++;
-%>
+        %>
         <tr>
             <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
             <td><img src="<%=imageUrl%>" height="256px"></td>
