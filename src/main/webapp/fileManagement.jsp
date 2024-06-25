@@ -223,8 +223,8 @@
                     <input type="hidden" id="contentNameReplace_<%=id%>" name="contentNameReplace" value="<%= content.getName()%>">
                 </form>
                 <hr>
-                <form action="file" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich l&ouml;schen?');">
-                    <input class="full-width-button" type="submit" name="deleteFile" value="l&ouml;schen">
+                <form action="file" method="post" onsubmit="return confirm('<%= Language.getTextfield(session, "contentServlet", "Datei")%> <%=content.getName()%> <%= Language.getTextfield(session, "fileManagement", "reallyDelete")%>');">
+                    <input class="full-width-button" type="submit" name="deleteFile" aria-label="<%= Language.getTextfield(session, "fileManagement", "Delete")%>" value="<%= Language.getTextfield(session, "fileManagement", "Delete")%>">
                     <input type="hidden" name="fileAccess" value="fileDelete">
                     <input type="hidden" name="id" value="<%=content.getID()%>">
                     <input type="hidden" name="context" value="<%=context%>">
