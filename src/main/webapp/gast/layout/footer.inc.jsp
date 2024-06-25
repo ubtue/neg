@@ -66,7 +66,7 @@
                 <nav class="ut-nav ut-nav--meta-bottom" aria-label="Metanavigation">
                     <ul class="ut-nav__list ">
                         <li class="ut-nav__item " data-level-count="1">
-                            <a class="ut-link ut-nav__link" href="/neg/gast/infos?sharedHtml=pisspressum"><% Language.printTextfield(out, session, "impressum", "Titel"); %></a>
+                            <a class="ut-link ut-nav__link" href="/neg/gast/infos?sharedHtml=impressum"><% Language.printTextfield(out, session, "impressum", "Titel"); %></a>
                         </li>
                     </ul>
                 </nav>
