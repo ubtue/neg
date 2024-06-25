@@ -86,5 +86,7 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 		
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Quellenkommentar', 'QUELLENKOMMENTAR', 'SOURCE COMMENT', 'COMMENTAIRE SOURCE', 'COMMENTARIUS FONTIUM');
 
-INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Überlieferungskommentar', 'ÜBERLIEFERUNGSKOMMENTAR', 'TRANSMISSION COMMENTARY', 'COMMENTAIRE DE TRANSMISSION', 'COMMENTARIUS TRADITIONIS');
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Überlieferungskommentar', 'ÜBERLIEFERUNGSKOMMENTAR', 'TRANSMISSION COMMENTARY', 'COMMENTAIRE DE TRANSMISSION', 'COMMENTARIUS TRADITIONIS'); 
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('impressum', 'Titel', 'Impressum', 'Imprint', 'Mentions légales', 'Imprimatur');
 
