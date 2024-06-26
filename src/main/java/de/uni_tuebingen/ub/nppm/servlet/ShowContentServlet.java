@@ -38,7 +38,11 @@ public class ShowContentServlet extends HttpServlet {
             }
 
             if (content != null) {
-                resp.setContentType(content.getContent_Type());
+                // Setzen der Zeichenkodierung
+                resp.setCharacterEncoding("UTF-8");
+
+                // Setzen des Content-Type Headers mit Zeichensatz
+                resp.setContentType(content.getContent_Type() + "; charset=UTF-8");
 
                 if (content.getContent_Type().startsWith("text/plain") || content.getContent_Type().startsWith("application/vnd.oasis.opendocument.text")
                         || content.getContent_Type().startsWith("application/msword")
