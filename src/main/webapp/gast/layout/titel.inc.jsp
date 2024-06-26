@@ -29,15 +29,15 @@
 <%
 if(request.getParameter("title").equals("mgh_lemma")){
 %>
-    <button type="button" class="ut-btn ut-btn--outline " style="background-color: white;"  aria-label="gehe zu mghlemma" disabled>MGH-Lemma</button>
-    <button type="button" class="ut-btn ut-btn--outline "  aria-label="gehe zu Namenlemma" onclick="window.location.href='namenkommentar?fromLemma=MGH-Lemma';">Namenlemma</button>
+    <button type="button" class="ut-btn ut-btn--outline " style="background-color: white;"  aria-label="gehe zu mghlemma" disabled><% Language.printTextfield(out, session, "mgh_lemma", "Titel"); %></button>
+    <button type="button" class="ut-btn ut-btn--outline "  aria-label="gehe zu Namenlemma" onclick="window.location.href='namenkommentar?fromLemma=MGH-Lemma';"><% Language.printTextfield(out, session, "namenkommentar", "PLemma");%></button>
 
 <%
 }
 if(request.getParameter("title").equals("namenkommentar")){
 %>
-    <button type="button" class="ut-btn ut-btn--outline "  aria-label="gehe zu Namenlemma" onclick="window.location.href='mghlemma?fromLemma=Namenlemma';">MGH-Lemma</button>
-    <button type="button" class="ut-btn ut-btn--outline " style="background-color: white;"  aria-label="gehe zu mghlemma" disabled>Namenlemma</button>
+    <button type="button" class="ut-btn ut-btn--outline "  aria-label="gehe zu Namenlemma" onclick="window.location.href='mghlemma?fromLemma=Namenlemma';"><% Language.printTextfield(out, session, "mgh_lemma", "Titel"); %></button>
+    <button type="button" class="ut-btn ut-btn--outline " style="background-color: white;"  aria-label="gehe zu mghlemma" disabled><% Language.printTextfield(out, session, "namenkommentar", "PLemma");%></button>
 <%
 }
 %>
