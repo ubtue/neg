@@ -2,6 +2,7 @@ package de.uni_tuebingen.ub.nppm.servlet.backend;
 
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.Language;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.JspWriter;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
@@ -34,97 +36,131 @@ public class ContentServlet extends AbstractBackendServlet {
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PrintWriter out = response.getWriter();
 
-        // show TinyMCE
-        if (request.getParameter("loadFile") != null) {
-            RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
-            rd.include(request, response);
-        } else if ("HtmlSaveToDatabase".equals(request.getParameter("htmlFileAccess"))) {
-            String fileName = request.getParameter("tinyFileName");
-            String language = request.getParameter("tinyLanguage");
-            String newHtmlContent = request.getParameter("htmlContent");
+        try {
+            // show TinyMCE
+            if (request.getParameter("loadFile") != null) {
+                RequestDispatcher rd = request.getRequestDispatcher("tinyMce.jsp");
+                rd.include(request, response);
+            } else if ("HtmlSaveToDatabase".equals(request.getParameter("htmlFileAccess"))) {
+                String fileName = request.getParameter("tinyFileName");
+                String language = request.getParameter("tinyLanguage");
+                String newHtmlContent = request.getParameter("htmlContent");
 
-            try {
-                Content content = ContentDB.getByNameAndLanguage(fileName, language);
-                if (content != null) {
-                    ContentDB.updateHtmlFile(content, newHtmlContent);
-                    // Redirect to the tinyMce.jsp page after saving
-                    response.sendRedirect("edit?loadFile=" + fileName + "&language=" + language);
-                    return;  // Important to return after redirect to stop further execution
+                try {
+                    Content content = ContentDB.getByNameAndLanguage(fileName, language);
+                    if (content != null) {
+                        ContentDB.updateHtmlFile(content, newHtmlContent);
+                        // Redirect to the tinyMce.jsp page after saving
+                        response.sendRedirect("edit?loadFile=" + fileName);
+                        return;  // Important to return after redirect to stop further execution
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (request.getParameter("loadFile") == null && !"HtmlSaveToDatabase".equals(request.getParameter("htmlFileAccess"))) {
-            //show fileManagement
-            out.println("<div id=\"titel\">");
-            out.println("  <table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
-            out.println("    <tr>");
-            out.println("      <td align=\"left\">");
-            out.println("        <h1>Inhalt bearbeiten");
-            out.println("        </h1>");
-            out.println("      </td>");
-            out.println("    </tr>");
-            out.println("  </table>");
-            out.println("</div>");
-            out.println("<div id=\"form\">");
-            out.println("<h2>Html Dateien & Bilder verwalten</h2>");
-            out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie eine Datei löschen, dann ist auch jede Verknüpfung im Programm gelöscht, auch wenn Sie </p>");
-            out.println("<p style=\"line-height: 0.2; color: red;\">die Datei mit gleichem Namen hochladen. </p>");
-            out.println("<p style=\"line-height: 0.2; color: red;\">Wenn sie aber Ersetzen wählen, dann bleiben die Verknüpfungen im Programm bestehen.</p>");
-            // Actions:
+            } else if (request.getParameter("loadFile") == null && !"HtmlSaveToDatabase".equals(request.getParameter("htmlFileAccess"))) {
+                //show fileManagement
 
-            String fileAccess = request.getParameter("fileAccess");
-            if (fileAccess != null) {
+                HttpSession session = request.getSession();
+                String myLanguage = Language.getLanguage(request);
 
-                //Action (Delete)
-                if (fileAccess.equals("fileDelete")) {
+                out.println("<div id=\"titel\">");
+                out.println("  <table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
+                out.println("    <tr>");
+                out.println("      <td align=\"left\">");
+                out.println("        <h1>");
+                Language.printTextfield(out, session, "inhaltBearbeiten", "Titel");
+                out.println("</h1>");
+                out.println("      </td>");
+                out.println("    </tr>");
+                out.println("  </table>");
+                out.println("</div>");
+                out.println("<div id=\"form\">");
+                out.println("<h2>");
+                Language.printTextfield(out, session, "contentServlet", "h2");
+                out.println("</h2>");
+                out.println("<p style=\"line-height: 0.2; color: red;\">");
+                Language.printTextfield(out, session, "contentServlet", "p1");
+                out.println("</p>");
+                out.println("<p style=\"line-height: 0.2; color: red;\">");
+                Language.printTextfield(out, session, "contentServlet", "p2");
+                out.println("</p>");
+                out.println("<p style=\"line-height: 0.2; color: red;\">");
+                Language.printTextfield(out, session, "contentServlet", "p3");
+                out.println("</p>");
+
+                // Actions:
+                String fileAccess = request.getParameter("fileAccess");
+                if (fileAccess != null) {
+                    String messageStart = "";
+                    String messageEnd = "";
+                    String selectedLanguage = getCookieLanguage(request, response);
+                    Content content = null;
                     if (request.getParameter("id") != null) {
-                        Content content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                        content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                    }
 
-                        if (content.getContext() != null && content.getContent_Type().equals("text/html")) {
+                    boolean isHtml = false;
+                    if (content != null && content.getContext() != null && content.getContent_Type().equals("text/html")) {
+                        isHtml = true;
+                    }
 
-                            String selectedLanguage = getCookieLanguage(request, response);
+                    //Action (Delete)
+                    if (fileAccess.equals("fileDelete")) {
+                        if (request.getParameter("id") != null) {
 
-                            String fileName = content.getName();
-                            deleteFileByNameAndLanguage(fileName, selectedLanguage);
-                            out.println("Datei " + content.getName() + " (" + selectedLanguage + ") wurde gelöscht");
+                            messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
+                            messageEnd = " " + Language.getTextfield(session, "contentServlet", "BeenDeleted");
+
+                            if (isHtml) {
+                                deleteFileByNameAndLanguage(content.getName(), selectedLanguage);
+                                out.println(messageStart + content.getName() + " (" + selectedLanguage + ") " + messageEnd);
+                            } else {
+                                deleteFile(request.getParameter("id"));
+                                out.println(messageStart + content.getName() + messageEnd);
+                            }
 
                         } else {
-                            deleteFile(request.getParameter("id"));
-                            out.println("Datei " + content.getName() + " wurde gelöscht");
+                            messageEnd = Language.getTextfield(session, "contentServlet", "FileNotDeleted");
+                            out.println("<span style=\" color: red;\" >Error: </span> " + messageEnd);
                         }
+                        // Action (upload OR replace/update)
+                    } else if (fileAccess.equals("fileUpload")) {
+                        uploadFile(request, response);
+                    } else if (fileAccess.equals("fileReplace")) {
 
-                    } else {
-                        out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht gelöscht werden");
-                    }
-                    // Action (upload OR replace/update)
-                } else if (fileAccess.equals("fileUpload")) {
-                    uploadFile(request, response);
-                } else if (fileAccess.equals("fileReplace")) {
+                        if (request.getParameter("id") != null) {  //hier != null
+                            replaceFile(request, response);
+                        } else {
+                            messageEnd = Language.getTextfield(session, "contentServlet", "FileNotReplaced");
+                            if (isHtml) {
+                                out.println("<span style=\" color: red;\" >Error: </span> " + content.getName() + " (" + selectedLanguage + ") " + messageEnd);
+                            } else {
+                                out.println("<span style=\" color: red;\" >Error: </span> " + content.getName() + " " + messageEnd);
+                            }
+                        }
+                    } else if (fileAccess.equals("HtmlFileCreate")) {
+                        String createFileName = request.getParameter("CreateHTMLFileName");
+                        String contextParam = request.getParameter("HtmlContext");
+                        Content.Context context = Content.Context.valueOf(contextParam);
 
-                    if (request.getParameter("id") != null) {
-                        replaceFile(request, response);
-                    } else {
-                        out.println("<span style=\" color: red;\" >Error: </span>Datei kann nicht ersetzt werden");
-                    }
-                } else if (fileAccess.equals("HtmlFileCreate")) {
-                    String selectedLanguage = getCookieLanguage(request, response);
-                    String fileName = request.getParameter("CreateHTMLFileName");
-                    String contextParam = request.getParameter("HtmlContext");
-                    Content.Context context = Content.Context.valueOf(contextParam);
+                        if (createFileName != null && context != null && selectedLanguage != null) {
+                            ContentDB.createHtmlFile(createFileName, context, selectedLanguage);
 
-                    if (fileName != null && context != null && selectedLanguage != null) {
-                        ContentDB.createHtmlFile(fileName, context, selectedLanguage);
-
-                        out.println("Datei " + fileName + " (" + selectedLanguage + ") wurde erstellt");
-
+                            messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
+                            messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileCreated");
+                            out.println(messageStart + createFileName + " (" + selectedLanguage + ") " + messageEnd);
+                        }
                     }
                 }
+                // show list (e.g. help, name comment or blank page)
+                RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
+                rd.include(request, response);
+
             }
-            // show list (e.g. help, name comment or blank page)
+        } catch (Exception e) {
+            // out.println("An error occurred mein Freund: " + e.getMessage());
             RequestDispatcher rd = request.getRequestDispatcher("fileManagement.jsp");
             rd.include(request, response);
-
         }
     }//end function
 
@@ -184,6 +220,10 @@ public class ContentServlet extends AbstractBackendServlet {
             // Parse the request
             FileItemIterator iter = upload.getItemIterator(request);
 
+            String messageStart = "";
+            String messageEnd = "";
+            HttpSession session = request.getSession();
+
             while (iter.hasNext()) {
 
                 FileItemStream item = iter.next();
@@ -193,7 +233,8 @@ public class ContentServlet extends AbstractBackendServlet {
                 if (!item.isFormField()) {
 
                     if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("")) {
-                        out.println("<span style=\" color: red;\" >Error: </span>Sie haben keine Datei ausgew&auml;hlt!");
+                        messageEnd = " " + Language.getTextfield(session, "contentServlet", "NoFile");
+                        out.println("<span style=\" color: red;\" >Error: </span>" + messageEnd);
                     } else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
                             || item.getContentType().startsWith("image") || item.getContentType().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
                             || item.getContentType().startsWith("application/msword")) {
@@ -205,7 +246,11 @@ public class ContentServlet extends AbstractBackendServlet {
                         Content content = null;
                         String selectedLanguage = getCookieLanguage(request, response);
 
-                        content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                        if (contentType.equals("text/html")) {
+                            content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
+                        } else {
+                            content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                        }
 
                         if (fileName.equals(content.getName())) //The file name to be uploaded should match the one in the database
                         {
@@ -220,15 +265,17 @@ public class ContentServlet extends AbstractBackendServlet {
                             content.setContent(bytes);
                             ContentDB.saveOrUpdate(content);
 
+                            messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
+                            messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileUpdate");
                             if (contentType.equals("text/html")) {
-
-                                out.println("Datei " + fileName + " (" + selectedLanguage + ")" + " wurde aktualisiert!");
+                                out.println(messageStart + fileName + " (" + selectedLanguage + ")" + messageEnd);
                             } else {
-                                out.println("Datei " + fileName + " wurde aktualisiert!");
+                                out.println(messageStart + fileName + messageEnd);
                             }
-
                         } else {
-                            out.println("<span style=\" color: red;\" >Error: </span>Datei Namen stimmen nicht überein:  " + content.getName() + " und " + fileName);
+                            messageStart = Language.getTextfield(session, "contentServlet", "FilesDontMatch") + " ";
+                            messageEnd = " " + Language.getTextfield(session, "contentServlet", "Und") + " ";
+                            out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + content.getName() + messageEnd + fileName);
                             out.println("<br>");
                         }
 
@@ -236,12 +283,13 @@ public class ContentServlet extends AbstractBackendServlet {
                         File myObj = new File(pathname);
                         myObj.delete();
                     } else {
-                        out.println("<span style=\" color: red;\" >Error: </span>Datei " + errorFileName + " Dateityp nicht erlaubt. Bitte wenden Sie sich an den Administrator");
+                        messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
+                        messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileNotAllowed");
+                        out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + errorFileName + ":" + messageEnd);
                         out.println("<br>");
                     }
                 }
             }
-
         } catch (Exception e) {
 
         }
@@ -260,6 +308,10 @@ public class ContentServlet extends AbstractBackendServlet {
         // Parse the request
         FileItemIterator iter = upload.getItemIterator(request);
 
+        String messageStart = "";
+        String messageEnd = "";
+        HttpSession session = request.getSession();
+
         while (iter.hasNext()) {
 
             FileItemStream item = iter.next();
@@ -269,7 +321,8 @@ public class ContentServlet extends AbstractBackendServlet {
             if (!item.isFormField()) {
 
                 if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("")) {
-                    out.println("<span style=\" color: red;\" >Error: </span>Sie haben keine Datei ausgew&auml;hlt!");
+                    messageEnd = " " + Language.getTextfield(session, "contentServlet", "NoFile");
+                    out.println("<span style=\" color: red;\" >Error: </span>" + messageEnd);
                 } else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
                         || item.getContentType().startsWith("image") || item.getContentType().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
                         || item.getContentType().startsWith("application/msword")) {
@@ -290,24 +343,25 @@ public class ContentServlet extends AbstractBackendServlet {
 
                         //search file - Context of existing file
                         String existingFileContext = "";
+                        messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
+                        messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileExist") + " ";
                         if (contentType.equals("text/html")) {
                             existingFileContext = ContentDB.getByNameAndLanguage(fileName, selectedLanguage).getContext().toString();
-                            out.println("<span style=\" color: red;\" >Error: </span>Datei " + fileName + " (" + selectedLanguage + ") existiert bereits im Context: " + existingFileContext);
+                            out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + fileName + " (" + selectedLanguage + ")" + messageEnd + existingFileContext);
                         } else {
                             existingFileContext = ContentDB.getByName(fileName).getContext().toString();
-                            out.println("<span style=\" color: red;\" >Error: </span>Datei " + fileName + " existiert bereits im Context: " + existingFileContext);
+                            out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + fileName + messageEnd + existingFileContext);
                         }
-
                         out.println("<br>");
-
                     } else {
-
+                        messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
+                        messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileSuccess");
                         if (contentType.equals("text/html")) {
                             ContentDB.saveFile(pathname, fileName, contentType, contextEnum, selectedLanguage);
-                            out.println("Datei " + fileName + "(" + selectedLanguage + ")" + " erfolgreich hochgeladen!");
+                            out.println(messageStart + fileName + "(" + selectedLanguage + ")" + messageEnd);
                         } else {
                             ContentDB.saveFile(pathname, fileName, contentType, contextEnum);
-                            out.println("Datei " + fileName + " erfolgreich hochgeladen!");
+                            out.println(messageStart + fileName + messageEnd);
                         }
                         out.println("<br>");
                     }
@@ -316,7 +370,9 @@ public class ContentServlet extends AbstractBackendServlet {
                     File myObj = new File(pathname);
                     myObj.delete();
                 } else {
-                    out.println("<span style=\" color: red;\" >Error: </span>Datei " + errorFileName + " Dateityp nicht erlaubt. Bitte wenden Sie sich an den Administrator");
+                    messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
+                    messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileNotAllowed");
+                    out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + errorFileName + ":" + messageEnd);
                     out.println("<br>");
                 }
             }
@@ -356,3 +412,4 @@ public class ContentServlet extends AbstractBackendServlet {
     }
 
 }//end class
+

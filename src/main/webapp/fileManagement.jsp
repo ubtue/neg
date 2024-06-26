@@ -43,6 +43,35 @@
             background-color: red;
             color: white;
         }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .file-input-label {
+            background-color: #f1f1f1;
+            padding: 2px 6px;
+            border: 1px solid #999;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 2px; /* Abgerundete Ecken */
+
+        }
+        .file-input-text {
+            margin-left: 10px;
+            font-style: normal;
+            color: #666;
+        }
     </style>
 </header>
 
@@ -55,7 +84,7 @@
         }
         Content.Context contextEnum = null;
         if (context.equals("CMS")) {
-             contextEnum = Content.Context.CMS;
+            contextEnum = Content.Context.CMS;
         } else if (context.equals("NAMENKOMMENTAR")) {
             contextEnum = Content.Context.NAMENKOMMENTAR;
         } else if (context.equals("QUELLENKOMMENTAR")) {
@@ -64,28 +93,31 @@
             contextEnum = Content.Context.UEBERLIEFERUNGSKOMMENTAR;
         }
     %>
-
     <br>
     <form method="get" id="contextForm" onchange="this.submit();">
         <select name="context">
-            <option value="">Context ausw&auml;hlen</option>
-            <option value="NAMENKOMMENTAR" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
-                    out.print("selected");
-                } %>>Namenkommentar</option>
-            <option value="QUELLENKOMMENTAR" <% if (contextEnum == Content.Context.QUELLENKOMMENTAR) {
-                    out.print("selected");
-                } %>>Quellenkommentar</option>
-            <option value="UEBERLIEFERUNGSKOMMENTAR" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR) {
-                    out.print("selected");
-                } %>>Überlieferungskommentar</option>
+            <option value="" aria-label="<% Language.printTextfield(out, session, "fileManagement", "ContextWahl"); %>" >
+                <% Language.printTextfield(out, session, "fileManagement", "ContextWahl");%>
+            </option>
+            <option value="NAMENKOMMENTAR" aria-label="<%= Language.getTextfield(session, "fileManagement", "Namenkommentar")%>" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
+                    out.print("selected"); }%>>
+                <%= Language.getTextfield(session, "fileManagement", "Namenkommentar")%>
+            </option>
+            <option value="QUELLENKOMMENTAR" aria-label="<%= Language.getTextfield(session, "fileManagement", "Quellenkommentar")%>" <% if (contextEnum == Content.Context.QUELLENKOMMENTAR) {
+                    out.print("selected"); }%>>
+                <%= Language.getTextfield(session, "fileManagement", "Quellenkommentar")%>
+            </option>
+            <option value="UEBERLIEFERUNGSKOMMENTAR" aria-label="<%= Language.getTextfield(session, "fileManagement", "Überlieferungskommentar")%>" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR) {
+                    out.print("selected"); }%>>
+                <%= Language.getTextfield(session, "fileManagement", "Überlieferungskommentar")%>
+            </option>
             <option value="CMS" <% if (contextEnum == Content.Context.CMS) {
-                    out.print("selected");
-                } %>>Content Management System</option>
+                    out.print("selected"); } %>>
+                CONTENT MANAGEMENT SYSTEM
+            </option>
         </select>
     </form>
-
     <br>
-
     <%
         try {
             String fileToDelete = request.getParameter("filename");
@@ -93,26 +125,31 @@
             boolean showPage = (!context.isEmpty());
             if (showPage) {
                 List<Integer> ids = new ArrayList<>(); // IDs-Liste initialisieren
-    %>
+%>
     <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file[]" value="Datei auswahl" multiple>
+        <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label">
+            <label id="file-upload-label" for="file-upload" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFiles")%></label>
+            <input type="file" id="file-upload" name="file[]" multiple onchange="updateFileName()" aria-describedby="file-name">
+            <span id="file-name" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
+        </div>
+
         <br><br>
-        <input type="submit" value="hochladen">
+        <input type="submit" value="<%= Language.getTextfield(session, "fileManagement", "Upload")%>">
     </form>
     <br>
 
     <div class="tab-container">
-        <button data-language="de" class="select-language" type="button" aria-label="Deutsch" onclick="setLanguage('de')">Deutsch</button>
-        <button data-language="gb" class="select-language" type="button" aria-label="Englisch" onclick="setLanguage('gb')">Englisch</button>
-        <button data-language="fr" class="select-language" type="button" aria-label="Französisch" onclick="setLanguage('fr')">Französisch</button>
-        <button data-language="la" class="select-language" type="button" aria-label="Latein" onclick="setLanguage('la')">Latein</button>
+        <button data-language="de" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%>" onclick="setLanguage('de')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%></button>
+        <button data-language="gb" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%>" onclick="setLanguage('gb')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%></button>
+        <button data-language="fr" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%>" onclick="setLanguage('fr')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%></button>
+        <button data-language="la" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%>" onclick="setLanguage('la')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%></button>
     </div>
 
     <table style="border-collapse:collapse;" border="1">
         <tr>
-            <th>Pfad</th>
-            <th>Vorschau</th>
-            <th>Aktionen</th>
+            <th><%= Language.getTextfield(session, "fileManagement", "Pfad")%></th>
+            <th><%= Language.getTextfield(session, "fileManagement", "Vorschau")%></th>
+            <th><%= Language.getTextfield(session, "fileManagement", "Aktionen")%></th>
         </tr>
 
         <%
@@ -125,9 +162,7 @@
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                         id++;
                         ids.add(id); // ID zur Liste hinzufügen
-%>
-
-
+        %>
         <tr>
             <td>
                 <a id="fileLink_<%=id%>" style="display: none;" href="<%=fileUrl%>" target="_blank"><%=name%></a>
@@ -141,24 +176,27 @@
                     <input type="submit" style="display:none;">
                 </form>
 
-                <form id="createFileForm_<%=id%>" action="file" method="post" onsubmit="setActionUrl(event, this, '<%= content.getContext() %>')">
+                <form id="createFileForm_<%=id%>" action="file" method="post" onsubmit="setActionUrl(event, this, '<%= content.getContext()%>')">
                     <input type="hidden" name="CreateHTMLFileName" value="<%=name%>">
                     <input type="hidden" name="fileAccess" value="HtmlFileCreate">
                     <input type="hidden" name="HtmlContext" value="<%= content.getContext()%>">
-                    <button type="submit" id="createFileButton_<%=id%>">Datei erstellen</button>
+                    <button type="submit" id="createFileButton_<%=id%>" aria-label="<%= Language.getTextfield(session, "fileManagement", "DateiErstellen")%>"><%= Language.getTextfield(session, "fileManagement", "DateiErstellen")%></button>
                 </form>
 
-
-                <a id="showTinyLink_<%=id%>" style="display: none;" href="edit?loadFile=<%=name%>">HTML Bearbeiten (TinyMCE)</a>
+                <a id="showTinyLink_<%=id%>" style="display: none;" href="edit?loadFile=<%=name%>" aria-label="<%= Language.getTextfield(session, "fileManagement", "HtmlBearbeiten")%>"><%= Language.getTextfield(session, "fileManagement", "HtmlBearbeiten")%></a>
                 <hr>
-                <form id="chooseFileForm_<%=id%>" style="display: none;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
-                    <input type="file" name="file" value="Datei auswahl">
-                    <input class="full-width-button" type="submit" value="Ersetzen">
+                <form id="chooseFileForm_<%=id%>" style="display: block;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
+                    <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label-replace_<%=id%>">
+                        <label id="file-upload-label-replace_<%=id%>" for="file-upload-replace_<%=id%>" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFile")%></label>
+                        <input type="file" id="file-upload-replace_<%=id%>" name="file" onchange="updateFileNameReplace('<%=id%>')" aria-describedby="file-name-replace_<%=id%>">
+                        <span id="file-name-replace_<%=id%>" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
+                    </div>
+                    <input class="full-width-button" type="submit" aria-label="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>" value="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>">
                     <input type="hidden" id="contentNameReplace_<%=id%>" name="contentNameReplace" value="<%= content.getName()%>">
                 </form>
                 <hr>
                 <form id="deleteFileForm_<%=id%>" style="display: none;"  action="file" method="post" onsubmit="return confirmDelete('<%=id%>');">
-                    <input class="full-width-button" type="submit" name="deleteFile" value="l&ouml;schen">
+                    <input class="full-width-button" type="submit" name="deleteFile" aria-label="<%= Language.getTextfield(session, "fileManagement", "Delete")%>" value="<%= Language.getTextfield(session, "fileManagement", "Delete")%>">
                     <input type="hidden" name="fileAccess" value="fileDelete">
                     <input type="hidden" name="id" value="<%=content.getID()%>">
                     <input type="hidden" name="context" value="<%=context%>">
@@ -172,18 +210,24 @@
                 || content.getContent_Type().startsWith("application/msword") || content.getContent_Type().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
             String name = content.getName();
             String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+            id++;
         %>
         <tr>
             <td><a href="<%=fileUrl%>" target="_blank"><%=name%></a></td>
             <td></td>
             <td class="cell-padding">
-                <form action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich ersetzen?');" enctype="multipart/form-data">
-                    <input type="file" name="file" value="Datei auswahl">
-                    <input class="full-width-button" type="submit" value="Ersetzen">
+                <form id="chooseFileForm_<%=id%>" style="display: block;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
+                    <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label-replace_<%=id%>">
+                        <label id="file-upload-label-replace_<%=id%>" for="file-upload-replace_<%=id%>" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFile")%></label>
+                        <input type="file" id="file-upload-replace_<%=id%>" name="file" onchange="updateFileNameReplace('<%=id%>')" aria-describedby="file-name-replace_<%=id%>">
+                        <span id="file-name-replace_<%=id%>" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
+                    </div>
+                    <input class="full-width-button" type="submit" aria-label="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>" value="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>">
+                    <input type="hidden" id="contentNameReplace_<%=id%>" name="contentNameReplace" value="<%= content.getName()%>">
                 </form>
                 <hr>
-                <form action="file" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich l&ouml;schen?');">
-                    <input class="full-width-button" type="submit" name="deleteFile" value="l&ouml;schen">
+                <form action="file" method="post" onsubmit="return confirm('<%= Language.getTextfield(session, "contentServlet", "Datei")%> <%=content.getName()%> <%= Language.getTextfield(session, "fileManagement", "reallyDelete")%>');">
+                    <input class="full-width-button" type="submit" name="deleteFile" aria-label="<%= Language.getTextfield(session, "fileManagement", "Delete")%>" value="<%= Language.getTextfield(session, "fileManagement", "Delete")%>">
                     <input type="hidden" name="fileAccess" value="fileDelete">
                     <input type="hidden" name="id" value="<%=content.getID()%>">
                     <input type="hidden" name="context" value="<%=context%>">
@@ -203,18 +247,25 @@
                 if (content.getContent_Type().startsWith("image")) {
                     String name = content.getName();
                     String imageUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
+                    id++;
         %>
         <tr>
             <td><a href="<%=imageUrl%>" target="_blank"><%=name%></a></td>
             <td><img src="<%=imageUrl%>" height="256px"></td>
             <td class="cell-padding">
-                <form action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich ersetzen?');" enctype="multipart/form-data">
-                    <input type="file" name="file" value="Datei auswahl">
-                    <input class="full-width-button" type="submit" value="Ersetzen">
+                <form id="chooseFileForm_<%=id%>" style="display: block;" action="file?context=<%=context%>&fileAccess=fileReplace&id=<%=content.getID()%>" method="post" onsubmit="return confirmReplace('<%=id%>');" enctype="multipart/form-data">
+                    <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label-replace_<%=id%>">
+                        <label id="file-upload-label-replace_<%=id%>" for="file-upload-replace_<%=id%>" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFile")%></label>
+                        <input type="file" id="file-upload-replace_<%=id%>" name="file" onchange="updateFileNameReplace('<%=id%>')" aria-describedby="file-name-replace_<%=id%>">
+                        <span id="file-name-replace_<%=id%>" class="file-input-text"><%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%></span>
+                    </div>
+                    <input class="full-width-button" type="submit" aria-label="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>" value="<%= Language.getTextfield(session, "fileManagement", "Ersetzen")%>">
+                    <input type="hidden" id="contentNameReplace_<%=id%>" name="contentNameReplace" value="<%= content.getName()%>">
                 </form>
+
                 <hr>
-                <form action="file" method="post" onsubmit="return confirm('Datei <%=content.getName()%> wirklich l&ouml;schen?');">
-                    <input class="full-width-button" type="submit" name="deleteFile" value="l&ouml;schen">
+                <form action="file" method="post" onsubmit="return confirm('<%= Language.getTextfield(session, "contentServlet", "Datei")%> <%=content.getName()%> <%= Language.getTextfield(session, "fileManagement", "reallyDelete")%>');">
+                    <input class="full-width-button" type="submit" name="deleteFile" aria-label="<%= Language.getTextfield(session, "fileManagement", "Delete")%>" value="<%= Language.getTextfield(session, "fileManagement", "Delete")%>">
                     <input type="hidden" name="fileAccess" value="fileDelete">
                     <input type="hidden" name="id" value="<%=content.getID()%>">
                     <input type="hidden" name="context" value="<%=context%>">
@@ -344,8 +395,11 @@
             // Abrufen des Namens des Inhalts aus dem versteckten HTML-Element
             let contentName = document.getElementById('contentName_' + id).value;
 
+            let messageStart = '<%= Language.getTextfield(session, "contentServlet", "Datei")%>' + " ";
+            let messageEnd = '<%= Language.getTextfield(session, "fileManagement", "reallyDelete")%>';
+
             // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
-            return confirm('Datei ' + contentName + ' (' + selectedLanguage + ') wirklich löschen?');
+            return confirm(messageStart + contentName + ' (' + selectedLanguage + ') ' + messageEnd);
         }
 
         function confirmReplace(id) {
@@ -355,12 +409,52 @@
             // Abrufen des Namens des Inhalts aus dem versteckten HTML-Element
             let contentName = document.getElementById('contentNameReplace_' + id).value;
 
+            let messageStart = '<%= Language.getTextfield(session, "contentServlet", "Datei")%>' + " ";
+            let messageEnd = '<%= Language.getTextfield(session, "fileManagement", "reallyReplace")%>';
+
             // Anzeigen des Bestätigungsfensters mit dem aktuellen Wert des Cookies und dem Namen des Inhalts
-            return confirm('Datei ' + contentName + ' (' + selectedLanguage + ') wirklich ersetzen?');
+            return confirm(messageStart + contentName + ' (' + selectedLanguage + ') ' + messageEnd);
         }
 
         function setActionUrl(event, form, context) {
             form.action += '?context=' + encodeURIComponent(context);
+        }
+
+        function updateFileName() {
+            var input = document.getElementById('file-upload');
+            var fileNameSpan = document.getElementById('file-name');
+            if (input.files.length > 0) {
+                var fileNames = [];
+                for (var i = 0; i < input.files.length; i++) {
+                    fileNames.push(input.files[i].name);
+                }
+                fileNameSpan.textContent = fileNames.join(', ');
+            } else {
+                fileNameSpan.textContent = '<%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%>';
+            }
+        }
+
+
+        function updateFileNameReplace(suffix) {
+            var input, fileNameSpan;
+
+            if (suffix) {
+                input = document.getElementById('file-upload-replace_' + suffix);
+                fileNameSpan = document.getElementById('file-name-replace_' + suffix);
+            } else {
+                input = document.getElementById('file-upload-replace');
+                fileNameSpan = document.getElementById('file-name-replace');
+            }
+
+            if (input && fileNameSpan) {
+                if (input.files.length > 0) {
+                    fileNameSpan.textContent = input.files[0].name;
+                } else {
+                    fileNameSpan.textContent = '<%= Language.getTextfield(session, "fileManagement", "NoFileChosen")%>';
+                }
+            } else {
+                console.error('Input element or fileNameSpan element not found.');
+            }
         }
     </script>
 </div>
