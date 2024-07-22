@@ -11,21 +11,17 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class SelektionTitelKritik extends SelektionBezeichnung{
 
      @ManyToMany(mappedBy = "titelKritiken")
-    private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
+    private Set<Einzelbeleg> einzelbelege = new HashSet<>();
 
-    public Set<Einzelbeleg> getEinzelbeleg() {
-        return einzelbeleg;
-    }
-
-    public void setEinzelbeleg(Set<Einzelbeleg> einzelbeleg) {
-        this.einzelbeleg = einzelbeleg;
+    public Set<Einzelbeleg> getEinzelbelege() {
+        return einzelbelege;
     }
 
      public void addEinzelbeleg(Einzelbeleg beleg) {
-        this.getEinzelbeleg().add(beleg);
+        this.getEinzelbelege().add(beleg);
     }
 
     public void removeEinzelbeleg(int id) {
-        this.getEinzelbeleg().removeIf(e -> e.getId() == id);
+        this.getEinzelbelege().removeIf(e -> e.getId() == id);
     }
 }

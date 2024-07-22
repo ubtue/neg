@@ -19,7 +19,7 @@ public class EinzelbelegHatTitelKritik  {
 
     @ManyToOne(targetEntity = SelektionTitelKritik.class)
     @JoinColumn(name = "TitelkritikID", referencedColumnName = "ID")
-    private SelektionTitelKritik titelKritik;
+    private SelektionTitelKritik selektionTitelKritik;
 
     public Integer getId() {
         return id;
@@ -37,11 +37,12 @@ public class EinzelbelegHatTitelKritik  {
         this.einzelbeleg = einzelbeleg;
     }
 
-    public SelektionTitelKritik getTitelKritik() {
-        return titelKritik;
+    public SelektionTitelKritik getSelektionTitelKritik() {
+        return selektionTitelKritik;
     }
 
-    public void setTitelKritik(SelektionTitelKritik titelKritik) {
-        this.titelKritik = titelKritik;
+    public void setSelektionTitelKritik(SelektionTitelKritik selektionTitelKritik) {
+        this.selektionTitelKritik = selektionTitelKritik;
     }
 }
+
