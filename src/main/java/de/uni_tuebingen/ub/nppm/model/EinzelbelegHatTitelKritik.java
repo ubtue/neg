@@ -25,10 +25,6 @@ public class EinzelbelegHatTitelKritik  {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Einzelbeleg getEinzelbeleg() {
         return einzelbeleg;
     }
