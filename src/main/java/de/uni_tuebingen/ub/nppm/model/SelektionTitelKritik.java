@@ -5,7 +5,7 @@ import java.util.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "selektion_titelkritik")
+@Table(name = "selektion_kritik")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SelektionTitelKritik extends SelektionBezeichnung{
