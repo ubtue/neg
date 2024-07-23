@@ -296,6 +296,17 @@ function CheckAll(index, check, praefix) {
                     </jsp:include>
                   </td>
                 </tr>
+                <tr>
+                  <th>
+                      <% Language.printDatafield(out, session, formular, "Seite"); %>
+                  </th>
+                  <td>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="Seite"/>
+                    </jsp:include>
+                  </td>
+                </tr>
               </tbody>
             </table>
             <a href="#erweiterte-suche" class="search-next search-button erweiterte_suche_next" data-id="tab-2"> Weiter zu Schritt 2 </a>

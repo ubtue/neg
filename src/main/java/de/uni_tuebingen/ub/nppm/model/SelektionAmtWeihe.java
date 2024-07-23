@@ -41,7 +41,7 @@ public class SelektionAmtWeihe extends SelektionHierarchy {
     }
 
     /* Hierarchy-related */
-    @OneToOne(targetEntity = SelektionAmtWeihe.class)
+    @ManyToOne(targetEntity = SelektionAmtWeihe.class)
     @JoinColumn(name = "parentId", referencedColumnName = "ID")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private SelektionAmtWeihe parent;

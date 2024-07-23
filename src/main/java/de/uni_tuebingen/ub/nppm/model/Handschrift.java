@@ -5,30 +5,30 @@ import java.util.*;
 
 @Entity
 @Table(name = "handschrift")
-public class Handschrift {    
-    @Id 
+public class Handschrift {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    
+
     @Column(name = "Bibliothekssignatur", length=255)
     private String bibliothekssignatur;
-    
+
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
-    
-    @OneToOne(targetEntity = Benutzer.class)
+
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "LetzteAenderungVon", referencedColumnName="ID")
     private Benutzer letzteAenderungVon;
-    
+
     @Column(name = "Erstellt")
     private Date erstellt;
-    
-    @OneToOne(targetEntity = Benutzer.class)
+
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "ErstelltVon", referencedColumnName="ID")
     private Benutzer erstelltVon;
-    
-    @OneToOne(targetEntity = BenutzerGruppe.class)
+
+    @ManyToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GehoertGruppe", referencedColumnName="ID")
     private BenutzerGruppe gehoertGruppe;
 

@@ -10,6 +10,7 @@ Prerequisites:
     - Find this servlet <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
     - Add parameter `<init-param><param-name>strictQuoteEscaping</param-name><param-value>false</param-value></init-param>`
   - Catalina/localhost/neg.xml (needs to be created with correct user credentials)
+    - Note: If you also want to run CLI programs out of the tomcat context, you must create /root/.neg.properties and store sqlURL, sqlUser and sqlPassword in there.
 ```
 <Context>
     <!-- Mandatory -->
@@ -30,6 +31,7 @@ Prerequisites:
 ```
 - Java >= 1.8.0_77
 - MySQL >= 5.7
+  - innodb_buffer_pool_size=512M
   - collation-server = utf8_unicode_ci
   - character-set-server = utf8mb4
   - group_concat_max_len = 100000000

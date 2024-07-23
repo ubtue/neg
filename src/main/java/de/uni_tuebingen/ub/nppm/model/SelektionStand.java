@@ -9,6 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SelektionStand extends SelektionHierarchy {
+
     @ManyToMany(mappedBy = "stand")
     private Set<Person> personen = new HashSet<>();
 
@@ -40,7 +41,7 @@ public class SelektionStand extends SelektionHierarchy {
     }
 
     /* Hierarchy-related */
-    @OneToOne(targetEntity = SelektionStand.class)
+    @ManyToOne(targetEntity = SelektionStand.class)
     @JoinColumn(name = "parentId", referencedColumnName = "ID")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private SelektionStand parent;

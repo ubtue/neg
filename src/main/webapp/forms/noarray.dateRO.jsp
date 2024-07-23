@@ -18,7 +18,6 @@
                     + ", " + zielattributArray[i];
         }
 
-
         Map row = AbstractBase.getMappedRow("SELECT " + zielattribute + " FROM "
                 + zielTabelle + " WHERE ID ='" + id + "'");
 
@@ -27,10 +26,12 @@
             int resultIndex = 0;
             for (String zielattribut : zielattributArray) {
                 String zielattributGen = "Genauigkeit" + zielattribut;
-                if (row.get(zielattributGen) != null)
+                if (row.get(zielattributGen) != null) {
                     results[resultIndex++] = row.get(zielattributGen).toString();
-                if (row.get(zielattribut) != null)
+                }
+                if (row.get(zielattribut) != null) {
                     results[resultIndex++] = row.get(zielattribut).toString();
+                }
             }
             String von = "";
             String vonGen = "";
@@ -84,7 +85,7 @@
                     && results[zielattributArray.length - 1] != null
                     && !results[zielattributArray.length - 1]
                             .equals("0")) {
-                if (bisGen.equals("") || bisGen.equals("-1")) {
+                if (bisGen == null || bisGen.equals("") || bisGen.equals("-1")) {
                     bisGen = results[zielattributArray.length * 2 - 2];
                 }
                 bis = results[zielattributArray.length * 2 - 1];
@@ -97,10 +98,12 @@
                 bisGen = "";
             }
 
-            if (!bis.equals(von) && !bis.equals("")) {
+            if (bis != null && von != null && !bis.equals(von) && !bis.equals("")) {
                 out.println(vonGen + " " + von + "-" + bisGen + " " + bis);
             } else {
-                out.println(vonGen + " " + von);
+                if (von != null) {
+                    out.println(vonGen + " " + von);
+                }
             }
         }
     }

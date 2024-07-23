@@ -18,23 +18,23 @@ public class Einzelbeleg {
     @Column(name = "Kontext", columnDefinition = "MEDIUMTEXT")
     private String kontext;
 
-    @OneToOne(targetEntity = SelektionGeschlecht.class)
+    @ManyToOne(targetEntity = SelektionGeschlecht.class)
     @JoinColumn(name = "GeschlechtID", referencedColumnName = "ID")
     private SelektionGeschlecht geschlecht;
 
-    @OneToOne(targetEntity = SelektionLebendVerstorben.class)
+    @ManyToOne(targetEntity = SelektionLebendVerstorben.class)
     @JoinColumn(name = "LebendVerstorbenID", referencedColumnName = "ID")
     private SelektionLebendVerstorben lebendVerstorben;
 
-    @OneToOne(targetEntity = Edition.class)
+    @ManyToOne(targetEntity = Edition.class)
     @JoinColumn(name = "EditionID", referencedColumnName = "ID")
     private Edition edition;
 
-    @OneToOne(targetEntity = Quelle.class)
+    @ManyToOne(targetEntity = Quelle.class)
     @JoinColumn(name = "QuelleID", referencedColumnName = "ID")
     private Quelle quelle;
 
-    @OneToOne(targetEntity = Handschrift.class)
+    @ManyToOne(targetEntity = Handschrift.class)
     @JoinColumn(name = "HandschriftID", referencedColumnName = "ID")
     private Handschrift handschrift;
 
@@ -44,11 +44,11 @@ public class Einzelbeleg {
     @Column(name = "EditionSeite", length = 255)
     private String editionSeite;
 
-    @OneToOne(targetEntity = SelektionQuellengattung.class)
+    @ManyToOne(targetEntity = SelektionQuellengattung.class)
     @JoinColumn(name = "QuelleGattungID", referencedColumnName = "ID")
     private SelektionQuellengattung quelleGattung;
 
-    @OneToOne(targetEntity = SelektionEchtheit.class)
+    @ManyToOne(targetEntity = SelektionEchtheit.class)
     @JoinColumn(name = "QuelleEchtheitID", referencedColumnName = "ID")
     private SelektionEchtheit quelleEchtheit;
 
@@ -67,11 +67,11 @@ public class Einzelbeleg {
     @Column(name = "Diakritisch", length = 255)
     private String diakritisch;
 
-    @OneToOne(targetEntity = SelektionKasus.class)
+    @ManyToOne(targetEntity = SelektionKasus.class)
     @JoinColumn(name = "KasusID", referencedColumnName = "ID")
     private SelektionKasus kasus;
 
-    @OneToOne(targetEntity = SelektionGrammatikgeschlecht.class)
+    @ManyToOne(targetEntity = SelektionGrammatikgeschlecht.class)
     @JoinColumn(name = "GrammatikGeschlechtID", referencedColumnName = "ID")
     private SelektionGrammatikgeschlecht grammatikGeschlecht;
 
@@ -81,7 +81,7 @@ public class Einzelbeleg {
     @Column(name = "Bemerkung", columnDefinition = "MEDIUMTEXT")
     private String bemerkung;
 
-    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+    @ManyToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
 
@@ -130,82 +130,82 @@ public class Einzelbeleg {
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
 
-    @OneToOne(targetEntity = Benutzer.class)
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "LetzteAenderungVon", referencedColumnName = "ID")
     private Benutzer letzteAenderungVon;
 
     @Column(name = "Erstellt")
     private Date erstellt;
 
-    @OneToOne(targetEntity = Benutzer.class)
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "ErstelltVon", referencedColumnName = "ID")
     private Benutzer erstelltVon;
 
-    @OneToOne(targetEntity = BenutzerGruppe.class)
+    @ManyToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitBisTag", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitBisTag;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitBisMonat", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitBisMonat;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitBisJahr", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitBisJahr;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitBisJahrhundert", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitBisJahrhundert;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitVonTag", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonTag;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitVonMonat", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonMonat;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitVonJahr", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonJahr;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitVonJahrhundert", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonJahrhundert;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitQuelleBisTag", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitQuelleBisTag;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitQuelleBisMonat", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitQuelleBisMonat;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitQuelleBisJahr", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitQuelleBisJahr;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitQuelleBisJahrhundert", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitQuelleBisJahrhundert;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitQuelleVonTag", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitQuelleVonTag;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitQuelleVonMonat", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitQuelleVonMonat;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitQuelleVonJahr", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitQuelleVonJahr;
 
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
     @JoinColumn(name = "GenauigkeitQuelleVonJahrhundert", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitQuelleVonJahrhundert;
 
@@ -239,7 +239,14 @@ public class Einzelbeleg {
     @Column(name = "MGHLemmaKorrigiert", columnDefinition = "BIT DEFAULT NULL")
     private Boolean mghLemmaKorrigiert;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @Column(name = "TitelText", length = 255)
+    private String titelText;
+
+    @ManyToOne(targetEntity = SelektionBeziehungGemeinschaft.class)
+    @JoinColumn(name = "BeziehungGemeinschaftID", referencedColumnName = "ID")
+    private SelektionBeziehungGemeinschaft beziehungGemeinschaft;
+
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatamtweihe",
             joinColumns = {
@@ -249,7 +256,7 @@ public class Einzelbeleg {
     )
     Set<SelektionAmtWeihe> amtWeihe = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatareal",
             joinColumns = {
@@ -259,7 +266,7 @@ public class Einzelbeleg {
     )
     Set<SelektionAreal> areal = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatfunktion",
             joinColumns = {
@@ -269,7 +276,7 @@ public class Einzelbeleg {
     )
     Set<SelektionFunktion> funktion = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatmghlemma",
             joinColumns = {
@@ -279,7 +286,7 @@ public class Einzelbeleg {
     )
     Set<MghLemma> mghLemma = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatnamenkommentar",
             joinColumns = {
@@ -289,7 +296,7 @@ public class Einzelbeleg {
     )
     Set<NamenKommentar> namenKommentar = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatperson",
             joinColumns = {
@@ -299,7 +306,7 @@ public class Einzelbeleg {
     )
     Set<Person> person = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatstand",
             joinColumns = {
@@ -308,6 +315,24 @@ public class Einzelbeleg {
                 @JoinColumn(name = "StandID")}
     )
     Set<SelektionStand> stand = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(
+            name = "einzelbeleg_hatangabe",
+            joinColumns = @JoinColumn(name = "EinzelbelegID"),
+            inverseJoinColumns = @JoinColumn(name = "AngabeID")
+    )
+    private Set<SelektionAngabe> angaben = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(
+            name = "einzelbeleg_hattitelkritik",
+            joinColumns = {
+                @JoinColumn(name = "EinzelbelegID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "TitelkritikID")}
+    )
+    private Set<SelektionTitelKritik> titelKritiken = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -871,5 +896,49 @@ public class Einzelbeleg {
 
     public void setMghLemma(Set<MghLemma> mghLemma) {
         this.mghLemma = mghLemma;
+    }
+
+    public Set<SelektionAngabe> getAngaben() {
+        return angaben;
+    }
+
+    public void addAngabe(SelektionAngabe selektionAngabe) {
+        if (selektionAngabe != null) {
+            this.getAngaben().add(selektionAngabe);
+        }
+    }
+
+    public void removeAngabe(int id) {
+        this.getAngaben().removeIf(e -> e.getId() == id);
+    }
+
+    public SelektionBeziehungGemeinschaft getBeziehungGemeinschaft() {
+        return beziehungGemeinschaft;
+    }
+
+    public void setBeziehungGemeinschaft(SelektionBeziehungGemeinschaft beziehungGemeinschaft) {
+        this.beziehungGemeinschaft = beziehungGemeinschaft;
+    }
+
+    public String getTitelText() {
+        return titelText;
+    }
+
+    public void setTitelText(String titelText) {
+        this.titelText = titelText;
+    }
+
+    public Set<SelektionTitelKritik> getTitelKritiken() {
+        return titelKritiken;
+    }
+
+    public void addTitelKritik(SelektionTitelKritik selektionTitelKritik) {
+        if (selektionTitelKritik != null) {
+            this.getTitelKritiken().add(selektionTitelKritik);
+        }
+    }
+
+    public void removeTitelKritik(int id) {
+        this.getTitelKritiken().removeIf(e -> e.getId() == id);
     }
 }

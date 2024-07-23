@@ -28,28 +28,34 @@
     out.println("<input type=\"submit\" value=\"eintragen\">");
     out.println("</form>");
   } else if (request.getParameter("action").equals("save")) {
+
     int newID = -1;
-    SelektionBezeichnung existing = SelektionDB.getByBezeichnung(request.getParameter("selektion"), request.getParameter("neuerEintrag"));
+    String selektionName = request.getParameter("selektion");
+
+    if(selektionName.equals("ort"))
+    {
+        selektionName = "selektion_" + selektionName;
+    }
+    SelektionBezeichnung existing = SelektionDB.getByBezeichnung(selektionName, request.getParameter("neuerEintrag"));
 
     if(existing != null) {
       newID = existing.getId();
     } else {
       // Neuen Wert eintragen
-      SelektionDB.insertBezeichnung(request.getParameter("selektion"), request.getParameter("neuerEintrag"));
+      SelektionDB.insertBezeichnung(selektionName, request.getParameter("neuerEintrag").trim());
 
       // Neue ID aus DB abfragen
-      existing = SelektionDB.getByBezeichnung(request.getParameter("selektion"), request.getParameter("neuerEintrag"));
+      existing = SelektionDB.getByBezeichnung(selektionName, request.getParameter("neuerEintrag"));
       if (existing != null) {
         newID = existing.getId();
       }
-      out.println("<p>"+request.getParameter("neuerEintrag")+" erfolgreich in die Selektion "+request.getParameter("selektion")+" eingetragen.</p>");
+      out.println("<p>"+request.getParameter("neuerEintrag")+" erfolgreich in die Selektion " + selektionName +" eingetragen.</p>");
     }
     out.println("<input type=\"button\" value=\"&uuml;bernehmen &amp; Fenster schlie&szlig;en\" onClick=\"javascript:addSelection("+newID+", '"+DBtoJS(request.getParameter("neuerEintrag"))+"', '"+request.getParameter("destination")+"');window.close();\">");
   } else {
     out.println("<p>Zugriff nicht erlaubt!!!</p>");
     out.println("<a href=\"../index.jsp\">Zur&uuml;ck zur Startseite</a>");
   }
-
 }
 %>
   </BODY>

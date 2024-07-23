@@ -64,6 +64,9 @@ public class DatenbankMapping {
     @Column(name = "default", length = 255)
     private String alt;
 
+    @Column(name = "schema_org_property", length = 255)
+    private String schemaOrgProperty;
+
     @Column(name = "gb_beschriftung", length = 255)
     private String gbBeschriftung;
 
@@ -252,6 +255,14 @@ public class DatenbankMapping {
 
     public void setAlt(String alt) {
         this.alt = alt;
+    }
+
+    public String getSchemaOrgProperty() {
+        return schemaOrgProperty;
+    }
+
+    public void setSchemaOrg(String schemaOrgProperty) {
+        this.schemaOrgProperty = schemaOrgProperty;
     }
 
     public String getGbBeschriftung() {

@@ -18,25 +18,25 @@ public class MghLemma {
     @Column(name = "MGHLemma", length = 255)
     private String mghLemma;
 
-    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+    @ManyToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
 
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
 
-    @OneToOne(targetEntity = Benutzer.class)
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "LetzteAenderungVon", referencedColumnName = "ID")
     private Benutzer letzteAenderungVon;
 
     @Column(name = "Erstellt")
     private Date erstellt;
 
-    @OneToOne(targetEntity = Benutzer.class)
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "ErstelltVon", referencedColumnName = "ID")
     private Benutzer erstelltVon;
 
-    @OneToOne(targetEntity = BenutzerGruppe.class)
+    @ManyToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
 
