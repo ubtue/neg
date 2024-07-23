@@ -239,6 +239,9 @@ public class Einzelbeleg {
     @Column(name = "MGHLemmaKorrigiert", columnDefinition = "BIT DEFAULT NULL")
     private Boolean mghLemmaKorrigiert;
 
+    @Column(name = "KritikID")
+    private Integer kritikId;
+
     @Column(name = "TitelText", length = 255)
     private String titelText;
 
@@ -332,7 +335,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "TitelkritikID")}
     )
-    private Set<SelektionTitelKritik> titelKritiken = new HashSet<>();
+    private Set<SelektionKritik> titelKritiken = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -928,17 +931,25 @@ public class Einzelbeleg {
         this.titelText = titelText;
     }
 
-    public Set<SelektionTitelKritik> getTitelKritiken() {
+    public Set<SelektionKritik> getTitelKritiken() {
         return titelKritiken;
     }
 
-    public void addTitelKritik(SelektionTitelKritik selektionTitelKritik) {
-        if (selektionTitelKritik != null) {
-            this.getTitelKritiken().add(selektionTitelKritik);
+    public void addTitelKritik(SelektionKritik selektionKritik) {
+        if (selektionKritik != null) {
+            this.getTitelKritiken().add(selektionKritik);
         }
     }
 
     public void removeTitelKritik(int id) {
         this.getTitelKritiken().removeIf(e -> e.getId() == id);
+    }
+
+    public Integer getKritikId() {
+        return kritikId;
+    }
+
+    public void setKritikId(Integer kritikId) {
+        this.kritikId = kritikId;
     }
 }
