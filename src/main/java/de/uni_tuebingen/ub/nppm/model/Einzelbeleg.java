@@ -239,6 +239,9 @@ public class Einzelbeleg {
     @Column(name = "MGHLemmaKorrigiert", columnDefinition = "BIT DEFAULT NULL")
     private Boolean mghLemmaKorrigiert;
 
+    @Column(name = "KritikID")
+    private Integer kritikId;
+
     @Column(name = "TitelText", length = 255)
     private String titelText;
 
@@ -940,5 +943,13 @@ public class Einzelbeleg {
 
     public void removeTitelKritik(int id) {
         this.getTitelKritiken().removeIf(e -> e.getId() == id);
+    }
+
+    public Integer getKritikId() {
+        return kritikId;
+    }
+
+    public void setKritikId(Integer kritikId) {
+        this.kritikId = kritikId;
     }
 }
