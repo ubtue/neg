@@ -335,7 +335,7 @@ public class Einzelbeleg {
             inverseJoinColumns = {
                 @JoinColumn(name = "TitelkritikID")}
     )
-    private Set<SelektionTitelKritik> titelKritiken = new HashSet<>();
+    private Set<SelektionKritik> titelKritiken = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -931,13 +931,13 @@ public class Einzelbeleg {
         this.titelText = titelText;
     }
 
-    public Set<SelektionTitelKritik> getTitelKritiken() {
+    public Set<SelektionKritik> getTitelKritiken() {
         return titelKritiken;
     }
 
-    public void addTitelKritik(SelektionTitelKritik selektionTitelKritik) {
-        if (selektionTitelKritik != null) {
-            this.getTitelKritiken().add(selektionTitelKritik);
+    public void addTitelKritik(SelektionKritik selektionKritik) {
+        if (selektionKritik != null) {
+            this.getTitelKritiken().add(selektionKritik);
         }
     }
 

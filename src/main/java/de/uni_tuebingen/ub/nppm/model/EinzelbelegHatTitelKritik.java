@@ -5,21 +5,20 @@ import java.util.*;
 
 @Entity
 @Table(name = "einzelbeleg_hattitelkritik")
-public class EinzelbelegHatTitelKritik  {
+public class EinzelbelegHatTitelKritik {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 
-     @ManyToOne(targetEntity = Einzelbeleg.class)
+    @ManyToOne(targetEntity = Einzelbeleg.class)
     @JoinColumn(name = "EinzelbelegID", referencedColumnName = "ID")
     private Einzelbeleg einzelbeleg;
 
-
-    @ManyToOne(targetEntity = SelektionTitelKritik.class)
+    @ManyToOne(targetEntity = SelektionKritik.class)
     @JoinColumn(name = "TitelkritikID", referencedColumnName = "ID")
-    private SelektionTitelKritik selektionTitelKritik;
+    private SelektionKritik selektionKritik;
 
     public Integer getId() {
         return id;
@@ -33,12 +32,11 @@ public class EinzelbelegHatTitelKritik  {
         this.einzelbeleg = einzelbeleg;
     }
 
-    public SelektionTitelKritik getSelektionTitelKritik() {
-        return selektionTitelKritik;
+    public SelektionKritik getSelektionTitelKritik() {
+        return selektionKritik;
     }
 
-    public void setSelektionTitelKritik(SelektionTitelKritik selektionTitelKritik) {
-        this.selektionTitelKritik = selektionTitelKritik;
+    public void setSelektionTitelKritik(SelektionKritik selektionKritik) {
+        this.selektionKritik = selektionKritik;
     }
 }
-
