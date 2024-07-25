@@ -3,13 +3,6 @@
 #add a enum to associated migrated data with a source system (a source system can be for example dmp or batch import)
 #
 ALTER TABLE bemerkung ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
-ALTER TABLE benutzer ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
-ALTER TABLE benutzer_gruppe ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
-ALTER TABLE datenbank_filter ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
-ALTER TABLE datenbank_mapping ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
-ALTER TABLE datenbank_selektion ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
-ALTER TABLE datenbank_sprachen ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
-ALTER TABLE datenbank_texte ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE edition ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE edition_band ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE edition_bestand ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
@@ -69,8 +62,6 @@ ALTER TABLE selektion_sammelband ADD provenance_source VARCHAR (255) NOT NULL DE
 ALTER TABLE selektion_stand ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE selektion_urkundeausstellerempfaenger ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE selektion_verwandtschaftsgrad ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
-ALTER TABLE suche_favoriten ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
-ALTER TABLE content ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE ueberlieferung_edition ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE urkunde ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE urkunde_betreff ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
@@ -82,14 +73,6 @@ ALTER TABLE urkunde_hatempfaenger ADD provenance_source VARCHAR (255) NOT NULL D
 #add a field to neg tables to associated migrated rows with dmp rows
 #
 #
-ALTER TABLE bemerkung ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
-ALTER TABLE benutzer ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
-ALTER TABLE benutzer_gruppe ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
-ALTER TABLE datenbank_filter ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
-ALTER TABLE datenbank_mapping ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
-ALTER TABLE datenbank_selektion ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
-ALTER TABLE datenbank_sprachen ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
-ALTER TABLE datenbank_texte ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE edition ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE edition_band ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE edition_bestand ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
@@ -149,8 +132,6 @@ ALTER TABLE selektion_sammelband ADD provenance_id VARCHAR (255) DEFAULT NULL, A
 ALTER TABLE selektion_stand ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE selektion_urkundeausstellerempfaenger ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE selektion_verwandtschaftsgrad ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
-ALTER TABLE suche_favoriten ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
-ALTER TABLE content ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE ueberlieferung_edition ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE urkunde ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE urkunde_betreff ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
