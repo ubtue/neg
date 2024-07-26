@@ -36,6 +36,7 @@ ALTER TABLE person_verwandtmit ADD provenance_source VARCHAR (255) NOT NULL DEFA
 ALTER TABLE quelle ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE quelle_inedition ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE selektion_amtstandweihe ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
+ALTER TABLE selektion_angabe ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE selektion_amtweihe ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE selektion_areal ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE selektion_autor ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
@@ -106,6 +107,7 @@ ALTER TABLE person_verwandtmit ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD
 ALTER TABLE quelle ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE quelle_inedition ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE selektion_amtstandweihe ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
+ALTER TABLE selektion_angabe ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE selektion_amtweihe ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE selektion_areal ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
 ALTER TABLE selektion_autor ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
