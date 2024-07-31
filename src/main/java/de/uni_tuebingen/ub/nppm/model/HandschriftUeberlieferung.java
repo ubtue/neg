@@ -5,111 +5,115 @@ import java.util.*;
 
 @Entity
 @Table(name = "handschrift_ueberlieferung")
-public class HandschriftUeberlieferung {    
-    @Id 
+public class HandschriftUeberlieferung {
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    
-    @OneToOne(targetEntity = Quelle.class)
-    @JoinColumn(name = "QuelleID", referencedColumnName="ID")
+
+    @ManyToOne(targetEntity = Quelle.class)
+    @JoinColumn(name = "QuelleID", referencedColumnName = "ID")
     private Quelle quelle;
 
-    @Column(name = "Sigle", length=255)
+    @Column(name = "Sigle", length = 255)
     private String sigle;
 
-    @Column(name = "Bibliothekssignatur", length=255)
+    @Column(name = "Bibliothekssignatur", length = 255)
     private String bibliothekssignatur;
-    
+
     @Column(name = "VonTag")
     private Integer vonTag;
-    
+
     @Column(name = "VonMonat")
     private Integer vonMonat;
-    
+
     @Column(name = "VonJahr")
     private Integer vonJahr;
-    
-    @Column(name = "VonJahrhundert", length=5)
+
+    @Column(name = "VonJahrhundert", length = 5)
     private String vonJahrhundert;
-    
+
     @Column(name = "BisTag")
     private Integer bisTag;
-    
+
     @Column(name = "BisMonat")
     private Integer bisMonat;
-    
+
     @Column(name = "BisJahr")
     private Integer bisJahr;
-    
-    @Column(name = "BisJahrhundert", length=5)
+
+    @Column(name = "BisJahrhundert", length = 5)
     private String bisJahrhundert;
-    
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
-    @JoinColumn(name = "GenauigkeitVonTag", referencedColumnName="ID")
+
+    @Column(name = "Schriftherkunft", length = 255)
+    private String schriftherkunft;
+
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @JoinColumn(name = "GenauigkeitVonTag", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonTag;
-    
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
-    @JoinColumn(name = "GenauigkeitVonMonat", referencedColumnName="ID")
+
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @JoinColumn(name = "GenauigkeitVonMonat", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonMonat;
-    
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
-    @JoinColumn(name = "GenauigkeitVonJahr", referencedColumnName="ID")
+
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @JoinColumn(name = "GenauigkeitVonJahr", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonJahr;
-    
-    @OneToOne(targetEntity = SelektionDatGenauigkeit.class)
-    @JoinColumn(name = "GenauigkeitVonJahrhundert", referencedColumnName="ID")
+
+    @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
+    @JoinColumn(name = "GenauigkeitVonJahrhundert", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonJahrhundert;
-    
-    @OneToOne(targetEntity = SelektionOrt.class)
-    @JoinColumn(name = "Schriftheimat", referencedColumnName="ID")
+
+    @ManyToOne(targetEntity = SelektionOrt.class)
+    @JoinColumn(name = "Schriftheimat", referencedColumnName = "ID")
     private SelektionOrt schriftheimat;
-    
+
     @Column(name = "UeberlieferungDatierung", length = 255)
     private String ueberlieferungDatierung;
 
-    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+    @ManyToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
-    
+
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
-    
-    @OneToOne(targetEntity = Benutzer.class)
-    @JoinColumn(name = "LetzteAenderungVon", referencedColumnName="ID")
+
+    @ManyToOne(targetEntity = Benutzer.class)
+    @JoinColumn(name = "LetzteAenderungVon", referencedColumnName = "ID")
     private Benutzer letzteAenderungVon;
-    
+
     @Column(name = "Erstellt")
     private Date erstellt;
-    
-    @OneToOne(targetEntity = Benutzer.class)
-    @JoinColumn(name = "ErstelltVon", referencedColumnName="ID")
+
+    @ManyToOne(targetEntity = Benutzer.class)
+    @JoinColumn(name = "ErstelltVon", referencedColumnName = "ID")
     private Benutzer erstelltVon;
-    
-    @OneToOne(targetEntity = BenutzerGruppe.class)
-    @JoinColumn(name = "GehoertGruppe", referencedColumnName="ID")
+
+    @ManyToOne(targetEntity = BenutzerGruppe.class)
+    @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
-    
-    @OneToOne(targetEntity = Handschrift.class)
+
+    @ManyToOne(targetEntity = Handschrift.class)
     @JoinColumn(name = "HandschriftID", referencedColumnName = "ID")
     private Handschrift handschrift;
-    
-    @OneToOne(targetEntity = SelektionOrt.class)
-    @JoinColumn(name = "Bibliotheksheimat", referencedColumnName="ID")
+
+    @ManyToOne(targetEntity = SelektionOrt.class)
+    @JoinColumn(name = "Bibliotheksheimat", referencedColumnName = "ID")
     private SelektionOrt bibliotheksheimat;
-    
+
     @Column(name = "GenauigkeitBisTag")
     private Integer genauigkeitBisTag;
-    
+
     @Column(name = "GenauigkeitBisMonat")
     private Integer genauigkeitBisMonat;
-    
+
     @Column(name = "GenauigkeitBisJahr")
     private Integer genauigkeitBisJahr;
-    
+
     @Column(name = "GenauigkeitBisJahrhundert")
     private Integer genauigkeitBisJahrhundert;
-    
+
     @OneToOne(targetEntity = Edition.class)
     @JoinColumn(name = "EditionID", referencedColumnName = "ID")
     private Edition edition;
@@ -358,6 +362,11 @@ public class HandschriftUeberlieferung {
         this.edition = edition;
     }
 
-   
-    
+    public String getSchriftherkunft() {
+        return schriftherkunft;
+    }
+
+    public void setSchriftherkunft(String schriftherkunft) {
+        this.schriftherkunft = schriftherkunft;
+    }
 }
