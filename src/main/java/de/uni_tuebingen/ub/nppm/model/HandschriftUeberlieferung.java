@@ -6,19 +6,20 @@ import java.util.*;
 @Entity
 @Table(name = "handschrift_ueberlieferung")
 public class HandschriftUeberlieferung {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 
     @ManyToOne(targetEntity = Quelle.class)
-    @JoinColumn(name = "QuelleID", referencedColumnName="ID")
+    @JoinColumn(name = "QuelleID", referencedColumnName = "ID")
     private Quelle quelle;
 
-    @Column(name = "Sigle", length=255)
+    @Column(name = "Sigle", length = 255)
     private String sigle;
 
-    @Column(name = "Bibliothekssignatur", length=255)
+    @Column(name = "Bibliothekssignatur", length = 255)
     private String bibliothekssignatur;
 
     @Column(name = "VonTag")
@@ -30,7 +31,7 @@ public class HandschriftUeberlieferung {
     @Column(name = "VonJahr")
     private Integer vonJahr;
 
-    @Column(name = "VonJahrhundert", length=5)
+    @Column(name = "VonJahrhundert", length = 5)
     private String vonJahrhundert;
 
     @Column(name = "BisTag")
@@ -42,27 +43,30 @@ public class HandschriftUeberlieferung {
     @Column(name = "BisJahr")
     private Integer bisJahr;
 
-    @Column(name = "BisJahrhundert", length=5)
+    @Column(name = "BisJahrhundert", length = 5)
     private String bisJahrhundert;
 
+    @Column(name = "Schriftherkunft", length = 255)
+    private String schriftherkunft;
+
     @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
-    @JoinColumn(name = "GenauigkeitVonTag", referencedColumnName="ID")
+    @JoinColumn(name = "GenauigkeitVonTag", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonTag;
 
     @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
-    @JoinColumn(name = "GenauigkeitVonMonat", referencedColumnName="ID")
+    @JoinColumn(name = "GenauigkeitVonMonat", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonMonat;
 
     @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
-    @JoinColumn(name = "GenauigkeitVonJahr", referencedColumnName="ID")
+    @JoinColumn(name = "GenauigkeitVonJahr", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonJahr;
 
     @ManyToOne(targetEntity = SelektionDatGenauigkeit.class)
-    @JoinColumn(name = "GenauigkeitVonJahrhundert", referencedColumnName="ID")
+    @JoinColumn(name = "GenauigkeitVonJahrhundert", referencedColumnName = "ID")
     private SelektionDatGenauigkeit genauigkeitVonJahrhundert;
 
     @ManyToOne(targetEntity = SelektionOrt.class)
-    @JoinColumn(name = "Schriftheimat", referencedColumnName="ID")
+    @JoinColumn(name = "Schriftheimat", referencedColumnName = "ID")
     private SelektionOrt schriftheimat;
 
     @Column(name = "UeberlieferungDatierung", length = 255)
@@ -76,18 +80,18 @@ public class HandschriftUeberlieferung {
     private Date letzteAenderung;
 
     @ManyToOne(targetEntity = Benutzer.class)
-    @JoinColumn(name = "LetzteAenderungVon", referencedColumnName="ID")
+    @JoinColumn(name = "LetzteAenderungVon", referencedColumnName = "ID")
     private Benutzer letzteAenderungVon;
 
     @Column(name = "Erstellt")
     private Date erstellt;
 
     @ManyToOne(targetEntity = Benutzer.class)
-    @JoinColumn(name = "ErstelltVon", referencedColumnName="ID")
+    @JoinColumn(name = "ErstelltVon", referencedColumnName = "ID")
     private Benutzer erstelltVon;
 
     @ManyToOne(targetEntity = BenutzerGruppe.class)
-    @JoinColumn(name = "GehoertGruppe", referencedColumnName="ID")
+    @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
 
     @ManyToOne(targetEntity = Handschrift.class)
@@ -95,7 +99,7 @@ public class HandschriftUeberlieferung {
     private Handschrift handschrift;
 
     @ManyToOne(targetEntity = SelektionOrt.class)
-    @JoinColumn(name = "Bibliotheksheimat", referencedColumnName="ID")
+    @JoinColumn(name = "Bibliotheksheimat", referencedColumnName = "ID")
     private SelektionOrt bibliotheksheimat;
 
     @Column(name = "GenauigkeitBisTag")
@@ -358,6 +362,11 @@ public class HandschriftUeberlieferung {
         this.edition = edition;
     }
 
+    public String getSchriftherkunft() {
+        return schriftherkunft;
+    }
 
-
+    public void setSchriftherkunft(String schriftherkunft) {
+        this.schriftherkunft = schriftherkunft;
+    }
 }

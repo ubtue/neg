@@ -239,11 +239,17 @@ public class Einzelbeleg {
     @Column(name = "MGHLemmaKorrigiert", columnDefinition = "BIT DEFAULT NULL")
     private Boolean mghLemmaKorrigiert;
 
+    @Column(name = "KritikID")
+    private Integer kritikId;
+
+    @Column(name = "TitelText", length = 255)
+    private String titelText;
+
     @ManyToOne(targetEntity = SelektionBeziehungGemeinschaft.class)
-    @JoinColumn(name = "BeziehungGemeinschaftID", referencedColumnName="ID")
+    @JoinColumn(name = "BeziehungGemeinschaftID", referencedColumnName = "ID")
     private SelektionBeziehungGemeinschaft beziehungGemeinschaft;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatamtweihe",
             joinColumns = {
@@ -253,7 +259,7 @@ public class Einzelbeleg {
     )
     Set<SelektionAmtWeihe> amtWeihe = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatareal",
             joinColumns = {
@@ -263,7 +269,7 @@ public class Einzelbeleg {
     )
     Set<SelektionAreal> areal = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatfunktion",
             joinColumns = {
@@ -273,7 +279,7 @@ public class Einzelbeleg {
     )
     Set<SelektionFunktion> funktion = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatmghlemma",
             joinColumns = {
@@ -283,7 +289,7 @@ public class Einzelbeleg {
     )
     Set<MghLemma> mghLemma = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatnamenkommentar",
             joinColumns = {
@@ -293,7 +299,7 @@ public class Einzelbeleg {
     )
     Set<NamenKommentar> namenKommentar = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatperson",
             joinColumns = {
@@ -303,7 +309,7 @@ public class Einzelbeleg {
     )
     Set<Person> person = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatstand",
             joinColumns = {
@@ -313,14 +319,23 @@ public class Einzelbeleg {
     )
     Set<SelektionStand> stand = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
-        name = "einzelbeleg_hatangabe",
-        joinColumns = @JoinColumn(name = "EinzelbelegID"),
-        inverseJoinColumns = @JoinColumn(name = "AngabeID")
+            name = "einzelbeleg_hatangabe",
+            joinColumns = @JoinColumn(name = "EinzelbelegID"),
+            inverseJoinColumns = @JoinColumn(name = "AngabeID")
     )
     private Set<SelektionAngabe> angaben = new HashSet<>();
 
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(
+            name = "einzelbeleg_hattitelkritik",
+            joinColumns = {
+                @JoinColumn(name = "EinzelbelegID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "TitelkritikID")}
+    )
+    private Set<SelektionKritik> titelKritiken = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -906,5 +921,35 @@ public class Einzelbeleg {
 
     public void setBeziehungGemeinschaft(SelektionBeziehungGemeinschaft beziehungGemeinschaft) {
         this.beziehungGemeinschaft = beziehungGemeinschaft;
+    }
+
+    public String getTitelText() {
+        return titelText;
+    }
+
+    public void setTitelText(String titelText) {
+        this.titelText = titelText;
+    }
+
+    public Set<SelektionKritik> getTitelKritiken() {
+        return titelKritiken;
+    }
+
+    public void addTitelKritik(SelektionKritik selektionKritik) {
+        if (selektionKritik != null) {
+            this.getTitelKritiken().add(selektionKritik);
+        }
+    }
+
+    public void removeTitelKritik(int id) {
+        this.getTitelKritiken().removeIf(e -> e.getId() == id);
+    }
+
+    public Integer getKritikId() {
+        return kritikId;
+    }
+
+    public void setKritikId(Integer kritikId) {
+        this.kritikId = kritikId;
     }
 }
