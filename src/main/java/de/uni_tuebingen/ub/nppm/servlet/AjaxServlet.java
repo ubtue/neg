@@ -44,7 +44,7 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
-    protected void detecZusatzNamenKommentar(HttpServletRequest request, HttpServletResponse response) {
+    protected void detectZusatzNamenKommentar(HttpServletRequest request, HttpServletResponse response) {
         try {
             String EinzelbelegID = request.getParameter("EinzelbelegID");
             if (EinzelbelegID == null) {
@@ -54,7 +54,7 @@ public class AjaxServlet extends HttpServlet {
                 Einzelbeleg lastEinzelbeleg = EinzelbelegDB.getById(Integer.parseInt(EinzelbelegID));
                 String belegform = lastEinzelbeleg.getBelegform();
 
-                List<Einzelbeleg> einzelbelege = EinzelbelegDB.getBelegformList(belegform);
+                List<Einzelbeleg> einzelbelege = EinzelbelegDB.getListByBelegform(belegform);
 
                 Map<Integer, List<Integer>> namenkommentarIdToEinzelbelegIdsMap = new HashMap<>();
                 Map<Integer, String> namenkommentarIdToPlemmaMap = new HashMap<>();
@@ -62,7 +62,7 @@ public class AjaxServlet extends HttpServlet {
                 for (Einzelbeleg eb : einzelbelege) {
                     int einzelbelegId = eb.getId();
 
-                    List<EinzelbelegNamenkommentar_MM> einzelbeleg_hatnamenkommentar_list = EinzelbelegNamenkommentarDB.getByEinzelbelegId(einzelbelegId);
+                    List<EinzelbelegNamenkommentar_MM> einzelbeleg_hatnamenkommentar_list = Einzelbeleg.getNamenkommentarByEinzelbelegId(einzelbelegId);
 
                     for (EinzelbelegNamenkommentar_MM einzelbeleg_hatnamenkommentar : einzelbeleg_hatnamenkommentar_list) {
                         NamenKommentar namenKommentar = einzelbeleg_hatnamenkommentar.getNamenKommentar();
@@ -136,7 +136,7 @@ public class AjaxServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 // Logik zum Speichern des Zusatznamen-Kommentars
-                EinzelbelegNamenkommentarDB.insertNamenkommentar(EinzelbelegID, namenkommentarID);
+               EinzelbelegDB.insertNamenkommentar(EinzelbelegID, namenkommentarID);
 
                 response.setContentType("application/json; charset=UTF-8");
                 JSONObject jsonObject = new JSONObject();
@@ -148,7 +148,7 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
-    protected void detecLemma(HttpServletRequest request, HttpServletResponse response) {
+    protected void detectLemma(HttpServletRequest request, HttpServletResponse response) {
         try {
             String EinzelbelegID = request.getParameter("EinzelbelegID");
             if (EinzelbelegID == null) {
@@ -158,7 +158,7 @@ public class AjaxServlet extends HttpServlet {
                 Einzelbeleg lastEinzelbeleg = EinzelbelegDB.getById(Integer.parseInt(EinzelbelegID));
                 String belegform = lastEinzelbeleg.getBelegform();
 
-                List<Einzelbeleg> einzelbelege = EinzelbelegDB.getBelegformList(belegform);
+                List<Einzelbeleg> einzelbelege = EinzelbelegDB.getListByBelegform(belegform);
 
                 Map<Integer, List<Integer>> lemmaIdToEinzelbelegIdsMap = new HashMap<>();
                 Map<Integer, String> lemmaIdToLemmaMap = new HashMap<>();
@@ -166,7 +166,8 @@ public class AjaxServlet extends HttpServlet {
                 for (Einzelbeleg eb : einzelbelege) {
                     int einzelbelegId = eb.getId();
 
-                    List<EinzelbelegMghLemma_MM> einzelbeleg_hatmghlemma_list = EinzelbelegMGHLemmaDB.getByEinzelbelegId(einzelbelegId);
+                   // List<EinzelbelegMghLemma_MM> einzelbeleg_hatmghlemma_list = EinzelbelegMGHLemmaDB.getByEinzelbelegId(einzelbelegId);
+                    List<EinzelbelegMghLemma_MM> einzelbeleg_hatmghlemma_list = Einzelbeleg.getLemmaByEinzelbelegId(einzelbelegId);
 
                     // 5. Überprüfe, ob Einträge gefunden wurden
                     for (EinzelbelegMghLemma_MM einzelbeleg_hatlemma : einzelbeleg_hatmghlemma_list) {
@@ -244,7 +245,7 @@ public class AjaxServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 // Logik zum Speichern des Zusatznamen-Kommentars
-                EinzelbelegMGHLemmaDB.insertLemma(EinzelbelegID, lemmaID);
+                EinzelbelegDB.insertLemma(EinzelbelegID, lemmaID);
 
                 response.setContentType("application/json; charset=UTF-8");
                 JSONObject jsonObject = new JSONObject();
@@ -275,10 +276,10 @@ public class AjaxServlet extends HttpServlet {
         if (action != null) {
             if (action.equals("autocomplete")) {
                 autocomplete(request, response);
-            } else if (action.equals("detecZusatzNamenKommentar")) {
-                detecZusatzNamenKommentar(request, response);
-            }else if (action.equals("detecLemma")) {
-                detecLemma(request, response);
+            } else if (action.equals("detectZusatzNamenKommentar")) {
+                detectZusatzNamenKommentar(request, response);
+            }else if (action.equals("detectLemma")) {
+                detectLemma(request, response);
             }  else {
                 response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
             }
@@ -288,3 +289,4 @@ public class AjaxServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
     }
 }
+

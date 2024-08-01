@@ -40,41 +40,8 @@ public class EinzelbelegDB extends AbstractBase {
         insertOrUpdate(sql);
     }
 
-    //Neu Dazu gekommen -- Lemma
-    public static boolean hasZusatzNamenKommentar(String lastID) throws Exception {
-        try ( Session session = getSession()) {
-            String SQL = "SELECT * FROM einzelbeleg_hatnamenkommentar WHERE EinzelbelegID = :lastID";
-
-            if (session.createNativeQuery(SQL) != null) {
-                NativeQuery query = session.createNativeQuery(SQL);
-                query.setParameter("lastID", lastID);
-                return !query.getResultList().isEmpty();
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean hasLemmar(String lastID) throws Exception {
-        try ( Session session = getSession()) {
-            String SQL = "SELECT * FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID = :lastID";
-
-            if (session.createNativeQuery(SQL) != null) {
-                NativeQuery query = session.createNativeQuery(SQL);
-                query.setParameter("lastID", lastID);
-                return !query.getResultList().isEmpty();
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     //gibt eine Liste von Einzelbelege die die gleiche Belegform haben
-    public static List<Einzelbeleg> getBelegformList(String belegform) {
+    public static List<Einzelbeleg> getListByBelegform(String belegform) {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Einzelbeleg> criteria = builder.createQuery(Einzelbeleg.class);
@@ -89,5 +56,15 @@ public class EinzelbelegDB extends AbstractBase {
             e.printStackTrace();
             throw new RuntimeException("Error retrieving Einzelbeleg list by belegform: " + belegform, e);
         }
+    }
+
+    public static void insertLemma(String einzelbelegId, String mghLemmaId) throws Exception {
+        String sql = "INSERT INTO einzelbeleg_hatmghlemma(EinzelbelegID, MGHLemmaID) VALUES(" + einzelbelegId + ", " + mghLemmaId + ")";
+        insertOrUpdate(sql);
+    }
+
+    public static void insertNamenkommentar(String einzelbelegId, String namenkommentarId) throws Exception {
+        String sql = "INSERT INTO einzelbeleg_hatnamenkommentar(EinzelbelegID, NamenkommentarID) VALUES(" + einzelbelegId + ", " + namenkommentarId + ")";
+        insertOrUpdate(sql);
     }
 }

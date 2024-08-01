@@ -467,8 +467,8 @@ if (form.equals("einzelbeleg")) {
 
 try{
 
-boolean hasZusatzNamenKommentar = EinzelbelegDB.hasZusatzNamenKommentar(String.valueOf(id));
-boolean hasLemma = EinzelbelegDB.hasLemmar(String.valueOf(id));
+boolean hasZusatzNamenKommentar = Einzelbeleg.hasZusatzNamenKommentar(String.valueOf(id));
+boolean hasLemma = Einzelbeleg.hasLemma(String.valueOf(id));
 
 Einzelbeleg lastEinzelbeleg = EinzelbelegDB.getById(id);
 belegform = lastEinzelbeleg.getBelegform(); // z.B. Sebastianus
@@ -482,14 +482,13 @@ if (!hasZusatzNamenKommentar) { %>
 
             let ajaxUrl = '<%= Utils.getBaseUrl(request) %>/ajax';
 
-            // GET-Anfrage zum DetecZusatzNamenKommentar
+            // GET-Anfrage zum DetectZusatzNamenKommentar
             $.ajax({
                 type: "GET",
                 url: ajaxUrl,
-                data: { action: "detecZusatzNamenKommentar", EinzelbelegID: einzelbelegID },
+                data: { action: "detectZusatzNamenKommentar", EinzelbelegID: einzelbelegID },
                 dataType: "json",
                 success: function (data) {
-                    console.log(data);
 
                     if (data.outputListZ && !<%= hasZusatzNamenKommentar %>) {
                         var output = data.outputListZ.join('\n');
@@ -530,11 +529,11 @@ if (!hasZusatzNamenKommentar) { %>
 
                     let ajaxUrl = '<%= Utils.getBaseUrl(request) %>/ajax';
 
-                    // GET-Anfrage zum DetecLemma
+                    // GET-Anfrage zum DetectLemma
                     $.ajax({
                         type: "GET",
                         url: ajaxUrl,
-                        data: { action: "detecLemma", EinzelbelegID: einzelbelegID },
+                        data: { action: "detectLemma", EinzelbelegID: einzelbelegID },
                         dataType: "json",
                         success: function (data) {
 
