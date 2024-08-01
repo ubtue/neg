@@ -480,7 +480,7 @@ if (!hasZusatzNamenKommentar) { %>
         $(function () {
             var einzelbelegID = <%= id %>;
 
-            let ajaxUrl = '<%= Utils.getBaseUrl(request) %>/ajax';
+            let ajaxUrl = '<%= Utils.getAjaxUrl(request) %>';
 
             // GET-Anfrage zum DetectZusatzNamenKommentar
             $.ajax({
@@ -527,7 +527,7 @@ if (!hasZusatzNamenKommentar) { %>
                 $(function () {
                     var einzelbelegID = <%= id %>;
 
-                    let ajaxUrl = '<%= Utils.getBaseUrl(request) %>/ajax';
+                    let ajaxUrl = '<%= Utils.getAjaxUrl(request) %>';
 
                     // GET-Anfrage zum DetectLemma
                     $.ajax({
