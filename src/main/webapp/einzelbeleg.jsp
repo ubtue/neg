@@ -732,6 +732,15 @@
                         <jsp:param name="Formular" value="einzelbeleg" />
                         <jsp:param name="Datenfeld" value="Funktion" />
                     </jsp:include>
+                    <br />
+                    
+                    <jsp:include page="inc.erzeugeFormular.jsp">
+                        <jsp:param name="ID" value="<%=id%>" />
+                        <jsp:param name="Formular" value="einzelbeleg" />
+                        <jsp:param name="Datenfeld" value="NewAreal" />
+                    </jsp:include>
+
+
                 </div>
             </div>
 
