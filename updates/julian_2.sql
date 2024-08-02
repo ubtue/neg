@@ -9,11 +9,16 @@ VALUES ('einzelbeleg','NewAreal','combined',1,'einzelbeleg_hatareal','ArealID;Ar
 
 ALTER TABLE `einzelbeleg_hatareal` ADD COLUMN `ArealTypID` int DEFAULT -1;
 
+ALTER TABLE einzelbeleg_hatareal ADD CONSTRAINT fk_selektion_arealtyp FOREIGN KEY (ArealTypID) REFERENCES selektion_arealtyp(ID);
+
 CREATE TABLE `selektion_arealtyp` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Bezeichnung` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provenance_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT('NeG'),
+  `provenance_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `Bezeichnung` (`Bezeichnung`)
+  UNIQUE KEY `uk_bezeichnung` (`Bezeichnung`),
+  UNIQUE KEY `uk_provenance_id` (`provenance_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Einträge einfügen
