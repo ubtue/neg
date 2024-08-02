@@ -5,19 +5,19 @@ import java.util.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "selektion_titelkritik")
+@Table(name = "selektion_kritik")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class SelektionTitelKritik extends SelektionBezeichnung{
+public class SelektionKritik extends SelektionBezeichnung {
 
-     @ManyToMany(mappedBy = "titelKritiken")
+    @ManyToMany(mappedBy = "titelKritiken")
     private Set<Einzelbeleg> einzelbelege = new HashSet<>();
 
     public Set<Einzelbeleg> getEinzelbelege() {
         return einzelbelege;
     }
 
-     public void addEinzelbeleg(Einzelbeleg beleg) {
+    public void addEinzelbeleg(Einzelbeleg beleg) {
         this.getEinzelbelege().add(beleg);
     }
 

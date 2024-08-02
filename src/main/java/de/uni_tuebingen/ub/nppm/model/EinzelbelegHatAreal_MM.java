@@ -1,11 +1,10 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
-@Table(name = "einzelbeleg_hattitelkritik")
-public class EinzelbelegHatTitelKritik {
+@Table(name = "einzelbeleg_hatareal")
+public class EinzelbelegHatAreal_MM {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +15,9 @@ public class EinzelbelegHatTitelKritik {
     @JoinColumn(name = "EinzelbelegID", referencedColumnName = "ID")
     private Einzelbeleg einzelbeleg;
 
-    @ManyToOne(targetEntity = SelektionKritik.class)
-    @JoinColumn(name = "TitelkritikID", referencedColumnName = "ID")
-    private SelektionKritik selektionKritik;
+    @ManyToOne(targetEntity = SelektionAreal.class)
+    @JoinColumn(name = "ArealID", referencedColumnName = "ID")
+    private SelektionAreal areal;
 
     public Integer getId() {
         return id;
@@ -32,11 +31,13 @@ public class EinzelbelegHatTitelKritik {
         this.einzelbeleg = einzelbeleg;
     }
 
-    public SelektionKritik getSelektionTitelKritik() {
-        return selektionKritik;
+    public SelektionAreal getAreal() {
+        return areal;
     }
 
-    public void setSelektionTitelKritik(SelektionKritik selektionKritik) {
-        this.selektionKritik = selektionKritik;
+    public void setAreal(SelektionAreal areal) {
+        this.areal = areal;
     }
+
+
 }
