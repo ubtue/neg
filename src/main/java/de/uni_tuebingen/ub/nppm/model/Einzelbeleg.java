@@ -265,6 +265,16 @@ public class Einzelbeleg {
                 @JoinColumn(name = "ArealID")}
     )
     Set<SelektionAreal> areal = new HashSet<>();
+    
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(
+            name = "einzelbeleg_hatareal",
+            joinColumns = {
+                @JoinColumn(name = "EinzelbelegID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "ArealTypID")}
+    )
+    Set<SelektionArealTyp> arealTyp = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
@@ -941,4 +951,24 @@ public class Einzelbeleg {
     public void removeTitelKritik(int id) {
         this.getTitelKritiken().removeIf(e -> e.getId() == id);
     }
+
+    public Set<SelektionArealTyp> getArealTyp() {
+        return arealTyp;
+    }
+
+    public void setArealTyp(Set<SelektionArealTyp> arealTyp) {
+        this.arealTyp = arealTyp;
+    }
+    
+    public void addArealTyp(SelektionArealTyp selektionArealTyp) {
+        if (selektionArealTyp != null) {
+            this.getArealTyp().add(selektionArealTyp);
+        }
+    }
+
+    public void removeArealTyp(int id) {
+        this.getArealTyp().removeIf(e -> e.getId() == id);
+    }
+    
+    
 }
