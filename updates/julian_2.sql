@@ -17,8 +17,8 @@ CREATE TABLE `selektion_arealtyp` (
   `provenance_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT('NeG'),
   `provenance_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `uk_bezeichnung` (`Bezeichnung`),
-  UNIQUE KEY `uk_provenance_id` (`provenance_id`)
+  UNIQUE KEY `unique_bezeichnung` (`Bezeichnung`),
+  UNIQUE KEY `unique_provenance_id` (`provenance_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Einträge einfügen
