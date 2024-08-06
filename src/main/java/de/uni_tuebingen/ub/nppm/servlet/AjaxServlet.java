@@ -6,6 +6,7 @@ import de.uni_tuebingen.ub.nppm.model.EinzelbelegMghLemma_MM;
 import de.uni_tuebingen.ub.nppm.model.EinzelbelegNamenkommentar_MM;
 import de.uni_tuebingen.ub.nppm.model.MghLemma;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
+import de.uni_tuebingen.ub.nppm.util.Language;
 import org.json.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,6 +84,7 @@ public class AjaxServlet extends HttpServlet {
                 }
 
                 if (namenkommentarIdToEinzelbelegIdsMap.size() != 0) {
+                    String language = Language.getLanguage(request);
                     StringBuilder sb = new StringBuilder();
                     int save_namenkommentarID = -1;
 
@@ -91,8 +93,13 @@ public class AjaxServlet extends HttpServlet {
                         List<Integer> einzelbelegIDs = entry.getValue();
                         String plemma = namenkommentarIdToPlemmaMap.get(namenkommentarID);
 
-                        sb.append("Für Belegform ").append(belegform).append(" wurde Zusatznamen-Kommentar  ").append(plemma).append(" gefunden. ");
-                        sb.append("NamenkommentarID: ").append(namenkommentarID).append(", EinzelbelegIDs: ").append(einzelbelegIDs).append("\n\n");
+                        String einzelbelegIDsString = einzelbelegIDs.toString();
+
+                        String s = DatenbankDB.getLabel(language, "einzelbeleg", "ZusatznamenkommentarPopup");
+
+                        String result = String.format(s, belegform, plemma, String.valueOf(namenkommentarID), einzelbelegIDsString);
+
+                        sb.append(result).append("\n\n");
 
                         if (namenkommentarIdToEinzelbelegIdsMap.size() == 1) {
                             save_namenkommentarID = namenkommentarID;
@@ -100,9 +107,9 @@ public class AjaxServlet extends HttpServlet {
                     }
 
                     if (namenkommentarIdToEinzelbelegIdsMap.size() == 1) {
-                        sb.append("Soll dieser Zusatznamen-Kommentar hier übernommen werden? ");
+                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "ChoicePopupZusatznamenkommentar"));
                     } else {
-                        sb.append("Bitte bereinigen sie die Daten");
+                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "ChoiceCleanDataPopup"));
                     }
 
                     outputList.add(sb.toString());
@@ -136,11 +143,10 @@ public class AjaxServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 // Logik zum Speichern des Zusatznamen-Kommentars
-               EinzelbelegDB.insertNamenkommentar(EinzelbelegID, namenkommentarID);
+                EinzelbelegDB.insertNamenkommentar(EinzelbelegID, namenkommentarID);
 
                 response.setContentType("application/json; charset=UTF-8");
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("message", "Der Zusatznamen-Kommentar wird übernommen.");
                 response.getWriter().print(jsonObject.toString());
             }
         } catch (Exception e) {
@@ -166,7 +172,7 @@ public class AjaxServlet extends HttpServlet {
                 for (Einzelbeleg eb : einzelbelege) {
                     int einzelbelegId = eb.getId();
 
-                   // List<EinzelbelegMghLemma_MM> einzelbeleg_hatmghlemma_list = EinzelbelegMGHLemmaDB.getByEinzelbelegId(einzelbelegId);
+                    // List<EinzelbelegMghLemma_MM> einzelbeleg_hatmghlemma_list = EinzelbelegMGHLemmaDB.getByEinzelbelegId(einzelbelegId);
                     List<EinzelbelegMghLemma_MM> einzelbeleg_hatmghlemma_list = Einzelbeleg.getLemmaByEinzelbelegId(einzelbelegId);
 
                     // 5. Überprüfe, ob Einträge gefunden wurden
@@ -192,6 +198,7 @@ public class AjaxServlet extends HttpServlet {
                 }
 
                 if (lemmaIdToEinzelbelegIdsMap.size() != 0) {
+                    String language = Language.getLanguage(request);
                     StringBuilder sb = new StringBuilder();
                     int save_lemmaID = -1;
 
@@ -200,8 +207,13 @@ public class AjaxServlet extends HttpServlet {
                         List<Integer> einzelbelegIDs = entry.getValue();
                         String lemma = lemmaIdToLemmaMap.get(lemmaID);
 
-                        sb.append("Für Belegform ").append(belegform).append(" wurde das Lemma  ").append(lemma).append(" gefunden. ");
-                        sb.append("LemmaID: ").append(lemmaID).append(", EinzelbelegIDs: ").append(einzelbelegIDs).append("\n\n");
+                        String einzelbelegIDsString = einzelbelegIDs.toString();
+
+                        String s = DatenbankDB.getLabel(language, "einzelbeleg", "LemmaPopup");
+
+                        String result = String.format(s, belegform, lemma, String.valueOf(lemmaID), einzelbelegIDsString);
+
+                        sb.append(result).append("\n\n");
 
                         if (lemmaIdToEinzelbelegIdsMap.size() == 1) {
                             save_lemmaID = lemmaID;
@@ -209,9 +221,9 @@ public class AjaxServlet extends HttpServlet {
                     }
 
                     if (lemmaIdToEinzelbelegIdsMap.size() == 1) {
-                        sb.append("Soll dieser Zusatznamen-Kommentar hier übernommen werden? ");
+                         sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "ChoicePopupLemma"));
                     } else {
-                        sb.append("Bitte bereinigen sie die Daten");
+                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "ChoiceCleanDataPopup"));
                     }
 
                     outputList.add(sb.toString());
@@ -249,7 +261,6 @@ public class AjaxServlet extends HttpServlet {
 
                 response.setContentType("application/json; charset=UTF-8");
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("message", "Das lemma wird übernommen.");
                 response.getWriter().print(jsonObject.toString());
             }
         } catch (Exception e) {
@@ -261,7 +272,7 @@ public class AjaxServlet extends HttpServlet {
         String action = request.getParameter("action");
         if ("confirmLemma".equals(action)) {
             confirmLemma(request, response);
-        }else if ("confirmZusatzNamenKommentar".equals(action)) {
+        } else if ("confirmZusatzNamenKommentar".equals(action)) {
             confirmZusatzNamenKommentar(request, response);
         } else {
             // Andere Aktionen
@@ -278,9 +289,9 @@ public class AjaxServlet extends HttpServlet {
                 autocomplete(request, response);
             } else if (action.equals("detectZusatzNamenKommentar")) {
                 detectZusatzNamenKommentar(request, response);
-            }else if (action.equals("detectLemma")) {
+            } else if (action.equals("detectLemma")) {
                 detectLemma(request, response);
-            }  else {
+            } else {
                 response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
             }
             return;
@@ -289,4 +300,3 @@ public class AjaxServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
     }
 }
-
