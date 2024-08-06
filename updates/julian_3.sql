@@ -5,3 +5,5 @@ WHERE (Datenfeld = 'PLemma' AND Formular = 'namenkommentar')
 OR (Datenfeld = 'LemmaRO' AND Formular = 'einzelbeleg')
 OR (Datenfeld = 'Namenlemma' AND Formular = 'freie_suche')
 OR (Datenfeld = 'Ausgabe_Namenlemma' AND Formular = 'freie_suche');
+
+UPDATE `neg`.`datenbank_mapping` SET `Feldtyp` = 'link(mgh_lemma tab,MGHLemmaID,MGHLemma,lemma)' WHERE (`Datenfeld` = 'MGHLemmaRO' AND Formular = 'einzelbeleg');

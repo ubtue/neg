@@ -32,7 +32,7 @@ public class RedirectServlet extends HttpServlet {
         } else if (type.equals("T")) {
             response.sendRedirect(request.getContextPath() + "/gast/handschrift?ID=" + ID);
         } else if (type.equals("M")) {
-            response.sendRedirect(request.getContextPath() + "/gast/mghlemma?ID=" + ID);
+            response.sendRedirect(request.getContextPath() + "/gast/lemma?ID=" + ID);
         } else {
             throw new ServletException("Invalid ID: " + PID);
         }
