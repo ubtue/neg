@@ -6,7 +6,7 @@ import de.uni_tuebingen.ub.nppm.model.*;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 
-public class MghLemmaDB extends AbstractBase {
+public class LemmaDB extends AbstractBase {
 
     public static List getList() throws Exception {
         return getList(MghLemma.class);
