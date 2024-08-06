@@ -9,7 +9,7 @@ VALUES ('einzelbeleg','NewAreal','combined',1,'einzelbeleg_hatareal','ArealID;Ar
 
 ALTER TABLE `einzelbeleg_hatareal` ADD COLUMN `ArealTypID` int DEFAULT -1;
 
-ALTER TABLE einzelbeleg_hatareal ADD CONSTRAINT fk_selektion_arealtyp FOREIGN KEY (ArealTypID) REFERENCES selektion_arealtyp(ID);
+ALTER TABLE einzelbeleg_hatareal ADD CONSTRAINT einzelbeleg_hatareal_ArealTypID FOREIGN KEY (ArealTypID) REFERENCES selektion_arealtyp(ID);
 
 CREATE TABLE `selektion_arealtyp` (
   `ID` int NOT NULL AUTO_INCREMENT,
