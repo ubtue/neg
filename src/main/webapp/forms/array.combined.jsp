@@ -383,7 +383,7 @@
 
                         String add = fields[0];
                         if (add.equals("mgh_lemma")) {
-                            add = "mghlemma";
+                            add = "lemma";
                         }
 
                         out.println("<a href=\""
