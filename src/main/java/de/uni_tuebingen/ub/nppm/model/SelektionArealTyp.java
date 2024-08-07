@@ -14,7 +14,7 @@ public class SelektionArealTyp extends SelektionBezeichnung {
     }
 
     public void removeEinzelbeleg(int id) {
-        this.getEinzelbelege().removeIf(e -> e.getId() == id);
+        this.getEinzelbelege().removeIf(e -> e.getId() != null && e.getId().equals(id));
     }
 
     public Set<Einzelbeleg> getEinzelbelege() {
