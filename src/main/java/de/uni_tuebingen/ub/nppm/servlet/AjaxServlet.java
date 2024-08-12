@@ -95,7 +95,7 @@ public class AjaxServlet extends HttpServlet {
 
                         String einzelbelegIDsString = einzelbelegIDs.toString();
 
-                        String s = DatenbankDB.getLabel(language, "einzelbeleg", "ZusatznamenkommentarPopup");
+                        String s = DatenbankDB.getLabel(language, "einzelbeleg", "foundZusatznamenkommentar");
 
                         String result = String.format(s, belegform, plemma, String.valueOf(namenkommentarID), einzelbelegIDsString);
 
@@ -107,9 +107,9 @@ public class AjaxServlet extends HttpServlet {
                     }
 
                     if (namenkommentarIdToEinzelbelegIdsMap.size() == 1) {
-                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "ChoicePopupZusatznamenkommentar"));
+                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "replaceZusatznamenkommentar"));
                     } else {
-                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "ChoiceCleanDataPopup"));
+                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "cleanData"));
                     }
 
                     outputList.add(sb.toString());
@@ -209,7 +209,7 @@ public class AjaxServlet extends HttpServlet {
 
                         String einzelbelegIDsString = einzelbelegIDs.toString();
 
-                        String s = DatenbankDB.getLabel(language, "einzelbeleg", "LemmaPopup");
+                        String s = DatenbankDB.getLabel(language, "einzelbeleg", "foundLemma");
 
                         String result = String.format(s, belegform, lemma, String.valueOf(lemmaID), einzelbelegIDsString);
 
@@ -221,9 +221,9 @@ public class AjaxServlet extends HttpServlet {
                     }
 
                     if (lemmaIdToEinzelbelegIdsMap.size() == 1) {
-                         sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "ChoicePopupLemma"));
+                         sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "replaceLemma"));
                     } else {
-                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "ChoiceCleanDataPopup"));
+                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "cleanData"));
                     }
 
                     outputList.add(sb.toString());
@@ -300,3 +300,4 @@ public class AjaxServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
     }
 }
+

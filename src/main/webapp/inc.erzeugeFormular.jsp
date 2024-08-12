@@ -7,7 +7,7 @@
 <%
 
   String language = Language.getLanguage(request);
-  String deleteEntryMessage = DatenbankDB.getLabel(language, "funktionen", "DeleteEntry");
+  String deleteEntryMessage = DatenbankDB.getLabel(language, "funktionen", "deleteEntry");
   String id = "-1";
   String returnId = "-1";
   String formular = request.getParameter("Formular");
