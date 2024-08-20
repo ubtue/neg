@@ -63,10 +63,7 @@ public class AjaxServlet extends HttpServlet {
                 for (Einzelbeleg eb : einzelbelege) {
                     int einzelbelegId = eb.getId();
 
-                    List<EinzelbelegNamenkommentar_MM> einzelbeleg_hatnamenkommentar_list = Einzelbeleg.getNamenkommentarByEinzelbelegId(einzelbelegId);
-
-                    for (EinzelbelegNamenkommentar_MM einzelbeleg_hatnamenkommentar : einzelbeleg_hatnamenkommentar_list) {
-                        NamenKommentar namenKommentar = einzelbeleg_hatnamenkommentar.getNamenKommentar();
+                    for (NamenKommentar namenKommentar : eb.getNamenKommentar()) {
                         if (namenKommentar != null) {
                             int namenkommentarID = namenKommentar.getId();
                             String plemma = namenKommentar.getpLemma();
@@ -83,7 +80,7 @@ public class AjaxServlet extends HttpServlet {
                     }
                 }
 
-                if (namenkommentarIdToEinzelbelegIdsMap.size() != 0) {
+                if (!namenkommentarIdToEinzelbelegIdsMap.isEmpty()) {
                     String language = Language.getLanguage(request);
                     StringBuilder sb = new StringBuilder();
                     int save_namenkommentarID = -1;
@@ -172,12 +169,8 @@ public class AjaxServlet extends HttpServlet {
                 for (Einzelbeleg eb : einzelbelege) {
                     int einzelbelegId = eb.getId();
 
-                    // List<EinzelbelegMghLemma_MM> einzelbeleg_hatmghlemma_list = EinzelbelegMGHLemmaDB.getByEinzelbelegId(einzelbelegId);
-                    List<EinzelbelegMghLemma_MM> einzelbeleg_hatmghlemma_list = Einzelbeleg.getLemmaByEinzelbelegId(einzelbelegId);
-
                     // 5. Überprüfe, ob Einträge gefunden wurden
-                    for (EinzelbelegMghLemma_MM einzelbeleg_hatlemma : einzelbeleg_hatmghlemma_list) {
-                        MghLemma lemmakommentar = einzelbeleg_hatlemma.getMghLemma();
+                    for (MghLemma lemmakommentar : eb.getMghLemma()) {
                         if (lemmakommentar != null) {
                             int lemmaID = lemmakommentar.getId();
                             String plemma = lemmakommentar.getMghLemma();
@@ -197,7 +190,7 @@ public class AjaxServlet extends HttpServlet {
 
                 }
 
-                if (lemmaIdToEinzelbelegIdsMap.size() != 0) {
+                if (!lemmaIdToEinzelbelegIdsMap.isEmpty()) {
                     String language = Language.getLanguage(request);
                     StringBuilder sb = new StringBuilder();
                     int save_lemmaID = -1;
@@ -257,7 +250,8 @@ public class AjaxServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 // Logik zum Speichern des Zusatznamen-Kommentars
-                EinzelbelegDB.insertLemma(EinzelbelegID, lemmaID);
+              // EinzelbelegDB.insertFunktion(EinzelbelegID, lemmaID);
+              EinzelbelegDB.insertLemma(EinzelbelegID, lemmaID);
 
                 response.setContentType("application/json; charset=UTF-8");
                 JSONObject jsonObject = new JSONObject();
@@ -268,6 +262,7 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if ("confirmLemma".equals(action)) {
@@ -300,4 +295,3 @@ public class AjaxServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
     }
 }
-

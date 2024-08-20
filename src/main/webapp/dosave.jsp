@@ -467,10 +467,11 @@ if (form.equals("einzelbeleg")) {
 
 try{
 
-boolean hasZusatzNamenKommentar = Einzelbeleg.hasZusatzNamenKommentar(String.valueOf(id));
-boolean hasLemma = Einzelbeleg.hasLemma(String.valueOf(id));
+
 
 Einzelbeleg lastEinzelbeleg = EinzelbelegDB.getById(id);
+boolean hasLemma = lastEinzelbeleg.getMghLemma().size() > 0;
+boolean hasZusatzNamenKommentar = lastEinzelbeleg.getNamenKommentar().size() > 0;
 belegform = lastEinzelbeleg.getBelegform(); // z.B. Sebastianus
 
 

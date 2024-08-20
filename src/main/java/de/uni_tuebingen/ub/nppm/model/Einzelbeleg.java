@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.model;
 
-import de.uni_tuebingen.ub.nppm.db.AbstractBase;
+
 import javax.persistence.*;
 import java.util.*;
 import javax.persistence.criteria.*;
@@ -10,7 +10,7 @@ import org.hibernate.query.NativeQuery;
 
 @Entity
 @Table(name = "einzelbeleg")
-public class Einzelbeleg extends AbstractBase {
+public class Einzelbeleg {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -273,7 +273,7 @@ public class Einzelbeleg extends AbstractBase {
                 @JoinColumn(name = "ArealID")}
     )
     Set<SelektionAreal> areal = new HashSet<>();
-    
+
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "einzelbeleg_hatareal",
@@ -967,7 +967,7 @@ public class Einzelbeleg extends AbstractBase {
     public void setArealTyp(Set<SelektionArealTyp> arealTyp) {
         this.arealTyp = arealTyp;
     }
-    
+
     public void addArealTyp(SelektionArealTyp selektionArealTyp) {
         if (selektionArealTyp != null) {
             this.getArealTyp().add(selektionArealTyp);
@@ -977,73 +977,12 @@ public class Einzelbeleg extends AbstractBase {
     public void removeArealTyp(int id) {
         this.getArealTyp().removeIf(e -> e.getId() == id);
     }
-    
+
     public Integer getKritikId() {
         return kritikId;
     }
 
     public void setKritikId(Integer kritikId) {
         this.kritikId = kritikId;
-    }
-
-    //Utility Function
-    public static List<EinzelbelegMghLemma_MM> getLemmaByEinzelbelegId(int einzelbelegId) throws Exception {
-        try ( Session session = getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<EinzelbelegMghLemma_MM> query = builder.createQuery(EinzelbelegMghLemma_MM.class);
-            Root<EinzelbelegMghLemma_MM> root = query.from(EinzelbelegMghLemma_MM.class);
-
-            // Join to fetch Einzelbeleg and filter by EinzelbelegID
-            root.fetch("einzelbeleg", JoinType.INNER);
-            query.select(root).where(builder.equal(root.get("einzelbeleg").get("id"), einzelbelegId));
-
-            return session.createQuery(query).getResultList();
-        }
-    }
-
-    public static List<EinzelbelegNamenkommentar_MM> getNamenkommentarByEinzelbelegId(int einzelbelegId) throws Exception {
-        try ( Session session = getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<EinzelbelegNamenkommentar_MM> query = builder.createQuery(EinzelbelegNamenkommentar_MM.class);
-            Root<EinzelbelegNamenkommentar_MM> root = query.from(EinzelbelegNamenkommentar_MM.class);
-
-            // Join to fetch Einzelbeleg and filter by EinzelbelegID
-            root.fetch("einzelbeleg", JoinType.INNER);
-            query.select(root).where(builder.equal(root.get("einzelbeleg").get("id"), einzelbelegId));
-
-            return session.createQuery(query).getResultList();
-        }
-    }
-
-    public static boolean hasLemma(String lastID) throws Exception {
-        try ( Session session = getSession()) {
-            String SQL = "SELECT * FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID = :lastID";
-
-            if (session.createNativeQuery(SQL) != null) {
-                NativeQuery query = session.createNativeQuery(SQL);
-                query.setParameter("lastID", lastID);
-                return !query.getResultList().isEmpty();
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean hasZusatzNamenKommentar(String lastID) throws Exception {
-        try ( Session session = getSession()) {
-            String SQL = "SELECT * FROM einzelbeleg_hatnamenkommentar WHERE EinzelbelegID = :lastID";
-
-            if (session.createNativeQuery(SQL) != null) {
-                NativeQuery query = session.createNativeQuery(SQL);
-                query.setParameter("lastID", lastID);
-                return !query.getResultList().isEmpty();
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

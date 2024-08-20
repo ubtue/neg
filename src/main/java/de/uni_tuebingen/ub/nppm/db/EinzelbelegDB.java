@@ -1,15 +1,18 @@
 package de.uni_tuebingen.ub.nppm.db;
 
+import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
-public class EinzelbelegDB extends AbstractBase {
+public class EinzelbelegDB extends AbstractBase{
 
     public static Einzelbeleg getById(int id) throws Exception {
         return AbstractBase.getById(id, Einzelbeleg.class);
@@ -58,7 +61,7 @@ public class EinzelbelegDB extends AbstractBase {
         }
     }
 
-    public static void insertLemma(String einzelbelegId, String mghLemmaId) throws Exception {
+     public static void insertLemma(String einzelbelegId, String mghLemmaId) throws Exception {
         String sql = "INSERT INTO einzelbeleg_hatmghlemma(EinzelbelegID, MGHLemmaID) VALUES(" + einzelbelegId + ", " + mghLemmaId + ")";
         insertOrUpdate(sql);
     }
