@@ -248,7 +248,7 @@ public class Utils {
                             out.print("<a href=\"namenkommentar?ID=" + (int) rs.get("namenkommentarID") + "\">");
                             link = true;
                         } else if (orderV[z].equals("MGHLemma") && rs.get("mgh_lemmaID") != null) {
-                            out.print("<a href=\"mghlemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
+                            out.print("<a href=\"lemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
                             link = true;
                         } else if (orderV[z].equals("Bezeichnung") && rs.get("quelleID") != null) {                              // ?
                             out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
@@ -321,7 +321,7 @@ public class Utils {
                             out.print("<a href=\"namenkommentar?ID=" + (int) rs.get("namenkommentarID") + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("MGHLemma") && rs.get("mgh_lemmaID") != null) {
-                            out.print("<a href=\"mghlemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
+                            out.print("<a href=\"lemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("Bezeichnung") && rs.get("quelleID") != null) {        //?
                             out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");

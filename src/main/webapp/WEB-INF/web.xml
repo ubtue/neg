@@ -74,7 +74,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>NamenServlet</servlet-name>
-        <url-pattern>/gast/mghlemma</url-pattern>
+        <url-pattern>/gast/lemma</url-pattern>
         <url-pattern>/gast/namenkommentar</url-pattern>
     </servlet-mapping>
     <servlet>
@@ -118,12 +118,12 @@
         <url-pattern>/einstellungen</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>MghLemmaServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.MghLemmaServlet</servlet-class>
+        <servlet-name>LemmaServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.LemmaServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>MghLemmaServlet</servlet-name>
-        <url-pattern>/mghlemma</url-pattern>
+        <servlet-name>LemmaServlet</servlet-name>
+        <url-pattern>/lemma</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>BackendEinzelbelegServlet</servlet-name>
