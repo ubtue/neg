@@ -2,9 +2,12 @@ package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
 import java.util.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "selektion_urkundeausstellerempfaenger")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SelektionUrkundeAusstellerEmpfaenger extends SelektionBezeichnung {
     @ManyToMany(mappedBy = "empfaenger")
     private Set<Urkunde> urkundeEmpfaenger = new HashSet<Urkunde>();

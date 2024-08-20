@@ -2,9 +2,12 @@ package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
 import java.util.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "selektion_funktion")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SelektionFunktion extends SelektionBezeichnung {
     @ManyToMany(mappedBy = "funktion")
     private Set<Einzelbeleg> einzelbeleg = new HashSet<>();
