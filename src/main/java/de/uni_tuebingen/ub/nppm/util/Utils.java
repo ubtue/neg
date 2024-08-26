@@ -31,6 +31,10 @@ public class Utils {
         return baseUrl;
     }
 
+     public static String getAjaxUrl(HttpServletRequest request) {
+        return getBaseUrl(request) + "/ajax";
+    }
+
     public static int determineId(HttpServletRequest request, HttpServletResponse response, String formular, JspWriter out) throws Exception {
         int id = Constants.UNDEFINED_ID;
 

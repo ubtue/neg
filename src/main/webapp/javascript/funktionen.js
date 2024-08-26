@@ -75,14 +75,15 @@ function copySearchedID(id, destination) {
   opener.document.getElementsByName(destination)[0].value = id;
 }
 
-function deleteEntry (table, id, returnpage, returnid) {
-  if (confirm (unescape("Soll dieser Eintrag wirklich gel%F6scht werden? Alle bisherigen %C4nderungen in diesem Formular werden verworfen!"))) {
+function deleteEntry (table, id, returnpage, returnid) {   
+  if (confirm (deleteEntryMessage)) {
     location.href = "dodelete.jsp?table="+encodeURIComponent(table)+"&ID="+encodeURIComponent(id)+"&returnpage="+encodeURIComponent(returnpage)+"&returnid="+encodeURIComponent(returnid);
   }
 }
 
 function deleteFile (table, attribute, id, returnpage) {
-  if (confirm (unescape("Soll dieser Eintrag wirklich gel%F6scht werden? Alle bisherigen %C4nderungen in diesem Formular werden verworfen!"))) {
+     
+  if (confirm (deleteEntryMessage)) {
     location.href = "dodeletefile.jsp?table="+encodeURIComponent(table)+"&attribute="+encodeURIComponent(attribute)+"&ID="+encodeURIComponent(id)+"&returnpage="+encodeURIComponent(returnpage);
   }
 }
