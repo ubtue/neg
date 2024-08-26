@@ -37,8 +37,8 @@ function transformCsvData(array $rows) : array {
         }
 
         $dataset = [
-            'selektionFunktionId' => $row[1],
-            'selektionFunktionBezeichnung' => $row[2],
+            'selektionFunktionId' => trim($row[1]),
+            'selektionFunktionBezeichnung' => trim($row[2]),
             'remove' => $remove,
             'selektionFunktionBezeichnungNeu' => $funktionNew,
         ];
@@ -58,21 +58,20 @@ function getTargetEntries($data) {
 }
 
 function generateSqlStatements(array $data) {
-    $sql = 'BEGIN;' . PHP_EOL;
-
-    // We need to change the isolation level for the transaction,
-    // since we want to SELECT what we have INSERTed before we COMMIT
-    $sql .= 'SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;' . PHP_EOL . PHP_EOL;
+    $sql = 'BEGIN;' . PHP_EOL . PHP_EOL;
 
     // Make sure all target entries exist
     $newEntries = getTargetEntries($data);
     foreach ($newEntries as $newEntry) {
-        $sql .= 'INSERT IGNORE INTO selektion_funktion (Bezeichnung) VALUES ("' . $newEntry . '");' . PHP_EOL;
+        $sql .= 'INSERT IGNORE INTO selektion_funktion (ID, Bezeichnung) SELECT MAX(ID)+1, "' . $newEntry . '" FROM selektion_funktion;' . PHP_EOL;
     }
     $sql .= PHP_EOL;
 
     // Process datasets
     foreach ($data as $dataset) {
+        if (in_array($dataset['selektionFunktionBezeichnung'], $newEntries))
+            continue;
+
         if ($dataset['remove']) {
             $sql .= 'DELETE FROM einzelbeleg_hatfunktion WHERE FunktionID = ' . $dataset['selektionFunktionId'] . ';' . PHP_EOL;
         } else {
@@ -90,9 +89,6 @@ function generateSqlStatements(array $data) {
         $sql .= 'DELETE FROM selektion_funktion WHERE ID = ' . $dataset['selektionFunktionId'] . ';' . PHP_EOL . PHP_EOL;
     }
     $sql .= 'COMMIT;' . PHP_EOL;
-
-    // Set isolation level back to default
-    $sql .= 'SET SESSION TRANSACTION ISOLATION LEVELREPEATABLE READ;' . PHP_EOL;
     return $sql;
 }
 
