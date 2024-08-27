@@ -1,3 +1,10 @@
+ALTER TABLE content
+ADD COLUMN `language` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL;
+
+ALTER TABLE content DROP INDEX `name`;
+
+ALTER TABLE content ADD UNIQUE INDEX `name_language` (`Bezeichnung`, `language`);
+
 UPDATE `neg`.`content` SET `context` = 'CMS', `language` = 'de' WHERE (`Bezeichnung` = 'hilfe.html');
 UPDATE `neg`.`content` SET `context` = 'CMS' WHERE (`Bezeichnung` = 'image001.png');
 UPDATE `neg`.`content` SET `context` = 'CMS' WHERE (`Bezeichnung` = 'image002.png');
