@@ -314,7 +314,7 @@
 315;395;Ausstellerin der vorliegenden Urkunde (prekarischer Vorbehalt);False;Aussteller;;;;;;;;;;;;;;;;;;;
 316;396;Ausstellerin der vorliegenden Urkunde (Subscriptio);False;Aussteller;;;;;;;;;;;;;;;;;;;
 317;397;Ausstellerin der vorliegenden Urkunde (Unterfertigung);False;Aussteller;;;;;;;;;;;;;;;;;;;
-318;398;Aussteller;False;Aussteller;;;;;;;;;;;;;;;;;;;
+318;398;Austeller;False;Aussteller;;;;;;;;;;;;;;;;;;;
 319;399;Ausstellerin der Urkunde;False;Aussteller;;;;;;;;;;;;;;;;;;;
 320;400;Autor;False;;;;;;;;;;;Autor;;;;;;;;;
 321;401;Autor der Vita;False;;;;;;;;;;;Autor;;;;;;;;;
@@ -382,7 +382,7 @@
 383;464;Bischof, Vorsteher des Klosters Hersfeld (Urkundenempfänger);False;;;;;Empfänger;;;;;;;;;;;;;;;
 384;465;Bischof, Vorsteher des Klosters Honau (Urkundenempfänger);False;;;;;Empfänger;;;;;;;;;;;;;;;
 385;466;Bittempfänger;False;;;;;Empfänger;;;;;;;;;;;;;;;
-386;467;Petent;False;;;;;;;;Petent;;;;;;;;;;;;
+386;467;Bittsteller;False;;;;;;;;Petent;;;;;;;;;;;;
 387;468;Bote des Uualpert;True;;;;;;;;;;;;;;;;;;;;
 388;469;Bruder des Testators;True;;;;;;;;;;;;;;;;;;;;
 389;470;Bruder des Tradenten Lantfrid (prekarischer Vorbehalt);True;;;;;;;;;;;;;;;;;;;;
@@ -393,7 +393,7 @@
 394;475;(Konsentient und Urkundenzeuge);False;;;;;;;Zeuge;;;;;;;;;;;;Konsentient;
 395;476;und Zeuge (Konsentient);False;;;;;;;Zeuge;;;;;;;;;;;;Konsentient;
 396;477;;True;;;;;;;;;;;;;;;;;;;;
-397;478;Konsentient;False;;;;;;;;;;;;;;;;;;;Konsentient;
+397;478;Bruder des Urkundenausstellers, Konsentient;False;;;;;;;;;;;;;;;;;;;Konsentient;
 398;479;Bürge;False;;;;;;;;;;;;;;;;;Bürge;;;
 399;480;Bürge, Aussteller;False;Aussteller;;;;;;;;;;;;;;;;Bürge;;;
 400;481;Bürge, Unterzeichnender, Aussteller;False;Aussteller;;;;;;;;;;;;;;;;Bürge;;;
@@ -431,7 +431,7 @@
 432;513;ehemaliger Inhaber des Streitobjektes Lemausum;True;;;;;;;;;;;;;;;;;;;;
 433;514;ehemaliger Inhaber des strittigen Besitzes in Bezu-la-Forêt;True;;;;;;;;;;;;;;;;;;;;
 434;515;Ehrenname des Adressaten;False;;;;;;;;;Adressat;;;;;;;;;;;
-435;516;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
+435;516;Eigenhändige Unterschrift des Testators (Subscriptio);False;;;;;;;;;;;;;;;Subskribent;;;;;
 436;517;Eigenpriester der zusammen mit den genannten Gütern dem Kloster Fulda geschenkt wird.;True;;;;;;;;;;;;;;;;;;;;
 437;518;Eigentümer;True;;;;;;;;;;;;;;;;;;;;
 438;519;Eine der Tradent(inn)en, die dem Kloster Fulda die Mark Rasdorf schenken.;True;;;;;;;;;;;;;;;;;;;;
@@ -468,7 +468,7 @@
 469;564;Gegner der Abtei St-Denis im Prozess des Jahres 709;True;;;;;;;;;;;;;;;;;;;;
 470;565;Gegner der Abtei Stablo-Malmedy im Streit um die villae Tofino und Silvestri;True;;;;;;;;;;;;;;;;;;;;
 471;566;Gegner des Bistums Le Mans im Streit um das Nonnenkloster Notre-Dame in Tuffé;True;;;;;;;;;;;;;;;;;;;;
-472;567;Höriger;False;;;;;;;;;;;;;;;;;;;;Höriger
+472;567;gehöhren zum Schenkungsgut;False;;;;;;;;;;;;;;;;;;;;Höriger
 473;568;Gelobender/Schenkender;True;;;;;;;;;;;;;;;;;;;;
 474;569;Gemahl der Angeklagten Ingober[...] und vormaliger Inhaber des Streitgutes;True;;;;;;;;;;;;;;;;;;;;
 475;570;Gemahlin des Beklagten Drogo, dessen Prozess im vorliegenden Placitum festgehalten wird;True;;;;;;;;;;;;;;;;;;;;
@@ -515,7 +515,7 @@
 516;611;h;True;;;;;;;;;;;;;;;;;;;;
 517;612;Herausgeber der Kopie;True;;;;;;;;;;;;;;;;;;;;
 518;613;Herr des Sigemund;True;;;;;;;;;;;;;;;;;;;;
-519;614;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
+519;614;hi testes in praesenti fuerunt;False;;;;;;;Zeuge;;;;;;;;;;;;;
 520;615;"Hofnarr König Liutbrands; vormaliger Inhaber von Gütern im Gebiet von Bologna, deren Übergang an das Kloster Nonantola durch das vorliegende Präzept bestätigt wird";True;;;;;;;;;;;;;;;;;;;;
 521;616;Hörige(r), der/die dem Kloster Fulda geschenkt wird;False;;;;;;;;;;;;;;;;;;;;Höriger
 522;617;Hörige(r), der/die durch die vorliegende Urkunde dem Kloster Fulda geschenkt wird;False;;;;;;;;;;;;;;;;;;;;Höriger
@@ -546,9 +546,9 @@
 547;642;Intervenient, auf deren Veranlassung hin der Urkundenaussteller das Privileg erteilt;False;Aussteller;;;;;;;;;;;;;;;;;;;
 548;643;Intervenient, auf dessen Veranlassung hin der Urkundenaussteller die Schenkung vollzieht;False;Aussteller;;;;;;;;;;;;;;;;;;;
 549;644;Intervenientin, auf deren Veranlassung hin der Urkundenaussteller die Schenkung vollzieht;False;Aussteller;;;;;;;;;;;;;;;;;;;
-550;645;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-551;646;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-552;647;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
+550;645;Isti dixerunt iurati.;False;;;;;;;Zeuge;;;;;;;;;;;;;
+551;646;"ISTI IURA VERUNT (Schwurliste; Elmshäuser/Hedwig, S. 46)";False;;;;;;;Zeuge;;;;;;;;;;;;;
+552;647;"Isti iuraverunt (Schwurliste; Elmshäuser/Hedwig, S. 66)";False;;;;;;;Zeuge;;;;;;;;;;;;;
 553;648;Iusto et Petro germanis;True;;;;;;;;;;;;;;;;;;;;
 554;649;Rekognoszent;False;;;;;;;;;;;;;;;;Recognoszent;;;;
 555;650;Kläger in dem Prozess, den das vorliegende Placitum festhält;True;;;;;;;;;;;;;;;;;;;;
@@ -556,7 +556,7 @@
 557;652;Konpatron des Klosters Prüm;True;;;;;;;;;;;;;;;;;;;;
 558;653;Konsenszeuge (Sohn des Urkundenausstellers Karlmann);False;Aussteller;;;;;;Zeuge;;;;;;;;;;;;;
 559;654;Konsentientin (Tochter des Tradenten);False;;;;;;;;;;;;;;;;;;;Konsentient;
-560;655;Schreiber;False;;;;;;;;;;;;;Schreiber;;;;;;;
+560;655;Kopiator;False;;;;;;;;;;;;;Schreiber;;;;;;;
 561;656;Käufer;False;;;;;;Käufer;;;;;;;;;;;;;;
 562;657;Käufer, Anrainer, Empfänger;False;;Besitznachbar;;;Empfänger;Käufer;;;;;;;;;;;;;;
 563;658;Käufer, Aussteller;False;Aussteller;;;;;Käufer;;;;;;;;;;;;;;
@@ -600,9 +600,9 @@
 601;696;Mitausstellerin der vorliegenden Schenkungsurkunde;False;Aussteller;;;;;;;;;;;;;;;;;;;
 602;697;Mitausstellerin der vorliegenden Urkunde;False;Aussteller;;;;;;;;;;;;;;;;;;;
 603;698;Mitausstellerin der vorliegenden Urkunde (Subscriptio);False;Aussteller;;;;;;;;;;;;;;;;;;;
-604;699;Konsentient;False;;;;;;;;;;;;;;;;;;;Konsentient;
-605;700;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
-606;701;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
+604;699;Mitglied des zustimmenden Klerus;False;;;;;;;;;;;;;;;;;;;Konsentient;
+605;700;Mitunterzeichner;False;;;;;;;;;;;;;;;Subskribent;;;;;
+606;701;Mitunterzeichner: Zustimmender;False;;;;;;;;;;;;;;;Subskribent;;;;;
 607;702;Mundwart (mundeburo) des Beklagten, dessen Prozess in dem vorliegenden Placitum festgehalten wird;True;;;;;;;;;;;;;;;;;;;;
 608;703;Mutter des Testators;True;;;;;;;;;;;;;;;;;;;;
 609;704;Mutter des Tradenten Benedict, für deren Seelenheil die vorliegende Schenkung erfolgt.;True;;;;;;;;;;;;;;;;;;;;
@@ -743,7 +743,7 @@
 744;839;Petent, auf dessen Wirken hin die Schenkung vollzogen wird;False;;;;;;;;Petent;;;;;;;;;;;;
 745;840;Petent, Partei in einem Rechtsstreit;False;;;;;;;;Petent;;;;;;;;;;;;
 746;841;Petentin um die Genehmigung einer Erbpacht, Empfängerin;False;;;;;Empfänger;;;Petent;;;;;;;;;;;;
-747;842;Petent;False;;;;;;;;Petent;;;;;;;;;;;;
+747;842;petiuimus [Fortunato et Bonuald] licentiam...Talesperiani...et Uualp(er)ti;False;;;;;;;;Petent;;;;;;;;;;;;
 748;843;Propst des Klosters Kesseling;True;;;;;;;;;;;;;;;;;;;;
 749;844;Prozessgegner der Abtei St-Denis;True;;;;;;;;;;;;;;;;;;;;
 750;845;Prozessgegner der Abtei St-Denis im Streit um die villa Boran-sur-Oise;True;;;;;;;;;;;;;;;;;;;;
@@ -754,7 +754,7 @@
 755;850;Prozessgegner des Abtes von St-Germain-des-Prés im Streit um den Wald von Mons Adraldus;True;;;;;;;;;;;;;;;;;;;;
 756;851;Prozessgegnerin der Abtei St-Denis im Streit um die villa Mariolo;True;;;;;;;;;;;;;;;;;;;;
 757;852;Referendar, für den das vorliegende Placitum in Stellvertretung rekognosziert wird;False;;;;;;;;;;;;Referendar;;;;;;;;
-758;853;Referendar;False;;;;;;;;;;;;Referendar;;;;;;;;
+758;853;referente viro venerabili Agripino diacono [...], cognovimus;False;;;;;;;;;;;;Referendar;;;;;;;;
 759;854;Reichter;True;;;;;;;;;;;;;;;;;;;;
 760;855;Rekognoszent des Gestaprotokolls;False;;;;;;;;;;;;;;;;Recognoszent;;;;
 761;856;Rekognoszent;False;;;;;;;;;;;;;;;;Recognoszent;;;;
@@ -767,11 +767,11 @@
 768;863;Sachwalter der Adalgude vor dem Königsgericht;True;;;;;;;;;;;;;;;;;;;;
 769;864;Sachwalter der klagenden Partei vor dem Königsgericht, dessen Urteil im vorliegenden Placitum festgehalten wird;True;;;;;;;;;;;;;;;;;;;;
 770;866;Schenkende;True;;;;;;;;;;;;;;;;;;;;
-771;867;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
+771;867;"Schenkende; Unterzeichnende";False;;;;;;;;;;;;;;;Subskribent;;;;;
 772;868;Schenkender;True;;;;;;;;;;;;;;;;;;;;
 773;869;Schenkender und Auftraggeber;True;;;;;;;;;;;;;;;;;;;;
 774;870;Schenkender und Autor;False;;;;;;;;;;;Autor;;;;;;;;;
-775;871;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
+775;871;Schenkender, Unterzeichnender;False;;;;;;;;;;;;;;;Subskribent;;;;;
 776;872;Schenkender, Unterzeichnender, Aussteller;False;Aussteller;;;;;;;;;;;;;;;;;;;
 777;873;Schenkungsempfänger;False;;;;;Empfänger;;;;;;;;;;;;;;;
 778;874;Schenkungsempfänger, Empfänger;False;;;;;Empfänger;;;;;;;;;;;;;;;
@@ -817,7 +817,7 @@
 818;921;Schwiegersohn des Urkundenausstellers Hilduwin, dem von diesem diverse Erb- und Eigengüter gegen einen jährlichen Zins an das Kloster Echternach überschrieben werden;False;Aussteller;;;;;;;;;;;;;;;;;;;
 819;922;Schwiegervater (socer) des Beklagten Drogo, dessen Prozess im vorliegenden Placitum festgehalten wird;True;;;;;;;;;;;;;;;;;;;;
 820;923;Schüler Erminos, Augenzeuge der Ereignisse;False;;;;;;;Zeuge;;;;;;;;;;;;;
-821;924;Schreiber;False;;;;;;;;;;;;;Schreiber;;;;;;;
+821;924;Scriptor;False;;;;;;;;;;;;;Schreiber;;;;;;;
 822;925;Sohn der beiden Urkundenaussteller Altfrid und Folcrat;False;Aussteller;;;;;;;;;;;;;;;;;;;
 823;926;Sohn der Tradentin (prekarischer Vorbehalt);True;;;;;;;;;;;;;;;;;;;;
 824;927;Sohn der Tradentin Theodredana (Konsentient);False;;;;;;;;;;;;;;;;;;;Konsentient;
@@ -848,7 +848,7 @@
 849;962;Stimmt dem Verkauf zu;True;;;;;;;;;;;;;;;;;;;;
 850;963;Streitpartei;True;;;;;;;;;;;;;;;;;;;;
 851;964;Stv. Rekognoszent, Urkundenmundant;False;;;;;;;;;;;;;;;;Recognoszent;;;;
-852;965;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
+852;965;Subscriptio;False;;;;;;;;;;;;;;;Subskribent;;;;;
 853;966;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
 854;967;Subskribent der vorliegenden Urkunde;False;;;;;;;;;;;;;;;Subskribent;;;;;
 855;968;Tauschpartner;False;;;Partner eines Tausches;;;;;;;;;;;;;;;;;
@@ -878,17 +878,17 @@
 879;992;terrula Pisinnuli;True;;;;;;;;;;;;;;;;;;;;
 880;993;Testamentsvollstrecker;True;;;;;;;;;;;;;;;;;;;;
 881;994;Testamentszeuge (Subskribent);False;;;;;;;Zeuge;;;;;;;;Subskribent;;;;;
-882;995;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-883;996;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-884;997;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-885;998;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-886;999;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-887;1000;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-888;1001;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-889;1002;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-890;1003;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-891;1004;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-892;1005;Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
+882;995;Testator;False;;;;;;;Zeuge;;;;;;;;;;;;;
+883;996;testiert das Urteil des Hausmeiergerichts;False;;;;;;;Zeuge;;;;;;;;;;;;;
+884;997;testiert das Urteil des Königsgerichtes;False;;;;;;;Zeuge;;;;;;;;;;;;;
+885;998;testiert das Urteil des Königsgerichts;False;;;;;;;Zeuge;;;;;;;;;;;;;
+886;999;testiert das Urteil des Königsgerichts, welches in dem vorliegenden Placitum festgehalten wird;False;;;;;;;Zeuge;;;;;;;;;;;;;
+887;1000;testiert das Urteil des Königsgerichts, wie es in dem vorliegenden Placitum festgehalten wird;False;;;;;;;Zeuge;;;;;;;;;;;;;
+888;1001;testiert das vom Königsgericht gefundene Urteil;False;;;;;;;Zeuge;;;;;;;;;;;;;
+889;1002;testiert dem König das Urteil des Hofgerichtes;False;;;;;;;Zeuge;;;;;;;;;;;;;
+890;1003;testiert dem König das Urteil des Königsgerichts;False;;;;;;;Zeuge;;;;;;;;;;;;;
+891;1004;testiert dem König den Inhalt der vor Gericht vorgelegten Urkunde;False;;;;;;;Zeuge;;;;;;;;;;;;;
+892;1005;testiert die Ablegung des Eides, die der Beklagte Amalgarius zur Erweisung seines Rechtes geleistet hat;False;;;;;;;Zeuge;;;;;;;;;;;;;
 893;1006;Tochter der Tradentin Reginswind (Konsentientin);False;;;;;;;;;;;;;;;;;;;Konsentient;
 894;1007;Tochter des Urkundenausstellers (prekarischer Vorbehalt);False;Aussteller;;;;;;;;;;;;;;;;;;;
 895;1008;Tochter des Urkundenausstellers, zu deren Seelenheil die vorliegende Schenkung erfolgt;False;Aussteller;;;;;;;;;;;;;;;;;;;
@@ -896,16 +896,16 @@
 897;1010;Tradent von Gütern im Seillegau (an Pippin d. J.), die Karl der Große nun der Kirche in Salonne schenkt;True;;;;;;;;;;;;;;;;;;;;
 898;1011;Tradentin (Vorbesitzerin eines Weinbergs, der durch die vorliegende Urkunde dem Kloster Echternach geschenkt wird);True;;;;;;;;;;;;;;;;;;;;
 899;1012;Tradentin, die durch die vorliegende Urkunde ihr der Abtei Fulda geschenktes Eigen als prekarischen Besitz auf Lebenszeit zurückerhält;True;;;;;;;;;;;;;;;;;;;;
-900;1014;Höriger;False;;;;;;;;;;;;;;;;;;;;Höriger
+900;1014;Unfreie(r);False;;;;;;;;;;;;;;;;;;;;Höriger
 901;1016;Unterfertigender Schreiber;False;;;;;;;;;;;;;Schreiber;;;;;;;
-902;1017;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
-903;1018;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
-904;1019;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
-905;1020;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
-906;1021;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
+902;1017;Unterfertigung;False;;;;;;;;;;;;;;;Subskribent;;;;;
+903;1018;Unterfertigung der Königinmutter;False;;;;;;;;;;;;;;;Subskribent;;;;;
+904;1019;Unterfertigung der Königinmutter per Monogramm;False;;;;;;;;;;;;;;;Subskribent;;;;;
+905;1020;Unterzeichnender;False;;;;;;;;;;;;;;;Subskribent;;;;;
+906;1021;Unterzeichnender der Schenkungsurkunde;False;;;;;;;;;;;;;;;Subskribent;;;;;
 907;1022;Subskribent, Schenkender;False;;;;;;;;;;;;;;;Subskribent;;;;;
 908;1023;Unterzeichnender, Zeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-909;1024;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
+909;1024;Unterzeichner der Schenkungsurkunde;False;;;;;;;;;;;;;;;Subskribent;;;;;
 910;1025;Urheber der Besitzübertragung, die durch die vorliegende Urkunde bestätigt wird;True;;;;;;;;;;;;;;;;;;;;
 911;1026;Urheber der Schenkung, die durch das vorliegende Präzept bestätigt wird;True;;;;;;;;;;;;;;;;;;;;
 912;1027;Urheber des vorliegenden Testamentes;True;;;;;;;;;;;;;;;;;;;;
@@ -931,11 +931,11 @@
 932;1047;Urkundenempfänger;False;;;;;Empfänger;;;;;;;;;;;;;;;
 933;1048;Urkundenempfänger (Abt des Klosters Münster im Gregoriental);False;;;;;Empfänger;;;;;;;;;;;;;;;
 934;1049;Urkundenempfänger und Empfänger der Schenkung;False;;;;;Empfänger;;;;;;;;;;;;;;;
-935;1050;Schreiber;False;;;;;;;;;;;;;Schreiber;;;;;;;
+935;1050;Urkundenkopist;False;;;;;;;;;;;;;Schreiber;;;;;;;
 936;1051;Urkundenschreiber;False;;;;;;;;;;;;;Schreiber;;;;;;;
 937;1052;Urkundenschreiber und Notar;False;;;;;;;;;;;;;Schreiber;Notar;;;;;;
 938;1053;Urkundenschreiber und Urkundenkopist;False;;;;;;;;;;;;;Schreiber;;;;;;;
-939;1054;Subskribent;False;;;;;;;;;;;;;;;Subskribent;;;;;
+939;1054;Urkundenunterzeichner;False;;;;;;;;;;;;;;;Subskribent;;;;;
 940;1055;Urkundenzeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
 941;1056;Urkundenzeuge (Bruder des Urkundenausstellers);False;Aussteller;;;;;;Zeuge;;;;;;;;;;;;;
 942;1057;Urkundenzeuge (Doppelnennung aufgrund eines Irrtums des Schreibers);False;;;;;;;Zeuge;;;;;;Schreiber;;;;;;;
@@ -969,7 +969,7 @@
 970;1085;Vater des Urkundenausstellers, Herzog Arnulfs;False;Aussteller;;;;;;;;;;;;;;;;;;;
 971;1086;Vater des Urkundenausstellers, Pippins d. M.;False;Aussteller;;;;;;;;;;;;;;;;;;;
 972;1087;Vater des vir inluster Dagobert, dessen Landschenkung an St-Denis durch die vorliegende Urkunde bestätigt wird;True;;;;;;;;;;;;;;;;;;;;
-973;1088;Autor;False;;;;;;;;;;;Autor;;;;;;;;;
+973;1088;Verfasser;False;;;;;;;;;;;Autor;;;;;;;;;
 974;1089;Verfasser der Schenkungsurkunde, Notar;False;;;;;;;;;;;;;;Notar;;;;;;
 975;1090;Verfügender;True;;;;;;;;;;;;;;;;;;;;
 976;1091;Verfügender/ Schenkender;True;;;;;;;;;;;;;;;;;;;;
@@ -1112,7 +1112,7 @@
 1113;1228;Zeuge, Unterzeichnender der Verkaufsurkunde;False;;;;;;;Zeuge;;;;;;;;;;;;;
 1114;1229;Zeuge, Vogt des Bischofs Willibrord von Utrecht;False;;;;;;;Zeuge;;;;;;;;;;;;;
 1115;1230;Zeugin;False;;;;;;;Zeuge;;;;;;;;;;;;;
-1116;1231;Konsentient;False;;;;;;;;;;;;;;;;;;;Konsentient;
+1116;1231;Zustimmender;False;;;;;;;;;;;;;;;;;;;Konsentient;
 1117;1232;[dul]cissime genetricae nostrae Iddane;True;;;;;;;;;;;;;;;;;;;;
 1118;1233;Äbtissin (des Nonnenklosters Wenkheim?), Urkundenempfängerin;False;;;;;Empfänger;;;;;;;;;;;;;;;
 1119;1234;"Äbtissin (Schwester des Tradenten Matto); für deren Seelenheil die vorliegende Schenkung zugunsten des Klosters Fulda u.a. erfolgt.";True;;;;;;;;;;;;;;;;;;;;
@@ -1126,7 +1126,7 @@
 1127;1243;Intervenient;True;;;;;;;;;;;;;;;;;;;;
 1128;1244;Prozesspartei;True;;;;;;;;;;;;;;;;;;;;
 1129;1245;Schwurzeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
-1130;1246;Höriger;False;;;;;;;;;;;;;;;;;;;;Höriger
+1130;1246;Kolone, der durch die vorliegende Urkunde dem Kloster Farfa übertragen wird;False;;;;;;;;;;;;;;;;;;;;Höriger
 1131;1248;Prozessgegner des Klosters Farfa;True;;;;;;;;;;;;;;;;;;;;
 1132;1249;Prozessvertreter des Klosters Farfa;True;;;;;;;;;;;;;;;;;;;;
 1133;1250;Konsentient;False;;;;;;;;;;;;;;;;;;;Konsentient;
@@ -1135,7 +1135,7 @@
 1136;1253;Konsentientin;False;;;;;;;;;;;;;;;;;;;Konsentient;
 1137;1254;Königsbote;True;;;;;;;;;;;;;;;;;;;;
 1138;1255;Stifter(in);True;;;;;;;;;;;;;;;;;;;;
-1139;1256;Schreiber;False;;;;;;;;;;;;;Schreiber;;;;;;;
+1139;1256;Kopist;False;;;;;;;;;;;;;Schreiber;;;;;;;
 1140;1257;Miterbe;True;;;;;;;;;;;;;;;;;;;;
 1141;1258;Beauftragter;True;;;;;;;;;;;;;;;;;;;;
 1142;1259;Herzogsmann;True;;;;;;;;;;;;;;;;;;;;
