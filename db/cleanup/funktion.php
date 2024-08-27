@@ -75,16 +75,18 @@ function generateSqlStatements(array $data) {
         if ($dataset['remove']) {
             $sql .= 'DELETE FROM einzelbeleg_hatfunktion WHERE FunktionID = ' . $dataset['selektionFunktionId'] . ';' . PHP_EOL;
         } else {
+            $sqlInsert = '';
+            $sqlUpdate = '';
             foreach ($dataset['selektionFunktionBezeichnungNeu'] as $funktionNr => $funktionNew) {
                 $subselectExistingFunktionId = 'SELECT ID FROM selektion_funktion WHERE Bezeichnung = "' . $funktionNew . '"';
                 if ($funktionNr == 0) {
-                    $sql .= 'UPDATE einzelbeleg_hatfunktion SET FunktionID = (' . $subselectExistingFunktionId . ') WHERE FunktionID = ' . $dataset['selektionFunktionId'] . ';' . PHP_EOL;
+                    $sqlUpdate .= 'UPDATE einzelbeleg_hatfunktion SET FunktionID = (' . $subselectExistingFunktionId . ') WHERE FunktionID = ' . $dataset['selektionFunktionId'] . ';' . PHP_EOL;
                 } else {
-                    $subselectForInsert = 'SELECT EinzelbelegID, (' . $subselectExistingFunktionId . ') FROM einzelbeleg_hatfunktion WHERE FunktionID = (' . $subselectExistingFunktionId . ');' . PHP_EOL;
-                    $sql .= 'INSERT INTO einzelbeleg_hatfunktion (EinzelbelegID, FunktionID) ' . $subselectForInsert . PHP_EOL;
+                    $subselectForInsert = 'SELECT EinzelbelegID, (' . $subselectExistingFunktionId . ') FROM einzelbeleg_hatfunktion WHERE FunktionID = ' . $dataset['selektionFunktionId'];
+                    $sqlInsert .= 'INSERT INTO einzelbeleg_hatfunktion (EinzelbelegID, FunktionID) ' . $subselectForInsert . ';' . PHP_EOL;
                 }
             }
-
+            $sql .= $sqlInsert . $sqlUpdate;
         }
         $sql .= 'DELETE FROM selektion_funktion WHERE ID = ' . $dataset['selektionFunktionId'] . ';' . PHP_EOL . PHP_EOL;
     }
