@@ -6,6 +6,8 @@
 
 <%
 
+  String language = Language.getLanguage(request);
+  String deleteEntryMessage = DatenbankDB.getLabel(language, "funktionen", "deleteEntry");
   String id = "-1";
   String returnId = "-1";
   String formular = request.getParameter("Formular");
@@ -101,7 +103,12 @@
   }
 %>
 
-<% if (visible!=null && visible.equals("hidden")) out.println("<div style=\"visibility:hidden\">");%>
+<% if (visible!=null && visible.equals("hidden")) out.println("<div class=\"container\" style=\"visibility:hidden\">");%>
+
+<script type="text/javascript">
+    var deleteEntryMessage = "<%= deleteEntryMessage %>"; // Java-Variable in JavaScript-Variable umwandeln
+</script>
+
 
 <%@ page import="java.util.*" isThreadSafe="false" %>
 

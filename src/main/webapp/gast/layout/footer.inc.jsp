@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <footer id="ut-identifier--footer" class="ut-page__footer ut-page-footer">
     <div class="container">
@@ -27,15 +28,16 @@
                     <div class="ut-panel__collapse collapse" id="footerpanel-2-pc">
                         <div class="ut-panel__body">
                             <div class="ut-link-register ut-link-register--color-text ut-link-register--without-icons">
-                                <div class="ut-link-register ut-page-footer__link-list">
+                               <div class="ut-link-register ut-page-footer__link-list">
                                     <div class="ut-link-register__link-list">
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/quellenliste">Quellenliste</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/tagungen">Tagungen</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/mitglieder">Mitglieder</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/projekte">Projekte</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/publikationen">Publikationen</a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="http://www.neg.uni-tuebingen.de/?q=de/ziele">Ziele</a>
-                                    </div>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=ziele"><% Language.printTextfield(out, session, "ziele", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=datenbank"><% Language.printTextfield(out, session, "datenbank", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=quellenliste"><% Language.printTextfield(out, session, "quellenliste", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=tagungen"><% Language.printTextfield(out, session, "tagungen", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=mitglieder"><% Language.printTextfield(out, session, "mitglieder", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=projekte"><% Language.printTextfield(out, session, "projekte", "Titel"); %></a>
+                                            <a class="ut-link ut-link--internal ut-link--block" href="/neg/gast/infos?sharedHtml=publikationen"><% Language.printTextfield(out, session, "publikationen", "Titel"); %></a>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -64,7 +66,7 @@
                 <nav class="ut-nav ut-nav--meta-bottom" aria-label="Metanavigation">
                     <ul class="ut-nav__list ">
                         <li class="ut-nav__item " data-level-count="1">
-                            <a class="ut-link ut-nav__link" href="<%=Utils.getBaseUrl(request)%>/gast/impressum">Impressum</a>
+                            <a class="ut-link ut-nav__link" href="/neg/gast/infos?sharedHtml=impressum"><% Language.printTextfield(out, session, "impressum", "Titel"); %></a>
                         </li>
                     </ul>
                 </nav>
@@ -72,7 +74,7 @@
         </div>
     </div>
     <a href="#top" title="To top" class="top-link">
-	<span class="ut-icon ut-icon-up-big ut-icon__to-top" role="img" aria-label="Nach oben scrollen"></span>
+        <span class="ut-icon ut-icon-up-big ut-icon__to-top" role="img" aria-label="Nach oben scrollen"></span>
     </a>
 </footer>
 

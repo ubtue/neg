@@ -23,10 +23,10 @@
 
     if (!title.contains("gast_")) {
         List<DatenbankFilter> filters = DatenbankDB.getListFilter();
-        out.println("<select name=\"filter\">");
+        out.println("<select class=\"ut-form__select ut-form__field \" name=\"filter\" id=\"id_field\">");
         for (DatenbankFilter datenbankFilter : filters) {
             if (datenbankFilter.getFormular().equals(title)) {
-                out.println("<option value=\"" + datenbankFilter.getNummer() + "\"" + (datenbankFilter.getNummer() == filter ? " selected" : "") + ">" + DBtoHTML(datenbankFilter.getBezeichnung()) + "</option>");
+                out.println("<option label=\"" + DBtoHTML(datenbankFilter.getBezeichnung()) + "\"value=\"" + datenbankFilter.getNummer() + "\"" + (datenbankFilter.getNummer() == filter ? " selected" : "") + ">" + DBtoHTML(datenbankFilter.getBezeichnung()) + "</option>");
             }
         }
         out.println("</select>");

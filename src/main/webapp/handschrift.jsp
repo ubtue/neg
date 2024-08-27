@@ -27,20 +27,20 @@
 
 <div
 	onLoad="javascript:onoff('tab2','tab1'); onoff('tab1','tab2');urlRewrite(<%=id%>);">
-<FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
-<jsp:include page="layout/image.inc.html" /> <jsp:include
-	page="layout/titel.inc.jsp">
+<FORM method="POST">
+    <jsp:include page="layout/titel.inc.jsp">
 	<jsp:param name="formTitle" value="Textzeugen" />
 	<jsp:param name="title" value="Handschrift" />
 	<jsp:param name="ID" value="<%= id %>" />
 	<jsp:param name="size" value="" />
 	<jsp:param name="Formular" value="handschrift" />
-</jsp:include> <jsp:include page="inc.erzeugeFormular.jsp">
+    </jsp:include>
+    <jsp:include page="inc.erzeugeFormular.jsp">
 	<jsp:param name="ID" value="<%= id %>" />
 	<jsp:param name="Formular" value="handschrift" />
 	<jsp:param name="Datenfeld" value="ID" />
 	<jsp:param name="size" value="" />
-</jsp:include>
+    </jsp:include>
 
 <div id="form">
   <table style="width:100%;">
@@ -71,7 +71,7 @@
 	<li><span>
              <% Language.printTextfield(out,session, formular,"TabUeberlieferung");%>
             </span></li>
-	<li><a href="javascript:onoff('tab2','tab1');"> 
+	<li><a href="javascript:onoff('tab2','tab1');">
              <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
             </a></li>
 </ul>

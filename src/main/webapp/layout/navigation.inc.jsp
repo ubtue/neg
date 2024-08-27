@@ -69,7 +69,12 @@
     </a>
     <br>
     <hr>
-    <a href="ohneVerknuepfung">offene Verkn&uuml;pfung</a>
+    <a href="ohneVerknuepfung">
+        <jsp:include page="../inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="openLink"/>
+            <jsp:param name="Textfeld" value="Titel"/>
+        </jsp:include>
+    </a>
     <br>
     <hr>
     <a href="freie_suche">
@@ -101,10 +106,10 @@
     <br>
     <hr>
     <a href="file">
-        <%
-            DatenbankTexte label = DatenbankTexteDB.getText("navigation", "InhaltBearbeiten");
-        %>
-        <%= label.getDe()%>
+        <jsp:include page="../inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="inhaltBearbeiten"/>
+            <jsp:param name="Textfeld" value="Titel"/>
+        </jsp:include>
     </a>
     <%
         }
@@ -112,7 +117,12 @@
     <br>
     <hr>
     <hr>
-    <a href="logout?go=gast">Abmelden</a>
+    <a href="logout?go=gast">
+        <jsp:include page="../inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="abmelden"/>
+            <jsp:param name="Textfeld" value="Titel"/>
+        </jsp:include>
+    </a>
     <br>
     <br>
     <%
@@ -140,8 +150,10 @@
         }
     %>
     <br>
-    <jsp:include page="../forms/language.jsp">
-        <jsp:param name="ID" value="<%= request.getParameter("ID")%>"/>
-        <jsp:param name="title" value="<%= request.getParameter("title")%>"/>
-    </jsp:include>
+    <FORM method="POST">
+        <jsp:include page="../forms/language.jsp">
+            <jsp:param name="ID" value="<%= request.getParameter("ID")%>"/>
+            <jsp:param name="title" value="<%= request.getParameter("title")%>"/>
+        </jsp:include>
+    </form>
 </div>

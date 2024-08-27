@@ -56,5 +56,7 @@
     if (newid2 != null)
         newid = newid2;
 
-    out.println("<a class='pager " + backgroundClass + "' href='?ID=" + (request.getParameter("Command").equals("new") ? "-1" : newid) + "'></a>");
+
+    out.println("<a class='ut-link pager " + backgroundClass + "' href='?ID=" + (request.getParameter("Command").equals("new") ? "-1" : newid) + "'></a>");
+
 %>

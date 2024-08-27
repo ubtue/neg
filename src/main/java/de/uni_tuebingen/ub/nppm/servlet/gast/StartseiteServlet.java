@@ -13,7 +13,7 @@ public class StartseiteServlet extends AbstractGastServlet {
 
     @Override
     protected String getTitle() {
-        return "Startseite";
+        return "startseite";
     }
 
     @Override

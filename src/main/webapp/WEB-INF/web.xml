@@ -84,15 +84,7 @@
     <servlet-mapping>
         <servlet-name>QuelleServlet</servlet-name>
         <url-pattern>/gast/quelle</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>HilfeServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.HilfeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>HilfeServlet</servlet-name>
-        <url-pattern>/gast/hilfe</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>    
     <servlet>
         <servlet-name>StartseiteServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.StartseiteServlet</servlet-class>
@@ -108,8 +100,16 @@
     <servlet-mapping>
         <servlet-name>ImpressumServlet</servlet-name>
         <url-pattern>/gast/impressum</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>    
     <servlet>
+        <servlet-name>SharedHtmlServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.SharedHtmlServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SharedHtmlServlet</servlet-name>
+        <url-pattern>/gast/infos</url-pattern>
+    </servlet-mapping>
+    <servlet>      
         <servlet-name>EinstellungenServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinstellungenServlet</servlet-class>
     </servlet>
@@ -156,6 +156,14 @@
     <servlet-mapping>
         <servlet-name>BackendPersonServlet</servlet-name>
         <url-pattern>/person</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>BackendBerechneDateiSpracheServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.BerechneDateiSpracheServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BackendBerechneDateiSpracheServlet</servlet-name>
+        <url-pattern>/berechne</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>BackendEditionServlet</servlet-name>
@@ -271,7 +279,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ShowContentServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ShowContentServlet</servlet-class>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ShowContentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ShowContentServlet</servlet-name>

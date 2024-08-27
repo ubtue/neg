@@ -31,9 +31,7 @@
 
 <div
     onLoad="javascript:onoff('tab4', 'tab1'); onoff('tab1', 'tab4');urlRewrite(<%=id%>);">
-    <FORM method="POST">
-        <jsp:include page="layout/navigation.inc.jsp" />
-        <jsp:include page="layout/image.inc.html" />
+    <FORM method="POST">        
         <jsp:include page="layout/titel.inc.jsp">
             <jsp:param name="title" value="Einzelbeleg" />
             <jsp:param name="ID" value="<%=id%>" />
@@ -732,6 +730,15 @@
                         <jsp:param name="Formular" value="einzelbeleg" />
                         <jsp:param name="Datenfeld" value="Funktion" />
                     </jsp:include>
+                    <br />
+                    
+                    <jsp:include page="inc.erzeugeFormular.jsp">
+                        <jsp:param name="ID" value="<%=id%>" />
+                        <jsp:param name="Formular" value="einzelbeleg" />
+                        <jsp:param name="Datenfeld" value="NewAreal" />
+                    </jsp:include>
+
+
                 </div>
             </div>
 

@@ -5,18 +5,22 @@
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-<%    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
-        int id = -1;
-        String form = request.getParameter("form");
-        try {
-            if (request.getParameter("ID").equals("-1")) {
-                id = SaveHelper.getMaxId(form) + 1;
-            } else {
-                id = Integer.parseInt(request.getParameter("ID"));
-            }
-        } catch (Exception e) {
-            out.println(e);
-        }
+<%
+    String belegform = "keine Belegform";
+    String form = request.getParameter("form");
+    int id = -1;
+    try {
+        if (request.getParameter("ID").equals("-1")) {
+            id = SaveHelper.getMaxId(form) + 1;
+        } else {
+            id = Integer.parseInt(request.getParameter("ID"));
+    }
+}catch (Exception e) {
+        out.println(e);
+    }
+
+
+    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
 
         boolean exist = SaveHelper.existForm(form, id);
         if (!form.equals("urkunde") && !exist) {
@@ -250,30 +254,27 @@
                     }
                 } // ENDE Datensatz neu
             } // ENDE Bemerkungsfeld
-          // Namenkommentar Editor
+            // Namenkommentar Editor
             else if (feldtyp != null && feldtyp.equals("nkeditor") && zieltabelle != null) {
                 String temp_datenfeld = request.getParameter(datenfeld);
 
                 if (temp_datenfeld != null && temp_datenfeld.equals("on")) {
 
-                            Date d = new Date();
-                            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            String formattedDate = sf.format(d);
+                    Date d = new Date();
+                    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String formattedDate = sf.format(d);
 
-                            Map<String, String> valueMap = new HashMap<>();
+                    Map<String, String> valueMap = new HashMap<>();
 
-                            if(formularAttribut.equals("NamenkommentarID"))
-                            {
-                                valueMap.put("NamenkommentarID", String.valueOf(id));
-                            }
-                            else if(formularAttribut.equals("MGHLemmaID"))
-                            {
-                                valueMap.put("MGHLemmaID", String.valueOf(id));
-                            }
+                    if (formularAttribut.equals("NamenkommentarID")) {
+                        valueMap.put("NamenkommentarID", String.valueOf(id));
+                    } else if (formularAttribut.equals("MGHLemmaID")) {
+                        valueMap.put("MGHLemmaID", String.valueOf(id));
+                    }
 
-                            valueMap.put("BenutzerID", String.valueOf(session.getAttribute("BenutzerID")));
-                            valueMap.put("Zeitstempel", formattedDate);
-                            SaveHelper.insert(zieltabelle, valueMap);
+                    valueMap.put("BenutzerID", String.valueOf(session.getAttribute("BenutzerID")));
+                    valueMap.put("Zeitstempel", formattedDate);
+                    SaveHelper.insert(zieltabelle, valueMap);
                 }
             } // ENDE NamenkommentarEditor
             // combined
@@ -461,4 +462,128 @@
 <%
         }
     } // ENDE if (speichern)
+
+if (form.equals("einzelbeleg")) {
+
+try{
+
+
+
+Einzelbeleg lastEinzelbeleg = EinzelbelegDB.getById(id);
+boolean hasLemma = lastEinzelbeleg.getMghLemma().size() > 0;
+boolean hasZusatzNamenKommentar = lastEinzelbeleg.getNamenKommentar().size() > 0;
+belegform = lastEinzelbeleg.getBelegform(); // z.B. Sebastianus
+
+
+if (!hasZusatzNamenKommentar) { %>
+
+    <script>
+        $(function () {
+            var einzelbelegID = <%= id %>;
+
+            let ajaxUrl = '<%= Utils.getAjaxUrl(request) %>';
+
+            // GET-Anfrage zum DetectZusatzNamenKommentar
+            $.ajax({
+                type: "GET",
+                url: ajaxUrl,
+                data: { action: "detectZusatzNamenKommentar", EinzelbelegID: einzelbelegID },
+                dataType: "json",
+                success: function (data) {
+
+                    if (data.outputListZ && !<%= hasZusatzNamenKommentar %>) {
+                        var output = data.outputListZ.join('\n');
+                        if (confirm(output)) {
+                            var postData = { action: "confirmZusatzNamenKommentar", EinzelbelegID: einzelbelegID };
+                            if (data.namenkommentarID) {
+                                postData.namenkommentarID = data.namenkommentarID;
+                            }
+
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrl,
+                                data: postData,
+                                dataType: "json",
+                                success: function (response) {
+                                    location.reload();
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    console.error('Post Error:', textStatus, errorThrown);
+                                }
+                            });
+                        }
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Get Error:', textStatus, errorThrown);
+                }
+            });
+        });
+</script>
+    <% } %>
+
+        <% if (!hasLemma) { %>
+
+            <script>
+                $(function () {
+                    var einzelbelegID = <%= id %>;
+
+                    let ajaxUrl = '<%= Utils.getAjaxUrl(request) %>';
+
+                    // GET-Anfrage zum DetectLemma
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrl,
+                        data: { action: "detectLemma", EinzelbelegID: einzelbelegID },
+                        dataType: "json",
+                        success: function (data) {
+
+                            // Assuming the server response is a JSON object with the key "outputList" and optionally "lemmaID"
+                            if (data.outputListL && !<%= hasLemma %>) {
+                                var output = data.outputListL.join('\n');
+                                if (confirm(output)) {
+                                    // POST-Anfrage zum ConfirmLemma
+                                    var postData = { action: "confirmLemma", EinzelbelegID: einzelbelegID };
+                                    if (data.lemmaID) {
+                                        postData.lemmaID = data.lemmaID;
+                                    }
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: ajaxUrl,
+                                        data: postData,
+                                        dataType: "json",
+                                        success: function (response) {
+                                            location.reload();
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            console.error('Post Error:', textStatus, errorThrown);
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error('Get Error:', textStatus, errorThrown);
+                        }
+                    });
+                });
+</script>
+
+
+            <% } }catch(Exception e){
+
+%>
+
+<script>
+
+        console.log("<%= e %>")
+
+</script>
+
+<%
+
+}
+}
+
 %>

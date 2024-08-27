@@ -123,6 +123,11 @@
             <artifactId>jstree</artifactId>
             <version>3.3.15</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.8</version> <!-- Aktualisiere die Version, falls erforderlich -->
+        </dependency>
     </dependencies>
 
     <build>
@@ -164,8 +169,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                     <compilerArgs>
                         <arg>-Djava.endorsed.dirs=${endorsed.dir}</arg>
                     </compilerArgs>
@@ -298,7 +303,7 @@
                 </executions>
             </plugin>
             <!-- Configure the maven-surefire-plugin and maven-failsafe-plugin to be at version 2.22.2 so that they can run JUnit5 -->
-            <plugin>
+             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>

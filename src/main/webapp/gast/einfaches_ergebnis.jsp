@@ -1,7 +1,7 @@
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
-<div>
+<div class="wrapper">
     <form method="post" action="einfaches_ergebnis">
         <% Language.setLanguage(request);
 
@@ -13,15 +13,24 @@
         %>
         <input type="hidden" name="form" value="einfache_suche">
 
-        <jsp:include page="layout/image.inc.html" />
-        <jsp:include page="layout/titel.suche.html" />
-
-        <h3>  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
+        <h3 class="ut-heading ut-heading--h3">
+            <jsp:include page="../inc.erzeugeBeschriftung.jsp">
                 <jsp:param name="Formular" value="gast_freie_suche"/>
                 <jsp:param name="Textfeld" value="EinfacheSuche"/>
             </jsp:include></h3>
-        <input type="text" name="query" style="width:75%">
-        <input type="submit" name="Suchen" value="&gt;">
+
+        <div class="ut-form__row row align-items-center">
+            <div class="col-sm-10">
+                <input class="ut-form__input ut-form__field" id="id_field" type="text" name="query" placeholder="<% Language.printTextfield(out, session, "gast_freie_suche", "IhreSuchanfrage"); %>" value="" required />
+            </div>
+        </div>
+        <div class="ut-form__row row align-items-center">
+            <div class="col-sm-10">
+                <button type="submit" class="ut-btn ut-btn--outline ut-btn--color-primary-1 ut-form__action mr-2" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Suchen"); %>"><% Language.printTextfield(out, session, "gast_freie_suche", "Suchen"); %></button>
+                <button type="reset" class="ut-btn ut-btn--outline ut-form__action" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %>"><% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %></button>
+            </div>
+        </div>
+
 
         <%    if (session.getAttribute("Sprache").equals("de")) {
 
@@ -67,7 +76,7 @@
         </p>
         <%} else {
         %>
-        <h4>How to search the database</h4>
+        <h4 class="ut-heading ut-heading--h4">How to search the database</h4>
 
         <p>The database allows you to search for name lemmata, persons, and primary sources, as well as single references (specific names within a source). For a more detailed search, please press the <a href="freie_suche">advanced search button</a>. Upper and lower case are disregarded as search criteria.
         </p>

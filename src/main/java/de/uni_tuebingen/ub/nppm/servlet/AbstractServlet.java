@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public abstract class AbstractServlet extends HttpServlet {
 
+    protected HttpServletRequest currentRequest;
+    protected HttpServletResponse currentResponse;
+
     protected void initRequest(HttpServletRequest request) throws Exception {
         Language.setLanguage(request);
     }
@@ -54,6 +57,11 @@ public abstract class AbstractServlet extends HttpServlet {
 
     abstract protected String getTitle();
 
+    // Methode mit Parametern benoetigt für dynamische Titel angabe bei sharedHtmlServlet
+    protected String getTitle(HttpServletRequest request, HttpServletResponse response) {
+        return getTitle();
+    }
+
     protected String getNavigationTitle() {
         return "";
     }
@@ -65,6 +73,9 @@ public abstract class AbstractServlet extends HttpServlet {
     abstract protected String getFooterTemplate();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        this.currentRequest = request;
+        this.currentResponse = response;
         // Since the header is very large using the UB navigation,
         // we need to increase the buffer size so no packages will be sent
         // during rendering the navigation. Else it would not be possible to
