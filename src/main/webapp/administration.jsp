@@ -119,6 +119,11 @@
                                 out.print("<td>" + tbl + "</td>");
                                 out.print("<td><a href=\"admin-auswahlfelder?Formular=bearbeiten&Tabelle=" + tbl + "\">bearbeiten</a></td>");
                                 out.print("<td><a href=\"admin-auswahlfelder?Formular=zusammenfuehren&Tabelle=" + tbl + "\">zusammenf&uuml;hren</a></td>");
+                                if("selektion_funktion".equals(tbl)){
+                                    out.print("<td><a href=\"admin-auswahlfelder?Formular=aufteilen&Tabelle=" + tbl + "\">Aufteilen</a></td>");
+                                }else{
+                                     out.print("<td></td>");
+                                  }
                                 if (SelektionDB.isHierarchy(tbl)) {
                                     out.print("<td><a href=\"admin-baumstruktur?Formular=baumstruktur&Tabelle=" + tbl + "\">Baumstruktur</a></td>");
                                 }
