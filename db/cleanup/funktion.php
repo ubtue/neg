@@ -32,7 +32,7 @@ function transformCsvData(array $rows) : array {
         }
 
         // Sanity check
-        if ($remove && !empty($funktionNew)) {
+        if ($remove && !empty($funktionNew) || !$remove && empty($funktionNew)) {
             die('Sanity check failed: ' . print_r($row));
         }
 

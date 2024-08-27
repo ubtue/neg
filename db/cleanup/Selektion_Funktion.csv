@@ -419,10 +419,10 @@
 420;501;Ehegattin des Tradenetn Otacar, für deren Seelenheil die Schenkung zugunsten des Klosters Fulda erfolgt;True;;;;;;;;;;;;;;;;;;;;
 421;502;Ehegattin des Tradenten Hrudhart, für deren Seelenheil die vorliegende Schenkung (u.a.) erfolgt;True;;;;;;;;;;;;;;;;;;;;
 422;503;Ehegattin des Tradenten Uto, für deren Seeleneheil die vorliegende Schenkung erfolgt;True;;;;;;;;;;;;;;;;;;;;
-423;504;;False;;;;;;;;;;;;;;;;;;;;
-424;505;;False;;;;;;;;;;;;;;;;;;;;
-425;506;;False;;;;;;;;;;;;;;;;;;;;
-426;507;;False;;;;;;;;;;;;;;;;;;;;
+423;504;;True;;;;;;;;;;;;;;;;;;;;
+424;505;;True;;;;;;;;;;;;;;;;;;;;
+425;506;;True;;;;;;;;;;;;;;;;;;;;
+426;507;;True;;;;;;;;;;;;;;;;;;;;
 427;508;ehemalige Inhaberin der Güter, die durch das vorliegende Präzept dem Diakon Chaino übertragen werden;True;;;;;;;;;;;;;;;;;;;;
 428;509;Ehemaliger Bischof von Poitiers;True;;;;;;;;;;;;;;;;;;;;
 429;510;ehemaliger Inhaber der Güter, die durch das vorliegende Präzept dem Diakon Chaino übertragen werden;True;;;;;;;;;;;;;;;;;;;;
@@ -1123,7 +1123,7 @@
 1124;1239;Äbtissin des Nonnenklosters Tuffé, um das hier gestritten wird;True;;;;;;;;;;;;;;;;;;;;
 1125;1240;Äbtissin des von der Urkunde begünstigten Klosters Argenteuil (nw. Paris);True;;;;;;;;;;;;;;;;;;;;
 1126;1241;Ausstellerin;False;Aussteller;;;;;;;;;;;;;;;;;;;
-1127;1243;Intervenient;False;;;;;;;;;;;;;;;;;;;;
+1127;1243;Intervenient;True;;;;;;;;;;;;;;;;;;;;
 1128;1244;Prozesspartei;True;;;;;;;;;;;;;;;;;;;;
 1129;1245;Schwurzeuge;False;;;;;;;Zeuge;;;;;;;;;;;;;
 1130;1246;Höriger;False;;;;;;;;;;;;;;;;;;;;Höriger
