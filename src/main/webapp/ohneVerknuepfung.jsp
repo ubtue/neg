@@ -9,8 +9,7 @@
   Language.setLanguage(request);
 %>
   <div>
-    <jsp:include page="layout/navigation.inc.jsp" />
-    <jsp:include page="layout/image.inc.html" />
+      
     <jsp:include page="layout/titel.suche.html" />
 
        <div id="form">

@@ -81,7 +81,7 @@
                     BenutzerDB.saveOrUpdate(benutzer);
 
                     out.println("<p>Benutzer \"" + request.getParameter("Benutzername") + "\"erfolgreich angelegt.</p>");
-                    out.println("<a href=\"administration.jsp\">zur&uuml;ck</a>");
+                    out.println("<a href=\"administration\">zur&uuml;ck</a>");
                 }
             %>
 

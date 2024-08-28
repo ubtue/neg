@@ -5,9 +5,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.SelektionDB" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 
-<div>
-    <jsp:include page="layout/navigation.inc.jsp" />
-    <jsp:include page="layout/image.inc.html" />
+<div>    
     <jsp:include page="layout/titel.administration.jsp" />
     <div id="form">
 
