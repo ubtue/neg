@@ -10,13 +10,13 @@ public class EditionEditor {
     @Column(name = "ID")
     private Integer id;
 
-    @OneToOne(targetEntity = Edition.class)
+    @ManyToOne(targetEntity = Edition.class)
     @JoinColumn(name = "EditionID", referencedColumnName="ID")
     private Edition edition;
 
-    @OneToOne(targetEntity = SelektionEditor.class)
+    @ManyToOne(targetEntity = SelektionEditor.class)
     @JoinColumn(name = "EditorID", referencedColumnName="ID")
-    private SelektionEditor editor;  
+    private SelektionEditor editor;
 
     public Integer getId() {
         return id;

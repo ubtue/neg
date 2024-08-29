@@ -41,7 +41,7 @@ public class SelektionStand extends SelektionHierarchy {
     }
 
     /* Hierarchy-related */
-    @OneToOne(targetEntity = SelektionStand.class)
+    @ManyToOne(targetEntity = SelektionStand.class)
     @JoinColumn(name = "parentId", referencedColumnName = "ID")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private SelektionStand parent;

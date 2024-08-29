@@ -2,14 +2,14 @@
 
 <%
     if (feldtyp.equals("gndlink") && !array) {
-
         String gndId = AbstractBase.getStringNative("SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
-
         if (gndId != null && !gndId.trim().equals("")) {
-
-        String link = "<a href=\"https://d-nb.info/gnd/" + DBtoHTML(gndId) + "\" target=\"_blank\" style=\"display: inline-block; line-height: 40px; vertical-align: middle; margin-top: 10px;\"> " + gndIcon + "</a>";
-
-        out.println(link);
+            String schemaOrgAttribute = "";
+            if (schemaOrgProperty != null && !schemaOrgProperty.isEmpty()) {
+                schemaOrgAttribute = " property=\"" + schemaOrgProperty + "\"";
+            }
+            String link = "<a href=\"https://d-nb.info/gnd/" + DBtoHTML(gndId) + "\" target=\"_blank\" style=\"display: inline-block; vertical-align: middle;\"" + schemaOrgAttribute + "> " + gndIcon + "</a>";
+            out.println(link);
         }
     }
 %>

@@ -12,20 +12,8 @@
         Language.setLanguage(request);
 %>
 
-<HEAD>
-    <TITLE>Nomen et Gens - Administration</TITLE>
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <link rel="stylesheet" href="mktree.css" type="text/css">
-    <script type="text/javascript" src="mktree.js"></script>
-    <script src="javascript/funktionen.js" type="text/javascript"></script>
-    <noscript></noscript>
-</HEAD>
-
 <div>
-    <jsp:include page="layout/navigation.inc.jsp" />
-    <jsp:include page="layout/image.inc.html" />
     <jsp:include page="layout/titel.administration.jsp" />
-
     <div id="form">
         <div id="tab1">
             <div id="header">
@@ -119,6 +107,11 @@
                                 out.print("<td>" + tbl + "</td>");
                                 out.print("<td><a href=\"admin-auswahlfelder?Formular=bearbeiten&Tabelle=" + tbl + "\">bearbeiten</a></td>");
                                 out.print("<td><a href=\"admin-auswahlfelder?Formular=zusammenfuehren&Tabelle=" + tbl + "\">zusammenf&uuml;hren</a></td>");
+                                if("selektion_funktion".equals(tbl)){
+                                    out.print("<td><a href=\"admin-auswahlfelder?Formular=aufteilen&Tabelle=" + tbl + "\">Aufteilen</a></td>");
+                                }else{
+                                     out.print("<td></td>");
+                                  }
                                 if (SelektionDB.isHierarchy(tbl)) {
                                     out.print("<td><a href=\"admin-baumstruktur?Formular=baumstruktur&Tabelle=" + tbl + "\">Baumstruktur</a></td>");
                                 }

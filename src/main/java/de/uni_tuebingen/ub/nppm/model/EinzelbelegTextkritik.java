@@ -18,15 +18,15 @@ public class EinzelbelegTextkritik {
     @Column(name = "Bemerkung", columnDefinition = "LONGTEXT")
     private String bemerkung;
 
-    @OneToOne(targetEntity = Einzelbeleg.class)
+    @ManyToOne(targetEntity = Einzelbeleg.class)
     @JoinColumn(name = "EinzelbelegID", referencedColumnName = "ID")
     private Einzelbeleg einzelbeleg;
 
-    @OneToOne(targetEntity = Edition.class)
+    @ManyToOne(targetEntity = Edition.class)
     @JoinColumn(name = "EditionID", referencedColumnName = "ID")
     private Edition edition;
 
-    @OneToOne(targetEntity = HandschriftUeberlieferung.class)
+    @ManyToOne(targetEntity = HandschriftUeberlieferung.class)
     @JoinColumn(name = "HandschriftID", referencedColumnName = "ID")
     private HandschriftUeberlieferung handschriftUeberlieferung;
 
