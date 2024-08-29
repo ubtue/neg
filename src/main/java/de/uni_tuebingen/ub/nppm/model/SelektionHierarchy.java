@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.Set;
 import javax.persistence.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.json.*;
 
 @MappedSuperclass
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 abstract public class SelektionHierarchy extends SelektionBezeichnung {
     abstract public SelektionHierarchy getParent();
     abstract public Set<? extends SelektionHierarchy> getChildren();

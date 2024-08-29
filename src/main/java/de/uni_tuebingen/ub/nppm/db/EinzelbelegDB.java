@@ -70,4 +70,24 @@ public class EinzelbelegDB extends AbstractBase{
         String sql = "INSERT INTO einzelbeleg_hatnamenkommentar(EinzelbelegID, NamenkommentarID) VALUES(" + einzelbelegId + ", " + namenkommentarId + ")";
         insertOrUpdate(sql);
     }
+
+    public static void insertFunktion(String einzelbelegId, String funktionID) throws Exception {
+        String sql = "INSERT INTO einzelbeleg_hatfunktion(EinzelbelegID, FunktionID) VALUES(" + einzelbelegId + ", " + funktionID + ")";
+        insertOrUpdate(sql);
+    }
+
+    public static List<EinzelbelegHatFunktion_MM> getListEinzelbelegHatFunktion(int funktionId) throws Exception {
+        try ( Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<EinzelbelegHatFunktion_MM> query = builder.createQuery(EinzelbelegHatFunktion_MM.class);
+            Root<EinzelbelegHatFunktion_MM> root = query.from(EinzelbelegHatFunktion_MM.class);
+
+            query.select(root);
+            // Erstelle ein Predicate für das FunktionID-Feld
+            Predicate functionIdPredicate = builder.equal(root.get("funktion").get("id"), funktionId);
+            query.where(functionIdPredicate);
+
+            return session.createQuery(query).getResultList();
+        }
+    }
 }

@@ -159,7 +159,8 @@ public class AbstractBase {
 
     // For now, we open a new session each time this method is called.
     // Later, we might try to use a static session similar to the static SessionFactory.
-     protected static Session getSession() throws Exception {
+
+    public static Session getSession() throws Exception {
         return getSessionFactory().openSession();
     }
 
