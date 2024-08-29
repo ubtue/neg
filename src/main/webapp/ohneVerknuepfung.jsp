@@ -9,6 +9,7 @@
   Language.setLanguage(request);
 %>
   <div>
+
     <jsp:include page="layout/titel.suche.html" />
 
        <div id="form">

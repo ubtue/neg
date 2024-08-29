@@ -30,12 +30,14 @@
 <div
     onLoad="javascript:onoff('tab4', 'tab1'); onoff('tab1', 'tab4');urlRewrite(<%=id%>);">
     <FORM method="POST">
-        <jsp:include page="layout/titel.inc.jsp">
+         <jsp:include
+            page="layout/titel.inc.jsp">
             <jsp:param name="title" value="Person" />
             <jsp:param name="ID" value="<%= id%>" />
             <jsp:param name="size" value="" />
             <jsp:param name="Formular" value="person" />
         </jsp:include>
+
         <jsp:include page="inc.erzeugeFormular.jsp">
             <jsp:param name="ID" value="<%= id%>" />
             <jsp:param name="Formular" value="person" />
