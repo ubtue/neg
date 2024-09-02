@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:noble
 LABEL maintainer="NPPM Team <nppm-team@ub.uni-tuebingen.de>"
 
 # Set non-interactive mode for UBUNTU to avoid interruptions
@@ -8,7 +8,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # install dependencies
 RUN apt-get --yes update
-RUN apt-get --yes install mysql-server openjdk-11-jre tomcat9
+RUN apt-get --yes install mysql-server openjdk-11-jre tomcat10
 
 # MySQL configuration
 RUN echo "collation-server = utf8_unicode_ci" >> /etc/mysql/mysql.conf.d/mysqld.cnf
@@ -26,12 +26,12 @@ RUN mysqld --daemonize && echo "GRANT ALL PRIVILEGES ON neg.* TO 'neg'@'localhos
 RUN mysqld --daemonize && echo "FLUSH PRIVILEGES;" | mysql
 
 # tomcat configuration & app
-ENV CATALINA_HOME=/usr/share/tomcat9
-ENV CATALINA_BASE=/var/lib/tomcat9
+ENV CATALINA_HOME=/usr/share/tomcat10
+ENV CATALINA_BASE=/var/lib/tomcat10
 ENV CATALINA_TMPDIR=/tmp
-RUN sed -i 's/<servlet-class>org.apache.jasper.servlet.JspServlet<\/servlet-class>/<servlet-class>org.apache.jasper.servlet.JspServlet<\/servlet-class><init-param><param-name>strictQuoteEscaping<\/param-name><param-value>false<\/param-value><\/init-param>/g' /etc/tomcat9/web.xml
-COPY resources/neg.xml /etc/tomcat9/Catalina/localhost/neg.xml
-COPY resources/neg.war /var/lib/tomcat9/webapps/neg.war
+RUN sed -i 's/<servlet-class>org.apache.jasper.servlet.JspServlet<\/servlet-class>/<servlet-class>org.apache.jasper.servlet.JspServlet<\/servlet-class><init-param><param-name>strictQuoteEscaping<\/param-name><param-value>false<\/param-value><\/init-param>/g' /etc/tomcat10/web.xml
+COPY resources/neg.xml /etc/tomcat10/Catalina/localhost/neg.xml
+COPY resources/neg.war /var/lib/tomcat10/webapps/neg.war
 EXPOSE 8080
 
 # start services when container is run
