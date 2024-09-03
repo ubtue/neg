@@ -20,7 +20,7 @@ public class AdministrationBaumstrukturServlet extends AbstractBackendServlet {
     protected boolean isAdminRequired() {
         return true;
     }
-    
+
      @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher("admin.baumstruktur.jsp");
@@ -31,14 +31,14 @@ public class AdministrationBaumstrukturServlet extends AbstractBackendServlet {
     @Override
     protected List<String> getAdditionalCss() {
         List<String> additionalCss = new ArrayList<>();
-        additionalCss.add("webjars/jstree/3.3.15/themes/default/style.min.css");
+        additionalCss.add("webjars/jstree/3.3.16/themes/default/style.min.css");
         return additionalCss;
     }
 
     @Override
     protected List<String> getAdditionalJavaScript() {
         List<String> additionalJs = new ArrayList<>();
-        additionalJs.add("webjars/jstree/3.3.15/jstree.min.js");
+        additionalJs.add("webjars/jstree/3.3.16/jstree.min.js");
         return additionalJs;
     }
 
