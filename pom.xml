@@ -121,6 +121,7 @@
     </dependencies>
 
     <build>
+        <finalName>neg</finalName>
         <resources>
             <resource>
                 <directory>src/test/java/de/uni_tuebingen/ub/nppm/test/resources/</directory>
@@ -252,7 +253,6 @@
                         </resource>
                     </webResources>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <warName>neg</warName>
                     <outputDirectory>/var/lib/tomcat9/webapps</outputDirectory>
                 </configuration>
             </plugin>
