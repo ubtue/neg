@@ -18,3 +18,6 @@ ALTER TABLE selektion_kritik ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD C
 
 ALTER TABLE selektion_titelkritik ADD provenance_source VARCHAR (255) NOT NULL DEFAULT('NeG');
 ALTER TABLE selektion_titelkritik ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
+
+#Add missing id column to bemerkung
+ALTER TABLE bemerkung ADD provenance_id VARCHAR (255) DEFAULT NULL, ADD CONSTRAINT unique_provenance_id UNIQUE (provenance_id);
