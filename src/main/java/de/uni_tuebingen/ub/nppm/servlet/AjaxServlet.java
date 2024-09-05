@@ -2,8 +2,6 @@ package de.uni_tuebingen.ub.nppm.servlet;
 
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.Einzelbeleg;
-import de.uni_tuebingen.ub.nppm.model.EinzelbelegMghLemma_MM;
-import de.uni_tuebingen.ub.nppm.model.EinzelbelegNamenkommentar_MM;
 import de.uni_tuebingen.ub.nppm.model.MghLemma;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
 import de.uni_tuebingen.ub.nppm.util.Language;
@@ -13,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -262,6 +262,23 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
+    private void newParentNode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // This method is called via AJAX to change the parent ID.
+        Integer id = Integer.parseInt(request.getParameter("id")); // Hier die ID des verschobenen Nodes
+        String table = request.getParameter("Tabelle");
+        Integer parentId = null;
+        String temp = request.getParameter("parentId");
+        if (temp != null && !temp.isEmpty()) {
+            parentId = Integer.parseInt(temp); // Hier die neue Parent-ID
+        }
+
+        try {
+            SelektionDB.updateParentId(table, id, parentId);
+        } catch (Exception ex) {
+            throw new ServletException(ex);
+        }
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -269,8 +286,12 @@ public class AjaxServlet extends HttpServlet {
             confirmLemma(request, response);
         } else if ("confirmZusatzNamenKommentar".equals(action)) {
             confirmZusatzNamenKommentar(request, response);
-        } else {
-            // Andere Aktionen
+        } else if("newParentNode".equals(action)){
+            try {
+                newParentNode(request, response);
+            } catch (Exception ex) {
+                Logger.getLogger(AjaxServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

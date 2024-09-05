@@ -115,7 +115,7 @@
                                     out.print("<td></td>");
                                 }
                                 if (SelektionDB.isHierarchy(tbl)) {
-                                    out.print("<td><a href=\"admin-baumstruktur?Formular=baumstruktur&Tabelle=" + tbl + "\">Baumstruktur</a></td>");
+                                    out.print("<td><a href=\"admin-auswahlfelder?Formular=baumstruktur&Tabelle=" + tbl + "\">Baumstruktur</a></td>");
                                 }
                                 out.print("</tr>");
                             }
