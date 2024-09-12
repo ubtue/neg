@@ -262,21 +262,26 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
-    private void newParentNode(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // This method is called via AJAX to change the parent ID.
-        Integer id = Integer.parseInt(request.getParameter("id")); // Hier die ID des verschobenen Nodes
-        String table = request.getParameter("Tabelle");
-        Integer parentId = null;
-        String temp = request.getParameter("parentId");
-        if (temp != null && !temp.isEmpty()) {
-            parentId = Integer.parseInt(temp); // Hier die neue Parent-ID
+     private void newParentNode(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            // This method is called via AJAX to change the parent ID.
+            Integer id = Integer.parseInt(request.getParameter("id")); // Hier die ID des verschobenen Nodes
+            String table = request.getParameter("Tabelle");
+            Integer parentId = null;
+            String temp = request.getParameter("parentId");
+            if (temp != null && !temp.isEmpty()) {
+                parentId = Integer.parseInt(temp); // Hier die neue Parent-ID
+            }
+
+            try {
+                SelektionDB.updateParentId(table, id, parentId);
+            } catch (Exception ex) {
+                throw new ServletException(ex);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AjaxServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        try {
-            SelektionDB.updateParentId(table, id, parentId);
-        } catch (Exception ex) {
-            throw new ServletException(ex);
-        }
     }
 
     @Override
@@ -286,14 +291,11 @@ public class AjaxServlet extends HttpServlet {
             confirmLemma(request, response);
         } else if ("confirmZusatzNamenKommentar".equals(action)) {
             confirmZusatzNamenKommentar(request, response);
-        } else if("newParentNode".equals(action)){
-            try {
-                newParentNode(request, response);
-            } catch (Exception ex) {
-                Logger.getLogger(AjaxServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        } else if ("newParentNode".equals(action)) {
+             newParentNode(request, response);
         }
     }
+    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
