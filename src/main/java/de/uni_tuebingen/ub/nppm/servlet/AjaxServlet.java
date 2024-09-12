@@ -262,7 +262,7 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
-     private void newParentNode(HttpServletRequest request, HttpServletResponse response) {
+     private void newParentNode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             // This method is called via AJAX to change the parent ID.
             Integer id = Integer.parseInt(request.getParameter("id")); // Hier die ID des verschobenen Nodes
@@ -271,15 +271,13 @@ public class AjaxServlet extends HttpServlet {
             String temp = request.getParameter("parentId");
             if (temp != null && !temp.isEmpty()) {
                 parentId = Integer.parseInt(temp); // Hier die neue Parent-ID
-            }
-
-            try {
+            }           
                 SelektionDB.updateParentId(table, id, parentId);
-            } catch (Exception ex) {
-                throw new ServletException(ex);
-            }
+           
         } catch (Exception ex) {
             Logger.getLogger(AjaxServlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("An error occurred while processing your request.");
         }
 
     }
