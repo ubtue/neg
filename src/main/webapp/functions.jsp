@@ -182,4 +182,12 @@ String getBelegformLinked(String einzelbelegID, String belegform) throws Excepti
     return String.format("<a href='%s' title='%s'>%s</a>", dmghUrl[0], dmghUrl[1], belegform);
 }
 
+String getBelegformExternalLinked(String einzelbelegID, String belegform) throws Exception {
+    String[] dmghUrl = getdMGHUrl(einzelbelegID);
+    if (dmghUrl[0].isEmpty()) {
+        return belegform;
+    }
+    return String.format("<a href='%s' title='%s' target='_blank'>%s</a>", dmghUrl[0], dmghUrl[1], belegform);
+}
+
 %>
