@@ -917,13 +917,13 @@
                 }
                 out.print(bezeichnung);
                 first = false;
-            } //while 2 ende
+            } //end for 2
             out.println("</td>");
             out.println("</tr>");
-        } //while 1 ende
+        } //end for 1
 
         if (firstEdition) {
-            out.println("<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+            out.println("<td colspan=\"8\"></tr>");
         }
         count++;
         if (count % 2 == 0)
@@ -991,10 +991,10 @@
                 }
                 out.print(bezeichnung);
                 first = false;
-            } //while 4 ende
+            } //end for 4
             out.println("</td>");
             out.println("</tr>");
-        } //while 3 ende
+        } //end for 3
 
     } catch (Exception e) {
         out.println(e);
