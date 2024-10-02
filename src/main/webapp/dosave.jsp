@@ -279,173 +279,201 @@
             } // ENDE NamenkommentarEditor
             // combined
             else if (feldtyp != null && feldtyp.equals("combined") && zieltabelle != null && zielAttribut != null && combFeldnamen != null && combFeldtyp != null) {
-                String[] zielattributArray = Arrays.stream(zielAttribut.split(";")).map(String::trim).toArray(String[]::new);
+                try {
+                    String[] zielattributArray = Arrays.stream(zielAttribut.split(";")).map(String::trim).toArray(String[]::new);
 
-                String[] combinedFeldnamenArray = Arrays.stream(combFeldnamen.split(";")).map(String::trim).toArray(String[]::new);
+                    String[] combinedFeldnamenArray = Arrays.stream(combFeldnamen.split(";")).map(String::trim).toArray(String[]::new);
 
-                String[] combinedFeldtypenArray = Arrays.stream(combFeldtyp.split(";")).map(String::trim).toArray(String[]::new);
-                if (combinedFeldtypenArray.length == combinedFeldtypenArray.length) {
-                    for (int i = 0; request.getParameter(combinedFeldnamenArray[0] + "[" + i + "]") != null; i++) {
+                    String[] combinedFeldtypenArray = Arrays.stream(combFeldtyp.split(";")).map(String::trim).toArray(String[]::new);
+                    if (combinedFeldtypenArray.length == combinedFeldtypenArray.length) {
+                        for (int i = 0; request.getParameter(combinedFeldnamenArray[0] + "[" + i + "]") != null; i++) {
 
-                        // Datensatz ändern
-                        if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
-                            boolean aenderung = false;
+                            // Datensatz ändern
+                            if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
+                                boolean aenderung = false;
 
-                            int mapId = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
-                            List<Map> attributes = SaveHelper.getMapField(zieltabelle, mapId);
-                            if (attributes.size() > 0) {
-                                Map attr = attributes.iterator().next();
-                                for (int j = 0; j < combinedFeldnamenArray.length; j++) {
-                                    if (combinedFeldtypenArray[j].equals("subtable")) {
-                                        for (int j2 = 0; request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") != null; j2++) {
-                                            if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
+                                int mapId = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                                List<Map> attributes = SaveHelper.getMapField(zieltabelle, mapId);
+                                if (attributes.size() > 0) {
+                                    Map attr = attributes.iterator().next();
+                                    for (int j = 0; j < combinedFeldnamenArray.length; j++) {
+                                        if (combinedFeldtypenArray[j].equals("subtable")) {
+                                            for (int j2 = 0; request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]") != null; j2++) {
+                                                if (request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") != null) {
 
-                                                Map<String, String> condMap = new HashMap<>();
-                                                condMap.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
-                                                condMap.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                                                    Map<String, String> condMap = new HashMap<>();
+                                                    condMap.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
+                                                    condMap.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
 
-                                                List<Map> ueberlieferungEdition = SaveHelper.getAttribute("ueberlieferung_edition", "*", condMap);
+                                                    List<Map> ueberlieferungEdition = SaveHelper.getAttribute("ueberlieferung_edition", "*", condMap);
 
-                                                if (ueberlieferungEdition.size() > 0) {
+                                                    if (ueberlieferungEdition.size() > 0) {
 
-                                                    String value = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
-                                                    Map<String, String> condMap2 = new HashMap<>();
-                                                    condMap2.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
-                                                    condMap2.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                                                        String value = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]");
+                                                        Map<String, String> condMap2 = new HashMap<>();
+                                                        condMap2.put("editionID", request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
+                                                        condMap2.put("ueberlieferungID", request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
 
-                                                    AbstractBase.update("ueberlieferung_edition", "sigle", value, condMap2);
+                                                        AbstractBase.update("ueberlieferung_edition", "sigle", value, condMap2);
 
-                                                } else {
-                                                    int value_one = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
-                                                    int value_two = Integer.parseInt(request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
-                                                    String value_three = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]").trim();
+                                                    } else {
+                                                        int value_one = Integer.parseInt(request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid"));
+                                                        int value_two = Integer.parseInt(request.getParameter(combinedFeldnamenArray[j] + "_ed[" + i + "]" + "[" + j2 + "]"));
+                                                        String value_three = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]" + "[" + j2 + "]").trim();
 
-                                                    Map<String, String> condMap2 = new HashMap<>();
-                                                    condMap2.put("UeberlieferungID", String.valueOf(value_one));
-                                                    condMap2.put("EditionID", String.valueOf(value_two));
-                                                    condMap2.put("Sigle", value_three);
+                                                        Map<String, String> condMap2 = new HashMap<>();
+                                                        condMap2.put("UeberlieferungID", String.valueOf(value_one));
+                                                        condMap2.put("EditionID", String.valueOf(value_two));
+                                                        condMap2.put("Sigle", value_three);
 
-                                                    SaveHelper.insert("ueberlieferung_edition", condMap2);
+                                                        SaveHelper.insert("ueberlieferung_edition", condMap2);
+                                                    }
                                                 }
                                             }
-                                        }
-                                    } else if (combinedFeldtypenArray[j].equals("textfield")
-                                            || combinedFeldtypenArray[j].equals("textarea")
-                                            || combinedFeldtypenArray[j].equals("select")
-                                            || combinedFeldtypenArray[j].equals("sqlselect")
-                                            || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
-                                        if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
-                                                && ((!request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("") && attr.get(zielattributArray[j]) == null)
-                                                || (!request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals(attr.get(zielattributArray[j]))))) {
-                                            aenderung = true;
-                                        }
-                                    } else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                                        if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
-                                                && request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("on")
-                                                && (attr.get(zielattributArray[j]) == null || attr.get(zielattributArray[j]).equals("0"))) {
-                                            aenderung = true;
-                                        } else if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") == null
-                                                && (attr.get(zielattributArray[j]) != null && attr.get(zielattributArray[j]).equals("1"))) {
-                                            aenderung = true;
+                                        } else if (combinedFeldtypenArray[j].equals("textfield")
+                                                || combinedFeldtypenArray[j].equals("textarea")
+                                                || combinedFeldtypenArray[j].equals("select")
+                                                || combinedFeldtypenArray[j].equals("sqlselect")
+                                                || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
+                                            if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
+                                                    && ((!request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("") && attr.get(zielattributArray[j]) == null)
+                                                    || (!request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals(attr.get(zielattributArray[j]))))) {
+                                                aenderung = true;
+                                            }
+                                        } else if (combinedFeldtypenArray[j].equals("checkbox")) {
+                                            if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
+                                                    && request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("on")
+                                                    && (attr.get(zielattributArray[j]) == null || attr.get(zielattributArray[j]).equals("0"))) {
+                                                aenderung = true;
+                                            } else if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") == null
+                                                    && (attr.get(zielattributArray[j]) != null && attr.get(zielattributArray[j]).equals("1"))) {
+                                                aenderung = true;
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            if (aenderung && zieltabelle != null) {
-                                String sql = "UPDATE " + zieltabelle + " SET ";
-                                String ed = "";
-                                for (int j = 0; j < combinedFeldnamenArray.length; j++) {
-                                    if (combinedFeldtypenArray[j].equals("textfield")
-                                            || combinedFeldtypenArray[j].equals("textarea")
-                                            || combinedFeldtypenArray[j].equals("select")
-                                            || combinedFeldtypenArray[j].equals("sqlselect")
-                                            || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
-                                        //Dont Quote NULL values
-                                        if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").compareTo("NULL") == 0) {
-                                            sql += zielattributArray[j] + " = " + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").trim()) + ", ";
-                                        } else {
-                                            sql += zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").trim()) + "', ";
-                                        }
-
-                                        if (zieltabelle.equals("quelle_inedition") && zielattributArray[j].equals("EditionID")) {
-                                            ed = DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").trim());
-                                        }
-                                    } else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                                        sql += zielattributArray[j] + " = '" + (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j]
-                                                + "[" + i + "]").equals("on") ? "1" : "0") + "', ";
-                                    }
-                                }
-                                sql = sql.substring(0, sql.length() - 2);
-                                sql += " WHERE ID='" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "';";
-                                String old_ed = "";
-                                if (!ed.equals("")) {
-                                    List<Map> editionLst = SaveHelper.getMappedList("select EditionID from quelle_inedition WHERE ID='" + request.getParameter(datenfeld.toLowerCase()
-                                            + "[" + i + "]_entryid") + "';");
-
-                                    if (editionLst.size() > 0) {
-                                        old_ed = editionLst.get(editionLst.size() - 1).get("EditionID").toString();
-                                    }
-                                }
-                                SaveHelper.insertOrUpdateSql(sql);
-                                if (!ed.equals("")) {
-                                    SaveHelper.insertOrUpdateSql("Update ueberlieferung_edition set EditionID='" + ed + "' where EditionID=" + old_ed
-                                            + " and UeberlieferungID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID="
-                                            + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid").trim() + " and q_i.QuelleID=h_u.QuelleID)"
-                                    );
-
-                                    SaveHelper.insertOrUpdateSql("Update einzelbeleg_textkritik set EditionID='" + ed + "' where EditionID=" + old_ed
-                                            + " and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + request.getParameter(datenfeld.toLowerCase().trim()
-                                                    + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)"
-                                    );
-
-                                    SaveHelper.insertOrUpdateSql(" Update einzelbeleg set EditionID ='" + ed + "' where EditionID=" + old_ed
-                                            + " and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID="
-                                            + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid").trim() + " and q_i.QuelleID=h_u.QuelleID)"
-                                    );
-                                }
-                            }
-                        } // Datensatz neu
-                        else if (zieltabelle != null && formularAttribut != null) {
-                            boolean aenderung = false;
-                            for (int j = 0; j < combinedFeldnamenArray.length; j++) {
-                                if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
-                                        && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("")
-                                        && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("-1")
-                                        && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("NULL")) {
-                                    aenderung = true;
-                                }
-                            }
-                            if (aenderung) {
-                                String sql = "INSERT INTO " + zieltabelle + " SET " + formularAttribut + " = '" + id + "'";
-                                for (int j = 0; j < combinedFeldnamenArray.length; j++) {
-                                    if (!combinedFeldnamenArray[j].equals("")) {
+                                if (aenderung && zieltabelle != null) {
+                                    String sql = "UPDATE " + zieltabelle + " SET ";
+                                    String ed = "";
+                                    for (int j = 0; j < combinedFeldnamenArray.length; j++) {
                                         if (combinedFeldtypenArray[j].equals("textfield")
                                                 || combinedFeldtypenArray[j].equals("textarea")
                                                 || combinedFeldtypenArray[j].equals("select")
                                                 || combinedFeldtypenArray[j].equals("sqlselect")
                                                 || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
+                                            //Dont Quote NULL values
+                                            if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").compareTo("NULL") == 0) {
+                                                sql += zielattributArray[j] + " = " + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").trim()) + ", ";
+                                            } else {
+                                                sql += zielattributArray[j] + " = '" + DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").trim()) + "', ";
+                                            }
 
-                                            String parameterValue = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]");
-                                            if (parameterValue != null) {
-                                                if (parameterValue.equals("NULL")) {
-                                                    sql += ", " + zielattributArray[j] + " = NULL";
-                                                } else {
-                                                    sql += ", " + zielattributArray[j] + " = '" + DBtoDB(parameterValue.trim()) + "'";
-                                                }
+                                            if (zieltabelle.equals("quelle_inedition") && zielattributArray[j].equals("EditionID")) {
+                                                ed = DBtoDB(request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").trim());
                                             }
                                         } else if (combinedFeldtypenArray[j].equals("checkbox")) {
-                                            String checkboxValue = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]");
-                                            if (checkboxValue != null) {
-                                                sql += ", " + zielattributArray[j] + " = '" + (checkboxValue.equals("on") ? "1" : "0") + "'";
+                                            sql += zielattributArray[j] + " = '" + (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null && request.getParameter(combinedFeldnamenArray[j]
+                                                    + "[" + i + "]").equals("on") ? "1" : "0") + "', ";
+                                        }
+                                    }
+                                    sql = sql.substring(0, sql.length() - 2);
+                                    sql += " WHERE ID='" + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid") + "';";
+                                    String old_ed = "";
+                                    if (!ed.equals("")) {
+                                        List<Map> editionLst = SaveHelper.getMappedList("select EditionID from quelle_inedition WHERE ID='" + request.getParameter(datenfeld.toLowerCase()
+                                                + "[" + i + "]_entryid") + "';");
+
+                                        if (editionLst.size() > 0) {
+                                            old_ed = editionLst.get(editionLst.size() - 1).get("EditionID").toString();
+                                        }
+                                    }
+                                    SaveHelper.insertOrUpdateSql(sql);
+                                    if (!ed.equals("")) {
+                                        SaveHelper.insertOrUpdateSql("Update ueberlieferung_edition set EditionID='" + ed + "' where EditionID=" + old_ed
+                                                + " and UeberlieferungID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID="
+                                                + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid").trim() + " and q_i.QuelleID=h_u.QuelleID)"
+                                        );
+
+                                        SaveHelper.insertOrUpdateSql("Update einzelbeleg_textkritik set EditionID='" + ed + "' where EditionID=" + old_ed
+                                                + " and HandschriftID in (select h_u.ID from handschrift_ueberlieferung h_u, quelle_inedition q_i where q_i.ID=" + request.getParameter(datenfeld.toLowerCase().trim()
+                                                        + "[" + i + "]_entryid") + " and q_i.QuelleID=h_u.QuelleID)"
+                                        );
+
+                                        SaveHelper.insertOrUpdateSql(" Update einzelbeleg set EditionID ='" + ed + "' where EditionID=" + old_ed
+                                                + " and ID in (select e_t.EinzelbelegID from handschrift_ueberlieferung h_u, quelle_inedition q_i, einzelbeleg_textkritik e_t where e_t.HandschriftID=h_u.ID and q_i.ID="
+                                                + request.getParameter(datenfeld.toLowerCase() + "[" + i + "]_entryid").trim() + " and q_i.QuelleID=h_u.QuelleID)"
+                                        );
+                                    }
+                                }
+                            } // Datensatz neu
+                            else if (zieltabelle != null && formularAttribut != null) {
+                                boolean aenderung = false;
+                                for (int j = 0; j < combinedFeldnamenArray.length; j++) {
+                                    if (request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]") != null
+                                            && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("")
+                                            && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("-1")
+                                            && !request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]").equals("NULL")) {
+                                        aenderung = true;
+                                    }
+                                }
+                                if (aenderung) {
+                                    String sql = "INSERT INTO " + zieltabelle + " SET " + formularAttribut + " = '" + id + "'";
+                                    for (int j = 0; j < combinedFeldnamenArray.length; j++) {
+                                        if (!combinedFeldnamenArray[j].equals("")) {
+                                            if (combinedFeldtypenArray[j].equals("textfield")
+                                                    || combinedFeldtypenArray[j].equals("textarea")
+                                                    || combinedFeldtypenArray[j].equals("select")
+                                                    || combinedFeldtypenArray[j].equals("sqlselect")
+                                                    || combinedFeldtypenArray[j].equals("addselect") || combinedFeldtypenArray[j].equals("addselectandtext")) {
+
+                                                String parameterValue = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]");
+                                                if (parameterValue != null) {
+                                                    if (parameterValue.equals("NULL")) {
+                                                        sql += ", " + zielattributArray[j] + " = NULL";
+                                                    } else {
+                                                        sql += ", " + zielattributArray[j] + " = '" + DBtoDB(parameterValue.trim()) + "'";
+                                                    }
+                                                }
+                                            } else if (combinedFeldtypenArray[j].equals("checkbox")) {
+                                                String checkboxValue = request.getParameter(combinedFeldnamenArray[j] + "[" + i + "]");
+                                                if (checkboxValue != null) {
+                                                    sql += ", " + zielattributArray[j] + " = '" + (checkboxValue.equals("on") ? "1" : "0") + "'";
+                                                }
                                             }
                                         }
                                     }
+                                    SaveHelper.insertOrUpdateSql(sql);
                                 }
-                                SaveHelper.insertOrUpdateSql(sql);
                             }
                         }
                     }
+                } catch (Exception e) {
+                    String errorMessage = e.getMessage();  // Hole die Fehlernachricht
+                    String errorSource = "";  // Ein weiteres Detail als zweiter Parameter
+
+                    if (errorMessage != null && errorMessage.contains("NamenkommentarID")) {
+                        errorSource = "Philologisches Lemma ID ist nicht vorhanden";
+                    } else if (errorMessage != null && errorMessage.contains("MGHLemmaID")) {
+                        errorSource = "Lemma ID ist nicht vorhanden";
+                    } else if (errorMessage != null && errorMessage.contains("PersonID")) {
+                        errorSource = "Person ID ist nicht vorhanden";
+                    } else if (errorMessage != null && errorMessage.contains("PersonIDzu")) {
+                        errorSource = "Person ID ist nicht vorhanden";
+                    } else if (errorMessage != null && errorMessage.contains("EinzelbelegID")) {
+                        errorSource = "Einzelbeleg ID ist nicht vorhanden";
+                    } else if (errorMessage != null && errorMessage.contains("EditionID")) {
+                        errorSource = "Edition ID ist nicht vorhanden";
+                    } else if (errorMessage != null && errorMessage.contains("QuelleID")) {
+                        errorSource = "Quelle ID ist nicht vorhanden";
+                    }
+
+                    errorMessage = java.net.URLEncoder.encode(errorMessage, "UTF-8");
+                    errorSource = java.net.URLEncoder.encode(errorSource, "UTF-8");
+                    out.println("<script type='text/javascript'>");
+                    out.println("window.location.href = 'error?errorSource=" + errorSource + "&errorMessage=" + errorMessage + "';");
+                    out.println("</script>");
                 }
+
             } // ENDE combined
         } // ENDE while
 
