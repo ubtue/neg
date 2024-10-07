@@ -21,6 +21,8 @@
                 out.println("<br>");
                 out.println("z.b E125");
                 out.println("<br><br>");
+
+                errorMessage = "Wrong ID Prefix";
             }
 
             if (errorMessage != null) {
