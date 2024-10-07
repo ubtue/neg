@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalDateTime"%>
 <%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="java.sql.Date" isThreadSafe="false"%>
 <%@ page import="java.sql.Time" isThreadSafe="false"%>
@@ -5,1768 +6,1465 @@
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
-<%
-	String id = request.getParameter("ID");
-	String formular = request.getParameter("Formular");
-	String modul = request.getParameter("Modul");
+<%    String id = request.getParameter("ID");
+    String formular = request.getParameter("Formular");
+    String modul = request.getParameter("Modul");
 
-	if (formular.equals("einzelbeleg")) {
-		if (modul.equals("lesartenRO")) {
+    if (formular.equals("einzelbeleg")) {
+        //Gast: Einzelbeleg Katagorie/Bereich Textkritik (Edition, Sigle, Varianten, Datierung d. Textzeugen, Bemerkung)
+        if (modul.equals("lesartenRO")) {
 
-			out.println("<table class=\"content-table\" width=\"100%\">\n");
+            out.println("<table class=\"content-table\" width=\"100%\">\n");
 %>
 <tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="einzelbeleg" />
-		<jsp:param name="Textfeld" value="Edition" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="einzelbeleg" />
-		<jsp:param name="Textfeld" value="Sigle" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="einzelbeleg" />
-		<jsp:param name="Textfeld" value="Varianten" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="einzelbeleg" />
-		<jsp:param name="Textfeld" value="DatierungTextzeuge" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="einzelbeleg" />
-		<jsp:param name="Textfeld" value="Bemerkung" />
-	</jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="Edition" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="Sigle" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="Varianten" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="DatierungTextzeuge" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="Bemerkung" />
+        </jsp:include></th>
 </tr>
 
 <%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT ed.Zitierweise, ue.Sigle, et.Variante, h.VonTag,h.VonMonat,h.VonJahr,h.VonJahrhundert, h.BisTag,h.BisMonat,h.BisJahr,h.BisJahrhundert, et.Bemerkung from einzelbeleg_textkritik et, "
-								+ "edition ed, handschrift_ueberlieferung h, ueberlieferung_edition ue, einzelbeleg e where "
-								+ " h.ID=ue.UeberlieferungID AND et.HandschriftID=h.ID AND ue.EditionID=ed.ID AND "
-								+ " h.QuelleID=e.QuelleID AND ed.ID=et.EditionID "
-								+ " AND et.EinzelbelegID="
-								+ id
-								+ " AND e.ID=" + id);
+            try {
 
-				int count = 0;
-				while (rs.next()) {
-					count++;
+                List<Object[]> resultList = ModulIncDB.getListEinzelbelegTextkritik(id);
 
-					if (count % 2 == 0)
-						out.println("<tr>");
-					else
-						out.println("<tr bgcolor='#AACCDD'>");
+                int count = 0;
+                for (Object[] row : resultList) {
+                    count++;
+                    if (count % 2 == 0) {
+                        out.println("<tr>");
+                    } else {
+                        out.println("<tr bgcolor='#AACCDD'>");
+                    }
 
-					out.println("<td>" + rs.getString("ed.Zitierweise")
-							+ "</td>");
-					String sigle = rs.getString("ue.Sigle");
+                    String zitierweise = row[0] != null ? String.valueOf(row[0]) : "";
+                    String sigle = row[1] != null ? String.valueOf(row[1]) : "";
+                    String variante = row[2] != null ? String.valueOf(row[2]) : "";
 
-					if (sigle == null)
-						sigle = "";
+                    String vonTag = row[3] != null ? String.valueOf(row[3]) : "";
+                    String vonMonat = row[4] != null ? String.valueOf(row[4]) : "";
+                    String vonJahr = row[5] != null ? String.valueOf(row[5]) : "";
+                    String vonJhdt = row[6] != null ? String.valueOf(row[6]) : "";
 
-					out.println("<td>" + sigle + "</td>");
-					out.println("<td>" + rs.getString("et.Variante")
-							+ "</td>");
+                    String bisTag = row[7] != null ? String.valueOf(row[7]) : "";
+                    String bisMonat = row[8] != null ? String.valueOf(row[8]) : "";
+                    String bisJahr = row[9] != null ? String.valueOf(row[9]) : "";
+                    String bisJhdt = row[10] != null ? String.valueOf(row[10]) : "";
 
-					String vonTag = rs.getString("h.VonTag");
-					String vonMonat = rs.getString("h.VonMonat");
-					String vonJahr = rs.getString("h.VonJahr");
-					String vonJhdt = rs.getString("h.VonJahrhundert");
-					String bisTag = rs.getString("h.BisTag");
-					String bisMonat = rs.getString("h.BisMonat");
-					String bisJahr = rs.getString("h.BisJahr");
-					String bisJhdt = rs.getString("h.BisJahrhundert");
+                    String bemerkung = row[11] != null ? String.valueOf(row[11]) : "";
 
-					String von = "";
+                    out.println("<td>" + zitierweise + "</td>");
+                    out.println("<td>" + sigle + "</td>");
+                    out.println("<td>" + variante + "</td>");
 
-					if (vonTag != null && !vonTag.equals("")
-							&& !vonTag.equals("0"))
-						von = vonTag + ".";
-					if (vonMonat != null && !vonMonat.equals("")
-							&& !vonMonat.equals("0"))
-						von = von + vonMonat + ".";
-					if (vonJahr != null && !vonJahr.equals("")
-							&& !vonJahr.equals("0"))
-						von = von + vonJahr;
-					if (von.equals("") && vonJhdt != null)
-						von = vonJhdt;
+                    String von = "";
 
-					String bis = "";
+                    if (vonTag != null && !vonTag.equals("")
+                            && !vonTag.equals("0")) {
+                        von = vonTag + ".";
+                    }
+                    if (vonMonat != null && !vonMonat.equals("")
+                            && !vonMonat.equals("0")) {
+                        von = von + vonMonat + ".";
+                    }
+                    if (vonJahr != null && !vonJahr.equals("")
+                            && !vonJahr.equals("0")) {
+                        von = von + vonJahr;
+                    }
+                    if (von.equals("") && vonJhdt != null) {
+                        von = vonJhdt;
+                    }
 
-					if (bisTag != null && !bisTag.equals("")
-							&& !bisTag.equals("0"))
-						bis = bisTag + ".";
-					if (bisMonat != null && !bisMonat.equals("")
-							&& !bisMonat.equals("0"))
-						bis = bis + bisMonat + ".";
-					if (bisJahr != null && !bisJahr.equals("")
-							&& !bisJahr.equals("0"))
-						bis = bis + bisJahr;
-					if (bis.equals("") && bisJhdt != null)
-						bis = bisJhdt;
+                    if (!von.equals("") && !von.contains("J") && !von.equals("0")
+                            && (vonTag == null || vonTag.equals("") || vonTag.equals("0"))
+                            && (vonMonat == null || vonMonat.equals("") || vonMonat.equals("0"))
+                            && (vonJahr == null || vonJahr.equals("") || vonJahr.equals("0"))) {
+                        von = von + " Jh.";
+                    }
 
-					if (!bis.equals(von) && !bis.equals(""))
-						out.println("<td>" + von + " - " + bis
-								+ "</td>");
-					else
-						out.println("<td>" + von + "</td>");
+                    String bis = "";
 
-					String bem = rs.getString("et.Bemerkung");
+                    if (bisTag != null && !bisTag.equals("")
+                            && !bisTag.equals("0")) {
+                        bis = bisTag + ".";
+                    }
+                    if (bisMonat != null && !bisMonat.equals("")
+                            && !bisMonat.equals("0")) {
+                        bis = bis + bisMonat + ".";
+                    }
+                    if (bisJahr != null && !bisJahr.equals("")
+                            && !bisJahr.equals("0")) {
+                        bis = bis + bisJahr;
+                    }
+                    if (bis.equals("") && bisJhdt != null) {
+                        bis = bisJhdt;
+                    }
 
-					if (bem == null)
-						bem = "";
+                    if (!bis.equals("") && !bis.contains("J") && !bis.equals("0")
+                            && (bisTag == null || bisTag.equals("") || bisTag.equals("0"))
+                            && (bisMonat == null || bisMonat.equals("") || bisMonat.equals("0"))
+                            && (bisJahr == null || bisJahr.equals("") || bisJahr.equals("0"))) {
+                        bis = bis + " Jh.";
+                    }
 
-					out.println("<td>" + bem + "</td>");
-					out.println("</tr>");
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}
-	}
+                    if (!bis.equals(von) && !bis.equals("")) {
+                        out.println("<td>" + von + " - " + bis + "</td>");
+                    } else {
+                        out.println("<td>" + von + "</td>");
+                    }
 
-	else if (formular.equals("person")) {
-		if (modul.equals("namen")) {
-			out.println("<tr><td>\n");
+                    out.println("<td>" + bemerkung + "</td>");
+                    out.println("</tr>");
 
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
+                }
 
-				rs = st
-						.executeQuery("SELECT count(DISTINCT namenkommentar.ID) FROM einzelbeleg LEFT OUTER JOIN "+
-						"einzelbeleg_hatperson ON "+
-						"einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID LEFT OUTER JOIN "+
-						"person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN "+
-						"einzelbeleg_hatnamenkommentar ON "+
-						"einzelbeleg_hatnamenkommentar.EinzelbelegID=einzelbeleg.ID "+
-						"LEFT OUTER JOIN namenkommentar ON "+
-						"namenkommentar.ID=einzelbeleg_hatnamenkommentar.NamenkommentarID WHERE person.ID=\""
-								+ id + "\"");
-				out.print("<label>Name");
-				if(rs.next() && rs.getInt(1)>1) out.println("n");
-				out.println("</label></td><td>");
-				rs = st
-						.executeQuery("SELECT DISTINCT namenkommentar.PLemma, "+
-						"namenkommentar.ID FROM einzelbeleg LEFT OUTER JOIN "+
-						"einzelbeleg_hatperson ON "+
-						"einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID LEFT OUTER JOIN "+
-						"person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN "+
-						"einzelbeleg_hatnamenkommentar ON "+
-						"einzelbeleg_hatnamenkommentar.EinzelbelegID=einzelbeleg.ID "+
-						"LEFT OUTER JOIN namenkommentar ON "+
-						"namenkommentar.ID=einzelbeleg_hatnamenkommentar.NamenkommentarID WHERE person.ID=\""
-								+ id + "\"");
-				while (rs.next()  && rs.getString("namenkommentar.PLemma") !=null) {
-					out.println("<a href=\"namenkommentar?ID="+rs.getString("namenkommentar.ID")+"\">"+format(rs.getString("namenkommentar.PLemma"),"PLemma")+"<br>");
-				}
-				out.println("</td></tr>");
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</ul>\n");
-		}if (modul.equals("nachweise")) {
-			out.println("<table>\n");
+            } catch (Exception e) {
+                out.println(e);
+            } finally {
+
+            }
+            out.println("</table>\n");
+        }
+    }
+
+    if (formular.equals("person")) {
+        //Backend: Personen, Feld Namen z.b Gudalandaz (zweite Zeile) Gōdalandaz
+        if (modul.equals("namen")) {
+            out.println("<tr><td>\n");
+
+            try {
+                // Abfrage der Anzahl der Kommentare
+                int count = ModulIncDB.countNamenkommentar(id);
+
+                out.print("<label>Name");
+                if (count > 1) {
+                    out.println("n");
+                }
+                out.println("</label></td><td>");
+
+                // Abfrage der Namenkommentare
+                List<Object[]> resultList = ModulIncDB.getListPersonNamenkommentarPlemma(id);
+
+                // Schleife durch die Ergebnisse
+                if (resultList != null && !resultList.isEmpty()) {
+                    for (Object[] row : resultList) {
+                        String plemma = String.valueOf(row[0]);
+                        String plemmaID = String.valueOf(row[1]);
+
+                        if (plemma != null && !plemma.isEmpty() && !plemma.equalsIgnoreCase("null")) {
+                            out.println("<a href=\"namenkommentar?ID=" + plemmaID + "\">" + format(plemma, "PLemma") + "<br>");
+                        }
+                    }
+                }
+
+                out.println("</td></tr>");
+            } catch (Exception e) {
+                out.println(e);
+            }
+
+            out.println("</ul>\n");
+        }
+
+        //Gast: Personen, Katagorie/Bereich: Einzelbeleg (Beleg, Belegform, Datierung, Amt/Weihe, Stand, Kontext)
+        if (modul.equals("nachweiseRO")) {
+            out.println("<table \"width=100%\" id=\"einzelbelege\" class=\"content-table\">\n");
 %>
 <tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Beleg" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Belegform" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="AmtWeihe" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Stand" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Kontext" />
-	</jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="person" />
+            <jsp:param name="Textfeld" value="Beleg" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="person" />
+            <jsp:param name="Textfeld" value="Belegform" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="person" />
+            <jsp:param name="Textfeld" value="Datierung" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="person" />
+            <jsp:param name="Textfeld" value="AmtWeihe" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="person" />
+            <jsp:param name="Textfeld" value="Stand" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="person" />
+            <jsp:param name="Textfeld" value="Kontext" />
+        </jsp:include></th>
 </tr>
-
 <%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT e.ID, e.Belegnummer, e.Belegform,"
-								+ "e.VonTag, e.VonMonat, e.VonJahr, e.BisTag, e.BisMonat, e.BisJahr, sew.Bezeichnung, st.Bezeichnung, e.kontext "
-								+ " FROM (((einzelbeleg e LEFT JOIN einzelbeleg_hatamtweihe ew ON ew.einzelbelegID=e.ID)"
-								+ " LEFT JOIN selektion_amtweihe sew ON ew.AmtWeiheID=sew.ID) LEFT JOIN "
-								+ " einzelbeleg_hatstand es ON es.einzelbelegID=e.ID) "
-								+ " LEFT JOIN selektion_stand st ON es.StandID=st.ID, einzelbeleg_hatperson p "
-								+ "where e.id in (SELECT einzelbeleg.ID FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID) and e.id=p.einzelbelegID and  p.personID= \""
-								+ id
-								+ "\""
-								+ " ORDER BY e.vonJahr ASC, e.vonMonat ASC, e.vonTag ASC");
-				int count = 0;
-				while (rs.next()) {
-					count++;
-					if (count % 2 == 0)
-						out.println("<tr>");
-					else
-						out.println("<tr bgcolor='#AACCDD'>");
-					out.println("<td><a href=\"einzelbeleg?ID="
-							+ rs.getInt("e.ID") + "\">");
+    try {
+
+        List<Object[]> resultList = ModulIncDB.getListPersonenEinzelbelege(id);
+
+        int count = 0;
+
+        for (Object[] row : resultList) {
+            count++;
+            if (count % 2 == 0) {
+                out.println("<tr>");
+            } else {
+                out.println("<tr bgcolor='#AACCDD'>");
+            }
+
+            String eId = String.valueOf(row[0]);
+            String belegform = row[2] != null ? String.valueOf(row[2]) : "";
+
+            out.println("<td><a href=\"einzelbeleg?ID="
+                    + eId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="person" />
-	<jsp:param name="Textfeld" value="BelegLink" />
+    <jsp:param name="Formular" value="person" />
+    <jsp:param name="Textfeld" value="BelegLink" />
 </jsp:include>
 <%
-	out.println("</a></td>");
-					out.println("<td>" + rs.getString("e.Belegform")
-							+ "</td>");
-					out.println("<td> "
-							+ makeDate(rs.getInt("e.VonTag"), rs
-									.getInt("e.VonMonat"), rs
-									.getInt("e.VonJahr"))
-							+ " - "
-							+ makeDate(rs.getInt("e.BisTag"), rs
-									.getInt("e.BisMonat"), rs
-									.getInt("e.BisJahr")) + "</td>");
-					out
-							.println("<td>"
-									+ (rs.getString("sew.Bezeichnung") != null ? rs
-											.getString("sew.Bezeichnung")
-											: "-") + "</td>");
-					out
-							.println("<td>"
-									+ (rs.getString("st.Bezeichnung") != null ? rs
-											.getString("st.Bezeichnung")
-											: "-") + "</td>");
-					out.println("<td>"
-							+ (rs.getString("e.Kontext") != null ? rs
-									.getString("e.Kontext") : "-")
-							+ "</td>");
-					out.println("</tr>");
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}
-		if (modul.equals("nachweiseRO")) {
-			out.println("<table \"width=100%\" id=\"einzelbelege\" class=\"content-table\">\n");
+                out.println("</a></td>");
+                out.println("<td>" + getBelegformExternalLinked(eId, belegform) + "</td>");
+
+                String vonTag = row[3] != null ? String.valueOf(row[3]) : "";
+                String vonMonat = row[4] != null ? String.valueOf(row[4]) : "";
+                String vonJahr = row[5] != null ? String.valueOf(row[5]) : "";
+                String vonJhdt = row[6] != null ? String.valueOf(row[6]) : "";
+                String bisTag = row[7] != null ? String.valueOf(row[7]) : "";
+                String bisMonat = row[8] != null ? String.valueOf(row[8]) : "";
+                String bisJahr = row[9] != null ? String.valueOf(row[9]) : "";
+                String bisJhdt = row[10] != null ? String.valueOf(row[10]) : "";
+
+                String sewBezeichnung = row[11] != null ? String.valueOf(row[11]) : "";
+                String ssBezeichnung = row[12] != null ? String.valueOf(row[12]) : "";
+                String kontext = row[13] != null ? String.valueOf(row[13]) : "";
+
+                String von = "";
+
+                if (vonTag != null && !vonTag.equals("")
+                        && !vonTag.equals("0")) {
+                    von = vonTag + ".";
+                }
+                if (vonMonat != null && !vonMonat.equals("")
+                        && !vonMonat.equals("0")) {
+                    von = von + vonMonat + ".";
+                }
+                if (vonJahr != null && !vonJahr.equals("")
+                        && !vonJahr.equals("0")) {
+                    von = von + vonJahr;
+                }
+                if (von.equals("") && vonJhdt != null) {
+                    von = vonJhdt;
+                }
+
+                if (!von.equals("") && !von.contains("J") && !von.equals("0")
+                        && (vonTag == null || vonTag.equals("") || vonTag.equals("0"))
+                        && (vonMonat == null || vonMonat.equals("") || vonMonat.equals("0"))
+                        && (vonJahr == null || vonJahr.equals("") || vonJahr.equals("0"))) {
+                    von = von + " Jh.";
+                }
+
+                String bis = "";
+
+                if (bisTag != null && !bisTag.equals("")
+                        && !bisTag.equals("0")) {
+                    bis = bisTag + ".";
+                }
+                if (bisMonat != null && !bisMonat.equals("")
+                        && !bisMonat.equals("0")) {
+                    bis = bis + bisMonat + ".";
+                }
+                if (bisJahr != null && !bisJahr.equals("")
+                        && !bisJahr.equals("0")) {
+                    bis = bis + bisJahr;
+                }
+                if (bis.equals("") && bisJhdt != null) {
+                    bis = bisJhdt;
+                }
+
+                if (!bis.equals("") && !bis.contains("J") && !bis.equals("0")
+                        && (bisTag == null || bisTag.equals("") || bisTag.equals("0"))
+                        && (bisMonat == null || bisMonat.equals("") || bisMonat.equals("0"))
+                        && (bisJahr == null || bisJahr.equals("") || bisJahr.equals("0"))) {
+                    bis = bis + " Jh.";
+                }
+
+                if (!bis.equals(von) && !bis.equals("")) {
+                    out.println("<td>" + von + " - " + bis + "</td>");
+
+                } else {
+                    out.println("<td>" + von + "</td>");
+                }
+
+                if (sewBezeichnung == null || sewBezeichnung.equals("") || sewBezeichnung.equalsIgnoreCase("null")) {
+                    out.println("<td>-</td>");
+                } else {
+                    out.println("<td>" + sewBezeichnung + "</td>");
+                }
+
+                if (ssBezeichnung == null || ssBezeichnung.equals("") || ssBezeichnung.equalsIgnoreCase("null")) {
+                    out.println("<td>-</td>");
+                } else {
+                    out.println("<td>" + ssBezeichnung + "</td>");
+                }
+
+                if (kontext == null || kontext.equals("") || kontext.equalsIgnoreCase("null")) {
+                    out.println("<td>-</td>");
+                } else {
+                    out.println("<td>" + kontext + "</td>");
+                }
+
+                out.println("</tr>");
+
+            }//end for
+
+        } catch (Exception e) {
+            out.println(e);
+        }
+        out.println("</table>\n");
+    }
+
+    //Gast: Personen Katagorie/Feld Verwandte (Name d. person), Verwandschaftsgrade (z.b Gottfried, Vater)
+    if (modul.equals("Verwandte")) {
+        out.println("<table>\n");
 %>
 <tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Beleg" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Belegform" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="AmtWeihe" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Stand" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="person" />
-		<jsp:param name="Textfeld" value="Kontext" />
-	</jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="gast_person" />
+            <jsp:param name="Textfeld" value="PersonName" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="gast_person" />
+            <jsp:param name="Textfeld" value="Verwandtschaftsgrade" />
+        </jsp:include></th>
 </tr>
 <%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT e.ID, e.Belegnummer, e.Belegform,"
-								+ "e.VonTag, e.VonMonat, e.VonJahr, e.VonJahrhundert, e.BisTag, e.BisMonat, e.BisJahr, e.BisJahrhundert, sew.Bezeichnung, ss.Bezeichnung, e.kontext "
-								+ " FROM (((einzelbeleg e LEFT JOIN einzelbeleg_hatamtweihe ew ON ew.einzelbelegID=e.ID)"
-								+ " LEFT JOIN selektion_amtweihe sew ON ew.AmtWeiheID=sew.ID) LEFT JOIN "
-								+ " einzelbeleg_hatstand es ON es.einzelbelegID=e.ID)"
-								+ " LEFT JOIN selektion_stand ss ON es.StandID=ss.ID, einzelbeleg_hatperson p "
-								+ "where e.id in (SELECT einzelbeleg.ID FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1) and e.id=p.einzelbelegID and  p.personID= \""
-								+ id
-								+ "\""
-								+ " ORDER BY e.vonJahr ASC, e.vonMonat ASC, e.vonTag ASC");
-				int count = 0;
-				while (rs.next()) {
-					count++;
-					if (count % 2 == 0)
-						out.println("<tr>");
-					else
-						out.println("<tr bgcolor='#AACCDD'>");
-					out.println("<td><a href=\"einzelbeleg?ID="
-							+ rs.getInt("e.ID") + "\">");
+            try {
+
+                List<Object[]> resultList = ModulIncDB.getListPersonenVerwandte(id);
+
+                boolean atLeastOne = false;
+
+                for (Object[] row : resultList) {
+
+                    String pId = row[0] != null ? String.valueOf(row[0]) : "";
+                    String standardname = row[1] != null ? String.valueOf(row[1]) : "";
+                    String bezeichnung = row[2] != null ? String.valueOf(row[2]) : "";
+
+                    out.println("<tr>");
+                    out.println("<td><a href=\"person?ID=" + pId + "\">" + standardname + "</a></td>");
+                    out.println("<td>" + bezeichnung + "</td>");
+                    out.println("</tr>");
+                    atLeastOne = true;
+                }//end for
+
+                if (!atLeastOne) {
+                    out.println("<tr>");
+                    out.println("<td>-</td>");
+                    out.println("<td>-</td>");
+                    out.println("</tr>");
+                }
+
+            } catch (Exception e) {
+                out.println(e);
+            }
+
+            out.println("</table>\n");
+        }
+
+    }
+
+    if (formular.equals("edition")) {
+        //Backend: Edition, Tab Überlieferung (Überlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat) [z.b E125]
+        if (modul.equals("ueberlieferung")) {
+            out.println("<table>\n");
+%>
+<tr>
+    <th></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Ueberlieferung" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Signatur" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Sigle" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Datierung" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Schriftheimat" />
+        </jsp:include></th>
+</tr>
+<%
+    try {
+
+        List<Object[]> resultList = ModulIncDB.getListQuellenbezeichnungen(id);
+
+        for (Object[] row : resultList) {
+
+            String qId = String.valueOf(row[0]);
+            String bezeichnung = String.valueOf(row[1]);
+
+            List<Object[]> resultList_2 = ModulIncDB.getListQuellenInformationen(qId, id);
+
+            out.println("<tr><td colspan=6>");
+            out.println("Quelle: " + bezeichnung + "</td></tr>");
+
+            for (Object[] row_2 : resultList_2) {
+
+                String handschriftId = String.valueOf(row_2[0]);
+                String bibliothekssignatur = row_2[1] != null ? String.valueOf(row_2[1]) : "";
+                String sigel = row_2[3] != null ? String.valueOf(row_2[3]) : "";
+
+                String vonTag = row_2[4] != null ? String.valueOf(row_2[4]) : "";
+                String vonMonat = row_2[5] != null ? String.valueOf(row_2[5]) : "";
+                String vonJahr = row_2[6] != null ? String.valueOf(row_2[6]) : "";
+                String vonJhdt = row_2[7] != null ? String.valueOf(row_2[7]) : "";
+                String bisTag = row_2[8] != null ? String.valueOf(row_2[8]) : "";
+                String bisMonat = row_2[9] != null ? String.valueOf(row_2[9]) : "";
+                String bisJahr = row_2[10] != null ? String.valueOf(row_2[10]) : "";
+                String bisJhdt = row_2[11] != null ? String.valueOf(row_2[11]) : "";
+
+                String bezeichnungOrt = row_2[12] != null ? String.valueOf(row_2[12]) : "";
+
+                out.println("<tr>");
+                out.println("<td>&nbsp;</td><td><a href=\"handschrift?ID=" + handschriftId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="person" />
-	<jsp:param name="Textfeld" value="BelegLink" />
-</jsp:include>
-<%
-	out.println("</a></td>");
-					out.println("<td>" + getBelegformLinked(rs.getString("e.ID"), rs.getString("e.Belegform"))
-							+ "</td>");
-
-					String vonTag = rs.getString("e.VonTag");
-					String vonMonat = rs.getString("e.VonMonat");
-					String vonJahr = rs.getString("e.VonJahr");
-					String vonJhdt = rs.getString("e.VonJahrhundert");
-					String bisTag = rs.getString("e.BisTag");
-					String bisMonat = rs.getString("e.BisMonat");
-					String bisJahr = rs.getString("e.BisJahr");
-					String bisJhdt = rs.getString("e.BisJahrhundert");
-
-					String von = "";
-
-					if (vonTag != null && !vonTag.equals("")
-							&& !vonTag.equals("0"))
-						von = vonTag + ".";
-					if (vonMonat != null && !vonMonat.equals("")
-							&& !vonMonat.equals("0"))
-						von = von + vonMonat + ".";
-					if (vonJahr != null && !vonJahr.equals("")
-							&& !vonJahr.equals("0"))
-						von = von + vonJahr;
-					if (von.equals("") && vonJhdt != null)
-						von = vonJhdt;
-
-					String bis = "";
-
-					if (bisTag != null && !bisTag.equals("")
-							&& !bisTag.equals("0"))
-						bis = bisTag + ".";
-					if (bisMonat != null && !bisMonat.equals("")
-							&& !bisMonat.equals("0"))
-						bis = bis + bisMonat + ".";
-					if (bisJahr != null && !bisJahr.equals("")
-							&& !bisJahr.equals("0"))
-						bis = bis + bisJahr;
-					if (bis.equals("") && bisJhdt != null)
-						bis = bisJhdt;
-
-					if (!bis.equals(von) && !bis.equals(""))
-						out.println("<td>" + von + " - " + bis
-								+ "</td>");
-					else
-						out.println("<td>" + von + "</td>");
-					out
-							.println("<td>"
-									+ (rs.getString("sew.Bezeichnung") != null ? rs
-											.getString("sew.Bezeichnung")
-											: "-") + "</td>");
-					out
-							.println("<td>"
-									+ (rs.getString("ss.Bezeichnung") != null ? rs
-											.getString("ss.Bezeichnung")
-											: "-") + "</td>");
-					out.println("<td>"
-							+ (rs.getString("e.Kontext") != null ? rs
-									.getString("e.Kontext") : "-")
-							+ "</td>");
-					out.println("</tr>");
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}
-		if (modul.equals("Verwandte")) {
-			out.println("<table>\n");
-%>
-<tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="gast_person" />
-		<jsp:param name="Textfeld" value="PersonName" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="gast_person" />
-		<jsp:param name="Textfeld" value="Verwandtschaftsgrade" />
-	</jsp:include></th>
-</tr>
-<%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("select p.ID, p.Standardname, sv.Bezeichnung from person p, "
-								+ "person_verwandtmit pv, selektion_verwandtschaftsgrad sv where "
-								+ "pv.personIDvon="
-								+ id
-								+ " and pv.personIDzu=p.ID and "
-								+ "pv.verwandtschaftsgradID=sv.ID and p.ID in "
-								+ "(SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN "
-								+ "(SELECT einzelbeleg.ID FROM einzelbeleg, quelle WHERE "
-								+ "einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))");
-				int count = 0;
-				boolean atLeastOne = false;
-				while (rs.next()) {
-					count++;
-					out.println("<tr>");
-					out.println("<td><a href=\"person?ID="
-							+ rs.getInt("p.ID") + "\">"
-							+ rs.getString("p.Standardname")
-							+ "</a></td>");
-					out.println("<td>" + rs.getString("sv.Bezeichnung")
-							+ "</td>");
-					out.println("</tr>");
-					atLeastOne = true;
-				}
-				if (!atLeastOne) {
-					out.println("<tr>");
-					out.println("<td>-</td>");
-					out.println("<td>-</td>");
-					out.println("</tr>");
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}
-	}
-
-	else if (formular.equals("edition")) {
-		if (modul.equals("ueberlieferung")) {
-			out.println("<table>\n");
-%>
-<tr>
-	<th></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Ueberlieferung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Signatur" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Sigle" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Schriftheimat" />
-	</jsp:include></th>
-</tr>
-<%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT quelle.ID, quelle.Bezeichnung Bezeichnung FROM quelle_inedition, quelle WHERE quelle_inedition.EditionID=  "
-								+ id
-								+ " AND quelle_inedition.quelleID=quelle.ID ORDER BY Bezeichnung ASC");
-				while (rs.next()) {
-					String bez = rs.getString("Bezeichnung");
-					String qID = rs.getString("quelle.ID");
-					Statement st2 = cn.createStatement();
-
-					ResultSet rs2 = st2
-							.executeQuery("SELECT handschrift.ID, handschrift.Bibliothekssignatur,  handschrift_ueberlieferung.ID, ueberlieferung_edition.Sigle, handschrift_ueberlieferung.VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, selektion_ort.Bezeichnung"
-									+ " FROM handschrift, (handschrift_ueberlieferung JOIN selektion_ort ON selektion_ort.ID = handschrift_ueberlieferung.Schriftheimat), ueberlieferung_edition"
-									+ " WHERE handschrift_ueberlieferung.HandschriftID = handschrift.ID AND ueberlieferung_edition.EditionID = "
-									+ id
-									+ " AND ueberlieferung_edition.UeberlieferungID =handschrift_ueberlieferung.ID AND handschrift_ueberlieferung.QuelleID = \""
-									+ qID
-									+ "\" "
-									+ " ORDER BY ueberlieferung_edition.Sigle ASC");
-
-					out.println("<tr><td colspan=6>");
-
-	out.println("Quelle: " + bez + "</td></tr>");
-					while (rs2.next()) {
-						out.println("<tr>");
-						out
-								.println("<td>&nbsp;</td><td><a href=\"handschrift?ID="
-										+ rs2.getInt("handschrift.ID")
-										+ "\">");
-%>
-<jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="quelle" />
-	<jsp:param name="Textfeld" value="ZurHandschrift" />
+    <jsp:param name="Formular" value="quelle" />
+    <jsp:param name="Textfeld" value="ZurHandschrift" />
 </jsp:include>
 
 <%
-	out.println("</a></td>");
-						out
-								.println("<td>"
-										+ (rs2
-												.getString("handschrift.Bibliothekssignatur") == null ? ""
-												: rs2
-														.getString("handschrift.Bibliothekssignatur"))
-										+ "</td>");
-						out
-								.println("<td>"
-										+ (rs2
-												.getString("ueberlieferung_edition.Sigle") == null ? ""
-												: rs2
-														.getString("ueberlieferung_edition.Sigle"))
-										+ "</td>");
-						out
-								.println("<td> "
-										+ makeDate(
-												rs2
-														.getInt("handschrift_ueberlieferung.VonTag"),
-												rs2
-														.getInt("handschrift_ueberlieferung.VonMonat"),
-												rs2
-														.getInt("handschrift_ueberlieferung.VonJahr"))
-										+ (rs2.getString("handschrift_ueberlieferung.VonJahrhundert") == null || rs2.getString("handschrift_ueberlieferung.VonJahrhundert").equals("")?"":"("+rs2.getString("handschrift_ueberlieferung.VonJahrhundert")+")")
+                        out.println("</a></td>");
 
-										+ " - "
-										+ makeDate(
-												rs2
-														.getInt("handschrift_ueberlieferung.BisTag"),
-												rs2
-														.getInt("handschrift_ueberlieferung.BisMonat"),
-												rs2
-														.getInt("handschrift_ueberlieferung.BisJahr"))
-										+ (rs2.getString("handschrift_ueberlieferung.BisJahrhundert") == null || rs2.getString("handschrift_ueberlieferung.BisJahrhundert").equals("")?"":"("+rs2.getString("handschrift_ueberlieferung.VonJahrhundert")+")")
-										+ "</td>");
-						out
-								.println("<td>"
-										+ (rs2
-												.getString("selektion_ort.Bezeichnung") == null ? ""
-												: rs2
-														.getString("selektion_ort.Bezeichnung"))
-										+ "</td>");
-						out.println("</tr>");
-					}
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}
-		else if (modul.equals("quellen")) {
-			out.println("<table>\n");
-			out
-					.println("<tr><th>Quelle</th><th>Sigle</th><th>Standard</th></tr>\n");
-			Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT quelle.ID, quelle.Bezeichnung, quelle_inedition.Sigle, quelle_inedition.Standard"
-								+ " FROM quelle_inedition, quelle"
-								+ " WHERE quelle.ID = quelle_inedition.QuelleID"
-								+ " AND quelle_inedition.EditionID = \""
-								+ id
-								+ "\""
-								+ " ORDER BY quelle_inedition.Sigle ASC");
-				while (rs.next()) {
-					out.println("<tr>");
-					out.println("<td><a href=\"quelle?ID="
-							+ rs.getInt("quelle.ID") + "\">"
-							+ rs.getString("quelle.Bezeichnung")
-							+ "</a></td>");
-					out
-							.println("<td>"
-									+ (rs
-											.getString("quelle_inedition.Sigle") == null ? ""
-											: rs
-													.getString("quelle_inedition.Sigle"))
-									+ "</td>");
-					out
-							.println("<td>"
-									+ (rs
-											.getInt("quelle_inedition.Standard") == 1 ? "JA"
-											: "") + "</td>");
-					out.println("</tr>");
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}
-	}
+                        out.println("<td>" + bibliothekssignatur + "</td>");
 
-	else if (formular.equals("quelle")) {
-		if (modul.equals("ueberlieferung")) {
-			out.println("<table>\n");
+                        out.println("<td>" + sigel + "</td>");
+
+                        String von = "";
+
+                        if (vonTag != null && !vonTag.equals("")
+                                && !vonTag.equals("0")) {
+                            von = vonTag + ".";
+                        }
+                        if (vonMonat != null && !vonMonat.equals("")
+                                && !vonMonat.equals("0")) {
+                            von = von + vonMonat + ".";
+                        }
+                        if (vonJahr != null && !vonJahr.equals("")
+                                && !vonJahr.equals("0")) {
+                            von = von + vonJahr;
+                        }
+                        if (von.equals("") && vonJhdt != null) {
+                            von = vonJhdt;
+                        }
+
+                        if (!von.equals("") && !von.contains("J") && !von.equals("0")
+                                && (vonTag == null || vonTag.equals("") || vonTag.equals("0"))
+                                && (vonMonat == null || vonMonat.equals("") || vonMonat.equals("0"))
+                                && (vonJahr == null || vonJahr.equals("") || vonJahr.equals("0"))) {
+                            von = von + " Jh.";
+                        }
+
+                        String bis = "";
+
+                        if (bisTag != null && !bisTag.equals("")
+                                && !bisTag.equals("0")) {
+                            bis = bisTag + ".";
+                        }
+                        if (bisMonat != null && !bisMonat.equals("")
+                                && !bisMonat.equals("0")) {
+                            bis = bis + bisMonat + ".";
+                        }
+                        if (bisJahr != null && !bisJahr.equals("")
+                                && !bisJahr.equals("0")) {
+                            bis = bis + bisJahr;
+                        }
+                        if (bis.equals("") && bisJhdt != null) {
+                            bis = bisJhdt;
+                        }
+
+                        if (!bis.equals("") && !bis.contains("J") && !bis.equals("0")
+                                && (bisTag == null || bisTag.equals("") || bisTag.equals("0"))
+                                && (bisMonat == null || bisMonat.equals("") || bisMonat.equals("0"))
+                                && (bisJahr == null || bisJahr.equals("") || bisJahr.equals("0"))) {
+                            bis = bis + " Jh.";
+                        }
+
+                        if (!bis.equals(von) && !bis.equals("")) {
+                            out.println("<td>" + von + " - " + bis
+                                    + "</td>");
+                        } else {
+                            out.println("<td>" + von + "</td>");
+                        }
+
+                        out.println("<td>" + bezeichnungOrt + "</td>");
+
+                        out.println("</tr>");
+
+                    } //end row_2
+                } //end row
+
+            } catch (Exception e) {
+                out.println(e);
+            }
+            out.println("</table>\n");
+        }
+    }
+
+    //Backend: Quellen --> Tab: Überlieferung (Uberlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat)
+    if (formular.equals("quelle")) {
+        if (modul.equals("ueberlieferung")) {
+            out.println("<table>\n");
 %>
 <tr>
-	<th></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Ueberlieferung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Signatur" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Sigle" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Schriftheimat" />
-	</jsp:include></th>
+    <th></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Ueberlieferung" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Signatur" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Sigle" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Datierung" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Schriftheimat" />
+        </jsp:include></th>
 </tr>
 <%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT edition.ID, edition.Zitierweise Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
-								+ id
-								+ " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC");
-				while (rs.next()) {
-					String bez = rs.getString("Bezeichnung");
-					String edID = rs.getString("edition.ID");
-					Statement st2 = cn.createStatement();
+    try {
 
-					ResultSet rs2 = st2
-							.executeQuery("SELECT handschrift.ID, handschrift.Bibliothekssignatur,  handschrift_ueberlieferung.ID, ueberlieferung_edition.Sigle, handschrift_ueberlieferung.VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, selektion_ort.Bezeichnung"
-									+ " FROM handschrift, (handschrift_ueberlieferung JOIN selektion_ort ON selektion_ort.ID = handschrift_ueberlieferung.Schriftheimat), ueberlieferung_edition"
-									+ " WHERE handschrift_ueberlieferung.HandschriftID = handschrift.ID AND ueberlieferung_edition.EditionID = "
-									+ edID
-									+ " AND ueberlieferung_edition.UeberlieferungID =handschrift_ueberlieferung.ID AND handschrift_ueberlieferung.QuelleID = \""
-									+ id
-									+ "\" "
-									+ " ORDER BY ueberlieferung_edition.Sigle ASC");
+        List<Object[]> resultList = ModulIncDB.getListQuelleEditionen(id);
 
-					out.println("<tr><td colspan=6>");
+        for (Object[] row : resultList) {
+
+            String edId = String.valueOf(row[0]);
+            String bez = String.valueOf(row[1]);
+
+            List<Object[]> resultList_2 = ModulIncDB.getListQuelleSignaturen(edId, id);
+            out.println("<tr><td colspan=6>");
 %><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="quelle" />
-	<jsp:param name="Textfeld" value="Edition" />
+    <jsp:param name="Formular" value="quelle" />
+    <jsp:param name="Textfeld" value="Edition" />
 </jsp:include>
 <%
-	out.println(": " + bez + "</td></tr>");
-					while (rs2.next()) {
-						out.println("<tr>");
-						out
-								.println("<td>&nbsp;</td><td><a href=\"handschrift?ID="
-										+ rs2.getInt("handschrift.ID")
-										+ "\">");
+    out.println(": " + bez + "</td></tr>");
+
+    for (Object[] row_2 : resultList_2) {
+
+        String handschriftId = String.valueOf(row_2[0]);
+        String bibliothekssignatur = row_2[1] != null ? String.valueOf(row_2[1]) : "";
+        String sigel = row_2[3] != null ? String.valueOf(row_2[3]) : "";
+
+        String vonTag = row_2[4] != null ? String.valueOf(row_2[4]) : "";
+        String vonMonat = row_2[5] != null ? String.valueOf(row_2[5]) : "";
+        String vonJahr = row_2[6] != null ? String.valueOf(row_2[6]) : "";
+        String vonJhdt = row_2[7] != null ? String.valueOf(row_2[7]) : "";
+
+        String bisTag = row_2[8] != null ? String.valueOf(row_2[8]) : "";
+        String bisMonat = row_2[9] != null ? String.valueOf(row_2[9]) : "";
+        String bisJahr = row_2[10] != null ? String.valueOf(row_2[10]) : "";
+        String bisJhdt = row_2[11] != null ? String.valueOf(row_2[11]) : "";
+
+        String bezeichnung = row_2[12] != null ? String.valueOf(row_2[12]) : "";
+
+        out.println("<tr>");
+        out.println("<td>&nbsp;</td><td><a href=\"handschrift?ID=" + handschriftId + "\">");
 %>
+
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="quelle" />
-	<jsp:param name="Textfeld" value="ZurHandschrift" />
+    <jsp:param name="Formular" value="quelle" />
+    <jsp:param name="Textfeld" value="ZurHandschrift" />
 </jsp:include>
 
 <%
-	out.println("</a></td>");
-						out
-								.println("<td>"
-										+ (rs2
-												.getString("handschrift.Bibliothekssignatur") == null ? ""
-												: rs2
-														.getString("handschrift.Bibliothekssignatur"))
-										+ "</td>");
-						out
-								.println("<td>"
-										+ (rs2
-												.getString("ueberlieferung_edition.Sigle") == null ? ""
-												: rs2
-														.getString("ueberlieferung_edition.Sigle"))
-										+ "</td>");
-						out
-								.println("<td> "
-										+ makeDate(
-												rs2
-														.getInt("handschrift_ueberlieferung.VonTag"),
-												rs2
-														.getInt("handschrift_ueberlieferung.VonMonat"),
-												rs2
-														.getInt("handschrift_ueberlieferung.VonJahr"))
-										+ (rs2.getString("handschrift_ueberlieferung.VonJahrhundert") == null || rs2.getString("handschrift_ueberlieferung.VonJahrhundert").equals("")?"":"("+rs2.getString("handschrift_ueberlieferung.VonJahrhundert")+(rs2.getString("handschrift_ueberlieferung.VonJahrhundert").contains("J")?"":" Jh.")+")")
+                    out.println("</a></td>");
+                    out.println("<td>" + bibliothekssignatur + "</td>");
+                    out.println("<td>" + sigel + "</td>");
 
-										+ " - "
-										+ makeDate(
-												rs2
-														.getInt("handschrift_ueberlieferung.BisTag"),
-												rs2
-														.getInt("handschrift_ueberlieferung.BisMonat"),
-												rs2
-														.getInt("handschrift_ueberlieferung.BisJahr"))
-										+ (rs2.getString("handschrift_ueberlieferung.BisJahrhundert") == null || rs2.getString("handschrift_ueberlieferung.BisJahrhundert").equals("")?"":"("+rs2.getString("handschrift_ueberlieferung.BisJahrhundert")+(rs2.getString("handschrift_ueberlieferung.BisJahrhundert").contains("J")?"":" Jh.")+")")
-										+ "</td>");
-						out
-								.println("<td>"
-										+ (rs2
-												.getString("selektion_ort.Bezeichnung") == null ? ""
-												: rs2
-														.getString("selektion_ort.Bezeichnung"))
-										+ "</td>");
-						out.println("</tr>");
-					}
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		} else if (modul.equals("ueberlieferungRO")) {
-			out.println("<table id=\"ueberlieferung\" class=\"content-table\">\n");
- %>
+                    String von = "";
+
+                    if (vonTag != null && !vonTag.equals("")
+                            && !vonTag.equals("0")) {
+                        von = vonTag + ".";
+                    }
+                    if (vonMonat != null && !vonMonat.equals("")
+                            && !vonMonat.equals("0")) {
+                        von = von + vonMonat + ".";
+                    }
+                    if (vonJahr != null && !vonJahr.equals("")
+                            && !vonJahr.equals("0")) {
+                        von = von + vonJahr;
+                    }
+                    if (von.equals("") && vonJhdt != null) {
+                        von = vonJhdt;
+                    }
+
+                    if (!von.equals("") && !von.contains("J") && !von.equals("0")
+                            && (vonTag == null || vonTag.equals("") || vonTag.equals("0"))
+                            && (vonMonat == null || vonMonat.equals("") || vonMonat.equals("0"))
+                            && (vonJahr == null || vonJahr.equals("") || vonJahr.equals("0"))) {
+                        von = von + " Jh.";
+                    }
+
+                    String bis = "";
+
+                    if (bisTag != null && !bisTag.equals("")
+                            && !bisTag.equals("0")) {
+                        bis = bisTag + ".";
+                    }
+                    if (bisMonat != null && !bisMonat.equals("")
+                            && !bisMonat.equals("0")) {
+                        bis = bis + bisMonat + ".";
+                    }
+                    if (bisJahr != null && !bisJahr.equals("")
+                            && !bisJahr.equals("0")) {
+                        bis = bis + bisJahr;
+                    }
+                    if (bis.equals("") && bisJhdt != null) {
+                        bis = bisJhdt;
+                    }
+
+                    if (!bis.equals("") && !bis.contains("J") && !bis.equals("0")
+                            && (bisTag == null || bisTag.equals("") || bisTag.equals("0"))
+                            && (bisMonat == null || bisMonat.equals("") || bisMonat.equals("0"))
+                            && (bisJahr == null || bisJahr.equals("") || bisJahr.equals("0"))) {
+                        bis = bis + " Jh.";
+                    }
+
+                    if (!bis.equals(von) && !bis.equals("")) {
+                        out.println("<td>" + von + " - " + bis
+                                + "</td>");
+                    } else {
+                        out.println("<td>" + von + "</td>");
+                    }
+
+                    out.println("<td>" + bezeichnung + "</td>");
+                    out.println("</tr>");
+                }
+            }
+        } catch (Exception e) {
+            out.println(e);
+        }
+        out.println("</table>\n");
+    }
+
+//Gast:  Quellen --> Bereich/Katagorie Überlieferung
+    if (modul.equals("ueberlieferungRO")) {
+        out.println("<table id=\"ueberlieferung\" class=\"content-table\">\n");
+%>
 <tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Signatur" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Sigle" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Schriftheimat" />
-	</jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Signatur" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Sigle" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Datierung" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="Schriftheimat" />
+        </jsp:include></th>
 </tr>
 <%
-Connection cn = null;
-Statement st = null;
-ResultSet rs = null;
-try {
-	Class.forName(sqlDriver);
-	cn = DriverManager.getConnection(sqlURL, sqlUser,
-			sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT edition.ID, edition.Zitierweise Bezeichnung FROM quelle_inedition, edition WHERE quelle_inedition.QuelleID=  "
-								+ id
-								+ " AND quelle_inedition.editionID=edition.ID ORDER BY Bezeichnung ASC");
-				while (rs.next()) {
-					String bez = rs.getString("Bezeichnung");
-					String edID = rs.getString("edition.ID");
-					Statement st2 = cn.createStatement();
+    try {
 
-					ResultSet rs2 = st2
-							.executeQuery("SELECT handschrift.ID, handschrift.Bibliothekssignatur,  handschrift_ueberlieferung.ID, ueberlieferung_edition.Sigle, handschrift_ueberlieferung.VonJahrhundert, handschrift_ueberlieferung.BisJahrhundert, handschrift_ueberlieferung.VonJahr, handschrift_ueberlieferung.BisJahr, handschrift_ueberlieferung.VonMonat, handschrift_ueberlieferung.BisMonat, handschrift_ueberlieferung.VonTag, handschrift_ueberlieferung.BisTag, selektion_ort.Bezeichnung"
-									+ " FROM handschrift, (handschrift_ueberlieferung JOIN selektion_ort ON selektion_ort.ID = handschrift_ueberlieferung.Schriftheimat), ueberlieferung_edition"
-									+ " WHERE handschrift_ueberlieferung.HandschriftID = handschrift.ID AND ueberlieferung_edition.EditionID = "
-									+ edID
-									+ " AND ueberlieferung_edition.UeberlieferungID =handschrift_ueberlieferung.ID AND handschrift_ueberlieferung.QuelleID = \""
-									+ id
-									+ "\" "
-									+ " ORDER BY ueberlieferung_edition.Sigle ASC");
+        List<Object[]> resultList = ModulIncDB.getListQuelleEditionen(id);
 
+        for (Object[] row : resultList) {
+            String edId = String.valueOf(row[0]);
+            String bez = row[1] != null ? String.valueOf(row[1]) : "";
 
-					out.println("<tr><th colspan=4><b>");
+            List<Object[]> resultList_2 = ModulIncDB.getListGastQuelleSignaturen(edId, id);
+
+            out.println("<tr><th colspan=4><b>");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="quelle" />
-	<jsp:param name="Textfeld" value="Edition" />
+    <jsp:param name="Formular" value="quelle" />
+    <jsp:param name="Textfeld" value="Edition" />
 </jsp:include>
 
 <%
-	out.println(": " + bez + "</b></td></tr>");
-					while (rs2.next()) {
-						out.println("<tr>");
-						out
-								.println("<td>"
-										+ (rs2
-												.getString("handschrift.Bibliothekssignatur") == null ? ""
-												: rs2
-														.getString("handschrift.Bibliothekssignatur"))
-										+ "</td>");
-						out
-								.println("<td>"
-										+ (rs2
-												.getString("ueberlieferung_edition.Sigle") == null ? ""
-												: rs2
-														.getString("ueberlieferung_edition.Sigle"))
-										+ "</td>");
+                out.println(": " + bez + "</b></td></tr>");
 
-						String vonTag = rs2
-								.getString("handschrift_ueberlieferung.VonTag");
-						String vonMonat = rs2
-								.getString("handschrift_ueberlieferung.VonMonat");
-						String vonJahr = rs2
-								.getString("handschrift_ueberlieferung.VonJahr");
-						String vonJhdt = rs2
-								.getString("handschrift_ueberlieferung.VonJahrhundert");
-						String bisTag = rs2
-								.getString("handschrift_ueberlieferung.BisTag");
-						String bisMonat = rs2
-								.getString("handschrift_ueberlieferung.BisMonat");
-						String bisJahr = rs2
-								.getString("handschrift_ueberlieferung.BisJahr");
-						String bisJhdt = rs2
-								.getString("handschrift_ueberlieferung.BisJahrhundert");
+                for (Object[] row_2 : resultList_2) {
 
-						String von = "";
+                    String bibliothekssignatur = row_2[1] != null ? String.valueOf(row_2[1]) : "";
+                    String sigel = row_2[3] != null ? String.valueOf(row_2[3]) : "";
 
-						if (vonTag != null && !vonTag.equals("")
-								&& !vonTag.equals("0"))
-							von = vonTag + ".";
-						if (vonMonat != null && !vonMonat.equals("")
-								&& !vonMonat.equals("0"))
-							von = von + vonMonat + ".";
-						if (vonJahr != null && !vonJahr.equals("")
-								&& !vonJahr.equals("0"))
-							von = von + vonJahr;
-						if (von.equals("") && vonJhdt != null)
-							von = vonJhdt;
+                    String vonTag = row_2[10] != null ? String.valueOf(row_2[10]) : "";
+                    String vonMonat = row_2[8] != null ? String.valueOf(row_2[8]) : "";
+                    String vonJahr = row_2[6] != null ? String.valueOf(row_2[6]) : "";
+                    String vonJhdt = row_2[4] != null ? String.valueOf(row_2[4]) : "";
 
-						if(!von.equals("") && !von.contains("J") && (vonTag==null || vonTag.equals("") || vonTag.equals("0")) && (vonMonat==null || vonMonat.equals("") || vonMonat.equals("0")) && (vonJahr==null || vonJahr.equals("") || vonJahr.equals("0"))) von = von + " Jh.";
+                    String bisTag = row_2[11] != null ? String.valueOf(row_2[11]) : "";
+                    String bisMonat = row_2[9] != null ? String.valueOf(row_2[9]) : "";
+                    String bisJahr = row_2[7] != null ? String.valueOf(row_2[7]) : "";
+                    String bisJhdt = row_2[5] != null ? String.valueOf(row_2[5]) : "";
 
-						String bis = "";
+                    String bezeichnung = row_2[12] != null ? String.valueOf(row_2[12]) : "";
 
-						if (bisTag != null && !bisTag.equals("")
-								&& !bisTag.equals("0"))
-							bis = bisTag + ".";
-						if (bisMonat != null && !bisMonat.equals("")
-								&& !bisMonat.equals("0"))
-							bis = bis + bisMonat + ".";
-						if (bisJahr != null && !bisJahr.equals("")
-								&& !bisJahr.equals("0"))
-							bis = bis + bisJahr;
-						if (bis.equals("") && bisJhdt != null)
-							bis = bisJhdt;
+                    out.println("<tr>");
+                    out.println("<td>" + bibliothekssignatur + "</td>");
+                    out.println("<td>" + sigel + "</td>");
 
-						if(!bis.equals("")  && !bis.contains("J") && (bisTag==null || bisTag.equals("") || bisTag.equals("0")) && (bisMonat==null || bisMonat.equals("") || bisMonat.equals("0")) && (bisJahr==null || bisJahr.equals("") || bisJahr.equals("0"))) bis = bis + " Jh.";
+                    String von = "";
 
+                    if (vonTag != null && !vonTag.equals("")
+                            && !vonTag.equals("0")) {
+                        von = vonTag + ".";
+                    }
+                    if (vonMonat != null && !vonMonat.equals("")
+                            && !vonMonat.equals("0")) {
+                        von = von + vonMonat + ".";
+                    }
+                    if (vonJahr != null && !vonJahr.equals("")
+                            && !vonJahr.equals("0")) {
+                        von = von + vonJahr;
+                    }
+                    if (von.equals("") && vonJhdt != null) {
+                        von = vonJhdt;
+                    }
 
-						if (!bis.equals(von) && !bis.equals(""))
-							out.println("<td>" + von + " - " + bis
-									+ "</td>");
-						else
-							out.println("<td>" + von + "</td>");
+                    if (!von.equals("") && !von.contains("J") && !von.equals("0")
+                            && (vonTag == null || vonTag.equals("") || vonTag.equals("0"))
+                            && (vonMonat == null || vonMonat.equals("") || vonMonat.equals("0"))
+                            && (vonJahr == null || vonJahr.equals("") || vonJahr.equals("0"))) {
+                        von = von + " Jh.";
+                    }
 
-						out
-								.println("<td>"
-										+ (rs2
-												.getString("selektion_ort.Bezeichnung") == null ? ""
-												: rs2
-														.getString("selektion_ort.Bezeichnung"))
-										+ "</td>");
-						out.println("</tr>");
-					}
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		} else if (modul.equals("edition")) {
-			out.println("<table id=\"edition\">\n");
+                    String bis = "";
+
+                    if (bisTag != null && !bisTag.equals("")
+                            && !bisTag.equals("0")) {
+                        bis = bisTag + ".";
+                    }
+                    if (bisMonat != null && !bisMonat.equals("")
+                            && !bisMonat.equals("0")) {
+                        bis = bis + bisMonat + ".";
+                    }
+                    if (bisJahr != null && !bisJahr.equals("")
+                            && !bisJahr.equals("0")) {
+                        bis = bis + bisJahr;
+                    }
+                    if (bis.equals("") && bisJhdt != null) {
+                        bis = bisJhdt;
+                    }
+
+                    if (!bis.equals("") && !bis.contains("J") && !bis.equals("0")
+                            && (bisTag == null || bisTag.equals("") || bisTag.equals("0"))
+                            && (bisMonat == null || bisMonat.equals("") || bisMonat.equals("0"))
+                            && (bisJahr == null || bisJahr.equals("") || bisJahr.equals("0"))) {
+                        bis = bis + " Jh.";
+                    }
+
+                    if (!bis.equals(von) && !bis.equals("")) {
+                        out.println("<td>" + von + " - " + bis
+                                + "</td>");
+                    } else {
+                        out.println("<td>" + von + "</td>");
+                    }
+
+                    out.println("<td>" + bezeichnung + "</td>");
+
+                    out.println("</tr>");
+                }
+            }
+        } catch (Exception e) {
+            out.println(e);
+        }
+        out.println("</table>\n");
+    }
+
+    //Gast:  Quellen --> Bereich/Katagorie Standard Edition &n Weitere Editionen (Qeullen, Reihe, Bd., Ort, Jahr, Seiten, Herausgeber)
+    if (modul.equals("edition")) {
+        out.println("<table id=\"edition\">\n");
 %>
 <tbody  valign="bottom">
 
-<tr>
-	<th class="date">&nbsp;</th>
-	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Titel" />
-	</jsp:include></th>
-	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Reihe" />
-	</jsp:include></th>
-	<th class="date">Bd.</th>
-	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Ort" />
-	</jsp:include></th>
-	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Jahr" />
-	</jsp:include></th>
-	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Seiten" />
-	</jsp:include></th>
-	<th class="date">Nummer</th>
-	<th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="Herausgeber" />
-	</jsp:include></th>
-</tr>
-<%
-				int count = 0;
-					count++;
-					if (count % 2 == 0)
-						out.println("<tr>");
-					else
-						out.println("<tr bgcolor='#AACCDD'>");
+    <tr>
+        <th class="date">&nbsp;</th>
+        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="quelle" />
+                <jsp:param name="Textfeld" value="Titel" />
+            </jsp:include></th>
+        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="quelle" />
+                <jsp:param name="Textfeld" value="Reihe" />
+            </jsp:include></th>
+        <th class="date">Bd.</th>
+        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="quelle" />
+                <jsp:param name="Textfeld" value="Ort" />
+            </jsp:include></th>
+        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="quelle" />
+                <jsp:param name="Textfeld" value="Jahr" />
+            </jsp:include></th>
+        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="quelle" />
+                <jsp:param name="Textfeld" value="Seiten" />
+            </jsp:include></th>
+        <th class="date">Nummer</th>
+        <th class="date"><jsp:include page="inc.erzeugeBeschriftung.jsp">
+                <jsp:param name="Formular" value="quelle" />
+                <jsp:param name="Textfeld" value="Herausgeber" />
+            </jsp:include></th>
+    </tr>
+    <%
+        int count = 0;
+        count++;
+        if (count % 2 == 0) {
+            out.println("<tr>");
+        } else {
+            out.println("<tr bgcolor='#AACCDD'>");
+        }
 
-%>	<td><strong><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="StandardEdition" />
-	</jsp:include></strong></td>
+    %>	<td><strong><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Textfeld" value="StandardEdition" />
+        </jsp:include></strong></td>
 
 
-<%
-    boolean firstEdition = true;
+<%    boolean firstEdition = true;
     boolean showNummer = false;
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("Select e.ID, e.Titel, r.Bezeichnung as Reihe, e.BandNummer as Band, o. Bezeichnung as Ort, e.Jahr, qi.Seiten, e.Seiten, qi.Nummer from ((edition e join quelle_inedition qi on e.ID=qi.EditionID) left join selektion_reihe r on e.ReiheID=r.ID) left join selektion_ort o on e.OrtID=o.ID where qi.QuelleID="
-								+ id + " and qi.Standard=1");
-				while (rs.next()) {
-					if(!firstEdition){
-					count++;
-					if (count % 2 == 0)
-						out.println("<tr>");
-					else
-						out.println("<tr bgcolor='#AACCDD'>");
-					   out.println("<td></td>");
-					}
-					firstEdition = false;
-					out.println("<td>" + rs.getString("e.Titel")
-							+ "</td>");
-					out.println("<td>"
-							+ (rs.getString("Reihe") == null ? "--"
-									: DBtoHTML(rs.getString("Reihe")))
-							+ "</td>");
-					out.println("<td>"
-							+ (rs.getString("Band") == null ? "--"
-									: DBtoHTML(rs.getString("Band")))
-							+ "</td>");
-					out.println("<td>"
-							+ (rs.getString("Ort") == null ? "--"
-									: DBtoHTML(rs.getString("Ort")))
-							+ "</td>");
-					out.println("<td>"
-							+ (rs.getString("e.Jahr") == null ? "--"
-									: DBtoHTML(rs.getString("e.Jahr")))
-							+ "</td>");
-					out
-							.println("<td> "
-									+ (rs.getString("qi.Seiten") == null ? (rs.getString("e.Seiten") == null ? "--"
-											: DBtoHTML(rs
-													.getString("e.Seiten")))
-											: DBtoHTML(rs
-													.getString("qi.Seiten")))
-									+ "</td>");
-					out.println("<td>"
-							+ ((rs.getString("qi.Nummer") == null ||  rs.getString("qi.Nummer").trim().equals(""))? "--"
-									: DBtoHTML(rs.getString("qi.Nummer")))
-							+ "</td>");
-					if(rs.getString("qi.Nummer") != null && !rs.getString("qi.Nummer").trim().equals("")) showNummer =true;
-					out.println("<td>");
-					Statement st2 = cn.createStatement();
-					ResultSet rs2 = st2
-							.executeQuery("select s.Bezeichnung from selektion_editor s, edition_hateditor ehe where ehe.EditionID="
-									+ rs.getString("e.ID")
-									+ " AND ehe.EditorID=s.ID");
-					boolean first = true;
-					while (rs2.next()) {
-						if (!first)
-							out.print(" / ");
-						out.print(rs2.getString("s.Bezeichnung"));
-						first = false;
-					}
-					out.println("</td>");
-					out.println("</tr>");
-				}
-				if(firstEdition)out.println("<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-					count++;
-					if (count % 2 == 0)
-						out.println("<tr>");
-					else
-						out.println("<tr bgcolor='#AACCDD'>");
+
+    try {
+
+        List<Object[]> resultList = ModulIncDB.getListGastQuelleEditionen("1", id);
+
+        for (Object[] row : resultList) {
+
+            if (!firstEdition) {
+                count++;
+                if (count % 2 == 0) {
+                    out.println("<tr>");
+                } else {
+                    out.println("<tr bgcolor='#AACCDD'>");
+                }
+                out.println("<td></td>");
+            }
+            firstEdition = false;
+
+            String eId = row[0] != null ? String.valueOf(row[0]) : "-1";
+            String titel = row[1] != null ? String.valueOf(row[1]) : "";
+            String reihe = row[2] != null ? String.valueOf(row[2]) : "--";
+            String band = row[3] != null ? String.valueOf(row[3]) : "--";
+            String ort = row[4] != null ? String.valueOf(row[4]) : "--";
+            String jahr = row[5] != null ? String.valueOf(row[5]) : "--";
+            String qiSeiten = row[6] != null ? String.valueOf(row[6]) : row[7] != null ? String.valueOf(row[7]) : "--";
+            String nummer = (row[8] != null && !String.valueOf(row[8]).trim().equals("")) ? String.valueOf(row[8]) : "--";
+
+            out.println("<td>" + titel + "</td>");
+            out.println("<td>" + DBtoHTML(reihe) + "</td>");
+            out.println("<td>" + DBtoHTML(band) + "</td>");
+            out.println("<td>" + DBtoHTML(ort) + "</td>");
+            out.println("<td>" + DBtoHTML(jahr) + "</td>");
+            out.println("<td>" + DBtoHTML(qiSeiten) + "</td>");
+            out.println("<td>" + DBtoHTML(nummer) + "</td>");
+
+            if (nummer != null && !nummer.trim().equals("")) {
+                showNummer = true;
+            }
+
+            out.println("<td>");
+
+            List<String> resultList_2 = ModulIncDB.getListGastQuelleEditionHerausgeber(eId);
+            boolean first = true;
+
+            for (String row_2 : resultList_2) {
+
+                String bezeichnung = row_2 != null ? row_2 : "";
+
+                if (!first) {
+                    out.print(" / ");
+                }
+                out.print(bezeichnung);
+                first = false;
+            } //end for 2
+            out.println("</td>");
+            out.println("</tr>");
+        } //end for 1
+
+        if (firstEdition) {
+            out.println("<td colspan=\"8\"></tr>");
+        }
+        count++;
+        if (count % 2 == 0)
+            out.println("<tr>");
+        else
+            out.println("<tr bgcolor='#AACCDD'>");
 %>
-	<td><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="quelle" />
-		<jsp:param name="Textfeld" value="WeitereEditionen" />
-	</jsp:include></td>
+<td><jsp:include page="inc.erzeugeBeschriftung.jsp">
+        <jsp:param name="Formular" value="quelle" />
+        <jsp:param name="Textfeld" value="WeitereEditionen" />
+    </jsp:include>
+</td>
 
 <%
-firstEdition = true;
-	rs = st
-						.executeQuery("Select e.ID, e.Titel, r.Bezeichnung as Reihe, e.BandNummer as Band, o. Bezeichnung as Ort, e.Jahr, qi.Seiten, e.Seiten, qi.Nummer from ((edition e join quelle_inedition qi on e.ID=qi.EditionID) left join selektion_reihe r on e.ReiheID=r.ID) left join selektion_ort o on e.OrtID=o.ID where qi.QuelleID="
-								+ id + " and qi.Standard=0");
-				while (rs.next()) {
+        firstEdition = true;
 
-					if(!firstEdition){
-					count++;
-					if (count % 2 == 0)
-						out.println("<tr>");
-					else
-						out.println("<tr bgcolor='#AACCDD'>");
-					   out.println("<td></td>");
-					}
- 				    firstEdition = false;
-					out.println("<td>" + rs.getString("e.Titel")
-							+ "</td>");
-					out.println("<td>"
-							+ (rs.getString("Reihe") == null ? "--"
-									: DBtoHTML(rs.getString("Reihe")))
-							+ "</td>");
-					out.println("<td>"
-							+ (rs.getString("Band") == null ? "--"
-									: DBtoHTML(rs.getString("Band")))
-							+ "</td>");
-					out.println("<td>"
-							+ (rs.getString("Ort") == null ? "--"
-									: DBtoHTML(rs.getString("Ort")))
-							+ "</td>");
-					out.println("<td>"
-							+ (rs.getString("e.Jahr") == null ? "--"
-									: DBtoHTML(rs.getString("e.Jahr")))
-							+ "</td>");
-				out
-							.println("<td> "
-									+ (rs.getString("qi.Seiten") == null ? (rs.getString("e.Seiten") == null ? "--"
-											: DBtoHTML(rs
-													.getString("e.Seiten")))
-											: DBtoHTML(rs
-													.getString("qi.Seiten")))
-									+ "</td>");
-					out.println("<td>"
-							+ ((rs.getString("qi.Nummer") == null ||  rs.getString("qi.Nummer").trim().equals(""))? "--"
-									: DBtoHTML(rs.getString("qi.Nummer")))
-							+ "</td>");
-					if(rs.getString("qi.Nummer") != null && !rs.getString("qi.Nummer").trim().equals("")) showNummer =true;
-					out.println("<td>");
+        List<Object[]> resultList_3 = ModulIncDB.getListGastQuelleEditionen("0", id);
 
-					Statement st2 = cn.createStatement();
-					ResultSet rs2 = st2
-							.executeQuery("select s.Bezeichnung from selektion_editor s, edition_hateditor ehe where ehe.EditionID="
-									+ rs.getString("e.ID")
-									+ " AND ehe.EditorID=s.ID");
-					boolean first = true;
-					while (rs2.next()) {
-						if (!first)
-							out.print(" / ");
-						out.print(rs2.getString("s.Bezeichnung"));
-						first = false;
-					}
-					out.println("</td>");
-					out.println("</tr>");
-				}
+        for (Object[] row_3 : resultList_3) {
 
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</tbody valign=\"bottom\">\n");
-			out.println("</table>\n");
-			if(!showNummer){
-			%>
+            if (!firstEdition) {
+                count++;
+                if (count % 2 == 0) {
+                    out.println("<tr>");
+                } else {
+                    out.println("<tr bgcolor='#AACCDD'>");
+                }
+                out.println("<td></td>");
+            }
+            firstEdition = false;
+
+            String eId = row_3[0] != null ? String.valueOf(row_3[0]) : "-1";
+            String titel = row_3[1] != null ? String.valueOf(row_3[1]) : "";
+            String reihe = row_3[2] != null ? String.valueOf(row_3[2]) : "--";
+            String band = row_3[3] != null ? String.valueOf(row_3[3]) : "--";
+            String ort = row_3[4] != null ? String.valueOf(row_3[4]) : "--";
+            String jahr = row_3[5] != null ? String.valueOf(row_3[5]) : "--";
+            String qiSeiten = row_3[6] != null ? String.valueOf(row_3[6]) : row_3[7] != null ? String.valueOf(row_3[7]) : "--";
+            String nummer = (row_3[8] != null && !String.valueOf(row_3[8]).trim().equals("")) ? String.valueOf(row_3[8]) : "--";
+
+            out.println("<td>" + titel + "</td>");
+            out.println("<td>" + DBtoHTML(reihe) + "</td>");
+            out.println("<td>" + DBtoHTML(band) + "</td>");
+            out.println("<td>" + DBtoHTML(ort) + "</td>");
+            out.println("<td>" + DBtoHTML(jahr) + "</td>");
+            out.println("<td>" + DBtoHTML(qiSeiten) + "</td>");
+            out.println("<td>" + DBtoHTML(nummer) + "</td>");
+
+            if (nummer != null && !nummer.trim().equals("")) {
+                showNummer = true;
+            }
+
+            out.println("<td>");
+
+            List<String> resultList_4 = ModulIncDB.getListGastQuelleEditionHerausgeber(eId);
+
+            boolean first = true;
+
+            for (String row_4 : resultList_4) {
+
+                String bezeichnung = row_4 != null ? row_4 : "";
+
+                if (!first) {
+                    out.print(" / ");
+                }
+                out.print(bezeichnung);
+                first = false;
+            } //end for 4
+            out.println("</td>");
+            out.println("</tr>");
+        } //end for 3
+
+    } catch (Exception e) {
+        out.println(e);
+    }
+    out.println("</tbody valign=\"bottom\">\n");
+    out.println("</table>\n");
+    if (!showNummer) {
+%>
 <script type="text/javascript">
-   var rows = document.getElementById('edition').getElementsByTagName('tr');
-   for (var i = 0; i < rows.length; i++) {
-   if(rows[i].getElementsByTagName('th')[7])
-    rows[i].getElementsByTagName('th')[7].style.display='none';
-   if(rows[i].getElementsByTagName('td')[7])
-    rows[i].getElementsByTagName('td')[7].style.display='none';
-  }
+    var rows = document.getElementById('edition').getElementsByTagName('tr');
+    for (var i = 0; i < rows.length; i++) {
+        if (rows[i].getElementsByTagName('th')[7])
+            rows[i].getElementsByTagName('th')[7].style.display = 'none';
+        if (rows[i].getElementsByTagName('td')[7])
+            rows[i].getElementsByTagName('td')[7].style.display = 'none';
+    }
 </script>
-	<%	}
-		}
-	}
-	else if (formular.equals("mgh_lemma")) {
-		if (modul.equals("bearbeiter") || modul.equals("korrektor")) {
-			out.println("<table>\n");
-			out.print("<tr><th width=\"200\">");
-			if (modul.equals("bearbeiter")) {
+<%	}
+        }
+    }
+
+    //Backend: (mgh)lemma --> Tab Bearbeiter (Bearbeiter, Datum, Uhrzeit
+    if (formular.equals("mgh_lemma")) {
+        if (modul.equals("bearbeiter") || modul.equals("korrektor")) {
+            out.println("<table>\n");
+            out.print("<tr><th width=\"200\">");
+            if (modul.equals("bearbeiter")) {
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="mgh_lemma" />
-	<jsp:param name="Textfeld" value="Bearbeiter" />
+    <jsp:param name="Formular" value="mgh_lemma" />
+    <jsp:param name="Textfeld" value="Bearbeiter" />
 </jsp:include>
 
 <%
-	} else {
+} else {
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="mgh_lemma" />
-	<jsp:param name="Textfeld" value="Korrektor" />
+    <jsp:param name="Formular" value="mgh_lemma" />
+    <jsp:param name="Textfeld" value="Korrektor" />
 </jsp:include>
 <%
-	}
+    }
 %>
 </th>
 <th width="100"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="mgh_lemma" />
-	<jsp:param name="Textfeld" value="Datum" />
-</jsp:include></th>
+        <jsp:param name="Formular" value="mgh_lemma" />
+        <jsp:param name="Textfeld" value="Datum" />
+    </jsp:include></th>
 
 <th width="100"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="mgh_lemma" />
-	<jsp:param name="Textfeld" value="Uhrzeit" />
-</jsp:include></th>
+        <jsp:param name="Formular" value="mgh_lemma" />
+        <jsp:param name="Textfeld" value="Uhrzeit" />
+    </jsp:include></th>
 </tr>
 <%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT benutzer.Nachname, benutzer.Vorname, mgh_lemma_"
-								+ modul
-								+ ".Zeitstempel"
-								+ " FROM mgh_lemma, mgh_lemma_"
-								+ modul
-								+ ", benutzer"
-								+ " WHERE mgh_lemma.ID = \""
-								+ id
-								+ "\""
-								+ " AND mgh_lemma.ID = mgh_lemma_"
-								+ modul
-								+ ".MGHLemmaID"
-								+ " AND mgh_lemma_"
-								+ modul
-								+ ".BenutzerID = benutzer.ID"
-								+ " ORDER BY mgh_lemma_"
-								+ modul
-								+ ".Zeitstempel ASC;");
-				while (rs.next()) {
-					Date date = null;
-					Time time = null;
-					try {
-						date = rs.getDate("mgh_lemma_" + modul
-								+ ".Zeitstempel");
-						time = rs.getTime("mgh_lemma_" + modul
-								+ ".Zeitstempel");
-					} catch (SQLException e) {
-					}
-					out.println("<tr>");
-					out
-							.println("<td>"
-									+ DBtoHTML(rs
-											.getString("benutzer.Nachname"))
-									+ ", "
-									+ DBtoHTML(rs
-											.getString("Benutzer.Vorname"))
-									+ "</td>");
-					out.println("<td>" + (date == null ? "--" : date)
-							+ "</td>");
-					out.println("<td>" + (time == null ? "--" : time)
-							+ "</td>");
-					out.println("</tr>");
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}		else if (modul.equals("belege")) {
-			out.println("<table>\n");
+        try {
+
+            List<Object[]> resultList = ModulIncDB.getListLemmaBearbeiterKorrektor(modul, id);
+
+            for (Object[] row : resultList) {
+
+                Date date = null;
+                Time time = null;
+
+                String nachname = String.valueOf(row[0]);
+                String vorname = String.valueOf(row[1]);
+                String zeitstempelString = String.valueOf(row[2]);                           //besser !!!
+
+                Timestamp zeitstempel = Timestamp.valueOf(zeitstempelString);
+
+                // LocalDateTime aus Timestamp holen
+                LocalDateTime localDateTime = zeitstempel.toLocalDateTime();
+
+                // Date und Time extrahieren
+                date = Date.valueOf(localDateTime.toLocalDate());   // Nur Datum
+                time = Time.valueOf(localDateTime.toLocalTime());   // Nur Uhrzeit
+
+                out.println("<tr>");
+                out.println("<td>" + DBtoHTML(nachname) + ", " + DBtoHTML(vorname) + "</td>");
+                out.println("<td>" + (date == null ? "--" : date) + "</td>");
+                out.println("<td>" + (time == null ? "--" : time) + "</td>");
+                out.println("</tr>");
+            }//end for
+        } catch (Exception e) {
+            out.println(e);
+        }
+        out.println("</table>\n");
+    } //korrektor
+
+    if (modul.equals("belege")) {
+        out.println("<table>\n");
 %>
 <tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="mgh_lemma" />
-		<jsp:param name="Textfeld" value="Beleg" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="mgh_lemma" />
-		<jsp:param name="Textfeld" value="Belegform" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="mgh_lemma" />
-		<jsp:param name="Textfeld" value="Person" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="mgh_lemma" />
-		<jsp:param name="Textfeld" value="Standardname" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="mgh_lemma" />
-		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="mgh_lemma" />
+            <jsp:param name="Textfeld" value="Beleg" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="mgh_lemma" />
+            <jsp:param name="Textfeld" value="Belegform" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="mgh_lemma" />
+            <jsp:param name="Textfeld" value="Person" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="mgh_lemma" />
+            <jsp:param name="Textfeld" value="Standardname" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="mgh_lemma" />
+            <jsp:param name="Textfeld" value="Datierung" />
+        </jsp:include></th>
 </tr>
 <%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT einzelbeleg.ID, einzelbeleg.Belegnummer, einzelbeleg.Belegform"
-								+ ", person.ID, person.PKZ, person.Standardname"
-								+ ", einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr"
-								+ " FROM einzelbeleg_hatmghlemma, (einzelbeleg LEFT JOIN einzelbeleg_hatperson ON einzelbeleg.ID = einzelbeleg_hatperson.EinzelbelegID) LEFT JOIN person ON einzelbeleg_hatperson.PersonID = person.ID"
-								+ " WHERE einzelbeleg_hatmghlemma.MGHLemmaID = \""
-								+ id
-								+ "\""
-								+ " AND einzelbeleg_hatmghlemma.EinzelbelegID = einzelbeleg.ID"
-								+ " ORDER BY einzelbeleg.VonJahr, einzelbeleg.VonMonat, einzelbeleg.VonTag ASC");
-				while (rs.next()) {
-					out.println("<tr>");
-					out.println("<td><a href=\"einzelbeleg?ID="
-							+ rs.getInt("einzelbeleg.ID") + "\">");
+    try {
+        List<Object[]> resultList = ModulIncDB.getListNamenLemmaBelege("mghlemma", id);
+
+        for (Object[] row : resultList) {
+
+            String einzelbelegId = String.valueOf(row[0]);
+            String einzelbelegBelegform = String.valueOf(row[2]);
+            String personId = String.valueOf(row[3]);
+            String personPkz = String.valueOf(row[4]);
+            String standardname = String.valueOf(row[5]);
+
+            String vonTag = row[6] != null ? String.valueOf(row[6]) : "";
+            String vonMonat = row[7] != null ? String.valueOf(row[7]) : "";
+            String vonJahr = row[8] != null ? String.valueOf(row[8]) : "";
+            String vonJhdt = row[9] != null ? String.valueOf(row[9]) : "";
+
+            String bisTag = row[10] != null ? String.valueOf(row[10]) : "";
+            String bisMonat = row[11] != null ? String.valueOf(row[11]) : "";
+            String bisJahr = row[12] != null ? String.valueOf(row[12]) : "";
+            String bisJhdt = row[13] != null ? String.valueOf(row[13]) : "";
+
+            out.println("<tr>");
+            out.println("<td><a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="mgh_lemma" />
-	<jsp:param name="Textfeld" value="ZumBeleg" />
+    <jsp:param name="Formular" value="mgh_lemma" />
+    <jsp:param name="Textfeld" value="ZumBeleg" />
 </jsp:include>
 
 <%
-	out.println("</a></td>");
-					out
-							.println("<td>"
-									+ (rs
-											.getString("einzelbeleg.Belegform") == null ? "&nbsp;"
-											: rs
-													.getString("einzelbeleg.Belegform"))
-									+ "</td>");
-					out.println("<td>");
-					if (rs.getString("person.PKZ") == null)
-						out.println("--");
-					else {
-						out.println("<a href=\"person?ID="
-								+ rs.getInt("person.ID") + "\">");
-%>
-<jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="mgh_lemma" />
-	<jsp:param name="Textfeld" value="ZurPerson" />
-</jsp:include>
-<%
-	}
-					out.println("</a></td>");
-					out
-							.println("<td>"
-									+ (rs
-											.getString("person.Standardname") == null ? "--"
-											: DBtoHTML(rs
-													.getString("person.Standardname")))
-									+ "</td>");
-					out.println("<td> "
-							+ makeDate(rs.getInt("einzelbeleg.VonTag"),
-									rs.getInt("einzelbeleg.VonMonat"),
-									rs.getInt("einzelbeleg.VonJahr"))
-							+ " - "
-							+ makeDate(rs.getInt("einzelbeleg.BisTag"),
-									rs.getInt("einzelbeleg.BisMonat"),
-									rs.getInt("einzelbeleg.BisJahr"))
-							+ "</td>");
-					out.println("</tr>");
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}
-}
+    out.println("</a></td>");
+    if (einzelbelegBelegform.equals("")) {
+        out.println("<td> &nbsp; </td>");
+    } else {
+        out.println("<td>" + einzelbelegBelegform + "</td>");
+    }
 
-	else if (formular.equals("namenkommentar")) {
-		if (modul.equals("bearbeiter") || modul.equals("korrektor")) {
-			out.println("<table>\n");
-			out.print("<tr><th width=\"200\">");
-			if (modul.equals("bearbeiter")) {
+    out.println("<td>");
+
+    if (personPkz.equals("")) {
+        out.println("--");
+    } else {
+        out.println("<a href=\"person?ID=" + personId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Textfeld" value="Bearbeiter" />
+    <jsp:param name="Formular" value="mgh_lemma" />
+    <jsp:param name="Textfeld" value="ZurPerson" />
+</jsp:include>
+<%
+                    }
+
+                    out.println("</a></td>");
+
+                    if (standardname.equals("")) {
+                        out.println("<td>--</td>");
+                    } else {
+                        out.println("<td>" + DBtoHTML(standardname) + "</td>");
+                    }
+
+                    String von = "";
+
+                    if (vonTag != null && !vonTag.equals("")
+                            && !vonTag.equals("0")) {
+                        von = vonTag + ".";
+                    }
+                    if (vonMonat != null && !vonMonat.equals("")
+                            && !vonMonat.equals("0")) {
+                        von = von + vonMonat + ".";
+                    }
+                    if (vonJahr != null && !vonJahr.equals("")
+                            && !vonJahr.equals("0")) {
+                        von = von + vonJahr;
+                    }
+                    if (von.equals("") && vonJhdt != null) {
+                        von = vonJhdt;
+                    }
+
+                    if (!von.equals("") && !von.contains("J") && !von.equals("0")
+                            && (vonTag == null || vonTag.equals("") || vonTag.equals("0"))
+                            && (vonMonat == null || vonMonat.equals("") || vonMonat.equals("0"))
+                            && (vonJahr == null || vonJahr.equals("") || vonJahr.equals("0"))) {
+                        von = von + " Jh.";
+                    }
+
+                    String bis = "";
+
+                    if (bisTag != null && !bisTag.equals("")
+                            && !bisTag.equals("0")) {
+                        bis = bisTag + ".";
+                    }
+                    if (bisMonat != null && !bisMonat.equals("")
+                            && !bisMonat.equals("0")) {
+                        bis = bis + bisMonat + ".";
+                    }
+                    if (bisJahr != null && !bisJahr.equals("")
+                            && !bisJahr.equals("0")) {
+                        bis = bis + bisJahr;
+                    }
+                    if (bis.equals("") && bisJhdt != null) {
+                        bis = bisJhdt;
+                    }
+
+                    if (!bis.equals("") && !bis.contains("J") && !bis.equals("0")
+                            && (bisTag == null || bisTag.equals("") || bisTag.equals("0"))
+                            && (bisMonat == null || bisMonat.equals("") || bisMonat.equals("0"))
+                            && (bisJahr == null || bisJahr.equals("") || bisJahr.equals("0"))) {
+                        bis = bis + " Jh.";
+                    }
+
+                    if (!bis.equals(von) && !bis.equals("")) {
+                        out.println("<td>" + von + " - " + bis
+                                + "</td>");
+                    } else {
+                        out.println("<td>" + von + "</td>");
+                    }
+
+                    out.println("</tr>");
+                }
+            } catch (Exception e) {
+                out.println(e);
+            }
+
+            out.println("</table>\n");
+        }
+
+    }//mgh-lemma
+
+    if (formular.equals("namenkommentar")) {
+        //Backend: Namen bzw. namenkommentar  Tab Bearbeiter (Bearbeiter, Datum Uhrzeit) z.b ( Team, NPPM , 2024-09-16, 9:57:21)
+        if (modul.equals("bearbeiter") || modul.equals("korrektor")) {
+            out.println("<table>\n");
+            out.print("<tr><th width=\"200\">");
+            if (modul.equals("bearbeiter")) {
+%>
+<jsp:include page="inc.erzeugeBeschriftung.jsp">
+    <jsp:param name="Formular" value="namenkommentar" />
+    <jsp:param name="Textfeld" value="Bearbeiter" />
 </jsp:include>
 
 <%
-	} else {
+} else {
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Textfeld" value="Korrektor" />
+    <jsp:param name="Formular" value="namenkommentar" />
+    <jsp:param name="Textfeld" value="Korrektor" />
 </jsp:include>
 <%
-	}
+    }
 %>
 </th>
 <th width="100"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Textfeld" value="Datum" />
-</jsp:include></th>
+        <jsp:param name="Formular" value="namenkommentar" />
+        <jsp:param name="Textfeld" value="Datum" />
+    </jsp:include></th>
 
 <th width="100"><jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Textfeld" value="Uhrzeit" />
-</jsp:include></th>
+        <jsp:param name="Formular" value="namenkommentar" />
+        <jsp:param name="Textfeld" value="Uhrzeit" />
+    </jsp:include></th>
 </tr>
 <%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT benutzer.Nachname, benutzer.Vorname, namenkommentar_"
-								+ modul
-								+ ".Zeitstempel"
-								+ " FROM namenkommentar, namenkommentar_"
-								+ modul
-								+ ", benutzer"
-								+ " WHERE namenkommentar.ID = \""
-								+ id
-								+ "\""
-								+ " AND namenkommentar.ID = namenkommentar_"
-								+ modul
-								+ ".NamenkommentarID"
-								+ " AND namenkommentar_"
-								+ modul
-								+ ".BenutzerID = benutzer.ID"
-								+ " ORDER BY namenkommentar_"
-								+ modul
-								+ ".Zeitstempel ASC;");
-				while (rs.next()) {
-					Date date = null;
-					Time time = null;
-					try {
-						date = rs.getDate("namenkommentar_" + modul
-								+ ".Zeitstempel");
-						time = rs.getTime("namenkommentar_" + modul
-								+ ".Zeitstempel");
-					} catch (SQLException e) {
-					}
-					out.println("<tr>");
-					out
-							.println("<td>"
-									+ DBtoHTML(rs
-											.getString("benutzer.Nachname"))
-									+ ", "
-									+ DBtoHTML(rs
-											.getString("Benutzer.Vorname"))
-									+ "</td>");
-					out.println("<td>" + (date == null ? "--" : date)
-							+ "</td>");
-					out.println("<td>" + (time == null ? "--" : time)
-							+ "</td>");
-					out.println("</tr>");
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}
+        try {
+            List<Object[]> resultList = ModulIncDB.getListNamenBearbeiterKorrektor(modul, id);
 
-		else if (modul.equals("belege")) {
-			out.println("<table>\n");
+            for (Object[] row : resultList) {
+
+                Date date = null;
+                Time time = null;
+
+                String nachname = String.valueOf(row[0]);
+                String vorname = String.valueOf(row[1]);
+                String zeitstempelString = String.valueOf(row[2]);                           //besser !!!
+
+                Timestamp zeitstempel = Timestamp.valueOf(zeitstempelString);
+
+                // LocalDateTime aus Timestamp holen
+                LocalDateTime localDateTime = zeitstempel.toLocalDateTime();
+
+                // Date und Time extrahieren
+                date = Date.valueOf(localDateTime.toLocalDate());   // Nur Datum
+                time = Time.valueOf(localDateTime.toLocalTime());   // Nur Uhrzeit
+
+                out.println("<tr>");
+                out.println("<td>" + DBtoHTML(nachname) + ", " + DBtoHTML(vorname) + "</td>");
+                out.println("<td>" + (date == null ? "--" : date) + "</td>");
+                out.println("<td>" + (time == null ? "--" : time) + "</td>");
+                out.println("</tr>");
+            }//end for
+        } catch (Exception e) {
+            out.println(e);
+        }
+        out.println("</table>\n");
+    }
+
+    //Backend: Namen (bzw. namenkommentar) Tab Belege (Beleg, Belegform, Person, Standardname, Datierung)
+    if (modul.equals("belege")) {
+        out.println("<table>\n");
 %>
 <tr>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Beleg" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Belegform" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Person" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Standardname" />
-	</jsp:include></th>
-	<th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-		<jsp:param name="Formular" value="namenkommentar" />
-		<jsp:param name="Textfeld" value="Datierung" />
-	</jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="namenkommentar" />
+            <jsp:param name="Textfeld" value="Beleg" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="namenkommentar" />
+            <jsp:param name="Textfeld" value="Belegform" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="namenkommentar" />
+            <jsp:param name="Textfeld" value="Person" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="namenkommentar" />
+            <jsp:param name="Textfeld" value="Standardname" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="namenkommentar" />
+            <jsp:param name="Textfeld" value="Datierung" />
+        </jsp:include></th>
 </tr>
 <%
-	Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st
-						.executeQuery("SELECT einzelbeleg.ID, einzelbeleg.Belegnummer, einzelbeleg.Belegform"
-								+ ", person.ID, person.PKZ, person.Standardname"
-								+ ", einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr"
-								+ " FROM einzelbeleg_hatnamenkommentar, (einzelbeleg LEFT JOIN einzelbeleg_hatperson ON einzelbeleg.ID = einzelbeleg_hatperson.EinzelbelegID) LEFT JOIN person ON einzelbeleg_hatperson.PersonID = person.ID"
-								+ " WHERE einzelbeleg_hatnamenkommentar.NamenkommentarID = \""
-								+ id
-								+ "\""
-								+ " AND einzelbeleg_hatnamenkommentar.EinzelbelegID = einzelbeleg.ID"
-								+ " ORDER BY einzelbeleg.VonJahr, einzelbeleg.VonMonat, einzelbeleg.VonTag ASC");
-				while (rs.next()) {
-					out.println("<tr>");
-					out.println("<td><a href=\"einzelbeleg?ID="
-							+ rs.getInt("einzelbeleg.ID") + "\">");
+    List<Object[]> resultList = ModulIncDB.getListNamenLemmaBelege("namenkommentar", id);
+
+    for (Object[] row : resultList) {
+
+        String einzelbelegId = String.valueOf(row[0]);
+        String einzelbelegBelegform = String.valueOf(row[2]);
+        String personId = String.valueOf(row[3]);
+        String personPkz = String.valueOf(row[4]);
+        String standardname = String.valueOf(row[5]);
+
+        String vonTag = row[6] != null ? String.valueOf(row[6]) : "";
+        String vonMonat = row[7] != null ? String.valueOf(row[7]) : "";
+        String vonJahr = row[8] != null ? String.valueOf(row[8]) : "";
+        String vonJhdt = row[9] != null ? String.valueOf(row[9]) : "";
+
+        String bisTag = row[10] != null ? String.valueOf(row[10]) : "";
+        String bisMonat = row[11] != null ? String.valueOf(row[11]) : "";
+        String bisJahr = row[12] != null ? String.valueOf(row[12]) : "";
+        String bisJhdt = row[13] != null ? String.valueOf(row[13]) : "";
+
+        out.println("<tr>");
+        out.println("<td><a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
+
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Textfeld" value="ZumBeleg" />
+    <jsp:param name="Formular" value="namenkommentar" />
+    <jsp:param name="Textfeld" value="ZumBeleg" />
 </jsp:include>
 
-<%
-	out.println("</a></td>");
-					out
-							.println("<td>"
-									+ (rs
-											.getString("einzelbeleg.Belegform") == null ? "&nbsp;"
-											: rs
-													.getString("einzelbeleg.Belegform"))
-									+ "</td>");
-					out.println("<td>");
-					if (rs.getString("person.PKZ") == null)
-						out.println("--");
-					else {
-						out.println("<a href=\"person?ID="
-								+ rs.getInt("person.ID") + "\">");
+<%    out.println("</a></td>");
+    if (einzelbelegBelegform.equals("")) {
+        out.println("<td> &nbsp; </td>");
+    } else {
+        out.println("<td>" + einzelbelegBelegform + "</td>");
+    }
+
+    out.println("<td>");
+
+    if (personPkz.equals("")) {
+        out.println("--");
+    } else {
+        out.println("<a href=\"person?ID=" + personId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
-	<jsp:param name="Formular" value="namenkommentar" />
-	<jsp:param name="Textfeld" value="ZurPerson" />
+    <jsp:param name="Formular" value="namenkommentar" />
+    <jsp:param name="Textfeld" value="ZurPerson" />
 </jsp:include>
 <%
-	}
-					out.println("</a></td>");
-					out
-							.println("<td>"
-									+ (rs
-											.getString("person.Standardname") == null ? "--"
-											: DBtoHTML(rs
-													.getString("person.Standardname")))
-									+ "</td>");
-					out.println("<td> "
-							+ makeDate(rs.getInt("einzelbeleg.VonTag"),
-									rs.getInt("einzelbeleg.VonMonat"),
-									rs.getInt("einzelbeleg.VonJahr"))
-							+ " - "
-							+ makeDate(rs.getInt("einzelbeleg.BisTag"),
-									rs.getInt("einzelbeleg.BisMonat"),
-									rs.getInt("einzelbeleg.BisJahr"))
-							+ "</td>");
-					out.println("</tr>");
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-			out.println("</table>\n");
-		}
+                }
 
-		else if (modul.equals("PLemma")) {
+                out.println("</a></td>");
 
-			Connection cn = null;
-			Statement st = null;
-			ResultSet rs = null;
-			try {
-				Class.forName(sqlDriver);
-				cn = DriverManager.getConnection(sqlURL, sqlUser,
-						sqlPassword);
-				st = cn.createStatement();
-				rs = st.executeQuery("SELECT PLemma"
-						+ " FROM namenkommentar " + " WHERE ID = \""
-						+ id + "\"");
-				while (rs.next()) {
-					String lemma = rs.getString("PLemma");
+                if (standardname.equals("")) {
+                    out.println("<td>--</td>");
+                } else {
+                    out.println("<td>" + DBtoHTML(standardname) + "</td>");
+                }
 
-					out.println(format(lemma,"PLemma"));
+                String von = "";
 
-				}
-			} catch (Exception e) {
-				out.println(e);
-			} finally {
-				try {
-					if (null != rs)
-						rs.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != st)
-						st.close();
-				} catch (Exception ex) {
-				}
-				try {
-					if (null != cn)
-						cn.close();
-				} catch (Exception ex) {
-				}
-			}
-		}
+                if (vonTag != null && !vonTag.equals("")
+                        && !vonTag.equals("0")) {
+                    von = vonTag + ".";
+                }
+                if (vonMonat != null && !vonMonat.equals("")
+                        && !vonMonat.equals("0")) {
+                    von = von + vonMonat + ".";
+                }
+                if (vonJahr != null && !vonJahr.equals("")
+                        && !vonJahr.equals("0")) {
+                    von = von + vonJahr;
+                }
+                if (von.equals("") && vonJhdt != null) {
+                    von = vonJhdt;
+                }
 
-	}
+                if (!von.equals("") && !von.contains("J") && !von.equals("0")
+                        && (vonTag == null || vonTag.equals("") || vonTag.equals("0"))
+                        && (vonMonat == null || vonMonat.equals("") || vonMonat.equals("0"))
+                        && (vonJahr == null || vonJahr.equals("") || vonJahr.equals("0"))) {
+                    von = von + " Jh.";
+                }
+
+                String bis = "";
+
+                if (bisTag != null && !bisTag.equals("")
+                        && !bisTag.equals("0")) {
+                    bis = bisTag + ".";
+                }
+                if (bisMonat != null && !bisMonat.equals("")
+                        && !bisMonat.equals("0")) {
+                    bis = bis + bisMonat + ".";
+                }
+                if (bisJahr != null && !bisJahr.equals("")
+                        && !bisJahr.equals("0")) {
+                    bis = bis + bisJahr;
+                }
+                if (bis.equals("") && bisJhdt != null) {
+                    bis = bisJhdt;
+                }
+
+                if (!bis.equals("") && !bis.contains("J") && !bis.equals("0")
+                        && (bisTag == null || bisTag.equals("") || bisTag.equals("0"))
+                        && (bisMonat == null || bisMonat.equals("") || bisMonat.equals("0"))
+                        && (bisJahr == null || bisJahr.equals("") || bisJahr.equals("0"))) {
+                    bis = bis + " Jh.";
+                }
+
+                if (!bis.equals(von) && !bis.equals("")) {
+                    out.println("<td>" + von + " - " + bis
+                            + "</td>");
+                } else {
+                    out.println("<td>" + von + "</td>");
+                }
+                out.println("</tr>");
+            }
+            out.println("</table>\n");
+        }
+
+        //backend: namenkommtar, Philologisches Lemma (...) z.b (Idwiniz)
+        if (modul.equals("PLemma")) {
+            try {
+                List<String> plemmaList = ModulIncDB.getListPlemma(id);
+
+                for (String plemma : plemmaList) {
+
+                    String lemma = plemma;
+
+                    out.println(format(lemma, "PLemma"));
+                }
+
+            } catch (Exception e) {
+                out.println(e);
+            }
+        }
+    }
 %>
