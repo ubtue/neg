@@ -4,14 +4,14 @@ You can also have a look at the installation example in the docker subdirectory.
 
 Prerequisites:
 - System
-  - Tomcat 9 / Ubuntu (for automated build process). WAR-file should work with Tomcat >= 7.
-  - find /etc/tomcat<n> (might also be /usr/share/tomcat)
+  - Tomcat 10 / Ubuntu 24.04. WAR-file should work with Tomcat >= 9.
+  - find /etc/tomcat10
   - conf/web.xml
     - Find this servlet <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
     - Add parameter `<init-param><param-name>strictQuoteEscaping</param-name><param-value>false</param-value></init-param>`
   - Catalina/localhost/neg.xml (needs to be created with correct user credentials)
     - Note: If you also want to run CLI programs out of the tomcat context, you must create /root/.neg.properties and store sqlURL, sqlUser and sqlPassword in there.
-```
+
 <Context>
     <!-- Mandatory -->
     <Environment name="sqlURL" value="jdbc:mysql://localhost:3306/neg?characterEncoding=utf8" type="java.lang.String"/>
@@ -29,8 +29,8 @@ Prerequisites:
     <Environment name="smtpPassword" value="examplePassword" type="java.lang.String"/>
 </Context>
 ```
-- Java >= 1.8.0_77
-- MySQL >= 5.7
+- Java >= 1.11.0
+- MySQL >= 8.0
   - innodb_buffer_pool_size=512M
   - collation-server = utf8_unicode_ci
   - character-set-server = utf8mb4
