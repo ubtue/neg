@@ -1,3 +1,9 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.PersonDB"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.NamenKommentarDB"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.QuelleDB"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.EditionDB"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.HandschriftDB"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.MghLemmaDB"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.EinzelbelegDB"%>
 <%@ include file="../configuration.jsp" %>
 
@@ -17,28 +23,28 @@
         provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "einzelbeleg");
     } else if (title.toLowerCase().equals("person")) {
         out.print("P");
-        provenanceId = EinzelbelegDB.getProvenanceId(id, "person");
-        provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "person");
+        provenanceId = PersonDB.getProvenanceId(id, "person");
+        provenanceSrc = PersonDB.getProvenanceSource(id, "person");
     } else if (title.toLowerCase().equals("namenkommentar")) {
         out.print("N");
-        provenanceId = EinzelbelegDB.getProvenanceId(id, "namenkommentar");
-        provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "namenkommentar");
+        provenanceId = NamenKommentarDB.getProvenanceId(id, "namenkommentar");
+        provenanceSrc = NamenKommentarDB.getProvenanceSource(id, "namenkommentar");
     } else if (title.toLowerCase().equals("quelle")) {
         out.print("Q");
-        provenanceId = EinzelbelegDB.getProvenanceId(id, "quelle");
-        provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "quelle");
+        provenanceId = QuelleDB.getProvenanceId(id, "quelle");
+        provenanceSrc = QuelleDB.getProvenanceSource(id, "quelle");
     } else if (title.toLowerCase().equals("edition")) {
         out.print("E");
-        provenanceId = EinzelbelegDB.getProvenanceId(id, "edition");
-        provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "edition");
+        provenanceId = EditionDB.getProvenanceId(id, "edition");
+        provenanceSrc = EditionDB.getProvenanceSource(id, "edition");
     } else if (title.toLowerCase().equals("handschrift")) {
         out.print("T");
-        provenanceId = EinzelbelegDB.getProvenanceId(id, "handschrift");
-        provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "handschrift");
+        provenanceId = HandschriftDB.getProvenanceId(id, "handschrift");
+        provenanceSrc = HandschriftDB.getProvenanceSource(id, "handschrift");
     } else if (title.toLowerCase().equals("mghlemma")) {
         out.print("M");
-        provenanceId = EinzelbelegDB.getProvenanceId(id, "mgh_lemma");
-        provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "mgh_lemma");
+        provenanceId = MghLemmaDB.getProvenanceId(id, "mgh_lemma");
+        provenanceSrc = MghLemmaDB.getProvenanceSource(id, "mgh_lemma");
     }
 
     out.println(id);
