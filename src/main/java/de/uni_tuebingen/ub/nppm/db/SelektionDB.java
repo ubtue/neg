@@ -29,6 +29,14 @@ public class SelektionDB extends AbstractBase {
         return getList(getEntityClassByTableName(selektion));
     }
 
+    static public List<SelektionBezeichnung> getListBezeichnung(String selektion) throws Exception {
+        return getList(getEntityClassByTableName(selektion));
+    }
+
+    static public List<SelektionProvenance> getListProvenance(String selektion) throws Exception {
+        return getList(getEntityClassByTableName(selektion));
+    }
+
     static public List<SelektionHierarchy> getListHierarchy(String selektion) throws Exception {
         Class c = getEntityClassByTableName(selektion);
 
@@ -71,6 +79,54 @@ public class SelektionDB extends AbstractBase {
             }
         }
     }
+
+    public static String getBezeichnungByID(String id, String tabelle) throws Exception {
+        String result = "";
+
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+
+            String sql = "SELECT Bezeichnung FROM " + tabelle + " WHERE ID= :ID";
+            NativeQuery query = session.createNativeQuery(sql);
+            query.setParameter("ID", id);
+            result = (String) query.getSingleResult();
+            session.getTransaction().commit();
+        }
+        return result;
+    }
+
+    public static String getProvenanceSourceByID(String id, String tabelle) throws Exception {
+        String result = "";
+
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+
+            String sql = "SELECT provenance_source FROM " + tabelle + " WHERE ID= :ID";
+            NativeQuery query = session.createNativeQuery(sql);
+            query.setParameter("ID", id);
+            result = (String) query.getSingleResult();
+            session.getTransaction().commit();
+        }
+        return result;
+    }
+
+    public static String getProvenanceID(String id, String tabelle) throws Exception {
+        String result = "";
+
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+
+            String sql = "SELECT provenance_id FROM " + tabelle + " WHERE ID= :ID";
+            NativeQuery query = session.createNativeQuery(sql);
+            query.setParameter("ID", id);
+            result = (String) query.getSingleResult();
+            session.getTransaction().commit();
+        }
+        return result;
+    }
+
+
+
 
     public static List<Object> getBezeichnung(String tabelle, String bezeichnung) throws Exception {
         List<Object> results = new ArrayList<>();

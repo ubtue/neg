@@ -498,7 +498,7 @@ public class AbstractBase {
         return getSingleField("provenance_id", tabelle, Integer.valueOf(id));
     }
 
-    public static String getProvenanceSrc(String id, String tabelle) throws Exception{
+    public static String getProvenanceSource(String id, String tabelle) throws Exception{
         return getSingleField("provenance_source", tabelle, Integer.valueOf(id));
     }
 }

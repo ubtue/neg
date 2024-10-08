@@ -59,8 +59,14 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
             divideFunction(request, response);
         }
         // Weiterleiten an die JSP
-        RequestDispatcher rd = request.getRequestDispatcher("admin.auswahlfelder.jsp");
-        rd.include(request, response);
+        if(request.getParameter("Formular") != null && request.getParameter("Formular").equals("showProvenance")){
+            RequestDispatcher rd = request.getRequestDispatcher("admin.auswahlfelder.provenance.jsp");
+            rd.include(request, response);
+        }else{
+            RequestDispatcher rd = request.getRequestDispatcher("admin.auswahlfelder.jsp");
+            rd.include(request, response);
+        }
+        
 
     }
 
