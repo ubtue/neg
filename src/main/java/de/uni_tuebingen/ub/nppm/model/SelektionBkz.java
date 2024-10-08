@@ -7,6 +7,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "selektion_bkz")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class SelektionBkz extends SelektionBezeichnung {
+public class SelektionBkz extends SelektionProvenance {
 
 }
