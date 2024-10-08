@@ -29,8 +29,8 @@
             out.println("</tr>");
             for(Selektion sel: bezList){
                 String bez = SelektionDB.getBezeichnungByID(String.valueOf(sel.getId()),request.getParameter("Tabelle"));
-                String proSrc = SelektionDB.getProvenanceSourceByID(String.valueOf(sel.getId()),request.getParameter("Tabelle"));
-                String proID = SelektionDB.getProvenanceID(String.valueOf(sel.getId()),request.getParameter("Tabelle"));
+                String proSrc = SelektionDB.getProvenanceSource(String.valueOf(sel.getId()),request.getParameter("Tabelle"));
+                String proID = SelektionDB.getProvenanceId(String.valueOf(sel.getId()),request.getParameter("Tabelle"));
                 out.println("<tr>");
                 out.println("<td>");
                 out.println(bez);
