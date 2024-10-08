@@ -29,14 +29,6 @@ public class SelektionDB extends AbstractBase {
         return getList(getEntityClassByTableName(selektion));
     }
 
-    static public List<SelektionBezeichnung> getListBezeichnung(String selektion) throws Exception {
-        return getList(getEntityClassByTableName(selektion));
-    }
-
-    static public List<SelektionProvenance> getListProvenance(String selektion) throws Exception {
-        return getList(getEntityClassByTableName(selektion));
-    }
-
     static public List<SelektionHierarchy> getListHierarchy(String selektion) throws Exception {
         Class c = getEntityClassByTableName(selektion);
 

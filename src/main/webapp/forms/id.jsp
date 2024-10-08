@@ -37,7 +37,7 @@
         provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "handschrift");
     } else if (title.toLowerCase().equals("mghlemma")) {
         out.print("M");
-        provenanceId = EinzelbelegDB.getProvenanceId(id, "mghlemma");
+        provenanceId = EinzelbelegDB.getProvenanceId(id, "mgh_lemma");
         provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "mgh_lemma");
     }
 
