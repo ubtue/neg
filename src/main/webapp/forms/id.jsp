@@ -1,10 +1,5 @@
-<%@page import="de.uni_tuebingen.ub.nppm.db.PersonDB"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.NamenKommentarDB"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.QuelleDB"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.EditionDB"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.HandschriftDB"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.MghLemmaDB"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.EinzelbelegDB"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ include file="../configuration.jsp" %>
 
 <%
@@ -48,8 +43,10 @@
     }
 
     out.println(id);
-    if(provenanceSrc != null)
-        out.println("<br>Provenance Source: "+provenanceSrc);
-    if(provenanceId != null)
-        out.println("<br>Provenance ID: "+provenanceId);
+    if (!Utils.isGastEnvironment(request)) {
+        if(provenanceSrc != null)
+            out.println("<br>Provenienz (DB): "+provenanceSrc);
+        if(provenanceId != null)
+            out.println("<br>Provenienz (ID): "+provenanceId);
+    }
 %>
