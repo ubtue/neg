@@ -35,16 +35,23 @@
         List<Map> rowlist2 = AbstractBase.getMappedList(sql);
         //   out.println("<option value=\"-1\">nicht bearbeitet</option>");
         for (Map row2 : rowlist2) {
-            if (!isReadOnly) {
-                out.println("<option value=\"" + row2.get("ID").toString() + "\" " + (Integer.parseInt(row2.get("ID").toString()) == selected ? "selected" : "") + ">" + DBtoHTML(row2.get("Bezeichnung").toString()) + "</option>");
-            } else if (Integer.parseInt(row2.get("ID").toString()) == selected) {
-                out.println(DBtoHTML(row2.get("Bezeichnung").toString()));
+            String bezeichnung = row2.get("Bezeichnung") != null ? DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) : "";
+            String id_temp = String.valueOf(row2.get("ID")); // Sicherstellen, dass die ID immer als String vorliegt
+
+            if (row2.get("ID") != null && row2.get("Bezeichnung") != null) {
+                if (!isReadOnly) {
+                    out.println(String.format("<option value=\"%s\" %s>%s</option>",
+                            id_temp,
+                            (Integer.parseInt(id_temp) == selected ? "selected" : ""),
+                            bezeichnung));
+                } else if (Integer.parseInt(id_temp) == selected) {
+                    out.println(bezeichnung);
+                }
             }
         }
 
         if (!isReadOnly) {
             out.println("</select>");
         }
-
     }
 %>
