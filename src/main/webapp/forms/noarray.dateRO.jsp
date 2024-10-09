@@ -78,7 +78,7 @@
 
             Map row2 = AbstractBase.getMappedRow("SELECT * FROM selektion_datgenauigkeit WHERE ID=" + vonGen);
             if (row2 != null && !vonGen.equals("-1")) {
-                vonGen =  String.valueOf(row2.get("Bezeichnung"));
+                vonGen = row2.get("Bezeichnung") != null ? String.valueOf(row2.get("Bezeichnung")) : "";
             } else {
                 vonGen = "";
             }
@@ -95,7 +95,7 @@
 
             row2 = AbstractBase.getMappedRow("SELECT * FROM selektion_datgenauigkeit WHERE ID=" + bisGen);
             if (row2 != null && !bisGen.equals("-1")) {
-                bisGen = String.valueOf(row2.get("Bezeichnung"));
+                bisGen = row2.get("Bezeichnung") != null ? String.valueOf(row2.get("Bezeichnung")) : "";
             } else {
                 bisGen = "";
             }
