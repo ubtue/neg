@@ -116,6 +116,9 @@ public class Quelle {
     @ManyToMany(mappedBy = "quellen")
     private Set<Edition> editions = new HashSet<>();
 
+    @OneToOne(mappedBy = "quelle")
+    private Urkunde urkunde;
+
     public Integer getId() {
         return id;
     }
@@ -362,6 +365,10 @@ public class Quelle {
 
     public void removeEdition(int id){
         this.getEditions().removeIf(e -> e.getId() == id);
+    }
+
+    public Urkunde getUrkunde() {
+        return urkunde;
     }
 
 }
