@@ -168,7 +168,7 @@
                         Map<String, String> attributesAndValuesMap = new HashMap<>();
 
                         for (int i = 0; i < zielattributArray.length; i++) {
-                            String fieldValue = request.getParameter(combinedFeldnamenArray[i]);
+                            String fieldValue = !request.getParameter(combinedFeldnamenArray[i]).equals("") ?  request.getParameter(combinedFeldnamenArray[i]) : "0";
                             String genauigkeitValue = request.getParameter("Genauigkeit" + combinedFeldnamenArray[i]);
 
                             // Überprüfen, ob das Feld leer ist und den Wert entsprechend festlegen
