@@ -21,6 +21,70 @@
         Map row = AbstractBase.getMappedRow("SELECT " + zielattribute + " FROM "
                 + zielTabelle + " WHERE ID ='" + id + "'");
 
+        if (row.get("VonTag") == null) {
+            row.put("VonTag", 0);
+        }
+
+        if (row.get("VonMonat") == null) {
+            row.put("VonMonat", 0);
+        }
+
+        if (row.get("VonJahr") == null) {
+            row.put("VonJahr", 0);
+        }
+
+        if (row.get("VonJahrhundert") == null) {
+            row.put("VonJahrhundert", "0");
+        }
+
+        if (row.get("BisTag") == null) {
+            row.put("BisTag", 0);
+        }
+
+        if (row.get("BisMonat") == null) {
+            row.put("BisMonat", 0);
+        }
+
+        if (row.get("BisJahr") == null) {
+            row.put("BisJahr", 0);
+        }
+
+        if (row.get("BisJahrhundert") == null) {
+            row.put("BisJahrhundert", "0");
+        }
+
+        if (row.get("QuelleVonTag") == null) {
+            row.put("QuelleVonTag", 0);
+        }
+
+        if (row.get("QuelleVonMonat") == null) {
+            row.put("QuelleVonMonat", 0);
+        }
+
+        if (row.get("QuelleVonJahr") == null) {
+            row.put("QuelleVonJahr", 0);
+        }
+
+        if (row.get("QuelleVonJahrhundert") == null) {
+            row.put("QuelleVonJahrhundert", "0");
+        }
+
+        if (row.get("QuelleBisTag") == null) {
+            row.put("QuelleBisTag", 0);
+        }
+
+        if (row.get("QuelleBisMonat") == null) {
+            row.put("QuelleBisMonat", 0);
+        }
+
+        if (row.get("QuelleBisJahr") == null) {
+            row.put("QuelleBisJahr", 0);
+        }
+
+        if (row.get("QuelleBisJahrhundert") == null) {
+            row.put("QuelleBisJahrhundert", "0");
+        }
+
         if (row != null) {
 
             int resultIndex = 0;
@@ -42,7 +106,7 @@
                 if (i % 2 == 0) {
                     if (vonGen == null || vonGen.equals("") || vonGen.equals("-1")) {
                         if (results[i] != null) {
-                            vonGen = results[i]; 
+                            vonGen = results[i];
                         }
                     }
                 } else if (results[i] != null
