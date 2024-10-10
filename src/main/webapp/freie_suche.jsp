@@ -338,6 +338,19 @@
                     <% Language.printTextfield(out,session, formular,"Datumsformat");%>: 6Jh2, 750, 750-810, 5Jh1-7Jh2
                   </td>
                 </tr>
+                <!-- Provenance information -->
+                <tr>
+                  <th width="200" valign="top">
+                      <% Language.printDatafield(out,session, formular,"ProvenanceEinzelbeleg");%>
+                  </th>
+                  <td width="450">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="ProvenanceEinzelbeleg"/>
+                    </jsp:include>
+                  </td>
+                </tr>
+
               </tbody>
             </table>
             <!--p>&nbsp;<font color="red">*</font> <br>
@@ -698,6 +711,17 @@
                     </jsp:include>
                       <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Textzeuge_Bibliotheksheimat");%>
                     <font color="red">*</font>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="25">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="Ausgabe_Provenance_Einzelbeleg"/>
+                    </jsp:include>
+                  </td>
+                  <td width="350" valign="top">
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Provenance_Einzelbeleg");%>
                   </td>
                 </tr>
               </tbody>

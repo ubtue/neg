@@ -305,6 +305,13 @@
                                        "(VON_JAHR_JHDT(quelle.vonJahr, quelle.vonJahrhundert, quelle.bisJahrhundert)<="+vonNum+" and BIS_JAHR_JHDT(quelle.bisJahr, quelle.bisJahrhundert, quelle.vonJahrhundert)>="+bisNum+"))");
     einzelbeleg = true;
   }
+  
+    String provenanceEinzelbeleg = request.getParameter("ProvenanceEinzelbeleg");
+    
+    if (provenanceEinzelbeleg != null && !provenanceEinzelbeleg.isEmpty()) {
+        conditions.add("einzelbeleg.provenance_source = '" + request.getParameter("ProvenanceEinzelbeleg") + "'");
+        einzelbeleg = true;
+    }
 
   // ######### SUCHANFRAGE ##########
 
@@ -559,8 +566,14 @@
     fieldNames.add("einzelbeleg.EditionSeite");
    // headlines.add("Seite");
           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "EditionSeite"));
-
-    einzelbeleg = true;
+    einzelbeleg = true;    
+  }
+  if (request.getParameter("Ausgabe_Provenance_Einzelbeleg") != null && request.getParameter("Ausgabe_Provenance_Einzelbeleg").equals("on")) {
+        fields.add("einzelbeleg.provenance_source");
+        fieldNames.add("einzelbeleg.provenance_source");
+        //headlines.add("provenance_source");
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "ProvenanceEinzelbeleg"));
+        einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Quelle_Datierung") != null && request.getParameter("Ausgabe_Quelle_Datierung").equals("on")) {
     fields.add("quelle.VonTag");
@@ -1208,12 +1221,10 @@
  //       sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
 
 
-//      out.println(sql);
+      //out.println(sql);
     // if(true)return;
     java.util.List<Map<String, String>> searchResults = null;
     searchResults = SucheDB.getSearchResult(fieldsString, tablesString, conditionsString, orderString, order, fieldAliases.toArray(String[]::new));
-
-
 
   //    out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
               int orderSize = 0;

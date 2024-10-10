@@ -12,6 +12,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspWriter;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
@@ -89,23 +90,54 @@ public class SucheDB extends AbstractBase {
 
         try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
-            List<Object[]> rows = sqlQuery.getResultList();
+            List<?> rows = sqlQuery.getResultList();
             //return var
             List<Map<String, String>> ret = new ArrayList<>();
-            //loop over the rows
-            for (Object[] row : rows) {
-                //convert the fields from the row to a map
-                Map<String, String> fieldVal = new HashMap<>();
-                for (int i = 0; i < fields.length; i++) {
-                    String[] name = fields[i].split(" AS ");
-                    if (name.length == 2) {
-                        fields[i] = name[1];
-                    }
-                    if (row[i] != null) {
-                        fieldVal.put(fields[i].trim(), row[i].toString());
-                    }
+            
+            //determine the first element which is not null
+            //this is necessary to get the type of the return class
+            Object firstElement = null;
+            for(Object o : rows){
+                if(o != null){
+                    firstElement = o;
+                    break;
                 }
-                ret.add(fieldVal);
+            }
+            /*
+                the return value is from type Object[]
+            */
+            if(firstElement instanceof Object[]){
+                //loop over the rows
+                for (Object[] row : (List<Object[]>) rows) {
+                    //convert the fields from the row to a map
+                    Map<String, String> fieldVal = new HashMap<>();
+                    for (int i = 0; i < fields.length; i++) {
+                        String[] name = fields[i].split(" AS ");
+                        if (name.length == 2) {
+                            fields[i] = name[1];
+                        }
+                        if (row != null && row[i] != null) {
+                            fieldVal.put(fields[i].trim(), row[i].toString());
+                        }
+                    }
+                    ret.add(fieldVal);
+                }
+            /*
+                the return value is from type Object
+            */
+            }else if(firstElement instanceof Object){
+                for (Object row : (List<Object>) rows) {
+                    //convert the fields from the row to a map
+                    Map<String, String> fieldVal = new HashMap<>();
+                    String[] name = fields[0].split(" AS ");
+                    if (name.length == 2) {
+                        fields[0] = name[1];
+                    }
+                    if (row != null) {
+                        fieldVal.put(fields[0].trim(), row.toString());
+                    }
+                    ret.add(fieldVal);
+                }
             }
 
             return ret;
