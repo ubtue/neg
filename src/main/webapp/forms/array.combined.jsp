@@ -264,9 +264,8 @@
                                     + " /></td></tr>");
                             i2++;
                         }
-                         out.println("</table>");
+                        out.println("</table>");
                     }
-
 
                 } else if (combinedFeldtypen[j].equals("checkbox")) {
                     if (!isReadOnly) {
@@ -332,23 +331,26 @@
                     if (!isReadOnly) {
                         out.println("<option value=\"NULL\" " + selectForm.get(-1) + ">nicht bearbeitet</option>");
                     }
-                    //if (!sql.equals("")) {
+
                     for (Map row2 : rowlist2) {
-                        if (!isReadOnly) {
-                            out.println("<option value='"
-                                    + row2.get("ID").toString()
-                                    + "' "
-                                    + (Integer.parseInt(row2.get("ID").toString()) == selected ? "selected"
-                                    : "")
-                                    + ">"
-                                    + row2.get("Bezeichnung").toString()
-                                    + "</option>");
-                        } else if (Integer.parseInt(row2.get("ID").toString()) == selected
-                                && combinedFeldnamen[j].equals("TKHandschrift")) {
-                            out.println(row2.get("Bezeichnung").toString());
+                        // Sicherstellen, dass die Bezeichnung nicht null ist
+                        String bezeichnung = row2.get("Bezeichnung") != null ? DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) : "";
+                        String id_temp = row2.get("ID") != null ? String.valueOf(row2.get("ID")) : "";
+
+                        if (!id_temp.isEmpty() && !bezeichnung.isEmpty()) {
+                            if (!isReadOnly) {
+                                out.println(String.format("<option value='%s' %s>%s</option>",
+                                        id_temp,
+                                        (Integer.parseInt(id_temp) == selected ? "selected" : ""),
+                                        bezeichnung));
+                            }
+                        } else if (Integer.parseInt(id_temp) == selected && combinedFeldnamen[j].equals("TKHandschrift")) {
+                            // Ausgabe nur der Bezeichnung, wenn `isReadOnly` true ist und `TKHandschrift` gewählt wurde
+                            if (!bezeichnung.isEmpty()) {
+                                out.println(bezeichnung);
+                            }
                         }
                     }
-                    //}
 
                     out.println("</select>");
                 } else if (combinedFeldtypen[j].equals("checkbox")) {

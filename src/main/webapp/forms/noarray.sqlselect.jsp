@@ -36,9 +36,9 @@
         //   out.println("<option value=\"-1\">nicht bearbeitet</option>");
         for (Map row2 : rowlist2) {
             String bezeichnung = row2.get("Bezeichnung") != null ? DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) : "";
-            String id_temp = String.valueOf(row2.get("ID")); // Sicherstellen, dass die ID immer als String vorliegt
+            String id_temp = row2.get("ID") != null ? String.valueOf(row2.get("ID")) : "";
 
-            if (row2.get("ID") != null && row2.get("Bezeichnung") != null) {
+            if (!id_temp.isEmpty() && !bezeichnung.isEmpty()) {
                 if (!isReadOnly) {
                     out.println(String.format("<option value=\"%s\" %s>%s</option>",
                             id_temp,
