@@ -7,6 +7,8 @@
     String title = request.getParameter("title");
     String provenanceId = null;
     String provenanceSrc = null;
+    String DMPtype = null;
+    String DMPprimaryColumn = null;
     if (title.contains("gast_")) {
         title = title.substring(5);
     }
@@ -16,6 +18,8 @@
         out.print("B");
         provenanceId = EinzelbelegDB.getProvenanceId(id, "einzelbeleg");
         provenanceSrc = EinzelbelegDB.getProvenanceSource(id, "einzelbeleg");
+        DMPtype = "namen";
+        DMPprimaryColumn = "g_index";
     } else if (title.toLowerCase().equals("person")) {
         out.print("P");
         provenanceId = PersonDB.getProvenanceId(id, "person");
@@ -28,6 +32,8 @@
         out.print("Q");
         provenanceId = QuelleDB.getProvenanceId(id, "quelle");
         provenanceSrc = QuelleDB.getProvenanceSource(id, "quelle");
+        DMPtype = "quelle";
+        DMPprimaryColumn = "quelle";
     } else if (title.toLowerCase().equals("edition")) {
         out.print("E");
         provenanceId = EditionDB.getProvenanceId(id, "edition");
@@ -47,8 +53,8 @@
         if(provenanceSrc != null)
             out.println("<br>Provenienz (DB): "+provenanceSrc);
         if(provenanceId != null) {
-            if (provenanceSrc != null && provenanceSrc.equals("DMP")) {
-                out.println("<br>Provenienz (ID): <a href=\"https://dmp.ub.uni-tuebingen.de/?table=namen&mode=view&g_index=" + provenanceId + "\" target=\"_blank\">"+ provenanceId + "</a>");
+            if (provenanceSrc != null && provenanceSrc.equals("DMP") && DMPtype != null && DMPprimaryColumn != null) {
+                out.println("<br>Provenienz (ID): <a href=\"https://dmp.ub.uni-tuebingen.de/?table=" + DMPtype + "&mode=view&" + DMPprimaryColumn + "=" + provenanceId + "\" target=\"_blank\">"+ provenanceId + "</a>");
             } else {
                 out.println("<br>Provenienz (ID): "+provenanceId);
             }
