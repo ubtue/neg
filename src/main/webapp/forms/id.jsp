@@ -46,7 +46,12 @@
     if (!Utils.isGastEnvironment(request)) {
         if(provenanceSrc != null)
             out.println("<br>Provenienz (DB): "+provenanceSrc);
-        if(provenanceId != null)
-            out.println("<br>Provenienz (ID): "+provenanceId);
+        if(provenanceId != null) {
+            if (provenanceSrc != null && provenanceSrc.equals("DMP")) {
+                out.println("<br>Provenienz (ID): <a href=\"https://dmp.ub.uni-tuebingen.de/?table=namen&mode=view&g_index=" + provenanceId + "\" target=\"_blank\">"+ provenanceId + "</a>");
+            } else {
+                out.println("<br>Provenienz (ID): "+provenanceId);
+            }
+        }
     }
 %>
