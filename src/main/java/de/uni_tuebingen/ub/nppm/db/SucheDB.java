@@ -105,6 +105,8 @@ public class SucheDB extends AbstractBase {
             }
             /*
                 the return value is from type Object[]
+                This means that the array fields has more than one element
+                and we need to iterate over it
             */
             if(firstElement instanceof Object[]){
                 //loop over the rows
@@ -124,6 +126,8 @@ public class SucheDB extends AbstractBase {
                 }
             /*
                 the return value is from type Object
+                This means that the array fields has only one element
+                and we dont need to iterate over it
             */
             }else if(firstElement instanceof Object){
                 for (Object row : (List<Object>) rows) {
