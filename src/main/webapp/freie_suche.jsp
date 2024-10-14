@@ -200,6 +200,20 @@
                     </jsp:include>
                   </td>
                 </tr>
+
+                <!-- Provenance information Lemma-->
+                <tr>
+                  <th width="200" valign="top">
+                      <% Language.printDatafield(out,session, formular,"ProvenanceLemma");%>
+                  </th>
+                  <td width="450">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="ProvenanceLemma"/>
+                    </jsp:include>
+                  </td>                 
+                </tr>
+
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th width="200" valign="top">
@@ -238,6 +252,7 @@
                     Format: 6Jh2, 750, 750-810, 5Jh1-7Jh2
                   </td>
                 </tr>
+
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th width="200" valign="top">
@@ -338,6 +353,19 @@
                     <% Language.printTextfield(out,session, formular,"Datumsformat");%>: 6Jh2, 750, 750-810, 5Jh1-7Jh2
                   </td>
                 </tr>
+                <!-- Provenance information Einzelbeleg-->
+                <tr>
+                  <th width="200" valign="top">
+                      <% Language.printDatafield(out,session, formular,"ProvenanceEinzelbeleg");%>
+                  </th>
+                  <td width="450">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="ProvenanceEinzelbeleg"/>
+                    </jsp:include>
+                  </td>                  
+                </tr>
+
               </tbody>
             </table>
             <!--p>&nbsp;<font color="red">*</font> <br>
@@ -436,7 +464,21 @@
                   <td width="350" valign="top">
                       <% Language.printDatafield(out,session, formular,"Ausgabe_MGHLemma");%>
                   </td>
-                </tr>                 <tr><td colspan="2">&nbsp;</td></tr>
+                </tr>
+
+                <tr>
+                  <td width="25">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="Ausgabe_Provenance_Lemma"/>
+                    </jsp:include>
+                  </td>
+                  <td width="350" valign="top">
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Provenance_Lemma");%>
+                  </td>
+                </tr>
+
+                <tr><td colspan="2">&nbsp;</td></tr>
                 <tr><td colspan="2"><h3>
                         <% Language.printTextfield(out,session, formular,"ZurPerson");%>
                         </h3></td></tr>
@@ -698,6 +740,17 @@
                     </jsp:include>
                       <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Textzeuge_Bibliotheksheimat");%>
                     <font color="red">*</font>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="25">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="Ausgabe_Provenance_Einzelbeleg"/>
+                    </jsp:include>
+                  </td>
+                  <td width="350" valign="top">
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Provenance_Einzelbeleg");%>
                   </td>
                 </tr>
               </tbody>
