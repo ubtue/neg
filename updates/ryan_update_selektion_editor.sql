@@ -16,9 +16,9 @@ UPDATE selektion_editor
 SET ID = -1
 WHERE ID = 1;
 
-UPDATE edition_hateditor
-SET EditorID = -1
+DELETE FROM edition_hateditor
 WHERE EditorID = 1;
+
 
 -- Fremdschlüssel erneut hinzufügen
 ALTER TABLE edition_hateditor
