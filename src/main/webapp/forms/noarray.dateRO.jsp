@@ -27,16 +27,8 @@
             int resultIndex = 0;
             for (String zielattribut : zielattributArray) {
                 String zielattributGen = "Genauigkeit" + zielattribut;
-                if (row.get(zielattributGen) != null) {
-                    results[resultIndex++] = row.get(zielattributGen).toString();
-                } else {
-                    results[resultIndex++] = null;
-                }
-                if (row.get(zielattribut) != null) {
-                    results[resultIndex++] = row.get(zielattribut).toString();
-                } else {
-                    results[resultIndex++] = null;
-                }
+                results[resultIndex++] = row.get(zielattributGen) == null ? null : row.get(zielattributGen).toString();
+                results[resultIndex++] = row.get(zielattribut) == null ? null : row.get(zielattribut).toString();
             }
 
             // Initialize all display variables
