@@ -1,12 +1,10 @@
-SET FOREIGN_KEY_CHECKS = 0;
-
 -- Fremdschlüssel entfernen
 ALTER TABLE edition_hateditor DROP FOREIGN KEY edition_hateditor_EditorID;
 ALTER TABLE edition_hateditor DROP FOREIGN KEY edition_hateditor_EditionID;
 
 -- Datentypen ändern
 ALTER TABLE selektion_editor MODIFY ID int;
-ALTER TABLE edition_hateditor MODIFY EditorID INT NOT NULL;
+ALTER TABLE edition_hateditor MODIFY EditorID INT NOT NULL DEFAULT -1;
 
 -- AUTO_INCREMENT hinzufügen
 ALTER TABLE selektion_editor MODIFY ID INT NOT NULL AUTO_INCREMENT;
@@ -25,5 +23,3 @@ ALTER TABLE edition_hateditor
 ADD CONSTRAINT edition_hateditor_EditorID FOREIGN KEY (EditorID) REFERENCES selektion_editor(ID);
 ALTER TABLE edition_hateditor
 ADD CONSTRAINT edition_hateditor_EditionID FOREIGN KEY (EditionID) REFERENCES edition(ID);
-
-SET FOREIGN_KEY_CHECKS = 1;
