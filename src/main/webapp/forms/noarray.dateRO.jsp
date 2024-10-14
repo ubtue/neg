@@ -80,11 +80,7 @@
 
             // Lookup vonGen vs selektion_datgenauigkeit
             Map row2 = AbstractBase.getMappedRow("SELECT * FROM selektion_datgenauigkeit WHERE ID=" + vonGen);
-            if (row2 != null && !vonGen.equals("-1")) {
-                vonGen = row2.get("Bezeichnung").toString();
-            } else {
-                vonGen = "";
-            }
+            vonGen = row2 != null && !vonGen.equals("-1") ? String.valueOf(row2.get("Bezeichnung")) : "";
 
             // Special handling if "bis" is empty to use last 2 fields (GenauigkeitBisJahrhundert, BisJahrhundert)
             if (bis.equals("")
@@ -99,11 +95,7 @@
 
             // Lookup bisGen vs selektion_datgenauigkeit
             row2 = AbstractBase.getMappedRow("SELECT * FROM selektion_datgenauigkeit WHERE ID=" + bisGen);
-            if (row2 != null && !bisGen.equals("-1")) {
-                bisGen = row2.get("Bezeichnung").toString();
-            } else {
-                bisGen = "";
-            }
+            bisGen = row2 != null && !bisGen.equals("-1") ? String.valueOf(row2.get("Bezeichnung")) : "";
 
             // Print output depeding on whether "bis" is set as well or not
             if (bis != null && von != null && !bis.equals(von) && !bis.equals("")) {
