@@ -116,7 +116,12 @@
                                 }
                                 if (SelektionDB.isHierarchy(tbl)) {
                                     out.print("<td><a href=\"admin-auswahlfelder?Formular=baumstruktur&Tabelle=" + tbl + "\">Baumstruktur</a></td>");
+                                } else {
+                                    out.print("<td></td>");
                                 }
+                                out.println("<td>");
+                                out.println("<a href=\"admin-auswahlfelder?Formular=showProvenance&Tabelle=" + tbl + "\">provenance info</a>");
+                                out.println("</td>");
                                 out.print("</tr>");
                             }
                         }

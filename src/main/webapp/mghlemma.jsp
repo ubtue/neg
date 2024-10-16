@@ -44,7 +44,7 @@
 			<td width="200">
                             <% Language.printDatafield(out,session, formular,"MGHLemma");%>
                         </td>
-			<td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+			<td width="600"><jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="mgh_lemma" />
 				<jsp:param name="Datenfeld" value="MGHLemma" />

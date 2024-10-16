@@ -21,6 +21,10 @@ public class Utils {
         return true;
     }
 
+    public static boolean isGastEnvironment(HttpServletRequest request) {
+        return request.getRequestURL().toString().contains("/gast/");
+    }
+
     public static String getBaseUrl(HttpServletRequest request) {
         String scheme = request.getScheme();
         String host = request.getServerName();
