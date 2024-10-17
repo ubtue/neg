@@ -1116,10 +1116,10 @@
         for (Object[] row : resultList) {
 
             String einzelbelegId = String.valueOf(row[0]);
-            String einzelbelegBelegform = String.valueOf(row[2]);
+            String einzelbelegBelegform = row[2] != null ? String.valueOf(row[2]) : "";
             String personId = String.valueOf(row[3]);
-            String personPkz = String.valueOf(row[4]);
-            String standardname = String.valueOf(row[5]);
+            String personPkz = row[4] != null ? String.valueOf(row[4]) : "";
+            String standardname = row[5] != null ? String.valueOf(row[5]) : "";
 
             String vonTag = row[6] != null ? String.valueOf(row[6]) : "";
             String vonMonat = row[7] != null ? String.valueOf(row[7]) : "";
@@ -1336,10 +1336,10 @@
     for (Object[] row : resultList) {
 
         String einzelbelegId = String.valueOf(row[0]);
-        String einzelbelegBelegform = String.valueOf(row[2]);
+        String einzelbelegBelegform = row[2] != null ? String.valueOf(row[2]) : "";
         String personId = String.valueOf(row[3]);
-        String personPkz = String.valueOf(row[4]);
-        String standardname = String.valueOf(row[5]);
+        String personPkz = row[4] != null ? String.valueOf(row[4]) : "";
+        String standardname = row[5] != null ? String.valueOf(row[5]) : "";
 
         String vonTag = row[6] != null ? String.valueOf(row[6]) : "";
         String vonMonat = row[7] != null ? String.valueOf(row[7]) : "";
