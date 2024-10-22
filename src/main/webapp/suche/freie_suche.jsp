@@ -76,9 +76,13 @@
 
   String provenanceLemma = request.getParameter("ProvenanceLemma");
 
-  if (provenanceLemma != null && !provenanceLemma.isEmpty()) {
-    conditions.add("mgh_lemma.provenance_source = '" + request.getParameter("ProvenanceLemma") + "'");
-    mghlemma = true;
+  if (provenanceLemma != null && Integer.parseInt(provenanceLemma) > -1) {
+     if(Integer.parseInt(provenanceLemma) == 0){
+         conditions.add("mgh_lemma.provenance_source = 'NeG'");
+     }else if(Integer.parseInt(provenanceLemma) == 1){
+        conditions.add("mgh_lemma.provenance_source = 'DMP'");
+     }
+     mghlemma = true;
   }
   // ### ZUR PERSON ###
 
@@ -316,8 +320,12 @@
   
     String provenanceEinzelbeleg = request.getParameter("ProvenanceEinzelbeleg");
     
-    if (provenanceEinzelbeleg != null && !provenanceEinzelbeleg.isEmpty()) {
-        conditions.add("einzelbeleg.provenance_source = '" + request.getParameter("ProvenanceEinzelbeleg") + "'");
+    if (provenanceEinzelbeleg != null && Integer.parseInt(provenanceEinzelbeleg) > -1) {
+        if(Integer.parseInt(provenanceEinzelbeleg) == 0){
+            conditions.add("einzelbeleg.provenance_source = 'NeG'");
+        }else if(Integer.parseInt(provenanceEinzelbeleg) == 1){
+            conditions.add("einzelbeleg.provenance_source = 'DMP'");
+        }
         einzelbeleg = true;
     }
 
