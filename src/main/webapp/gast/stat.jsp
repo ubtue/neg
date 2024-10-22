@@ -77,14 +77,6 @@
         return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleDown&page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort down</a>";
     }
 
-    public String html_sort_id_up(int page, String filterTitle, int recordsPerPage, String jumpToID) {
-        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=idUp&page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort up</a>";
-    }
-
-    public String html_sort_id_down(int page, String filterTitle, int recordsPerPage, String jumpToID) {
-        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=idDown&page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort down</a>";
-    }
-
     public void print_pagination(JspWriter out, int currentPage, int recordsPerPage, String filterTitle, int nOfPages, String sort, String jumpToID) throws Exception {
         out.println("<nav aria-label=\"Navigation for rows\">");
         out.println("<ul class=\"pagination\">");
@@ -125,20 +117,6 @@
     <table id="stat1" class="statTable">
         <thead>        
             <th>
-                <b>ID</b>
-                <form method="GET">
-                    <input name="jumpToID" type="text" size="10" value="<%=jumpToID %>" placeholder="Jump to ID"/>
-                    <input name="page" type="hidden" value="anzahl_belege"/>
-                    <input name="sort" type="hidden" value="<%=sort %>"/>
-                    <input name="jumpToID" type="hidden" value="<%=jumpToID %>"/>
-                    <input type="submit" />
-                </form>
-                <%
-                    out.println(html_sort_id_up(currentPage, filterTitle, recordsPerPage,jumpToID));
-                    out.println(html_sort_id_down(currentPage, filterTitle, recordsPerPage,jumpToID));
-                %>
-            </th>
-            <th>
                 <b>Titel der Quelle</b>
                 <form method="GET">
                     <input name="filterTitle" type="text" size="40" value="<%=filterTitle %>" placeholder="Titel Filter"/>
@@ -158,10 +136,7 @@
        <tbody>
             <%
             for (Quelle q : lst) {
-                out.print("<tr>");
-                out.print("<td>");
-                out.print(Utils.escapeHTML(String.valueOf(q.getId())));
-                out.print("</td>");
+                out.print("<tr onclick=\"window.location='/neg/gast/quelle?ID="+String.valueOf(q.getId())+"';\" style=\"cursor: pointer;\">");
                 out.print("<td>");
                 out.print(Utils.escapeHTML(q.getBezeichnung()));
                 out.print("</td>");
