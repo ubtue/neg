@@ -144,6 +144,7 @@ transition: all 0.5s ease; }
 
 .page-item {
     margin-right: 10px;
+    float: right;
 }
 
 .sort-link {
