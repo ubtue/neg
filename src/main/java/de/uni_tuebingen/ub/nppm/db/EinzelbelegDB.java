@@ -49,7 +49,7 @@ public class EinzelbelegDB extends AbstractBase{
             CriteriaQuery<Einzelbeleg> criteria = builder.createQuery(Einzelbeleg.class);
             Root einzelbeleg = criteria.from(Einzelbeleg.class);
             criteria.select(einzelbeleg);
-            criteria.where(builder.equal(einzelbeleg.get(Einzelbeleg_.ID), qId));
+            criteria.where(builder.equal(einzelbeleg.get(Einzelbeleg_.QUELLE), qId));
             List<Einzelbeleg> res = session.createQuery(criteria).getResultList();
             return res.size();
         }
