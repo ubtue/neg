@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="layout/layout.css" type="text/css">
 
     <script src="javascript/funktionen.js" type="text/javascript"></script>
-    <script src="webjars/jquery/3.7.0/jquery.min.js" type="text/javascript"></script>
-    <script src="webjars/jQuery-Autocomplete/1.4.10/jquery.autocomplete.min.js" type="text/javascript"></script>
+    <script src="webjars/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="webjars/jQuery-Autocomplete/1.4.11/jquery.autocomplete.min.js" type="text/javascript"></script>
 
     ${additionalCss}
 

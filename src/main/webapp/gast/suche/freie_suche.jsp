@@ -62,9 +62,19 @@
             if (!tableString.contains("quelle")) {
                 tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
             }
+        }else if (newID.startsWith("E") || newID.startsWith("e")) {
+            conditions.add("edition.ID='" + newForm + "'");
+
+            if (!tableString.contains("edition")) {
+                tableString += " INNER JOIN edition ON einzelbeleg.EditionID = edition.ID";
+            }
+        }else if (newID.startsWith("M") || newID.startsWith("m")) {
+            conditions.add("mgh_lemma.ID='" + newForm + "'");
+            mghlemma = true;
         }
 
-    }
+
+    }//ce end
 
     // ######### SUCHANFRAGE ##########
     // ### ZUM NAMEN ###
@@ -326,6 +336,12 @@
         einzelbeleg = true;
     }
 
+    String pageString = request.getParameter("Seite");
+    if (pageString != null && !pageString.isEmpty()) {
+            conditions.add("einzelbeleg.EditionSeite = '" + request.getParameter("Seite") + "'");
+            einzelbeleg = true;
+    }
+
     // ######### SUCHANFRAGE ##########
     String sprache = "de";
     if (session != null && session.getAttribute("Sprache") != null) {
@@ -499,9 +515,9 @@
         fieldNames.add("selektion_quellengattung.Bezeichnung");
         if (!tableString.contains("selektion_quellengattung")) {
             tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
-        }
-        //headlines.add("Quellengattung");
-        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "EinzelbelegQuellengattung"));
+    }
+
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "QuelleGattung"));
 
         einzelbeleg = true;
     }

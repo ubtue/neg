@@ -26,7 +26,8 @@
 	<jsp:param name="size" value="11" />
 </jsp:include>
 
-
+<!---------- schema.org RDFa wrapper ---------->
+<div vocab="https://schema.org/" typeof="Person">
 
 <!----------ID---------->
   <div id="id">
@@ -43,18 +44,22 @@
   <table id="personen-table" class="content-table">
 	<tbody>
 		<tr>
-                    <th><% Language.printTextfield(out, session, "person", "Person"); %></th>
-
-			
-			<td><jsp:include page="../inc.erzeugeFormular.jsp">
+                    <th style="vertical-align: middle;"><% Language.printTextfield(out, session, "person", "Person"); %></th>
+			<td style="padding-top: 5px; padding-bottom: 2px;">
+                            <jsp:include page="../inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="person" />
 				<jsp:param name="Datenfeld" value="Standardname" />
 				<jsp:param name="size" value="50" />
 				<jsp:param name="Readonly" value="yes" />
-			</jsp:include>
-              <span style="float:right;display:block;font-weight:bold;">
-              </span></td>
+                            </jsp:include>
+
+                            <jsp:include page="../inc.erzeugeFormular.jsp">
+                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="Formular" value="person" />
+                                <jsp:param name="Datenfeld" value="GNDLink" />
+                            </jsp:include>
+                        </td>
 		</tr>
 		<tr>
                     <th><% Language.printDatafield(out, session, "person", "Varianten"); %></th>
@@ -135,6 +140,8 @@
 		</tr>
 	</tbody>
   </table>
+
+</div>
 
 <!----------Einzelbelege---------->
 <h3><% Language.printTextfield(out, session, "person", "TabEinzelbelege"); %></h3>

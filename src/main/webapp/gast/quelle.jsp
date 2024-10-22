@@ -1,6 +1,5 @@
-<%@page import="de.uni_tuebingen.ub.nppm.db.UrkundeDB"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.Urkunde"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.QuelleDB"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
 <%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
@@ -11,9 +10,9 @@
 <%
     int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));
-    int urkundeid = -1;
     String formular = "quelle";
-    urkundeid = UrkundeDB.getUrkunde(id).getId();
+    Quelle quelle = QuelleDB.getById(id);
+    Urkunde urkunde = quelle.getUrkunde();
 %>
 <jsp:include page="../dojump.jsp">
   <jsp:param name="form" value="gast_quelle" />
@@ -99,7 +98,10 @@
   </jsp:include>
 
 <!----------Bei Urkunden---------->
-<h3><% Language.printTextfield(out, session, "quelle", "TabUrkunde" ); %></h3>
+<% if (urkunde != null) { %>
+  <% int urkundeid = urkunde.getId(); %>
+
+  <h3><% Language.printTextfield(out, session, "quelle", "TabUrkunde" ); %></h3>
   <div id="urkunden">
     <table class="content-table">
       <tbody>
@@ -165,6 +167,4 @@
     </table>
   </div>
 
-
-
-
+<% } %>

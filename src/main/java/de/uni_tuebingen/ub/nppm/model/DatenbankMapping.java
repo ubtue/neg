@@ -1,8 +1,11 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "datenbank_mapping")
 public class DatenbankMapping {
 
@@ -63,6 +66,9 @@ public class DatenbankMapping {
 
     @Column(name = "default", length = 255)
     private String alt;
+
+    @Column(name = "schema_org_property", length = 255)
+    private String schemaOrgProperty;
 
     @Column(name = "gb_beschriftung", length = 255)
     private String gbBeschriftung;
@@ -252,6 +258,14 @@ public class DatenbankMapping {
 
     public void setAlt(String alt) {
         this.alt = alt;
+    }
+
+    public String getSchemaOrgProperty() {
+        return schemaOrgProperty;
+    }
+
+    public void setSchemaOrg(String schemaOrgProperty) {
+        this.schemaOrgProperty = schemaOrgProperty;
     }
 
     public String getGbBeschriftung() {

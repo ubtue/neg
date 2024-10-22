@@ -5,6 +5,7 @@
 <%
     if (feldtyp.equals("dateRO") && !array) {
 
+        // Build Query + get all relevant field from DB table
         String[] zielattributArray = zielAttribut.split(";");
         for (int i = 0; i < zielattributArray.length; i++) {
             zielattributArray[i] = zielattributArray[i].trim();
@@ -22,22 +23,21 @@
                 + zielTabelle + " WHERE ID ='" + id + "'");
 
         if (row != null) {
-
+            // Build up "results" array with same indexes as zielAttributArray
             int resultIndex = 0;
             for (String zielattribut : zielattributArray) {
                 String zielattributGen = "Genauigkeit" + zielattribut;
-                if (row.get(zielattributGen) != null) {
-                    results[resultIndex++] = row.get(zielattributGen).toString();
-                }
-                if (row.get(zielattribut) != null) {
-                    results[resultIndex++] = row.get(zielattribut).toString();
-                }
+                results[resultIndex++] = row.get(zielattributGen) == null ? null : row.get(zielattributGen).toString();
+                results[resultIndex++] = row.get(zielattribut) == null ? null : row.get(zielattribut).toString();
             }
+
+            // Initialize all display variables
             String von = "";
             String vonGen = "";
             String bis = "";
             String bisGen = "";
 
+            // Generate von + vonGen
             for (int i = 0; i < zielattributArray.length - 1; i++) {
                 if (i % 2 == 0) {
                     if (vonGen == null || vonGen.equals("") || vonGen.equals("-1")) {
@@ -51,6 +51,8 @@
                                     : "");
                 }
             }
+
+            // Special handling if "von" is empty to use last 2 fields (GenauigkeitBisJahrhundert, BisJahrhundert)
             if (von.equals("")
                     && results[zielattributArray.length - 1] != null
                     && !results[zielattributArray.length - 1]
@@ -60,6 +62,8 @@
                 }
                 von = results[zielattributArray.length - 1];
             }
+
+            // Generate bis + bisGen
             for (int i = zielattributArray.length; i < zielattributArray.length * 2 - 1; i++) {
                 if (i % 2 == 0) {
                     if (bisGen == null || bisGen.equals("") || bisGen.equals("-1")) {
@@ -74,13 +78,11 @@
                 }
             }
 
+            // Lookup vonGen vs selektion_datgenauigkeit
             Map row2 = AbstractBase.getMappedRow("SELECT * FROM selektion_datgenauigkeit WHERE ID=" + vonGen);
-            if (row2 != null && !vonGen.equals("-1")) {
-                vonGen = row2.get("Bezeichnung").toString();
-            } else {
-                vonGen = "";
-            }
+            vonGen = row2 != null && !vonGen.equals("-1") ? String.valueOf(row2.get("Bezeichnung")) : "";
 
+            // Special handling if "bis" is empty to use last 2 fields (GenauigkeitBisJahrhundert, BisJahrhundert)
             if (bis.equals("")
                     && results[zielattributArray.length - 1] != null
                     && !results[zielattributArray.length - 1]
@@ -91,15 +93,17 @@
                 bis = results[zielattributArray.length * 2 - 1];
             }
 
+            // Lookup bisGen vs selektion_datgenauigkeit
             row2 = AbstractBase.getMappedRow("SELECT * FROM selektion_datgenauigkeit WHERE ID=" + bisGen);
-            if (row2 != null && !bisGen.equals("-1")) {
-                bisGen = row2.get("Bezeichnung").toString();
-            } else {
-                bisGen = "";
-            }
+            bisGen = row2 != null && !bisGen.equals("-1") ? String.valueOf(row2.get("Bezeichnung")) : "";
 
+            // Print output depeding on whether "bis" is set as well or not
             if (bis != null && von != null && !bis.equals(von) && !bis.equals("")) {
-                out.println(vonGen + " " + von + "-" + bisGen + " " + bis);
+                String vonTotal = vonGen + " " + von;
+                String bisTotal = bisGen + " " + bis;
+                vonTotal = vonTotal.trim();
+                bisTotal = bisTotal.trim();
+                out.println(vonTotal + " - " + bisTotal);
             } else {
                 if (von != null) {
                     out.println(vonGen + " " + von);

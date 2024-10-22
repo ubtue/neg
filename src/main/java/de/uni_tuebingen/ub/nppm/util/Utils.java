@@ -21,6 +21,10 @@ public class Utils {
         return true;
     }
 
+    public static boolean isGastEnvironment(HttpServletRequest request) {
+        return request.getRequestURL().toString().contains("/gast/");
+    }
+
     public static String getBaseUrl(HttpServletRequest request) {
         String scheme = request.getScheme();
         String host = request.getServerName();
@@ -29,6 +33,10 @@ public class Utils {
 
         String baseUrl = scheme + "://" + host + ((("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)) ? "" : ":" + port) + contextPath;
         return baseUrl;
+    }
+
+     public static String getAjaxUrl(HttpServletRequest request) {
+        return getBaseUrl(request) + "/ajax";
     }
 
     public static int determineId(HttpServletRequest request, HttpServletResponse response, String formular, JspWriter out) throws Exception {

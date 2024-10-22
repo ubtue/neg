@@ -264,9 +264,8 @@
                                     + " /></td></tr>");
                             i2++;
                         }
-                         out.println("</table>");
+                        out.println("</table>");
                     }
-
 
                 } else if (combinedFeldtypen[j].equals("checkbox")) {
                     if (!isReadOnly) {
@@ -276,7 +275,7 @@
                                 + i
                                 + "]\""
                                 + " type=\"checkbox\""
-                                + (row != null && Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1 ? " checked"
+                                + (row != null && row.get(zielattributArray[j]) != null && Integer.parseInt(row.get(zielattributArray[j]).toString()) == 1 ? " checked"
                                 : "") + " />");
                     }
 
@@ -332,23 +331,26 @@
                     if (!isReadOnly) {
                         out.println("<option value=\"NULL\" " + selectForm.get(-1) + ">nicht bearbeitet</option>");
                     }
-                    //if (!sql.equals("")) {
+
                     for (Map row2 : rowlist2) {
-                        if (!isReadOnly) {
-                            out.println("<option value='"
-                                    + row2.get("ID").toString()
-                                    + "' "
-                                    + (Integer.parseInt(row2.get("ID").toString()) == selected ? "selected"
-                                    : "")
-                                    + ">"
-                                    + row2.get("Bezeichnung").toString()
-                                    + "</option>");
-                        } else if (Integer.parseInt(row2.get("ID").toString()) == selected
-                                && combinedFeldnamen[j].equals("TKHandschrift")) {
-                            out.println(row2.get("Bezeichnung").toString());
+                        // Sicherstellen, dass die Bezeichnung nicht null ist
+                        String bezeichnung = row2.get("Bezeichnung") != null ? DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) : "";
+                        String id_temp = row2.get("ID") != null ? String.valueOf(row2.get("ID")) : "";
+
+                        if (!id_temp.isEmpty() && !bezeichnung.isEmpty()) {
+                            if (!isReadOnly) {
+                                out.println(String.format("<option value='%s' %s>%s</option>",
+                                        id_temp,
+                                        (Integer.parseInt(id_temp) == selected ? "selected" : ""),
+                                        bezeichnung));
+                            }
+                        } else if (Integer.parseInt(id_temp) == selected && combinedFeldnamen[j].equals("TKHandschrift")) {
+                            // Ausgabe nur der Bezeichnung, wenn `isReadOnly` true ist und `TKHandschrift` gewählt wurde
+                            if (!bezeichnung.isEmpty()) {
+                                out.println(bezeichnung);
+                            }
                         }
                     }
-                    //}
 
                     out.println("</select>");
                 } else if (combinedFeldtypen[j].equals("checkbox")) {
@@ -447,6 +449,101 @@
                                     combinedFeldtypen[j]
                                             .lastIndexOf(')'))
                             .split(",");
+
+                    if (repeat) {
+
+                        try {
+                            List<Map> rowlist2 = AbstractBase.getMappedList("SELECT e.VonTag, e.VonMonat, e.VonJahr, e.VonJahrhundert,"
+                                    + " e.BisTag, e.BisMonat, e.BisJahr, e.BisJahrhundert, ehp." + fields[1] + " "
+                                    + "FROM " + fields[0] + " e "
+                                    + "LEFT JOIN " + fields[2] + " ehp ON e.ID = ehp." + fields[1] + " "
+                                    + "WHERE e.ID = " + (Integer) row.get(fields[1]) + ";");
+
+                            String vonTag = "";
+                            String vonMonat = "";
+                            String vonJahr = "";
+                            String vonJhdt = "";
+
+                            String bisTag = "";
+                            String bisMonat = "";
+                            String bisJahr = "";
+                            String bisJhdt = "";
+
+                            for (Map<String, Object> rowtemp : rowlist2) {
+
+                                vonTag = rowtemp.get("VonTag") != null ? String.valueOf(rowtemp.get("VonTag")) : "";
+                                vonMonat = rowtemp.get("VonMonat") != null ? String.valueOf(rowtemp.get("VonMonat")) : "";
+                                vonJahr = rowtemp.get("VonJahr") != null ? String.valueOf(rowtemp.get("VonJahr")) : "";
+                                vonJhdt = rowtemp.get("VonJahrhundert") != null ? String.valueOf(rowtemp.get("VonJahrhundert")) : "";
+
+                                bisTag = rowtemp.get("BisTag") != null ? String.valueOf(rowtemp.get("BisTag")) : "";
+                                bisMonat = rowtemp.get("BisMonat") != null ? String.valueOf(rowtemp.get("BisMonat")) : "";
+                                bisJahr = rowtemp.get("BisJahr") != null ? String.valueOf(rowtemp.get("BisJahr")) : "";
+                                bisJhdt = rowtemp.get("BisJahrhundert") != null ? String.valueOf(rowtemp.get("BisJahrhundert")) : "";
+
+                            }
+
+                            String von = "";
+
+                            if (vonTag != null && !vonTag.equals("")
+                                    && !vonTag.equals("0")) {
+                                von = vonTag + ".";
+                            }
+                            if (vonMonat != null && !vonMonat.equals("")
+                                    && !vonMonat.equals("0")) {
+                                von = von + vonMonat + ".";
+                            }
+                            if (vonJahr != null && !vonJahr.equals("")
+                                    && !vonJahr.equals("0")) {
+                                von = von + vonJahr;
+                            }
+                            if (von.equals("") && vonJhdt != null) {
+                                von = vonJhdt;
+                            }
+
+                            if (!von.equals("") && !von.contains("J") && !von.equals("0")
+                                    && (vonTag == null || vonTag.equals("") || vonTag.equals("0"))
+                                    && (vonMonat == null || vonMonat.equals("") || vonMonat.equals("0"))
+                                    && (vonJahr == null || vonJahr.equals("") || vonJahr.equals("0"))) {
+                                von = von + " Jh.";
+                            }
+
+                            String bis = "";
+
+                            if (bisTag != null && !bisTag.equals("")
+                                    && !bisTag.equals("0")) {
+                                bis = bisTag + ".";
+                            }
+                            if (bisMonat != null && !bisMonat.equals("")
+                                    && !bisMonat.equals("0")) {
+                                bis = bis + bisMonat + ".";
+                            }
+                            if (bisJahr != null && !bisJahr.equals("")
+                                    && !bisJahr.equals("0")) {
+                                bis = bis + bisJahr;
+                            }
+                            if (bis.equals("") && bisJhdt != null) {
+                                bis = bisJhdt;
+                            }
+
+                            if (!bis.equals("") && !bis.contains("J") && !bis.equals("0")
+                                    && (bisTag == null || bisTag.equals("") || bisTag.equals("0"))
+                                    && (bisMonat == null || bisMonat.equals("") || bisMonat.equals("0"))
+                                    && (bisJahr == null || bisJahr.equals("") || bisJahr.equals("0"))) {
+                                bis = bis + " Jh.";
+                            }
+
+                            if (!bis.equals(von) && !bis.equals("")) {
+                                out.println(von + " - " + bis);
+                            } else {
+                                out.println(von);
+                            }
+
+                        } catch (Exception e) {
+                            out.println(e);
+                        }
+                    }
+
                 } else if (combinedFeldtypen[j].startsWith("search")) {
                     String[] fields = combinedFeldtypen[j]
                             .substring(

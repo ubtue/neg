@@ -29,12 +29,21 @@ public class AbstractBase {
 
     protected static SessionFactory sessionFactory;
 
+    protected static Properties cliProperties = null;
+
     protected static javax.naming.InitialContext initialContext = null;
 
     public static Map<String, Class> tableNameToEntityMap = initTableNameToEntityMap();
 
     public static void setInitialContext(javax.naming.InitialContext ctx) {
         initialContext = ctx;
+    }
+
+    // This can be used to override certain properties like DB access credentials
+    // when running in CLI mode. If not present, we will try to take the properties
+    // later from the tomcat application context.
+    public static void setCliProperties(Properties newCliProperties) {
+        cliProperties = newCliProperties;
     }
 
     // Example taken from: https://www.javaguides.net/2019/08/hibernate-5-one-to-many-mapping-annotation-example.html
@@ -51,9 +60,16 @@ public class AbstractBase {
                 initialContext = new javax.naming.InitialContext();
             }
             settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-            settings.put(Environment.URL, (String) initialContext.lookup("java:comp/env/sqlURL"));
-            settings.put(Environment.USER, (String) initialContext.lookup("java:comp/env/sqlUser"));
-            settings.put(Environment.PASS, (String) initialContext.lookup("java:comp/env/sqlPassword"));
+
+            if (cliProperties != null) {
+                settings.put(Environment.URL, cliProperties.get("sqlURL"));
+                settings.put(Environment.USER, cliProperties.get("sqlUser"));
+                settings.put(Environment.PASS, cliProperties.get("sqlPassword"));
+            } else {
+                settings.put(Environment.URL, (String) initialContext.lookup("java:comp/env/sqlURL"));
+                settings.put(Environment.USER, (String) initialContext.lookup("java:comp/env/sqlUser"));
+                settings.put(Environment.PASS, (String) initialContext.lookup("java:comp/env/sqlPassword"));
+            }
 
             settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
             settings.put(Environment.SHOW_SQL, "true");
@@ -74,6 +90,11 @@ public class AbstractBase {
             settings.put("hibernate.cache.use_query_cache", "true");
             settings.put("hibernate.cache.use_second_level_cache", "true");
             settings.put("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
+            settings.put("hibernate.cache.ehcache.missing_cache_strategy", "create");
+
+            // Avoid FetchType.EAGER, automatically create session with FetchType.LAZY if there is none
+            // Note: This can lead to Performance problems (N+1)
+            settings.put("hibernate.enable_lazy_load_no_trans", "true");
 
             configuration.setProperties(settings);
 
@@ -110,7 +131,7 @@ public class AbstractBase {
     }
 
     public static <T> T getById(int id, Class<T> class_) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             return (T) session.get(class_, id);
         }
     }
@@ -138,12 +159,13 @@ public class AbstractBase {
 
     // For now, we open a new session each time this method is called.
     // Later, we might try to use a static session similar to the static SessionFactory.
-    protected static Session getSession() throws Exception {
+
+    public static Session getSession() throws Exception {
         return getSessionFactory().openSession();
     }
 
     protected static List getList(Class c, CriteriaQuery criteria) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             if (criteria == null) {
                 criteria = builder.createQuery(c);
@@ -158,21 +180,33 @@ public class AbstractBase {
         return getList(c, null);
     }
 
-    public static void remove(Class class_, int id) throws Exception {
-        try ( Session session = getSession()) {
-            Transaction transaction = session.getTransaction();
-            transaction.begin();
-            //Load
-            Object obj = session.load(class_, id);
-            //Remove
-            session.remove(obj);
-            //Commit
-            transaction.commit();
+
+
+     protected static void removeHelper(Class class_, int id, Session session) throws Exception {
+        Object obj = session.load(class_, id);
+        session.remove(obj);
+    }
+
+     public static void remove(Class class_, int id) throws Exception {
+        remove(class_, id, null);
+    }
+
+    public static void remove(Class class_, int id, Session session) throws Exception {
+        if (session == null) {
+            try (Session session2 = getSession()) {
+                Transaction transaction = session2.getTransaction();
+                transaction.begin();
+                removeHelper(class_, id, session2);
+                transaction.commit();
+            }
+        } else {
+            removeHelper(class_, id, session);
         }
     }
 
+
     public static List<Object[]> getListNative(String sql) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<Object[]> rows = sqlQuery.getResultList();
             return rows;
@@ -192,7 +226,7 @@ public class AbstractBase {
         // This function is needed because if we use getRowNative or getListNative
         // we will have problems to cast a BigInteger to an Object, so we cast to
         // Int instead.
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             //sqlQuery.setMaxResults(1);
             List<Object> rows = sqlQuery.getResultList();
@@ -205,7 +239,7 @@ public class AbstractBase {
     }
 
     public static String getStringNative(String sql) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             //sqlQuery.setMaxResults(1);
             List<Object> rows = sqlQuery.getResultList();
@@ -218,7 +252,7 @@ public class AbstractBase {
     }
 
     public static List<String> getStringListNative(String sql) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             List<String> rows = sqlQuery.getResultList();
             return rows;
@@ -226,7 +260,7 @@ public class AbstractBase {
     }
 
     public static Timestamp getTimestampNative(String sql) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             NativeQuery sqlQuery = session.createNativeQuery(sql);
             //sqlQuery.setMaxResults(1);
             List<Timestamp> rows = sqlQuery.getResultList();
@@ -278,7 +312,7 @@ public class AbstractBase {
     }
 
     public static void update(String table, Map<String, String> attributesAndValues, Map<String, String> andConditions, List<String> specialColumns) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             session.getTransaction().begin();
             String sql = "UPDATE " + table + " SET ";
 
@@ -306,7 +340,7 @@ public class AbstractBase {
     }
 
     public static void update(String table, String attribute, String value, Map<String, String> andConditions) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             session.getTransaction().begin();
             String sql = "UPDATE " + table + " SET " + attribute + "= :value";
             sql += buildAndConditions(andConditions);
@@ -334,7 +368,7 @@ public class AbstractBase {
     }
 
     protected static void insertOrUpdate(String sql) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             session.getTransaction().begin();
             NativeQuery query = session.createNativeQuery(sql);
             query.executeUpdate();
@@ -367,7 +401,7 @@ public class AbstractBase {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             return getMappedListString(session.createNativeQuery(query));
         }
     }
@@ -379,7 +413,7 @@ public class AbstractBase {
     }
 
     protected static List<Map> getMappedList(CriteriaQuery criteria) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             return getMappedList(session.createQuery(criteria));
         }
     }
@@ -388,7 +422,7 @@ public class AbstractBase {
         // Note: If you wanna use this function properly and your query
         // contains a JOIN, please make sure to provide aliases (using AS)
         // to be able to access the result columns by key.
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             return getMappedList(session.createNativeQuery(query));
         }
     }
@@ -405,7 +439,7 @@ public class AbstractBase {
     }
 
     public static Map getMappedRow(String query) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             return getMappedRow(session.createNativeQuery(query));
         }
     }
@@ -458,5 +492,13 @@ public class AbstractBase {
         if (!column.matches("^[a-zA-Z0-9_]+$")) {
             throw new SqlInjectionException("Invalid column name: " + column);
         }
+    }
+
+    public static String getProvenanceId(String id, String tabelle) throws Exception{
+        return getSingleField("provenance_id", tabelle, Integer.valueOf(id));
+    }
+
+    public static String getProvenanceSource(String id, String tabelle) throws Exception{
+        return getSingleField("provenance_source", tabelle, Integer.valueOf(id));
     }
 }

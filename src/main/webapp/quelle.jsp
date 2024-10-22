@@ -36,14 +36,16 @@
 
 <div
     onLoad="javascript:onoff('tab4', 'tab1'); onoff('tab1', 'tab4');urlRewrite(<%=id%>);">
-    <FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
-        <jsp:include page="layout/image.inc.html" /> <jsp:include
+    <FORM method="POST">
+        <jsp:include
             page="layout/titel.inc.jsp">
             <jsp:param name="title" value="Quelle" />
             <jsp:param name="ID" value="<%= id%>" />
             <jsp:param name="size" value="" />
             <jsp:param name="Formular" value="quelle" />
-        </jsp:include> <jsp:include page="inc.erzeugeFormular.jsp">
+        </jsp:include>
+
+        <jsp:include page="inc.erzeugeFormular.jsp">
             <jsp:param name="ID" value="<%= id%>" />
             <jsp:param name="Formular" value="quelle" />
             <jsp:param name="Datenfeld" value="ID" />
@@ -74,10 +76,6 @@
                         </td>
 
                         <%
-                            //Verübergehend ausgeschaltet
-                            boolean off = true;
-                            if (off == false) {
-
                                 if (id != -1 && QuelleDB.getById(id).getQuellenKommentarDatei() != null && !QuelleDB.getById(id).getQuellenKommentarDatei().equals("")) {
                                     int fileId = 1;
                                     boolean fileExist = false;
@@ -122,23 +120,13 @@
                         <td>&nbsp;</td>
                         <%
                             }
-
-                        }//end if off vorübergehend ausgeschaltet
  %>
-
-
-
-
-
                     </tr>
                     <tr>
                         <td width="200">
                             <% Language.printDatafield(out, session, formular, "Ueberlieferungskommentar");%>
                         </td>
                         <%
-                             //Verübergehend ausgeschaltet
-                            boolean off2 = true;
-                            if (off2 == false) {
 
                             if (id != -1 && QuelleDB.getById(id).getUeberlieferungsKommentarDatei() != null && !QuelleDB.getById(id).getUeberlieferungsKommentarDatei().equals("")) {
                                 int fileId = 1;
@@ -173,7 +161,6 @@
                                 }
                             }
                         } else {
-
                         %>
                         <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
                                 <jsp:param name="ID" value="<%= id%>" />
@@ -184,8 +171,6 @@
                         <td>&nbsp;</td>
                         <%
                             }
-
-                            } //end if off2 vorübergehend ausgeschaltet
                         %>
                     </tr>
                     <tr>
@@ -340,6 +325,7 @@
                                 <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="ID" value="<%= urkundeid%>" />
                                         <jsp:param name="Formular" value="urkunde" />
+                                        <jsp:param name="returnID" value="<%= id%>" />
                                         <jsp:param name="Datenfeld" value="Betreff" />
                                         <jsp:param name="size" value="50" />
                                     </jsp:include></td>
@@ -350,6 +336,7 @@
                                 </th>
                                 <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="ID" value="<%= urkundeid%>" />
+                                        <jsp:param name="returnID" value="<%= id%>" />
                                         <jsp:param name="Formular" value="urkunde" />
                                         <jsp:param name="Datenfeld" value="Aussteller" />
                                     </jsp:include></td>
@@ -360,6 +347,7 @@
                                 </th>
                                 <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="ID" value="<%= urkundeid%>" />
+                                        <jsp:param name="returnID" value="<%= id%>" />
                                         <jsp:param name="Formular" value="urkunde" />
                                         <jsp:param name="Datenfeld" value="Empfaenger" />
                                     </jsp:include></td>
@@ -370,6 +358,7 @@
                                 </th>
                                 <td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="ID" value="<%= urkundeid%>" />
+                                        <jsp:param name="returnID" value="<%= id%>" />
                                         <jsp:param name="Formular" value="urkunde" />
                                         <jsp:param name="Datenfeld" value="Dorsalnotiz" />
                                         <jsp:param name="size" value="50" />

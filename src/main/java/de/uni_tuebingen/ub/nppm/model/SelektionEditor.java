@@ -2,10 +2,13 @@ package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
 import java.util.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "selektion_editor")
-public class SelektionEditor extends SelektionBezeichnung {
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class SelektionEditor extends SelektionProvenance {
 
     @Column(name = "Nachname", length = 50)
     private String nachname;

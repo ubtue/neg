@@ -42,7 +42,7 @@
       newID = existing.getId();
     } else {
       // Neuen Wert eintragen
-      SelektionDB.insertBezeichnung(selektionName, request.getParameter("neuerEintrag"));
+      SelektionDB.insertBezeichnung(selektionName, request.getParameter("neuerEintrag").trim());
 
       // Neue ID aus DB abfragen
       existing = SelektionDB.getByBezeichnung(selektionName, request.getParameter("neuerEintrag"));

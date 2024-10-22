@@ -19,6 +19,10 @@
                     if (formular.equals("einzelbeleg") && datenfeld.equals("Belegform")) {
                         belegformHtml = getBelegformLinked(id, belegformHtml);
                     }
+
+                    if (schemaOrgProperty != null && !schemaOrgProperty.isEmpty())
+                        belegformHtml = "<span property=\"" + schemaOrgProperty + "\">" + belegformHtml + "</span>";
+
                     out.println(belegformHtml);
                 }
             } else if (def != null) {

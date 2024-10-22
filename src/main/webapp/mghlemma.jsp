@@ -29,9 +29,8 @@
 
 <div
 	onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');urlRewrite(<%=id%>);">
-<FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
-<jsp:include page="layout/image.inc.html" /> <jsp:include
-	page="layout/titel.inc.jsp">
+<FORM method="POST">
+ <jsp:include page="layout/titel.inc.jsp">
 	<jsp:param name="title" value="mgh_lemma" />
 	<jsp:param name="ID" value="<%= id %>" />
 	<jsp:param name="size" value="" />
@@ -45,7 +44,7 @@
 			<td width="200">
                             <% Language.printDatafield(out,session, formular,"MGHLemma");%>
                         </td>
-			<td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+			<td width="600"><jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="mgh_lemma" />
 				<jsp:param name="Datenfeld" value="MGHLemma" />

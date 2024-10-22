@@ -6,7 +6,10 @@
 
 <%
 
+  String language = Language.getLanguage(request);
+  String deleteEntryMessage = DatenbankDB.getLabel(language, "funktionen", "deleteEntry");
   String id = "-1";
+  String returnId = "-1";
   String formular = request.getParameter("Formular");
   String datenfeld = request.getParameter("Datenfeld");
   String visible = request.getParameter("Visibility");
@@ -26,6 +29,9 @@
 
   if (request.getParameter("ID") != null)
     id = request.getParameter("ID");
+
+  if (request.getParameter("returnID") != null)
+    returnId = request.getParameter("returnID");
 
   int size = 0;
   int rows = 0;
@@ -63,6 +69,7 @@
   String formularAttribut = "";
   String buttonAktion = "";
   String returnpage = "";
+  String schemaOrgProperty = "";
 
   String[] defaultValues = null;
   String[] combinedFeldnamen = null;
@@ -87,6 +94,7 @@
     formularAttribut = mapping.getFormularAttribut();
     buttonAktion = mapping.getButtonAktion();
     returnpage = mapping.getSeite();
+    schemaOrgProperty = mapping.getSchemaOrgProperty();
 
     defaultValues = mapping.getAltAsArray();
     combinedFeldnamen = mapping.getCombinedFeldnamenAsArray();
@@ -96,6 +104,11 @@
 %>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("<div style=\"visibility:hidden\">");%>
+
+<script type="text/javascript">
+    var deleteEntryMessage = "<%= deleteEntryMessage %>"; // Java-Variable in JavaScript-Variable umwandeln
+</script>
+
 
 <%@ page import="java.util.*" isThreadSafe="false" %>
 
@@ -126,5 +139,6 @@
 <%@ include file="forms/noarray.sqlselect.jsp" %>
 <%@ include file="forms/noarray.textarea.jsp" %>
 <%@ include file="forms/noarray.textfield.jsp" %>
+<%@ include file="forms/noarray.gndlink.jsp" %>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("</div>");%>
