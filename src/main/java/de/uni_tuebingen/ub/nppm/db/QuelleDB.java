@@ -24,24 +24,26 @@ public class QuelleDB extends AbstractBase {
         try (Session session = getSession()) {          
             String q = "";
             if(jumpToID != null && jumpToID.length() > 0){
-                q = "FROM Quelle q WHERE q.id = :id";
+                q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.id = :id";
                 query = session.createQuery(q);
                 query.setParameter("id", Integer.valueOf(jumpToID));
+                query.setParameter("zuV", 1);
             }else{
-                q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez";
+                q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez";
                 if(sort.compareTo("titleDown") == 0){
-                    q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.bezeichnung DESC";
+                    q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez ORDER BY q.bezeichnung DESC";
                 }else if(sort.compareTo("titleUp") == 0){
-                    q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.bezeichnung ASC";
+                    q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez ORDER BY q.bezeichnung ASC";
                 }else  if(sort.compareTo("idDown") == 0){
-                    q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.id DESC";
+                    q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez ORDER BY q.id DESC";
                 }else if(sort.compareTo("idUp") == 0){
-                    q = "FROM Quelle q WHERE q.bezeichnung LIKE :bez ORDER BY q.id ASC";
+                    q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez ORDER BY q.id ASC";
                 }
                 query = session.createQuery(q);
                 query.setFirstResult(start);
                 query.setMaxResults(recordsPerPage);
                 query.setParameter("bez", "%" + filterTitle + "%");
+                query.setParameter("zuV", 1);
             }
             return query.list();
         }
@@ -49,8 +51,9 @@ public class QuelleDB extends AbstractBase {
         
     public static Long countStat(String filterTitle) throws Exception {
         try (Session session = getSession()) {
-            Query query = session.createQuery("select count(*) from Quelle q where q.bezeichnung like :bez");            
+            Query query = session.createQuery("SELECT count(*) FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung like :bez");
             query.setParameter("bez", "%" + filterTitle + "%");
+            query.setParameter("zuV", 1);
             return (Long)query.uniqueResult();
         }
     }
