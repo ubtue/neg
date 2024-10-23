@@ -9,6 +9,8 @@
     String title = request.getParameter("form");
 
     if (request.getParameter("jumpID") != null && (request.getParameter("jumpID").equals("los") || request.getParameter("jumpID").equals(">"))) {
+        String errorMessage = "wrongIDPrefix";
+         errorMessage = java.net.URLEncoder.encode(errorMessage, "UTF-8");
         String newID = request.getParameter("jumpValueID");
         String newForm = "";
         if (newID.startsWith("B") || newID.startsWith("b")) {
@@ -30,7 +32,7 @@
             String url = request.getRequestURL().toString();
             url = url.substring(0, url.lastIndexOf('/') + 1);
             out.println("window.stop();");
-            out.println("location.replace('" + url + "error.jsp');");
+            out.println("location.replace('" + url + "error?errorMessage=" + errorMessage + "');");
             out.println("</script>");
         }
         out.println("<script type=\"text/javascript\">");
@@ -41,8 +43,7 @@
         url = url.substring(0, url.lastIndexOf('/') + 1);
 
         if (url.endsWith("gast/") && (newForm.equals("edition") || newForm.equals("handschrift"))) {
-            out.println("window.stop();");
-            out.println("location.replace('" + url + "error.jsp');");
+             out.println("window.location.href = 'error?errorMessage=" + errorMessage + "';");
         } else {
             out.println("location.replace('" + url + newForm + "?ID='+" + newID.substring(1) + ");");
         }
