@@ -1,3 +1,5 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.EinzelbelegHatStand"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.EinzelbelegHatAmtWeihe_MM"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="java.sql.Date" isThreadSafe="false"%>
@@ -249,9 +251,7 @@
                 String bisJahr = row[9] != null ? String.valueOf(row[9]) : "";
                 String bisJhdt = row[10] != null ? String.valueOf(row[10]) : "";
 
-                String sewBezeichnung = row[11] != null ? String.valueOf(row[11]) : "";
-                String ssBezeichnung = row[12] != null ? String.valueOf(row[12]) : "";
-                String kontext = row[13] != null ? String.valueOf(row[13]) : "";
+                String kontext = row[11] != null ? String.valueOf(row[11]) : "";
 
                 String von = "";
 
@@ -310,16 +310,46 @@
                     out.println("<td>" + von + "</td>");
                 }
 
-                if (sewBezeichnung == null || sewBezeichnung.equals("") || sewBezeichnung.equalsIgnoreCase("null")) {
-                    out.println("<td>-</td>");
-                } else {
-                    out.println("<td>" + sewBezeichnung + "</td>");
-                }
+                List<EinzelbelegHatAmtWeihe_MM> listAmtWeihe = EinzelbelegDB.getListEinzelbelegHatAmtWeihe(Integer.parseInt(eId));
 
-                if (ssBezeichnung == null || ssBezeichnung.equals("") || ssBezeichnung.equalsIgnoreCase("null")) {
+                if (listAmtWeihe == null || listAmtWeihe.isEmpty()) {
                     out.println("<td>-</td>");
                 } else {
-                    out.println("<td>" + ssBezeichnung + "</td>");
+                    out.println("<td>");
+
+                    for (EinzelbelegHatAmtWeihe_MM rowAmtWeihe : listAmtWeihe) {
+
+                        String tempAmtWeihe = rowAmtWeihe.getAmtWeihe().getBezeichnung();
+
+                        if (tempAmtWeihe == null || tempAmtWeihe.equals("") || tempAmtWeihe.equalsIgnoreCase("null")) {
+                            out.println("-<br>");
+                        } else {
+                            out.println(tempAmtWeihe + "<br>");
+                        }
+
+                    }
+                    out.println("</td>");
+                }
+                out.println("</td>");
+
+                List<EinzelbelegHatStand> listStand = EinzelbelegDB.getListEinzelbelegHatStand(Integer.parseInt(eId));
+
+                if (listStand == null || listStand.isEmpty()) {
+                    out.println("<td>-</td>");
+                } else {
+                    out.println("<td>");
+
+                    for (EinzelbelegHatStand rowStand : listStand) {
+
+                        String tempStand = rowStand.getSelektionStand().getBezeichnung();
+
+                        if (tempStand == null || tempStand.equals("") || tempStand.equalsIgnoreCase("null")) {
+                            out.println("-<br>");
+                        } else {
+                            out.println(tempStand + "<br>");
+                        }
+                    }
+                    out.println("</td>");
                 }
 
                 if (kontext == null || kontext.equals("") || kontext.equalsIgnoreCase("null")) {
