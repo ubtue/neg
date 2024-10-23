@@ -106,7 +106,7 @@
 <p>
         
     <h1>Statistik</h1>
-    <a href="/neg/gast/stat">Zurück zur Übersicht</a>
+    <a href="<%=Utils.getBaseUrl(request)%>/gast/stat">Zurück zur Übersicht</a>
     <br><br>
     <h3>Liste der Quellen mit Anzahl der Belege
     </h3>
@@ -136,16 +136,14 @@
        <tbody>
             <%
             for (Quelle q : lst) {
-                out.print("<tr onclick= style=\"cursor: pointer;\">");
+                out.print("<tr>");
                 out.print("<td>");
-                out.println("<a href=\"window.location='"+Utils.getBaseUrl(request)+"/gast/quelle?ID="+String.valueOf(q.getId())+"';\">");
+                out.print("<a href=\""+Utils.getBaseUrl(request)+"/gast/quelle?ID="+String.valueOf(q.getId())+"\">");
                 out.print(Utils.escapeHTML(q.getBezeichnung()));
                 out.print("</a>");
                 out.print("</td>");
                 out.print("<td>");
-                out.println("<a href=\"window.location='"+Utils.getBaseUrl(request)+"/gast/quelle?ID="+String.valueOf(q.getId())+"';\">");
                 out.print(q.getEinzelbelege().size());
-                out.print("</a>");
                 out.print("</td>");
                 out.print("</tr>");
             }
