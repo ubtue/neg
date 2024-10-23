@@ -136,12 +136,16 @@
        <tbody>
             <%
             for (Quelle q : lst) {
-                out.print("<tr onclick=\"window.location='/neg/gast/quelle?ID="+String.valueOf(q.getId())+"';\" style=\"cursor: pointer;\">");
+                out.print("<tr onclick= style=\"cursor: pointer;\">");
                 out.print("<td>");
+                out.println("<a href=\"window.location='"+Utils.getBaseUrl(request)+"/gast/quelle?ID="+String.valueOf(q.getId())+"';\">");
                 out.print(Utils.escapeHTML(q.getBezeichnung()));
+                out.print("</a>");
                 out.print("</td>");
                 out.print("<td>");
-                out.print(EinzelbelegDB.countEinzelbelegByQuelleId(q.getId()));
+                out.println("<a href=\"window.location='"+Utils.getBaseUrl(request)+"/gast/quelle?ID="+String.valueOf(q.getId())+"';\">");
+                out.print(q.getEinzelbelege().size());
+                out.print("</a>");
                 out.print("</td>");
                 out.print("</tr>");
             }
