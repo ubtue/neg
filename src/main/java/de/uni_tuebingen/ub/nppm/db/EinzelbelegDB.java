@@ -42,18 +42,6 @@ public class EinzelbelegDB extends AbstractBase{
     public static void insertBySql(String sql) throws Exception {
         insertOrUpdate(sql);
     }
-    
-    public static int countEinzelbelegByQuelleId(int qId) throws Exception {
-        try (Session session = getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Einzelbeleg> criteria = builder.createQuery(Einzelbeleg.class);
-            Root einzelbeleg = criteria.from(Einzelbeleg.class);
-            criteria.select(einzelbeleg);
-            criteria.where(builder.equal(einzelbeleg.get(Einzelbeleg_.QUELLE), qId));
-            List<Einzelbeleg> res = session.createQuery(criteria).getResultList();
-            return res.size();
-        }
-    }
 
     //gibt eine Liste von Einzelbelege die die gleiche Belegform haben
     public static List<Einzelbeleg> getListByBelegform(String belegform) {
