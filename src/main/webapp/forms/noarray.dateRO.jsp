@@ -98,7 +98,7 @@
             bisGen = row2 != null && !bisGen.equals("-1") ? String.valueOf(row2.get("Bezeichnung")) : "";
 
             // Print output depeding on whether "bis" is set as well or not
-            if (bis != null && von != null && !bis.equals(von) && !bis.equals("")) {
+            if (bis != null && von != null && !bis.equals(von) && !bis.equals("0") && !bis.equals("")) {	
                 String vonTotal = vonGen + " " + von;
                 String bisTotal = bisGen + " " + bis;
                 vonTotal = vonTotal.trim();
