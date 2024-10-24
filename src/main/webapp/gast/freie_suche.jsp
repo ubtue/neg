@@ -94,7 +94,7 @@ function CheckAll(index, check, praefix) {
         </ul>
         <div class="clear"></div>
 
-    <FORM method="POST" action="suchergebnis">
+    <FORM method="GET" action="suchergebnis">
       <input type="hidden" name="form" value="freie_suche">
 
 <!-- ##### SUCHFELDER ##### -->
