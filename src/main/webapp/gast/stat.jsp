@@ -73,6 +73,14 @@
         return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleUp&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort up</a>";
     }
 
+    public String html_sort_belege_up(int page, String filterTitle, int recordsPerPage, String jumpToID) {
+        return "<a class=\"sort-link\" href=\"?jumpToID=" + jumpToID + "&sort=belegeUp&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort up</a>";
+    }
+
+    public String html_sort_belege_down(int page, String filterTitle, int recordsPerPage, String jumpToID) {
+        return "<a class=\"sort-link\" href=\"?jumpToID=" + jumpToID + "&sort=belegeDown&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort down</a>";
+    }
+
     public String html_sort_title_down(int page, String filterTitle, int recordsPerPage, String jumpToID) {
         return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleDown&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort down</a>";
     }
@@ -106,7 +114,7 @@
 <p>
         
     <h1>Statistik</h1>
-    <a href="javascript:history.back();">Zurück</a>
+    <a href="<%=Utils.getBaseUrl(request)%>/gast/quelle">Zurück</a>
     <br><br>
     <h3>Liste der Quellen mit Anzahl der Belege
     </h3>
@@ -131,6 +139,11 @@
             </th>
             <th>
                 <b>Anzahl Belege</b>
+                <br>
+                <%
+                    out.println(html_sort_belege_up(currentPage, filterTitle, recordsPerPage, jumpToID));
+                    out.println(html_sort_belege_down(currentPage, filterTitle, recordsPerPage, jumpToID));
+                %>
             </th>
         </thead>
        <tbody>
