@@ -3,6 +3,8 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.model.Content.Context;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -13,6 +15,48 @@ public class QuelleDB extends AbstractBase {
 
     public static List getList() throws Exception {
         return getList(Quelle.class);
+    }
+
+    public static List getList(Integer currentPage, Integer recordsPerPage, String filterTitle, String sort, String jumpToID) throws Exception {
+        Query query;
+        try (Session session = getSession()) {          
+            String q = "";
+            if(jumpToID != null && jumpToID.length() > 0){
+                q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.id = :id";
+                query = session.createQuery(q);
+                query.setParameter("id", Integer.valueOf(jumpToID));
+                query.setParameter("zuV", 1);
+                return query.list();
+            }else{
+                Integer start = null;
+                if(currentPage != null && recordsPerPage != null)
+                    start = currentPage * recordsPerPage - recordsPerPage;
+                if(sort.startsWith("title")){
+                    q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez ORDER BY q.bezeichnung "+ (sort.equals("titleDown") ? "DESC" : "ASC");
+                }else if(sort.startsWith("belege")){
+                    q = "SELECT q FROM Quelle q LEFT JOIN q.einzelbelege e WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez " +
+                        "GROUP BY q.id " +
+                        "ORDER BY COUNT(e.id) " + (sort.equals("belegeDown") ? "DESC" : "ASC");
+                }else{
+                    q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez";
+                }
+                query = session.createQuery(q);
+                query.setFirstResult(start);
+                query.setMaxResults(recordsPerPage);
+                query.setParameter("bez", "%" + filterTitle + "%");
+                query.setParameter("zuV", 1);
+                return query.list();
+            }            
+        }
+    }
+        
+    public static Long countStat(String filterTitle) throws Exception {
+        try (Session session = getSession()) {
+            Query query = session.createQuery("SELECT count(*) FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung like :bez");
+            query.setParameter("bez", "%" + filterTitle + "%");
+            query.setParameter("zuV", 1);
+            return (Long)query.uniqueResult();
+        }
     }
 
     public static Quelle getFirstPublicQuelle() throws Exception {

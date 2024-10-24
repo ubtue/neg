@@ -1,0 +1,1 @@
+INSERT INTO datenbank_texte (Formular, Textfeld, de, gb, fr, la) VALUES ('stat', 'Titel', 'Statistik', 'Statistics', 'Statistiques', 'Statistics');
