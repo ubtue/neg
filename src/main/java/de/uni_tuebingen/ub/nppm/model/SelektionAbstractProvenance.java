@@ -6,7 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @MappedSuperclass
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public abstract class SelektionProvenance extends SelektionBezeichnung {
+public abstract class SelektionAbstractProvenance extends SelektionBezeichnung {
     @Column(name = "provenance_source")
     private String provenanceSource;
 

@@ -73,6 +73,17 @@
 	    conditions.add("mgh_lemma.MGHLemma LIKE '"+request.getParameter("MGHLemma").trim()+"'");
 	    mghlemma = true;
 	  }
+
+  String provenanceLemma = request.getParameter("ProvenanceLemma");
+
+  if (provenanceLemma != null && Integer.parseInt(provenanceLemma) > -1) {
+     if(Integer.parseInt(provenanceLemma) == 0){
+         conditions.add("mgh_lemma.provenance_source = 'NeG'");
+     }else if(Integer.parseInt(provenanceLemma) == 1){
+        conditions.add("mgh_lemma.provenance_source = 'DMP'");
+     }
+     mghlemma = true;
+  }
   // ### ZUR PERSON ###
 
   if (!request.getParameter("Personenname").trim().equals("")) {
@@ -117,6 +128,7 @@
     conditions.add("NOT EXISTS (SELECT * from person_verwandtmit where person.ID=person_verwandtmit.PersonIDvon)");
     person = true;
   }
+
   // ### ZUM EINZELBELEG ###
  if (!request.getParameter("Belegform").trim().equals("")) {
     conditions.add("einzelbeleg.Belegform LIKE '"+request.getParameter("Belegform").trim()+"'");
@@ -305,6 +317,17 @@
                                        "(VON_JAHR_JHDT(quelle.vonJahr, quelle.vonJahrhundert, quelle.bisJahrhundert)<="+vonNum+" and BIS_JAHR_JHDT(quelle.bisJahr, quelle.bisJahrhundert, quelle.vonJahrhundert)>="+bisNum+"))");
     einzelbeleg = true;
   }
+  
+    String provenanceEinzelbeleg = request.getParameter("ProvenanceEinzelbeleg");
+    
+    if (provenanceEinzelbeleg != null && Integer.parseInt(provenanceEinzelbeleg) > -1) {
+        if(Integer.parseInt(provenanceEinzelbeleg) == 0){
+            conditions.add("einzelbeleg.provenance_source = 'NeG'");
+        }else if(Integer.parseInt(provenanceEinzelbeleg) == 1){
+            conditions.add("einzelbeleg.provenance_source = 'DMP'");
+        }
+        einzelbeleg = true;
+    }
 
   // ######### SUCHANFRAGE ##########
 
@@ -420,6 +443,14 @@
         tables.add("mgh_lemma");
        // headlines.add("Namenlemma");
        headlines.add(DatenbankDB.getMapping(sprache, "mgh_lemma", "MGHLemma"));
+        mghlemma = true;
+  }
+
+  if (request.getParameter("Ausgabe_Provenance_Lemma") != null && request.getParameter("Ausgabe_Provenance_Lemma").equals("on")) {
+        fields.add("mgh_lemma.provenance_source");
+        fieldNames.add("mgh_lemma.provenance_source");
+        //headlines.add("provenance_source");
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "ProvenanceLemma"));
         mghlemma = true;
   }
     // ### Zur Person ###
@@ -559,8 +590,14 @@
     fieldNames.add("einzelbeleg.EditionSeite");
    // headlines.add("Seite");
           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "EditionSeite"));
-
-    einzelbeleg = true;
+    einzelbeleg = true;    
+  }
+  if (request.getParameter("Ausgabe_Provenance_Einzelbeleg") != null && request.getParameter("Ausgabe_Provenance_Einzelbeleg").equals("on")) {
+        fields.add("einzelbeleg.provenance_source");
+        fieldNames.add("einzelbeleg.provenance_source");
+        //headlines.add("provenance_source");
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "ProvenanceEinzelbeleg"));
+        einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Quelle_Datierung") != null && request.getParameter("Ausgabe_Quelle_Datierung").equals("on")) {
     fields.add("quelle.VonTag");
@@ -1208,12 +1245,10 @@
  //       sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
 
 
-//      out.println(sql);
+      //out.println(sql);
     // if(true)return;
     java.util.List<Map<String, String>> searchResults = null;
     searchResults = SucheDB.getSearchResult(fieldsString, tablesString, conditionsString, orderString, order, fieldAliases.toArray(String[]::new));
-
-
 
   //    out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
               int orderSize = 0;
