@@ -19,7 +19,7 @@
        jumpToID = request.getParameter("jumpToID");
     }
     /*
-    Calcualtion for pagination
+    Calculation for pagination
      */
     int currentPage = 1;
 
@@ -54,11 +54,11 @@
     Functions that helps to print pagination
      */
     public String html_prev_button(String filterTitle, String recordsPerPage, Integer currentPage, String sort, String jumpToID) {
-        return "<li class=\"page-item\"><a class=\"page-link\" href=\"?jumpToID="+jumpToID+"&sort="+sort+"&page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage - 1) + "\">Previous</a></li>";
+        return "<li class=\"page-item\"><a class=\"page-link\" href=\"?jumpToID="+jumpToID+"&sort="+sort+"&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage - 1) + "\">Previous</a></li>";
     }
 
     public String html_next_button(String filterTitle, String recordsPerPage, Integer currentPage, String sort, String jumpToID) {
-        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?jumpToID="+jumpToID+"&sort="+sort+"&page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage + 1) + "\">Next</a></li>";
+        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?jumpToID="+jumpToID+"&sort="+sort+"&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + (currentPage + 1) + "\">Next</a></li>";
     }
 
     public String html_page_item_current(int page) {
@@ -66,15 +66,15 @@
     }
 
     public String html_page_item(int page, String filterTitle, int recordsPerPage, String sort, String jumpToID) {
-        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?jumpToID="+jumpToID+"&sort="+sort+"&page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + page + "</a></li>";
+        return "<li class=\"page-item\"><a class=\"page-link\"href=\"?jumpToID="+jumpToID+"&sort="+sort+"&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + page + "</a></li>";
     }
 
     public String html_sort_title_up(int page, String filterTitle, int recordsPerPage, String jumpToID) {
-        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleUp&page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort up</a>";
+        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleUp&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort up</a>";
     }
 
     public String html_sort_title_down(int page, String filterTitle, int recordsPerPage, String jumpToID) {
-        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleDown&page=anzahl_belege&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort down</a>";
+        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleDown&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort down</a>";
     }
 
     public void print_pagination(JspWriter out, int currentPage, int recordsPerPage, String filterTitle, int nOfPages, String sort, String jumpToID) throws Exception {
@@ -106,7 +106,7 @@
 <p>
         
     <h1>Statistik</h1>
-    <a href="<%=Utils.getBaseUrl(request)%>/gast/stat">Zurück zur Übersicht</a>
+    <a href="javascript:history.back();">Zurück</a>
     <br><br>
     <h3>Liste der Quellen mit Anzahl der Belege
     </h3>

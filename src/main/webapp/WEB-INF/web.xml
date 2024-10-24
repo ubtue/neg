@@ -85,15 +85,6 @@
         <servlet-name>QuelleServlet</servlet-name>
         <url-pattern>/gast/quelle</url-pattern>
     </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>StatServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.StatistikServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>StatServlet</servlet-name>
-        <url-pattern>/gast/stat</url-pattern>
-    </servlet-mapping>
      
     <servlet>
         <servlet-name>HilfeServlet</servlet-name>

@@ -15,7 +15,7 @@
     Urkunde urkunde = quelle.getUrkunde();
 %>
 
-<a href="<%=Utils.getBaseUrl(request)%>/gast/stat">
+<a href="<%=Utils.getBaseUrl(request)%>/gast/quelle?page=stat">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
         <jsp:param name="Formular" value="stat"/>
         <jsp:param name="Textfeld" value="Titel"/>
