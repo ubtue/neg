@@ -33,8 +33,34 @@ public class ExportSolr extends AbstractBase {
                 jsonObject.put("belegform", einzelbeleg.getBelegform());
                 jsonObject.put("quelle", einzelbeleg.getQuelle().getBezeichnung());
 
-                // Optional
-                jsonObject.put("kontext", einzelbeleg.getKontext());
+                // Optional (Einzelbeleg)
+                if (einzelbeleg.getKontext() != null) {
+                    jsonObject.put("kontext", einzelbeleg.getKontext());
+                }
+                if (einzelbeleg.getSeite() != null) {
+                    jsonObject.put("seite", einzelbeleg.getSeite());
+                }
+                if (einzelbeleg.getRaster() != null) {
+                    jsonObject.put("raster", einzelbeleg.getRaster());
+                }
+
+                // Optional (weitere Ebenen)
+                if (!einzelbeleg.getMghLemma().isEmpty()) {
+                    JSONArray lemmas = new JSONArray();
+                    for (MghLemma lemma : einzelbeleg.getMghLemma()) {
+                        lemmas.put(lemma.getMghLemma());
+                    }
+                    jsonObject.put("lemma", lemmas);
+                }
+                if (!einzelbeleg.getPerson().isEmpty()) {
+                    JSONArray personen = new JSONArray();
+                    for (Person person : einzelbeleg.getPerson()) {
+                        if (person.getStandardname() != null) {
+                            personen.put(person.getStandardname());
+                        }
+                    }
+                    jsonObject.put("person", personen);
+                }
 
                 jsonArray.put(jsonObject);
             }

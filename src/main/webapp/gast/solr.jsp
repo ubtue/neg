@@ -15,17 +15,8 @@
     MultiMapSolrParams queryParams = (MultiMapSolrParams)request.getAttribute("solrParams");
     QueryResponse queryResponse = (QueryResponse)request.getAttribute("solrResponse");
 
-    List<String> types = new ArrayList<>();
-    //types.add("AllFields");
-    types.add("belegform");
-    types.add("kontext");
-    types.add("person");
-    types.add("quelle");
-
-    List<String> sorts = new ArrayList<>();
-    sorts.add("score desc");
-    sorts.add("belegform asc");
-    sorts.add("quelle asc");
+    List<String> types = (List<String>)request.getAttribute("types");
+    List<String> sorts = (List<String>)request.getAttribute("sorts");
 %>
 
 <form id="searchForm" method="get">
@@ -61,18 +52,38 @@
                 <div class="result" style="background-color: #<%= (i % 2 == 0) ? "ccc" : "ddd" %>">
                     <%
                         String id = (String)document.getFirstValue("id");
+                        String url = Utils.getBaseUrl(request) + "/gast/einzelbeleg?ID=" + Utils.urlEncode(id);
                         String belegform = (String)document.getFirstValue("belegform");
                         String quelle = (String)document.getFirstValue("quelle");
+                        String seite = document.getFirstValue("seite") != null ? (String)document.getFirstValue("seite") : "";
+                        String raster = document.getFirstValue("raster") != null ? (String)document.getFirstValue("raster") : "";
                         String kontext = document.getFirstValue("kontext") != null ? (String)document.getFirstValue("kontext") : "";
+                        String person = document.getFirstValue("person") != null ? (String)document.getFirstValue("person") : "";
+                        String lemma = document.getFirstValue("lemma") != null ? (String)document.getFirstValue("lemma") : "";
+                        String heading = !person.isEmpty() ? person : belegform;
+
+                        String quellenangabe = quelle;
+                        if (!seite.isEmpty()) {
+                            quellenangabe += ", S." + seite;
+                            if (!raster.isEmpty()) {
+                                quellenangabe += " "  + raster;
+                            }
+                        }
                     %>
                     <div>
-                        <span class="belegform"><a href="<%=Utils.getBaseUrl(request)%>/gast/einzelbeleg?ID=<%=id%>"><%=belegform%></a></span><br>
-                        <span class="quelle">In: <%=quelle%></span><br>
-                        <% if (!kontext.isEmpty()) { %>
-                            <span class="kontext"><%=kontext%></span>
+                        <span class="heading"><a href="<%=url%>"><%=Utils.escapeHTML(heading)%></a></span><br>
+                        <% if (!lemma.isEmpty()) { %>
+                            <span class="lemma"><%=Utils.escapeHTML(lemma)%></span><br>
                         <% } %>
+
+                        <div class="quellenangabe">
+                            <span class="quelle">In: <%=Utils.escapeHTML(quellenangabe)%></span><br>
+                            <% if (!kontext.isEmpty()) { %>
+                                <span class="kontext"><%=Utils.escapeHTML(kontext)%></span>
+                            <% } %>
+                        </div>
                     </div>
-                    <div class="id">ID:&nbsp;<%=id%></div>
+                    <div class="id">B<%=Utils.escapeHTML(id)%></div>
                 </div>
             <% } %>
         </div>
@@ -88,13 +99,13 @@
                         <% if (request.getParameter(facet.getName()) == null || !request.getParameter(facet.getName()).equals(count.getName())) { %>
                             <li class="facet-list-item">
                                 <a class="facet-link" href="<%=new URIBuilder(request.getRequestURL().toString() + "?" + request.getQueryString()).addParameter(facet.getName(), count.getName()).build().toString()%>">
-                                    <span class="facet-value"><%= count.getName()%></span>
-                                    <span class="facet-count"><%= String.valueOf(count.getCount())%></span>
+                                    <span class="facet-value"><%=Utils.escapeHTML(count.getName())%></span>
+                                    <span class="facet-count"><%=Utils.escapeHTML(String.valueOf(count.getCount()))%></span>
                                 </a>
                             </li>
                         <% } else { %>
                             <li class="facet-list-item-active">
-                                <span class="facet-value"><%= count.getName()%></span>
+                                <span class="facet-value"><%=Utils.escapeHTML(count.getName())%></span>
                             </li>
                         <% } %>
                     <% } %>

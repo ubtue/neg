@@ -250,6 +250,12 @@ public class Einzelbeleg {
     @Column(name = "TitelText", length = 255)
     private String titelText;
 
+    @Column(name = "seite")
+    private String seite;
+
+    @Column(name = "raster")
+    private String raster;
+
     @ManyToOne(targetEntity = SelektionBeziehungGemeinschaft.class)
     @JoinColumn(name = "BeziehungGemeinschaftID", referencedColumnName = "ID")
     private SelektionBeziehungGemeinschaft beziehungGemeinschaft;
@@ -646,6 +652,14 @@ public class Einzelbeleg {
 
     public Set<SelektionStand> getStand() {
         return stand;
+    }
+
+    public String getSeite() {
+        return seite;
+    }
+
+    public String getRaster() {
+        return raster;
     }
 
     public void setBelegnummer(String belegnummer) {

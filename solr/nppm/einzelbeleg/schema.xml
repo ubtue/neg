@@ -31,7 +31,10 @@
     <!-- Optional -->
     <field name="datierung" type="dateRange" indexed="true" stored="true" />
     <field name="kontext" type="text" indexed="true" stored="true" />
+    <field name="lemma" type="string" indexed="true" stored="true" multiValued="true" />
     <field name="person" type="string" indexed="true" stored="true" multiValued="true" />
+    <field name="raster" type="string" indexed="true" stored="true" />
+    <field name="seite" type="string" indexed="true" stored="true" />
     <field name="stand" type="string" indexed="true" stored="true" multiValued="true" />
 
     <!--

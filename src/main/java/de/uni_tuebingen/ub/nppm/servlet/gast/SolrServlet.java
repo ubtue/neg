@@ -6,7 +6,7 @@ import org.apache.solr.client.solrj.impl.Http2SolrClient;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +31,10 @@ public class SolrServlet extends AbstractGastServlet {
 
         String solrBaseUrl = "http://localhost:8984/solr";
         String solrIndex = "einzelbeleg";
-        List<String> facets = new ArrayList<>();
-        facets.add("quelle");
-        facets.add("belegform");
+        List<String> facets = Arrays.asList("quelle", "belegform", "person", "lemma");
+        List<String> types = Arrays.asList("belegform", "kontext", "person", "quelle");
+        List<String> sorts = Arrays.asList("score desc", "belegform asc", "quelle asc, seite asc, raster asc");
+
         String lookfor = request.getParameter("lookfor") != null ? request.getParameter("lookfor") : "";
         String type = request.getParameter("lookfor") != null ? request.getParameter("type") : "belegform";
         String sort = request.getParameter("sort") != null ? request.getParameter("sort") : "score desc";
@@ -65,6 +66,9 @@ public class SolrServlet extends AbstractGastServlet {
 
         request.setAttribute("solrParams", queryParams);
         request.setAttribute("solrResponse", solrResponse);
+        request.setAttribute("facets", facets);
+        request.setAttribute("types", types);
+        request.setAttribute("sorts", sorts);
 
         rd.include(request, response);
     }
