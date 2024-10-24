@@ -88,6 +88,12 @@
             </tr>
          </tbody>
         </table>
+<!----------Einzelbelege---------->
+
+<h1>
+    <a href="<%= Utils.getBaseUrl(request) %>/gast/suchergebnis?Quellenliste=<%= id %>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&Ausgabe_Einzelbeleg_Quellengattung=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit=">Einzelbelege</a>
+</h1>
+
 
 <!----------Ueberlieferung---------->
 <h3><% Language.printTextfield(out, session, "quelle", "TabUeberlieferung"); %></h3>
