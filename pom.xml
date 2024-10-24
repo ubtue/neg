@@ -118,6 +118,11 @@
             <artifactId>jstree</artifactId>
             <version>3.3.16</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>9.7.0</version>
+        </dependency>
     </dependencies>
 
     <build>

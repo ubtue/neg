@@ -236,7 +236,7 @@
     <servlet-mapping>
         <servlet-name>BackendQuelleServlet</servlet-name>
         <url-pattern>/quelle</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>
     <servlet>
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ForgotPasswordServlet</servlet-class>
@@ -278,6 +278,14 @@
         <servlet-name>ContentServlet</servlet-name>
         <url-pattern>/edit</url-pattern>
         <url-pattern>/file</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SolrServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.SolrServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SolrServlet</servlet-name>
+        <url-pattern>/gast/solr</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

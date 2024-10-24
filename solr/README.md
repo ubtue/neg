@@ -10,6 +10,7 @@ Installation:
 - Import some sample data e.g. by using `import.sh` in this directory
     - (This will just import a small amount of test datasets. You can use the Java CLI class ExportSolr if you need more test data later)
 - Execute a sample query, e.g. http://localhost:8984/solr/einzelbeleg/select?q=*:*&df=belegform&fl=*,score&facet=true&facet.field=quelle&facet.mincount=1
+- Open http://localhost:8984/neg/gast/solr for a basic Servlet+jsp example
 
 Notes:
 - This is just a simple development environment. To use it on the servers we must move the directory structure out of the repository, e.g. to /usr/local/nppm/solr/...
