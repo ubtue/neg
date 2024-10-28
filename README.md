@@ -21,6 +21,7 @@ Prerequisites:
     <!-- Optional -->
     <Environment name="matomoURL" value="" type="java.lang.String"/>
     <Environment name="matomoSiteId" value="" type="java.lang.String"/>
+    <Environment name="development" value="true" type="java.lang.String"/>
 
     <!-- Mail -->
     <Environment name="smtpHost" value="smtpserv.uni-tuebingen.de" type="java.lang.String"/>
