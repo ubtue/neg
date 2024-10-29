@@ -20,6 +20,8 @@
   String typeFile = request.getParameter("type");
   String def = "";
   String disabled = "";
+  String darstellung = request.getParameter("Darstellung") != null ? request.getParameter("Darstellung") : "";
+  String label = request.getParameter("Label") != null ? request.getParameter("Label") : "";
 
   boolean isReadOnly = (readonly!=null && readonly.equals("yes"));
   boolean isEmpty = (emp!=null && emp.equals("yes"));
@@ -105,10 +107,15 @@
 
 <% if (visible!=null && visible.equals("hidden")) out.println("<div style=\"visibility:hidden\">");%>
 
+<% if (darstellung.equals("Tabellenzeile")) { %>
+    <tr>
+        <th><%=label%></th>
+        <td>
+<% } %>
+
 <script type="text/javascript">
     var deleteEntryMessage = "<%= deleteEntryMessage %>"; // Java-Variable in JavaScript-Variable umwandeln
 </script>
-
 
 <%@ page import="java.util.*" isThreadSafe="false" %>
 
@@ -140,5 +147,10 @@
 <%@ include file="forms/noarray.textarea.jsp" %>
 <%@ include file="forms/noarray.textfield.jsp" %>
 <%@ include file="forms/noarray.gndlink.jsp" %>
+
+<% if (darstellung.equals("Tabellenzeile")) { %>
+        </td>
+    </tr>
+<% } %>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("</div>");%>
