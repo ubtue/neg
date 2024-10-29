@@ -103,19 +103,18 @@
     combinedFeldtypen = mapping.getCombinedFeldtypenAsArray();
     combinedAnzeigenamen = mapping.getCombinedAnzeigenamenAsArray(sprache);
   }
+
 %>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("<div style=\"visibility:hidden\">");%>
 
-<% if (darstellung.equals("Tabellenzeile")) { %>
-    <tr>
-        <th><%=label%></th>
-        <td>
-<% } %>
-
-<script type="text/javascript">
-    var deleteEntryMessage = "<%= deleteEntryMessage %>"; // Java-Variable in JavaScript-Variable umwandeln
-</script>
+<%
+    // Replace the standard writer with a custom writer that writes to a string variable.
+    // This way we can check whether a value was generated before generating layout like table rows, etc.
+    JspWriter out_html = out;
+    JspWriterStringBuffer out_buffer = new de.uni_tuebingen.ub.nppm.util.JspWriterStringBuffer();
+    out = out_buffer;
+%>
 
 <%@ page import="java.util.*" isThreadSafe="false" %>
 
@@ -148,9 +147,29 @@
 <%@ include file="forms/noarray.textfield.jsp" %>
 <%@ include file="forms/noarray.gndlink.jsp" %>
 
-<% if (darstellung.equals("Tabellenzeile")) { %>
-        </td>
-    </tr>
-<% } %>
+<%
+    // Read the value from buffer & restore our default html writer
+    out = out_html;
+    String generatedValue = out_buffer.getBuffer().trim();
+
+    // Render output if generated value is not empty
+    boolean display = !generatedValue.isEmpty() && !generatedValue.equals("-");
+
+    if (display) {
+        if (darstellung.equals("Tabellenzeile")) {
+            out.print("<tr><th>" + label + "</th><td>");
+        }
+        %>
+        <script type="text/javascript">
+            var deleteEntryMessage = "<%= deleteEntryMessage %>"; // Java-Variable in JavaScript-Variable umwandeln
+        </script>
+        <%
+        out.print(generatedValue);
+
+        if (darstellung.equals("Tabellenzeile")) {
+            out.print("</td></tr>");
+        }
+    }
+%>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("</div>");%>

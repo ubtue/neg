@@ -71,17 +71,15 @@
         </jsp:include>
       </td>
     </tr>
-    <tr>
-      <th><% Language.printDatafield(out, session, "einzelbeleg", "LemmaRO"); %></th>
-      <td>
-        <jsp:include page="../inc.erzeugeFormular.jsp">
-          <jsp:param name="ID" value="<%= id %>"/>
-          <jsp:param name="Formular" value="einzelbeleg"/>
-          <jsp:param name="Datenfeld" value="LemmaRO"/>
-          <jsp:param name="Readonly" value="yes"/>
-        </jsp:include>
-      </td>
-    </tr>
+
+    <jsp:include page="../inc.erzeugeFormular.jsp">
+      <jsp:param name="ID" value="<%= id %>"/>
+      <jsp:param name="Formular" value="einzelbeleg"/>
+      <jsp:param name="Datenfeld" value="LemmaRO"/>
+      <jsp:param name="Readonly" value="yes"/>
+      <jsp:param name="Darstellung" value="Tabellenzeile"/>
+      <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "LemmaRO")%>"/>
+    </jsp:include>
 
      <tr>
       <th><% Language.printDatafield(out, session, "einzelbeleg", "MGHLemmaRO"); %></th>
@@ -243,15 +241,17 @@
         </jsp:include>
       </td>
     </tr>
-
-    <jsp:include page="../inc.erzeugeFormular.jsp">
-      <jsp:param name="ID" value="<%= id %>"/>
-      <jsp:param name="Formular" value="einzelbeleg"/>
-      <jsp:param name="Datenfeld" value="Schreiber"/>
-      <jsp:param name="Readonly" value="yes"/>
-      <jsp:param name="Darstellung" value="Tabellenzeile"/>
-      <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Schreiber")%>"/>
-    </jsp:include>
+    <tr>
+      <th><% Language.printDatafield(out, session, "einzelbeleg", "Schreiber"); %></th>
+      <td>
+        <jsp:include page="../inc.erzeugeFormular.jsp">
+          <jsp:param name="ID" value="<%= id %>"/>
+          <jsp:param name="Formular" value="einzelbeleg"/>
+          <jsp:param name="Datenfeld" value="Schreiber"/>
+          <jsp:param name="Readonly" value="yes"/>
+        </jsp:include>
+      </td>
+    </tr>
   </tbody>
 </table>
 
