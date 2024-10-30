@@ -69,20 +69,20 @@
         return "<li class=\"page-item\"><a class=\"page-link\"href=\"?jumpToID="+jumpToID+"&sort="+sort+"&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + page + "</a></li>";
     }
 
-    public String html_sort_title_up(int page, String filterTitle, int recordsPerPage, String jumpToID) {
-        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleUp&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort up</a>";
+    public String html_sort_title_up(int page, String filterTitle, int recordsPerPage, String jumpToID,HttpSession session) throws Exception {
+        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleUp&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">"+Language.getTextfield(session, "stat", "SortUp")+"</a>";
     }
 
-    public String html_sort_belege_up(int page, String filterTitle, int recordsPerPage, String jumpToID) {
-        return "<a class=\"sort-link\" href=\"?jumpToID=" + jumpToID + "&sort=belegeUp&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort up</a>";
+    public String html_sort_belege_up(int page, String filterTitle, int recordsPerPage, String jumpToID,HttpSession session) throws Exception {
+        return "<a class=\"sort-link\" href=\"?jumpToID=" + jumpToID + "&sort=belegeUp&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">"+Language.getTextfield(session, "stat", "SortUp")+"</a>";
     }
 
-    public String html_sort_belege_down(int page, String filterTitle, int recordsPerPage, String jumpToID) {
-        return "<a class=\"sort-link\" href=\"?jumpToID=" + jumpToID + "&sort=belegeDown&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort down</a>";
+    public String html_sort_belege_down(int page, String filterTitle, int recordsPerPage, String jumpToID,HttpSession session) throws Exception {
+        return "<a class=\"sort-link\" href=\"?jumpToID=" + jumpToID + "&sort=belegeDown&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">"+Language.getTextfield(session, "stat", "SortDown")+"</a>";
     }
 
-    public String html_sort_title_down(int page, String filterTitle, int recordsPerPage, String jumpToID) {
-        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleDown&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">sort down</a>";
+    public String html_sort_title_down(int page, String filterTitle, int recordsPerPage, String jumpToID,HttpSession session) throws Exception {
+        return "<a class=\"sort-link\"href=\"?jumpToID="+jumpToID+"&sort=titleDown&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">"+Language.getTextfield(session, "stat", "SortDown")+"</a>";
     }
 
     public void print_pagination(JspWriter out, int currentPage, int recordsPerPage, String filterTitle, int nOfPages, String sort, String jumpToID) throws Exception {
@@ -133,16 +133,16 @@
                     <input type="submit" />
                 </form>
                 <%
-                    out.println(html_sort_title_up(currentPage, filterTitle, recordsPerPage,jumpToID));
-                    out.println(html_sort_title_down(currentPage, filterTitle, recordsPerPage,jumpToID));
+                    out.println(html_sort_title_up(currentPage, filterTitle, recordsPerPage,jumpToID,session));
+                    out.println(html_sort_title_down(currentPage, filterTitle, recordsPerPage,jumpToID,session));
                 %>
             </th>
             <th>
                 <b>Anzahl Belege</b>
                 <br>
                 <%
-                    out.println(html_sort_belege_up(currentPage, filterTitle, recordsPerPage, jumpToID));
-                    out.println(html_sort_belege_down(currentPage, filterTitle, recordsPerPage, jumpToID));
+                    out.println(html_sort_belege_up(currentPage, filterTitle, recordsPerPage, jumpToID,session));
+                    out.println(html_sort_belege_down(currentPage, filterTitle, recordsPerPage, jumpToID,session));
                 %>
             </th>
         </thead>
