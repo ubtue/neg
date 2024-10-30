@@ -150,12 +150,12 @@
             <%
             for (Quelle q : lst) {
                 out.print("<tr>");
-                out.print("<td>");
+                out.print("<td width='80%'>");
                 out.print("<a href=\""+Utils.getBaseUrl(request)+"/gast/quelle?ID="+String.valueOf(q.getId())+"\">");
                 out.print(Utils.escapeHTML(q.getBezeichnung()));
                 out.print("</a>");
                 out.print("</td>");
-                out.print("<td>");
+                out.print("<td width='20%'>");
                 out.print(q.getEinzelbelege().size());
                 out.print("</td>");
                 out.print("</tr>");
