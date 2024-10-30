@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 public class QuelleDB extends AbstractBase {
@@ -17,11 +18,11 @@ public class QuelleDB extends AbstractBase {
         return getList(Quelle.class);
     }
 
-    public static List getList(Integer currentPage, Integer recordsPerPage, String filterTitle, String sort, String jumpToID) throws Exception {
-        Query query;
+    public static List getList(Integer currentPage, Integer recordsPerPage, String filterTitle, String sort, String jumpToID) throws Exception {        
         try (Session session = getSession()) {          
             String q = "";
             if(jumpToID != null && jumpToID.length() > 0){
+                Query query;
                 q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.id = :id";
                 query = session.createQuery(q);
                 query.setParameter("id", Integer.valueOf(jumpToID));
@@ -29,23 +30,27 @@ public class QuelleDB extends AbstractBase {
                 return query.list();
             }else{
                 Integer start = null;
-                if(currentPage != null && recordsPerPage != null)
+                if (currentPage != null && recordsPerPage != null) {
                     start = currentPage * recordsPerPage - recordsPerPage;
-                if(sort.startsWith("title")){
-                    q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez ORDER BY q.bezeichnung "+ (sort.equals("titleDown") ? "DESC" : "ASC");
-                }else if(sort.startsWith("belege")){
-                    q = "SELECT q FROM Quelle q LEFT JOIN q.einzelbelege e WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez " +
-                        "GROUP BY q.id " +
-                        "ORDER BY COUNT(e.id) " + (sort.equals("belegeDown") ? "DESC" : "ASC");
-                }else{
-                    q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez";
                 }
-                query = session.createQuery(q);
-                query.setFirstResult(start);
-                query.setMaxResults(recordsPerPage);
-                query.setParameter("bez", "%" + filterTitle + "%");
-                query.setParameter("zuV", 1);
-                return query.list();
+
+                if (sort.startsWith("title")) {
+                    q = "SELECT * FROM quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez "
+                            + "ORDER BY q.bezeichnung " + (sort.equals("titleDown") ? "DESC" : "ASC");
+                } else if (sort.startsWith("belege")) {
+                    //SQL Abfrage mit Unterabfrage
+                    q = "SELECT * FROM quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez "
+                            + "ORDER BY (SELECT COUNT(e.id) FROM einzelbeleg e WHERE e.QuelleID = q.id) " + (sort.equals("belegeDown") ? "DESC" : "ASC");
+                } else {
+                    q = "SELECT * FROM quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.bezeichnung LIKE :bez";
+                }
+
+                Query<Quelle> queryNative = session.createNativeQuery(q, Quelle.class);
+                queryNative.setFirstResult(start);
+                queryNative.setMaxResults(recordsPerPage);
+                queryNative.setParameter("bez", "%" + filterTitle + "%");
+                queryNative.setParameter("zuV", 1);
+                return queryNative.getResultList();
             }            
         }
     }
