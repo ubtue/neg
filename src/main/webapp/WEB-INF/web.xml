@@ -236,7 +236,7 @@
     <servlet-mapping>
         <servlet-name>BackendQuelleServlet</servlet-name>
         <url-pattern>/quelle</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>
     <servlet>
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ForgotPasswordServlet</servlet-class>
@@ -289,9 +289,25 @@
             <page-encoding>UTF-8</page-encoding>
         </jsp-property-group>
     </jsp-config>
+
+    <!--
+        default error page
+        (e.g. 404 - "page not found" error for invalid URLs, and others)
+    -->
     <error-page>
-        <location>/gast/servlet/error.jsp</location>
+        <location>/error.jsp</location>
     </error-page>
+
+    <!--
+        error page for specific exceptions
+        (e.g. ID not found, etc.)
+        This needs to be registered in a separage error-page entry even if it's the same template!
+    -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error.jsp</location>
+    </error-page>
+
     <listener>
         <listener-class>de.uni_tuebingen.ub.nppm.util.ContextListener</listener-class>
     </listener>

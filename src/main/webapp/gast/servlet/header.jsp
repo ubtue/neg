@@ -1,4 +1,5 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
 <!DOCTYPE html>
 <HTML>
   <HEAD>
@@ -10,15 +11,15 @@
     }
     %>
     <TITLE><%=fullTitle%></TITLE>
-    <link rel="icon" href="layout/images/nomen_et_gens_icon.gif" type="image/gif">
-    <link rel="stylesheet" href="layout/layout.css" type="text/css">
-    <link href="layout/fonts/open-sans.css" rel="stylesheet" type="text/css">
-    <link href="layout/fonts/alegreya-sans-sc.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="<%=Utils.getBaseUrl(request)%>/gast/layout/images/nomen_et_gens_icon.gif" type="image/gif">
+    <link rel="stylesheet" href="<%=Utils.getBaseUrl(request)%>/gast/layout/layout.css" type="text/css">
+    <link href="<%=Utils.getBaseUrl(request)%>/gast/layout/fonts/open-sans.css" rel="stylesheet" type="text/css">
+    <link href="<%=Utils.getBaseUrl(request)%>/gast/layout/fonts/alegreya-sans-sc.css" rel="stylesheet" type="text/css">
 
-    <script src="../webjars/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
-    <script src="../webjars/jQuery-Autocomplete/1.4.11/jquery.autocomplete.min.js" type="text/javascript"></script>
-    <script src="../javascript/funktionen.js" type="text/javascript"></script>
-    <script src="../javascript/javascript.js" type="text/javascript"></script>
+    <script src="<%=Utils.getBaseUrl(request)%>/webjars/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="<%=Utils.getBaseUrl(request)%>/webjars/jQuery-Autocomplete/1.4.11/jquery.autocomplete.min.js" type="text/javascript"></script>
+    <script src="<%=Utils.getBaseUrl(request)%>/javascript/funktionen.js" type="text/javascript"></script>
+    <script src="<%=Utils.getBaseUrl(request)%>/javascript/javascript.js" type="text/javascript"></script>
 
     ${additionalCss}
 
