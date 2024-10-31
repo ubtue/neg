@@ -1,24 +1,19 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import javax.persistence.*;
-import java.util.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "selektion_autor")
-public class SelektionAutor {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class SelektionAutor extends Selektion {
 
     @Column(name = "Nachname", length=255)
     private String nachname;
-    
+
     @Column(name = "Vorname", length=255)
     private String vorname;
-
-    public Integer getId() {
-        return id;
-    }
 
     public String getNachname() {
         return nachname;

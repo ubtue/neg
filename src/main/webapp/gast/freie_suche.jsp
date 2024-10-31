@@ -94,7 +94,7 @@ function CheckAll(index, check, praefix) {
         </ul>
         <div class="clear"></div>
 
-    <FORM method="POST" action="suchergebnis">
+    <FORM method="GET" action="suchergebnis">
       <input type="hidden" name="form" value="freie_suche">
 
 <!-- ##### SUCHFELDER ##### -->
@@ -150,7 +150,7 @@ function CheckAll(index, check, praefix) {
                       <jsp:param name="Formular" value="gast_freie_suche"/>
                       <jsp:param name="Datenfeld" value="Namenkommentar"/>
                     </jsp:include>/
-                    
+
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="gast_freie_suche"/>
                       <jsp:param name="Datenfeld" value="Namenkommentar2"/>
@@ -271,7 +271,19 @@ function CheckAll(index, check, praefix) {
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Quelle"/>
-                    </jsp:include>                  </td>
+                    </jsp:include>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                      <% Language.printDatafield(out, session, formular, "QuelleGattung"); %>
+                  </th>
+                  <td>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="QuelleGattung"/>
+                    </jsp:include>
+                  </td>
                 </tr>
                 <tr>
                   <th>
@@ -281,6 +293,17 @@ function CheckAll(index, check, praefix) {
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="QuelleZeitraum"/>
+                    </jsp:include>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                      <% Language.printDatafield(out, session, formular, "Seite"); %>
+                  </th>
+                  <td>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="Seite"/>
                     </jsp:include>
                   </td>
                 </tr>
@@ -305,7 +328,7 @@ function CheckAll(index, check, praefix) {
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="Ausgabe_Namenlemma"/>
-                    </jsp:include>                      
+                    </jsp:include>
                   </td>
                   <td>
                       <% Language.printDatafield(out, session, formular, "Ausgabe_Namenlemma"); %>
@@ -357,6 +380,18 @@ function CheckAll(index, check, praefix) {
                       <jsp:param name="Datenfeld" value="Ausgabe_Person_AmtWeiheZeitraum"/>
                     </jsp:include>
                       <% Language.printDatafield(out, session, formular, "Ausgabe_Person_AmtWeiheZeitraum"); %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="Ausgabe_Stand"/>
+                    </jsp:include>
+                  </td>
+                  <td>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Stand"); %>
+                    <font color="blue"></font>
                   </td>
                 </tr>
                 <tr>
@@ -452,6 +487,20 @@ function CheckAll(index, check, praefix) {
                   </td>
                   <td>
                       <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Varianten"); %>
+                    <font color="blue"></font>
+                  </td>
+                </tr>
+
+                <!-- TODO: Oder als Teil von Belegstelle umsetzen? Außerdem: Label in GAST fehlt! -->
+                <tr>
+                  <td>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                      <jsp:param name="Formular" value="freie_suche"/>
+                      <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_Quellengattung"/>
+                    </jsp:include>
+                  </td>
+                  <td>
+                      <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Quellengattung"); %>
                     <font color="blue"></font>
                   </td>
                 </tr>

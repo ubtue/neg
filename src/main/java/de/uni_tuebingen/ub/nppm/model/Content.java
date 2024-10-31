@@ -17,7 +17,9 @@ public class Content {
 
     public enum Context {
         HILFE,
-        NAMENKOMMENTAR
+        NAMENKOMMENTAR,
+        QUELLENKOMMENTAR,
+        UEBERLIEFERUNGSKOMMENTAR  
     }
 
     @Id

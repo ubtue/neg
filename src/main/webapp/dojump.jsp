@@ -1,4 +1,5 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="java.text.SimpleDateFormat" isThreadSafe="false"%>
 <%@ page import="java.util.Date" isThreadSafe="false"%>
@@ -26,12 +27,7 @@
         } else if (newID.startsWith("M") || newID.startsWith("m")) {
             newForm = "mghlemma";
         } else {
-            out.println("<script type=\"text/javascript\">");
-            String url = request.getRequestURL().toString();
-            url = url.substring(0, url.lastIndexOf('/') + 1);
-            out.println("window.stop();");
-            out.println("location.replace('" + url + "error.jsp');");
-            out.println("</script>");
+            throw new IdInvalidException();
         }
         out.println("<script type=\"text/javascript\">");
         String url = request.getRequestURL().toString();

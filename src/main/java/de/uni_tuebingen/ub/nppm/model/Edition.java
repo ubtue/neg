@@ -5,7 +5,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "edition")
-public class Edition {    
+public class Edition {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
@@ -22,58 +22,58 @@ public class Edition {
     @Column(name = "Zitierweise", length=255)
     private String zitierweise;
 
-    @OneToOne(targetEntity = SelektionOrt.class)
+    @ManyToOne(targetEntity = SelektionOrt.class)
     @JoinColumn(name = "OrtID", referencedColumnName="ID")
     private SelektionOrt ort;
-    
-    @OneToOne(targetEntity = SelektionReihe.class)
+
+    @ManyToOne(targetEntity = SelektionReihe.class)
     @JoinColumn(name = "ReiheID", referencedColumnName="ID")
     private SelektionReihe reihe;
-    
-    @OneToOne(targetEntity = SelektionSammelband.class)
+
+    @ManyToOne(targetEntity = SelektionSammelband.class)
     @JoinColumn(name = "SammelbandID", referencedColumnName="ID")
     private SelektionSammelband sammelband;
 
     @Column(name = "Verbindlich", columnDefinition="INTEGER DEFAULT NULL")
     private Boolean verbindlich;
-    
-    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+
+    @ManyToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName="ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
-    
+
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
-    
-    @OneToOne(targetEntity = Benutzer.class)
+
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "LetzteAenderungVon", referencedColumnName="ID")
     private Benutzer letzteAenderungVon;
-    
+
     @Column(name = "Erstellt")
     private Date erstellt;
-    
-    @OneToOne(targetEntity = Benutzer.class)
+
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "ErstelltVon", referencedColumnName="ID")
     private Benutzer erstelltVon;
-    
-    @OneToOne(targetEntity = BenutzerGruppe.class)
+
+    @ManyToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GehoertGruppe", referencedColumnName="ID")
     private BenutzerGruppe gehoertGruppe;
-    
+
     @Column(name = "BandNummer", length=100)
     private String bandNummer;
-    
-    @OneToOne(targetEntity = SelektionDmghBand.class)
+
+    @ManyToOne(targetEntity = SelektionDmghBand.class)
     @JoinColumn(name = "dMGHBandID", referencedColumnName="ID")
-    private SelektionDmghBand dMGHBand; 
-    
+    private SelektionDmghBand dMGHBand;
+
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
-        name = "edition_hateditor", 
-        joinColumns = { @JoinColumn(name = "EditionID") }, 
+        name = "edition_hateditor",
+        joinColumns = { @JoinColumn(name = "EditionID") },
         inverseJoinColumns = { @JoinColumn(name = "EditorID") }
     )
     Set<SelektionEditor> editors = new HashSet<>();
-    
+
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinTable(
             name = "quelle_inedition",
@@ -87,15 +87,15 @@ public class Edition {
     public Set<SelektionEditor> getEditors() {
         return editors;
     }
-    
+
     public void addEditor(SelektionEditor editor){
         this.getEditors().add(editor);
     }
-      
+
     public void removeEditor(int id){
         this.getEditors().removeIf(e -> e.getId() == id);
     }
-    
+
     public Set<Quelle> getQuellen() {
         return quellen;
     }
@@ -239,5 +239,5 @@ public class Edition {
     public void setdMGHBand(SelektionDmghBand dMGHBand) {
         this.dMGHBand = dMGHBand;
     }
-    
+
 }

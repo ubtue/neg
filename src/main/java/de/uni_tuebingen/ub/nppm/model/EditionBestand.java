@@ -10,16 +10,16 @@ public class EditionBestand {
     @Column(name = "ID")
     private Integer id;
 
-    @OneToOne(targetEntity = Edition.class)
+    @ManyToOne(targetEntity = Edition.class)
     @JoinColumn(name = "EditionID", referencedColumnName="ID")
     private Edition edition;
 
     @Column(name = "Signatur", length=255)
     private String signatur;
 
-    @OneToOne(targetEntity = SelektionBkz.class)
+    @ManyToOne(targetEntity = SelektionBkz.class)
     @JoinColumn(name = "BKZ", referencedColumnName="ID")
-    private SelektionBkz bkz;  
+    private SelektionBkz bkz;
 
     public Integer getId() {
         return id;
@@ -48,5 +48,5 @@ public class EditionBestand {
     public void setBkz(SelektionBkz bkz) {
         this.bkz = bkz;
     }
-    
+
 }

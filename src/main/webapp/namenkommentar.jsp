@@ -1,19 +1,13 @@
-<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
-<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false"%>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
-<%@ page import="java.sql.SQLException" isThreadSafe="false"%>
-<%@ page import="java.sql.Statement" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.*"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
-<%@include file="functions.jsp" %>
+<%@ include file="functions.jsp" %>
 <%@ include file="configuration.jsp"%>
 
 
@@ -35,14 +29,15 @@
 
 <div
     onLoad="javascript:onoff('tab4', 'tab1'); onoff('tab1', 'tab4');urlRewrite(<%=id%>);">
-    <FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
-        <jsp:include page="layout/image.inc.html" /> <jsp:include
+    <FORM method="POST">
+        <jsp:include
             page="layout/titel.inc.jsp">
             <jsp:param name="title" value="Namenkommentar" />
             <jsp:param name="ID" value="<%= id%>" />
             <jsp:param name="size" value="" />
             <jsp:param name="Formular" value="namenkommentar" />
         </jsp:include>
+
         <div id="form">
             <table style="width:100%;">
                 <tbody>

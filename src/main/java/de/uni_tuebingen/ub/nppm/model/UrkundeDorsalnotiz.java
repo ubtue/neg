@@ -9,8 +9,8 @@ public class UrkundeDorsalnotiz {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    
-    @OneToOne(targetEntity = Urkunde.class)
+
+    @ManyToOne(targetEntity = Urkunde.class)
     @JoinColumn(name = "UrkundeID", referencedColumnName="ID")
     private Urkunde urkunde;
 

@@ -10,6 +10,7 @@ Prerequisites:
     - Find this servlet <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
     - Add parameter `<init-param><param-name>strictQuoteEscaping</param-name><param-value>false</param-value></init-param>`
   - Catalina/localhost/neg.xml (needs to be created with correct user credentials)
+    - Note: If you also want to run CLI programs out of the tomcat context, you must create /root/.neg.properties and store sqlURL, sqlUser and sqlPassword in there.
 ```
 <Context>
     <!-- Mandatory -->
@@ -20,6 +21,7 @@ Prerequisites:
     <!-- Optional -->
     <Environment name="matomoURL" value="" type="java.lang.String"/>
     <Environment name="matomoSiteId" value="" type="java.lang.String"/>
+    <Environment name="development" value="true" type="java.lang.String"/>
 
     <!-- Mail -->
     <Environment name="smtpHost" value="smtpserv.uni-tuebingen.de" type="java.lang.String"/>
@@ -30,6 +32,7 @@ Prerequisites:
 ```
 - Java >= 1.8.0_77
 - MySQL >= 5.7
+  - innodb_buffer_pool_size=1024M
   - collation-server = utf8_unicode_ci
   - character-set-server = utf8mb4
   - group_concat_max_len = 100000000
@@ -73,6 +76,9 @@ Build:
 - Deploy 1st time using http://localhost:8080/manager/html
 - Update copying neg.war to /var/lib/tomcat/webapps/ and removing the old unpacked neg/ subdirectory
 - Make sure the file /var/lib/tomcat9/conf/Catalina/localhost/neg.xml exists
+
+Development:
+- Make sure you have git hooks enabled, see git-config/hooks/README.md for further information
 
 Production:
 - https://wiki.owasp.org/index.php/Securing_tomcat

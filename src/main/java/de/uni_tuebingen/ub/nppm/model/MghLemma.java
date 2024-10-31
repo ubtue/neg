@@ -1,20 +1,15 @@
 package de.uni_tuebingen.ub.nppm.model;
 
 import java.util.*;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "mgh_lemma")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MghLemma {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -23,28 +18,28 @@ public class MghLemma {
     @Column(name = "MGHLemma", length = 255)
     private String mghLemma;
 
-    @OneToOne(targetEntity = SelektionBearbeitungsstatus.class)
+    @ManyToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
 
     @Column(name = "LetzteAenderung")
     private Date letzteAenderung;
 
-    @OneToOne(targetEntity = Benutzer.class)
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "LetzteAenderungVon", referencedColumnName = "ID")
     private Benutzer letzteAenderungVon;
 
     @Column(name = "Erstellt")
     private Date erstellt;
 
-    @OneToOne(targetEntity = Benutzer.class)
+    @ManyToOne(targetEntity = Benutzer.class)
     @JoinColumn(name = "ErstelltVon", referencedColumnName = "ID")
     private Benutzer erstelltVon;
 
-    @OneToOne(targetEntity = BenutzerGruppe.class)
+    @ManyToOne(targetEntity = BenutzerGruppe.class)
     @JoinColumn(name = "GehoertGruppe", referencedColumnName = "ID")
     private BenutzerGruppe gehoertGruppe;
-    
+
     @ManyToMany(mappedBy = "mghLemma")
     private Set<Einzelbeleg> einzelbelege = new HashSet<>();
 
@@ -111,7 +106,7 @@ public class MghLemma {
     public Set<Einzelbeleg> getEinzelbelege() {
         return einzelbelege;
     }
-    
+
     public void addEinzelbeleg(Einzelbeleg person) {
         this.getEinzelbelege().add(person);
     }
@@ -119,5 +114,5 @@ public class MghLemma {
     public void removeEinzelbeleg(int id) {
         this.getEinzelbelege().removeIf(e -> e.getId() == id);
     }
-    
+
 }

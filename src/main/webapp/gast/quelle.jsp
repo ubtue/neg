@@ -1,7 +1,6 @@
-<%@page import="de.uni_tuebingen.ub.nppm.db.UrkundeDB"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.Urkunde"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.QuelleDB"%>
-﻿<%@ page import="java.sql.*" isThreadSafe="false"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
+<%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp"%>
@@ -11,9 +10,9 @@
 <%
     int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));
-    int urkundeid = -1;
     String formular = "quelle";
-    urkundeid = UrkundeDB.getUrkunde(id).getId();
+    Quelle quelle = QuelleDB.getById(id);
+    Urkunde urkunde = quelle.getUrkunde();
 %>
 <jsp:include page="../dojump.jsp">
   <jsp:param name="form" value="gast_quelle" />
@@ -89,6 +88,12 @@
             </tr>
          </tbody>
         </table>
+<!----------Einzelbelege---------->
+
+<h1>
+    <a href="<%= Utils.getBaseUrl(request) %>/gast/suchergebnis?Quellenliste=<%= id %>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&Ausgabe_Einzelbeleg_Quellengattung=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit=">Einzelbelege</a>
+</h1>
+
 
 <!----------Ueberlieferung---------->
 <h3><% Language.printTextfield(out, session, "quelle", "TabUeberlieferung"); %></h3>
@@ -99,7 +104,10 @@
   </jsp:include>
 
 <!----------Bei Urkunden---------->
-<h3><% Language.printTextfield(out, session, "quelle", "TabUrkunde" ); %></h3>
+<% if (urkunde != null) { %>
+  <% int urkundeid = urkunde.getId(); %>
+
+  <h3><% Language.printTextfield(out, session, "quelle", "TabUrkunde" ); %></h3>
   <div id="urkunden">
     <table class="content-table">
       <tbody>
@@ -165,6 +173,4 @@
     </table>
   </div>
 
-
-
-
+<% } %>

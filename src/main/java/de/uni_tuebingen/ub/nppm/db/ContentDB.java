@@ -39,15 +39,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static Content getById(int id) throws Exception {
-        try (Session session = getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myImage = criteria.from(Content.class);
-            criteria.select(myImage);
-            criteria.where(builder.equal(myImage.get(Content_.ID), id));
-            Content content = session.createQuery(criteria).getSingleResult();
-            return content;
-        }
+        return AbstractBase.getById(id, Content.class);
     }
 
     public static Content getByName(String name) throws Exception {

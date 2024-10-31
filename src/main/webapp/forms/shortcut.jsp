@@ -52,28 +52,32 @@
     String sql2 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID = " + id + " ORDER BY ID DESC";
     String sql3 = sql + (sql.contains("WHERE") ? " AND" : " WHERE") + " " + title + ".ID > " + id + " ORDER BY ID ASC LIMIT 0,5";
 
-    List<Map> rowlist = AbstractBase.getMappedList(sql1);
+   List<Map> rowlist = AbstractBase.getMappedList(sql1);
     int count = 0;
     String res = "";
-    for (Map row: rowlist) {
+    for (Map row : rowlist) {
         count++;
-        if (count >= 5)
+        if (count >= 5) {
             break;
+        }
 
-        String value = format(row.get(bez).toString(), bez);
-        if (value != null) {
-            int max = Math.min(7, value.length());
-            if (bez.equals("PLemma")) {
-                int posAmph = value.substring(0, max).lastIndexOf("&");
-                int posSem = value.substring(0, max).lastIndexOf(";");
-                if (posAmph > posSem) {
-                    posSem = value.indexOf(";", posAmph);
-                    max = value.indexOf(";", posAmph) + 1;
+        Object valueObj = row.get(bez);
+        if (valueObj != null && !valueObj.toString().equals("")) {
+            String value = format(valueObj.toString(), bez);
+            if (value != null) {
+                int max = Math.min(7, value.length());
+                if (bez.equals("PLemma")) {
+                    int posAmph = value.substring(0, max).lastIndexOf("&");
+                    int posSem = value.substring(0, max).lastIndexOf(";");
+                    if (posAmph > posSem) {
+                        posSem = value.indexOf(";", posAmph);
+                        max = value.indexOf(";", posAmph) + 1;
+                    }
                 }
+                value = value.substring(0, max);
+                value = "<a style='color:#ffffff;' href='?ID=" + row.get("ID").toString() + "'>" + value + "..." + "</a>";
+                res = value + "\t" + res;
             }
-            value = value.substring(0, max);
-            value = "<a style='color:#ffffff;' href='?ID=" + row.get("ID").toString() + "'>" + value + "..." + "</a>";
-            res = value + "\t" + res;
         }
     }
     out.println(res);

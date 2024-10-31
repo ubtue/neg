@@ -1,9 +1,3 @@
-<%@ page import="java.sql.Connection" isThreadSafe="false" %>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false" %>
-<%@ page import="java.sql.SQLException" isThreadSafe="false" %>
-<%@ page import="java.sql.Statement" isThreadSafe="false" %>
-
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
@@ -31,15 +25,14 @@
 </jsp:include>
 
   <div onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');urlRewrite(<%= id %>);">
-    <FORM method="POST">
-      <jsp:include page="layout/navigation.inc.jsp" />
-      <jsp:include page="layout/image.inc.html" />
+    <FORM method="POST">      
       <jsp:include page="layout/titel.inc.jsp">
         <jsp:param name="title" value="Edition" />
         <jsp:param name="ID" value="<%= id %>" />
         <jsp:param name="size" value="" />
         <jsp:param name="Formular" value="edition" />
       </jsp:include>
+
       <jsp:include page="inc.erzeugeFormular.jsp">
         <jsp:param name="ID" value="<%= id %>"/>
         <jsp:param name="Formular" value="edition"/>
@@ -196,7 +189,7 @@
                     <% Language.printTextfield(out,session, formular,"TabEditoren");%>
                 </span>
               </li>
-	<li><a href="javascript:onoff('tab5','tab1');"> 
+	<li><a href="javascript:onoff('tab5','tab1');">
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
 <!-- TAB BÄNDE & QUELLEN
@@ -246,7 +239,7 @@
                     <% Language.printTextfield(out,session, formular,"TabEditoren");%>
                 </a>
               </li>
-	<li><span> 
+	<li><span>
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </span></li>
 <!-- TAB BÄNDE & QUELLEN
@@ -274,7 +267,7 @@
 	<jsp:param name="Modul" value="ueberlieferung" />
 </jsp:include></div>
         </div>
- 
+
         <div id="tab2">
           <div id="header">
             <ul id="primary">
@@ -351,7 +344,7 @@
                     <% Language.printTextfield(out,session, formular,"TabEditoren");%>
                 </a>
               </li>
-	<li><a href="javascript:onoff('tab5','tab4');"> 
+	<li><a href="javascript:onoff('tab5','tab4');">
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
 <!-- TAB BÄNDE & QUELLEN
@@ -486,8 +479,8 @@
                   <jsp:param name="Datenfeld" value="Sammelband"/>
                   <jsp:param name="Visibility" value="hidden"/>
                 </jsp:include>
-            
-            
+
+
           </div>
         </div>
       </div>

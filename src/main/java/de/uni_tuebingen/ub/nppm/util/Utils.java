@@ -5,7 +5,8 @@ import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
@@ -22,6 +23,21 @@ public class Utils {
         return true;
     }
 
+    public static boolean isDevelopmentEnvironment() {
+        try {
+            InitialContext initialContext = new javax.naming.InitialContext();
+            Object entry = initialContext.lookup("java:comp/env/development");
+            return entry == null || ((String)entry).equals("true");
+        } catch (NamingException ex) {
+            return false;
+        }
+
+    }
+
+    public static boolean isGastEnvironment(HttpServletRequest request) {
+        return request.getRequestURL().toString().contains("/gast/");
+    }
+
     public static String getBaseUrl(HttpServletRequest request) {
         String scheme = request.getScheme();
         String host = request.getServerName();
@@ -30,6 +46,10 @@ public class Utils {
 
         String baseUrl = scheme + "://" + host + ((("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)) ? "" : ":" + port) + contextPath;
         return baseUrl;
+    }
+
+     public static String getAjaxUrl(HttpServletRequest request) {
+        return getBaseUrl(request) + "/ajax";
     }
 
     public static int determineId(HttpServletRequest request, HttpServletResponse response, String formular, JspWriter out) throws Exception {
@@ -146,7 +166,7 @@ public class Utils {
         return lemma;
     }
 
-    public static void simpleSearch(JspWriter out, Vector<String> headlines, Vector<String> fieldNames, List<Map> rsMap, String orderV[], String order, String open, boolean countTables) throws IOException {
+    public static void simpleSearch(JspWriter out, List<String> headlines, List<String> fieldNames, List<Map> rsMap, String orderV[], String order, String open, boolean countTables) throws IOException {
 
         int topCount = 0;
 

@@ -1,4 +1,4 @@
-﻿<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>

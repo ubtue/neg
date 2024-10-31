@@ -9,8 +9,8 @@ public class UrkundeBetreff {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    
-    @OneToOne(targetEntity = Urkunde.class)
+
+    @ManyToOne(targetEntity = Urkunde.class)
     @JoinColumn(name = "UrkundeID", referencedColumnName="ID")
     private Urkunde urkunde;
 
@@ -36,6 +36,6 @@ public class UrkundeBetreff {
     public void setBetreff(String betreff) {
         this.betreff = betreff;
     }
-    
-    
+
+
 }

@@ -1,4 +1,7 @@
-﻿<%@ page import="java.io.File" isThreadSafe="false" %>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Content"%>
+<%@ page import="java.io.File" isThreadSafe="false" %>
 <%@ page import="java.io.FileNotFoundException" isThreadSafe="false" %>
 <%@ page import="java.sql.Connection" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false" %>
@@ -27,61 +30,26 @@
     <div id="form">
       <h2>L&ouml;schen</h2>
 <%
-  if (request.getParameter("table") == null) {
-    out.println("Falscher Aufruf!");
-  }
-  else if (request.getParameter("attribute") == null) {
-    out.println("Falscher Aufruf!");
-  }
-  else if (request.getParameter("ID") == null) {
-    out.println("Falscher Aufruf!");
-  }
-  else if (request.getParameter("returnpage") == null) {
-    out.println("Falscher Aufruf!");
-  }
-  else {
-    String folder = "";
-    if (request.getParameter("table").equals("person")){
-      folder = commentFolder_personenkommentar;
-    }
-    else if (request.getParameter("table").equals("namenkommentar")) {
-      folder = commentFolder_namenkommentar;
-    }
-   /* else if (request.getParameter("table").equals("quelle") && request.getParameter("attribute").equals("QuellenKommentarDatei")) {
-      folder = commentFolder_quellenkommentar;
-    }
-    else if (request.getParameter("table").equals("quelle") && request.getParameter("attribute").equals("UeberlieferungsKommentarDatei")) {
-      folder = commentFolder_namenkommentar;
-    }*/
 
-    String sql = "SELECT "+request.getParameter("attribute")+" FROM "+request.getParameter("table")+" WHERE ID="+request.getParameter("ID")+";";
-    Connection cn = null;
-    Statement  st = null;
-    ResultSet  rs = null;
-    try {
-      Class.forName( sqlDriver );
-      cn = DriverManager.getConnection( sqlURL, sqlUser, sqlPassword );
-      st = cn.createStatement();
-      rs = st.executeQuery(sql);
-      String filename = null;
-      if (rs.next()) {
-        filename = rs.getString(request.getParameter("attribute"));
-      }
-      sql = "UPDATE "+request.getParameter("table")+" SET "+request.getParameter("attribute")+"=NULL WHERE ID="+request.getParameter("ID")+";";
-      st.execute(sql);
-      if ((new File(this.getServletContext().getRealPath("/")+path +"\\"+folder+"\\"+filename)).delete()) {
+    if (request.getParameter("table") == null || request.getParameter("attribute") == null || (request.getParameter("ID") == null || request.getParameter("returnpage") == null)) {
+    out.println("Falscher Aufruf!");
+    }
+    else
+    {
+        int id = Integer.parseInt(request.getParameter("ID"));
+        String filename = AbstractBase.getSingleField(request.getParameter("attribute"),request.getParameter("table") , id );
+        int fileId = Integer.parseInt(filename);
+        Content content = ContentDB.getById(fileId);
+        filename = content.getName();
+
+        Map<String, String> condMap = new HashMap<>();
+        condMap.put("ID", String.valueOf(id));
+
+        AbstractBase.update(request.getParameter("table"),request.getParameter("attribute"), null, condMap);
+
         out.println("<p>Eintrag "+filename+" erfolgreich gel&ouml;scht!</p>");
-      }
     }
-    catch (Exception e) {
-      out.println(e);
-    } 
-    finally {
-      try { if( null != st ) st.close(); } catch( Exception ex ) {}
-      try { if( null != cn ) cn.close(); } catch( Exception ex ) {}
-    }
-    out.println("<p><a href=\""+request.getParameter("returnpage")+"?ID="+request.getParameter("ID")+"\">zur&uuml;ck</a></p>");
-  }
+        out.println("<p><a href=\""+request.getParameter("returnpage")+"?ID="+request.getParameter("ID")+"\">zur&uuml;ck</a></p>");
 %>
     </div>
   </BODY>

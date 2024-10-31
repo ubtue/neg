@@ -46,15 +46,7 @@ public class BenutzerDB extends AbstractBase {
     }
 
     public static Benutzer getById(int id) throws Exception {
-        try (Session session = getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
-            Root benutzer = criteria.from(Benutzer.class);
-            criteria.select(benutzer);
-            criteria.where(builder.equal(benutzer.get(Benutzer_.ID), id));
-            Benutzer res = session.createQuery(criteria).getSingleResult();
-            return res;
-        }
+        return AbstractBase.getById(id, Benutzer.class);
     }
 
     public static Benutzer getByLogin(String login) throws Exception {

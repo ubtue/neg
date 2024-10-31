@@ -18,7 +18,3 @@ ALTER TABLE datenbank_mapping ADD COLUMN Filter VARCHAR(255) AFTER Auswahlherkun
 
 INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, ZielTabelle, ZielAttribut, Auswahlherkunft, Auswahlherkunft_Filter, Filter, Seite)
 VALUES ('namenkommentar', 'DateinameX', 'Dateiname', 'select', 0, 'namenkommentar', 'Dateiname', 'content', 'context', 'NAMENKOMMENTAR', 'namenkommentar');
-
-
-
-

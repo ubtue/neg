@@ -1,4 +1,4 @@
-﻿<%--
+<%--
   Comment to this file see:
   http://www.Torsten-Horn.de/techdocs/jsp-upload.htm
 

@@ -1,8 +1,3 @@
-﻿<%@ page import="java.sql.Connection" isThreadSafe="false"%>
-<%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
-<%@ page import="java.sql.ResultSet" isThreadSafe="false"%>
-<%@ page import="java.sql.SQLException" isThreadSafe="false"%>
-<%@ page import="java.sql.Statement" isThreadSafe="false"%>
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.math.BigInteger" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
@@ -13,14 +8,14 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
-<%    
+<%
     int id = Constants.UNDEFINED_ID;
     String formular = "mgh_lemma";
     Language.setLanguage(request);
     Filter.setFilter(request, formular, out);
     id = Utils.determineId(request, response, formular, out);
-    
-        
+
+
 %>
 
 <jsp:include page="dosave.jsp">
@@ -34,9 +29,8 @@
 
 <div
 	onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');urlRewrite(<%=id%>);">
-<FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
-<jsp:include page="layout/image.inc.html" /> <jsp:include
-	page="layout/titel.inc.jsp">
+<FORM method="POST">
+ <jsp:include page="layout/titel.inc.jsp">
 	<jsp:param name="title" value="mgh_lemma" />
 	<jsp:param name="ID" value="<%= id %>" />
 	<jsp:param name="size" value="" />
@@ -50,7 +44,7 @@
 			<td width="200">
                             <% Language.printDatafield(out,session, formular,"MGHLemma");%>
                         </td>
-			<td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+			<td width="600"><jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="mgh_lemma" />
 				<jsp:param name="Datenfeld" value="MGHLemma" />
@@ -69,7 +63,7 @@
 <ul id="primary">
 	<li>
             <span>
-                <% Language.printTextfield(out,session, formular,"TabBearbeiter");%> 
+                <% Language.printTextfield(out,session, formular,"TabBearbeiter");%>
             </span>
         </li>
 	<li>
@@ -153,10 +147,10 @@
 <div id="tab4">
 <div id="header">
 <ul id="primary">
-	<li><a href="javascript:onoff('tab1','tab4');"> 
+	<li><a href="javascript:onoff('tab1','tab4');">
             <% Language.printTextfield(out,session, formular,"TabBearbeiter");%>
             </a></li>
-	<li><a href="javascript:onoff('tab3','tab4');"> 
+	<li><a href="javascript:onoff('tab3','tab4');">
             <% Language.printTextfield(out,session, formular,"TabBelege");%>
             </a></li>
 	<li><span>

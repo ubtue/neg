@@ -100,7 +100,7 @@
     </a>
     <br>
     <hr>
-    <a href="file" target="_blank">
+    <a href="file">
         <%
             DatenbankTexte label = DatenbankTexteDB.getText("navigation", "InhaltBearbeiten");
         %>
@@ -145,8 +145,3 @@
         <jsp:param name="title" value="<%= request.getParameter("title")%>"/>
     </jsp:include>
 </div>
-
-
-<jsp:include page="../inc.matomo.jsp">
-    <jsp:param name="frontendType" value="Backend" />
-</jsp:include>

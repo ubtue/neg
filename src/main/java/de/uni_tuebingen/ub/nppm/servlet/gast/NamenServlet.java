@@ -22,8 +22,19 @@ public class NamenServlet extends AbstractGastServlet {
 
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String requestURI = request.getRequestURI();
+        String queryString = request.getQueryString();
 
-        if (request.getParameter("fromLemma") != null && request.getParameter("fromLemma").equals("MGH-Lemma")) {
+        if (requestURI.endsWith("namenkommentar") && queryString != null && queryString.startsWith("ID=")) {
+             if (request.getParameter("ID") == null) {
+                getServletConfig().getServletContext().getRequestDispatcher("/gast/namenkommentar?ID=" + NamenKommentarDB.getFirstPublicNamenlemma().getId()).forward(request, response);
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher("namenkommentar.jsp");
+                rd.include(request, response);
+            }
+        } else if (requestURI.endsWith("mghlemma") && queryString != null && queryString.startsWith("ID=")) {
+            startpage(request, response);
+        } else if (request.getParameter("fromLemma") != null && request.getParameter("fromLemma").equals("MGH-Lemma")) {
 
             if (request.getParameter("ID") == null) {
                 getServletConfig().getServletContext().getRequestDispatcher("/gast/namenkommentar?ID=" + NamenKommentarDB.getFirstPublicNamenlemma().getId()).forward(request, response);

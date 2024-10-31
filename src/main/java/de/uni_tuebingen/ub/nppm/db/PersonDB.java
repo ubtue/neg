@@ -24,7 +24,7 @@ public class PersonDB extends AbstractBase {
         return getList(PersonVariante.class);
     }
 
-     public static Person getFirstPublicPerson() throws Exception, Exception {
+    public static Person getFirstPublicPerson() throws Exception {
         try (Session session = getSession()) {
             String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";
 
@@ -32,6 +32,16 @@ public class PersonDB extends AbstractBase {
             query.addEntity(Person.class);
             query.setMaxResults(1);
             return (Person) query.getSingleResult();
+        }
+    }
+
+    public static List getListPersonPublic() throws Exception {
+        try (Session session = getSession()) {
+            String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";
+
+            NativeQuery query = session.createNativeQuery(SQL);
+            query.addEntity(Person.class);
+            return query.getResultList();
         }
     }
 }

@@ -1,5 +1,6 @@
+<%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
-<%@ page import="java.util.Vector" isThreadSafe="false" %>
+<%@ page import="java.util.List" isThreadSafe="false" %>
 
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.Document" isThreadSafe="false" %>
@@ -67,14 +68,14 @@ document.open();
 
 
       out.println("</table>\n");
-        
-        }else 
+
+        }else
         {
         String sql = "SELECT n.ID, n.PLemma"
                              +" FROM einzelbeleg_hatnamenkommentar eh2, einzelbeleg e2, namenkommentar n"
                              +" WHERE e2.Belegform LIKE '" +request.getParameter("Belegform")+"' AND eh2.EinzelbelegID=e2.ID AND n.ID=eh2.NamenkommentarID GROUP BY n.ID ORDER BY n.PLemma";
-        
-        java.util.List<Object[]> result = SucheDB.getListNative(sql);                     
+
+        java.util.List<Object[]> result = SucheDB.getListNative(sql);
         for(Object[] row : result){
         // step 4: we add a paragraph to the document
                         document.add(new Paragraph(DBtoHTML(row[1].toString()), new Font(Font.TIMES_ROMAN, 28)));
@@ -104,7 +105,7 @@ document.open();
                              +" WHERE einzelbeleg_hatnamenkommentar.NamenkommentarID = \""+id+"\""
                              +" AND einzelbeleg_hatnamenkommentar.EinzelbelegID = einzelbeleg.ID"
                              +" ORDER BY person.Standardname ASC";
-          java.util.List<Object[]> results = SucheDB.getListNative(sql2); 
+          java.util.List<Object[]> results = SucheDB.getListNative(sql2);
          int count=0;
          String standardName = "";
         for ( Object[] resultRow : results) {
@@ -144,14 +145,14 @@ document.open();
              table.addCell(dat);
 
           String sql3 = "Select u.Sigle, e.Variante, h.Bibliothekssignatur, e.handschriftID, h.ID, hu.VonTag, hu.VonMonat, hu.VonJahr, hu.BisTag, hu.BisMonat, hu.BisJahr, s1.Bezeichnung, s2.Bezeichnung  from einzelbeleg_textkritik e, ueberlieferung_edition u, handschrift h, handschrift_ueberlieferung hu, selektion_ort s1, selektion_ort s2 where e.EinzelbelegID=" + resultRow[0] +" and hu.ID=e.handschriftID and hu.handschriftID=h.ID and e.handschriftID=u.ueberlieferungID and e.editionID=u.editionID and s1.ID=hu.Bibliotheksheimat AND s2.ID=hu.Schriftheimat";
-          
+
           out.println("<td><table cellpadding=2 style=\"font-size:8pt\">");
           String sigle = "";
           boolean first=true;
 
           int belegCount =0;
 
-          java.util.List<Object[]> sucheResults = SucheDB.getListNative(sql3); 
+          java.util.List<Object[]> sucheResults = SucheDB.getListNative(sql3);
           for(Object[] innerResultRow : sucheResults){
           belegCount++;
             if(first){

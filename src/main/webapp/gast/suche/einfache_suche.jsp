@@ -1,8 +1,9 @@
-<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
-<%@page import="java.util.Map"%>
-<%@page import="de.uni_tuebingen.ub.nppm.db.SucheDB"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.SucheDB"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.Enumeration" isThreadSafe="false" %>
-<%@ page import="java.util.Vector" isThreadSafe="false" %>
+<%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.Document" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.*" isThreadSafe="false" %>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false" %>
@@ -15,8 +16,8 @@
 
     try {
 
-        Vector<String> headlines = new Vector<String>();
-        Vector<String> fieldNames = new Vector<String>();
+        List<String> headlines = new ArrayList<>();
+        List<String> fieldNames = new ArrayList<>();
 
         int orderSize = 0;
 
@@ -72,7 +73,7 @@
         out.print("<div class=\"close_prev_level\" onClick=\"collapseNextLevel('complete')\">Weitere Ebene zuklappen</div></div>");
 
         //Part 1 of the query
-        headlines = new Vector<String>();
+        headlines = new ArrayList<>();
         headlines.add("Namenlemma");
         headlines.add("Standardname");
         headlines.add("Quelle");
@@ -90,7 +91,7 @@
         headlines.add("EB bis Jh.");
         headlines.add("Q Jahr");
 
-        fieldNames = new Vector<String>();
+        fieldNames = new ArrayList<>();
         fieldNames.add("PLemma");
         fieldNames.add("Standardname");
         fieldNames.add("Bezeichnung");
@@ -149,7 +150,7 @@
         }
 
         //Part 2 of the query
-        headlines = new Vector<String>();
+        headlines = new ArrayList<>();
         headlines.add("MGHLemma");
         headlines.add("Standardname");
         headlines.add("Quelle");
@@ -167,7 +168,7 @@
         headlines.add("EB bis Jh.");
         headlines.add("Q Jahr");
 
-        fieldNames = new Vector<String>();
+        fieldNames = new ArrayList<>();
         fieldNames.add("MGHLemma");
         fieldNames.add("Standardname");
         fieldNames.add("Bezeichnung");
@@ -226,7 +227,7 @@
         }
 
         //Part 3 of the query
-        headlines = new Vector<String>();
+        headlines = new ArrayList<>();
         headlines.add("Standardname");
         headlines.add("Quelle");
         headlines.add("Edition");
@@ -243,7 +244,7 @@
         headlines.add("EB bis Jh.");
         headlines.add("EB Jahr");
 
-        fieldNames = new Vector<String>();
+        fieldNames = new ArrayList<>();
         fieldNames.add("Standardname");
         fieldNames.add("Bezeichnung");
         fieldNames.add("Titel");
@@ -294,11 +295,11 @@
         }
 
         //Part 4 of the query
-        headlines = new Vector<String>();
+        headlines = new ArrayList<>();
         headlines.add("Quelle");
         headlines.add("Q Jahr");
 
-        fieldNames = new Vector<String>();
+        fieldNames = new ArrayList<>();
         fieldNames.add("Bezeichnung");
         fieldNames.add("quelleBerJahr");
         order = "";
@@ -320,8 +321,8 @@
         }
 
         //Part 5 of the query
-        headlines = new Vector<String>();
-        headlines = new Vector<String>();
+        headlines = new ArrayList<>();
+        headlines = new ArrayList<>();
         headlines.add("Quelle");
         headlines.add("Edition");
         headlines.add("c.");
@@ -337,7 +338,7 @@
         headlines.add("EB bis Jh.");
         headlines.add("Q Jahr");
 
-        fieldNames = new Vector<String>();
+        fieldNames = new ArrayList<>();
         fieldNames.add("Bezeichnung");
         fieldNames.add("editionTitel");
         fieldNames.add("EditionKapitel");

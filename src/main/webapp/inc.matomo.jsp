@@ -1,4 +1,4 @@
-﻿<%@ include file="configuration.jsp" %>
+<%@ include file="configuration.jsp" %>
 <%
     String matomoURL = (String)initialContext.lookup("java:comp/env/matomoURL");
     String matomoSiteId = (String)initialContext.lookup("java:comp/env/matomoSiteId");
