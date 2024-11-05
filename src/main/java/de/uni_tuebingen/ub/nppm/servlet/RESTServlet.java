@@ -57,12 +57,7 @@ public class RESTServlet extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Path cannot be null");
             }
         } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            // Stacktrace im Response senden
-            response.getWriter().write(sw.toString());
-            //response.getWriter().write(e.getLocalizedMessage());
+            response.getWriter().write(e.getLocalizedMessage());
         }
     }
 
