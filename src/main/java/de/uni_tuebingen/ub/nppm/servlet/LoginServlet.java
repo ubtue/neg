@@ -12,42 +12,37 @@ import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
 import de.uni_tuebingen.ub.nppm.util.Utils;
+import de.uni_tuebingen.ub.nppm.exception.*;
 
 public class LoginServlet extends HttpServlet {
 
-    protected void processLoginAction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void processLoginAction(HttpServletRequest request, HttpServletResponse response) throws Exception, LoginException {
         String login = request.getParameter("username");
         String password = request.getParameter("password");
 
         if (login == null || login.isEmpty() || !BenutzerDB.hasLogin(login)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Benutzer existiert nicht");
-            return;
+            throw new LoginException("Benutzer existiert nicht");
         }
-
 
         Benutzer benutzer = BenutzerDB.getByLogin(login);
 
         if (!benutzer.isAktiv()) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Zugriff nicht erlaubt, Ihr Administrator muss Sie auf aktiv schalten !");
-            return;
+            throw new LoginException("Zugriff nicht erlaubt, Ihr Administrator muss Sie auf aktiv schalten !");
         }
 
         if (benutzer == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Zugriff nicht erlaubt");
-            return;
+            throw new LoginException("Zugriff nicht erlaubt");
         }
 
         String saltString = benutzer.getSalt();
         if (saltString == null || saltString.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Die Sicherheit der Datenbank wurde verbessert. Das Passwort muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");
-            return;
+            throw new LoginException("Die Sicherheit der Datenbank wurde verbessert. Das Passwort muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");
         }
 
         byte[] saltBytes = SaltHash.Base64StringToBytes(saltString);
         String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
         if (!passwordSalted.equals(benutzer.getPassword())) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ungültiges Passwort.");
-            return;
+            throw new LoginException("Ungültiges Passwort.");
         }
 
         // Falls Session vorhanden, löschen
@@ -92,7 +87,11 @@ public class LoginServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
                 rd.include(request, response);
             }
-        } catch (Exception e) {
+        }catch (LoginException e) {
+            request.setAttribute("javax.servlet.error.exception", e);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        }
+        catch (Exception e) {
             response.sendError(500, e.getMessage());
         }
     }

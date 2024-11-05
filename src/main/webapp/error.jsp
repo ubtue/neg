@@ -50,7 +50,12 @@
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             String sourceId = getCauseMessage(exception, IdNotFoundException.class);
             out.println(sourceId);
-        } else if (containsCause(exception, IdInvalidException.class)) { %>
+        }else if(containsCause(exception, LoginException.class)) { %>
+        <%
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            String sourceId = getCauseMessage(exception, LoginException.class);
+            out.println(sourceId);
+        }else if (containsCause(exception, IdInvalidException.class)) { %>
         <% response.setStatus(HttpServletResponse.SC_BAD_REQUEST); %>
         ID muss mit B, P, M, N, Q, T, oder E beginnen und mit einer Nummer enden (z.B. P7404).
 
