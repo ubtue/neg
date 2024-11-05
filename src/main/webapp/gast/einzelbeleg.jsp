@@ -11,7 +11,7 @@
     int id = Integer.parseInt(request.getParameter("ID"));
 
     if(EinzelbelegDB.getById(id) == null){
-        throw new IdNotFoundException("Einzelbeleg ID ist nicht vorhanden");
+        throw new IdNotFoundException("Einzelbeleg ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 
     Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);

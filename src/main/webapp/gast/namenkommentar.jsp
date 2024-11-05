@@ -19,7 +19,7 @@
     int id = Integer.parseInt(request.getParameter("ID"));
 
     if(NamenKommentarDB.getById(id) == null){
-          throw new IdNotFoundException("Philologisches Lemma ID ist nicht vorhanden");
+          throw new IdNotFoundException("Philologisches Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 
     List<Einzelbeleg> listEinzelbeleg = EinzelbelegDB.getListEinzelbelegeByNamenkommentarId(id);

@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.MghLemma"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
@@ -17,26 +18,27 @@
 <%
     int id = Integer.parseInt(request.getParameter("ID"));
 
-    if(MghLemmaDB.getById(id) == null){
-        throw new IdNotFoundException("Lemma ID ist nicht vorhanden");
-    }
-
-    List<Einzelbeleg> listEinzelbeleg = EinzelbelegDB.getListEinzelbelegeByMghLemmaId(id);
-
-    boolean match = false;
-
-    if (listEinzelbeleg.isEmpty()) {
-        throw new IdNotPublicException();
+   if (MghLemmaDB.getById(id) == null) {
+        throw new IdNotFoundException("Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
     } else {
-        for (Einzelbeleg eb : listEinzelbeleg) {
+        MghLemma lemma = MghLemmaDB.getById(id);
+        Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
 
-            if (eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                match = true;
-            }
-        }
+        boolean match = false;
 
-        if(!match){
+        if (listEinzelbeleg.isEmpty()) {
             throw new IdNotPublicException();
+        } else {
+            for (Einzelbeleg eb : listEinzelbeleg) {
+
+                if (eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                    match = true;
+                }
+            }
+
+            if (!match) {
+                throw new IdNotPublicException();
+            }
         }
     }
 

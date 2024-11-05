@@ -1,4 +1,6 @@
+<%@page import="java.util.Set"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Person"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
@@ -8,25 +10,27 @@
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
 
-    if(PersonDB.getById(id) == null){
-         throw new IdNotFoundException("Person ID ist nicht vorhanden");
-    }
-
-    List<Einzelbeleg> listEinzelbeleg = EinzelbelegDB.getListEinzelbelegeByPersonId(id);
-
-    boolean match = false;
-
-    if (listEinzelbeleg.isEmpty()) {
-        throw new IdNotPublicException();
+    if (PersonDB.getById(id) == null) {
+        throw new IdNotFoundException("Person ID " + String.valueOf(id) + " ist nicht vorhanden");
     } else {
-        for (Einzelbeleg eb : listEinzelbeleg) {
-            if (eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                match = true;
-            }
-        }
+        Person person = PersonDB.getById(id);
 
-        if(!match){
+        Set<Einzelbeleg> listEinzelbeleg = person.getEinzelbeleg();
+
+        boolean match = false;
+
+        if (listEinzelbeleg.isEmpty()) {
             throw new IdNotPublicException();
+        } else {
+            for (Einzelbeleg eb : listEinzelbeleg) {
+                if (eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                    match = true;
+                }
+            }
+
+            if (!match) {
+                throw new IdNotPublicException();
+            }
         }
     }
 %>
