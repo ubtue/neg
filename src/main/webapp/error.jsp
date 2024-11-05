@@ -50,19 +50,19 @@
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             String sourceId = getCauseMessage(exception, IdNotFoundException.class);
             out.println(sourceId);
-        }else if(containsCause(exception, LoginException.class)) { %>
-        <%
+        } else if (containsCause(exception, LoginException.class)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             String sourceId = getCauseMessage(exception, LoginException.class);
             out.println(sourceId);
-        }else if (containsCause(exception, IdInvalidException.class)) { %>
-        <% response.setStatus(HttpServletResponse.SC_BAD_REQUEST); %>
+        } else if (containsCause(exception, IdInvalidException.class)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); %>
         ID muss mit B, P, M, N, Q, T, oder E beginnen und mit einer Nummer enden (z.B. P7404).
 
-        <% } else if (containsCause(exception, IdNotPublicException.class)) { %>
-        <% response.setStatus(HttpServletResponse.SC_FORBIDDEN); %>
-        ID ist nicht zu veröffentlichen
-        <% } else if (Utils.isDevelopmentEnvironment()) {%>
+        <% } else if (containsCause(exception, IdNotPublicException.class)) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            String sourceId = getCauseMessage(exception, IdNotPublicException.class);
+            out.println(sourceId);
+        } else if (Utils.isDevelopmentEnvironment()) {%>
     <pre><%=exception.getMessage()%></pre>
     <% } else {%>
     Eine unbehandelte Ausnahme vom Typ <%=exception.getClass().getSimpleName()%> ist aufgetreten.

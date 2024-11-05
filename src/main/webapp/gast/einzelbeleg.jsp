@@ -17,7 +17,7 @@
     Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
 
     if(einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
-            throw new IdNotPublicException();
+            throw new IdNotPublicException("ID " + id + " ist nicht zu veröffentlichen");
     }
 %>
 

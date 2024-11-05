@@ -19,7 +19,7 @@
     Quelle quelle = QuelleDB.getById(id);
 
     if(quelle.getZuVeroeffentlichen() != 1){
-        throw new IdNotPublicException();
+        throw new IdNotPublicException("ID " + id + " ist nicht zu veröffentlichen");
     }
 
     String formular = "quelle";
