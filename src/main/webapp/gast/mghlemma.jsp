@@ -27,7 +27,7 @@
         boolean match = false;
 
         if (listEinzelbeleg.isEmpty()) {
-            throw new IdNotPublicException();
+            throw new IdNotPublicException("ID " + id + " ist nicht zu veröffentlichen");
         } else {
             for (Einzelbeleg eb : listEinzelbeleg) {
 
