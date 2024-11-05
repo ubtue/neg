@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.MghLemmaDB"%>
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.math.BigInteger" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
@@ -6,6 +7,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
 <%
@@ -15,7 +17,9 @@
     Filter.setFilter(request, formular, out);
     id = Utils.determineId(request, response, formular, out);
 
-
+    if(MghLemmaDB.getById(id) == null){
+        throw new IdNotFoundException("Lemma ID ist nicht vorhanden");
+    }
 %>
 
 <jsp:include page="dosave.jsp">

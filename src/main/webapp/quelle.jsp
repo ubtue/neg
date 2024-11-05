@@ -8,6 +8,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ include file="functions.jsp" %>
 <%@ include file="configuration.jsp"%>
 
@@ -17,6 +18,10 @@
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
     id = Utils.determineId(request, response, formular, out);
+
+    if(QuelleDB.getById(id) == null){
+        throw new IdNotFoundException("Quellen ID ist nicht vorhanden");
+    }
     //only determine the urkunde id for an existing quelle record
     if (id != Constants.UNDEFINED_ID && id != Constants.NEW_ITEM) {
         urkundeid = UrkundeDB.determineUrkundeId(id);

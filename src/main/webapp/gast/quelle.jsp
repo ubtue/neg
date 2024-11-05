@@ -2,6 +2,7 @@
 <%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
 <%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp"%>
 
@@ -10,10 +11,21 @@
 <%
     int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));
-    String formular = "quelle";
+
+    if(QuelleDB.getById(id) == null){
+        throw new IdNotFoundException("Quellen ID ist nicht vorhanden");
+    }
+
     Quelle quelle = QuelleDB.getById(id);
+
+    if(quelle.getZuVeroeffentlichen() != 1){
+            throw new IdNotPublicException();
+    }
+
+    String formular = "quelle";
     Urkunde urkunde = quelle.getUrkunde();
 %>
+
 <jsp:include page="../dojump.jsp">
   <jsp:param name="form" value="gast_quelle" />
 </jsp:include>

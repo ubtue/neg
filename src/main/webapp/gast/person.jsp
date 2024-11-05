@@ -1,11 +1,34 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp" %>
 
 <jsp:include page="../dofilter.jsp" />
 
-<%
-   int id = Integer.parseInt(request.getParameter("ID"));
+<%    int id = Integer.parseInt(request.getParameter("ID"));
+
+    if(PersonDB.getById(id) == null){
+         throw new IdNotFoundException("Person ID ist nicht vorhanden");
+    }
+
+    List<Einzelbeleg> listEinzelbeleg = EinzelbelegDB.getListEinzelbelegeByPersonId(id);
+
+    boolean match = false;
+
+    if (listEinzelbeleg.isEmpty()) {
+        throw new IdNotPublicException();
+    } else {
+        for (Einzelbeleg eb : listEinzelbeleg) {
+            if (eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                match = true;
+            }
+        }
+
+        if(!match){
+            throw new IdNotPublicException();
+        }
+    }
 %>
 
 <jsp:include page="../dojump.jsp">

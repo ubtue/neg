@@ -1,9 +1,11 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.EditionDB"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp" %>
 
@@ -14,6 +16,10 @@
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
     id = Utils.determineId(request, response, formular, out);
+
+    if(EditionDB.getById(id) == null){
+        throw new IdNotFoundException("Edition ID ist nicht vorhanden");
+    }
 %>
 
 <jsp:include page="dosave.jsp">

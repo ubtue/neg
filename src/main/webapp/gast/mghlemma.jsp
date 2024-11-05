@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.Enumeration" isThreadSafe="false"%>
@@ -10,10 +11,34 @@
 <%@ page import="com.lowagie.text.*" isThreadSafe="false"%>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false"%>
 <%@ page import="java.io.*" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <jsp:include page="../dofilter.jsp" />
 
 <%
     int id = Integer.parseInt(request.getParameter("ID"));
+
+    if(MghLemmaDB.getById(id) == null){
+        throw new IdNotFoundException("Lemma ID ist nicht vorhanden");
+    }
+
+    List<Einzelbeleg> listEinzelbeleg = EinzelbelegDB.getListEinzelbelegeByMghLemmaId(id);
+
+    boolean match = false;
+
+    if (listEinzelbeleg.isEmpty()) {
+        throw new IdNotPublicException();
+    } else {
+        for (Einzelbeleg eb : listEinzelbeleg) {
+
+            if (eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                match = true;
+            }
+        }
+
+        if(!match){
+            throw new IdNotPublicException();
+        }
+    }
 
     String formular ="mgh_lemma";
 

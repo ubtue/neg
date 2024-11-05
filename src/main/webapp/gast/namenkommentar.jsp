@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
@@ -10,11 +11,35 @@
 <%@ page import="com.lowagie.text.*" isThreadSafe="false"%>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false"%>
 <%@ page import="java.io.*" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <jsp:include page="../dofilter.jsp" />
 
 <%
     int id = Integer.parseInt(request.getParameter("ID"));
+
+    if(NamenKommentarDB.getById(id) == null){
+          throw new IdNotFoundException("Philologisches Lemma ID ist nicht vorhanden");
+    }
+
+    List<Einzelbeleg> listEinzelbeleg = EinzelbelegDB.getListEinzelbelegeByNamenkommentarId(id);
+
+    boolean match = false;
+
+    if (listEinzelbeleg.isEmpty()) {
+        throw new IdNotPublicException();
+    } else {
+        for (Einzelbeleg eb : listEinzelbeleg) {
+
+            if (eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                match = true;
+            }
+        }
+
+        if(!match){
+            throw new IdNotPublicException();
+        }
+    }
 
     String formular = "namenkommentar";
 
