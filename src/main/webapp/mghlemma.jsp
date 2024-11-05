@@ -17,7 +17,7 @@
     Filter.setFilter(request, formular, out);
     id = Utils.determineId(request, response, formular, out);
 
-    if(MghLemmaDB.getById(id) == null){
+    if(MghLemmaDB.getById(id) == null && id != -1){
         throw new IdNotFoundException("Lemma ID ist nicht vorhanden");
     }
 %>

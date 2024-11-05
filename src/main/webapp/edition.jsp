@@ -17,7 +17,7 @@
     Language.setLanguage(request);
     id = Utils.determineId(request, response, formular, out);
 
-    if(EditionDB.getById(id) == null){
+    if(EditionDB.getById(id) == null && id != -1){
         throw new IdNotFoundException("Edition ID ist nicht vorhanden");
     }
 %>

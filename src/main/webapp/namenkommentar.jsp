@@ -19,7 +19,7 @@
     Language.setLanguage(request);
     id = Utils.determineId(request, response, formular, out);
 
-    if(NamenKommentarDB.getById(id) == null){
+    if(NamenKommentarDB.getById(id) == null && id != -1){
           throw new IdNotFoundException("Philologisches Lemma ID ist nicht vorhanden");
     }
 %>

@@ -20,7 +20,7 @@
     Language.setLanguage(request);
     id = Utils.determineId(request, response, formular, out);
 
-    if(EinzelbelegDB.getById(id) == null){
+    if(EinzelbelegDB.getById(id) == null && id != -1){
         throw new IdNotFoundException("Einzelbeleg ID ist nicht vorhanden");
     }
 %>

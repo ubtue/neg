@@ -19,7 +19,7 @@
     Language.setLanguage(request);
     id = Utils.determineId(request, response, formular, out);
 
-    if(QuelleDB.getById(id) == null){
+    if(QuelleDB.getById(id) == null && id != -1){
         throw new IdNotFoundException("Quellen ID ist nicht vorhanden");
     }
     //only determine the urkunde id for an existing quelle record

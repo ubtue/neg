@@ -17,7 +17,7 @@
     Filter.setFilter(request, formular, out);
     id = Utils.determineId(request, response, formular, out);
 
-    if(PersonDB.getById(id) == null){
+    if(PersonDB.getById(id) == null && id != -1){
          throw new IdNotFoundException("Person ID ist nicht vorhanden");
     }
 %>
