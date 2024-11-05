@@ -10,7 +10,7 @@ import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
 public class IdentifierMapper {
     public static Object getModelByIdentifier(String identifier) throws Exception {
         // Map identifier to Model Class
-        if (identifier.startsWith("P")) {
+        if (identifier.startsWith("M")) {
             return MghLemmaDB.getById(Integer.valueOf(identifier.substring(1)),MghLemma.class);
         } else if (identifier.startsWith("N")) {
             return NamenKommentarDB.getById(Integer.valueOf(identifier.substring(1)),NamenKommentar.class);

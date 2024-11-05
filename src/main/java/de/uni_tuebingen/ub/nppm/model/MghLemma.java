@@ -3,6 +3,7 @@ package de.uni_tuebingen.ub.nppm.model;
 import java.util.*;
 import javax.persistence.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "mgh_lemma")
@@ -115,4 +116,15 @@ public class MghLemma {
         this.getEinzelbelege().removeIf(e -> e.getId() == id);
     }
 
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mghLemma", this.getMghLemma());
+        jsonObject.put("bearbeitungsstatus", this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null);
+        jsonObject.put("gehoertGruppe", this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null);
+        jsonObject.put("erstellt", this.getErstellt());
+        jsonObject.put("letzteAenderung", this.getLetzteAenderung());
+        jsonObject.put("letzteAenderungVon", this.getLetzteAenderungVon() != null ? this.getLetzteAenderungVon().getNachname() : null);
+        jsonObject.put("id", "M" + this.getId());
+        return jsonObject;
+    }
 }

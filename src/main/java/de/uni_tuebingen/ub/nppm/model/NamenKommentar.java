@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "namenkommentar")
@@ -184,5 +185,22 @@ public class NamenKommentar {
 
     public void removeEinzelbeleg(int id) {
         this.getEinzelbeleg().removeIf(e -> e.getId() == id);
+    }
+
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("ELemma", this.geteLemma());
+        jsonObject.put("PLemma", this.getpLemma());
+        jsonObject.put("MGHLemma", this.getMghLemma());
+        jsonObject.put("bearbeitungsstatus", this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null);
+        jsonObject.put("gehoertGruppe", this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null);
+        jsonObject.put("erstellt", this.getErstellt());
+        jsonObject.put("letzteAenderung", this.getLetzteAenderung());
+        jsonObject.put("erstelltVon", this.getErstelltVon() != null ? this.getErstelltVon().getNachname() : null);
+        jsonObject.put("hinweise", this.getHinweise());
+        jsonObject.put("protokoll", this.getProtokoll());
+        jsonObject.put("dateiname", this.getDateiname());
+        jsonObject.put("id", "N"+this.getId());
+        return jsonObject;
     }
 }
