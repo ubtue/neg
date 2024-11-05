@@ -20,7 +20,7 @@
     id = Utils.determineId(request, response, formular, out);
 
     if(QuelleDB.getById(id) == null && id != -1){
-        throw new IdNotFoundException("Quellen ID ist nicht vorhanden");
+        throw new IdNotFoundException("Quellen ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
     //only determine the urkunde id for an existing quelle record
     if (id != Constants.UNDEFINED_ID && id != Constants.NEW_ITEM) {

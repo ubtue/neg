@@ -19,7 +19,7 @@
     id = Utils.determineId(request, response, formular, out);
 
     if(HandschriftDB.getById(id) == null && id != -1){
-        throw new IdNotFoundException("Textzeugen ID ist nicht vorhanden");
+        throw new IdNotFoundException("Textzeugen ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>
 

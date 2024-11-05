@@ -18,7 +18,7 @@
     id = Utils.determineId(request, response, formular, out);
 
     if(EditionDB.getById(id) == null && id != -1){
-        throw new IdNotFoundException("Edition ID ist nicht vorhanden");
+        throw new IdNotFoundException("Edition ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>
 

@@ -18,7 +18,7 @@
     id = Utils.determineId(request, response, formular, out);
 
     if(MghLemmaDB.getById(id) == null && id != -1){
-        throw new IdNotFoundException("Lemma ID ist nicht vorhanden");
+        throw new IdNotFoundException("Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>
 
