@@ -11,26 +11,26 @@
 <%    int id = Integer.parseInt(request.getParameter("ID"));
 
     if (PersonDB.getById(id) == null) {
-        throw new IdNotFoundException("Person ID " + String.valueOf(id) + " ist nicht vorhanden");
+        throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
     } else {
         Person person = PersonDB.getById(id);
 
         Set<Einzelbeleg> listEinzelbeleg = person.getEinzelbeleg();
 
-        boolean match = false;
+        boolean throwException = true;
 
         if (listEinzelbeleg.isEmpty()) {
-            throw new IdNotPublicException("ID " + id + " ist nicht zu veröffentlichen");
+            throwException = true;
         } else {
             for (Einzelbeleg eb : listEinzelbeleg) {
-                if (eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                    match = true;
+                if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                    throwException = false;
                 }
             }
+        }
 
-            if (!match) {
-                throw new IdNotPublicException("ID " + id + " ist nicht zu veröffentlichen");
-            }
+        if (throwException) {
+            throw new IdNotPublicException("Person ID P" + id + " ist nicht zu veröffentlichen");
         }
     }
 %>

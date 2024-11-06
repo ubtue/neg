@@ -8,18 +8,17 @@
 
 <jsp:include page="../dofilter.jsp" />
 
-<%
-    int id = 1;
+<%    int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));
 
-    if(QuelleDB.getById(id) == null){
+    if (QuelleDB.getById(id) == null) {
         throw new IdNotFoundException("Quellen ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
-    
+
     Quelle quelle = QuelleDB.getById(id);
 
-    if(quelle.getZuVeroeffentlichen() != 1){
-        throw new IdNotPublicException("ID " + id + " ist nicht zu veröffentlichen");
+    if (quelle.getZuVeroeffentlichen() != 1) {
+        throw new IdNotPublicException("Quellen ID Q" + id + " ist nicht zu veröffentlichen");
     }
 
     String formular = "quelle";

@@ -15,30 +15,29 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <jsp:include page="../dofilter.jsp" />
 
-<%
-    int id = Integer.parseInt(request.getParameter("ID"));
+<%    int id = Integer.parseInt(request.getParameter("ID"));
 
-   if (MghLemmaDB.getById(id) == null) {
-        throw new IdNotFoundException("Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
+    if (MghLemmaDB.getById(id) == null) {
+        throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
     } else {
         MghLemma lemma = MghLemmaDB.getById(id);
+
         Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
 
-        boolean match = false;
+        boolean throwException = true;
 
         if (listEinzelbeleg.isEmpty()) {
-            throw new IdNotPublicException("ID " + id + " ist nicht zu veröffentlichen");
+            throwException = true;
         } else {
             for (Einzelbeleg eb : listEinzelbeleg) {
-
-                if (eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                    match = true;
+                if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                    throwException = false;
                 }
             }
+        }
 
-            if (!match) {
-                throw new IdNotPublicException("ID " + id + " ist nicht zu veröffentlichen");
-            }
+        if (throwException) {
+            throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
         }
     }
 
