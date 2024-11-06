@@ -119,22 +119,5 @@ public class EinzelbelegDB extends AbstractBase{
 
             return session.createQuery(query).getResultList();
         }
-    }    
-
-    public static List<Einzelbeleg> getListEinzelbelegeByNamenkommentarId(int namenKommentarId) throws Exception {
-        try (Session session = getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Einzelbeleg> query = builder.createQuery(Einzelbeleg.class);
-            Root<EinzelbelegNamenkommentar_MM> root = query.from(EinzelbelegNamenkommentar_MM.class);
-
-            // Auswahl der Einzelbeleg-Objekte
-            query.select(root.get("einzelbeleg"));
-
-            // Predicate für die Abfrage nach der PersonID
-            Predicate personIdPredicate = builder.equal(root.get("namenKommentar").get("id"), namenKommentarId);
-            query.where(personIdPredicate);
-
-            return session.createQuery(query).getResultList();
-        }
-    }    
+    } 
 }

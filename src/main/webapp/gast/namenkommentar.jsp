@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.NamenKommentar"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
@@ -21,7 +22,9 @@
         throw new IdNotFoundException("Philologisches Lemma ID N" + String.valueOf(id) + " ist nicht vorhanden");
     }
 
-    List<Einzelbeleg> listEinzelbeleg = EinzelbelegDB.getListEinzelbelegeByNamenkommentarId(id);
+    NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
+
+    Set<Einzelbeleg> listEinzelbeleg = namenkommentar.getEinzelbeleg();
 
     boolean throwException = true;
 
