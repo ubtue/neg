@@ -13,14 +13,14 @@
 
 
 
-<%  int id = Constants.UNDEFINED_ID;
+<%
     String formular = "namenkommentar";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
 
-    if(NamenKommentarDB.getById(id) == null && id != -1){
-          throw new IdNotFoundException("Philologisches Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
+    if (id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || NamenKommentarDB.getById(id) == null)) {
+        throw new IdNotFoundException("Philologisches Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>
 

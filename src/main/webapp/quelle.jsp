@@ -12,14 +12,14 @@
 <%@ include file="functions.jsp" %>
 <%@ include file="configuration.jsp"%>
 
-<%    int id = Constants.UNDEFINED_ID;
+<%
     int urkundeid = Constants.UNDEFINED_ID;
     String formular = "quelle";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
 
-    if(QuelleDB.getById(id) == null && id != -1){
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || QuelleDB.getById(id) == null)){
         throw new IdNotFoundException("Quellen ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
     //only determine the urkunde id for an existing quelle record
@@ -27,6 +27,7 @@
         urkundeid = UrkundeDB.determineUrkundeId(id);
     }
 %>
+
 <jsp:include page="dosave.jsp">
     <jsp:param name="form" value="quelle" />
     <jsp:param name="ID" value="<%= id%>" />

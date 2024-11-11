@@ -11,11 +11,10 @@
 <%    int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));
 
-    if (QuelleDB.getById(id) == null) {
+    Quelle quelle = QuelleDB.getById(id);
+    if (quelle == null) {
         throw new IdNotFoundException("Quellen ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
-
-    Quelle quelle = QuelleDB.getById(id);
 
     if (quelle.getZuVeroeffentlichen() != 1) {
         throw new IdNotPublicException("Quellen ID Q" + id + " ist nicht zu veröffentlichen");

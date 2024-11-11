@@ -17,22 +17,20 @@
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
 
-    if (MghLemmaDB.getById(id) == null) {
+    MghLemma lemma = MghLemmaDB.getById(id);
+
+    if (lemma == null) {
         throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
     } else {
-        MghLemma lemma = MghLemmaDB.getById(id);
 
         Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
 
         boolean throwException = true;
 
-        if (listEinzelbeleg.isEmpty()) {
-            throwException = true;
-        } else {
-            for (Einzelbeleg eb : listEinzelbeleg) {
-                if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                    throwException = false;
-                }
+        for (Einzelbeleg eb : listEinzelbeleg) {
+            if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                throwException = false;
+                break;
             }
         }
 

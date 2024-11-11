@@ -12,13 +12,12 @@
 <%@ include file="configuration.jsp"%>
 
 <%
-    int id = Constants.UNDEFINED_ID;
     String formular = "handschrift";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
 
-    if(HandschriftDB.getById(id) == null && id != -1){
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || HandschriftDB.getById(id) == null)){
         throw new IdNotFoundException("Textzeugen ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>

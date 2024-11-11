@@ -11,13 +11,15 @@
 
 
 <%
-    int id = Constants.UNDEFINED_ID;
     String formular = "edition";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
 
-    if(EditionDB.getById(id) == null && id != -1){
+    //If we have deleted the edition with ID = -2, this should be used.
+    //if (id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || EditionDB.getById(id) == null)) {
+
+    if (id != Constants.NEW_ITEM && (EditionDB.getById(id) == null)) {
         throw new IdNotFoundException("Edition ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>

@@ -11,13 +11,12 @@
 <%@ include file="configuration.jsp"%>
 
 <%
-    int id = Constants.UNDEFINED_ID;
     String formular = "mgh_lemma";
     Language.setLanguage(request);
     Filter.setFilter(request, formular, out);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
 
-    if(MghLemmaDB.getById(id) == null && id != -1){
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || MghLemmaDB.getById(id) == null)){
         throw new IdNotFoundException("Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>

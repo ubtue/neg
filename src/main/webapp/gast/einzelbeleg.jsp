@@ -10,11 +10,11 @@
 <%
     int id = Integer.parseInt(request.getParameter("ID"));
 
-    if(EinzelbelegDB.getById(id) == null){
+    Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
+
+    if(einzelbeleg == null){
         throw new IdNotFoundException("Einzelbeleg ID B" + String.valueOf(id) + " ist nicht vorhanden");
     }
-
-    Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
 
     if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
         throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu veröffentlichen");

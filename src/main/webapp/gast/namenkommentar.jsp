@@ -18,23 +18,19 @@
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
 
-    if (NamenKommentarDB.getById(id) == null) {
+    NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
+
+    if (namenkommentar == null) {
         throw new IdNotFoundException("Philologisches Lemma ID N" + String.valueOf(id) + " ist nicht vorhanden");
     }
-
-    NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
 
     Set<Einzelbeleg> listEinzelbeleg = namenkommentar.getEinzelbeleg();
 
     boolean throwException = true;
 
-    if (listEinzelbeleg.isEmpty()) {
-        throwException = true;
-    } else {
-        for (Einzelbeleg eb : listEinzelbeleg) {
-            if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                throwException = false;
-            }
+    for (Einzelbeleg eb : listEinzelbeleg) {
+        if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+            throwException = false;
         }
     }
 

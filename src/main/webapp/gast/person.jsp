@@ -10,22 +10,18 @@
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
 
-    if (PersonDB.getById(id) == null) {
+    Person person = PersonDB.getById(id);
+    if (person == null) {
         throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
     } else {
-        Person person = PersonDB.getById(id);
-
         Set<Einzelbeleg> listEinzelbeleg = person.getEinzelbeleg();
 
         boolean throwException = true;
 
-        if (listEinzelbeleg.isEmpty()) {
-            throwException = true;
-        } else {
-            for (Einzelbeleg eb : listEinzelbeleg) {
-                if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                    throwException = false;
-                }
+        for (Einzelbeleg eb : listEinzelbeleg) {
+            if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                throwException = false;
+                break;
             }
         }
 

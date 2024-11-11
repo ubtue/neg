@@ -14,13 +14,13 @@
 
 <jsp:include page="doduplicate.jsp" />
 
-<%    int id = Constants.UNDEFINED_ID;
+<%
     String formular = "einzelbeleg";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
 
-    if(EinzelbelegDB.getById(id) == null && id != -1){
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || EinzelbelegDB.getById(id) == null)){
         throw new IdNotFoundException("Einzelbeleg ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>
