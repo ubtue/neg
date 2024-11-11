@@ -13,7 +13,7 @@
 
     Quelle quelle = QuelleDB.getById(id);
     if (quelle == null) {
-        throw new IdNotFoundException("Quellen ID " + String.valueOf(id) + " ist nicht vorhanden");
+        throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
     }
 
     if (quelle.getZuVeroeffentlichen() != 1) {
