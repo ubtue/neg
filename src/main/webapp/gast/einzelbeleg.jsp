@@ -55,14 +55,15 @@
     <tr>
       <th><% Language.printDatafield(out, session, "einzelbeleg", "Belegform"); %></th>
       <td>
-        <jsp:include page="../inc.erzeugeFormular.jsp">
-          <jsp:param name="ID" value="<%= id %>"/>
-          <jsp:param name="Formular" value="einzelbeleg"/>
-          <jsp:param name="Datenfeld" value="Belegform"/>
-          <jsp:param name="size" value="50"/>
-          <jsp:param name="Readonly" value="yes"/>
-        </jsp:include>
-          <br>
+        <div style="display: flex; align-items: center;">
+          <jsp:include page="../inc.erzeugeFormular.jsp">
+            <jsp:param name="ID" value="<%= id %>"/>
+            <jsp:param name="Formular" value="einzelbeleg"/>
+            <jsp:param name="Datenfeld" value="Belegform"/>
+            <jsp:param name="size" value="50"/>
+            <jsp:param name="Readonly" value="yes"/>
+          </jsp:include>
+        </div>
         <jsp:include page="../inc.erzeugeFormular.jsp">
           <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="Formular" value="einzelbeleg"/>
