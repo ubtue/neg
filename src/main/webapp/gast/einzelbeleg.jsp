@@ -62,6 +62,7 @@
           <jsp:param name="size" value="50"/>
           <jsp:param name="Readonly" value="yes"/>
         </jsp:include>
+          <br>
         <jsp:include page="../inc.erzeugeFormular.jsp">
           <jsp:param name="ID" value="<%= id %>"/>
           <jsp:param name="Formular" value="einzelbeleg"/>
