@@ -1,4 +1,6 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
@@ -7,7 +9,18 @@
 
 <%
     int id = Integer.parseInt(request.getParameter("ID"));
+
+    Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
+
+    if(einzelbeleg == null){
+        throw new IdNotFoundException("Einzelbeleg ID B" + String.valueOf(id) + " ist nicht vorhanden");
+    }
+
+    if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
+        throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu veröffentlichen");
+    }
 %>
+
 
 
 <jsp:include page="../dojump.jsp">
