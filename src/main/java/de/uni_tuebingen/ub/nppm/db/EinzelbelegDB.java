@@ -119,5 +119,5 @@ public class EinzelbelegDB extends AbstractBase{
 
             return session.createQuery(query).getResultList();
         }
-    }
+    } 
 }

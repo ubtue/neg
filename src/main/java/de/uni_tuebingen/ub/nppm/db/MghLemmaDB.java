@@ -8,6 +8,10 @@ import org.hibernate.query.NativeQuery;
 
 public class MghLemmaDB extends AbstractBase {
 
+    public static MghLemma getById(int id) throws Exception {
+        return AbstractBase.getById(id, MghLemma.class);
+    }
+
     public static List getList() throws Exception {
         return getList(MghLemma.class);
     }

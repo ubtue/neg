@@ -185,6 +185,21 @@
         return String.format("<a href='%s' title='%s'>%s</a>", dmghUrl[0], dmghUrl[1], belegform);
     }
 
+    String getBelegformExternalLinked(HttpServletRequest request, String einzelbelegID, String belegform) throws Exception {
+        String[] dmghUrl = getdMGHUrl(einzelbelegID);
+        if (dmghUrl[0].isEmpty()) {
+            return belegform;
+        } else {
+
+            String dmghIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/gast/layout/icons/dmgh.gif\" border=\"0\" alt=\"dMGH Link\" title=\"" + dmghUrl[1] + "\">";
+
+            String temp = belegform;
+            temp += String.format("<a href='%s' title='%s' class='dmghlink' target='_blank'>%s</a>", dmghUrl[0], dmghUrl[1], dmghIcon);
+
+            return temp;
+        }
+    }
+
     String getBelegformExternalLinked(String einzelbelegID, String belegform) throws Exception {
         String[] dmghUrl = getdMGHUrl(einzelbelegID);
         if (dmghUrl[0].isEmpty()) {
@@ -192,5 +207,6 @@
         }
         return String.format("<a href='%s' title='%s' target='_blank'>%s</a>", dmghUrl[0], dmghUrl[1], belegform);
     }
+
 
 %>

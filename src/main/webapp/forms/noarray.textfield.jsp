@@ -17,7 +17,7 @@
                 } else {
                     String belegformHtml = DBtoHTML(format(value_zielAttribut, isKlarlemma ? "Klarlemma" : ""));
                     if (formular.equals("einzelbeleg") && datenfeld.equals("Belegform")) {
-                        belegformHtml = getBelegformLinked(id, belegformHtml);
+                        belegformHtml = getBelegformExternalLinked(request, id, belegformHtml);
                     }
 
                     if (schemaOrgProperty != null && !schemaOrgProperty.isEmpty())
