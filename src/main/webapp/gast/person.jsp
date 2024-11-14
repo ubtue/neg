@@ -1,11 +1,34 @@
+<%@page import="java.util.Set"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Person"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp"%>
 <%@ include file="../functions.jsp" %>
 
 <jsp:include page="../dofilter.jsp" />
 
-<%
-   int id = Integer.parseInt(request.getParameter("ID"));
+<%    int id = Integer.parseInt(request.getParameter("ID"));
+
+    Person person = PersonDB.getById(id);
+    if (person == null) {
+        throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
+    } else {
+        Set<Einzelbeleg> listEinzelbeleg = person.getEinzelbeleg();
+
+        boolean throwException = true;
+
+        for (Einzelbeleg eb : listEinzelbeleg) {
+            if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                throwException = false;
+                break;
+            }
+        }
+
+        if (throwException) {
+            throw new IdNotPublicException("Person ID P" + id + " ist nicht zu veröffentlichen");
+        }
+    }
 %>
 
 <jsp:include page="../dojump.jsp">

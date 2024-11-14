@@ -8,6 +8,10 @@ import org.hibernate.query.NativeQuery;
 
 public class PersonDB extends AbstractBase {
 
+    public static Person getById(int id) throws Exception {
+        return AbstractBase.getById(id, Person.class);
+    }
+
     public static List getListPerson() throws Exception {
         return getList(Person.class);
     }
