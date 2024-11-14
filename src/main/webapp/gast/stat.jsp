@@ -156,7 +156,7 @@
                 out.print("</a>");
                 out.print("</td>");
                 out.print("<td width='20%'>");
-                out.print(q.getEinzelbelege().size());
+                out.print(QuelleDB.getEinzelbelegeCount(q.getId()));
                 out.print("</td>");
                 out.print("</tr>");
             }

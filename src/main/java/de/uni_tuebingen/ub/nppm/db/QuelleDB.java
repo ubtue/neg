@@ -64,6 +64,15 @@ public class QuelleDB extends AbstractBase {
         }
     }
 
+    public static Long getEinzelbelegeCount(Integer quelleID) throws Exception {
+        try (Session session = getSession()) {
+            String query = "SELECT COUNT(e) FROM Einzelbeleg e WHERE e.quelle.id = :quelleId";
+            Query queryObj = session.createQuery(query);
+            queryObj.setParameter("quelleId", quelleID);
+            return (Long)queryObj.uniqueResult();
+        }
+    }
+
     public static Quelle getFirstPublicQuelle() throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
