@@ -1,3 +1,5 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.MghLemma"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.Enumeration" isThreadSafe="false"%>
@@ -10,10 +12,32 @@
 <%@ page import="com.lowagie.text.*" isThreadSafe="false"%>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false"%>
 <%@ page import="java.io.*" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <jsp:include page="../dofilter.jsp" />
 
-<%
-    int id = Integer.parseInt(request.getParameter("ID"));
+<%    int id = Integer.parseInt(request.getParameter("ID"));
+
+    MghLemma lemma = MghLemmaDB.getById(id);
+
+    if (lemma == null) {
+        throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
+    } else {
+
+        Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
+
+        boolean throwException = true;
+
+        for (Einzelbeleg eb : listEinzelbeleg) {
+            if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                throwException = false;
+                break;
+            }
+        }
+
+        if (throwException) {
+            throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
+        }
+    }
 
     String formular ="mgh_lemma";
 
