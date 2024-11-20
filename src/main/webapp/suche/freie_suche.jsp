@@ -73,17 +73,6 @@
 	    conditions.add("mgh_lemma.MGHLemma LIKE '"+request.getParameter("MGHLemma").trim()+"'");
 	    mghlemma = true;
 	  }
-
-  String provenanceLemma = request.getParameter("ProvenanceLemma");
-
-  if (provenanceLemma != null && Integer.parseInt(provenanceLemma) > -1) {
-     if(Integer.parseInt(provenanceLemma) == 0){
-         conditions.add("mgh_lemma.provenance_source = 'NeG'");
-     }else if(Integer.parseInt(provenanceLemma) == 1){
-        conditions.add("mgh_lemma.provenance_source = 'DMP'");
-     }
-     mghlemma = true;
-  }
   // ### ZUR PERSON ###
 
   if (!request.getParameter("Personenname").trim().equals("")) {
@@ -443,14 +432,6 @@
         tables.add("mgh_lemma");
        // headlines.add("Namenlemma");
        headlines.add(DatenbankDB.getMapping(sprache, "mgh_lemma", "MGHLemma"));
-        mghlemma = true;
-  }
-
-  if (request.getParameter("Ausgabe_Provenance_Lemma") != null && request.getParameter("Ausgabe_Provenance_Lemma").equals("on")) {
-        fields.add("mgh_lemma.provenance_source");
-        fieldNames.add("mgh_lemma.provenance_source");
-        //headlines.add("provenance_source");
-        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "ProvenanceLemma"));
         mghlemma = true;
   }
     // ### Zur Person ###

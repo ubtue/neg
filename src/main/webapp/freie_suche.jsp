@@ -201,19 +201,6 @@
                   </td>
                 </tr>
 
-                <!-- Provenance information Lemma-->
-                <tr>
-                  <th width="200" valign="top">
-                      <% Language.printDatafield(out,session, formular,"ProvenanceLemma");%>
-                  </th>
-                  <td width="450">
-                    <jsp:include page="inc.erzeugeFormular.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="ProvenanceLemma"/>
-                    </jsp:include>
-                  </td>                 
-                </tr>
-
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr>
                   <th width="200" valign="top">
