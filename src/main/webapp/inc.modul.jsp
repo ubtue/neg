@@ -16,14 +16,32 @@
         //Gast: Einzelbeleg Katagorie/Bereich Textkritik (Edition, Sigle, Varianten, Datierung d. Textzeugen, Bemerkung)
         if (modul.equals("lesartenRO")) {
 
-            String datenfeld = request.getParameter("Datenfeld");
-            String darstellung = request.getParameter("Darstellung") != null ? request.getParameter("Darstellung") : "";
-            String label = request.getParameter("Label") != null ? request.getParameter("Label") : "";
+            out.println("<table class=\"content-table\" width=\"100%\">\n");
+%>
+<tr>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="Edition" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="Sigle" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="Varianten" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="DatierungTextzeuge" />
+        </jsp:include></th>
+    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="einzelbeleg" />
+            <jsp:param name="Textfeld" value="Bemerkung" />
+        </jsp:include></th>
+</tr>
 
-            JspWriter out_html = out;
-            JspWriterStringBuffer out_buffer = new de.uni_tuebingen.ub.nppm.util.JspWriterStringBuffer();
-            out = out_buffer;
-
+<%
             try {
 
                 List<Object[]> resultList = ModulIncDB.getListEinzelbelegTextkritik(id);
@@ -123,61 +141,7 @@
             } finally {
 
             }
-
-            out = out_html;
-            String generatedValue = out_buffer.getBuffer().trim();
-
-            //  out.println(generatedValue);
-            // Render output if generated value is not empty
-            // boolean display = !generatedValue.isEmpty() && !generatedValue.equals("-")  && !"<div></div>".equals(generatedValue);
-            boolean display = !generatedValue.isEmpty() && !generatedValue.equals("-");
-
-            if (display) {
-                if (darstellung.equals("Tabellenzeile")) {
-                out.print("<h3>" + label + "</h3>");
-                    out.println("<table class=\"content-table\" width=\"100%\">\n");
-
-%>
-<tr>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="Edition" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="Sigle" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="Varianten" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="DatierungTextzeuge" />
-        </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="einzelbeleg" />
-            <jsp:param name="Textfeld" value="Bemerkung" />
-        </jsp:include></th>
-</tr>
-
-<%
-                }
-
-                out.print(generatedValue);
-
-                if (darstellung.equals("Tabellenzeile")) {
-                    out.print("</td></tr>");
-                    out.println("</table>\n");
-
-                }
-
-                if ("Datierung".equals(datenfeld)) {
-                    // Setze ein Attribut in der Session oder Request, falls `Datierung` angezeigt werden soll
-                    request.setAttribute("displayDatierungUngewiss", true);
-                }
-            }
-
+            out.println("</table>\n");
         }
     }
 

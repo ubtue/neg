@@ -1,13 +1,24 @@
+<%@page import="de.uni_tuebingen.ub.nppm.exception.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
 <jsp:include page="../dofilter.jsp" />
 
+<%
+    int id = Integer.parseInt(request.getParameter("ID"));
 
-<%    int id = Integer.parseInt(request.getParameter("ID"));
+    Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
+
+    if(einzelbeleg == null){
+        throw new IdNotFoundException("Einzelbeleg ID B" + String.valueOf(id) + " ist nicht vorhanden");
+    }
+
+    if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
+        throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu veröffentlichen");
+    }
 %>
-
 
 <jsp:include page="../dojump.jsp">
     <jsp:param name="form" value="gast_einzelbeleg" />
@@ -40,7 +51,6 @@
 
 <table class="content-table">
     <tbody>
-
         <jsp:include page="../inc.erzeugeFormular.jsp">
             <jsp:param name="ID" value="<%= id%>"/>
             <jsp:param name="Formular" value="einzelbeleg"/>
@@ -229,7 +239,6 @@
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Schreiber")%>"/>
         </jsp:include>
-
     </tbody>
 </table>
 
@@ -284,16 +293,24 @@
         <jsp:param name="Darstellung" value="Tabellenzeile"/>
         <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "QuelleDatierung")%>"/>
     </jsp:include>
-
 </table>
 
 <!----------Textkritik---------->
+
+<%
+    List<Object[]> resultList = ModulIncDB.getListEinzelbelegTextkritik(String.valueOf(id));
+
+    if (resultList != null && !resultList.isEmpty()) {
+%>
 <div id="textkritik">
+    <h3><% Language.printTextfield(out, session, "einzelbeleg", "TabTextkritik");%></h3>
     <jsp:include page="../inc.modul.jsp">
         <jsp:param name="ID" value="<%= id%>"/>
         <jsp:param name="Formular" value="einzelbeleg"/>
         <jsp:param name="Modul" value="lesartenRO"/>
-        <jsp:param name="Darstellung" value="Tabellenzeile"/>
-        <jsp:param name="Label" value="<%=Language.getTextfield(session, "einzelbeleg", "TabTextkritik")%>"/>
     </jsp:include>
 </div>
+
+<%
+    }
+%>
