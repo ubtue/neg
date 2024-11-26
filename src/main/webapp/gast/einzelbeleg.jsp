@@ -71,18 +71,6 @@
         </jsp:include>
       </td>
     </tr>
-    <tr>
-      <th><% Language.printDatafield(out, session, "einzelbeleg", "LemmaRO"); %></th>
-      <td>
-        <jsp:include page="../inc.erzeugeFormular.jsp">
-          <jsp:param name="ID" value="<%= id %>"/>
-          <jsp:param name="Formular" value="einzelbeleg"/>
-          <jsp:param name="Datenfeld" value="LemmaRO"/>
-          <jsp:param name="Readonly" value="yes"/>
-        </jsp:include>
-      </td>
-    </tr>
-
      <tr>
       <th><% Language.printDatafield(out, session, "einzelbeleg", "MGHLemmaRO"); %></th>
       <td>
