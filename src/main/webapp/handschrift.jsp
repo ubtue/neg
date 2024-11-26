@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.HandschriftDB"%>
 <%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
@@ -6,15 +7,19 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp"%>
 
 <%
-    int id = Constants.UNDEFINED_ID;
     String formular = "handschrift";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
+
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || HandschriftDB.getById(id) == null)){
+        throw new IdNotFoundException("Textzeugen ID " + String.valueOf(id) + " ist nicht vorhanden");
+    }
 %>
 
 <jsp:include page="dosave.jsp">
@@ -27,20 +32,21 @@
 
 <div
 	onLoad="javascript:onoff('tab2','tab1'); onoff('tab1','tab2');urlRewrite(<%=id%>);">
-<FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
-<jsp:include page="layout/image.inc.html" /> <jsp:include
-	page="layout/titel.inc.jsp">
+<FORM method="POST">
+    <jsp:include page="layout/titel.inc.jsp">
 	<jsp:param name="formTitle" value="Textzeugen" />
 	<jsp:param name="title" value="Handschrift" />
 	<jsp:param name="ID" value="<%= id %>" />
 	<jsp:param name="size" value="" />
 	<jsp:param name="Formular" value="handschrift" />
-</jsp:include> <jsp:include page="inc.erzeugeFormular.jsp">
+    </jsp:include>
+
+    <jsp:include page="inc.erzeugeFormular.jsp">
 	<jsp:param name="ID" value="<%= id %>" />
 	<jsp:param name="Formular" value="handschrift" />
 	<jsp:param name="Datenfeld" value="ID" />
 	<jsp:param name="size" value="" />
-</jsp:include>
+    </jsp:include>
 
 <div id="form">
   <table style="width:100%;">

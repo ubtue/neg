@@ -1,3 +1,5 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.NamenKommentar"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
@@ -10,11 +12,31 @@
 <%@ page import="com.lowagie.text.*" isThreadSafe="false"%>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false"%>
 <%@ page import="java.io.*" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <jsp:include page="../dofilter.jsp" />
 
-<%
-    int id = Integer.parseInt(request.getParameter("ID"));
+<%    int id = Integer.parseInt(request.getParameter("ID"));
+
+    NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
+
+    if (namenkommentar == null) {
+        throw new IdNotFoundException("Philologisches Lemma ID N" + String.valueOf(id) + " ist nicht vorhanden");
+    }
+
+    Set<Einzelbeleg> listEinzelbeleg = namenkommentar.getEinzelbeleg();
+
+    boolean throwException = true;
+
+    for (Einzelbeleg eb : listEinzelbeleg) {
+        if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+            throwException = false;
+        }
+    }
+
+    if (throwException) {
+        throw new IdNotPublicException("Philologisches Lemma ID N" + id + " ist nicht zu veröffentlichen");
+    }
 
     String formular = "namenkommentar";
 

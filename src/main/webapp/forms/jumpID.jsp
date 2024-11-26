@@ -13,7 +13,7 @@
   } catch (NumberFormatException e) {}
 
 %>
-   <span style="color:#FFFFFF">Springe zu NeG-ID:</span><input type="text" name="jumpValueID" size="5">
+   <span style="color:#FFFFFF">Springe zu NeG-ID:</span><input type="text" name="jumpValueID" placeholder="z.B. P7404">
     <input type="hidden" name="jumpTable" value="<%= title %>">
     <input type="hidden" name="akt" value="<%= id %>">
     <input type="submit" name="jumpID" value="los">

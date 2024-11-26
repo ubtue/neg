@@ -72,6 +72,21 @@ public class SelektionDB extends AbstractBase {
         }
     }
 
+    public static String getBezeichnungByID(String id, String tabelle) throws Exception {
+        String result = "";
+
+        try ( Session session = getSession()) {
+            session.getTransaction().begin();
+
+            String sql = "SELECT Bezeichnung FROM " + tabelle + " WHERE ID= :ID";
+            NativeQuery query = session.createNativeQuery(sql);
+            query.setParameter("ID", id);
+            result = (String) query.getSingleResult();
+            session.getTransaction().commit();
+        }
+        return result;
+    }
+
     public static List<Object> getBezeichnung(String tabelle, String bezeichnung) throws Exception {
         List<Object> results = new ArrayList<>();
 

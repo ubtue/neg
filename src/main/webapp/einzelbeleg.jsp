@@ -7,17 +7,22 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
 <jsp:include page="doduplicate.jsp" />
 
-<%    int id = Constants.UNDEFINED_ID;
+<%
     String formular = "einzelbeleg";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
+
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || EinzelbelegDB.getById(id) == null)){
+        throw new IdNotFoundException("Einzelbeleg ID " + String.valueOf(id) + " ist nicht vorhanden");
+    }
 %>
 
 <jsp:include page="dosave.jsp">
@@ -31,9 +36,7 @@
 
 <div
     onLoad="javascript:onoff('tab4', 'tab1'); onoff('tab1', 'tab4');urlRewrite(<%=id%>);">
-    <FORM method="POST">
-        <jsp:include page="layout/navigation.inc.jsp" />
-        <jsp:include page="layout/image.inc.html" />
+    <FORM method="POST">        
         <jsp:include page="layout/titel.inc.jsp">
             <jsp:param name="title" value="Einzelbeleg" />
             <jsp:param name="ID" value="<%=id%>" />

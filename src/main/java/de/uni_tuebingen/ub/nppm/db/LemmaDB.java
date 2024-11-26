@@ -8,6 +8,10 @@ import org.hibernate.query.NativeQuery;
 
 public class LemmaDB extends AbstractBase {
 
+    public static MghLemma getById(int id) throws Exception {
+        return AbstractBase.getById(id, MghLemma.class);
+    }
+
     public static List getList() throws Exception {
         return getList(MghLemma.class);
     }
@@ -28,5 +32,13 @@ public class LemmaDB extends AbstractBase {
             query.setMaxResults(1);
             return (MghLemma) query.getSingleResult();
         }
+    }
+
+    public static List<String> getListErstglied() throws Exception {
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' ORDER BY Erstglied ASC");
+    }
+
+    public static List<String> getListZweitglied() throws Exception {
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' ORDER BY Zweitglied ASC");
     }
 }

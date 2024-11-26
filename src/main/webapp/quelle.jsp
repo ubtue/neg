@@ -8,20 +8,26 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ include file="functions.jsp" %>
 <%@ include file="configuration.jsp"%>
 
-<%    int id = Constants.UNDEFINED_ID;
+<%
     int urkundeid = Constants.UNDEFINED_ID;
     String formular = "quelle";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
+
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || QuelleDB.getById(id) == null)){
+        throw new IdNotFoundException("Quellen ID " + String.valueOf(id) + " ist nicht vorhanden");
+    }
     //only determine the urkunde id for an existing quelle record
     if (id != Constants.UNDEFINED_ID && id != Constants.NEW_ITEM) {
         urkundeid = UrkundeDB.determineUrkundeId(id);
     }
 %>
+
 <jsp:include page="dosave.jsp">
     <jsp:param name="form" value="quelle" />
     <jsp:param name="ID" value="<%= id%>" />
@@ -36,14 +42,16 @@
 
 <div
     onLoad="javascript:onoff('tab4', 'tab1'); onoff('tab1', 'tab4');urlRewrite(<%=id%>);">
-    <FORM method="POST"><jsp:include page="layout/navigation.inc.jsp" />
-        <jsp:include page="layout/image.inc.html" /> <jsp:include
+    <FORM method="POST">
+        <jsp:include
             page="layout/titel.inc.jsp">
             <jsp:param name="title" value="Quelle" />
             <jsp:param name="ID" value="<%= id%>" />
             <jsp:param name="size" value="" />
             <jsp:param name="Formular" value="quelle" />
-        </jsp:include> <jsp:include page="inc.erzeugeFormular.jsp">
+        </jsp:include>
+
+        <jsp:include page="inc.erzeugeFormular.jsp">
             <jsp:param name="ID" value="<%= id%>" />
             <jsp:param name="Formular" value="quelle" />
             <jsp:param name="Datenfeld" value="ID" />
