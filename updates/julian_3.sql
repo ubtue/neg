@@ -1,6 +1,6 @@
-UPDATE datenbank_mapping SET de_combinedAnzeigenamen = 'Zusatznamenkommentar;;Link',gb_combinedAnzeigenamen = 'Additional name comment;;Link',fr_combinedAnzeigenamen = 'Commentaire sur le nom supplémentaire;;Link',la_combinedAnzeigenamen = 'Commentarium nominis additicius;;Link' WHERE Formular = 'einzelbeleg' AND Datenfeld = 'Lemma';
+UPDATE datenbank_mapping SET de_combinedAnzeigenamen = 'Philologischer Kommentar;;Link',gb_combinedAnzeigenamen = 'Philological commentary;;Link',fr_combinedAnzeigenamen = 'commentaire philologique;;Link',la_combinedAnzeigenamen = 'commentatio philologica;;Link' WHERE Formular = 'einzelbeleg' AND Datenfeld = 'Lemma';
 
-UPDATE `datenbank_mapping` SET `de_Beschriftung` = 'Zusatznamenkommentar',`gb_Beschriftung` = 'Additional name comment',`fr_Beschriftung` = 'Commentaire sur le nom supplémentaire',`la_Beschriftung` = 'Commentarium nominis additicius'
+UPDATE `datenbank_mapping` SET `de_Beschriftung` = 'Philologischer Kommentar',`gb_Beschriftung` = 'Philological commentary',`fr_Beschriftung` = 'commentaire philologique',`la_Beschriftung` = 'commentatio philologica'
 WHERE (Datenfeld = 'PLemma' AND Formular = 'namenkommentar')
 OR (Datenfeld = 'LemmaRO' AND Formular = 'einzelbeleg')
 OR (Datenfeld = 'Namenlemma' AND Formular = 'freie_suche')
