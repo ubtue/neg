@@ -17,7 +17,7 @@
 
     String formular ="mgh_lemma";
 
-    String tableString = "einzelbeleg LEFT OUTER JOIN einzelbeleg_hatperson ON einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID LEFT OUTER JOIN person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN einzelbeleg_hatmghlemma ON einzelbeleg_hatmghlemma.EinzelbelegID=einzelbeleg.ID LEFT OUTER JOIN mgh_lemma ON mgh_lemma.ID=einzelbeleg_hatmghlemma.MGHLemmaID INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID";
+    String tableString = "einzelbeleg LEFT OUTER JOIN einzelbeleg_hatnamenkommentar ON einzelbeleg.ID=einzelbeleg_hatnamenkommentar.EinzelbelegID LEFT OUTER JOIN namenkommentar ON einzelbeleg_hatnamenkommentar.NamenkommentarID=namenkommentar.ID LEFT OUTER JOIN einzelbeleg_hatperson ON einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID LEFT OUTER JOIN person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN einzelbeleg_hatmghlemma ON einzelbeleg_hatmghlemma.EinzelbelegID=einzelbeleg.ID LEFT OUTER JOIN mgh_lemma ON mgh_lemma.ID=einzelbeleg_hatmghlemma.MGHLemmaID INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID";
     String order = "";
     String export = "browse";
 
@@ -25,12 +25,13 @@
     conditions.add("quelle.zuVeroeffentlichen=1");
     conditions.add("mgh_lemma.ID=" + id);
 
-    List<String> fields = new ArrayList<>();
+    List<String> fields = new ArrayList<>();    
     fields.add("person.Standardname");
     fields.add("person.ID");
     fields.add("selektion_amtweihe.Bezeichnung");
     fields.add("person_hatamtstandweihe.Zeitraum");
     fields.add("selektion_ethnie.Bezeichnung");
+    fields.add("namenkommentar.PLemma");
     fields.add("quelle.Bezeichnung");
     fields.add("quelle.ID");
     fields.add("edition.Titel");
@@ -50,11 +51,13 @@
     fields.add("selektion_lebendverstorben.Bezeichnung");
     fields.add("einzelbeleg_textkritik.Variante");
 
-    List<String> fieldNames = new ArrayList<>();
+
+    List<String> fieldNames = new ArrayList<>();    
     fieldNames.add("person.Standardname");
     fieldNames.add("selektion_amtweihe.Bezeichnung");
     fieldNames.add("person_hatamtstandweihe.Zeitraum");
     fieldNames.add("selektion_ethnie.Bezeichnung");
+    fieldNames.add("namenkommentar.PLemma");
     fieldNames.add("quelle.Bezeichnung");
     fieldNames.add("edition.Titel");
     fieldNames.add("einzelbeleg.EditionKapitel");
@@ -85,12 +88,12 @@
 
 
    List<String> joins = new ArrayList<>();
-   List<String> headlines = new ArrayList<>();
-
+   List<String> headlines = new ArrayList<>();    
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
     headlines.add(DatenbankDB.getMapping( sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeiheZeitraum"));
     headlines.add(DatenbankDB.getMapping(sprache,"freie_suche", "Ausgabe_Person_Ethnie"));
+    headlines.add(DatenbankDB.getMapping(sprache,"namenkommentar", "PLemma"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
     headlines.add(DatenbankDB.getMapping(sprache, "quelle", "Edition"));
     headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionKapitel"));
