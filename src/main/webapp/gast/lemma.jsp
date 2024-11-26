@@ -17,7 +17,7 @@
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
 
-    MghLemma lemma = MghLemmaDB.getById(id);
+    MghLemma lemma = LemmaDB.getById(id);
 
     if (lemma == null) {
         throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");

@@ -1,4 +1,4 @@
-<%@page import="de.uni_tuebingen.ub.nppm.db.MghLemmaDB"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.LemmaDB"%>
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.math.BigInteger" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
@@ -16,7 +16,7 @@
     Filter.setFilter(request, formular, out);
     int id = Utils.determineId(request, response, formular, out);
 
-    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || MghLemmaDB.getById(id) == null)){
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || LemmaDB.getById(id) == null)){
         throw new IdNotFoundException("Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>
