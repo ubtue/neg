@@ -13,3 +13,7 @@ VALUES ('freie_suche', 'ZweitGliedSelect', 'Zweitglied', 'select', '0', 'mgh_lem
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`)
  VALUES ('freie_suche', 'ErstZweitGlied', 'Erst-/ ZweitGlied', 'First/ Second part', 'Première/ Deuxième partie', 'Prima/ Secunda pars');
+
+
+-- The selektion_kritik was still missing in the administration area.
+INSERT INTO `neg`.`datenbank_selektion` (`selektion`, `tabelle`, `spalte`) VALUES ('selektion_kritik', 'einzelbeleg_hattitelkritik', 'TitelKritikID');
