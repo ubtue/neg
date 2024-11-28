@@ -142,22 +142,21 @@ function CheckAll(index, check, praefix) {
                   </td>
                 </tr>
                 <tr>
-                  <th>
-                      <% Language.printDatafield(out, session, formular, "Namenlemma"); %>
-                  </th>
-                  <td>
-                    <jsp:include page="../inc.erzeugeFormular.jsp">
-                      <jsp:param name="Formular" value="gast_freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Namenkommentar"/>
-                    </jsp:include>/
-
-                    <jsp:include page="../inc.erzeugeFormular.jsp">
-                      <jsp:param name="Formular" value="gast_freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Namenkommentar2"/>
-                      <jsp:param name="Sorted" value="yes"/>
-                    </jsp:include>                  </td>
+                    <th>
+                        <% Language.printTextfield(out, session, formular, "ErstZweitGlied"); %>
+                    </th>
+                    <td>
+                        <jsp:include page="../inc.erzeugeFormular.jsp">
+                            <jsp:param name="Formular" value="freie_suche" />
+                            <jsp:param name="Datenfeld" value="ErstGliedSelect" />
+                        </jsp:include>/
+                        <jsp:include page="../inc.erzeugeFormular.jsp">
+                            <jsp:param name="Formular" value="freie_suche" />
+                            <jsp:param name="Datenfeld" value="ZweitGliedSelect" />
+                        </jsp:include>
+                    </td>
                 </tr>
-               <tr>
+                <tr>
                   <th>
                       <% Language.printDatafield(out, session, formular, "MGHLemma"); %>
                   </th>
