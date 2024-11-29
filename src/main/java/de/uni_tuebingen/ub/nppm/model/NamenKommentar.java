@@ -1,5 +1,7 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.util.Utils;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -189,18 +191,28 @@ public class NamenKommentar {
 
     public JSONObject getJSON() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("ELemma", this.geteLemma());
-        jsonObject.put("PLemma", this.getpLemma());
-        jsonObject.put("MGHLemma", this.getMghLemma());
-        jsonObject.put("bearbeitungsstatus", this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null);
-        jsonObject.put("gehoertGruppe", this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null);
-        jsonObject.put("erstellt", this.getErstellt());
-        jsonObject.put("letzteAenderung", this.getLetzteAenderung());
-        jsonObject.put("erstelltVon", this.getErstelltVon() != null ? this.getErstelltVon().getNachname() : null);
-        jsonObject.put("hinweise", this.getHinweise());
-        jsonObject.put("protokoll", this.getProtokoll());
-        jsonObject.put("dateiname", this.getDateiname());
-        jsonObject.put("id", "N"+this.getId());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+        // Felder hinzufügen und direkt bereinigen
+        Utils.addIfValid(jsonObject, "ELemma", Utils.sanitize(this.geteLemma()));
+        Utils.addIfValid(jsonObject, "PLemma", Utils.sanitize(this.getpLemma()));
+        Utils.addIfValid(jsonObject, "MGHLemma", Utils.sanitize(this.getMghLemma()));
+        Utils.addIfValid(jsonObject, "bearbeitungsstatus",
+                Utils.sanitize(this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "gehoertGruppe",
+                Utils.sanitize(this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "erstellt",
+                this.getErstellt() != null ? dateFormat.format(this.getErstellt()) : null);
+        Utils.addIfValid(jsonObject, "letzteAenderung",
+                this.getLetzteAenderung() != null ? dateFormat.format(this.getLetzteAenderung()) : null);
+        Utils.addIfValid(jsonObject, "erstelltVon",
+                Utils.sanitize(this.getErstelltVon() != null ? this.getErstelltVon().getNachname() : null));
+        Utils.addIfValid(jsonObject, "hinweise", Utils.sanitize(this.getHinweise()));
+        Utils.addIfValid(jsonObject, "protokoll", Utils.sanitize(this.getProtokoll()));
+        Utils.addIfValid(jsonObject, "dateiname", Utils.sanitize(this.getDateiname()));
+        Utils.addIfValid(jsonObject, "id", "N" + this.getId());
+
         return jsonObject;
     }
+
 }

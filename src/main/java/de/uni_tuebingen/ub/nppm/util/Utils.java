@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
 import org.apache.commons.text.StringEscapeUtils;
+import org.json.JSONObject;
 
 public class Utils {
 
@@ -387,6 +388,21 @@ public class Utils {
         }
 
         out.print("</ul>");
+    }
+
+    // Hilfsfunktion zum Hinzufügen von Feldern, wenn sie gültig sind
+    public static void addIfValid(JSONObject jsonObject, String key, Object value) {
+        if (value != null) {
+            jsonObject.put(key, value);
+        }
+    }
+
+    // Hilfsfunktion zum Bereinigen von Strings
+    public static String sanitize(String value) {
+        if (value == null || "null".equalsIgnoreCase(value) || "-".equals(value.trim()) || "--".equals(value.trim()) || value.trim().isEmpty()) {
+            return null;
+        }
+        return value;
     }
 
 }

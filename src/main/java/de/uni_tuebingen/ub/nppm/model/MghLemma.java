@@ -1,5 +1,7 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.util.Utils;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -118,13 +120,17 @@ public class MghLemma {
 
     public JSONObject getJSON() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("mghLemma", this.getMghLemma());
-        jsonObject.put("bearbeitungsstatus", this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null);
-        jsonObject.put("gehoertGruppe", this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null);
-        jsonObject.put("erstellt", this.getErstellt());
-        jsonObject.put("letzteAenderung", this.getLetzteAenderung());
-        jsonObject.put("letzteAenderungVon", this.getLetzteAenderungVon() != null ? this.getLetzteAenderungVon().getNachname() : null);
-        jsonObject.put("id", "M" + this.getId());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+        // Felder hinzufügen und direkt bereinigen
+        Utils.addIfValid(jsonObject, "mghLemma", Utils.sanitize(this.getMghLemma()));
+        Utils.addIfValid(jsonObject, "bearbeitungsstatus", Utils.sanitize(this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "gehoertGruppe", Utils.sanitize(this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "erstellt", this.getErstellt() != null ? dateFormat.format(this.getErstellt()) : null);
+        Utils.addIfValid(jsonObject, "letzteAenderung", this.getLetzteAenderung() != null ? dateFormat.format(this.getLetzteAenderung()) : null);
+        Utils.addIfValid(jsonObject, "letzteAenderungVon", Utils.sanitize(this.getLetzteAenderungVon() != null ? this.getLetzteAenderungVon().getNachname() : null));
+        Utils.addIfValid(jsonObject, "id", "M" + this.getId());
+
         return jsonObject;
     }
 }
