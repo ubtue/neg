@@ -45,4 +45,12 @@ public class MghLemmaDB extends AbstractBase {
             return rows;
         }
     }
+
+    public static List<String> getListErstglied() throws Exception {
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' ORDER BY Erstglied ASC");
+    }
+
+    public static List<String> getListZweitglied() throws Exception {
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' ORDER BY Zweitglied ASC");
+    }
 }

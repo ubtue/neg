@@ -85,6 +85,7 @@
         <servlet-name>QuelleServlet</servlet-name>
         <url-pattern>/gast/quelle</url-pattern>
     </servlet-mapping>
+     
     <servlet>
         <servlet-name>HilfeServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.HilfeServlet</servlet-class>
