@@ -1485,7 +1485,7 @@
             try {
                 List<String> plemmaList = ModulIncDB.getListPlemma(id);
 
-                if (plemmaList != null && plemmaList.isEmpty()) {
+                if (plemmaList != null && !plemmaList.isEmpty()) {
 
                     for (String plemma : plemmaList) {
 
