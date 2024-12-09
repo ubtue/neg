@@ -117,6 +117,5 @@ public Set<Integer> GetHierarchyNodeIDsToDisplay(List<SelektionHierarchy> nodes)
         if (!tooltip.equals("")) {
             out.println("<a href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\"" + tooltip + "\"> ? </a>");
         }
-
     }
 %>

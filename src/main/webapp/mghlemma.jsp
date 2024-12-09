@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.MghLemmaDB"%>
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.math.BigInteger" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
@@ -6,16 +7,18 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ include file="configuration.jsp"%>
 
 <%
-    int id = Constants.UNDEFINED_ID;
     String formular = "mgh_lemma";
     Language.setLanguage(request);
     Filter.setFilter(request, formular, out);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
 
-
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || MghLemmaDB.getById(id) == null)){
+        throw new IdNotFoundException("Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
+    }
 %>
 
 <jsp:include page="dosave.jsp">
@@ -44,7 +47,7 @@
 			<td width="200">
                             <% Language.printDatafield(out,session, formular,"MGHLemma");%>
                         </td>
-			<td width="450"><jsp:include page="inc.erzeugeFormular.jsp">
+			<td width="600"><jsp:include page="inc.erzeugeFormular.jsp">
 				<jsp:param name="ID" value="<%= id %>" />
 				<jsp:param name="Formular" value="mgh_lemma" />
 				<jsp:param name="Datenfeld" value="MGHLemma" />

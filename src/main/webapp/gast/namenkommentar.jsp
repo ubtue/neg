@@ -1,3 +1,5 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.NamenKommentar"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
@@ -10,10 +12,31 @@
 <%@ page import="com.lowagie.text.*" isThreadSafe="false"%>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false"%>
 <%@ page import="java.io.*" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <jsp:include page="../dofilter.jsp" />
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
+
+    NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
+
+    if (namenkommentar == null) {
+        throw new IdNotFoundException("Philologisches Lemma ID N" + String.valueOf(id) + " ist nicht vorhanden");
+    }
+
+    Set<Einzelbeleg> listEinzelbeleg = namenkommentar.getEinzelbeleg();
+
+    boolean throwException = true;
+
+    for (Einzelbeleg eb : listEinzelbeleg) {
+        if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+            throwException = false;
+        }
+    }
+
+    if (throwException) {
+        throw new IdNotPublicException("Philologisches Lemma ID N" + id + " ist nicht zu veröffentlichen");
+    }
 
     String formular = "namenkommentar";
 
@@ -112,7 +135,6 @@
     <jsp:param name="form" value="gast_namenkommentar" />
 </jsp:include>
 
-
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="namenkommentar" />
     <jsp:param name="ID" value="<%= id%>" />
@@ -128,14 +150,15 @@
     </jsp:include>
 </div>
 
-<!---------- ---------->
-<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3" style="width: 100%; table-layout: fixed; border-collapse: collapse; border-spacing: 0;">
     <tbody class="ut-table__body ">
-        <tr class="ut-table__row">
-            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "namenkommentar", "Plemma");%> </td>
-            <td class="ut-table__item ut-table__body__item">
+        <tr class="ut-table__row" style="vertical-align: top; text-align: left;">
+            <td class="ut-table__item" style="padding-right: 0px; text-align: left; white-space: nowrap;">
+                <% Language.printDatafield(out, session, "namenkommentar", "Plemma"); %>
+            </td>
+            <td class="ut-table__item" style="padding-left: 0px;">
                 <jsp:include page="../inc.modul.jsp">
-                    <jsp:param name="ID" value="<%= id%>" />
+                    <jsp:param name="ID" value="<%= id %>" />
                     <jsp:param name="Formular" value="namenkommentar" />
                     <jsp:param name="Modul" value="PLemma" />
                     <jsp:param name="size" value="25" />
@@ -143,11 +166,14 @@
                 </jsp:include>
             </td>
         </tr>
-        <tr class="ut-table__row">
-            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "namenkommentar", "EinzelbelegRO");%> </td>
-            <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="inc.erzeugeFormular.jsp">
-                    <jsp:param name="ID" value="<%= id%>" />
+
+        <tr class="ut-table__row" style="vertical-align: top; text-align: left;">
+            <td class="ut-table__item" style="padding-right: 0px; text-align: left; white-space: nowrap;">
+                <% Language.printDatafield(out, session, "namenkommentar", "EinzelbelegRO"); %>
+            </td>
+            <td class="ut-table__item" style="padding-left: 0px;">
+                <jsp:include page="../inc.erzeugeFormular.jsp">
+                    <jsp:param name="ID" value="<%= id %>" />
                     <jsp:param name="Formular" value="namenkommentar" />
                     <jsp:param name="Datenfeld" value="EinzelbelegRO" />
                     <jsp:param name="Readonly" value="yes" />
@@ -156,9 +182,9 @@
         </tr>
     </tbody>
 </table>
+
+
 <!----------Treffer insgesamt---------->
 <div class="container" style="overflow:auto;">
-
     <%@ include file="suche/ergebnisliste.jsp"%>
-
 </div>

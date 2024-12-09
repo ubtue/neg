@@ -410,6 +410,5 @@ public class ContentServlet extends AbstractBackendServlet {
         }
         return selectedLanguage;
     }
-
 }//end class
 

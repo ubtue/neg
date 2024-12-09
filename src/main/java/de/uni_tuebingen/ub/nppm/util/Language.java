@@ -4,7 +4,6 @@ import javax.servlet.http.*;
 import de.uni_tuebingen.ub.nppm.db.DatenbankDB;
 import java.io.PrintWriter;
 import javax.servlet.jsp.JspWriter;
-
 public class Language {
 
     public static String getLanguage(HttpServletRequest request) {
@@ -13,7 +12,7 @@ public class Language {
         // Usually setLanguage() is called before getLanguage()
         // so we prioritize the session over the request.
         if (session.getAttribute("Sprache") != null) {
-            return (String) session.getAttribute("Sprache");
+            return (String)session.getAttribute("Sprache");
         } else if (request.getParameter("language") != null) {
             return request.getParameter("language");
         } else {
@@ -44,38 +43,46 @@ public class Language {
         }
     }
 
-    public static void printDatafield(JspWriter out, HttpSession session, String formular, String datenfeld) throws Exception {
+    public static String getDatafield(HttpSession session, String formular, String datenfeld) throws Exception {
+        String html = "";
+
         String lang = getLanguage(session);
         String[] langArray = {lang, Constants.DEFAULT_LANG};
         boolean isSet = false;
-        out.print("<label for=\"" + datenfeld + "\">");
-        for (String l : langArray) {
+        html += "<label for=\""+datenfeld+"\">";
+        for(String l : langArray){
             String print = DatenbankDB.getMapping(l, formular, datenfeld);
-            if (print != null) {
-                out.println(print);
+            if(print != null){
+                html += print;
                 isSet = true;
                 break;
             }
         }
-        out.print("</label>");
-        if (!isSet) {
-            out.println("no datafield available: " + formular + " " + datenfeld);
-        }
+        html += "</label>";
+        if(!isSet)
+            html += "no datafield available: " + formular + " " + datenfeld;
+
+        return html;
+    }
+
+    public static void printDatafield(JspWriter out, HttpSession session, String formular, String datenfeld) throws Exception{
+        out.println(getDatafield(session, formular, datenfeld));
     }
 
     public static String getTextfield(HttpSession session, String formular, String textfield) throws Exception {
         String lang = getLanguage(session);
         String[] langArray = {lang, Constants.DEFAULT_LANG};
-        for (String l : langArray) {
+        for(String l : langArray){
             String label = DatenbankDB.getLabel(l, formular, textfield);
-            if (label != null) {
+            if(label != null){
                 return label;
             }
         }
+
         return "no translation found";
     }
 
-    public static void printTextfield(JspWriter out, HttpSession session, String formular, String textfield) throws Exception {
+    public static void printTextfield(JspWriter out,HttpSession session, String formular, String textfield) throws Exception{
         out.println(getTextfield(session, formular, textfield));
     }
 
@@ -87,9 +94,8 @@ public class Language {
     private static String getLanguage(HttpSession session) {
         String lang = Constants.DEFAULT_LANG;
         //try to get language from session
-        if (session != null && session.getAttribute("Sprache") != null) {
-            lang = (String) session.getAttribute("Sprache");
-        }
+        if (session != null && session.getAttribute("Sprache") != null)
+            lang = (String)session.getAttribute("Sprache");
         return lang;
     }
 }

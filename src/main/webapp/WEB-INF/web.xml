@@ -84,7 +84,7 @@
     <servlet-mapping>
         <servlet-name>QuelleServlet</servlet-name>
         <url-pattern>/gast/quelle</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>
     <servlet>
         <servlet-name>StartseiteServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.StartseiteServlet</servlet-class>
@@ -100,7 +100,7 @@
     <servlet-mapping>
         <servlet-name>ImpressumServlet</servlet-name>
         <url-pattern>/gast/impressum</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>
     <servlet>
         <servlet-name>SharedHtmlServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.SharedHtmlServlet</servlet-class>
@@ -109,7 +109,7 @@
         <servlet-name>SharedHtmlServlet</servlet-name>
         <url-pattern>/gast/infos</url-pattern>
     </servlet-mapping>
-    <servlet>      
+    <servlet>
         <servlet-name>EinstellungenServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinstellungenServlet</servlet-class>
     </servlet>
@@ -246,14 +246,6 @@
         <url-pattern>/quelle</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>BackendAdministrationBaumstrukturServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.AdministrationBaumstrukturServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>BackendAdministrationBaumstrukturServlet</servlet-name>
-        <url-pattern>/admin-baumstruktur</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.ForgotPasswordServlet</servlet-class>
     </servlet>
@@ -305,9 +297,25 @@
             <page-encoding>UTF-8</page-encoding>
         </jsp-property-group>
     </jsp-config>
+
+    <!--
+        default error page
+        (e.g. 404 - "page not found" error for invalid URLs, and others)
+    -->
     <error-page>
-        <location>/gast/servlet/error.jsp</location>
+        <location>/error.jsp</location>
     </error-page>
+
+    <!--
+        error page for specific exceptions
+        (e.g. ID not found, etc.)
+        This needs to be registered in a separage error-page entry even if it's the same template!
+    -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error.jsp</location>
+    </error-page>
+
     <listener>
         <listener-class>de.uni_tuebingen.ub.nppm.util.ContextListener</listener-class>
     </listener>

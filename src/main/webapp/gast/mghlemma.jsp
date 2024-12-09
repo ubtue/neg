@@ -1,3 +1,5 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.MghLemma"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
 <%@ page import="java.util.Enumeration" isThreadSafe="false"%>
@@ -10,11 +12,35 @@
 <%@ page import="com.lowagie.text.*" isThreadSafe="false"%>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false"%>
 <%@ page import="java.io.*" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
+
 <jsp:include page="../dofilter.jsp" />
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
 
-    String formular = "mgh_lemma";
+    MghLemma lemma = MghLemmaDB.getById(id);
+
+    if (lemma == null) {
+        throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
+    } else {
+
+        Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
+
+        boolean throwException = true;
+
+        for (Einzelbeleg eb : listEinzelbeleg) {
+            if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+                throwException = false;
+                break;
+            }
+        }
+
+        if (throwException) {
+            throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
+        }
+    }
+
+    String formular ="mgh_lemma";
 
     String tableString = "einzelbeleg LEFT OUTER JOIN einzelbeleg_hatperson ON einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID LEFT OUTER JOIN person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN einzelbeleg_hatmghlemma ON einzelbeleg_hatmghlemma.EinzelbelegID=einzelbeleg.ID LEFT OUTER JOIN mgh_lemma ON mgh_lemma.ID=einzelbeleg_hatmghlemma.MGHLemmaID INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID";
     String order = "";
@@ -75,20 +101,21 @@
     tables.add("mghlemma");
     tables.add("person");
 
-    String sprache = "de";
+   String sprache = "de";
 
-    //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
-    if (session != null && session.getAttribute("Sprache") != null) {
-        sprache = (String) session.getAttribute("Sprache");
-    }
 
-    List<String> joins = new ArrayList<>();
-    List<String> headlines = new ArrayList<>();
+   //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
+   if (session != null && session.getAttribute("Sprache") != null)
+         sprache = (String)session.getAttribute("Sprache");
+
+
+   List<String> joins = new ArrayList<>();
+   List<String> headlines = new ArrayList<>();
 
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeiheZeitraum"));
-    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Ethnie"));
+    headlines.add(DatenbankDB.getMapping(sprache,"freie_suche", "Ausgabe_Person_Ethnie"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
     headlines.add(DatenbankDB.getMapping(sprache, "quelle", "Edition"));
     headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionKapitel"));
@@ -119,7 +146,6 @@
     <jsp:param name="Formular" value="mgh_lemma" />
 </jsp:include>
 
-
 <!----------ID---------->
 <div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
@@ -128,13 +154,14 @@
     </jsp:include>
 </div>
 
-<!---------- ---------->
-<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3" style="width: 100%; table-layout: fixed; border-collapse: collapse; border-spacing: 0;">
     <tbody class="ut-table__body ">
         <tr class="ut-table__row">
-            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma");%></td>
-            <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="inc.erzeugeFormular.jsp">
+            <td class="ut-table__item" style="padding-right: 0px; text-align: left; white-space: nowrap;">
+                <% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma");%>
+            </td>
+            <td class="ut-table__item" style="padding-left: 0px;">
+                <jsp:include page="../inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
                     <jsp:param name="Formular" value="mgh_lemma" />
                     <jsp:param name="Datenfeld" value="MGHLemma" />
@@ -145,9 +172,11 @@
             </td>
         </tr>
         <tr class="ut-table__row">
-            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%></td>
-            <td class="ut-table__item ut-table__body__item">
-                <jsp:include page="inc.erzeugeFormular.jsp">
+            <td class="ut-table__item" style="padding-right: 0px; text-align: left; white-space: nowrap;">
+                <% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%>
+            </td>
+            <td class="ut-table__item" style="padding-left: 0px;">
+                <jsp:include page="../inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
                     <jsp:param name="Formular" value="mgh_lemma" />
                     <jsp:param name="Datenfeld" value="EinzelbelegRO" />
@@ -159,8 +188,5 @@
 </table>
 <!----------Treffer insgesamt---------->
 <div class="container" style="overflow:auto;">
-
     <%@ include file="suche/ergebnisliste.jsp"%>
-
 </div>
-

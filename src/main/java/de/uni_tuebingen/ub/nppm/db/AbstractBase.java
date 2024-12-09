@@ -493,4 +493,12 @@ public class AbstractBase {
             throw new SqlInjectionException("Invalid column name: " + column);
         }
     }
+
+    public static String getProvenanceId(String id, String tabelle) throws Exception{
+        return getSingleField("provenance_id", tabelle, Integer.valueOf(id));
+    }
+
+    public static String getProvenanceSource(String id, String tabelle) throws Exception{
+        return getSingleField("provenance_source", tabelle, Integer.valueOf(id));
+    }
 }

@@ -90,4 +90,34 @@ public class EinzelbelegDB extends AbstractBase{
             return session.createQuery(query).getResultList();
         }
     }
+
+    public static List<EinzelbelegHatAmtWeihe_MM> getListEinzelbelegHatAmtWeihe(int einzelbelegId) throws Exception {
+        try ( Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<EinzelbelegHatAmtWeihe_MM> query = builder.createQuery(EinzelbelegHatAmtWeihe_MM.class);
+            Root<EinzelbelegHatAmtWeihe_MM> root = query.from(EinzelbelegHatAmtWeihe_MM.class);
+
+            query.select(root);
+            // Erstelle ein Predicate für das FunktionID-Feld
+            Predicate functionIdPredicate = builder.equal(root.get("einzelbeleg").get("id"), einzelbelegId);
+            query.where(functionIdPredicate);
+
+            return session.createQuery(query).getResultList();
+        }
+    }
+
+    public static List<EinzelbelegHatStand> getListEinzelbelegHatStand(int einzelbelegId) throws Exception {
+        try ( Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<EinzelbelegHatStand> query = builder.createQuery(EinzelbelegHatStand.class);
+            Root<EinzelbelegHatStand> root = query.from(EinzelbelegHatStand.class);
+
+            query.select(root);
+            // Erstelle ein Predicate für das FunktionID-Feld
+            Predicate functionIdPredicate = builder.equal(root.get("einzelbeleg").get("id"), einzelbelegId);
+            query.where(functionIdPredicate);
+
+            return session.createQuery(query).getResultList();
+        }
+    }
 }

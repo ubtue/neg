@@ -33,6 +33,20 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
     }
 
     @Override
+    protected List<String> getAdditionalCss() {
+        List<String> additionalCss = new ArrayList<>();
+        additionalCss.add("webjars/jstree/3.3.16/themes/default/style.min.css");
+        return additionalCss;
+    }
+
+    @Override
+    protected List<String> getAdditionalJavaScript() {
+        List<String> additionalJs = new ArrayList<>();
+        additionalJs.add("webjars/jstree/3.3.16/jstree.min.js");
+        return additionalJs;
+    }
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         if (request.getParameter("action") != null && request.getParameter("action").equals("neu")) {
@@ -45,8 +59,14 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
             divideFunction(request, response);
         }
         // Weiterleiten an die JSP
-        RequestDispatcher rd = request.getRequestDispatcher("admin.auswahlfelder.jsp");
-        rd.include(request, response);
+        if(request.getParameter("Formular") != null && request.getParameter("Formular").equals("showProvenance")){
+            RequestDispatcher rd = request.getRequestDispatcher("admin.auswahlfelder.provenance.jsp");
+            rd.include(request, response);
+        }else{
+            RequestDispatcher rd = request.getRequestDispatcher("admin.auswahlfelder.jsp");
+            rd.include(request, response);
+        }
+
 
     }
 

@@ -121,7 +121,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jstree</artifactId>
-            <version>3.3.15</version>
+            <version>3.3.16</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -131,6 +131,7 @@
     </dependencies>
 
     <build>
+        <finalName>neg</finalName>
         <resources>
             <resource>
                 <directory>src/test/java/de/uni_tuebingen/ub/nppm/test/resources/</directory>
@@ -262,7 +263,7 @@
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
                                     <artifactId>jstree</artifactId>
-                                    <version>3.3.15</version>
+                                    <version>3.3.16</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
@@ -281,7 +282,6 @@
                         </resource>
                     </webResources>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <warName>neg</warName>
                     <outputDirectory>/var/lib/tomcat9/webapps</outputDirectory>
                 </configuration>
             </plugin>

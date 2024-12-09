@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.HandschriftDB"%>
 <%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
@@ -6,15 +7,19 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp"%>
 
 <%
-    int id = Constants.UNDEFINED_ID;
     String formular = "handschrift";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
+
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || HandschriftDB.getById(id) == null)){
+        throw new IdNotFoundException("Textzeugen ID " + String.valueOf(id) + " ist nicht vorhanden");
+    }
 %>
 
 <jsp:include page="dosave.jsp">

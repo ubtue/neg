@@ -116,6 +116,12 @@ public class Quelle {
     @ManyToMany(mappedBy = "quellen")
     private Set<Edition> editions = new HashSet<>();
 
+    @ManyToMany(mappedBy = "quelle")
+    private Set<Einzelbeleg> einzelbelege = new HashSet<>();
+
+    @OneToOne(mappedBy = "quelle")
+    private Urkunde urkunde;
+
     public Integer getId() {
         return id;
     }
@@ -362,6 +368,26 @@ public class Quelle {
 
     public void removeEdition(int id){
         this.getEditions().removeIf(e -> e.getId() == id);
+    }
+
+    public Urkunde getUrkunde() {
+        return urkunde;
+    }
+
+    public Set<Einzelbeleg> getEinzelbelege() {
+        return einzelbelege;
+    }
+
+    public void setEinzelbelege(Set<Einzelbeleg> einzelbelege) {
+        this.einzelbelege = einzelbelege;
+    }
+
+    public void addEinzelbeleg(Einzelbeleg e){
+        this.getEinzelbelege().add(e);
+    }
+
+    public void removeEinzelbeleg(int id){
+        this.getEinzelbelege().removeIf(e -> e.getId() == id);
     }
 
 }

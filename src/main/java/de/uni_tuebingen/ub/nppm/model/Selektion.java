@@ -13,5 +13,5 @@ public abstract class Selektion {
 
     public Integer getId() {
         return id;
-    }
+    }  
 }

@@ -105,33 +105,33 @@
 
 <%@ page import="java.util.*" isThreadSafe="false" %>
 
-<%@ include file="forms/autocomplete.jsp" %>
-<%@ include file="forms/array.addselect.jsp" %>
-<%@ include file="forms/array.addselectandtext.jsp" %>
-<%@ include file="forms/array.combined.jsp" %>
-<%@ include file="forms/array.link.jsp" %>
-<%@ include file="forms/array.select.jsp" %>
-<%@ include file="forms/array.textfield.jsp" %>
+<%@ include file="../forms/autocomplete.jsp" %>
+<%@ include file="../forms/array.addselect.jsp" %>
+<%@ include file="../forms/array.addselectandtext.jsp" %>
+<%@ include file="../forms/array.combined.jsp" %>
+<%@ include file="../forms/array.link.jsp" %>
+<%@ include file="../forms/array.select.jsp" %>
+<%@ include file="../forms/array.textfield.jsp" %>
 
-<%@ include file="forms/noarray.button.jsp" %>
-<%@ include file="forms/noarray.checkbox.jsp" %>
-<%@ include file="forms/noarray.date.jsp" %>
-<%@ include file="forms/noarray.dateRO.jsp" %>
-<%@ include file="forms/noarray.extref.jsp" %>
-<%@ include file="forms/noarray.file.jsp" %>
-<%@ include file="forms/noarray.generator.jsp" %>
-<%@ include file="forms/noarray.infodate.jsp" %>
-<%@ include file="forms/noarray.infogroup.jsp" %>
-<%@ include file="forms/noarray.infouser.jsp" %>
-<%@ include file="forms/noarray.nkeditor.jsp" %>
-<%@ include file="forms/noarray.note.jsp" %>
-<%@ include file="forms/noarray.search.jsp" %>
-<%@ include file="forms/noarray.link.jsp" %>
-<%@ include file="forms/noarray.select.jsp" %>
-<%@ include file="forms/noarray.addselect.jsp" %>
-<%@ include file="forms/noarray.sqlselect.jsp" %>
-<%@ include file="forms/noarray.textarea.jsp" %>
-<%@ include file="forms/noarray.textfield.jsp" %>
-<%@ include file="forms/noarray.gndlink.jsp" %>
+<%@ include file="../forms/noarray.button.jsp" %>
+<%@ include file="../forms/noarray.checkbox.jsp" %>
+<%@ include file="../forms/noarray.date.jsp" %>
+<%@ include file="../forms/noarray.dateRO.jsp" %>
+<%@ include file="../forms/noarray.extref.jsp" %>
+<%@ include file="../forms/noarray.file.jsp" %>
+<%@ include file="../forms/noarray.generator.jsp" %>
+<%@ include file="../forms/noarray.infodate.jsp" %>
+<%@ include file="../forms/noarray.infogroup.jsp" %>
+<%@ include file="../forms/noarray.infouser.jsp" %>
+<%@ include file="../forms/noarray.nkeditor.jsp" %>
+<%@ include file="../forms/noarray.note.jsp" %>
+<%@ include file="../forms/noarray.search.jsp" %>
+<%@ include file="../forms/noarray.link.jsp" %>
+<%@ include file="../forms/noarray.select.jsp" %>
+<%@ include file="../forms/noarray.addselect.jsp" %>
+<%@ include file="../forms/noarray.sqlselect.jsp" %>
+<%@ include file="../forms/noarray.textarea.jsp" %>
+<%@ include file="../forms/noarray.textfield.jsp" %>
+<%@ include file="../forms/noarray.gndlink.jsp" %>
 
 <% if (visible!=null && visible.equals("hidden")) out.println("</div>");%>

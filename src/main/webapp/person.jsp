@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.PersonDB"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
@@ -6,16 +7,19 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false"%>
 <%@ page import="java.math.BigInteger" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp"%>
 
-<%    int id = Constants.UNDEFINED_ID;
+<%
     String formular = "person";
     Language.setLanguage(request);
     Filter.setFilter(request, formular, out);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
 
-
+    if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || PersonDB.getById(id) == null)){
+         throw new IdNotFoundException("Person ID " + String.valueOf(id) + " ist nicht vorhanden");
+    }
 %>
 
 <jsp:include page="dosave.jsp">

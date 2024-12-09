@@ -1,19 +1,27 @@
+<%@page import="de.uni_tuebingen.ub.nppm.db.EditionDB"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Filter" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Constants" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <%@ include file="configuration.jsp" %>
 
 
 <%
-    int id = Constants.UNDEFINED_ID;
     String formular = "edition";
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
-    id = Utils.determineId(request, response, formular, out);
+    int id = Utils.determineId(request, response, formular, out);
+
+    //If we have deleted the edition with ID = -2, this should be used.
+    //if (id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || EditionDB.getById(id) == null)) {
+
+    if (id != Constants.NEW_ITEM && (EditionDB.getById(id) == null)) {
+        throw new IdNotFoundException("Edition ID " + String.valueOf(id) + " ist nicht vorhanden");
+    }
 %>
 
 <jsp:include page="dosave.jsp">
@@ -192,7 +200,7 @@
 	<li><a href="javascript:onoff('tab5','tab1');">
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
-<!-- TAB BÃ„NDE & QUELLEN
+<!-- TAB BÄNDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                     <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -242,7 +250,7 @@
 	<li><span>
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </span></li>
-<!-- TAB BÃ„NDE & QUELLEN
+<!-- TAB BÄNDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                 <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -347,7 +355,7 @@
 	<li><a href="javascript:onoff('tab5','tab4');">
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
-<!-- TAB BÃ„NDE & QUELLEN
+<!-- TAB BÄNDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab4');">
                     <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -473,14 +481,12 @@
                 </tr>
               </tbody>
             </table>
-                            <jsp:include page="inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                   <jsp:param name="ID" value="<%= id %>"/>
                   <jsp:param name="Formular" value="edition"/>
                   <jsp:param name="Datenfeld" value="Sammelband"/>
                   <jsp:param name="Visibility" value="hidden"/>
                 </jsp:include>
-
-
           </div>
         </div>
       </div>

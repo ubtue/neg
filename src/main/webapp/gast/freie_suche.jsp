@@ -508,7 +508,7 @@
                                 </td>
                             </tr>
 
-                            <!-- TODO: Oder als Teil von Belegstelle umsetzen? AuÃŸerdem: Label in GAST fehlt! -->
+                            <!-- TODO: Oder als Teil von Belegstelle umsetzen? Außerdem: Label in GAST fehlt! -->
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -549,7 +549,7 @@
                         <button data-id="tab-1" class="ut-btn ut-btn--color-primary-1 search-next search-button left erweiterte_suche_prev" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt1"); %>" onclick="window.location.href = '#erweiterte-suche';">
                             <% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt1"); %>
                         </button>
-                        <div style="flex-grow: 1;"></div> <!-- FÃ¼gt flexibles Leerzeichen hinzu -->
+                        <div style="flex-grow: 1;"></div> <!-- Fügt flexibles Leerzeichen hinzu -->
                         <button data-id="tab-3" class="ut-btn ut-btn--color-primary-1 search-next search-button erweiterte_suche_next" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "WeiterZuSchritt3"); %>" href="#erweiterte-suche">
                             <% Language.printTextfield(out, session, "gast_freie_suche", "WeiterZuSchritt3"); %>
                         </button>
@@ -612,7 +612,7 @@
                         <button data-id="tab-2" class="ut-btn ut-btn--color-primary-1 search-next search-button left erweiterte_suche_prev" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt2"); %>" onclick="window.location.href = '#erweiterte-suche';">
                             <% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt2"); %>
                         </button>
-                        <div style="flex-grow: 1;"></div> <!-- FÃ¼gt flexibles Leerzeichen hinzu -->
+                        <div style="flex-grow: 1;"></div> <!-- Fügt flexibles Leerzeichen hinzu -->
                         <button  class="ut-btn ut-btn--color-primary-1" type="reset" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %>" >
                             <% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %>
                         </button>
@@ -646,7 +646,7 @@
         }
     }
 
-    // Event Listener fÃ¼r die Buttons hinzufÃ¼gen
+    // Event Listener für die Buttons hinzufügen
     buttons.forEach(function(button) {
         button.addEventListener('click', function() {
             let tabId = this.getAttribute('data-id');
@@ -654,7 +654,7 @@
         });
     });
 
-    // Event Listener fÃ¼r die Tabs hinzufÃ¼gen
+    // Event Listener für die Tabs hinzufügen
     tabs.forEach(function(tab) {
         tab.addEventListener('click', function() {
             let tabId = this.getAttribute('data-id');
