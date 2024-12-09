@@ -508,7 +508,7 @@
                                 </td>
                             </tr>
 
-                            <!-- TODO: Oder als Teil von Belegstelle umsetzen? Au�erdem: Label in GAST fehlt! -->
+                            <!-- TODO: Oder als Teil von Belegstelle umsetzen? AuÃerdem: Label in GAST fehlt! -->
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -549,7 +549,7 @@
                         <button data-id="tab-1" class="ut-btn ut-btn--color-primary-1 search-next search-button left erweiterte_suche_prev" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt1"); %>" onclick="window.location.href = '#erweiterte-suche';">
                             <% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt1"); %>
                         </button>
-                        <div style="flex-grow: 1;"></div> <!-- F�gt flexibles Leerzeichen hinzu -->
+                        <div style="flex-grow: 1;"></div> <!-- FÃ¼gt flexibles Leerzeichen hinzu -->
                         <button data-id="tab-3" class="ut-btn ut-btn--color-primary-1 search-next search-button erweiterte_suche_next" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "WeiterZuSchritt3"); %>" href="#erweiterte-suche">
                             <% Language.printTextfield(out, session, "gast_freie_suche", "WeiterZuSchritt3"); %>
                         </button>
@@ -573,7 +573,7 @@
                                     <% Language.printTextfield(out, session, formular, "Sortierung1"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="forms/search.order.jsp">
+                                    <jsp:include page="../forms/search.order.jsp">
                                         <jsp:param name="name" value="order1"/>
                                     </jsp:include>
                                 </td>
@@ -583,7 +583,7 @@
                                     <% Language.printTextfield(out, session, formular, "Sortierung2"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="forms/search.order.jsp">
+                                    <jsp:include page="../forms/search.order.jsp">
                                         <jsp:param name="name" value="order2"/>
                                     </jsp:include>
                                 </td>
@@ -593,7 +593,7 @@
                                     <% Language.printTextfield(out, session, formular, "Sortierung3");%>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="forms/search.order.jsp">
+                                    <jsp:include page="../forms/search.order.jsp">
                                         <jsp:param name="name" value="order3"/>
                                     </jsp:include>
                                 </td>
@@ -612,7 +612,7 @@
                         <button data-id="tab-2" class="ut-btn ut-btn--color-primary-1 search-next search-button left erweiterte_suche_prev" type="button" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt2"); %>" onclick="window.location.href = '#erweiterte-suche';">
                             <% Language.printTextfield(out, session, "gast_freie_suche", "ZurueckZuSchritt2"); %>
                         </button>
-                        <div style="flex-grow: 1;"></div> <!-- F�gt flexibles Leerzeichen hinzu -->
+                        <div style="flex-grow: 1;"></div> <!-- FÃ¼gt flexibles Leerzeichen hinzu -->
                         <button  class="ut-btn ut-btn--color-primary-1" type="reset" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %>" >
                             <% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %>
                         </button>
@@ -646,7 +646,7 @@
         }
     }
 
-    // Event Listener f�r die Buttons hinzuf�gen
+    // Event Listener fÃ¼r die Buttons hinzufÃ¼gen
     buttons.forEach(function(button) {
         button.addEventListener('click', function() {
             let tabId = this.getAttribute('data-id');
@@ -654,7 +654,7 @@
         });
     });
 
-    // Event Listener f�r die Tabs hinzuf�gen
+    // Event Listener fÃ¼r die Tabs hinzufÃ¼gen
     tabs.forEach(function(tab) {
         tab.addEventListener('click', function() {
             let tabId = this.getAttribute('data-id');
