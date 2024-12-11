@@ -450,7 +450,7 @@
                     }
                 }catch (Exception e) {
                     if (e.getMessage() != null && e.getMessage().contains("NamenkommentarID")) {
-                        throw new IdNotFoundException("Philologisches Kommentar ID ist nicht vorhanden");
+                        throw new IdNotFoundException("Philologischer Kommentar ID ist nicht vorhanden");
                     } else if (e.getMessage() != null && e.getMessage().contains("MGHLemmaID")) {
                         throw new IdNotFoundException("Lemma ID ist nicht vorhanden");
                     } else if (e.getMessage() != null && e.getMessage().contains("PersonID")) {

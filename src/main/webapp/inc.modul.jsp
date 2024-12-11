@@ -1480,7 +1480,7 @@
             out.println("</table>\n");
         }
 
-        //backend: namenkommtar, Philologisches Kommentar (...) z.b (Idwiniz)
+        //backend: namenkommtar, Philologischer Kommentar (...) z.b (Idwiniz)
         if (modul.equals("PLemma")) {
             try {
                 List<String> plemmaList = ModulIncDB.getListPlemma(id);

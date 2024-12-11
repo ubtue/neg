@@ -21,7 +21,7 @@
     NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
 
     if (namenkommentar == null) {
-        throw new IdNotFoundException("Philologisches Kommentar ID N" + String.valueOf(id) + " ist nicht vorhanden");
+        throw new IdNotFoundException("Philologischer Kommentar ID N" + String.valueOf(id) + " ist nicht vorhanden");
     }
 
     Set<Einzelbeleg> listEinzelbeleg = namenkommentar.getEinzelbeleg();
@@ -35,7 +35,7 @@
     }
 
     if (throwException) {
-        throw new IdNotPublicException("Philologisches Kommentar ID N" + id + " ist nicht zu veröffentlichen");
+        throw new IdNotPublicException("Philologischer Kommentar ID N" + id + " ist nicht zu veröffentlichen");
     }
 
     String formular = "namenkommentar";
