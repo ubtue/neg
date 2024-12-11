@@ -20,7 +20,7 @@
     int id = Utils.determineId(request, response, formular, out);
 
     if (id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || NamenKommentarDB.getById(id) == null)) {
-        throw new IdNotFoundException("Philologisches Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
+        throw new IdNotFoundException("Philologisches Kommentar ID " + String.valueOf(id) + " ist nicht vorhanden");
     }
 %>
 
