@@ -51,6 +51,14 @@ public class AdministrationServlet extends AbstractBackendServlet {
                 fehler = true;
             }
 
+            try {
+                if (BenutzerDB.getByMail(request.getParameter("EMail")) != null) {
+                    errorMessage = "<p><b>Fehler:</b> Die angegebene E-Mail-Adresse wird bereits verwendet.</p>";
+                    fehler = true;
+                }
+            } catch (Exception e) {
+            }
+
             if (fehler) {
                 request.setAttribute("errorCreate", fehler);
                 request.setAttribute("errorMessage", errorMessage);
