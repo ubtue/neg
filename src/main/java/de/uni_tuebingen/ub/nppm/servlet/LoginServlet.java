@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
         if (benutzer.isGast()) {
             response.sendRedirect("gast/startseite");
         } else {
-            response.sendRedirect("einzelbeleg");
+            response.sendRedirect("/neg/einzelbeleg");
         }
     }
 

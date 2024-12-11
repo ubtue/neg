@@ -33,14 +33,14 @@
                     <table border="0">
 
                         <tr><td colspan="2"><h2 class="login">
-                                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
                                         <jsp:param name="Formular" value="login"/>
                                         <jsp:param name="Textfeld" value="Anmeldung"/>
                                     </jsp:include>
                                 </h2></td></tr>
                         <tr>
                             <th><label for="username">
-                                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
                                         <jsp:param name="Formular" value="login"/>
                                         <jsp:param name="Textfeld" value="Benutzername"/>
                                     </jsp:include>
@@ -49,7 +49,7 @@
                         </tr>
                         <tr>
                             <th><label for="password">
-                                    <jsp:include page="inc.erzeugeBeschriftung.jsp">
+                                    <jsp:include page="../inc.erzeugeBeschriftung.jsp">
                                         <jsp:param name="Formular" value="login"/>
                                         <jsp:param name="Textfeld" value="Passwort"/>
                                     </jsp:include>
