@@ -16,7 +16,7 @@
     }
 
     if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
-        throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu veröffentlichen");
+        throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu verï¿½ffentlichen");
     }
 %>
 
@@ -61,7 +61,7 @@
         </jsp:include>
 
         <tr class="ut-table__row">
-            <th class="ut-table__item ut-table__header__item" scope="col"><% Language.printDatafield(out, session, "einzelbeleg", "Belegform");%></th>
+            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "einzelbeleg", "Belegform");%></td>
             <td class="ut-table__item ut-table__body__item">
                 <div class="container" style="display: flex; align-items: center;">
                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -148,7 +148,7 @@
         </jsp:include>
 
         <%
-            // Prüfe das Attribut
+            // Prï¿½fe das Attribut
             Boolean displayDatierung = (Boolean) request.getAttribute("displayDatierungUngewiss");
             if (displayDatierung != null && displayDatierung) {
         %>
@@ -246,7 +246,7 @@
 <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "BoxQuelle"); %></h3>
 <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
     <tr class="ut-table__row">
-        <th class="ut-table__item ut-table__header__item" scope="col"><% Language.printTextfield(out, session, "einzelbeleg", "Kurztitel");%></th>
+        <td class="ut-table__item ut-table__body__item"><% Language.printTextfield(out, session, "einzelbeleg", "Kurztitel");%></td>
         <td class="ut-table__item ut-table__body__item">
             <jsp:include page="../inc.erzeugeFormular.jsp">
                 <jsp:param name="ID" value="<%= id%>"/>
@@ -302,7 +302,7 @@
 
     if (resultList != null && !resultList.isEmpty()) {
 %>
-<div class="container" id="textkritik">
+<div class="container">
     <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "TabTextkritik");%></h3>
     <jsp:include page="../inc.modul.jsp">
         <jsp:param name="ID" value="<%= id%>"/>
