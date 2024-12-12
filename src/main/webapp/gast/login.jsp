@@ -65,7 +65,7 @@
 
 
                 <p> &nbsp; </p><!-- comment -->
-                <a href="forgotPassword">Passwort vergessen ?</a>
+                <a href="../forgotPassword">Passwort vergessen ?</a>
             </div>  <!-- ende flexbox-container -->
         </form>
     <center>
