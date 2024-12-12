@@ -65,8 +65,6 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_fr_2', 'Französisch', 'French', 'Français', 'Gallica');
 
-UPDATE `neg`.`datenbank_texte` SET `la` = 'Gallica (agros tantum)' WHERE (`ID` = '234');
-
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_la_2', 'Latein', 'Latin', 'Latin', 'Latina');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Pfad', 'Pfad', 'Path', 'Chemin', 'Semita');
@@ -90,10 +88,10 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'reallyReplace', 'wirklich ersetzen?', 'really replace?', 'vraiment remplacer?', 'vere reponere?');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Namenkommentar', 'NAMENKOMMENTAR', 'NAME COMMENT', 'COMMENTAIRE DE NOM', 'COMMENTARIUS NOMINIS');
-		
+
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Quellenkommentar', 'QUELLENKOMMENTAR', 'SOURCE COMMENT', 'COMMENTAIRE SOURCE', 'COMMENTARIUS FONTIUM');
 
-INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Überlieferungskommentar', 'ÜBERLIEFERUNGSKOMMENTAR', 'TRANSMISSION COMMENTARY', 'COMMENTAIRE DE TRANSMISSION', 'COMMENTARIUS TRADITIONIS'); 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('fileManagement', 'Überlieferungskommentar', 'ÜBERLIEFERUNGSKOMMENTAR', 'TRANSMISSION COMMENTARY', 'COMMENTAIRE DE TRANSMISSION', 'COMMENTARIUS TRADITIONIS');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('impressum', 'Titel', 'Impressum', 'Imprint', 'Mentions légales', 'Imprimatur');
 
