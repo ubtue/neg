@@ -1,6 +1,6 @@
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('namenkommentar', 'PLemma', 'Philologisches Lemma', 'Philological lemma', 'Lemme philologique', 'Lemma philologicum');
 
-UPDATE `neg`.`datenbank_texte` SET `gb` = 'Lemma', `fr` = 'Lemme', `la` = 'Lemma' WHERE (`ID` = '175');
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Lemma', `fr` = 'Lemme', `la` = 'Lemma' WHERE Formular = 'mgh_lemma' and Textfeld = 'Titel';
 
 -- Kommentar: Delete old hilfe.html cause it has mistakes
 DELETE FROM `neg`.`content` WHERE `Bezeichnung` = 'hilfe.html' and `language` = 'de';

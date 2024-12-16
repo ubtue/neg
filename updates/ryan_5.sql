@@ -55,11 +55,11 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprachauswahl', 'Sprachauswahl', 'Language selection', 'Sélection de langue', 'Selectio linguae');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_de', 'Deutsch', 'German', 'Allemand', 'Germanicus');
-  
+
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_en', 'Englisch', 'English', 'Anglais', 'Anglicus');
-  
+
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_fr', 'Französisch (nur Felder)', 'French (fields only)', 'Français (champs uniquement)', ' Gallica (agros tantum)');
-  
+
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sprachauswahl', 'Sprache_la', 'Latein (nur Felder)', 'Latin (fields only)', 'Latin (champs uniquement)', 'Latina (agros tantum)');
 
 DELETE FROM `neg`.`datenbank_texte` WHERE `Formular` = 'navigation' AND `Textfeld` = 'InhaltBearbeiten';
@@ -70,7 +70,7 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('openLink', 'Titel', 'offene Verknüpfung', 'Open link', 'Lien ouvert', 'Nexus patens');
 
-UPDATE `neg`.`datenbank_texte` SET `fr` = 'Recherche Avancée', `la` = 'Excogitata Inquisitio' WHERE (`ID` = '158');
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'Recherche Avancée', `la` = 'Inquisitio Provecta:' WHERE Formular = 'gast_freie_suche' and Textfeld = 'Titel';
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sucheEinzelbeleg', 'Titel', 'Suche (in Einzelbeleg)', 'search (in Single reference)', 'in référence individuelle', 'in testimonium personae');
 
