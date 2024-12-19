@@ -6,17 +6,17 @@
             <div class="ut-grid__col-1 ut-page-footer__col">
                 <div class="ut-panel panel ut-panel--collapsing-only-mobile" id="footerpanel-1">
                     <div class="ut-panel__heading ut-page-footer__heading" id="footerpanel-1-ph">
-                        <h6 class="ut-heading ut-panel__title"><a class="ut-link ut-panel__link" href="#footerpanel-1-pc" data-toggle="collapse" title="Panel öffnen/schließen">Kontakt<span class="ut-link__icon ut-link__icon--right ut-panel__icon ut-icon ut-icon-down-dir"></span></a></h6>
+                        <h6 class="ut-heading ut-panel__title"><a class="ut-link ut-panel__link" href="#footerpanel-1-pc" data-toggle="collapse" aria-expanded="false"><% Language.printTextfield(out, session, "kontakt", "Kontakt");%><span class="ut-link__icon ut-link__icon--right ut-panel__icon ut-icon ut-icon-down-dir"></span></a></h6>
                     </div>
                     <div class="ut-panel__collapse collapse" id="footerpanel-1-pc">
                         <div class="ut-panel__body ">
-                            <address class="ut-page-footer__contact">
+                            <address class="ut-page-footer__contact" tabindex="0">
                                 <strong>Nomen et Gens</strong><br>
                                 Seminar f&uuml;r mittelalterliche Geschichte<br>
                                 Eberhard Karls Universit&auml;t T&uuml;bingen<br>
                                 Wilhelmstr. 36<br>
                                 72074 Tübingen<br>
-                                <a class="ut-link ut-link--email ut-link--block ut-link--context-icon" href="mailto:neg@uni-tuebingen.de" title="E-Mail senden">neg@uni-tuebingen.de</a><br>
+                                <a class="ut-link ut-link--email ut-link--block ut-link--context-icon" href="mailto:neg@uni-tuebingen.de">neg@uni-tuebingen.de</a><br>
                             </address>
                         </div>
                     </div>
@@ -24,7 +24,7 @@
             </div>
             <div class="ut-grid__col-2 ut-page-footer__col">
                 <div class="ut-panel panel ut-panel--collapsing-only-mobile" id="footerpanel-2">
-                    <div class="ut-panel__heading ut-page-footer__heading" id="footerpanel-2-ph"><h6 class="ut-heading ut-panel__title"><a class="ut-link ut-panel__link collapsed" href="#footerpanel-2-pc" data-toggle="collapse" aria-expanded="false">Weitere Informationen<span class="ut-link__icon ut-link__icon--right ut-panel__icon ut-icon ut-icon-down-dir"></span></a></h6></div>
+                    <div class="ut-panel__heading ut-page-footer__heading" id="footerpanel-2-ph"><h6 class="ut-heading ut-panel__title"><a class="ut-link ut-panel__link collapsed" href="#footerpanel-2-pc" data-toggle="collapse" aria-expanded="false"><% Language.printTextfield(out, session, "informationen", "WeitereInformationen");%><span class="ut-link__icon ut-link__icon--right ut-panel__icon ut-icon ut-icon-down-dir"></span></a></h6></div>
                     <div class="ut-panel__collapse collapse" id="footerpanel-2-pc">
                         <div class="ut-panel__body">
                             <div class="ut-link-register ut-link-register--color-text ut-link-register--without-icons">
@@ -47,11 +47,11 @@
             <div class="ut-grid__col-3 ut-page-footer__col">
                 <div class="ut-panel panel ut-panel--collapsing-only-mobile" id="footerpanel-3">
                     <div class="ut-panel__heading ut-page-footer__heading" id="footerpanel-3-ph">
-                        <h6 class="ut-heading ut-panel__title"><a class="ut-link ut-panel__link" href="#footerpanel-3-pc" data-toggle="collapse" title="Panel öffnen/schließen">Gefördert von<span class="ut-link__icon ut-link__icon--right ut-panel__icon ut-icon ut-icon-down-dir"></span></a></h6>
+                        <h6 class="ut-heading ut-panel__title"><a class="ut-link ut-panel__link" href="#footerpanel-3-pc" data-toggle="collapse" ><% Language.printTextfield(out, session, "dfg", "GefoerdertVon"); %><span class="ut-link__icon ut-link__icon--right ut-panel__icon ut-icon ut-icon-down-dir"></span></a></h6>
                     </div>
                     <div class="ut-panel__collapse collapse" id="footerpanel-3-pc">
                         <div class="ut-panel__body">
-                            <a href="//dfg.de" target="_blank"><img src="layout/dfg_logo_schriftzug.svg" height="36"></a>
+                            <a href="//dfg.de" target="_blank"><img src="layout/dfg_logo_schriftzug.svg" alt="DFG Deutsche Forschungsgemeinschaft Logo" aria-label="DFG Deutsche Forschungsgemeinschaft" height="36"></a>
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
         <hr class="ut-page-footer__devider hidden-xs">
         <div class="row ut-page-footer__legal">
             <div class="col-xs-12 col-sm-6 col-md-6 ut-page-footer__copyright">
-                <p class="ut-copyright">© 2024 Eberhard Karls Universität Tübingen, Tübingen</p>
+                <p class="ut-copyright" tabindex="0">© 2024 Eberhard Karls Universität Tübingen, Tübingen</p>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-6 ut-page-footer__nav-meta">
                 <nav class="ut-nav ut-nav--meta-bottom" aria-label="Metanavigation">

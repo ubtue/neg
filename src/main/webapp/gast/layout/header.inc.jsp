@@ -180,7 +180,7 @@
                 <a href="https://www.uni-tuebingen.de" class="ut-logo-link ut-logo-link--main" aria-label="<% Language.printTextfield(out, session, "logo", "AriaLabelUniversitaetTuebingen");%>">
                     <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen.svg" class="ut-img ut-img--logo ut-img--logo-main" alt="Logo of the University Tübingen">
                 </a>
-                <a href="https://www.uni-tuebingen.de/exzellenzinitiative/" class="ut-logo-link ut-logo-link--excellence" aria-label="<% Language.printTextfield(out, session, "logo", "ArialLabelExcellence");%>">
+                <a href="https://www.uni-tuebingen.de/exzellenzinitiative/" class="ut-logo-link ut-logo-link--excellence" aria-label="<% Language.printTextfield(out, session, "logo", "AriaLabelExcellence");%>">
                     <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen_Exzellent_EN.svg" class="ut-img ut-img--logo ut-img--logo-excellence-###LANGUAGE_CODE_LOWER###" alt="Logo of the Excellence Strategy">
                 </a>
             </div>
@@ -188,7 +188,7 @@
         </div>
         <nav class="ut-nav-area ut-page-header__area_nav" aria-label="###DT-area_navigation###">
             <h4 class="ut-heading ut-nav-area__prev-level">
-                <a href="https://www.ub.uni-tuebingen.de" title="<% Language.printTextfield(out, session, "logo", "ArialLabelLibrary");%>" aria-label="<% Language.printTextfield(out, session, "logo", "ArialLabelLibrary");%>" class="ut-link ut-nav-area__link ut-nav-area__link--prev">
+                <a href="https://www.ub.uni-tuebingen.de" title="<% Language.printTextfield(out, session, "logo", "AriaLabelLibrary");%>" aria-label="<% Language.printTextfield(out, session, "logo", "AriaLabelLibrary");%>" class="ut-link ut-nav-area__link ut-nav-area__link--prev">
                     <% Language.printTextfield(out, session, "library", "Library");%>
                 </a>
             </h4>
