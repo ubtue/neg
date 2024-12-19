@@ -36,7 +36,7 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('gast_freie_suche', 'EbeneZuklappen', 'Weitere Ebene zuklappen', 'Collapse further level', 'Replier un autre niveau', 'Alterum contrahere level');
 
-INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('startseite', 'Titel', 'Startseite', 'Home page', 'Page d\'accueil', 'Pagina domestica');
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('startseite', 'Titel', 'Startseite', 'Home page', 'Page d\'accueil', 'Pagina Prima');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ziele', 'Titel', 'Ziele', 'Goals', 'Objectifs', 'Scopos');
 
@@ -70,7 +70,7 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('openLink', 'Titel', 'offene Verknüpfung', 'Open link', 'Lien ouvert', 'Nexus patens');
 
-UPDATE `neg`.`datenbank_texte` SET `fr` = 'Recherche Avancée', `la` = 'Inquisitio Provecta:' WHERE Formular = 'gast_freie_suche' and Textfeld = 'Titel';
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'Recherche Avancée', `la` = 'Quaesitio Provecta' WHERE Formular = 'gast_freie_suche' and Textfeld = 'Titel';
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('sucheEinzelbeleg', 'Titel', 'Suche (in Einzelbeleg)', 'search (in Single reference)', 'in référence individuelle', 'in testimonium personae');
 
@@ -79,5 +79,3 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('hilfe', 'Titel', 'Hilfe', 'Help', 'Aide', 'Auxilium');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('internerBereich', 'Titel', 'Interner Bereich', 'Internal Area', 'Zone Interne', 'Internum Area');
-
-

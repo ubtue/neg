@@ -79,7 +79,7 @@
 
                     <!-- Suchen -->
                     <li class="ut-switchbar__item" id="switchbar-search">
-                        <button class="ut-switchbar__toggle" id="ut-identifier--search-toggle" data-toggle="switchbar" data-target="#switchblock-search" title="Suchen" aria-haspopup="true" aria-expanded="false" tabindex="0">
+                        <button class="ut-switchbar__toggle" id="ut-identifier--search-toggle" data-toggle="switchbar" data-target="#switchblock-search" aria-label="<% Language.printTextfield(out, session, "suche", "Titel"); %>" aria-haspopup="true" aria-expanded="false" tabindex="0">
                             <span class="ut-switchbar__icon ut-icon ut-icon-search"></span>
                             <span class="ut-switchbar__label"><% Language.printTextfield(out, session, "suche", "Titel"); %></span>
                         </button>
@@ -109,7 +109,7 @@
 
                     <!-- Help -->
                     <li class="ut-switchbar__item" id="switchbar-help">
-                        <a href="/neg/gast/infos?sharedHtml=hilfe" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-help" title="Hilfe" role="button" aria-haspopup="false" aria-expanded="false">
+                        <a href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=hilfe" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-help" aria-label="<% Language.printTextfield(out, session, "hilfe", "Titel");%>" role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="ut-switchbar__icon ut-icon ut-icon-info-circled"></span>
                             <span class="ut-switchbar__label"><% Language.printTextfield(out, session, "hilfe", "Titel");%></span>
                         </a>
@@ -117,7 +117,7 @@
 
                     <!-- Login -->
                     <li class="ut-switchbar__item" id="switchbar-login">
-                        <a href="<%=Utils.getBaseUrl(request)%>/logout?go=intern" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-login" title="Interner Bereich" role="button" aria-haspopup="false" aria-expanded="false">
+                        <a href="<%=Utils.getBaseUrl(request)%>/logout?go=intern" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-login"  aria-label="<% Language.printTextfield(out, session, "internerBereich", "Titel"); %>" role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="ut-switchbar__icon ut-icon ut-icon-login"></span>
                             <span class="ut-switchbar__label"><% Language.printTextfield(out, session, "internerBereich", "Titel"); %></span>
                         </a>
@@ -126,35 +126,35 @@
                     <!-- Language -->
                     <li class="ut-switchbar__item" id="switchbar-language">
                         <a href="#" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-language"
-                           title="Sprache wählen" role="button" aria-haspopup="true" aria-expanded="false">
+                           title="Select Language" role="button" aria-label="Select Language" aria-haspopup="true" aria-expanded="false">
                             <span class="ut-switchbar__icon ut-icon ut-icon-globe"></span>
                             <span class="ut-switchbar__label">Language</span>
                         </a>
                         <div class="ut-switchblock__item ut-switchblock__item--dropdown" id="switchblock-language">
                             <div class="ut-switchblock__header">
                                 <span class="ut-switchblock__title"><% Language.printTextfield(out, session, "sprachauswahl", "Sprachauswahl");%></span>
-                                <span class="ut-switchblock__close-icon ut-icon ut-icon-cancel" role="button"></span>
+                                <span class="ut-switchblock__close-icon ut-icon ut-icon-cancel" role="button" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "SprachauswahlSchliessen");%>" tabindex="0" ></span>
                             </div>
                             <div class="ut-switchblock__content">
                                 <nav class="ut-nav ut-nav--language" aria-label="language">
                                     <ul class="ut-nav__list ">
                                         <li class="ut-nav__item " data-level-count="1">
-                                            <a class="ut-link ut-nav__link" href="?language=de&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="Sprache Deutsch wählen">
+                                            <a class="ut-link ut-nav__link" href="?language=de&sharedHtml=<%= request.getParameter("sharedHtml")%>" title=" <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de");%>" tabindex="0">
                                                 <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de");%>
                                             </a>
                                         </li>
                                         <li class="ut-nav__item " data-level-count="2">
-                                            <a class="ut-link ut-nav__link" href="?language=gb&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="Sprache Englisch wählen">
+                                            <a class="ut-link ut-nav__link" href="?language=gb&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_en");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_en");%>" tabindex="0">
                                                 <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_en");%>
                                             </a>
                                         </li>
                                         <li class="ut-nav__item " data-level-count="2">
-                                            <a class="ut-link ut-nav__link" href="?language=fr&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="Sprache Französisch wählen">
+                                            <a class="ut-link ut-nav__link" href="?language=fr&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_fr");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_fr");%>" tabindex="0">
                                                 <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_fr");%>
                                             </a>
                                         </li>
                                         <li class="ut-nav__item " data-level-count="2">
-                                            <a class="ut-link ut-nav__link" href="?language=la&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="Sprache Latein wählen">
+                                            <a class="ut-link ut-nav__link" href="?language=la&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_la");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_la");%>" tabindex="0">
                                                 <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_la");%>
                                             </a>
                                         </li>
@@ -166,7 +166,7 @@
 
                     <!-- Switchbar Menu (for low resolutions) -->
                     <li class="ut-switchbar__item" id="switchbar-menu">
-                        <a href="#" class="ut-switchbar__toggle" id="ut-identifier--menu-toggle" data-toggle="switchbar" data-target="#switchblock-menu" title="###DT-language_chooser###" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" class="ut-switchbar__toggle" id="ut-identifier--menu-toggle" data-toggle="switchbar" data-target="#switchblock-menu" title="###DT-language_chooser###" aria-label="Menu" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="ut-switchbar__icon ut-icon ut-icon-menu"></span>
                             <span class="ut-switchbar__label sr-only-focusable">Menu</span>
                         </a>
@@ -177,23 +177,23 @@
         </div>
         <div class="ut-page-header__banner">
             <div class="ut-page-header__logos">
-                <a href="https://www.uni-tuebingen.de" title="" class="ut-logo-link ut-logo-link--main">
-                    <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen.svg" class="ut-img ut-img--logo ut-img--logo-main" alt="##DT-img_university_tuebingen###">
+                <a href="https://www.uni-tuebingen.de" class="ut-logo-link ut-logo-link--main" aria-label="<% Language.printTextfield(out, session, "logo", "AriaLabelUniversitaetTuebingen");%>">
+                    <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen.svg" class="ut-img ut-img--logo ut-img--logo-main" alt="Logo of the University Tübingen">
                 </a>
-                <a href="https://www.uni-tuebingen.de/exzellenzinitiative/" title="" class="ut-logo-link ut-logo-link--excellence">
-                    <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen_Exzellent_EN.svg" class="ut-img ut-img--logo ut-img--logo-excellence-###LANGUAGE_CODE_LOWER###" alt="##DT-img_logo_excellence###">
+                <a href="https://www.uni-tuebingen.de/exzellenzinitiative/" class="ut-logo-link ut-logo-link--excellence" aria-label="<% Language.printTextfield(out, session, "logo", "ArialLabelExcellence");%>">
+                    <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen_Exzellent_EN.svg" class="ut-img ut-img--logo ut-img--logo-excellence-###LANGUAGE_CODE_LOWER###" alt="Logo of the Excellence Strategy">
                 </a>
             </div>
             <div class="ut-page-header__dropdowns"></div>
         </div>
         <nav class="ut-nav-area ut-page-header__area_nav" aria-label="###DT-area_navigation###">
             <h4 class="ut-heading ut-nav-area__prev-level">
-                <a href="https://www.ub.uni-tuebingen.de" title="###DT-university_library###" class="ut-link ut-nav-area__link ut-nav-area__link--prev">
-                    Universitätsbibliothek
+                <a href="https://www.ub.uni-tuebingen.de" title="<% Language.printTextfield(out, session, "logo", "ArialLabelLibrary");%>" aria-label="<% Language.printTextfield(out, session, "logo", "ArialLabelLibrary");%>" class="ut-link ut-nav-area__link ut-nav-area__link--prev">
+                    <% Language.printTextfield(out, session, "library", "Library");%>
                 </a>
             </h4>
             <h2 class="ut-heading ut-nav-area__current-level">
-                <a class="ut-link ut-nav-area__link" title="Nomen et Gens" href="/neg">
+                <a class="ut-link ut-nav-area__link" title="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>" aria-label="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>"  href="/neg">
                     Nomen et Gens
                 </a>
             </h2>
@@ -204,7 +204,6 @@
                     <span class="ut-switchblock__title">Menu</span>
                     <span class="ut-switchblock__close-icon ut-icon ut-icon-cancel" role="button"></span>
                 </div>
-
                 <div class="ut-switchblock__content" data-breadcrumbuids="0">
                     <nav id="ut-identifier--main-nav" class="ut-nav ut-nav--main lory-slider js_variablewidth variablewidth" data-current-languageuid="###LANGUAGE_UID###">
                         <div class="lory-frame js_frame">
@@ -212,7 +211,7 @@
                             <ul class="ut-nav__list ut-nav__list--level-1 lory-slides js_slides">
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="1">
                                     ${param.current eq 'startseite' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'startseite' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/startseite" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'startseite' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/startseite" aria-label="<% Language.printTextfield(out, session, "startseite", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="startseite"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -222,7 +221,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="2">
                                     ${param.current eq 'einzelbeleg' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einzelbeleg' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einzelbeleg" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einzelbeleg' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einzelbeleg" aria-label="<% Language.printTextfield(out, session, "einzelbeleg", "Titel");%>"  tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="einzelbeleg"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -232,7 +231,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="3">
                                     ${param.current eq 'person' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'person' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/person" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'person' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/person" aria-label="<% Language.printTextfield(out, session, "person", "Titel");%>"  tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="person"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -242,7 +241,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="4">
                                     ${param.current eq 'namenkommentar' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'namenkommentar' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/mghlemma" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'namenkommentar' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/mghlemma" aria-label="<% Language.printTextfield(out, session, "namen", "Namen");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="namenkommentar"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -252,7 +251,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="5">
                                     ${param.current eq 'quelle' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'quelle' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/quelle" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'quelle' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/quelle" aria-label="<% Language.printTextfield(out, session, "quelle", "Titel"); %>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="quelle"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -262,7 +261,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="6">
                                     ${param.current eq 'einfaches_ergebnis' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einfaches_ergebnis' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einfaches_ergebnis' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis" aria-label="<% Language.printTextfield(out, session, "suche", "Titel"); %>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="gast_freie_suche"/>
                                             <jsp:param name="Textfeld" value="Suchen"/>
@@ -272,7 +271,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="7">
                                     ${param.current eq 'freie_suche' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="gast_freie_suche"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -289,5 +288,3 @@
         </div>
     </div>
 </header>
-
-
