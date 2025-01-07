@@ -54,7 +54,7 @@
             out.println("<br>Provenienz (DB): "+provenanceSrc);
         if(provenanceId != null) {
             if (provenanceSrc != null && provenanceSrc.equals("DMP") && DMPtype != null && DMPprimaryColumn != null) {
-                out.println("<br>Provenienz (ID): <a href=\"https://dmp.ub.uni-tuebingen.de/?table=" + DMPtype + "&mode=view&" + DMPprimaryColumn + "=" + provenanceId + "\" target=\"_blank\">"+ provenanceId + "</a>");
+                out.println("<br>Provenienz (ID): <a class=\"ut-link ut-link--external ut-link--context-icon\" href=\"https://dmp.ub.uni-tuebingen.de/?table=" + DMPtype + "&mode=view&" + DMPprimaryColumn + "=" + provenanceId + "\" target=\"_blank\">"+ provenanceId + "</a>");
             } else {
                 out.println("<br>Provenienz (ID): "+provenanceId);
             }
