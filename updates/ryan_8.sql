@@ -16,3 +16,17 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('informationen', 'WeitereInformationen', 'Weitere Informationen', 'Further Information', 'Informations supplémentaires', 'Ulteriores Informationes');
 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('mgh_lemma', 'GoToLemma', 'Gehe zu Lemma', 'go to Lemma', 'aller à Lemma', 'ad Lemma');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('namenkommentar', 'GoToPhilologicalLemma', 'gehe zu Philologisches Lemma', 'go to Philological Lemma', 'aller à Lemme philologique', 'ad Lemma philologicum');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('jump', 'JumpTo', 'Springe zu NeG-ID:', 'Jump to NeG-ID:', 'Aller à NeG-ID:', 'Salta ad NeG-ID:');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('jump', 'Los', 'los', 'go', 'aller', 'ire');
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Jump ahead for', `fr` = 'Avancer de ', `la` = 'Transire per' WHERE Textfeld = 'vor';
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Jump to no.', `fr` = 'Sauter au no', `la` = 'Transire ad numerum' WHERE Textfeld = 'zu';
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Jump back for', `fr` = 'Retourner de ', `la` = 'Redire per' WHERE Textfeld = 'zurück';
+

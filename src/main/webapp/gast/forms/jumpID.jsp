@@ -13,9 +13,11 @@
     } catch (NumberFormatException e) {
     }
 %>
-<span>Springe zu NeG-ID:</span>
-<input type="text" name="jumpValueID" placeholder="z.B. P7404">
+<div style="display: flex; align-items: center; gap: 10px;">
+    <span id="jumpLabel"><% Language.printTextfield(out, session, "jump", "JumpTo");%></span>
+    <input class="ut-form__input ut-form__field" type="text" name="jumpValueID" placeholder="z.B. P7404" aria-labelledby="jumpLabel" aria-required="true">
 
-<input type="hidden" name="jumpTable" value="<%= title%>">
-<input type="hidden" name="akt" value="<%= id%>">
-<input type="submit" name="jumpID" value="los">
+    <input type="hidden" name="jumpTable" value="<%= title%>">
+    <input type="hidden" name="akt" value="<%= id%>">
+    <input class="ut-form__input" type="submit" name="jumpID" value="<% Language.printTextfield(out, session, "jump", "Los");%>">
+</div>
