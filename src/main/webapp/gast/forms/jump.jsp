@@ -37,5 +37,7 @@
     <input class="ut-form__input ut-form__field" type="text" name="jumpValue" size="5">
     <input type="hidden" name="jumpTable" value="<%= title%>">
     <input type="hidden" name="akt" value="<%= id%>">
-    <input class="ut-form__input" type="submit" name="jump" value="<% Language.printTextfield(out, session, "jump", "Los");%>">
+    <button class="ut-btn ut-btn--color-primary-2" name="jump" type="submit" value="los">
+        <% Language.printTextfield(out, session, "jump", "Los");%>
+    </button>
 </div>

@@ -19,5 +19,7 @@
 
     <input type="hidden" name="jumpTable" value="<%= title%>">
     <input type="hidden" name="akt" value="<%= id%>">
-    <input class="ut-form__input" type="submit" name="jumpID" value="<% Language.printTextfield(out, session, "jump", "Los");%>">
+    <button class="ut-btn ut-btn--color-primary-2" name="jumpID" type="submit" value="los">
+        <% Language.printTextfield(out, session, "jump", "Los");%>
+    </button>
 </div>
