@@ -30,8 +30,7 @@
             }
         }
         out.println("</select>");
-        out.println("<input type=\"text\" name=\"filterParameter\" value=\"" + (filterParameter == null ? "" : filterParameter) + "\" size=\"10\" maxlength=\"50\">");
-        out.println("<input type=\"submit\" value=\"filtern\">");
+        out.println("<input class=\"ut-form__input ut-form__field\" type=\"text\" name=\"filterParameter\" value=\"" + (filterParameter == null ? "" : filterParameter) + "\" size=\"10\" maxlength=\"50\">");
+        out.println("<input class=\"ut-form__input\" type=\"submit\" value=\"filtern\">");
     }
-
 %>
