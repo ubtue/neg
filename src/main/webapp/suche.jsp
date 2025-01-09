@@ -3,7 +3,7 @@
 <%@ include file="functions.jsp"%>
 
 <div>
-<jsp:include page="layout/titel.suche.html" />
+<jsp:include page="layout/titel.suche.jsp" />
 
 <div id="form">
 <div id="tab1">

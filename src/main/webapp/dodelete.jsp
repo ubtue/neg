@@ -18,7 +18,7 @@
   <BODY>
     <jsp:include page="layout/navigation.inc.jsp" />
     <jsp:include page="layout/image.inc.html" />
-    <jsp:include page="layout/titel.suche.html" />
+    <jsp:include page="layout/titel.suche.jsp" />
     <div id="form">
       <h2>L&ouml;schen</h2>
 <%
@@ -37,13 +37,13 @@
   else {
     if(DeleteHelper.deleteEntity(request,response,out)){
         out.println("<p>Eintrag erfolgreich gel&ouml;scht!</p>");
-        out.println("<script type=\"text/javascript\">window.setTimeout(location.replace('"+request.getParameter("returnpage")+"?ID="+request.getParameter("returnid")+"'),1000)</script>");    
+        out.println("<script type=\"text/javascript\">window.setTimeout(location.replace('"+request.getParameter("returnpage")+"?ID="+request.getParameter("returnid")+"'),1000)</script>");
     }else{
         out.println("<p>Fehler beim l&ouml;schen!</p>");
-        out.println("<a href=\"javascript: history.back();\">Zur&uuml;ck</a>");    
+        out.println("<a href=\"javascript: history.back();\">Zur&uuml;ck</a>");
     }
-    
-    
+
+
   }
 %>
     </div>

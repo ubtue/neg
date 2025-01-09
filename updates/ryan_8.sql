@@ -30,3 +30,42 @@ UPDATE `neg`.`datenbank_texte` SET `gb` = 'Jump to no.', `fr` = 'Sauter au no', 
 
 UPDATE `neg`.`datenbank_texte` SET `gb` = 'Jump back for', `fr` = 'Retourner de ', `la` = 'Redire per' WHERE Textfeld = 'zurück';
 
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Search', `fr` = 'Rechercher', `la` = 'Quaerere' WHERE Formular = "suche" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'Référence individuelle', `la` = 'Testimonium personae' WHERE Formular = "einzelbeleg" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Persons', `fr` = 'Personnes', `la` = 'Personae' WHERE Formular = "person" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Names', `fr` = 'Noms', `la` = 'Nomina' WHERE Formular = "namenkommentar" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Sources', `fr` = 'Sources', `la` = 'Fontes' WHERE Formular = "quelle" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Editions', `fr` = 'Éditions', `la` = 'Editiones' WHERE Formular = "edition" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Text attestor', `fr` = 'Témoins du texte', `la` = 'Testimonia textus' WHERE Formular = "handschrift" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `de` = 'Offene Verknüpfung' WHERE Formular = "openLink" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Free search', `fr` = 'Recherche libre', `la` = 'Libere quaerere' WHERE Formular = "freie_suche" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Settings', `fr` = 'Paramètres', `la` = 'Optiones' WHERE Formular = "einstellungen" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Administration', `fr` = 'Administration', `la` = 'Administratio' WHERE Formular = "administration" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'Inscrit(e) comme', `la` = 'Initus/a est' WHERE Formular = "navigation" and Textfeld = "AngemeldetAls";
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'EinzelbelegOhneLemma', 'Einzelbelege ohne Lemma', 'Single reference without a lemma', 'Référence individuelle sans lemme', 'Testimonia sine lemmate');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'EinzelbelegOhneTextkritik', 'Einzelbelege ohne Textkritik', 'Single references without text attestor', 'Références individuelles sans témoins du texte', 'Testimonia sine testimoniis textus');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'EinzelbelegOhnePerson', 'Einzelbelege ohne Person', 'Single references without a person', 'Références individuelles sans personne', 'Testimonia sine persona');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'NamenOhneBelege', 'Namen ohne Belege', 'Names without references', 'Noms sans références', 'Nomina sine testimoniis');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'PersonOhneBelege', 'Person ohne Belege', 'Person without references', 'Personne sans références', 'Persona sine testimoniis');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'QuelleOhneEdition', 'Quelle ohne Edition', 'Source without edition', 'Source sans édition', 'Fonte sine editione');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'QuelleOhneUeberlieferung', 'Quelle ohne Ueberlieferung', 'Source without tradition', 'Source sans tradition', 'Fonte sine traditione');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'TextzeugenOhneUeberlieferung', 'Textzeugen ohne Ueberlieferung', 'Text attestors without tradition', 'Témoins du texte sans tradition', 'Testimonia textus sine traditione');
