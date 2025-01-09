@@ -12,7 +12,12 @@
 
     Person person = PersonDB.getById(id);
     if (person == null) {
-        throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " does not exist");
+        }
+
     } else {
         Set<Einzelbeleg> listEinzelbeleg = person.getEinzelbeleg();
 
@@ -26,10 +31,16 @@
         }
 
         if (throwException) {
-            throw new IdNotPublicException("Person ID P" + id + " ist nicht zu veröffentlichen");
+            if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Person ID P" + String.valueOf(id) + " ist nicht zu verÃ¶ffentlichen");
+            } else{
+                throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " is not to be published");
+            }
+
         }
     }
 %>
+
 
 <jsp:include page="../dojump.jsp">
     <jsp:param name="form" value="gast_person" />

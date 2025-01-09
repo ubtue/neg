@@ -13,11 +13,19 @@
 
     Quelle quelle = QuelleDB.getById(id);
     if (quelle == null) {
-        throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " does not exist");
+        }
     }
 
     if (quelle.getZuVeroeffentlichen() != 1) {
-        throw new IdNotPublicException("Quellen ID Q" + id + " ist nicht zu veröffentlichen");
+        if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Quellen ID Q" + id + " ist nicht zu verÃ¶ffentlichen");
+            } else{
+                throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " is not to be published");
+            }
     }
 
     String formular = "quelle";
@@ -204,9 +212,9 @@
 <script>
     window.onload = function() {
         var urkundenDiv = document.getElementById("urkunden");
-        // Überprüfen, ob das div sichtbaren Inhalt enthält
+        // ï¿½berprï¿½fen, ob das div sichtbaren Inhalt enthï¿½lt
         if (urkundenDiv && urkundenDiv.innerText.trim() !== "") {
-            // Falls Inhalte vorhanden sind, die Überschrift und das div anzeigen
+            // Falls Inhalte vorhanden sind, die ï¿½berschrift und das div anzeigen
             document.getElementById("headline").style.display = "block";
             urkundenDiv.style.display = "block";
         }

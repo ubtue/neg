@@ -21,7 +21,11 @@
     int id = Utils.determineId(request, response, formular, out);
 
     if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || EinzelbelegDB.getById(id) == null)){
-        throw new IdNotFoundException("Einzelbeleg ID " + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Einzelbeleg ID B" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Single Reference ID B" + String.valueOf(id) + " does not exist");
+        }
     }
 %>
 
@@ -36,7 +40,7 @@
 
 <div
     onLoad="javascript:onoff('tab4', 'tab1'); onoff('tab1', 'tab4');urlRewrite(<%=id%>);">
-    <FORM method="POST">        
+    <FORM method="POST">
         <jsp:include page="layout/titel.inc.jsp">
             <jsp:param name="title" value="Einzelbeleg" />
             <jsp:param name="ID" value="<%=id%>" />
@@ -736,7 +740,7 @@
                         <jsp:param name="Datenfeld" value="Funktion" />
                     </jsp:include>
                     <br />
-                    
+
                     <jsp:include page="inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%=id%>" />
                         <jsp:param name="Formular" value="einzelbeleg" />

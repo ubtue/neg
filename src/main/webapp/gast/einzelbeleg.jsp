@@ -11,13 +11,21 @@
 
     Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
 
-    if(einzelbeleg == null){
-        throw new IdNotFoundException("Einzelbeleg ID B" + String.valueOf(id) + " ist nicht vorhanden");
-    }
+        if(einzelbeleg == null){
+            if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotFoundException("Einzelbeleg ID B" + String.valueOf(id) + " ist nicht vorhanden");
+            } else{
+                throw new IdNotFoundException("Single Reference ID B" + String.valueOf(id) + " does not exist");
+            }
+        }
 
-    if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
-        throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu ver�ffentlichen");
-    }
+        if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
+            if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu veröffentlichen");
+            } else{
+                throw new IdNotPublicException("Single Reference ID B" + String.valueOf(id) + " is not to be published");
+            }
+        }
 %>
 
 <jsp:include page="../dojump.jsp">

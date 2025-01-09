@@ -11,8 +11,6 @@
 <%@ include file="functions.jsp" %>
 <%@ include file="configuration.jsp"%>
 
-
-
 <%
     String formular = "namenkommentar";
     Filter.setFilter(request, formular, out);
@@ -20,7 +18,11 @@
     int id = Utils.determineId(request, response, formular, out);
 
     if (id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || NamenKommentarDB.getById(id) == null)) {
-        throw new IdNotFoundException("Philologisches Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Philologisches Lemma ID N" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " does not exist");
+        }
     }
 %>
 

@@ -20,7 +20,11 @@
     int id = Utils.determineId(request, response, formular, out);
 
     if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || QuelleDB.getById(id) == null)){
-        throw new IdNotFoundException("Quellen ID " + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " does not exist");
+        }
     }
     //only determine the urkunde id for an existing quelle record
     if (id != Constants.UNDEFINED_ID && id != Constants.NEW_ITEM) {

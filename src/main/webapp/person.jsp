@@ -18,7 +18,11 @@
     int id = Utils.determineId(request, response, formular, out);
 
     if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || PersonDB.getById(id) == null)){
-         throw new IdNotFoundException("Person ID " + String.valueOf(id) + " ist nicht vorhanden");
+         if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " does not exist");
+        }
     }
 %>
 

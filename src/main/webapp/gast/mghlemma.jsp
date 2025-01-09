@@ -21,7 +21,11 @@
     MghLemma lemma = MghLemmaDB.getById(id);
 
     if (lemma == null) {
-        throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " does not exist");
+        }
     } else {
 
         Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
@@ -36,7 +40,11 @@
         }
 
         if (throwException) {
-            throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
+            if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu verÃ¶ffentlichen");
+            } else{
+                throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " is not to be published");
+            }
         }
     }
 

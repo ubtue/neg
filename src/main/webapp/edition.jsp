@@ -9,7 +9,6 @@
 
 <%@ include file="configuration.jsp" %>
 
-
 <%
     String formular = "edition";
     Filter.setFilter(request, formular, out);
@@ -20,7 +19,11 @@
     //if (id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || EditionDB.getById(id) == null)) {
 
     if (id != Constants.NEW_ITEM && (EditionDB.getById(id) == null)) {
-        throw new IdNotFoundException("Edition ID " + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Edition ID E" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Edition ID E" + String.valueOf(id) + " does not exist");
+        }
     }
 %>
 
@@ -200,7 +203,7 @@
 	<li><a href="javascript:onoff('tab5','tab1');">
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
-<!-- TAB BÄNDE & QUELLEN
+<!-- TAB Bï¿½NDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                     <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -250,7 +253,7 @@
 	<li><span>
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </span></li>
-<!-- TAB BÄNDE & QUELLEN
+<!-- TAB Bï¿½NDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                 <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -355,7 +358,7 @@
 	<li><a href="javascript:onoff('tab5','tab4');">
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
-<!-- TAB BÄNDE & QUELLEN
+<!-- TAB Bï¿½NDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab4');">
                     <% Language.printTextfield(out,session, formular,"TabBaende");%>
