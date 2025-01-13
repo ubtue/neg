@@ -69,3 +69,20 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'QuelleOhneUeberlieferung', 'Quelle ohne Ueberlieferung', 'Source without tradition', 'Source sans tradition', 'Fonte sine traditione');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('ohneVerknuepfung', 'TextzeugenOhneUeberlieferung', 'Textzeugen ohne Ueberlieferung', 'Text attestors without tradition', 'Témoins du texte sans tradition', 'Testimonia textus sine traditione');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('dodeletefile', 'FalscherAufruf', 'Falscher Aufruf!', 'Wrong call!', 'mauvais appel !', 'Falsum vocatum!');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('dodeletefile', 'ZugriffNichtErlaubt', 'Zugriff nicht erlaubt!!!', 'Access not allowed!!!', 'Accès non autorisé !!!', 'Accessus non permissus!!!');
+
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'Retourner à la  page d\'accueil ', `la` = 'Redire ad paginam primam' WHERE Formular = "all" and Textfeld = "Startseite";
+
+UPDATE `neg`.`datenbank_texte` SET `la` = 'Inscriptum' WHERE Formular = "titel_inc" and Textfeld = "Eintrag";
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('dodeletefile', 'ErfolgreichGeloescht', 'erfolgreich gelöscht!', 'successfully deleted!', 'supprimée avec succès !', 'feliciter deleta est!');
+
+UPDATE `neg`.`datenbank_texte` SET `de` = 'Zurück', `gb` = 'Back', `fr` = 'En arrière', `la` = 'Revertere' WHERE Formular = "einstellungen" and Textfeld = "Zurueck";
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('dodelete', 'EintragErflogreichGelöscht', 'Eintrag erfolgreich gelöscht!', 'Entry successfully deleted!', 'Entrée supprimée avec succès !', 'Inscriptum feliciter deleta est!');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('dodelete', 'FehlerBeimLoeschen!', 'Fehler beim löschen!', 'Error while deleting!', 'Erreur lors de la suppression !', 'Error in delendo!');
+
