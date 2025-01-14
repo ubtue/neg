@@ -86,3 +86,8 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('dodelete', 'FehlerBeimLoeschen!', 'Fehler beim löschen!', 'Error while deleting!', 'Erreur lors de la suppression !', 'Error in delendo!');
 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('stat', 'QuellenTitel', 'Titel der Quelle', 'Source Title', 'Titre de la source', 'Titulus fontis');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('stat', 'AnzahlBelege', 'Anzahl Belege', 'Number of References', 'Nombre de références', 'Numerus Testimoniorum');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('stat', 'TitelFilter', 'Titel Filter', 'Title Filter', 'Filtre par titre', 'Titulus Filtrum');
