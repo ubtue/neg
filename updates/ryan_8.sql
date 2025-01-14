@@ -91,3 +91,5 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('stat', 'AnzahlBelege', 'Anzahl Belege', 'Number of References', 'Nombre de références', 'Numerus Testimoniorum');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('stat', 'TitelFilter', 'Titel Filter', 'Title Filter', 'Filtre par titre', 'Titulus Filtrum');
+
+UPDATE `neg`.`datenbank_texte` SET `la` = 'Statistica' WHERE Formular = "stat" and Textfeld = "Titel";
