@@ -6,6 +6,26 @@
 
 <jsp:include page="../dofilter.jsp" />
 
+<style>
+    .myTable .ut-table {
+        table-layout: auto; /* Automatische Breitenanpassung */
+        width: 100%;
+    }
+
+    .myTable .ut-table__row td {
+        width: auto; /* Breite der Zellen soll sich anpassen */
+    }
+
+    .myTable .ut-table__row td:first-child {
+        white-space: nowrap; /* Verhindert das Umbruchverhalten */
+    }
+
+    .myTable .ut-table__row td:last-child {
+        width: 100%; /* Die zweite Spalte nimmt den verbleibenden Platz ein */
+    }
+</style>
+
+
 <%
     int id = Integer.parseInt(request.getParameter("ID"));
 
@@ -56,7 +76,7 @@
 
 <!----------Belegstelle---------->
 <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "TabBelegstelle");%></h3>
-
+<div class="myTable">
 <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
     <tbody class="ut-table__body ">
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -71,7 +91,7 @@
         <tr class="ut-table__row">
             <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "einzelbeleg", "Belegform");%></td>
             <td class="ut-table__item ut-table__body__item">
-                <div class="container" style="display: flex; align-items: center;">
+                <span style="display: inline-flex; align-items: center;">
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= id%>"/>
                         <jsp:param name="Formular" value="einzelbeleg"/>
@@ -79,14 +99,16 @@
                         <jsp:param name="size" value="50"/>
                         <jsp:param name="Readonly" value="yes"/>
                     </jsp:include>
+                </span>
+                <div>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:param name="ID" value="<%= id%>"/>
+                        <jsp:param name="Formular" value="einzelbeleg"/>
+                        <jsp:param name="Datenfeld" value="Griechisch"/>
+                        <jsp:param name="size" value="50"/>
+                        <jsp:param name="Readonly" value="yes"/>
+                    </jsp:include>
                 </div>
-                <jsp:include page="../inc.erzeugeFormular.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="Formular" value="einzelbeleg"/>
-                    <jsp:param name="Datenfeld" value="Griechisch"/>
-                    <jsp:param name="size" value="50"/>
-                    <jsp:param name="Readonly" value="yes"/>
-                </jsp:include>
             </td>
         </tr>
 
@@ -302,7 +324,7 @@
         <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "QuelleDatierung")%>"/>
     </jsp:include>
 </table>
-
+</div>
 <!----------Textkritik---------->
 
 <%
