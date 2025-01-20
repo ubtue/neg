@@ -6,14 +6,16 @@
         List<Object[]> rowlist = AbstractBase.getListNative("SELECT ID, " + zielAttribut + " FROM " + zielTabelle + " WHERE " + formular + "ID=\"" + id + "\"");
 
         if ((rowlist != null && !rowlist.isEmpty()) || !isReadOnly) {
-            out.println("<table>");
+            out.println("<table class=\"ut-table--color-primary-1 \">");
+            out.println("<thead class=\"ut-table__header \">");
+
             int i = 0;
             for (Object[] row : rowlist) {
                 String row_id = row[0].toString();
                 String row_zielAttribut = row[1].toString();
 
-                out.println("<tr>");
-                out.println("<td>");
+                out.println("<tr class=\"ut-table__row\">");
+                out.println("<td class=\"ut-table__item ut-table__body__item\">");
                 if (!isReadOnly) {
                     out.print("<input name=\"" + datenfeld + "[" + i + "]\" ");
                 }
@@ -54,7 +56,7 @@
                     href = "javascript:deleteEntry('" + zielTabelle + "', '" + row_id + "', '" + returnpage + "', '" + returnId + "');";
                 }
 
-                out.println("<td>");
+                out.println("<td class=\"ut-table__item ut-table__body__item\">");
                 if (!isReadOnly) {
                     out.println("<a href=\"" + href + "\">");
                     out.println(txt_delete);
@@ -76,6 +78,7 @@
                 out.println("</tr>");
             }
 
+            out.println("</thead>");
             out.println("</table>");
         }
     }

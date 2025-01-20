@@ -93,3 +93,10 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('stat', 'TitelFilter', 'Titel Filter', 'Title Filter', 'Filtre par titre', 'Titulus Filtrum');
 
 UPDATE `neg`.`datenbank_texte` SET `la` = 'Statistica' WHERE Formular = "stat" and Textfeld = "Titel";
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('person', 'Prosopographical', 'Prosopographisches', 'Prosopographical', 'Prosopographique', 'Prosopographicum');
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Functions', `fr` = 'Fonctions', `la` = 'Officia' WHERE Formular = "person" and Textfeld = "Aemter";
+
+UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Andere Namen', `gb_beschriftung` = 'Other Names', `fr_beschriftung` = 'Autres noms', `la_beschriftung` = 'Alia nomina' WHERE Formular = "person" and Datenfeld = "Varianten";
+

@@ -49,17 +49,19 @@
                 out.println("</td>");
                 if (repeat) {
                     String href = "javascript:deleteEntry('" + zielTabelle + "', '" + row.get("ID").toString() + "', '" + returnpage + "', '" + id + "');";
-                    out.println("<td>");
+
                     if (!isReadOnly) {
+                        out.println("<td class=\"ut-table__item ut-table__body__item\">");
                         out.println("<a href=\"" + href + "\">");
                         out.println(txt_delete);
                         out.println("</a>");
+                        out.println("</td>");
                     }
-                    out.println("</td>");
                 }
                 out.println("</tr>");
                 i++;
             }
+            out.println("</tbody>");
             out.println("</table>");
         }
     }

@@ -74,11 +74,11 @@
     <!----------Prosopographisches---------->
 
     <!----------Has to be put inside of database/table: "datenbank_texte" -- (not present till now)---------->
-    <h3 class="ut-heading ut-heading--h3"> Prosopographisches </h3>
+    <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "person", "Prosopographical");%></h3>
     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
         <tbody class="ut-table__body">
             <tr class="ut-table__row">
-                <th style="vertical-align: middle;"><% Language.printTextfield(out, session, "person", "Person");%> </th>
+                <td class="ut-table__item ut-table__body__item"><% Language.printTextfield(out, session, "person", "Person");%> </td>
                 <td class="ut-table__item ut-table__body__item">
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= id%>" />
@@ -142,6 +142,7 @@
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getTextfield(session, "person", "Aemter")%>"/>
+                <jsp:param name="CountRow" value="noCount" />
             </jsp:include>
 
             <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -151,6 +152,7 @@
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getDatafield(session, "person", "Ethnie")%>"/>
+                <jsp:param name="CountRow" value="noCount" />
             </jsp:include>
 
             <%
@@ -160,7 +162,7 @@
             %>
 
             <tr class="ut-table__row">
-                <th class="ut-table__item ut-table__header__item" scope="col"><% Language.printTextfield(out, session, "person", "TabVerwandte");%></th>
+                <th class="ut-table__item ut-table__body__item"><% Language.printTextfield(out, session, "person", "TabVerwandte");%></th>
                 <td class="ut-table__item ut-table__body__item">
                     <jsp:include page="../inc.modul.jsp">
                         <jsp:param name="ID" value="<%= id%>" />
