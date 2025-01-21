@@ -144,8 +144,8 @@
 <% if (urkunde != null) { %>
 <% int urkundeid = urkunde.getId(); %>
 
-<h3 id="headline" style="display: none;"><% Language.printTextfield(out, session, "quelle", "TabUrkunde");%></h3>
-<div id="urkunden" style="display: none;">
+<h3 id="headline" id="headline" style="display: none;"><% Language.printTextfield(out, session, "quelle", "TabUrkunde");%></h3>
+<div class="container" id="urkunden">
     <table class="content-table">
         <tbody>
             <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -204,11 +204,11 @@
 <script>
     window.onload = function() {
         var urkundenDiv = document.getElementById("urkunden");
-        // Überprüfen, ob das div sichtbaren Inhalt enthält
+        // überprüfen, ob das div sichtbaren Inhalt enthält
         if (urkundenDiv && urkundenDiv.innerText.trim() !== "") {
             // Falls Inhalte vorhanden sind, die Überschrift und das div anzeigen
             document.getElementById("headline").style.display = "block";
-            urkundenDiv.style.display = "block";
+
         }
     };
 </script>
