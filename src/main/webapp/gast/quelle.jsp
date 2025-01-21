@@ -32,13 +32,14 @@
     Urkunde urkunde = quelle.getUrkunde();
 %>
 
+<h1 class="ut-heading ut-heading--h1">
 <a class="ut-link" href="<%=Utils.getBaseUrl(request)%>/gast/quelle?page=stat">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
         <jsp:param name="Formular" value="stat"/>
         <jsp:param name="Textfeld" value="Titel"/>
     </jsp:include>
 </a>
-<br>
+</h1>
 
 <jsp:include page="../dojump.jsp">
     <jsp:param name="form" value="gast_quelle" />
@@ -152,8 +153,8 @@
 <% if (urkunde != null) { %>
 <% int urkundeid = urkunde.getId(); %>
 
-<h3 lass="ut-heading ut-heading--h3" style="display: none;"><% Language.printTextfield(out, session, "quelle", "TabUrkunde");%></h3>
-<div class="container" id="urkunden" style="display: none;">
+<h3 lass="ut-heading ut-heading--h3" id="headline" style="display: none;"><% Language.printTextfield(out, session, "quelle", "TabUrkunde");%></h3>
+<div class="container" id="urkunden">
     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
         <tbody class="ut-table__body ">
             <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -212,11 +213,12 @@
 <script>
     window.onload = function() {
         var urkundenDiv = document.getElementById("urkunden");
-        // �berpr�fen, ob das div sichtbaren Inhalt enth�lt
+        // überprüfen, ob das div sichtbaren Inhalt enthält
         if (urkundenDiv && urkundenDiv.innerText.trim() !== "") {
-            // Falls Inhalte vorhanden sind, die �berschrift und das div anzeigen
+            // Falls Inhalte vorhanden sind, die Überschrift und das div anzeigen
             document.getElementById("headline").style.display = "block";
-            urkundenDiv.style.display = "block";
+
         }
     };
 </script>
+

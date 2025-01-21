@@ -445,7 +445,7 @@
     }
 
     if (formular.equals("edition")) {
-        //Backend: Edition, Tab Überlieferung (Überlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat) [z.b E125]
+        //Backend: Edition, Tab ï¿½berlieferung (ï¿½berlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat) [z.b E125]
         if (modul.equals("ueberlieferung")) {
             out.println("<table>\n");
 %>
@@ -590,7 +590,7 @@
         }
     }
 
-    //Backend: Quellen --> Tab: Überlieferung (Uberlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat)
+    //Backend: Quellen --> Tab: ï¿½berlieferung (Uberlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat)
     if (formular.equals("quelle")) {
         if (modul.equals("ueberlieferung")) {
             out.println("<table>\n");
@@ -736,7 +736,7 @@
         out.println("</table>\n");
     }
 
-//Gast:  Quellen --> Bereich/Katagorie Überlieferung
+//Gast:  Quellen --> Bereich/Katagorie ï¿½berlieferung
     if (modul.equals("ueberlieferungRO")) {
 %>
 <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
@@ -937,7 +937,7 @@
                         <jsp:param name="Formular" value="quelle" />
                         <jsp:param name="Textfeld" value="StandardEdition" />
                     </jsp:include>
-                </strong><
+                </strong>
             </td>
 
 <%    boolean firstEdition = true;
@@ -1003,7 +1003,8 @@
 
         out.println("<tr class=\"ut-table__row\">");
 %>
-<td><jsp:include page="inc.erzeugeBeschriftung.jsp">
+<td  class="ut-table__item ut-table__body__item">
+    <jsp:include page="inc.erzeugeBeschriftung.jsp">
         <jsp:param name="Formular" value="quelle" />
         <jsp:param name="Textfeld" value="WeitereEditionen" />
     </jsp:include>
@@ -1066,6 +1067,11 @@
     } catch (Exception e) {
         out.println(e);
     }
+
+    if (firstEdition) {
+        out.println("<td class=\"ut-table__item ut-table__body__item\" colspan=\"8\"></td></tr>");
+    }
+
     out.println("</tbody>");
     out.println("</table>\n");
     if (!showNummer) {

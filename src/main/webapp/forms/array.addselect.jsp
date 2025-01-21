@@ -10,10 +10,11 @@
 
             String selected = "-1";
             int i = 0;
-            out.println("<table>");
+            out.println("<table class=\"ut-table \">");
+            out.println("<tbody class=\"ut-table__body\">");
             for (Object[] columns : rowlist) {
-                out.println("<tr>");
-                out.println("<td>");
+                out.println("<tr class=\"ut-table__row\">");
+                out.println("<td class=\"ut-table__item ut-table__body__item\">");
 
                 String value_id = columns[0].toString();
                 String value_zielAttribut = columns[1].toString();
