@@ -128,7 +128,7 @@
                 <b>Titel der Quelle</b>
                 <form method="GET">
                     <input name="filterTitle" type="text" size="40" value="<%=filterTitle %>" placeholder="Titel Filter"/>
-                    <input name="page" type="hidden" value="anzahl_belege"/>
+                    <input name="page" type="hidden" value="stat"/>
                     <input name="sort" type="hidden" value="<%=sort %>"/>
                     <input type="submit" />
                 </form>
