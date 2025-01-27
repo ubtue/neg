@@ -128,7 +128,7 @@ UPDATE `neg`.`datenbank_texte` SET `gb` = 'Edition', `fr` = 'Édition', `la` = '
 
 UPDATE `neg`.`datenbank_texte` SET `gb` = 'Charter', `fr` = 'Chartes', `la` = 'Chartae' where Formular = "quelle" and Textfeld = "TabUrkunde";
 
-UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Place of execution', `fr_beschriftung` = 'Lieu d\'exécution', `la_beschriftung` = 'Actum' where Formular = "urkunde" and Datenfeld = "Actumort";
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Place of Execution', `fr_beschriftung` = 'Lieu d\'exécution', `la_beschriftung` = 'Actum' where Formular = "urkunde" and Datenfeld = "Actumort";
 
 UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Subject', `fr_beschriftung` = 'Objet', `la_beschriftung` = 'Titulus' where Formular = "urkunde" and Datenfeld = "Betreff";
 
@@ -137,5 +137,93 @@ UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Issuer of the Charter'
 UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Recipient', `fr_beschriftung` = 'Destinataire', `la_beschriftung` = 'Destinatarius' where Formular = "urkunde" and Datenfeld = "Empfaenger";
 
 UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Dorsal Note', `fr_beschriftung` = 'Note dorsale', `la_beschriftung` = 'Adnotata dorsualia' where Formular = "urkunde" and Datenfeld = "Dorsalnotiz";
+
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'Recherche simple', `la` = 'Quaestio simplex' where Formular = "gast_freie_suche" and Textfeld = "EinfacheSuche";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'First Step', `fr` = 'Première étape', `la` = 'Gradus I' where Formular = "freie_suche" and Textfeld = "Tab1";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Second Step', `fr` = 'Deuxième étape', `la` = 'Gradus II' where Formular = "freie_suche" and Textfeld = "Tab2";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Third Step', `fr` = 'Troisième étape', `la` = 'Gradus III' where Formular = "freie_suche" and Textfeld = "Tab3";
+
+UPDATE `neg`.`datenbank_mapping` SET `la_beschriftung` = 'NeG-ID' where Formular = "freie_suche" and Datenfeld = "NeGID";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Form of Reference', `fr_beschriftung` = 'Forme de référence', `la_beschriftung` = 'Forma testimonii' where Formular = "freie_suche" and Datenfeld = "Belegform";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Context', `fr_beschriftung` = 'Contexte', `la_beschriftung` = 'Contextus ' where Formular = "freie_suche" and Datenfeld = "Kontext";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Philological Lemma' where Formular = "freie_suche" and Datenfeld = "Namenlemma";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Name of Person', `fr_beschriftung` = 'Nom de personne', `la_beschriftung` = 'Nomen personae' where Formular = "freie_suche" and Datenfeld = "Personenname";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Sex', `fr_beschriftung` = 'Sexe', `la_beschriftung` = 'Sexus' where Formular = "freie_suche" and Datenfeld = "Geschlecht";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Time Frame of Reference (Person)', `fr_beschriftung` = 'Période d\'attestation (personne)', `la_beschriftung` = 'Spatium temporis testimonii (persona)' where Formular = "freie_suche" and Datenfeld = "PersonZeitraum";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Office/Consecration (Person)', `fr_beschriftung` = 'Fonction/Ordination (personne)', `la_beschriftung` = 'Officium/Consecratio (persona)' where Formular = "freie_suche" and Datenfeld = "AmtWeihePerson";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Status (Person)', `fr_beschriftung` = 'Statut (personne)', `la_beschriftung` = 'Status (persona)' where Formular = "freie_suche" and Datenfeld = "StandPerson";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Ethnicity (Person)', `fr_beschriftung` = 'Ethnie (personne)', `la_beschriftung` = 'Gens (persona)' where Formular = "freie_suche" and Datenfeld = "EthniePerson";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Office/Consecration (Single Reference)', `fr_beschriftung` = 'Fonction/Ordination (Référence indivuelle)', `la_beschriftung` = 'Officium/Consecratio (testimonium)' where Formular = "freie_suche" and Datenfeld = "AmtWeiheEinzelbeleg";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Ethnicity (Single Reference)', `fr_beschriftung` = 'Ethnie (référence indivuelle)', `la_beschriftung` = 'Gens (testimonium)' where Formular = "freie_suche" and Datenfeld = "EthnieEinzelbeleg";
+
+UPDATE `neg`.`datenbank_texte` SET `la` = 'Testimonium' where Formular = "einzelbeleg" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Source', `fr_beschriftung` = 'Source', `la_beschriftung` = 'Fons' where Formular = "freie_suche" and Datenfeld = "Quelle";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Source Type', `fr_beschriftung` = 'Genre de source', `la_beschriftung` = 'Genus fontis' where Formular = "freie_suche" and Datenfeld = "QuelleGattung";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Date of Source', `fr_beschriftung` = 'Datation de la source', `la_beschriftung` = 'Datatio fontis' where Formular = "freie_suche" and Datenfeld = "QuelleZeitraum";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Page', `fr_beschriftung` = 'Page', `la_beschriftung` = 'Pagina' where Formular = "freie_suche" and Datenfeld = "Seite";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'To the Name', `fr` = 'Sur le nom', `la` = 'Ad nomen' where Formular = "gast_freie_suche" and Textfeld = "ZumNamen";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Philological Lemma' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Namenlemma";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'About the Person', `fr` = 'À propos de la personne', `la` = 'De persona' where Formular = "gast_freie_suche" and Textfeld = "ZurPerson";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Standard Name', `fr_beschriftung` = 'Nom standard', `la_beschriftung` = 'Nomen standard' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Person_Standardname";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Offices and Degrees of Consecration of the Person', `fr_beschriftung` = 'Fonctions et degrés de consécration de la personne', `la_beschriftung` = 'Officia et gradus consecrationis personae' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Person_AmtWeihe";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Including Time Period', `fr_beschriftung` = 'Période incluse', `la_beschriftung` = 'Tempus inclusum' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Person_AmtWeiheZeitraum";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Status', `fr_beschriftung` = 'Statut', `la_beschriftung` = 'Status' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Stand";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Ethnicity(ies)', `fr_beschriftung` = 'Ethnie(s)', `la_beschriftung` = 'Gens/Gentes' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Person_Ethnie";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Sex', `fr_beschriftung` = 'Sexe', `la_beschriftung` = 'Sexus' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Geschlecht";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'To the Single Reference', `fr` = 'À la Référence individuelle', `la` = 'Ad Testimonium' where Formular = "gast_freie_suche" and Textfeld = "ZumEinzelbeleg";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Form of Reference', `fr_beschriftung` = 'Forme de référence', `la_beschriftung` = 'Forma testimonii' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Belegform";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Reference Location (Source, Edition, Chapter, Page)', `fr_beschriftung` = 'Lieu de Référence (Source, Édition, Chapitre, Page)', `la_beschriftung` = 'Locus Testimonii (Fons, Editio, Caput, Pagina)' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Belegstelle";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Context', `fr_beschriftung` = 'Contexte', `la_beschriftung` = 'Contextus ' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Kontext";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Dating', `fr_beschriftung` = 'Datation', `la_beschriftung` = 'Datatio' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Datierung";
+
+UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Lebend / Verstorben', `gb_beschriftung` = 'Alive/Dead', `fr_beschriftung` = 'Vivant/Mort', `la_beschriftung` = 'Vivus/Mortuus' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_lebend";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Variants', `fr_beschriftung` = 'Variantes', `la_beschriftung` = 'Variationes' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Varianten";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Source Type', `fr_beschriftung` = 'Genre de sources', `la_beschriftung` = 'Genus fontis' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Quellengattung";
+
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'ascendant' where Formular = "freie_suche" and Textfeld = "SortierungASC";
+
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'descendant' where Formular = "freie_suche" and Textfeld = "SortierungDESC";
+
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'Période de Temps (uniquement pour la datation):', `la` = 'Tempus (tantum pro datatione):' where Formular = "gast_freie_suche" and Textfeld = "ZeitraumDatierung";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Dating', `fr` = 'Datation', `la` = 'Datatio' where Formular = "quelle" and Textfeld = "Datierung";
+
+
+
+
 
 
