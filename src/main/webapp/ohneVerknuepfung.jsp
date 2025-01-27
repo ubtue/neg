@@ -10,7 +10,7 @@
 %>
   <div>
 
-    <jsp:include page="layout/titel.suche.jsp" />
+    <jsp:include page="layout/title.openLink.jsp" />
 
        <div id="form">
        <ul>
