@@ -15,11 +15,11 @@
 %>
 
 <div  style="display: flex; align-items: center; ">
-    <span>Springe zu NeG-ID:</span>
+    <span id="jumpLabel"><% Language.printTextfield(out, session, "jump", "JumpTo");%></span>
     <input class="ut-form__input ut-form__field " id="id_field" type="text" name="jumpValueID" placeholder="z.B. P7404">
     <input type="hidden" name="jumpTable" value="<%= title%>">
     <input type="hidden" name="akt" value="<%= id%>">
-    <button class="ut-btn" type="submit" name="jumpID" value="los" aria-label="los">los</button>
+    <button name="jumpID" type="submit" value="los">
+        <% Language.printTextfield(out, session, "jump", "Los");%>
+    </button>
 </div>
-
-
