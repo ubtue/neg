@@ -67,7 +67,7 @@
                         </tr>
                         <tr>
                             <td width="200"><label for="EMail">E-Mail:</label></td>
-                            <td width="450"><input name="EMail" size="25" maxlength="255"></td>
+                            <td width="450"><input type="email" name="EMail" size="25" maxlength="255"></td>
                         </tr>
                         <tr>
                             <td width="200"><label for="Kennwort">Kennwort:</label></td>
