@@ -13,40 +13,43 @@ import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import de.uni_tuebingen.ub.nppm.exception.*;
+import de.uni_tuebingen.ub.nppm.util.Language;
 
 public class LoginServlet extends HttpServlet {
 
     protected void processLoginAction(HttpServletRequest request, HttpServletResponse response) throws Exception, LoginException {
         String login = request.getParameter("username");
         String password = request.getParameter("password");
+        HttpSession session = request.getSession();
+
+
 
         if (login == null || login.isEmpty() || !BenutzerDB.hasLogin(login)) {
-            throw new LoginException("Benutzer existiert nicht");
+            throw new LoginException(Language.getTextfield(session, "login", "BenutzerExistiertNicht"));
         }
 
         Benutzer benutzer = BenutzerDB.getByLogin(login);
 
         if (!benutzer.isAktiv()) {
-            throw new LoginException("Zugriff nicht erlaubt, Ihr Administrator muss Sie auf aktiv schalten !");
+            throw new LoginException(Language.getTextfield(session, "login", "AktivSchalten"));
         }
 
         if (benutzer == null) {
-            throw new LoginException("Zugriff nicht erlaubt");
+            throw new LoginException(Language.getTextfield(session, "login", "NichtErlaubt"));
         }
 
         String saltString = benutzer.getSalt();
         if (saltString == null || saltString.isEmpty()) {
-            throw new LoginException("Die Sicherheit der Datenbank wurde verbessert. Das Passwort muss neu gesetzt werden. <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">Neuen Link generieren</a>");
+            throw new LoginException(Language.getTextfield(session, "login", "PasswortNeuSetzen") + " <a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">" + Language.getTextfield(session, "login", "LinkGenerieren") + "</a>");
         }
 
         byte[] saltBytes = SaltHash.Base64StringToBytes(saltString);
         String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
         if (!passwordSalted.equals(benutzer.getPassword())) {
-            throw new LoginException("Ungültiges Passwort.");
+            throw new LoginException(Language.getTextfield(session, "login", "PasswortUngueltig"));
         }
 
         // Falls Session vorhanden, löschen
-        HttpSession session = request.getSession();
         if (session != null) {
             session.invalidate();
         }

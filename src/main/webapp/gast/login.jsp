@@ -1,6 +1,11 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="java.util.List" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.model.DatenbankSprache" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.*" isThreadSafe="false" %>
+
+<%@ include file="../configuration.jsp" %>
+<%@ include file="../functions.jsp" %>
+
 
 <HTML>
     <HEAD>
@@ -45,7 +50,7 @@
                                         <jsp:param name="Textfeld" value="Benutzername"/>
                                     </jsp:include>
                                 </label></th>
-                            <td><input name="username" maxlength="20" placeholder="Benutzername" /></td>
+                            <td><input name="username" maxlength="20" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "Benutzername"))%>" /></td>
                         </tr>
                         <tr>
                             <th><label for="password">
@@ -54,27 +59,27 @@
                                         <jsp:param name="Textfeld" value="Passwort"/>
                                     </jsp:include>
                                 </label></th>
-                            <td><input type="password" name="password" maxlength="20" placeholder="Passwort" /></td>
+                            <td><input type="password" name="password" maxlength="20" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "Passwort"))%>" /></td>
                         </tr>
                     </table>
 
 
                 </div>
-                <input type="submit" value="Daten absenden" style="margin:5px 0px 0px 50px"/>
+                <input type="submit" value="<%= DBtoHTML(Language.getTextfield(session, "login", "DatenSenden"))%>" style="margin:5px 0px 0px 50px"/>
 
 
 
                 <p> &nbsp; </p><!-- comment -->
-                <a href="../forgotPassword">Passwort vergessen ?</a>
+                <a href="../forgotPassword"><%= DBtoHTML(Language.getTextfield(session, "login", "PasswortVergessen")) %></a>
             </div>  <!-- ende flexbox-container -->
         </form>
     <center>
-        <% List<DatenbankSprache> sprachen = DatenbankDB.getListSprache(); %>
         <form method="POST">
-            <% for (DatenbankSprache sprache : sprachen) { %>
-                <input type="image" name="language" alt="" title="" src="layout/flags/<%=sprache.getKuerzel()%>.gif" value="<%=sprache.getKuerzel()%>" style="border:#000 1px solid;">
-            <% } %>
+            <jsp:include page="../forms/language.jsp">
+                <jsp:param name="ID" value="<%= request.getParameter("ID")%>"/>
+                <jsp:param name="title" value="<%= request.getParameter("title")%>"/>
+            </jsp:include>
         </form>
-    </center>
+</center>
 </BODY>
 </HTML>
