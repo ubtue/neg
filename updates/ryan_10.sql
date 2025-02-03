@@ -84,6 +84,15 @@ UPDATE `neg`.`datenbank_texte` SET `la` = 'Tessera'  where Formular = "login" an
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('login', 'DatenSenden', 'Daten absenden', 'Submit data', 'Soumettre les données', 'Submittere data');
 
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Edit content', `fr` = 'Modifier le contenu', `la` = 'Contentum recensere' where Formular = "navigation" and Textfeld = "InhaltBearbeiten";
+
+UPDATE `neg`.`datenbank_texte` SET `la` = 'Contentum recensere' where Formular = "inhaltBearbeiten" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `la` = 'Contentum' where Formular = "fileManagement" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'File & Image Management', `la` = 'Administratio fasciculorum et imaginum' where Formular = "tinyMce" and Textfeld = "LinkDateiBildVerwaltung";
+
+UPDATE `neg`.`datenbank_texte` SET `fr` = 'Sauvegarder', `la` = 'Conservare' where Formular = "tinyMce" and Textfeld = "ButtonSpeichern";
 
 
 
