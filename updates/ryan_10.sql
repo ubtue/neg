@@ -94,6 +94,10 @@ UPDATE `neg`.`datenbank_texte` SET `gb` = 'File & Image Management', `la` = 'Adm
 
 UPDATE `neg`.`datenbank_texte` SET `fr` = 'Sauvegarder', `la` = 'Conservare' where Formular = "tinyMce" and Textfeld = "ButtonSpeichern";
 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('login', 'Umzug', 'Datenbank-Umzug', 'Database relocation', 'Déplacement de la base de données', 'Translatio datorum (nova pagina initialis)');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('login', 'WerdenUmgeleitet', 'Sie werden umgeleitet.', 'You are being redirected.', 'Vous êtes redirigé.', 'Redirectimini.');
+
 
 
 

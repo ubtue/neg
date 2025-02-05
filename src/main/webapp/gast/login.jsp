@@ -12,7 +12,7 @@
         <TITLE>
             Nomen et Gens | Login
         </TITLE>
-        <link rel="stylesheet" href="layout/layout.css" type="text/css">
+        <link rel="stylesheet" href="../layout/layout.css" type="text/css">
         <style>
             .flexbox-container{
                 display: flex;
