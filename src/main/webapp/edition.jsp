@@ -118,10 +118,6 @@
             </tr>
             <tr>
               <td width="200">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Reihe"/>
-                </jsp:include>
                   <% Language.printDatafield(out,session, formular,"Reihe");%>
               </td>
               <td width="450">
@@ -203,7 +199,7 @@
 	<li><a href="javascript:onoff('tab5','tab1');">
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
-<!-- TAB B�NDE & QUELLEN
+<!-- TAB BAENDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                     <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -253,7 +249,7 @@
 	<li><span>
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </span></li>
-<!-- TAB B�NDE & QUELLEN
+<!-- TAB BAENDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                 <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -272,11 +268,13 @@
               </li>
             </ul>
           </div>
-<div id="main"><jsp:include page="inc.modul.jsp">
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="Formular" value="edition" />
-	<jsp:param name="Modul" value="ueberlieferung" />
-</jsp:include></div>
+          <div id="main">
+            <jsp:include page="inc.modul.jsp">
+                <jsp:param name="ID" value="<%= id %>" />
+                <jsp:param name="Formular" value="edition" />
+                <jsp:param name="Modul" value="ueberlieferung" />
+            </jsp:include>
+          </div>
         </div>
 
         <div id="tab2">

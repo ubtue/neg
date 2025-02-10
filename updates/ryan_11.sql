@@ -24,7 +24,7 @@ UPDATE `neg`.`datenbank_texte` SET `gb` = 'Person', `fr` = 'Personne', `la` = 'P
 
 UPDATE `neg`.`datenbank_texte` SET `gb` = 'Standard Name', `fr` = 'Nom standard', `la` = 'Nomen standard' where Formular = "mgh_lemma" and Textfeld = "Standardname";
 
-UPDATE `neg`.`datenbank_texte` SET `gb` = 'Dating', `fr` = 'Datation', `la` = 'Definitio temporis' where Formular = "mgh_lemma" and Textfeld = "Datierung";
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Dating', `fr` = 'Datation', `la` = 'Datatio' where Formular = "mgh_lemma" and Textfeld = "Datierung";
 
 UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Remark (for all)', `fr_beschriftung` = 'Remarque (pour tous)', `la_beschriftung` = 'Commentarius (pro omnibus)' where Formular = "mgh_lemma" and Datenfeld = "BemerkungAlle";
 
@@ -46,7 +46,7 @@ UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Signature/Designation'
 
 UPDATE `neg`.`datenbank_texte` SET `gb` = 'Tradition', `fr` = 'Tradition', `la` = 'Traditio' where Formular = "handschrift" and Textfeld = "TabUeberlieferung";
 
-UPDATE `neg`.`datenbank_mapping` SET `fr_combinedAnzeigenamen` = 'Source;;Lien;Édition/Sigle;Origine de l\'écriture;Lieu de création de l\'écriture;Origine bibliothèque;Datation', `la_combinedAnzeigenamen` = 'Fons;;Conexus;Editio/Sigla;Origo scripturae;Origo libri;Origo bibliothecaria;Definitio temporis' where Formular = "handschrift" and Datenfeld = "Ueberlieferung";
+UPDATE `neg`.`datenbank_mapping` SET `fr_combinedAnzeigenamen` = 'Source;;Lien;Édition/Sigle;Origine de l\'écriture;Lieu de création de l\'écriture;Origine bibliothèque;Datation', `la_combinedAnzeigenamen` = 'Fons;;Conexus;Editio/Sigla;Origo scripturae;Origo libri;Origo bibliothecaria;Datatio' where Formular = "handschrift" and Datenfeld = "Ueberlieferung";
 
 UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Remark (for all)', `fr_beschriftung` = 'Remarque (pour tous)', `la_beschriftung` = 'Commentarius (pro omnibus)' where Formular = "handschrift" and Datenfeld = "BemerkungAlle";
 
@@ -98,7 +98,7 @@ UPDATE `neg`.`datenbank_texte` SET `gb` = 'Person', `fr` = 'Personne', `la` = 'P
 
 UPDATE `neg`.`datenbank_texte` SET `gb` = 'Standard Name', `fr` = 'Nom standard', `la` = 'Nomen standard' where Formular = "namenkommentar" and Textfeld = "Standardname";
 
-UPDATE `neg`.`datenbank_texte` SET `gb` = 'Dating', `fr` = 'Datation', `la` = 'Definitio temporis' where Formular = "namenkommentar" and Textfeld = "Datierung";
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Dating', `fr` = 'Datation', `la` = 'Datatio' where Formular = "namenkommentar" and Textfeld = "Datierung";
 
 UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Remark (for all)', `fr_beschriftung` = 'Remarque (pour tous)', `la_beschriftung` = 'Commentarius (pro omnibus)' where Formular = "namenkommentar" and Datenfeld = "BemerkungAlle";
 
