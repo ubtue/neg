@@ -3,6 +3,8 @@ package de.uni_tuebingen.ub.nppm.util;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.naming.InitialContext;
@@ -403,6 +405,12 @@ public class Utils {
             return null;
         }
         return value;
+    }
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+    public static String formatDate(Date date) {
+        return date != null ? DATE_FORMAT.format(date) : null;
     }
 
 }

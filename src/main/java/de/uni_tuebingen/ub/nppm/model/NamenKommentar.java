@@ -191,7 +191,6 @@ public class NamenKommentar {
 
     public JSONObject getJSON() {
         JSONObject jsonObject = new JSONObject();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
         // Felder hinzufügen und direkt bereinigen
         Utils.addIfValid(jsonObject, "ELemma", Utils.sanitize(this.geteLemma()));
@@ -202,9 +201,9 @@ public class NamenKommentar {
         Utils.addIfValid(jsonObject, "gehoertGruppe",
                 Utils.sanitize(this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null));
         Utils.addIfValid(jsonObject, "erstellt",
-                this.getErstellt() != null ? dateFormat.format(this.getErstellt()) : null);
+                this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
         Utils.addIfValid(jsonObject, "letzteAenderung",
-                this.getLetzteAenderung() != null ? dateFormat.format(this.getLetzteAenderung()) : null);
+                this.getLetzteAenderung() != null ? Utils.formatDate(this.getLetzteAenderung()) : null);
         Utils.addIfValid(jsonObject, "erstelltVon",
                 Utils.sanitize(this.getErstelltVon() != null ? this.getErstelltVon().getNachname() : null));
         Utils.addIfValid(jsonObject, "hinweise", Utils.sanitize(this.getHinweise()));
