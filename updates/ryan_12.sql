@@ -44,3 +44,45 @@ UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Created by', `fr_besch
 
 UPDATE `neg`.`datenbank_texte` SET `gb` = 'Editors', `fr` = 'Éditeurs', `la` = 'Editores' where Formular = "edition" and Textfeld = "TabEditoren";
 
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Remarks', `fr` = 'Remarques', `la` = 'Commentaria' where Formular = "handschrift" and Textfeld = "TabBemerkungen";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Short title', `fr_beschriftung` = 'Titre abrégé', `la_beschriftung` = 'Citatio brevis' where Formular = "quelle" and Datenfeld = "Bezeichnung";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Source commentary', `fr_beschriftung` = 'Commentaire sur les sources', `la_beschriftung` = 'Commentarius fontium' where Formular = "quelle" and Datenfeld = "Quellenkommentar";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Tradition commentary', `fr_beschriftung` = 'Commentaire traditionnel' where Formular = "quelle" and Datenfeld = "Ueberlieferungskommentar";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'For publication', `fr_beschriftung` = 'À publier', `la_beschriftung` = 'Edendum' where Formular = "quelle" and Datenfeld = "ZuVeroeffentlichen";
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('quelle', 'Delete', 'löschen', 'delete', 'supprimer', 'delere');
+
+UPDATE `neg`.`datenbank_mapping` SET `fr_combinedAnzeigenamen` = 'Jour;Mois;Année;Siècle', `la_combinedAnzeigenamen` = 'Dies;Mensis;Annus;Saeculum' where Formular = "quelle" and Datenfeld = "DatumVon";
+
+UPDATE `neg`.`datenbank_mapping` SET `fr_combinedAnzeigenamen` = 'Jour;Mois;Année;Siècle', `la_combinedAnzeigenamen` = 'Dies;Mensis;Annus;Saeculum' where Formular = "quelle" and Datenfeld = "DatumBis";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Uncertain date', `fr_beschriftung` = 'Datation incertaine', `la_beschriftung` = 'Datatio incerta' where Formular = "quelle" and Datenfeld = "DatierungUngewiss";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Edition', `fr` = 'Édition', `la` = 'Editio' where Formular = "quelle" and Textfeld = "TabEdition";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Remarks', `fr` = 'Remarques', `la` = 'Commentaria' where Formular = "quelle" and Textfeld = "TabBemerkungen";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_combinedAnzeigenamen` = 'Edition number;;Indication;Standard;Pages;Number', `fr_combinedAnzeigenamen` = 'Numéro de l\'édition;;Désignation;Standard;Pages;Numéro', `la_combinedAnzeigenamen` = 'Numerus editionis;;Descriptio brevis;In usu;Paginae;Numerus' where Formular = "quelle" and Datenfeld = "Edition";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'For Charters', `fr` = 'Pour les chartes', `la` = 'Pro chartis' where Formular = "quelle" and Textfeld = "TabUrkunde";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Remark (for all)', `fr_beschriftung` = 'Remarque (pour tous)', `la_beschriftung` = 'Commentarius (pro omnibus)' where Formular = "quelle" and Datenfeld = "BemerkungAlle";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Remark (group)', `fr_beschriftung` = 'Remarque (en groupe)', `la_beschriftung` = 'Commentarius (coniunctis apertus)' where Formular = "quelle" and Datenfeld = "BemerkungGruppe";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Remark (private)', `fr_beschriftung` = 'Remarque (privée)', `la_beschriftung` = 'Commentarius (privatus)' where Formular = "quelle" and Datenfeld = "BemerkungPrivat";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Processing status', `fr_beschriftung` = 'Statut de traitement', `la_beschriftung` = 'Status tractandi' where Formular = "quelle" and Datenfeld = "Bearbeitungsstatus";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Last modification', `fr_beschriftung` = 'Dernière modification', `la_beschriftung` = 'Novissima retractatio' where Formular = "quelle" and Datenfeld = "LetzteAenderung";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Latest modification by', `fr_beschriftung` = 'Dernière modification par', `la_beschriftung` = 'Novissime retractatum ab' where Formular = "quelle" and Datenfeld = "LetzteAenderungVon";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Created', `fr_beschriftung` = 'Établi', `la_beschriftung` = 'Generatum' where Formular = "quelle" and Datenfeld = "Erstellt";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Created by', `fr_beschriftung` = 'Établi par', `la_beschriftung` = 'Generatum ab' where Formular = "quelle" and Datenfeld = "ErstelltVon";
+

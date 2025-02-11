@@ -110,7 +110,7 @@
                             <div style="display: inline-block;">
                                 <a href="<%=fileUrl%>" target="_blank"><%=name%></a>
                                 <a href="javascript:deleteFile('quelle', 'QuellenKommentarDatei', <%= id%>, 'quelle');">
-                                    <img src="layout/icons/delete2.gif" border="0" alt="löschen" title="löschen">
+                                    <img src="layout/icons/delete2.gif" border="0" alt="<%= DBtoHTML(Language.getTextfield(session, "quelle", "Delete")) %>" title="<%= DBtoHTML(Language.getTextfield(session, "quelle", "Delete")) %>">
                                 </a>
                             </div>
                         </td>
@@ -162,7 +162,7 @@
                             <div style="display: inline-block;">
                                 <a href="<%=fileUrl%>" target="_blank"><%=name%></a>
                                 <a href="javascript:deleteFile('quelle', 'UeberlieferungsKommentarDatei', <%= id%>, 'quelle');">
-                                    <img src="layout/icons/delete2.gif" border="0" alt="löschen" title="löschen">
+                                    <img src="layout/icons/delete2.gif" border="0" alt="<%= DBtoHTML(Language.getTextfield(session, "quelle", "Delete")) %>" title="<%= DBtoHTML(Language.getTextfield(session, "quelle", "Delete")) %>">
                                 </a>
                             </div>
                         </td>
