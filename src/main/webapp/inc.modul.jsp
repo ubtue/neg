@@ -160,9 +160,11 @@
                 // Abfrage der Anzahl der Kommentare
                 int count = ModulIncDB.countNamenkommentar(id);
 
-                out.print("<label>Name");
+
                 if (count > 1) {
-                    out.println("n");
+                    out.print("<label>" + Language.getTextfield(session, "modul", "Namen"));
+                }else{
+                    out.print("<label>" + Language.getTextfield(session, "modul", "Name"));
                 }
                 out.println("</label></td><td>");
 

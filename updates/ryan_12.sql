@@ -86,3 +86,52 @@ UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Created', `fr_beschrif
 
 UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Created by', `fr_beschriftung` = 'Établi par', `la_beschriftung` = 'Generatum ab' where Formular = "quelle" and Datenfeld = "ErstelltVon";
 
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Standard Name', `fr_beschriftung` = 'Nom standard', `la_beschriftung` = 'Nomen standard' where Formular = "person" and Datenfeld = "Standardname";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Fictitious Person', `fr_beschriftung` = 'Personne fictive', `la_beschriftung` = 'Persona ficta' where Formular = "person" and Datenfeld = "Fiktiv";
+
+UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Identifikationskommentare', `gb_beschriftung` = 'Identification Problems', `fr_beschriftung` = 'Problèmes d\'identification', `la_beschriftung` = 'Commentarii quoad identificationem' where Formular = "person" and Datenfeld = "Identifizierungsproblem";
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('modul', 'Name', 'Name', 'Name', 'Nom', 'Nomen');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('modul', 'Namen', 'Namen', 'Names', 'Noms', 'Nomina');
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Name Additions', `fr` = 'Complémentaires du Nom', `la` = 'Addita Nominis' where Formular = "person" and Textfeld = "TabZusatz";
+
+UPDATE `neg`.`datenbank_mapping` SET `fr_combinedAnzeigenamen` = 'Qui et;Complémentaire', `la_combinedAnzeigenamen` = 'Qui et;Quod additur' where Formular = "person" and Datenfeld = "QuiEt";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Office/Status/Consecration', `fr` = 'Fonction/ Statut/ Ordination', `la` = 'Officium/Status/Consecratio' where Formular = "person" and Textfeld = "TabASW";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Ethnie/Area', `fr` = 'Ethnie/Terrain', `la` = 'Gens/Regio' where Formular = "person" and Textfeld = "TabEthnieAreal";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Area', `fr_beschriftung` = 'Terrain', `la_beschriftung` = 'Regio' where Formular = "person" and Datenfeld = "Areal";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Group Origin', `fr_beschriftung` = 'Groupe origine', `la_beschriftung` = 'Gruppus originis' where Formular = "person" and Datenfeld = "GruppeHerkunft";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Commentary (ethnicity)', `fr_beschriftung` = 'Commentaire (ethnie)', `la_beschriftung` = 'Commentarius ad gentem spectans' where Formular = "person" and Datenfeld = "KommentarEthnie";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Commentary (area)', `fr_beschriftung` = 'Commentaire (terrain)', `la_beschriftung` = 'Commentaria ad regionem spectans' where Formular = "person" and Datenfeld = "KommentarAreal";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_combinedAnzeigenamen` = 'Person ID;Name of Person;Degree of Relationship', `fr_combinedAnzeigenamen` = 'Personne ID;;Nom de la personne;Degré de parenté', `la_combinedAnzeigenamen` = 'Numerus personae ID;;Nomen personae; Gradus propinquitatis' where Formular = "person" and Datenfeld = "Verwandtschaft";
+
+UPDATE `neg`.`datenbank_mapping` SET `de_combinedAnzeigenamen` = 'Beleg ID;;Belegform;Datierung;Amt/Weihe;Stand;Kontext', `gb_combinedAnzeigenamen` = 'Reference ID;;Form of Reference;Dating;Office/Consecration;Status;Context', `fr_combinedAnzeigenamen` = 'Testimonium ID;;Forma Testimonii;Datatio;Officium/Consecratio;Status;Contextus', `la_combinedAnzeigenamen` = 'Testimonium ID;;Forma Testimonii;Datatio;Officium/Consecratio;Status;Contextus' where Formular = "person" and Datenfeld = "Einzelbeleg";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Remark (for all)', `fr_beschriftung` = 'Remarque (pour tous)', `la_beschriftung` = 'Commentarius (pro omnibus)' where Formular = "person" and Datenfeld = "BemerkungAlle";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Remark (group)', `fr_beschriftung` = 'Remarque (en groupe)', `la_beschriftung` = 'Commentarius (coniunctis apertus)' where Formular = "person" and Datenfeld = "BemerkungGruppe";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Remark (private)', `fr_beschriftung` = 'Remarque (privée)', `la_beschriftung` = 'Commentarius (privatus)' where Formular = "person" and Datenfeld = "BemerkungPrivat";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Processing status', `fr_beschriftung` = 'Statut de traitement', `la_beschriftung` = 'Status tractandi' where Formular = "person" and Datenfeld = "Bearbeitungsstatus";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Last modification', `fr_beschriftung` = 'Dernière modification', `la_beschriftung` = 'Novissima retractatio' where Formular = "person" and Datenfeld = "LetzteAenderung";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Latest modification by', `fr_beschriftung` = 'Dernière modification par', `la_beschriftung` = 'Novissime retractatum ab' where Formular = "person" and Datenfeld = "LetzteAenderungVon";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Created', `fr_beschriftung` = 'Établi', `la_beschriftung` = 'Generatum' where Formular = "person" and Datenfeld = "Erstellt";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Created by', `fr_beschriftung` = 'Établi par', `la_beschriftung` = 'Generatum ab' where Formular = "person" and Datenfeld = "ErstelltVon";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Remarks', `fr` = 'Remarques', `la` = 'Commentaria' where Formular = "person" and Textfeld = "TabBemerkungen";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Place of Issue', `fr_beschriftung` = 'Lieu de délivrance' where Formular = "urkunde" and Datenfeld = "Actumort";

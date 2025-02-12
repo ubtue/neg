@@ -11,6 +11,16 @@
 
 <%@ include file="configuration.jsp"%>
 
+<style>
+
+#primary li {
+    word-wrap: break-word; /* Erzwingt den Zeilenumbruch bei zu langem Text */
+    white-space: normal; /* Damit der Text in die nächste Zeile fließen kann */
+}
+
+</style>
+
+
 <%
     String formular = "person";
     Language.setLanguage(request);
@@ -341,11 +351,13 @@
                             </a></li>
                     </ul>
                 </div>
-                <div id="main"><jsp:include page="inc.erzeugeFormular.jsp">
+                <div id="main">
+                    <jsp:include page="inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= id%>" />
                         <jsp:param name="Formular" value="person" />
                         <jsp:param name="Datenfeld" value="Verwandtschaft" />
-                    </jsp:include></div>
+                    </jsp:include>
+                </div>
             </div>
 
             <div id="tab5">
