@@ -40,6 +40,7 @@
         <jsp:param name="Formular" value="einstellungen"/>
         <jsp:param name="Textfeld" value="ErfolgDaten"/>
     </jsp:include>
+    <br><br>
     <a href="javascript:history.back()">
         <jsp:include page="inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="einstellungen"/>
@@ -85,6 +86,20 @@
         <jsp:param name="Textfeld" value="FehlerPasswortAltFalsch"/>
     </jsp:include>
     <%
+    } else if ("emailAddressTaken".equals(errorMessage)) {
+    %>
+    <jsp:include page="inc.erzeugeBeschriftung.jsp">
+        <jsp:param name="Formular" value="einstellungen"/>
+        <jsp:param name="Textfeld" value="EmailBesetzt"/>
+    </jsp:include>
+    <%
+    } else if ("usernameTaken".equals(errorMessage)) {
+    %>
+    <jsp:include page="inc.erzeugeBeschriftung.jsp">
+        <jsp:param name="Formular" value="einstellungen"/>
+        <jsp:param name="Textfeld" value="LoginNameBesetzt"/>
+    </jsp:include>
+    <%
     } else if ("noEmail".equals(errorMessage)) {
 
     %>
@@ -93,8 +108,8 @@
         <jsp:param name="Textfeld" value="FehlerEmailLeer"/>
     </jsp:include>
     <%    }
-        out.println("<a href=\"javascript:history.back()\">zur&uuml;ck</a>");
-
+        out.println("<br><br>");
+        out.println("<a href=\"javascript:history.back()\">" + Language.getTextfield(session, "einstellungen", "Zurueck") + "</a>");
     } else {
     %>
 
@@ -131,15 +146,15 @@
             <input type="hidden" name="action" value="Einstellungen">
             <table>
                 <tr>
-                    <td width="200"><label for="Benutzername">Benutzername:</label></td>
+                    <td width="200"><label for="Benutzername"><%= Language.getTextfield(session, "login", "Benutzername") %>:</label></td>
                     <td width="450"><input name="Benutzername" size="25" maxlength="255" required="true" value="<%= benutzer.getLogin()%>"></td>
                 </tr>
                 <tr>
-                    <td width="200"><label for="Nachname">Nachname:</label></td>
+                    <td width="200"><label for="Nachname"><%= Language.getTextfield(session, "einstellungen", "Nachname") %>:</label></td>
                     <td width="450"><input name="Nachname" size="25" maxlength="255" required="true" value="<%= benutzer.getNachname()%>"></td>
                 </tr>
                 <tr>
-                    <td width="200"><label for="Vorname">Vorname:</label></td>
+                    <td width="200"><label for="Vorname"><%= Language.getTextfield(session, "einstellungen", "Vorname") %>:</label></td>
                     <td width="450"><input name="Vorname" size="25" maxlength="255" required="true" value="<%= benutzer.getVorname()%>"></td>
                 </tr>
                 <tr>
@@ -150,7 +165,7 @@
                         </jsp:include>
                     </td>
 
-                    <td><input type="text" name="email" required="true" value="<%= benutzer.getEMail()%>"/></td>
+                    <td><input type="email" name="email" required="true" value="<%= benutzer.getEMail()%>"/></td>
                 </tr>
                 <tr>
                     <td>
@@ -169,11 +184,11 @@
                 </tr>
                 <%if (isAdmin) {%>
                 <tr>
-                    <td width="200"><label for="Administrator">Administrator:</label></td>
+                    <td width="200"><label for="Administrator"><%= Language.getTextfield(session, "administration", "Titel") %>:</label></td>
                     <td width="450"><input type="checkbox" name="Administrator" <%= benutzer.isAdmin() ? "checked" : ""%>></td>
                 </tr>
                 <tr>
-                    <td width="200"><label for="Administrator">Aktiv:</label></td>
+                    <td width="200"><label for="Administrator"><%= Language.getTextfield(session, "einstellungen", "Aktiv") %>:</label></td>
                     <td width="450"><input type="checkbox" name="Aktiv" <%= benutzer.isAktiv() ? "checked" : ""%>></td>
                 </tr>
                 <%}%>

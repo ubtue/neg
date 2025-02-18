@@ -20,7 +20,7 @@
             boolean errorCreate = (Boolean.TRUE.equals(request.getAttribute("errorCreate")));
             String activeTab = request.getParameter("tab"); // Parameter 'tab' in der URL
             if (activeTab == null) {
-                activeTab = "tab1"; // Standardm‰ﬂig Tab1 anzeigen
+                activeTab = "tab1"; // Standardm√§√üig Tab1 anzeigen
             }
 
             if ("anlegen".equals(createMessage)) {
@@ -67,7 +67,7 @@
                         </tr>
                         <tr>
                             <td width="200"><label for="EMail">E-Mail:</label></td>
-                            <td width="450"><input name="EMail" size="25" maxlength="255"></td>
+                            <td width="450"><input type="email" name="EMail" size="25" maxlength="255" required="true"></td>
                         </tr>
                         <tr>
                             <td width="200"><label for="Kennwort">Kennwort:</label></td>

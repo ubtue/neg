@@ -90,7 +90,8 @@
             <jsp:param name="Formular" value="einstellungen"/>
             <jsp:param name="Textfeld" value="Titel"/>
         </jsp:include>
-    </a><%      if (session.getAttribute("BenutzerID") != null
+    </a>
+    <%      if (session.getAttribute("BenutzerID") != null
                 && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0
                 && ((Boolean) session.getAttribute("Administrator")).booleanValue()) {
     %>
@@ -141,12 +142,12 @@
         </jsp:include>
         <%= DBtoHTML(user.getVorname())%>
         <%= DBtoHTML(user.getNachname())%>
+        (<%= DBtoHTML(user.getLogin())%>)
         (<%= DBtoHTML(user.getGruppe().getBezeichnung())%>)
         </font>
     </center>
     <%
             }
-
         }
     %>
     <br>
