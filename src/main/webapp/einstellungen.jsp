@@ -19,12 +19,28 @@
         activeTab = "tab1"; // Standardmäßig Tab1 anzeigen
     }
 
-    int benutzerID = ((Integer) session.getAttribute("BenutzerID")).intValue();
-    Benutzer benutzer = BenutzerDB.getById(benutzerID);
-    boolean isAdmin = benutzer.isAdmin();
+    // Benutzer-ID aus der Session abrufen
+    Integer sessionBenutzerID = (Integer) session.getAttribute("BenutzerID");
+    int benutzerID = (sessionBenutzerID != null) ? sessionBenutzerID : -1;
 
+    // Benutzer aus der Datenbank abrufen
+    Benutzer benutzer = BenutzerDB.getById(benutzerID);
+    boolean isAdmin = (benutzer != null) && benutzer.isAdmin();
+
+    // Falls Admin und eine ID per Request übergeben wurde
     if (isAdmin && request.getParameter("ID") != null) {
-        benutzerID = Integer.parseInt(request.getParameter("ID"));
+        try {
+            benutzerID = Integer.parseInt(request.getParameter("ID"));
+            benutzer = BenutzerDB.getById(benutzerID);
+
+            // ID in der Session speichern, damit sie nach Tab-Wechsel bleibt
+            session.setAttribute("BearbeiteteBenutzerID", benutzerID);
+        } catch (NumberFormatException e) {
+            errorMessage = "Ungültige Benutzer-ID übergeben!";
+        }
+    } else if (isAdmin && session.getAttribute("BearbeiteteBenutzerID") != null) {
+        // Falls keine neue ID übergeben wurde, aber eine gespeicherte existiert, diese nutzen
+        benutzerID = (Integer) session.getAttribute("BearbeiteteBenutzerID");
         benutzer = BenutzerDB.getById(benutzerID);
     }
 %>
@@ -146,15 +162,15 @@
             <input type="hidden" name="action" value="Einstellungen">
             <table>
                 <tr>
-                    <td width="200"><label for="Benutzername"><%= Language.getTextfield(session, "login", "Benutzername") %>:</label></td>
+                    <td width="200"><label for="Benutzername"><%= Language.getTextfield(session, "login", "Benutzername")%>:</label></td>
                     <td width="450"><input name="Benutzername" size="25" maxlength="255" required="true" value="<%= benutzer.getLogin()%>"></td>
                 </tr>
                 <tr>
-                    <td width="200"><label for="Nachname"><%= Language.getTextfield(session, "einstellungen", "Nachname") %>:</label></td>
+                    <td width="200"><label for="Nachname"><%= Language.getTextfield(session, "einstellungen", "Nachname")%>:</label></td>
                     <td width="450"><input name="Nachname" size="25" maxlength="255" required="true" value="<%= benutzer.getNachname()%>"></td>
                 </tr>
                 <tr>
-                    <td width="200"><label for="Vorname"><%= Language.getTextfield(session, "einstellungen", "Vorname") %>:</label></td>
+                    <td width="200"><label for="Vorname"><%= Language.getTextfield(session, "einstellungen", "Vorname")%>:</label></td>
                     <td width="450"><input name="Vorname" size="25" maxlength="255" required="true" value="<%= benutzer.getVorname()%>"></td>
                 </tr>
                 <tr>
@@ -184,11 +200,11 @@
                 </tr>
                 <%if (isAdmin) {%>
                 <tr>
-                    <td width="200"><label for="Administrator"><%= Language.getTextfield(session, "administration", "Titel") %>:</label></td>
+                    <td width="200"><label for="Administrator"><%= Language.getTextfield(session, "administration", "Titel")%>:</label></td>
                     <td width="450"><input type="checkbox" name="Administrator" <%= benutzer.isAdmin() ? "checked" : ""%>></td>
                 </tr>
                 <tr>
-                    <td width="200"><label for="Administrator"><%= Language.getTextfield(session, "einstellungen", "Aktiv") %>:</label></td>
+                    <td width="200"><label for="Administrator"><%= Language.getTextfield(session, "einstellungen", "Aktiv")%>:</label></td>
                     <td width="450"><input type="checkbox" name="Aktiv" <%= benutzer.isAktiv() ? "checked" : ""%>></td>
                 </tr>
                 <%}%>
@@ -212,20 +228,22 @@
             <input type="hidden" name="action" value="Passwort">
             <table>
                 <tr>
-                    <% if (isAdmin == false) {%>
+                    <% if (!isAdmin) { %>
                     <td>
                         <jsp:include page="inc.erzeugeBeschriftung.jsp">
                             <jsp:param name="Formular" value="einstellungen"/>
                             <jsp:param name="Textfeld" value="PasswortAlt"/>
                         </jsp:include>
                     </td>
-                    <%}%>
-
-                    <% if (isAdmin == false) {%>
-                    <td><input type="password" name="PasswortAlt" /></td>
-                        <%} else {%>
+                    <td>
+                        <div class="input-container">
+                            <input type="password" name="PasswortAlt" id="passwortAlt">
+                            <span class="toggle-eye" onclick="togglePassword('passwortAlt', this)">👁</span>
+                        </div>
+                    </td>
+                    <% } else { %>
                     <td><input type="hidden" name="PasswortAlt" /></td>
-                        <%}%>
+                        <% }%>
                 </tr>
                 <tr>
                     <td>
@@ -234,7 +252,12 @@
                             <jsp:param name="Textfeld" value="PasswortNeu"/>
                         </jsp:include>
                     </td>
-                    <td><input type="password" name="PasswortNeu" /></td>
+                    <td>
+                        <div class="input-container">
+                            <input type="password" name="PasswortNeu" id="passwortNeu">
+                            <span class="toggle-eye" onclick="togglePassword('passwortNeu', this)">👁</span>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -243,7 +266,12 @@
                             <jsp:param name="Textfeld" value="PasswortNeuWdh"/>
                         </jsp:include>
                     </td>
-                    <td><input type="password" name="PasswortNeuWdh" /></td>
+                    <td>
+                        <div class="input-container">
+                            <input type="password" name="PasswortNeuWdh" id="passwortNeuWdh">
+                            <span class="toggle-eye" onclick="togglePassword('passwortNeuWdh', this)">👁</span>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2" align="right">
@@ -254,6 +282,38 @@
                 </tr>
             </table>
         </form>
+
+        <script>
+            function togglePassword(fieldId, eyeIcon) {
+                let inputField = document.getElementById(fieldId);
+                if (inputField.type === "password") {
+                    inputField.type = "text";
+                    eyeIcon.textContent = "🔒"; // Schloss-Symbol
+                } else {
+                    inputField.type = "password";
+                    eyeIcon.textContent = "👁"; // Auge-Symbol
+                }
+            }
+        </script>
+
+        <style>
+            .input-container {
+                position: relative;
+                display: inline-block;
+            }
+            .input-container input {
+                padding-right: 35px; /* Platz für das Auge */
+            }
+            .toggle-eye {
+                position: absolute;
+                right: 5px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                font-size: 18px;
+            }
+        </style>
+
     </div>
 
     <%

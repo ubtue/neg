@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
@@ -9,6 +10,7 @@
 
 <HTML>
     <HEAD>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <TITLE>
             Nomen et Gens | Login
         </TITLE>
@@ -24,6 +26,23 @@
 
             .flex-item-table{
                 align-items: first;
+            }
+
+            .input-container {
+                position: relative;
+                display: inline-block;
+            }
+            .toggle-eye {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                font-size: 18px;
+                background: none;
+                border: none;
+                outline: none;
+                color: gray;
             }
         </style>
     </HEAD>
@@ -59,11 +78,15 @@
                                         <jsp:param name="Textfeld" value="Passwort"/>
                                     </jsp:include>
                                 </label></th>
-                            <td><input type="password" name="password" maxlength="20" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "Passwort"))%>" /></td>
+                            <td>
+                                <div class="input-container">
+                                    <input type="password" id="passwordx" name="password" maxlength="20" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "Passwort"))%>" />
+                                    <span class="toggle-eye" onclick="togglePassword('passwordx', this)">&#128065;</span> <!-- Auge -->
+
+                                </div>
+                            </td>
                         </tr>
                     </table>
-
-
                 </div>
                 <input type="submit" value="<%= DBtoHTML(Language.getTextfield(session, "login", "DatenSenden"))%>" style="margin:5px 0px 0px 50px"/>
 
@@ -83,3 +106,16 @@
 </center>
 </BODY>
 </HTML>
+
+<script>
+    function togglePassword(fieldId, eyeIcon) {
+        let inputField = document.getElementById(fieldId);
+        if (inputField.type === "password") {
+            inputField.type = "text";
+            eyeIcon.innerHTML = "&#128274;"; // Schloss-Symbol 🔒
+        } else {
+            inputField.type = "password";
+            eyeIcon.innerHTML = "&#128065;"; // Auge-Symbol 👁
+        }
+    }
+</script>

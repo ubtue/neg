@@ -70,7 +70,9 @@ public class EinstellungenServlet extends AbstractBackendServlet {
                     } else{
                          benutzer.setEMail(request.getParameter("email"));
                     }
-                } else if (!request.getParameter("Benutzername").equals(benutzer.getLogin())) {
+                }
+
+                if (!request.getParameter("Benutzername").equals(benutzer.getLogin())) {
                     if (BenutzerDB.hasLogin(request.getParameter("Benutzername"))) {
                         errorMessage = "usernameTaken";
                         actionNotDone = true;
