@@ -1485,11 +1485,14 @@
             try {
                 List<String> plemmaList = ModulIncDB.getListPlemma(id);
 
-                for (String plemma : plemmaList) {
+                if (plemmaList != null && !plemmaList.isEmpty()) {
 
-                    String lemma = plemma;
+                    for (String plemma : plemmaList) {
 
-                    out.println(format(lemma, "PLemma"));
+                        String lemma = plemma;
+
+                        out.println(format(lemma, "PLemma"));
+                    }
                 }
 
             } catch (Exception e) {

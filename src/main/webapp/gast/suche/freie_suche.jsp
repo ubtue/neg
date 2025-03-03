@@ -78,11 +78,11 @@
 
     // ######### SUCHANFRAGE ##########
     // ### ZUM NAMEN ###
-    if (!request.getParameter("Namenkommentar2").equals("-1") && request.getParameter("Namenkommentar").equals("-1")) {
+    if (request.getParameter("Namenkommentar2") != null && request.getParameter("Namenkommentar") != null && !request.getParameter("Namenkommentar2").equals("-1") && request.getParameter("Namenkommentar").equals("-1")) {
         conditions.add("namenkommentar.ID=" + request.getParameter("Namenkommentar2"));
         namenkommentar = true;
     }
-    if (!request.getParameter("Namenkommentar").equals("-1")) {
+    if (request.getParameter("Namenkommentar") != null && !request.getParameter("Namenkommentar").equals("-1")) {
         conditions.add("namenkommentar.ID=" + request.getParameter("Namenkommentar"));
         namenkommentar = true;
     }
@@ -90,6 +90,20 @@
         conditions.add("mgh_lemma.MGHLemma LIKE '" + request.getParameter("MGHLemma").trim() + "'");
         mghlemma = true;
     }
+
+    String erstgliedParam = request.getParameter("ErstGliedSelect");
+    String zweitgliedParam = request.getParameter("ZweitGliedSelect");
+
+    if (erstgliedParam != null && !erstgliedParam.trim().isEmpty() && !erstgliedParam.equals("-")) {
+        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', 1) LIKE '" + erstgliedParam.trim() + "'");
+        mghlemma = true;
+    }
+
+    if (zweitgliedParam != null && !zweitgliedParam.trim().isEmpty() && !zweitgliedParam.equals("-")) {
+        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', -1) LIKE '" + zweitgliedParam.trim() + "'");
+        mghlemma = true;
+    }
+
     // ### ZUR PERSON ###
     if (!request.getParameter("Personenname").trim().equals("")) {
         conditions.add("(person.Standardname LIKE '" + request.getParameter("Personenname").trim() + "' OR person_variante.Variante LIKE '" + request.getParameter("Personenname").trim() + "')");

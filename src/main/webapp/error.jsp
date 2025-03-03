@@ -54,9 +54,15 @@
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             String sourceId = getCauseMessage(exception, LoginException.class);
             out.println(sourceId);
-        } else if (containsCause(exception, IdInvalidException.class)) {
+        } else if (containsCause(exception, BenutzerNotAdminException.class)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST); %>
-        ID muss mit B, P, M, N, Q, T, oder E beginnen und mit einer Nummer enden (z.B. P7404).
+            Zugriff verweigert: Sie verfügen nicht über die erforderlichen Administratorrechte.
+        <% } else if (containsCause(exception, BenutzerNotSetException.class)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); %>
+            Bitte melden Sie sich an, um Zugriff auf diesen Bereich zu erhalten.
+        <% }  else if (containsCause(exception, IdInvalidException.class)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); %>
+            ID muss mit B, P, M, N, Q, T, oder E beginnen und mit einer Nummer enden (z.B. P7404).
 
         <% } else if (containsCause(exception, IdNotPublicException.class)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
