@@ -153,7 +153,7 @@
 <% if (urkunde != null) { %>
 <% int urkundeid = urkunde.getId(); %>
 
-<h3 lass="ut-heading ut-heading--h3" id="headline" style="display: none;"><% Language.printTextfield(out, session, "quelle", "TabUrkunde");%></h3>
+<h3 class="ut-heading ut-heading--h3" id="headline" style="display: none;"><% Language.printTextfield(out, session, "quelle", "TabUrkunde");%></h3>
 <div class="container" id="urkunden">
     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
         <tbody class="ut-table__body ">
