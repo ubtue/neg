@@ -135,73 +135,57 @@
 %>
 
 <jsp:include page="../dojump.jsp">
-	<jsp:param name="form" value="gast_mgh_lemma" />
+    <jsp:param name="form" value="gast_mgh_lemma" />
 </jsp:include>
 
 <jsp:include page="layout/titel.inc.jsp">
-	<jsp:param name="title" value="mgh_lemma" />
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="size" value="" />
-	<jsp:param name="Formular" value="mgh_lemma" />
+    <jsp:param name="title" value="mgh_lemma" />
+    <jsp:param name="ID" value="<%= id%>" />
+    <jsp:param name="size" value="" />
+    <jsp:param name="Formular" value="mgh_lemma" />
 </jsp:include>
 
-
-
-
 <!----------ID---------->
-  <div id="id">
+<div id="id">
     <jsp:include page="../forms/id.jsp">
-      <jsp:param name="ID" value="<%=id%>"/>
-      <jsp:param name="title" value="gast_mghlemma"/>
+        <jsp:param name="ID" value="<%=id%>"/>
+        <jsp:param name="title" value="gast_mghlemma"/>
     </jsp:include>
-  </div>
+</div>
 
-<!---------- ---------->
 <table class="content-table">
-	<tbody>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma"); %></th>
-			<td>
-			<jsp:include page="../inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="mgh_lemma" />
-				<jsp:param name="Datenfeld" value="MGHLemma" />
-				<jsp:param name="Klarlemma" value="yes"/>
-				<jsp:param name="size" value="25" />
-			    <jsp:param name="Readonly" value="yes" />
-			  </jsp:include>
-            </td>
-		</tr>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO"); %></th>
-
-
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="mgh_lemma" />
-				<jsp:param name="Datenfeld" value="EinzelbelegRO" />
-				<jsp:param name="Readonly" value="yes" />
-			  </jsp:include>
-            </td>
-		</tr>
-		<!--  tr>
-              <td width="200"><% Language.printTextfield(out, session, "namenkommentar", "BemerkungRO"); %></td>
-              <td width="450">
+    <tbody>
+        <tr>
+            <th><% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma");%></th>
+            <td>
                 <jsp:include page="../inc.erzeugeFormular.jsp">
-                  <jsp:param name="ID" value="<%=id%>"/>
-                  <jsp:param name="Formular" value="namenkommentar"/>
-                  <jsp:param name="Datenfeld" value="BemerkungAlle"/>
-                  <jsp:param name="Readonly" value="yes"/>
+                    <jsp:param name="ID" value="<%= id%>" />
+                    <jsp:param name="Formular" value="mgh_lemma" />
+                    <jsp:param name="Datenfeld" value="MGHLemma" />
+                    <jsp:param name="Klarlemma" value="yes"/>
+                    <jsp:param name="size" value="25" />
+                    <jsp:param name="Readonly" value="yes" />
                 </jsp:include>
-              </td>
-            </tr-->
-	</tbody>
+            </td>
+        </tr>
+        <tr>
+            <th><% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%></th>
+            <td>
+                <jsp:include page="../inc.erzeugeFormular.jsp">
+                    <jsp:param name="ID" value="<%= id%>" />
+                    <jsp:param name="Formular" value="mgh_lemma" />
+                    <jsp:param name="Datenfeld" value="EinzelbelegRO" />
+                    <jsp:param name="Readonly" value="yes" />
+                </jsp:include>
+            </td>
+        </tr>
+    </tbody>
 </table>
 <!----------Treffer insgesamt---------->
 <div style="overflow:auto;">
 
-<%@ include file="suche/ergebnisliste.jsp"%>
+    <%@ include file="suche/ergebnisliste.jsp"%>
 
 </div>
+
 
