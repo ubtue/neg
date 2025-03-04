@@ -138,12 +138,18 @@
     </form>
     <br>
 
-    <div class="tab-container">
-        <button data-language="de" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%>" onclick="setLanguage('de')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%></button>
-        <button data-language="gb" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%>" onclick="setLanguage('gb')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%></button>
-        <button data-language="fr" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%>" onclick="setLanguage('fr')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%></button>
-        <button data-language="la" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%>" onclick="setLanguage('la')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%></button>
-    </div>
+    <%
+        if(context.equals("CMS")){
+          %>
+        <div class="tab-container">
+            <button data-language="de" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%>" onclick="setLanguage('de')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%></button>
+            <button data-language="gb" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%>" onclick="setLanguage('gb')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%></button>
+            <button data-language="fr" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%>" onclick="setLanguage('fr')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%></button>
+            <button data-language="la" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%>" onclick="setLanguage('la')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%></button>
+        </div>
+          <%
+        }
+    %>
 
     <table style="border-collapse:collapse;" border="1">
         <tr>

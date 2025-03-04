@@ -72,7 +72,7 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myContent = criteria.from(Content.class);
+            Root<Content> myContent  = criteria.from(Content.class);
             criteria.select(myContent);
             criteria.where(builder.equal(myContent.get(Content_.NAME), name));
             Content content = session.createQuery(criteria).getSingleResult();
@@ -92,9 +92,6 @@ public class ContentDB extends AbstractBase {
 
             if (resultList.isEmpty()) {
                 return null;
-            } else if (resultList.size() > 1) {
-                //Return first result
-                return resultList.get(0);
             } else {
                 return resultList.get(0);
             }
@@ -105,7 +102,7 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myContent = criteria.from(Content.class);
+            Root<Content> myContent = criteria.from(Content.class);
             criteria.select(myContent);
             criteria.where(
                     builder.and(
@@ -123,7 +120,7 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myContent = criteria.from(Content.class);
+            Root<Content> myContent = criteria.from(Content.class);
             criteria.getOrderList();
             List<Content> contents = (List<Content>) session.createQuery(criteria).list();
             return contents;
@@ -165,7 +162,7 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myContent = criteria.from(Content.class);
+            Root<Content> myContent = criteria.from(Content.class);
             criteria.select(myContent);
             criteria.where(builder.equal(myContent.get(Content_.NAME), name));
             Content content = session.createQuery(criteria).getSingleResult();
@@ -187,7 +184,7 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myContent = criteria.from(Content.class);
+            Root<Content> myContent = criteria.from(Content.class);
             criteria.select(myContent);
             criteria.where(builder.equal(myContent.get(Content_.ID), id));
             Content content = session.createQuery(criteria).getSingleResult();
@@ -202,7 +199,7 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myContent = criteria.from(Content.class);
+            Root<Content> myContent = criteria.from(Content.class);
             criteria.select(myContent);
             criteria.where(builder.equal(myContent.get(Content_.NAME), name));
             Content content = session.createQuery(criteria).getSingleResult();
@@ -216,7 +213,7 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myContent = criteria.from(Content.class);
+            Root<Content> myContent = criteria.from(Content.class);
             criteria.select(myContent);
             criteria.where(
                     builder.and(
@@ -236,7 +233,7 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root myContent = criteria.from(Content.class);
+            Root<Content> myContent = criteria.from(Content.class);
             criteria.select(myContent);
             criteria.where(builder.equal(myContent.get(Content_.NAME), name));
             List<Content> contents = (List<Content>) session.createQuery(criteria).list();
@@ -267,7 +264,7 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root content = criteria.from(Content.class);
+            Root<Content> content = criteria.from(Content.class);
             criteria.select(content);
             criteria.where(builder.equal(content.get(Content_.ID), id));
             List<Content> contents = (List<Content>) session.createQuery(criteria).list();
