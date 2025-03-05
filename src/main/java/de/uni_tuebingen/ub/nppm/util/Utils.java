@@ -3,6 +3,8 @@ package de.uni_tuebingen.ub.nppm.util;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.naming.InitialContext;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
 import org.apache.commons.text.StringEscapeUtils;
+import org.json.JSONObject;
 
 public class Utils {
 
@@ -387,6 +390,27 @@ public class Utils {
         }
 
         out.print("</ul>");
+    }
+
+    // Hilfsfunktion zum Hinzufügen von Feldern, wenn sie gültig sind
+    public static void addIfValid(JSONObject jsonObject, String key, Object value) {
+        if (value != null) {
+            jsonObject.put(key, value);
+        }
+    }
+
+    // Hilfsfunktion zum Bereinigen von Strings
+    public static String sanitize(String value) {
+        if (value == null || "null".equalsIgnoreCase(value) || "-".equals(value.trim()) || "--".equals(value.trim()) || value.trim().isEmpty()) {
+            return null;
+        }
+        return value;
+    }
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+    public static String formatDate(Date date) {
+        return date != null ? DATE_FORMAT.format(date) : null;
     }
 
 }
