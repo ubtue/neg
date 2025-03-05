@@ -211,7 +211,10 @@ public class ContentServlet extends AbstractBackendServlet {
         try {
             PrintWriter out = response.getWriter();
 
+            String oldfFile = ContentDB.getById(Integer.parseInt(request.getParameter("id"))).getName();
+
             String context = request.getParameter("context");
+
             Content.Context contextEnum = Content.Context.valueOf(context);
 
             // Create a new file upload handler
@@ -228,6 +231,7 @@ public class ContentServlet extends AbstractBackendServlet {
 
                 FileItemStream item = iter.next();
                 String contentType = item.getContentType();
+
                 String errorFileName = item.getName();
 
                 if (!item.isFormField()) {
@@ -242,24 +246,19 @@ public class ContentServlet extends AbstractBackendServlet {
                         String fileName = item.getName();
 
                         boolean fileExists = ContentDB.searchName(fileName);
-                        boolean sameFileName = false;
-                        Content content = null;
-                        String selectedLanguage = getCookieLanguage(request, response);
 
-                        if (contentType.equals("text/html")) {
-                            content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
-                        } else {
-                            content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
-                        }
+                        if (fileExists && oldfFile.equals(fileName)) {
 
-                        if (fileName.equals(content.getName())) //The file name to be uploaded should match the one in the database
-                        {
-                            sameFileName = true;
-                        }
+                            Content content = null;
+                            String selectedLanguage = getCookieLanguage(request, response);
 
-                        String pathname = writeItemToTempFile(item);
+                            if (contentType.equals("text/html")) {
+                                content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
+                            } else {
+                                content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
+                            }
 
-                        if (fileExists == true && sameFileName == true) {
+                            String pathname = writeItemToTempFile(item);
 
                             byte[] bytes = ContentDB.readBytesFromFile(pathname);
                             content.setContent(bytes);
@@ -272,16 +271,16 @@ public class ContentServlet extends AbstractBackendServlet {
                             } else {
                                 out.println(messageStart + fileName + messageEnd);
                             }
+
+                            //Now delete the temporary file again
+                            File myObj = new File(pathname);
+                            myObj.delete();
                         } else {
                             messageStart = Language.getTextfield(session, "contentServlet", "FilesDontMatch") + " ";
                             messageEnd = " " + Language.getTextfield(session, "contentServlet", "Und") + " ";
-                            out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + content.getName() + messageEnd + fileName);
+                            out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + oldfFile + messageEnd + fileName);
                             out.println("<br>");
                         }
-
-                        //Now delete the temporary file again
-                        File myObj = new File(pathname);
-                        myObj.delete();
                     } else {
                         messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
                         messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileNotAllowed");
@@ -384,7 +383,7 @@ public class ContentServlet extends AbstractBackendServlet {
         String pathname = tmpDir + "/" + item.getName();
 
         InputStream stream = item.openStream();
-        try ( FileOutputStream file = new FileOutputStream(new File(pathname))) {
+        try (FileOutputStream file = new FileOutputStream(new File(pathname))) {
             for (int data = stream.read(); data >= 0; data = stream.read()) {
                 file.write(data);
             }
