@@ -136,28 +136,22 @@
                                     </jsp:include>
                                 </td>
                             </tr>
-
-
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <% Language.printDatafield(out, session, formular, "Namenlemma"); %>
+                                    <% Language.printTextfield(out, session, formular, "ErstZweitGlied"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../inc.erzeugeFormular.jsp">
-                                        <jsp:param name="Formular" value="gast_freie_suche"/>
-                                        <jsp:param name="Datenfeld" value="Namenkommentar"/>
-                                        <jsp:param name="FolgendeAuswahl" value="Yes"/>
-                                    </jsp:include>
-                                     <div style="height: 5px;"></div>
+                                        <jsp:param name="Formular" value="freie_suche" />
+                                        <jsp:param name="Datenfeld" value="ErstGliedSelect" />
+                                    </jsp:include>/
+                                    <div style="height: 5px;"></div>
                                     <jsp:include page="../inc.erzeugeFormular.jsp">
-                                        <jsp:param name="Formular" value="gast_freie_suche"/>
-                                        <jsp:param name="Datenfeld" value="Namenkommentar2"/>
-                                        <jsp:param name="Sorted" value="yes"/>
+                                        <jsp:param name="Formular" value="freie_suche" />
+                                        <jsp:param name="Datenfeld" value="ZweitGliedSelect" />
                                     </jsp:include>
                                 </td>
                             </tr>
-
-
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item" >
                                     <% Language.printDatafield(out, session, formular, "MGHLemma"); %>
@@ -667,4 +661,3 @@
 <script type="text/javascript">
     enableTooltips();
 </script>
-
