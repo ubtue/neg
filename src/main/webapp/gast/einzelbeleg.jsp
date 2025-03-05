@@ -6,18 +6,46 @@
 
 <jsp:include page="../dofilter.jsp" />
 
+<style>
+    .myTable .ut-table {
+        table-layout: auto; /* Automatische Breitenanpassung */
+        width: 100%;
+    }
+
+    .myTable .ut-table__row td {
+        width: auto; /* Breite der Zellen soll sich anpassen */
+    }
+
+    .myTable .ut-table__row td:first-child {
+        white-space: nowrap; /* Verhindert das Umbruchverhalten */
+    }
+
+    .myTable .ut-table__row td:last-child {
+        width: 100%; /* Die zweite Spalte nimmt den verbleibenden Platz ein */
+    }
+</style>
+
+
 <%
     int id = Integer.parseInt(request.getParameter("ID"));
 
     Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
 
-    if(einzelbeleg == null){
-        throw new IdNotFoundException("Einzelbeleg ID B" + String.valueOf(id) + " ist nicht vorhanden");
-    }
+        if(einzelbeleg == null){
+            if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotFoundException("Einzelbeleg ID B" + String.valueOf(id) + " ist nicht vorhanden");
+            } else{
+                throw new IdNotFoundException("Single Reference ID B" + String.valueOf(id) + " does not exist");
+            }
+        }
 
-    if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
-        throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu veröffentlichen");
-    }
+        if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
+            if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu veröffentlichen");
+            } else{
+                throw new IdNotPublicException("Single Reference ID B" + String.valueOf(id) + " is not to be published");
+            }
+        }
 %>
 
 <jsp:include page="../dojump.jsp">
@@ -39,7 +67,7 @@
 </jsp:include>
 
 <!----------ID---------->
-<div id="id">
+<div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
         <jsp:param name="ID" value="<%=id%>"/>
         <jsp:param name="title" value="gast_einzelbeleg"/>
@@ -47,10 +75,10 @@
 </div>
 
 <!----------Belegstelle---------->
-<h3><% Language.printTextfield(out, session, "einzelbeleg", "TabBelegstelle");%></h3>
-
-<table class="content-table">
-    <tbody>
+<h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "TabBelegstelle");%></h3>
+<div class="myTable">
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+    <tbody class="ut-table__body ">
         <jsp:include page="../inc.erzeugeFormular.jsp">
             <jsp:param name="ID" value="<%= id%>"/>
             <jsp:param name="Formular" value="einzelbeleg"/>
@@ -60,10 +88,10 @@
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "PersonRO")%>"/>
         </jsp:include>
 
-        <tr>
-            <th><% Language.printDatafield(out, session, "einzelbeleg", "Belegform");%></th>
-            <td>
-                <div style="display: flex; align-items: center;">
+        <tr class="ut-table__row">
+            <td class="ut-table__item ut-table__body__item"><% Language.printDatafield(out, session, "einzelbeleg", "Belegform");%></td>
+            <td class="ut-table__item ut-table__body__item">
+                <span style="display: inline-flex; align-items: center;">
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= id%>"/>
                         <jsp:param name="Formular" value="einzelbeleg"/>
@@ -71,14 +99,16 @@
                         <jsp:param name="size" value="50"/>
                         <jsp:param name="Readonly" value="yes"/>
                     </jsp:include>
+                </span>
+                <div>
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:param name="ID" value="<%= id%>"/>
+                        <jsp:param name="Formular" value="einzelbeleg"/>
+                        <jsp:param name="Datenfeld" value="Griechisch"/>
+                        <jsp:param name="size" value="50"/>
+                        <jsp:param name="Readonly" value="yes"/>
+                    </jsp:include>
                 </div>
-                <jsp:include page="../inc.erzeugeFormular.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="Formular" value="einzelbeleg"/>
-                    <jsp:param name="Datenfeld" value="Griechisch"/>
-                    <jsp:param name="size" value="50"/>
-                    <jsp:param name="Readonly" value="yes"/>
-                </jsp:include>
             </td>
         </tr>
 
@@ -148,7 +178,7 @@
         </jsp:include>
 
         <%
-            // Prüfe das Attribut
+            // Pr�fe das Attribut
             Boolean displayDatierung = (Boolean) request.getAttribute("displayDatierungUngewiss");
             if (displayDatierung != null && displayDatierung) {
         %>
@@ -243,11 +273,11 @@
 </table>
 
 <!----------Quelle---------->
-<h3><% Language.printTextfield(out, session, "einzelbeleg", "BoxQuelle"); %></h3>
-<table class="content-table">
-    <tr>
-        <th><% Language.printTextfield(out, session, "einzelbeleg", "Kurztitel");%></th>
-        <td>
+<h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "BoxQuelle"); %></h3>
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+    <tr class="ut-table__row">
+        <td class="ut-table__item ut-table__body__item"><% Language.printTextfield(out, session, "einzelbeleg", "Kurztitel");%></td>
+        <td class="ut-table__item ut-table__body__item">
             <jsp:include page="../inc.erzeugeFormular.jsp">
                 <jsp:param name="ID" value="<%= id%>"/>
                 <jsp:param name="Formular" value="einzelbeleg"/>
@@ -294,7 +324,7 @@
         <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "QuelleDatierung")%>"/>
     </jsp:include>
 </table>
-
+</div>
 <!----------Textkritik---------->
 
 <%
@@ -302,8 +332,8 @@
 
     if (resultList != null && !resultList.isEmpty()) {
 %>
-<div id="textkritik">
-    <h3><% Language.printTextfield(out, session, "einzelbeleg", "TabTextkritik");%></h3>
+<div class="container">
+    <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "TabTextkritik");%></h3>
     <jsp:include page="../inc.modul.jsp">
         <jsp:param name="ID" value="<%= id%>"/>
         <jsp:param name="Formular" value="einzelbeleg"/>

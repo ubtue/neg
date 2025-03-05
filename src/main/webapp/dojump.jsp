@@ -66,8 +66,10 @@
         }
 
         //get the filter sql string
-        String sql = Filter.getFilterSql(request, guest + title);
-        if (sql == null) {
+        String sql = "";
+        try {
+            sql = Filter.getFilterSql(request, guest + title);
+        } catch (Exception e) {
             sql = "SELECT * FROM " + title;
         }
         //modify sql string
@@ -96,8 +98,9 @@
             }
             akt--;
 
-            sql = Filter.getFilterSql(request, guest + title);
-            if (sql == null) {
+            try {
+                sql = Filter.getFilterSql(request, guest + title);
+            } catch (Exception e) {
                 sql = "SELECT " + title + ".ID FROM " + title;
             }
 

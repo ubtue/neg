@@ -1,6 +1,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
+
 <%
     if (feldtyp.equals("select") && array) {
 
@@ -11,7 +12,8 @@
 
         if ((rowlist != null && !rowlist.isEmpty()) || !isReadOnly) {
 
-            out.println("<table>");
+            out.println("<table class=\"ut-table \">");
+            out.println("<tbody class=\"ut-table__body\">");
             boolean repeat = true;
             int i = 0;
             while (repeat) {
@@ -26,8 +28,9 @@
                     repeat = false;
                 }
 
-                out.println("<tr>");
-                out.println("<td>");
+                out.println("<tr class=\"ut-table__row\">");
+                out.println("<td class=\"ut-table__item ut-table__body__item\">");
+
 
                 if (!isReadOnly) {
                     out.println("<select name='" + datenfeld + "[" + i + "]'>");
@@ -46,17 +49,19 @@
                 out.println("</td>");
                 if (repeat) {
                     String href = "javascript:deleteEntry('" + zielTabelle + "', '" + row.get("ID").toString() + "', '" + returnpage + "', '" + id + "');";
-                    out.println("<td>");
+
                     if (!isReadOnly) {
+                        out.println("<td class=\"ut-table__item ut-table__body__item\">");
                         out.println("<a href=\"" + href + "\">");
                         out.println(txt_delete);
                         out.println("</a>");
+                        out.println("</td>");
                     }
-                    out.println("</td>");
                 }
                 out.println("</tr>");
                 i++;
             }
+            out.println("</tbody>");
             out.println("</table>");
         }
     }

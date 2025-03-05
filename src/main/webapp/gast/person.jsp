@@ -12,7 +12,12 @@
 
     Person person = PersonDB.getById(id);
     if (person == null) {
-        throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " does not exist");
+        }
+
     } else {
         Set<Einzelbeleg> listEinzelbeleg = person.getEinzelbeleg();
 
@@ -26,10 +31,16 @@
         }
 
         if (throwException) {
-            throw new IdNotPublicException("Person ID P" + id + " ist nicht zu veröffentlichen");
+            if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Person ID P" + String.valueOf(id) + " ist nicht zu veröffentlichen");
+            } else{
+                throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " is not to be published");
+            }
+
         }
     }
 %>
+
 
 <jsp:include page="../dojump.jsp">
     <jsp:param name="form" value="gast_person" />
@@ -50,10 +61,10 @@
 </jsp:include>
 
 <!---------- schema.org RDFa wrapper ---------->
-<div vocab="https://schema.org/" typeof="Person">
+<div class="container" vocab="https://schema.org/" typeof="Person">
 
     <!----------ID---------->
-    <div id="id">
+    <div class="container" id="id">
         <jsp:include page="../forms/id.jsp">
             <jsp:param name="ID" value="<%=id%>"/>
             <jsp:param name="title" value="gast_person"/>
@@ -63,12 +74,12 @@
     <!----------Prosopographisches---------->
 
     <!----------Has to be put inside of database/table: "datenbank_texte" -- (not present till now)---------->
-    <h3> Prosopographisches </h3>
-    <table id="personen-table" class="content-table">
-        <tbody>
-            <tr>
-                <th style="vertical-align: middle;"><% Language.printTextfield(out, session, "person", "Person");%></th>
-                <td style="padding-top: 5px; padding-bottom: 2px;">
+    <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "person", "Prosopographical");%></h3>
+    <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+        <tbody class="ut-table__body">
+            <tr class="ut-table__row">
+                <td class="ut-table__item ut-table__body__item"><% Language.printTextfield(out, session, "person", "Person");%> </td>
+                <td class="ut-table__item ut-table__body__item">
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= id%>" />
                         <jsp:param name="Formular" value="person" />
@@ -131,6 +142,7 @@
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getTextfield(session, "person", "Aemter")%>"/>
+                <jsp:param name="CountRow" value="noCount" />
             </jsp:include>
 
             <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -140,6 +152,7 @@
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getDatafield(session, "person", "Ethnie")%>"/>
+                <jsp:param name="CountRow" value="noCount" />
             </jsp:include>
 
             <%
@@ -148,9 +161,9 @@
                 if (resultList != null && !resultList.isEmpty()) {
             %>
 
-            <tr>
-                <th><% Language.printTextfield(out, session, "person", "TabVerwandte");%></th>
-                <td>
+            <tr class="ut-table__row">
+                <th class="ut-table__item ut-table__body__item"><% Language.printTextfield(out, session, "person", "TabVerwandte");%></th>
+                <td class="ut-table__item ut-table__body__item">
                     <jsp:include page="../inc.modul.jsp">
                         <jsp:param name="ID" value="<%= id%>" />
                         <jsp:param name="Formular" value="person" />
@@ -168,11 +181,9 @@
 </div>
 
 <!----------Einzelbelege---------->
-<h3><% Language.printTextfield(out, session, "person", "TabEinzelbelege");%></h3>
+<h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "person", "TabEinzelbelege");%></h3>
 <jsp:include page="../inc.modul.jsp">
     <jsp:param name="ID" value="<%= id%>" />
     <jsp:param name="Formular" value="person" />
     <jsp:param name="Modul" value="nachweiseRO" />
 </jsp:include>
-
-

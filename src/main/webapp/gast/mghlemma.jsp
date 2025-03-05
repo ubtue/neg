@@ -13,6 +13,7 @@
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false"%>
 <%@ page import="java.io.*" isThreadSafe="false"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
+
 <jsp:include page="../dofilter.jsp" />
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
@@ -20,7 +21,11 @@
     MghLemma lemma = MghLemmaDB.getById(id);
 
     if (lemma == null) {
-        throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " does not exist");
+        }
     } else {
 
         Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
@@ -35,7 +40,11 @@
         }
 
         if (throwException) {
-            throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
+            if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
+            } else{
+                throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " is not to be published");
+            }
         }
     }
 
@@ -112,7 +121,7 @@
    List<String> headlines = new ArrayList<>();
 
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
-    headlines.add(DatenbankDB.getMapping( sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
+    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeiheZeitraum"));
     headlines.add(DatenbankDB.getMapping(sprache,"freie_suche", "Ausgabe_Person_Ethnie"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
@@ -146,18 +155,20 @@
 </jsp:include>
 
 <!----------ID---------->
-<div id="id">
+<div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
         <jsp:param name="ID" value="<%=id%>"/>
         <jsp:param name="title" value="gast_mghlemma"/>
     </jsp:include>
 </div>
 
-<table class="content-table">
-    <tbody>
-        <tr>
-            <th><% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma");%></th>
-            <td>
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3" style="width: 100%; table-layout: fixed; border-collapse: collapse; border-spacing: 0;">
+    <tbody class="ut-table__body ">
+        <tr class="ut-table__row">
+            <td class="ut-table__item" style="padding-right: 0px; text-align: left; white-space: nowrap;">
+                <% Language.printDatafield(out, session, "mgh_lemma", "MGHLemma");%>
+            </td>
+            <td class="ut-table__item" style="padding-left: 0px;">
                 <jsp:include page="../inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
                     <jsp:param name="Formular" value="mgh_lemma" />
@@ -168,9 +179,11 @@
                 </jsp:include>
             </td>
         </tr>
-        <tr>
-            <th><% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%></th>
-            <td>
+        <tr class="ut-table__row">
+            <td class="ut-table__item" style="padding-right: 0px; text-align: left; white-space: nowrap;">
+                <% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%>
+            </td>
+            <td class="ut-table__item" style="padding-left: 0px;">
                 <jsp:include page="../inc.erzeugeFormular.jsp">
                     <jsp:param name="ID" value="<%= id%>" />
                     <jsp:param name="Formular" value="mgh_lemma" />
@@ -182,10 +195,6 @@
     </tbody>
 </table>
 <!----------Treffer insgesamt---------->
-<div style="overflow:auto;">
-
+<div class="container" style="overflow:auto;">
     <%@ include file="suche/ergebnisliste.jsp"%>
-
 </div>
-
-

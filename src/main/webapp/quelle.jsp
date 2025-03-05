@@ -20,7 +20,11 @@
     int id = Utils.determineId(request, response, formular, out);
 
     if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || QuelleDB.getById(id) == null)){
-        throw new IdNotFoundException("Quellen ID " + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " does not exist");
+        }
     }
     //only determine the urkunde id for an existing quelle record
     if (id != Constants.UNDEFINED_ID && id != Constants.NEW_ITEM) {
@@ -106,7 +110,7 @@
                             <div style="display: inline-block;">
                                 <a href="<%=fileUrl%>" target="_blank"><%=name%></a>
                                 <a href="javascript:deleteFile('quelle', 'QuellenKommentarDatei', <%= id%>, 'quelle');">
-                                    <img src="layout/icons/delete2.gif" border="0" alt="löschen" title="löschen">
+                                    <img src="layout/icons/delete2.gif" border="0" alt="<%= DBtoHTML(Language.getTextfield(session, "quelle", "Delete")) %>" title="<%= DBtoHTML(Language.getTextfield(session, "quelle", "Delete")) %>">
                                 </a>
                             </div>
                         </td>
@@ -158,7 +162,7 @@
                             <div style="display: inline-block;">
                                 <a href="<%=fileUrl%>" target="_blank"><%=name%></a>
                                 <a href="javascript:deleteFile('quelle', 'UeberlieferungsKommentarDatei', <%= id%>, 'quelle');">
-                                    <img src="layout/icons/delete2.gif" border="0" alt="löschen" title="löschen">
+                                    <img src="layout/icons/delete2.gif" border="0" alt="<%= DBtoHTML(Language.getTextfield(session, "quelle", "Delete")) %>" title="<%= DBtoHTML(Language.getTextfield(session, "quelle", "Delete")) %>">
                                 </a>
                             </div>
                         </td>

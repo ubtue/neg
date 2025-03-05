@@ -13,24 +13,33 @@
 
     Quelle quelle = QuelleDB.getById(id);
     if (quelle == null) {
-        throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " does not exist");
+        }
     }
 
     if (quelle.getZuVeroeffentlichen() != 1) {
-        throw new IdNotPublicException("Quellen ID Q" + id + " ist nicht zu veröffentlichen");
+        if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Quellen ID Q" + id + " ist nicht zu veröffentlichen");
+            } else{
+                throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " is not to be published");
+            }
     }
 
     String formular = "quelle";
     Urkunde urkunde = quelle.getUrkunde();
 %>
 
-<a href="<%=Utils.getBaseUrl(request)%>/gast/quelle?page=stat">
+<h1 class="ut-heading ut-heading--h1">
+<a class="ut-link" href="<%=Utils.getBaseUrl(request)%>/gast/quelle?page=stat">
     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
         <jsp:param name="Formular" value="stat"/>
         <jsp:param name="Textfeld" value="Titel"/>
     </jsp:include>
 </a>
-<br>
+</h1>
 
 <jsp:include page="../dojump.jsp">
     <jsp:param name="form" value="gast_quelle" />
@@ -59,8 +68,8 @@
 </div>
 
 <!----------Quelle---------->
-<h3>
-    Quelle:
+<h3 class="ut-heading ut-heading--h3">
+    <% Language.printTextfield(out, session, "quelle", "Bezeichnung");%>
     <jsp:include page="../inc.erzeugeFormular.jsp">
         <jsp:param name="ID" value="<%= id%>"/>
         <jsp:param name="Formular" value="quelle"/>
@@ -69,8 +78,8 @@
         <jsp:param name="Readonly" value="yes"/>
     </jsp:include>
 </h3>
-<table id="quelle-table" class="content-table">
-    <tbody>
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+    <tbody class="ut-table__body ">
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
             <jsp:param name="ID" value="<%= id%>"/>
@@ -100,8 +109,8 @@
             if (resultListStandardEdition != null && !resultListStandardEdition.isEmpty() || resultListWeitereEdition != null && !resultListWeitereEdition.isEmpty()) {
         %>
 
-        <tr>
-            <td colspan="2">
+        <tr class="ut-table__row">
+            <td class="ut-table__item ut-table__body__item" colspan="2">
                 <jsp:include page="../inc.modul.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="Formular" value="quelle"/>
@@ -118,8 +127,8 @@
 </table>
 
 <!----------Einzelbelege---------->
-<h1>
-    <a href="<%= Utils.getBaseUrl(request)%>/gast/suchergebnis?Quellenliste=<%= id%>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&Ausgabe_Einzelbeleg_Quellengattung=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit=">Einzelbelege</a>
+<h1 class="ut-heading ut-heading--h1">
+    <a class="ut-link" href="<%= Utils.getBaseUrl(request)%>/gast/suchergebnis?Quellenliste=<%= id%>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&Ausgabe_Einzelbeleg_Quellengattung=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit="><% Language.printTextfield(out, session, "einzelbeleg", "Titel");%></a>
 </h1>
 
 <%
@@ -129,7 +138,7 @@
 %>
 
 <!----------Ueberlieferung---------->
-<h3><% Language.printTextfield(out, session, "quelle", "TabUeberlieferung");%></h3>
+<h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "quelle", "TabUeberlieferung");%></h3>
 <jsp:include page="../inc.modul.jsp">
     <jsp:param name="ID" value="<%= id%>" />
     <jsp:param name="Formular" value="quelle" />
@@ -144,10 +153,10 @@
 <% if (urkunde != null) { %>
 <% int urkundeid = urkunde.getId(); %>
 
-<h3 id="headline" style="display: none;"><% Language.printTextfield(out, session, "quelle", "TabUrkunde");%></h3>
+<h3 class="ut-heading ut-heading--h3" id="headline" style="display: none;"><% Language.printTextfield(out, session, "quelle", "TabUrkunde");%></h3>
 <div class="container" id="urkunden">
-    <table class="content-table">
-        <tbody>
+    <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
+        <tbody class="ut-table__body ">
             <jsp:include page="../inc.erzeugeFormular.jsp">
                 <jsp:param name="ID" value="<%= urkundeid%>" />
                 <jsp:param name="Formular" value="urkunde" />

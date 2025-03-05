@@ -38,12 +38,15 @@
 <jsp:include page="servlet/header.jsp" />
 <div id="titel"></div>
 <div id="form">
-    <% } %>
+    <% }%>
 
-    <h1 style="color: red">Fehler</h1>
+    <h1 class="ut-heading ut-heading--h1" style="color: red">
+        <%= "de".equals(session.getAttribute("Sprache")) ? "Fehler" : "Error"%>
+    </h1>
+
     <p style="font-weight: bold;">
-        <% if (response.getStatus() == 404) { %>
-        Die Unterseite existiert nicht.
+        <% if (response.getStatus() == 404) {%>
+        <span><%= "de".equals(session.getAttribute("Sprache")) ? "Die Unterseite existiert nicht." : "The subpage does not exist."%></span>
         <% } else if (exception != null) { %>
         <% if (containsCause(exception, IdNotFoundException.class)) { %>
         <%
@@ -55,14 +58,23 @@
             String sourceId = getCauseMessage(exception, LoginException.class);
             out.println(sourceId);
         } else if (containsCause(exception, BenutzerNotAdminException.class)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); %>
-            Zugriff verweigert: Sie verfügen nicht über die erforderlichen Administratorrechte.
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);%>
+        <span><%= "de".equals(session.getAttribute("Sprache"))
+                ? "Zugriff verweigert: Sie verfügen nicht über die erforderlichen Administratorrechte."
+                : "ID must start with B, P, M, N, Q, T, or E and end with a number (e.g. P7404)."%>
+        </span>
         <% } else if (containsCause(exception, BenutzerNotSetException.class)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); %>
-            Bitte melden Sie sich an, um Zugriff auf diesen Bereich zu erhalten.
-        <% }  else if (containsCause(exception, IdInvalidException.class)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); %>
-            ID muss mit B, P, M, N, Q, T, oder E beginnen und mit einer Nummer enden (z.B. P7404).
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);%>
+        <span><%= "de".equals(session.getAttribute("Sprache"))
+                ? "Bitte melden Sie sich an, um Zugriff auf diesen Bereich zu erhalten."
+                : "Please log in to access this area."%>
+        </span>
+        <% } else if (containsCause(exception, IdInvalidException.class)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);%>
+        <span><%= "de".equals(session.getAttribute("Sprache"))
+                ? "ID muss mit B, P, M, N, Q, T, oder E beginnen und mit einer Nummer enden (z.B. P7404)."
+                : "Access denied: You do not have the required administrator privileges."%>
+        </span>
 
         <% } else if (containsCause(exception, IdNotPublicException.class)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -71,16 +83,25 @@
         } else if (Utils.isDevelopmentEnvironment()) {%>
     <pre><%=exception.getMessage()%></pre>
     <% } else {%>
-    Eine unbehandelte Ausnahme vom Typ <%=exception.getClass().getSimpleName()%> ist aufgetreten.
+    <span>
+        <%= "de".equals(session.getAttribute("Sprache"))
+                ? "Eine unbehandelte Ausnahme vom Typ " + exception.getClass().getSimpleName() + " ist aufgetreten."
+                : "An unhandled exception of type " + exception.getClass().getSimpleName() + " occurred."%>
+    </span>
 
     <% } %>
-    <% } else { %>
-    Keine weiteren Informationen verfügbar.
+    <% } else {%>
+    <span>
+        <%= "de".equals(session.getAttribute("Sprache"))
+                ? "Keine weiteren Informationen verfügbar."
+                : "No further information available."%>
+    </span>
     <% } %>
 </p>
 
 <hr>
 
+<% if (session.getAttribute("Sprache").equals("de")) { %>
 <p>
     Falls Sie technischen Support benötigen, können Sie uns unter folgender Adresse kontaktieren: <a href="mailto:nppm-team@ub.uni-tuebingen.de" rel="nofollow">nppm-team@ub.uni-tuebingen.de</a>.<br>
     Bitte fügen Sie folgende Angaben hinzu:
@@ -90,8 +111,19 @@
     <li>Ihr Benutzername (falls zutreffend)</li>
 </ul>
 </p>
+<% } else { %>
+<p>
+    For technical support, please contact us at the following address: <a href="mailto:nppm-team@ub.uni-tuebingen.de" rel="nofollow">nppm-team@ub.uni-tuebingen.de</a>.<br>
+    Please include the following information:
+<ul style="list-style: initial;">
+    <li>Date/Time</li>
+    <li>Screenshot (including URL and error message)</li>
+    <li>Your username (if applicable)</li>
+</ul>
+</p>
 
-<% if (isGast) { %>
+<% }
+    if (isGast) { %>
 <jsp:include page="gast/servlet/footer.jsp" />
 <% } else { %>
 </div>

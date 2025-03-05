@@ -6,16 +6,19 @@
 <%
     if (feldtyp.equals("combined") && array) {
 
+        String doCount = String.valueOf(request.getParameter("CountRow"));
+
         List<Map> rowlist = AbstractBase.getMappedList("SELECT * FROM " + zielTabelle
                 + " WHERE " + formularAttribut + "=\"" + id + "\"");
 
         if ((rowlist != null && !rowlist.isEmpty()) || !isReadOnly) {
 
             int count = 0;
-            out.println("<table " + (isReadOnly ? "width=\"100%\"" : "") + ">\n");
-            out.println("<tr>\n");
+            out.println("<table class=\"ut-table\" " + (isReadOnly ? "width=\"100%\"" : "") + ">\n");
+            out.println("<tbody class=\"ut-table__body\">");
+            out.println("<tr class=\"ut-table__row\">\n");
             for (int i = 0; i < combinedAnzeigenamen.length; i++) {
-                out.println("<th>");
+
                 if (!isReadOnly || combinedFeldtypen[i].equals("sqlselect")
                         || combinedFeldtypen[i].equals("select")
                         || combinedFeldtypen[i].equals("textfield")
@@ -23,9 +26,10 @@
                         || combinedFeldtypen[i].contains("link")
                         || combinedFeldtypen[i].contains("info")
                         || combinedFeldtypen[i].contains("list")) {
+                    out.println("<th>");
                     out.println(combinedAnzeigenamen[i] + "\n");
+                    out.println("</th>");
                 }
-                out.println("</th>");
             }
             out.println("</tr>\n");
 
@@ -58,22 +62,26 @@
                     repeat = false;
                 }
 
-                count++;
-                if (count % 2 == 0) {
-                    out.println("<tr>");
-                } else {
-                    out.println("<tr bgcolor='#AACCDD'>");
+                if("noCount".equals(doCount)){
+                    out.println("<tr class=\"ut-table__row\">");
+                }else{
+                    count++;
+                    if (count % 2 == 0) {
+                        out.println("<tr>");
+                    } else {
+                        out.println("<tr bgcolor='#AACCDD'>");
+                    }
                 }
 
                 for (int j = 0; j < combinedFeldtypen.length; j++) {
                     if (combinedFeldtypen[j].equals("dateinfo")
                             || combinedFeldtypen[j].equals("addselect")) {
-                        out.println("<td nowrap>");
+                        out.println("<td class=\"ut-table__item ut-table__body__item\" nowrap>");
                     } else {
-                        out.println("<td>");
+                        out.println("<td class=\"ut-table__item ut-table__body__item\">");
                     }
 
-                    if (combinedFeldtypen[j].equals("textfield")) {
+                   if (combinedFeldtypen[j].equals("textfield")) {
                         if (!isReadOnly) {
                             out.println("<input name=\""
                                     + combinedFeldnamen[j]
@@ -348,7 +356,7 @@
                                             bezeichnung));
                                 }
                             } else if (Integer.parseInt(id_temp) == selected && combinedFeldnamen[j].equals("TKHandschrift")) {
-                                // Ausgabe nur der Bezeichnung, wenn `isReadOnly` true ist und `TKHandschrift` gewählt wurde
+                                // Ausgabe nur der Bezeichnung, wenn `isReadOnly` true ist und `TKHandschrift` gew�hlt wurde
                                 if (!bezeichnung.isEmpty()) {
                                     out.println(bezeichnung);
                                 }
@@ -632,6 +640,7 @@
                 out.println("</tr>");
                 i++;
             }
+            out.println("</tbody>");
             out.println("</table>\n");
         }
     }

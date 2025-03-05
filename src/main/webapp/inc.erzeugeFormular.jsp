@@ -116,7 +116,7 @@
 %>
 
 <% if (visible != null && visible.equals("hidden"))
-        out.println("<div style=\"visibility:hidden\">");%>
+        out.println("<div class=\"container\" style=\"visibility:hidden\">");%>
 
 <%
     // Replace the standard writer with a custom writer that writes to a string variable.
@@ -165,7 +165,7 @@
 
     if (display) {
         if (darstellung.equals("Tabellenzeile")) {
-            out.print("<tr><th>" + label + "</th><td>");
+            out.print("<tr class=\"ut-table__row\"><td class=\"ut-table__item ut-table__body__item\">" + label + "</td><td class=\"ut-table__item ut-table__body__item\">");
         }
 %>
 <script type="text/javascript">
