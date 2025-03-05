@@ -1,7 +1,7 @@
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
-<div>
+<div class="wrapper">
     <form method="post" action="einfaches_ergebnis">
         <% Language.setLanguage(request);
 
@@ -13,15 +13,24 @@
         %>
         <input type="hidden" name="form" value="einfache_suche">
 
-        <jsp:include page="layout/image.inc.html" />
-        <jsp:include page="layout/titel.suche.html" />
-
-        <h3>  <jsp:include page="../inc.erzeugeBeschriftung.jsp">
+        <h3 class="ut-heading ut-heading--h3">
+            <jsp:include page="../inc.erzeugeBeschriftung.jsp">
                 <jsp:param name="Formular" value="gast_freie_suche"/>
                 <jsp:param name="Textfeld" value="EinfacheSuche"/>
             </jsp:include></h3>
-        <input type="text" name="query" style="width:75%">
-        <input type="submit" name="Suchen" value="&gt;">
+
+        <div class="ut-form__row row align-items-center">
+            <div class="col-sm-10">
+                <input class="ut-form__input ut-form__field" id="id_field" type="text" name="query" placeholder="<% Language.printTextfield(out, session, "gast_freie_suche", "IhreSuchanfrage"); %>" value="" required />
+            </div>
+        </div>
+        <div class="ut-form__row row align-items-center">
+            <div class="col-sm-10">
+                <button type="submit" class="ut-btn ut-btn--outline ut-btn--color-primary-1 ut-form__action mr-2" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Suchen"); %>"><% Language.printTextfield(out, session, "gast_freie_suche", "Suchen"); %></button>
+                <button type="reset" class="ut-btn ut-btn--outline ut-form__action" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %>"><% Language.printTextfield(out, session, "gast_freie_suche", "Zuruecksetzen"); %></button>
+            </div>
+        </div>
+
 
         <%    if (session.getAttribute("Sprache").equals("de")) {
 
@@ -29,7 +38,7 @@
         <p>
             Sie k&ouml;nnen nach Namenlemmata, Personen, Quellen und Einzelbelegen (konkreten
             Namensnennungen in einer Quelle) suchen. F&uuml;r <b>komplexere Suchanfragen</b> wechseln Sie bitte zur
-            <b><a href="freie_suche">erweiterten Suche</a></b>.
+            <b><a href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche">erweiterten Suche</a></b>.
         </p>
         <p>
             Gro&szlig;- und Kleinschreibung werden bei der Suche nicht ber&uuml;cksichtigt.
@@ -63,13 +72,13 @@
         </p>
         <p>
             F&uuml;r <b>komplexere Suchanfragen</b> wechseln Sie bitte zur
-            <b><a href="freie_suche">erweiterten Suche</a></b>.
+            <b><a href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche">erweiterten Suche</a></b>.
         </p>
         <%} else {
         %>
-        <h4>How to search the database</h4>
+        <h4 class="ut-heading ut-heading--h4">How to search the database</h4>
 
-        <p>The database allows you to search for name lemmata, persons, and primary sources, as well as single references (specific names within a source). For a more detailed search, please press the <a href="freie_suche">advanced search button</a>. Upper and lower case are disregarded as search criteria.
+        <p>The database allows you to search for name lemmata, persons, and primary sources, as well as single references (specific names within a source). For more complex search queries, please switch to <a href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche">advanced search</a>. Upper and lower case are disregarded as search criteria.
         </p>
         <p>By entering % you can truncate your query. Put differently, the % represents a random amount of signs at each position (also in the beginning) of the search keyword. The truncation of the keyword at the end of the keyword is practical, because the database only shows entries which match the keyword exactly. Multiple search keywords are not conjoined by using 'and/or', thus you have to put a % between multiple search keywords.
         </p>
@@ -79,9 +88,9 @@
         </p>
         <p>Each category, be it name lemmata, persons, primary sources, or single references, must be browsed independently and entries in these different categories are not linked up with each other. In other words, an internal cross-reference search between categories is impossible. Hence, your keyword has to match an entry in one of the aforementioned categories to obtain results.
         </p>
-        <p>For a more detailed search please press the <a href="freie_suche">advanced search button</a>.
+        <p>For more complex search queries, please switch to <a href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche">advanced search</a>.
         </p>
-
+        
         <%
                 }
             }

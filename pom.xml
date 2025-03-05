@@ -110,6 +110,11 @@
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
+            <artifactId>jquery-ui</artifactId>
+            <version>1.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
             <artifactId>jQuery-Autocomplete</artifactId>
             <version>1.4.11</version>
         </dependency>
@@ -117,6 +122,11 @@
             <groupId>org.webjars</groupId>
             <artifactId>jstree</artifactId>
             <version>3.3.16</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.8</version> <!-- Aktualisiere die Version, falls erforderlich -->
         </dependency>
     </dependencies>
 
@@ -203,6 +213,25 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>unpack-jquery-ui</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <silent>true</silent>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>jquery-ui</artifactId>
+                                    <version>1.13.2</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>unpack-jquery-autocomplete</id>
                         <phase>generate-resources</phase>
                         <goals>
@@ -274,7 +303,7 @@
                 </executions>
             </plugin>
             <!-- Configure the maven-surefire-plugin and maven-failsafe-plugin to be at version 2.22.2 so that they can run JUnit5 -->
-            <plugin>
+             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>

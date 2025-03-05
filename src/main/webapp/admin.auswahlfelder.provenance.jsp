@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.SelektionProvenance"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.SelektionBezeichnung"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.Selektion"%>
@@ -18,13 +19,13 @@
             out.println("<table>");
             out.println("<tr>");
             out.println("<th>");
-            out.println("Bezeichnung");
+            out.println(Language.getTextfield(session, "admin", "Bezeichnung"));
             out.println("</th>");
             out.println("<th>");
-            out.println("Provenance Source");
+            out.println(Language.getTextfield(session, "admin", "ProvenanceSource"));
             out.println("</th>");
             out.println("<th>");
-            out.println("Provenance ID");
+            out.println(Language.getTextfield(session, "admin", "ProvenanceID"));
             out.println("</th>");
             out.println("</tr>");
             for(Selektion sel: bezList){

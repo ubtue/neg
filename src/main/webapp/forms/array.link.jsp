@@ -20,7 +20,7 @@
 
                 String add = fields[3];
 
-                out.println("<a href=\"" + add + "?ID=" + row.get(fields[1]).toString() + "\">" + bez + "</a><br>");
+                out.println("<a class=\"ut-link\" href=\"" + add + "?ID=" + row.get(fields[1]).toString() + "\">" + bez + "</a><br>");
             }
         }
     }

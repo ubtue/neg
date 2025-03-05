@@ -8,7 +8,7 @@ public class OhneVerknuepfungServlet extends AbstractBackendServlet {
 
     @Override
     protected String getTitle() {
-        return "freie_suche";
+        return "openLink";
     }
 
     @Override

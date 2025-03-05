@@ -18,7 +18,11 @@
     int id = Utils.determineId(request, response, formular, out);
 
     if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || HandschriftDB.getById(id) == null)){
-        throw new IdNotFoundException("Textzeugen ID " + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Textzeugen ID T" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Text attestor ID T" + String.valueOf(id) + " does not exist");
+        }
     }
 %>
 
@@ -77,7 +81,7 @@
 	<li><span>
              <% Language.printTextfield(out,session, formular,"TabUeberlieferung");%>
             </span></li>
-	<li><a href="javascript:onoff('tab2','tab1');"> 
+	<li><a href="javascript:onoff('tab2','tab1');">
              <% Language.printTextfield(out,session, formular,"TabBemerkungen");%>
             </a></li>
 </ul>
