@@ -9,7 +9,6 @@
 
 <%@ include file="configuration.jsp" %>
 
-
 <%
     String formular = "edition";
     Filter.setFilter(request, formular, out);
@@ -20,7 +19,11 @@
     //if (id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || EditionDB.getById(id) == null)) {
 
     if (id != Constants.NEW_ITEM && (EditionDB.getById(id) == null)) {
-        throw new IdNotFoundException("Edition ID " + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Edition ID E" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Edition ID E" + String.valueOf(id) + " does not exist");
+        }
     }
 %>
 
@@ -33,7 +36,7 @@
 </jsp:include>
 
   <div onLoad="javascript:onoff('tab4','tab1'); onoff('tab1','tab4');urlRewrite(<%= id %>);">
-    <FORM method="POST">      
+    <FORM method="POST">
       <jsp:include page="layout/titel.inc.jsp">
         <jsp:param name="title" value="Edition" />
         <jsp:param name="ID" value="<%= id %>" />
@@ -115,10 +118,6 @@
             </tr>
             <tr>
               <td width="200">
-                <jsp:include page="inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="edition"/>
-                  <jsp:param name="Datenfeld" value="Reihe"/>
-                </jsp:include>
                   <% Language.printDatafield(out,session, formular,"Reihe");%>
               </td>
               <td width="450">
@@ -200,7 +199,7 @@
 	<li><a href="javascript:onoff('tab5','tab1');">
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
-<!-- TAB BÄNDE & QUELLEN
+<!-- TAB BAENDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                     <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -250,7 +249,7 @@
 	<li><span>
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </span></li>
-<!-- TAB BÄNDE & QUELLEN
+<!-- TAB BAENDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab1');">
                 <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -269,11 +268,13 @@
               </li>
             </ul>
           </div>
-<div id="main"><jsp:include page="inc.modul.jsp">
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="Formular" value="edition" />
-	<jsp:param name="Modul" value="ueberlieferung" />
-</jsp:include></div>
+          <div id="main">
+            <jsp:include page="inc.modul.jsp">
+                <jsp:param name="ID" value="<%= id %>" />
+                <jsp:param name="Formular" value="edition" />
+                <jsp:param name="Modul" value="ueberlieferung" />
+            </jsp:include>
+          </div>
         </div>
 
         <div id="tab2">
@@ -355,7 +356,7 @@
 	<li><a href="javascript:onoff('tab5','tab4');">
             <% Language.printTextfield(out,session, "quelle","TabUeberlieferung");%>
             </a></li>
-<!-- TAB BÄNDE & QUELLEN
+<!-- TAB B�NDE & QUELLEN
               <li>
                 <a href="javascript:onoff('tab2','tab4');">
                     <% Language.printTextfield(out,session, formular,"TabBaende");%>
@@ -481,14 +482,12 @@
                 </tr>
               </tbody>
             </table>
-                            <jsp:include page="inc.erzeugeFormular.jsp">
+                <jsp:include page="inc.erzeugeFormular.jsp">
                   <jsp:param name="ID" value="<%= id %>"/>
                   <jsp:param name="Formular" value="edition"/>
                   <jsp:param name="Datenfeld" value="Sammelband"/>
                   <jsp:param name="Visibility" value="hidden"/>
                 </jsp:include>
-
-
           </div>
         </div>
       </div>

@@ -10,4 +10,5 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SelektionBearbeitungsstatus extends SelektionAbstractProvenance {
 
+
 }

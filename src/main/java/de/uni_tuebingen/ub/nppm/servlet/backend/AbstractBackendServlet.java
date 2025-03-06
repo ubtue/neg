@@ -1,5 +1,7 @@
 package de.uni_tuebingen.ub.nppm.servlet.backend;
 
+import de.uni_tuebingen.ub.nppm.exception.BenutzerNotSetException;
+import de.uni_tuebingen.ub.nppm.exception.BenutzerNotAdminException;
 import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.servlet.AbstractServlet;

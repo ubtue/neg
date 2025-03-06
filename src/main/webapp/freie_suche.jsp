@@ -80,8 +80,8 @@
 
     <noscript></noscript>
 </div>
-    
-    <jsp:include page="layout/titel.suche.html" />
+
+    <jsp:include page="layout/titel.suche.jsp" />
 
     <FORM method="POST" action="suchergebnis">
       <input type="hidden" name="form" value="freie_suche">
