@@ -90,7 +90,7 @@
 
             if (datenfeld.equals("ErstGliedSelect")) {
 
-                List<String> erstGliedlist = MghLemmaDB.getListErstglied();
+                List<String> erstGliedlist = LemmaDB.getListErstglied();
 
                 out.println("<option value=\"-\">-</option>");
 
@@ -99,7 +99,7 @@
                 }
 
             } else if (datenfeld.equals("ZweitGliedSelect")) {
-                List<String> zweitGliedlist = MghLemmaDB.getListZweitglied();
+                List<String> zweitGliedlist = LemmaDB.getListZweitglied();
 
                 out.println("<option value=\"-\">-</option>");
 

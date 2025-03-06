@@ -328,17 +328,17 @@
                                     <h3 class="ut-heading ut-heading--h3">
                                         <% Language.printTextfield(out, session, "gast_freie_suche", "ZumNamen"); %>
                                     </h3></td></tr>
-                            <tr class="ut-table__row">
+                            <!--<tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="Ausgabe_Namenlemma"/>
                                     </jsp:include>
                                 </td>
-                                <td class="ut-table__item ut-table__body__item">
-                                    <% Language.printDatafield(out, session, formular, "Ausgabe_Namenlemma"); %>
-                                </td>
-                            </tr>
+                                <td class="ut-table__item ut-table__body__item">-->
+                                    <% //Language.printDatafield(out, session, formular, "Ausgabe_Namenlemma"); %>
+                                <!--</td>
+                            </tr>-->
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../inc.erzeugeFormular.jsp">

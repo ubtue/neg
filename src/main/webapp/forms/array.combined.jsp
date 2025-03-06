@@ -164,10 +164,6 @@
                                 + combinedFeldnamen[j] + "[" + i
                                 + "]\" style=\"width:6em\">");
 
-                        String add = fields[0];
-                        if (add.equals("mgh_lemma")) {
-                            add = "lemma";
-                        }
                         List<Map> rowlist2 = AbstractBase.getMappedList(
                                 "SELECT * FROM "
                                 + auswahlherkunftArray[j]
