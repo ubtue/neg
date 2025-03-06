@@ -2,6 +2,7 @@ package de.uni_tuebingen.ub.nppm.util;
 
 import javax.servlet.http.*;
 import de.uni_tuebingen.ub.nppm.db.DatenbankDB;
+import java.io.PrintWriter;
 import javax.servlet.jsp.JspWriter;
 public class Language {
 
@@ -82,6 +83,11 @@ public class Language {
     }
 
     public static void printTextfield(JspWriter out,HttpSession session, String formular, String textfield) throws Exception{
+        out.println(getTextfield(session, formular, textfield));
+    }
+
+    //In order to use this function in a Servlet, I need a PrintWriter there.
+    public static void printTextfield(PrintWriter out, HttpSession session, String formular, String textfield) throws Exception {
         out.println(getTextfield(session, formular, textfield));
     }
 

@@ -1,9 +1,12 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.Benutzer"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.BenutzerDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@ include file="functions.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -71,18 +74,19 @@
         %>
         <div class="forgotPassword_container">
             <div class="div-1">
-                <h1>Passwort vergessen ?</h1>
-                <p>1. Geben Sie unten Ihre E-Mail Adresse ein.</p>
-                <p>2. Unser System sendet Ihnen einen Link an Ihre E-Mail Adresse</p>
-                <p>3. Klicken Sie den Link in Ihrer E-mail an, sie werden weiter geleitet um Ihr Passwort neu zu setzen</p>
+                <h1><%= DBtoHTML(Language.getTextfield(session, "login", "PasswortVergessen"))%></h1>
+                <p><%= DBtoHTML(Language.getTextfield(session, "login", "EingabeEmail"))%></p>
+                <p><%= DBtoHTML(Language.getTextfield(session, "login", "SendetEmail"))%></p>
+                <p><%= DBtoHTML(Language.getTextfield(session, "login", "KlickLink"))%></p>
                 <br>
                 <div class="div-1">
                     <form method="post" action="newPassword" id="register-form">
-                        <input type="email" name="email" id="email" value="" placeholder="Ihre Registrierte E-Mail" />
-                        <input type="submit" value="Neues Passwort" name="submit_new_password" />
-                        <a href="login"><button type="button">zur&uuml;ck zum Login</button></a>
+                        <input type="email" name="email" id="email" value="" placeholder= "<%= DBtoHTML(Language.getTextfield(session, "login", "RegistrierteEmail"))%>" />
+                        <button type="submit" name="submit_new_password">
+                            <%= DBtoHTML(Language.getTextfield(session, "login", "PasswortNeu"))%>
+                        </button>
+                        <a href="<%=Utils.getBaseUrl(request)%>/gast/login"><button type="button"><%= DBtoHTML(Language.getTextfield(session, "login", "ZurueckLogin"))%></button></a>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -91,7 +95,7 @@
             boolean emailIsRegistered = BenutzerDB.hasEmail(email_content);
             if (!emailIsRegistered) {
         %>
-        <h1>Fehler, E-mail Adresse ist nicht registriert versuchen sie einen Link mit einer anderen EMail Adresse zugenerieren</h1>
+        <h1><%= DBtoHTML(Language.getTextfield(session, "login", "ErrorEmailAdresse"))%></h1>
         <%
         } else {
 
@@ -110,8 +114,8 @@
 
                 String temp = "/forgotPassword";
         %>
-        <h1>Link ist nicht mehr g&uuml;ltig, bitte einen neuen Link generieren.</h1>
-        <h1><a href=" <%= Utils.getBaseUrl(request) + temp%> " >Neuen Link generieren</a></h1>
+        <h1><%= DBtoHTML(Language.getTextfield(session, "login", "LinkUngueltig"))%></h1>
+        <h1><a href=" <%= Utils.getBaseUrl(request) + temp%> " ><%= DBtoHTML(Language.getTextfield(session, "login", "NeuerLink"))%></a></h1>
         <%
         } else { //show layout for Reset your Password by typing twice your new Password in Fields
 
@@ -119,15 +123,15 @@
 
         <div class="forgotPassword_container">
             <div class="div-1">
-                <h1>Reset Passwort</h1>
+                <h1><%= DBtoHTML(Language.getTextfield(session, "login", "ResetPasswort"))%></h1>
 
                 <br>
                 <div class="div-1">
                     <form method="post" action="newPassword" id="register-form">
                         <div class="div-2">
-                            <input type="password" name="newPassword" value="" minlength="6" placeholder="Neues Passwort" />
-                            <input type="password" name="repeatPassword" value="" minlength="6" placeholder="Wiederhole neues Passwort" />
-                            <input type="submit" value="Reset" />
+                            <input type="password" name="newPassword" value="" minlength="6" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "PasswortNeu"))%>" />
+                            <input type="password" name="repeatPassword" value="" minlength="6" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "WiederholePasswort"))%>" />
+                            <input type="submit" value="<%= DBtoHTML(Language.getTextfield(session, "login", "Reset"))%>" />
                             <input type="hidden" name="url_uuid" value="<%= uuid_content%>">
                             <input type="hidden" name="url_email" value="<%= email_content%>">
                             <input type="hidden" name="url_timeStamp" value="<%= timeStamp_content%>">

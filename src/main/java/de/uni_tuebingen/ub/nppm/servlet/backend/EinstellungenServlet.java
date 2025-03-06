@@ -63,10 +63,26 @@ public class EinstellungenServlet extends AbstractBackendServlet {
                 if (request.getParameter("email").equals("")) {
                     errorMessage = "noEmail";
                     actionNotDone = true;
-                } else {
-                    benutzer.setEMail(request.getParameter("email"));
+                }else if (!request.getParameter("email").equals(benutzer.getEMail())) {
+                    if(BenutzerDB.getByMail(request.getParameter("email")) != null){
+                        errorMessage = "emailAddressTaken";
+                        actionNotDone = true;
+                    } else{
+                         benutzer.setEMail(request.getParameter("email"));
+                    }
+                }
+
+                if (!request.getParameter("Benutzername").equals(benutzer.getLogin())) {
+                    if (BenutzerDB.hasLogin(request.getParameter("Benutzername"))) {
+                        errorMessage = "usernameTaken";
+                        actionNotDone = true;
+                    } else{
+                        benutzer.setLogin(request.getParameter("Benutzername"));
+                    }
+                }
+
+                if (!actionNotDone) {
                     benutzer.setSprache(request.getParameter("Sprache"));
-                    benutzer.setLogin(request.getParameter("Benutzername"));
                     benutzer.setVorname(request.getParameter("Vorname"));
                     benutzer.setNachname(request.getParameter("Nachname"));
                     benutzer.setAdmin("on".equals(request.getParameter("Administrator")));

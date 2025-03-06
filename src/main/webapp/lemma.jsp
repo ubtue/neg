@@ -17,7 +17,11 @@
     int id = Utils.determineId(request, response, formular, out);
 
     if(id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || LemmaDB.getById(id) == null)){
-        throw new IdNotFoundException("Lemma ID " + String.valueOf(id) + " ist nicht vorhanden");
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " does not exist");
+        }
     }
 %>
 

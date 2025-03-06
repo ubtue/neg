@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ include file="../../configuration.jsp" %>
 
 <%
@@ -22,8 +23,8 @@
 
 %>
 
-<div id="jump-to-wrap">
-<div id="jump-to">
+<div class="ut-wrapper ut-wrapper--color-components-1" style="padding-top: 10px; padding-bottom: 10px;">
+<div class="container" id="jump-to" >
 <form method="post" >
 <div id="jump-1">
   <!------------Jump1------------>
@@ -49,7 +50,7 @@
 </div>
 
 <!------------prev-next------------>
-<div class="pager-wrap">
+<div class="container" style="display: flex; justify-content: center; padding-top: 10px ">
   <jsp:include page="../forms/link.jsp">
     <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
     <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
@@ -67,6 +68,7 @@
   </jsp:include>
 
     <!------------Eintraege------------>
+
   <span class="counter">
   <jsp:include page="../../forms/filter.jsp">
     <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
@@ -74,7 +76,8 @@
     <jsp:param name="filter" value="<%= filter %>"/>
     <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
   </jsp:include>
-  Eintrag <jsp:include page="../../forms/counter.jsp">
+      <% Language.printTextfield(out, session, "titel_inc", "Eintrag");%>
+  <jsp:include page="../../forms/counter.jsp">
       <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
       <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
       <jsp:param name="filter" value="<%= filter %>"/>
@@ -98,6 +101,3 @@
     <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
   </jsp:include>
 </div>
-
-
-

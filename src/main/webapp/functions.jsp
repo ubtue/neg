@@ -182,7 +182,7 @@
         if (dmghUrl[0].isEmpty()) {
             return belegform;
         }
-        return String.format("<a href='%s' title='%s'>%s</a>", dmghUrl[0], dmghUrl[1], belegform);
+        return String.format("<a class=\"ut-link ut-link--external ut-link--context-icon\" href='%s' title='%s' target='_blank'>%s</a>", dmghUrl[0], dmghUrl[1], belegform);
     }
 
     String getBelegformExternalLinked(HttpServletRequest request, String einzelbelegID, String belegform) throws Exception {
@@ -207,6 +207,4 @@
         }
         return String.format("<a href='%s' title='%s' target='_blank'>%s</a>", dmghUrl[0], dmghUrl[1], belegform);
     }
-
-
 %>

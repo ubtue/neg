@@ -21,7 +21,7 @@
     }
 
 
-    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals("speichern")) {
+    if (request.getParameter("speichern") != null && request.getParameter("speichern").equals(Language.getTextfield(session, "navigation", "Speichern"))) {
 
         boolean exist = SaveHelper.existForm(form, id);
         if (!form.equals("urkunde") && !exist) {
