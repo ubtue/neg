@@ -141,7 +141,7 @@
                 </div>
             </td>
         </tr>
-
+        <!--
         <jsp:include page="../inc.erzeugeFormular.jsp">
             <jsp:param name="ID" value="<%= id%>"/>
             <jsp:param name="Formular" value="einzelbeleg"/>
@@ -151,7 +151,7 @@
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "LemmaRO")%>"/>
             <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
-
+        -->
         <jsp:include page="../inc.erzeugeFormular.jsp">
             <jsp:param name="ID" value="<%= id%>"/>
             <jsp:param name="Formular" value="einzelbeleg"/>
