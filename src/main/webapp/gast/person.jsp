@@ -8,13 +8,53 @@
 
 <jsp:include page="../dofilter.jsp" />
 
+<style>
+    .myTable .ut-table {
+        table-layout: auto; /* Automatische Breitenanpassung */
+        width: 100%;
+    }
+
+    .myTable .ut-table__row td {
+        width: auto; /* Breite der Zellen soll sich anpassen */
+    }
+
+    .myTable .ut-table__row td:first-child {
+        white-space: nowrap; /* Verhindert das Umbruchverhalten */
+    }
+
+    .myTable .ut-table__row td:last-child {
+        width: 100%; /* Die zweite Spalte nimmt den verbleibenden Platz ein */
+    }
+
+    .flex-header {
+        position: relative;
+        display: flex; /* Optional, falls du Flexbox verwenden möchtest */
+        align-items: center; /* Stellt sicher, dass die Kinder (Button und h3) vertikal ausgerichtet sind */
+    }
+
+    #toggleButton {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: auto; /* Optional, wenn der Button eine flexible Höhe haben soll */
+    }
+
+    h3.ut-heading {
+        margin: 0;
+        line-height: 1.5;
+    }
+
+</style>
+
 <%    int id = Integer.parseInt(request.getParameter("ID"));
+    boolean buttonOnOff = "true".equals(request.getParameter("allfields"));
 
     Person person = PersonDB.getById(id);
     if (person == null) {
         if (session.getAttribute("Sprache").equals("de")) {
             throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
-        } else{
+        } else {
             throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " does not exist");
         }
 
@@ -33,7 +73,7 @@
         if (throwException) {
             if (session.getAttribute("Sprache").equals("de")) {
                 throw new IdNotPublicException("Person ID P" + String.valueOf(id) + " ist nicht zu veröffentlichen");
-            } else{
+            } else {
                 throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " is not to be published");
             }
 
@@ -74,7 +114,15 @@
     <!----------Prosopographisches---------->
 
     <!----------Has to be put inside of database/table: "datenbank_texte" -- (not present till now)---------->
-    <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "person", "Prosopographical");%></h3>
+    <div class="flex-header">
+        <h3 class="ut-heading ut-heading--h3">
+            <% Language.printTextfield(out, session, "person", "Prosopographical");%>
+        </h3>
+        <button class="ut-btn ut-btn--color-primary-4" id="toggleButton" style="margin-top: -8px;" onclick="toggleAllFields()">
+            <% Language.getTextfield(session, "fields", "On"); %>
+        </button>
+    </div>
+
     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
         <tbody class="ut-table__body">
             <tr class="ut-table__row">
@@ -104,6 +152,7 @@
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getDatafield(session, "person", "Varianten")%>"/>
+                <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>
 
             <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -113,6 +162,7 @@
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getDatafield(session, "person", "Geschlecht")%>"/>
+                <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>
 
             <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -124,6 +174,7 @@
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getTextfield(session, "person", "Identifizierungsproblem")%>"/>
+                <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>
 
             <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -133,6 +184,7 @@
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getDatafield(session, "person", "Stand")%>"/>
+                <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>
 
             <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -143,6 +195,7 @@
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getTextfield(session, "person", "Aemter")%>"/>
                 <jsp:param name="CountRow" value="noCount" />
+                <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>
 
             <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -153,12 +206,13 @@
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
                 <jsp:param name="Label" value="<%=Language.getDatafield(session, "person", "Ethnie")%>"/>
                 <jsp:param name="CountRow" value="noCount" />
+                <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>
 
             <%
                 List<Object[]> resultList = ModulIncDB.getListPersonenVerwandte(String.valueOf(id));
 
-                if (resultList != null && !resultList.isEmpty()) {
+                if (buttonOnOff || (resultList != null && !resultList.isEmpty())) {
             %>
 
             <tr class="ut-table__row">
@@ -187,3 +241,31 @@
     <jsp:param name="Formular" value="person" />
     <jsp:param name="Modul" value="nachweiseRO" />
 </jsp:include>
+
+<script>
+    function toggleAllFields() {
+        let url = new URL(window.location.href);
+        let params = url.searchParams;
+
+        if (params.get("allfields") === "true") {
+            params.delete("allfields");
+        } else {
+            params.set("allfields", "true");
+        }
+
+        window.location.href = url.toString();
+    }
+
+    window.onload = function () {
+        let params = new URLSearchParams(window.location.search);
+        let button = document.getElementById("toggleButton");
+        let on = '<%= Language.getTextfield(session, "fields", "Off") %>';
+        let off = '<%= Language.getTextfield(session, "fields", "On") %>';
+
+        if (params.get("allfields") === "true") {
+            button.textContent = on;
+        } else {
+            button.textContent = off;
+        }
+    };
+</script>

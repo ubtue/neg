@@ -161,7 +161,8 @@
     out = out_html;
     String generatedValue = out_buffer.getBuffer().trim();
 
-    boolean display = !generatedValue.isEmpty() && !generatedValue.equals("-");
+    boolean allFields = "true".equals(request.getParameter("allfields"));
+    boolean display = allFields || (!generatedValue.isEmpty() && !generatedValue.equals("-"));
 
     if (display) {
         if (darstellung.equals("Tabellenzeile")) {

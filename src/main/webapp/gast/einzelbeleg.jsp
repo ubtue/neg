@@ -23,11 +23,32 @@
     .myTable .ut-table__row td:last-child {
         width: 100%; /* Die zweite Spalte nimmt den verbleibenden Platz ein */
     }
+
+    .flex-header {
+        position: relative;
+        display: flex; /* Optional, falls du Flexbox verwenden möchtest */
+        align-items: center; /* Stellt sicher, dass die Kinder (Button und h3) vertikal ausgerichtet sind */
+    }
+
+    #toggleButton {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: auto; /* Optional, wenn der Button eine flexible Höhe haben soll */
+    }
+
+    h3.ut-heading {
+        margin: 0;
+        line-height: 1.5;
+    }
+
 </style>
 
 
 <%
     int id = Integer.parseInt(request.getParameter("ID"));
+    boolean buttonOnOff = "true".equals(request.getParameter("allfields"));
 
     Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
 
@@ -75,7 +96,15 @@
 </div>
 
 <!----------Belegstelle---------->
-<h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "TabBelegstelle");%></h3>
+<div class="flex-header">
+    <h3 class="ut-heading ut-heading--h3">
+        <% Language.printTextfield(out, session, "einzelbeleg", "TabBelegstelle");%>
+    </h3>
+    <button class="ut-btn ut-btn--color-primary-4" id="toggleButton" style="margin-top: -8px;" onclick="toggleAllFields()">
+        <% Language.getTextfield(session, "fields", "On"); %>
+    </button>
+</div>
+
 <div class="myTable">
 <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
     <tbody class="ut-table__body ">
@@ -86,6 +115,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "PersonRO")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <tr class="ut-table__row">
@@ -119,6 +149,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "LemmaRO")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
         -->
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -128,6 +159,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "MGHLemmaRO")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -139,6 +171,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Kontext")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -148,6 +181,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "KontextSelektion")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -157,6 +191,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "KritikSelektion")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -166,6 +201,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "LebendVerstorben")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -175,6 +211,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getTextfield(session, "einzelbeleg", "DatierungNennung")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <%
@@ -190,6 +227,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "DatierungUngewiss")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <%
@@ -205,6 +243,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "KommentarDatierung")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -214,6 +253,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Konvent")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -223,6 +263,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "PalAbgrenzung")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -232,6 +273,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "InhAbgrenzung")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -241,6 +283,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "NrInStrukt")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -250,6 +293,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Seite")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -259,6 +303,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Raster")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -268,6 +313,7 @@
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
             <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Schreiber")%>"/>
+            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
     </tbody>
 </table>
@@ -293,6 +339,7 @@
         <jsp:param name="Readonly" value="yes"/>
         <jsp:param name="Darstellung" value="Tabellenzeile"/>
         <jsp:param name="Label" value="<%=Language.getTextfield(session, "einzelbeleg", "Edition")%>"/>
+        <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
     </jsp:include>
 
     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -303,6 +350,7 @@
         <jsp:param name="Readonly" value="yes"/>
         <jsp:param name="Darstellung" value="Tabellenzeile"/>
         <jsp:param name="Label" value="<%=Language.getTextfield(session, "einzelbeleg", "Kapitel")%>"/>
+        <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
     </jsp:include>
 
     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -313,6 +361,7 @@
         <jsp:param name="Readonly" value="yes"/>
         <jsp:param name="Darstellung" value="Tabellenzeile"/>
         <jsp:param name="Label" value="<%=Language.getTextfield(session, "einzelbeleg", "Seite")%>"/>
+        <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
     </jsp:include>
 
     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -322,15 +371,15 @@
         <jsp:param name="Readonly" value="yes"/>
         <jsp:param name="Darstellung" value="Tabellenzeile"/>
         <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "QuelleDatierung")%>"/>
+        <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
     </jsp:include>
 </table>
 </div>
 <!----------Textkritik---------->
-
 <%
     List<Object[]> resultList = ModulIncDB.getListEinzelbelegTextkritik(String.valueOf(id));
 
-    if (resultList != null && !resultList.isEmpty()) {
+    if (buttonOnOff || (resultList != null && !resultList.isEmpty())) {
 %>
 <div class="container">
     <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "TabTextkritik");%></h3>
@@ -344,3 +393,31 @@
 <%
     }
 %>
+
+<script>
+    function toggleAllFields() {
+        let url = new URL(window.location.href);
+        let params = url.searchParams;
+
+        if (params.get("allfields") === "true") {
+            params.delete("allfields");
+        } else {
+            params.set("allfields", "true");
+        }
+
+        window.location.href = url.toString();
+    }
+
+    window.onload = function () {
+        let params = new URLSearchParams(window.location.search);
+        let button = document.getElementById("toggleButton");
+        let on = '<%= Language.getTextfield(session, "fields", "Off") %>';
+        let off = '<%= Language.getTextfield(session, "fields", "On") %>';
+
+        if (params.get("allfields") === "true") {
+            button.textContent = on;
+        } else {
+            button.textContent = off;
+        }
+    };
+</script>
