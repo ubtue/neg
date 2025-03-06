@@ -1,6 +1,6 @@
 package de.uni_tuebingen.ub.nppm.servlet;
 
-import de.uni_tuebingen.ub.nppm.db.MghLemmaDB;
+import de.uni_tuebingen.ub.nppm.db.LemmaDB;
 import de.uni_tuebingen.ub.nppm.model.Einzelbeleg;
 import de.uni_tuebingen.ub.nppm.model.MghLemma;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentar;

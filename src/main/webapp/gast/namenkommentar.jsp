@@ -39,11 +39,15 @@
     }
 
     if (throwException) {
+<<<<<<< HEAD
+        throw new IdNotPublicException("Philologischer Kommentar ID N" + id + " ist nicht zu veröffentlichen");
+=======
         if (session.getAttribute("Sprache").equals("de")) {
                 throw new IdNotPublicException("Philologisches Lemma ID N" + id + " ist nicht zu veröffentlichen");
             } else{
                 throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " is not to be published");
             }
+>>>>>>> develop
     }
 
     String formular = "namenkommentar";

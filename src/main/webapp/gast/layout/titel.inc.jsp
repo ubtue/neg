@@ -26,22 +26,7 @@
 <div class="ut-wrapper ut-wrapper--color-components-1" style="padding-top: 10px; padding-bottom: 10px;">
 <div class="container" id="jump-to" >
 <form method="post" >
-<%
-if(request.getParameter("title").equals("mgh_lemma")){
-%>
-    <button type="button" class="ut-btn ut-btn--outline " style="background-color: white;"  aria-label="<% Language.printTextfield(out, session, "mgh_lemma", "GoToLemma");%>" disabled><% Language.printTextfield(out, session, "mgh_lemma", "Titel"); %></button>
-    <button type="button" class="ut-btn ut-btn--outline " aria-label="<% Language.printTextfield(out, session, "namenkommentar", "GoToPhilologicalLemma");%>" onclick="window.location.href='namenkommentar?fromLemma=MGH-Lemma';"><% Language.printTextfield(out, session, "namenkommentar", "PLemma");%></button>
-
-<%
-}
-if(request.getParameter("title").equals("namenkommentar")){
-%>
-    <button type="button" class="ut-btn ut-btn--outline "  aria-label="<% Language.printTextfield(out, session, "namenkommentar", "GoToPhilologicalLemma");%>" onclick="window.location.href='mghlemma?fromLemma=Namenlemma';"><% Language.printTextfield(out, session, "mgh_lemma", "Titel"); %></button>
-    <button type="button" class="ut-btn ut-btn--outline " style="background-color: white;"  aria-label="<% Language.printTextfield(out, session, "mgh_lemma", "GoToLemma");%>" disabled><% Language.printTextfield(out, session, "namenkommentar", "PLemma");%></button>
-<%
-}
-%>
-<div id="jump-1" >
+<div id="jump-1">
   <!------------Jump1------------>
   <jsp:include page="../forms/jumpID.jsp">
     <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>

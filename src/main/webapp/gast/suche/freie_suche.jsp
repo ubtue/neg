@@ -1322,7 +1322,7 @@
                             out.print("<a class=\"ut-link\" href=\"namenkommentar?ID=" + row.get("namenkommentarID") + "\">");
                             link = true;
                         } else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
-                            out.print("<a class=\"ut-link\" href=\"mghlemma?ID=" + row.get("mgh_lemmaID") + "\">");
+                            out.print("<a class=\"ut-link\" href=\"lemma?ID=" + row.get("mgh_lemmaID") + "\">");
                             link = true;
                         } else if (orderV[z].equals("quelle.Bezeichnung")) {
                             out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");
@@ -1393,7 +1393,7 @@
                                 out.print("<a class=\"ut-link\" href=\"namenkommentar?ID=" + row.get("namenkommentarID") + "\">");
                                 link = true;
                             } else if (fieldNames.get(i).contains("mgh_lemma.MGHLemma")) {
-                                out.print("<a class=\"ut-link\" href=\"mghlemma?ID=" + row.get("mgh_lemmaID") + "\">");
+                                out.print("<a class=\"ut-link\" href=\"lemma?ID=" + row.get("mgh_lemmaID") + "\">");
                                 link = true;
                             } else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
                                 out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");

@@ -4,7 +4,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class MghLemmaServlet extends AbstractBackendServlet {
+public class LemmaServlet extends AbstractBackendServlet {
 
     @Override
     protected String getTitle() {
@@ -13,7 +13,7 @@ public class MghLemmaServlet extends AbstractBackendServlet {
 
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        RequestDispatcher rd = request.getRequestDispatcher("mghlemma.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("lemma.jsp");
         rd.include(request, response);
     }
 }

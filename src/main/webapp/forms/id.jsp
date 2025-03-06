@@ -45,8 +45,8 @@
         provenanceSrc = HandschriftDB.getProvenanceSource(id, "handschrift");
     } else if (title.toLowerCase().equals("mghlemma")) {
         out.print("M");
-        provenanceId = MghLemmaDB.getProvenanceId(id, "mgh_lemma");
-        provenanceSrc = MghLemmaDB.getProvenanceSource(id, "mgh_lemma");
+        provenanceId = LemmaDB.getProvenanceId(id, "mgh_lemma");
+        provenanceSrc = LemmaDB.getProvenanceSource(id, "mgh_lemma");
     }
 
     out.println(id);

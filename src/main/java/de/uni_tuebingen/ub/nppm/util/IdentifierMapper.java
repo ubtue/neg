@@ -1,7 +1,7 @@
 package de.uni_tuebingen.ub.nppm.util;
 
 import de.uni_tuebingen.ub.nppm.db.EinzelbelegDB;
-import de.uni_tuebingen.ub.nppm.db.MghLemmaDB;
+import de.uni_tuebingen.ub.nppm.db.LemmaDB;
 import de.uni_tuebingen.ub.nppm.db.NamenKommentarDB;
 import de.uni_tuebingen.ub.nppm.exception.IdNotFoundException;
 import de.uni_tuebingen.ub.nppm.exception.IdNotPublicException;
@@ -15,7 +15,7 @@ public class IdentifierMapper {
         Object ret = null;
         // Map identifier to Model Class
         if (identifier.startsWith("M")) {
-            ret = MghLemmaDB.getById(Integer.valueOf(identifier.substring(1)),MghLemma.class);
+            ret = LemmaDB.getById(Integer.valueOf(identifier.substring(1)),MghLemma.class);
         } else if (identifier.startsWith("N")) {
             ret = NamenKommentarDB.getById(Integer.valueOf(identifier.substring(1)),NamenKommentar.class);
         } else if (identifier.startsWith("B")) {

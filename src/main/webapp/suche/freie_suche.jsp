@@ -1344,7 +1344,7 @@
                   link = true;
                 }
                 else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
-                    out.print("<a href=\"mghlemma?ID="+item.get(QueryHelper.getFieldAliasResult("mgh_lemmaID"))+"\">");
+                    out.print("<a href=\"lemma?ID="+item.get(QueryHelper.getFieldAliasResult("mgh_lemmaID"))+"\">");
                     link = true;
                   }
                  else if (orderV[z].equals("quelle.Bezeichnung")) {
@@ -1423,7 +1423,7 @@
                   link = true;
                 }
                 else if (fieldName.contains("mgh_lemma.MGHLemma") && item.get(QueryHelper.getFieldAliasResult("mgh_lemma.ID")) != null) {
-                    out.print("<a href=\"mghlemma?ID="+item.get(QueryHelper.getFieldAliasResult("mgh_lemma.ID"))+"\">");
+                    out.print("<a href=\"lemma?ID="+item.get(QueryHelper.getFieldAliasResult("mgh_lemma.ID"))+"\">");
                     link = true;
                   }
                   else if (fieldName.contains("quelle.Bezeichnung") && item.get(QueryHelper.getFieldAliasResult("quelle.ID")) != null) {

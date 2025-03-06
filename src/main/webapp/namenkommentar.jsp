@@ -19,9 +19,9 @@
 
     if (id != Constants.NEW_ITEM && (id == Constants.UNDEFINED_ID || NamenKommentarDB.getById(id) == null)) {
         if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Philologisches Lemma ID N" + String.valueOf(id) + " ist nicht vorhanden");
+            throw new IdNotFoundException("Philologischer Kommentar ID N" + String.valueOf(id) + " ist nicht vorhanden");
         } else{
-            throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " does not exist");
+            throw new IdNotFoundException("Philological Comment ID N" + String.valueOf(id) + " does not exist");
         }
     }
 %>
