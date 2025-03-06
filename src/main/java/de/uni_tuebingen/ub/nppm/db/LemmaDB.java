@@ -33,6 +33,18 @@ public class LemmaDB extends AbstractBase {
             return (MghLemma) query.getSingleResult();
         }
     }
+    
+    public static List<MghLemma> getByName(String name) throws Exception{
+        String sql = "SELECT * FROM mgh_lemma WHERE MGHLemma" + " LIKE '%" + name + "%' ";
+        sql += " ORDER BY MGHLemma";
+
+        try ( Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            sqlQuery.addEntity(MghLemma.class);
+            List<MghLemma> rows = sqlQuery.getResultList();
+            return rows;
+        }
+    }
 
     public static List<String> getListErstglied() throws Exception {
         return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' ORDER BY Erstglied ASC");
