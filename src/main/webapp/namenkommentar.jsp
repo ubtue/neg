@@ -57,7 +57,8 @@
                                 <jsp:param name="Formular" value="namenkommentar" />
                                 <jsp:param name="Datenfeld" value="PLemma" />
                                 <jsp:param name="size" value="25" />
-                            </jsp:include>(                <jsp:include page="inc.modul.jsp">
+                            </jsp:include>(
+                            <jsp:include page="inc.modul.jsp">
                                 <jsp:param name="ID" value="<%= id%>"/>
                                 <jsp:param name="Formular" value="namenkommentar"/>
                                 <jsp:param name="Modul" value="PLemma"/>
