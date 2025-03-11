@@ -9,3 +9,7 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('error', 'QuellenID', 'Quellen ID ist nicht vorhanden.', 'Source ID is not available.', 'L\'ID de la source n\'est pas disponible.', 'Fons ID non adest.');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('error', 'EditionID', 'Edition ID ist nicht vorhanden.', 'Edition ID is not available.', 'L\'ID de l\'édition n\'est pas disponible.', 'Editio ID non adest.');
+
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Auswahlherkunft`, `Seite`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('handschrift', 'Bearbeitungsstatus', 'Bearbeitungsstatus', 'select', '0', 'handschrift_ueberlieferung', 'BearbeitungsstatusID', 'selektion_bearbeitungsstatus', 'handschrift', 'Processing status', 'Statut de traitement', 'Status tractandi');
+
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Auswahlherkunft`, `Seite`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('edition', 'Bearbeitungsstatus', 'Bearbeitungsstatus', 'select', '0', 'edition', 'BearbeitungsstatusID', 'selektion_bearbeitungsstatus', 'edition', 'Processing status', 'Statut de traitement', 'Status tractandi');
