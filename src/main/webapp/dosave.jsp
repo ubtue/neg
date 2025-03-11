@@ -50,15 +50,21 @@
                     || feldtyp.equals("sqlselect"))) {
                 // KEIN ARRAY
                 if (isArray != null && !isArray && zielAttribut != null && zieltabelle != null) {
-                    String attrVal = AbstractBase.getSingleField(zielAttribut, zieltabelle, id);
-                    // Datensatz ändern
-                    if (((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
-                            || (request.getParameter(datenfeld) != null && attrVal == null && !request.getParameter(datenfeld).equals("")))) {
+                    try {
+                        String attrVal = AbstractBase.getSingleField(zielAttribut, zieltabelle, id);
+                        // Datensatz ändern
+                        if (((request.getParameter(datenfeld) != null && attrVal != null && !attrVal.equals(DBtoDB(request.getParameter(datenfeld))))
+                                || (request.getParameter(datenfeld) != null && attrVal == null && !request.getParameter(datenfeld).equals("")))) {
 
-                        Map<String, String> condMap = new HashMap<>();
-                        condMap.put("ID", String.valueOf(id));
-                        AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld).trim(), condMap);
-                    } // ENDE Datensatz ändern
+                            Map<String, String> condMap = new HashMap<>();
+                            condMap.put("ID", String.valueOf(id));
+                            AbstractBase.update(zieltabelle, zielAttribut, request.getParameter(datenfeld).trim(), condMap);
+                        } // ENDE Datensatz ändern
+                    } catch (Exception e) {
+                        if ("QuelleID".equals(zielAttribut)) {
+                            throw new IdNotFoundException(Language.getTextfield(session, "error", "QuellenID"));
+                        }
+                    }
 
                 } // ENDE kein Array
                 // ARRAY
@@ -448,21 +454,35 @@
                             }
                         }
                     }
-                }catch (Exception e) {
+                } catch (Exception e) {
                     if (e.getMessage() != null && e.getMessage().contains("NamenkommentarID")) {
-                        throw new IdNotFoundException("Philologischer Kommentar ID ist nicht vorhanden");
+                        throw new IdNotFoundException(Language.getTextfield(session, "error", "PhilologischerKommentarID"));
                     } else if (e.getMessage() != null && e.getMessage().contains("MGHLemmaID")) {
-                        throw new IdNotFoundException("Lemma ID ist nicht vorhanden");
+                        throw new IdNotFoundException(Language.getTextfield(session, "error", "LemmaID"));
+                    } else if (e.getMessage() != null && e.getMessage().contains("PersonID") && e.getMessage().contains("EinzelbelegID")) {
+
+                        int personIdIndex = e.getMessage().indexOf("PersonID");
+                        int einzelbelegIdIndex = e.getMessage().indexOf("EinzelbelegID");
+
+                        if (personIdIndex < einzelbelegIdIndex) {
+                            throw new IdNotFoundException(Language.getTextfield(session, "error", "EinzelbelegID"));
+                        } else if (personIdIndex > einzelbelegIdIndex) {
+                            throw new IdNotFoundException(Language.getTextfield(session, "error", "PersonID"));
+                        }
                     } else if (e.getMessage() != null && e.getMessage().contains("PersonID")) {
-                        throw new IdNotFoundException("Person ID ist nicht vorhanden");
-                    }else if (e.getMessage() != null && e.getMessage().contains("PersonIDzu")) {
-                        throw new IdNotFoundException("Person ID ist nicht vorhanden");
-                    }else if (e.getMessage() != null && e.getMessage().contains("EinzelbelegID")) {
-                        throw new IdNotFoundException("Einzelbeleg ID ist nicht vorhanden");
-                    }else if (e.getMessage() != null && e.getMessage().contains("EditionID")) {
-                        throw new IdNotFoundException("Edition ID ist nicht vorhanden");
-                    }else if (e.getMessage() != null && e.getMessage().contains("QuelleID")) {
-                        throw new IdNotFoundException("Quellen ID ist nicht vorhanden");
+                        throw new IdNotFoundException(Language.getTextfield(session, "error", "PersonID"));
+                    } else if (e.getMessage() != null && e.getMessage().contains("PersonIDzu")) {
+                        throw new IdNotFoundException(Language.getTextfield(session, "error", "PersonID"));
+                    } else if (e.getMessage() != null && e.getMessage().contains("EinzelbelegID")) {
+                        throw new IdNotFoundException(Language.getTextfield(session, "error", "EinzelbelegID"));
+                    } else if (e.getMessage() != null && e.getMessage().contains("quelle_inedition") && e.getMessage().contains("EditionID") && e.getMessage().contains("QuelleID") && e.getMessage().contains("Seiten") && e.getMessage().contains("Nummer")) {
+                        throw new IdNotFoundException(Language.getTextfield(session, "error", "EditionID"));
+                    } else if (e.getMessage() != null && e.getMessage().contains("EditionID") && e.getMessage().contains("QuelleID") && e.getMessage().contains("Seiten") && e.getMessage().contains("Nummer")) {
+                        throw new IdNotFoundException(Language.getTextfield(session, "error", "QuellenID"));
+                    } else if (e.getMessage() != null && e.getMessage().contains("EditionID")) {
+                        throw new IdNotFoundException(Language.getTextfield(session, "error", "EditionID"));
+                    } else if (e.getMessage() != null && e.getMessage().contains("QuelleID")) {
+                        throw new IdNotFoundException(Language.getTextfield(session, "error", "QuellenID"));
                     }
                 }
             } // ENDE combined

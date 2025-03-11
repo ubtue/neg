@@ -73,7 +73,7 @@
                         <td width="200"><label for="Kennwort"><%= Language.getTextfield(session, "login", "Passwort")%>:</label></td>
                         <td width="450">
                             <div class="input-container">
-                                <input id="Kennwort" name="Kennwort" size="25" maxlength="255" type="password" autocomplete="off" required="true">
+                                <input id="Kennwort" name="Kennwort" size="25"  minlength="6" maxlength="255" type="password" autocomplete="off" required="true">
                                 <span class="toggle-eye" onclick="togglePassword('Kennwort', this)">👁</span>
                             </div>
                         </td>
