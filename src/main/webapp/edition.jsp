@@ -127,6 +127,8 @@
                   <jsp:param name="Datenfeld" value="Reihe"/>
                 </jsp:include>
               </td>
+            </tr>
+            <tr>
               <td>
                   <% Language.printDatafield(out,session, formular,"Band");%>
               </td>
