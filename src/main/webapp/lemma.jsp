@@ -56,11 +56,13 @@
                                 <jsp:param name="Formular" value="mgh_lemma" />
                                 <jsp:param name="Datenfeld" value="MGHLemma" />
                                 <jsp:param name="size" value="25" />
-                            </jsp:include><span style="float:right;display:block;font-weight:bold;">
+                            </jsp:include>
+                            <span style="float:right;display:block;font-weight:bold;">
                                 <jsp:include page="forms/id.jsp">
                                     <jsp:param name="ID" value="<%=id%>"/>
                                     <jsp:param name="title" value="mghlemma"/>
-                                </jsp:include></span>
+                                </jsp:include>
+                            </span>
                         </td>
                     </tr>
                 </tbody>
