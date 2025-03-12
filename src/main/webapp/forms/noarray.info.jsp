@@ -14,7 +14,7 @@
 
         List<Map> rowlist = AbstractBase.getMappedList("SELECT * FROM " + auswahlherkunft + " WHERE ID=" + selected + " ORDER BY Bezeichnung ASC");
         for (Map row : rowlist) {
-            out.println(DBtoHTML(row.get("Bezeichnung").toString()));
+            out.println(DBtoHTML(String.valueOf(row.get("Bezeichnung"))));
         }
 
         out.println("</select>");
