@@ -11,8 +11,8 @@
 
             int i = 0;
             for (Object[] row : rowlist) {
-                String row_id = row[0].toString();
-                String row_zielAttribut = row[1].toString();
+                String row_id = String.valueOf(row[0]);
+                String row_zielAttribut = String.valueOf(row[1]);
 
                 out.println("<tr class=\"ut-table__row\">");
                 out.println("<td class=\"ut-table__item ut-table__body__item\">");
