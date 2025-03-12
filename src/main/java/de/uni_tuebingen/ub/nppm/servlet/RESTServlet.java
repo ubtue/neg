@@ -38,18 +38,22 @@ public class RESTServlet extends HttpServlet {
 
                 if (parts.length >= 2) {
                     String action = parts[1]; // "item" oder "items"
-                    if (("item".equals(action) || "items".equals(action)) && parts.length >= 3) {
+                    if (("item".equals(action) || "items".equals(action) || "lemma".equals(action) || "lemmas".equals(action)) && parts.length >= 3) {
                         String[] identifiers = parts[2].split(","); // IDs aufteilen
 
                         if ("item".equals(action) && identifiers.length == 1) {
                             processSingleIdentifier(identifiers[0], response);
                         } else if ("items".equals(action)) {
                             processMultipleIdentifiers(identifiers, response);
+                        } else if ("lemma".equals(action) && identifiers.length == 1) {
+                            processSingleLemma(identifiers[0], response);
+                        } else if ("lemmas".equals(action)) {
+                            processMultipleLemmas(identifiers, response);
                         } else {
-                            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request format: "+pathInfo);
+                            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request format: " + pathInfo);
                         }
                     } else {
-                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request path format: "+pathInfo);
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request path format: " + pathInfo);
                     }
                 } else {
                     RequestDispatcher rd = request.getRequestDispatcher("../resthelp.jsp");
@@ -120,5 +124,48 @@ public class RESTServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         if(finalJson != null)
             response.getWriter().println(finalJson.toString(2));
+    }
+
+    private void processSingleLemma(String lemmaText, HttpServletResponse response) throws Exception {
+        String[] lemmas = new String[1];
+        lemmas[0] = lemmaText;
+        processMultipleLemmas(lemmas, response);
+    }
+
+    private void processMultipleLemmas(String[] lemmaTexts, HttpServletResponse response) throws Exception {
+        JSONArray jsonArray = new JSONArray();
+
+        for (String lemmaText : lemmaTexts) {
+            if (lemmaText != null) {
+                JSONObject jsonObject = new JSONObject();
+                // Suche nach dem passenden Lemma anhand der Belegform
+                MghLemma lemma = LemmaDB.getLemmaByBelegform(lemmaText);
+                if (lemma != null) {
+                    // Rückgabe des Lemmas
+                    int lemmaId = lemma.getId();
+                    String lemmaStr = lemma.getMghLemma();
+                    jsonObject.put("ID", lemmaId);
+                    jsonObject.put("Lemma", lemmaStr);
+                } else {
+                    // Falls kein Lemma gefunden wird, entsprechendes Error-Handling
+                    jsonObject.put("error", "Lemma not found for Belegform: " + lemmaText);
+                }
+                jsonArray.put(jsonObject);
+            }
+        }
+
+        JSONObject finalJson = null;
+        if (jsonArray.length() == 1) {
+            finalJson = jsonArray.getJSONObject(0);
+        } else {
+            finalJson = new JSONObject();
+            finalJson.put("LemmaArray", jsonArray);
+        }
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        if (finalJson != null) {
+            response.getWriter().println(finalJson.toString(2));
+        }
     }
 }
