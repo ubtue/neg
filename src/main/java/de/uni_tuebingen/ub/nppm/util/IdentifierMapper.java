@@ -3,11 +3,14 @@ package de.uni_tuebingen.ub.nppm.util;
 import de.uni_tuebingen.ub.nppm.db.EinzelbelegDB;
 import de.uni_tuebingen.ub.nppm.db.LemmaDB;
 import de.uni_tuebingen.ub.nppm.db.NamenKommentarDB;
+import de.uni_tuebingen.ub.nppm.db.PersonDB;
+import de.uni_tuebingen.ub.nppm.db.QuelleDB;
 import de.uni_tuebingen.ub.nppm.exception.IdNotFoundException;
 import de.uni_tuebingen.ub.nppm.exception.IdNotPublicException;
 import de.uni_tuebingen.ub.nppm.model.Einzelbeleg;
 import de.uni_tuebingen.ub.nppm.model.MghLemma;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
+import de.uni_tuebingen.ub.nppm.model.Person;
 import de.uni_tuebingen.ub.nppm.model.Quelle;
 
 public class IdentifierMapper {
@@ -29,6 +32,10 @@ public class IdentifierMapper {
                     }
                 }
             }
+        } else if (identifier.startsWith("P")) {
+            ret = PersonDB.getById(Integer.valueOf(identifier.substring(1)),Person.class);
+        } else if (identifier.startsWith("Q")) {
+            ret = QuelleDB.getById(Integer.valueOf(identifier.substring(1)),Quelle.class);
         }
 
         if(ret == null){

@@ -4,6 +4,8 @@ import de.uni_tuebingen.ub.nppm.db.LemmaDB;
 import de.uni_tuebingen.ub.nppm.model.Einzelbeleg;
 import de.uni_tuebingen.ub.nppm.model.MghLemma;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
+import de.uni_tuebingen.ub.nppm.model.Person;
+import de.uni_tuebingen.ub.nppm.model.Quelle;
 import de.uni_tuebingen.ub.nppm.util.IdentifierMapper;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -88,6 +90,16 @@ public class RESTServlet extends HttpServlet {
                     Einzelbeleg einzelbeleg = (Einzelbeleg) IdentifierMapper.getModelByIdentifier(id);
                     if (einzelbeleg != null) {
                         jsonObject = einzelbeleg.getJSON();
+                    }
+                } else if(id.startsWith("P")) {
+                    Person person = (Person) IdentifierMapper.getModelByIdentifier(id);
+                    if (person != null) {
+                        jsonObject = person.getJSON();
+                    }
+                } else if(id.startsWith("Q")) {
+                    Quelle quelle = (Quelle) IdentifierMapper.getModelByIdentifier(id);
+                    if (quelle != null) {
+                        jsonObject = quelle.getJSON();
                     }
                 }
                 jsonArray.put(jsonObject);
