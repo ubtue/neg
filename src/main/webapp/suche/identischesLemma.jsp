@@ -144,7 +144,7 @@ document.open();
              Cell dat = new Cell(new Paragraph(makeDateWrapper(resultRow[5], resultRow[6], resultRow[7])+" - "+makeDateWrapper(resultRow[8], resultRow[9], resultRow[10]), new Font(Font.TIMES_ROMAN, 8)));
              table.addCell(dat);
 
-          String sql3 = "Select u.Sigle, e.Variante, h.Bibliothekssignatur, e.handschriftID, h.ID, hu.VonTag, hu.VonMonat, hu.VonJahr, hu.BisTag, hu.BisMonat, hu.BisJahr, s1.Bezeichnung, s2.Bezeichnung  from einzelbeleg_textkritik e, ueberlieferung_edition u, handschrift h, handschrift_ueberlieferung hu, selektion_ort s1, selektion_ort s2 where e.EinzelbelegID=" + resultRow[0] +" and hu.ID=e.handschriftID and hu.handschriftID=h.ID and e.handschriftID=u.ueberlieferungID and e.editionID=u.editionID and s1.ID=hu.Bibliotheksheimat AND s2.ID=hu.Schriftheimat";
+          String sql3 = "Select u.Sigle, e.Variante, h.Bibliothekssignatur, e.handschriftID, h.ID, hu.VonTag, hu.VonMonat, hu.VonJahr, hu.BisTag, hu.BisMonat, hu.BisJahr, s1.Bezeichnung AS Bezeichnung1, s2.Bezeichnung AS Bezeichnung2  from einzelbeleg_textkritik e, ueberlieferung_edition u, handschrift h, handschrift_ueberlieferung hu, selektion_ort s1, selektion_ort s2 where e.EinzelbelegID=" + resultRow[0] +" and hu.ID=e.handschriftID and hu.handschriftID=h.ID and e.handschriftID=u.ueberlieferungID and e.editionID=u.editionID and s1.ID=hu.Bibliotheksheimat AND s2.ID=hu.Schriftheimat";
 
           out.println("<td><table cellpadding=2 style=\"font-size:8pt\">");
           String sigle = "";

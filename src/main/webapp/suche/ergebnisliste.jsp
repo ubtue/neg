@@ -113,7 +113,7 @@
         boolean even = false;
         List rowsAsMap = SucheDB.getFields(fieldsString, tablesString, conditionsString, export, pageoffset, pageLimit);
         for ( Object o : rowsAsMap ) {
-          java.util.HashMap row = (java.util.HashMap) o;
+          java.util.Map row = (java.util.Map) o;
           out.println("<tr class=\""+(even?"":"un")+"even\">");
           if (!formular.equals("favorit") && !formular.equals("freie_suche")&& !formular.equals("namenkommentar")&& !formular.equals("literatur")) {
             out.println("<td class=\"resultlist\" valign=\"top\" align=\"center\"><a href=\""+formular+"?ID="+row.get(formular+"ID")+"\">Gehe zu</a></td>");
