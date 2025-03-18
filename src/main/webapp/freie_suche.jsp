@@ -453,18 +453,6 @@
                   </td>
                 </tr>
 
-                <tr>
-                  <td width="25">
-                    <jsp:include page="inc.erzeugeFormular.jsp">
-                      <jsp:param name="Formular" value="freie_suche"/>
-                      <jsp:param name="Datenfeld" value="Ausgabe_Provenance_Lemma"/>
-                    </jsp:include>
-                  </td>
-                  <td width="350" valign="top">
-                      <% Language.printDatafield(out,session, formular,"Ausgabe_Provenance_Lemma");%>
-                  </td>
-                </tr>
-
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr><td colspan="2"><h3>
                         <% Language.printTextfield(out,session, formular,"ZurPerson");%>
