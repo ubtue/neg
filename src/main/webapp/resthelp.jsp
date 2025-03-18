@@ -34,12 +34,44 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+        .warning-box {
+            border: 1px solid #f0ad4e;
+            background-color: #fcf8e3;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .warning-icon {
+            color: #f0ad4e;
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .warning-box p {
+            margin: 0;
+            color: #8a6d3b;
+        }
+
+        .warning-link {
+            color: #8a6d3b;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <h1>REST API Documentation</h1>
     <p>Welcome to the REST API for the NPPM project. Below is an overview of the available endpoints and their usage.</p>
 
+    <div class="warning-box">
+        <span class="warning-icon">&#9888;</span>
+        <p>
+            <strong>Warning:</strong> Please note that this API is still experimental, which means that the listed endpoints and the returned data structures can potentially change at any time.
+            If there are specific use cases that you would like to cover in a stable way, please contact us at
+            <a href="mailto:nppm-team@ub.uni-tuebingen.de" class="warning-link">nppm-team@ub.uni-tuebingen.de</a>.
+        </p>
+    </div>
     <h2>Endpoints</h2>
     <table>
         <thead>
@@ -64,15 +96,15 @@
             <td><code>/rest/items/B1319,B1320,B1321</code></td>
         </tr>
         <tr>
-            <td><code>/rest/lemma/{belegform}</code></td>
+            <td><code>/rest/lemma/{Reference Form}</code></td>
             <td>GET</td>
-            <td>Fetches the lemma corresponding to the given Belegform.</td>
+            <td>Fetches the lemma corresponding to the given Reference Form.</td>
             <td><code>/rest/lemma/Sebastianus</code></td>
         </tr>
         <tr>
-            <td><code>/rest/lemmas/{belegform1},{belegform2}</code></td>
+            <td><code>/rest/lemmas/{Reference Form 1},{Reference Form 2}</code></td>
             <td>GET</td>
-            <td>Fetches multiple lemmas for the given Belegformen.</td>
+            <td>Fetches multiple lemmas for the given Reference Forms.</td>
             <td><code>/rest/lemmas/Sebastianus,Libinonem</code></td>
         </tr>
         <tr>
@@ -120,7 +152,7 @@ Response:
 ]
 }
     </pre>
-        <h3>Fetch a Lemma by Belegform</h3>
+        <h3>Fetch a Lemma by Reference Form</h3>
     <p>URL: <code>/rest/lemma/Sebastianus</code></p>
     <pre>
 Response:
@@ -130,7 +162,7 @@ Response:
 }
     </pre>
 
-    <h3>Fetch Multiple Lemmas by Belegformen</h3>
+    <h3>Fetch Multiple Lemmas by Reference Form</h3>
     <p>URL: <code>/rest/lemmas/Sebastianus,Libinonem</code></p>
     <pre>
 Response:
