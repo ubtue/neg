@@ -122,14 +122,9 @@ public class RESTServlet extends HttpServlet {
         }
         
         JSONObject finalJson = null;
-        if (jsonArray.length() == 1) {
-            // Nur ein Element, daher direkt das JSON-Objekt zurückgeben
-            finalJson = jsonArray.getJSONObject(0);
-        } else {
-            // Mehrere Elemente, daher als Array zurückgeben
-            finalJson = new JSONObject();
-            finalJson.put("items", jsonArray);
-        }
+        finalJson = new JSONObject();
+        finalJson.put("items", jsonArray);
+        
         // JSON als Antwort senden
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -169,12 +164,8 @@ public class RESTServlet extends HttpServlet {
         }
 
         JSONObject finalJson = null;
-        if (jsonArray.length() == 1) {
-            finalJson = jsonArray.getJSONObject(0);
-        } else {
-            finalJson = new JSONObject();
-            finalJson.put("LemmaArray", jsonArray);
-        }
+        finalJson = new JSONObject();
+        finalJson.put("LemmaArray", jsonArray);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
