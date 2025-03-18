@@ -126,8 +126,6 @@ public class MghLemma {
         Utils.addIfValid(jsonObject, "bearbeitungsstatus", Utils.sanitize(this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null));
         Utils.addIfValid(jsonObject, "gehoertGruppe", Utils.sanitize(this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null));
         Utils.addIfValid(jsonObject, "erstellt", this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
-        Utils.addIfValid(jsonObject, "letzteAenderung", this.getLetzteAenderung() != null ? Utils.formatDate(this.getLetzteAenderung()) : null);
-        Utils.addIfValid(jsonObject, "letzteAenderungVon", Utils.sanitize(this.getLetzteAenderungVon() != null ? this.getLetzteAenderungVon().getNachname() : null));
         Utils.addIfValid(jsonObject, "id", "M" + this.getId());
 
         return jsonObject;

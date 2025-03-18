@@ -428,12 +428,6 @@ public class Quelle {
         // Kommentare
         Utils.addIfValid(jsonObject, "kommentarDatierung", Utils.sanitize(this.getKommentarDatierung()));
 
-        // Zeitstempel
-        Utils.addIfValid(jsonObject, "letzteAenderung", this.getLetzteAenderung() != null ? Utils.formatDate(this.getLetzteAenderung()) : null);
-        Utils.addIfValid(jsonObject, "letzteAenderungVon", this.getLetzteAenderungVon() != null ? this.getLetzteAenderungVon().getNachname() : null);
-        Utils.addIfValid(jsonObject, "erstellt", this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
-        Utils.addIfValid(jsonObject, "erstelltVon", this.getErstelltVon() != null ? this.getErstelltVon().getNachname() : null);
-
         // Gruppenzugehörigkeit
         Utils.addIfValid(jsonObject, "gehoertGruppe", this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null);
 
