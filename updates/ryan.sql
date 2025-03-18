@@ -47,3 +47,55 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('suche', 'Person', 'Person', 'Person', 'Personne', 'Persona');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('suche', 'SigleVariante', 'Sigle: Variante', 'Siglum: Variant', 'Sigle : Variante', 'Sigla: Varietas');
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Please truncate your search using the wildcard %, e.g., Karl%Great%. [Help]', `fr` = 'Veuillez tronquer votre recherche avec le caractère générique %, par ex. Karl%Grand%. [Aide]', `la` = 'Quaestionem tuam cum locum tenente % truncare, exempli gratia Karl%Magnus%. [Auxilium]' where Formular = "freie_suche" and Textfeld = "TruncateHint";
+
+UPDATE `neg`.`datenbank_mapping` SET `fr_beschriftung` = 'Commentaire philologique', `la_beschriftung` = 'Commentatio philologica' where Formular = "freie_suche" and Datenfeld = "Namenlemma";
+
+UPDATE `neg`.`datenbank_mapping` SET `fr_beschriftung` = 'Commentaire philologique', `la_beschriftung` = 'Commentatio philologica' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Namenlemma";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'First element only', `fr_beschriftung` = 'Seulement le premier membre', `la_beschriftung` = 'Solum membrum primum' where Formular = "freie_suche" and Datenfeld = "Erstglied";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Second element only', `fr_beschriftung` = 'Seulement le deuxième membre', `la_beschriftung` = 'Solum membrum secundum' where Formular = "freie_suche" and Datenfeld = "Zweitglied";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Function (Single Reference)', `fr_beschriftung` = 'Fonction (réference individuelle)', `la_beschriftung` = 'Functio (testimonium)' where Formular = "freie_suche" and Datenfeld = "Funktion";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Degree of kinship', `fr_beschriftung` = 'Degré de parenté', `la_beschriftung` = 'Gradus consanguinitatis' where Formular = "freie_suche" and Datenfeld = "Verwandtschaftsgrad";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Provenance (Single Reference)', `fr_beschriftung` = 'Provenance (Référence individuelle)', `la_beschriftung` = 'Provenientiae (Testimonia)' where Formular = "freie_suche" and Datenfeld = "ProvenanceEinzelbeleg";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Format', `fr` = 'Format', `la` = 'Forma' where Formular = "freie_suche" and Textfeld = "Datumsformat";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'First part', `fr_beschriftung` = 'Première partie', `la_beschriftung` = 'Prima pars' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Erstglied";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = ' Second part', `fr_beschriftung` = 'Deuxième partie ', `la_beschriftung` = 'Secunda pars' where Formular = "freie_suche" and Datenfeld = "Ausgabe_Zweitglied";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Relatives', `fr_beschriftung` = 'Parents', `la_beschriftung` = 'Propinqui' WHERE Formular = "freie_suche" and Datenfeld = "Ausgabe_Person_Verwandte";
+
+UPDATE `neg`.`datenbank_texte` SET `la` = 'Propinqui' where Formular = "person" and Textfeld = "TabVerwandte";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Area', `fr_beschriftung` = 'Région', `la_beschriftung` = 'Regio' WHERE Formular = "freie_suche" and Datenfeld = "Ausgabe_Person_Areal";
+
+UPDATE `neg`.`datenbank_mapping` SET `fr_beschriftung` = 'Région' WHERE Formular = "person" and Datenfeld = "Areal";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Area;Area-Typ', `fr_beschriftung` = 'Région;Région-Typ', `fr_combinedAnzeigenamen` = 'Région;Type de région', `la_beschriftung` = 'Regio;Regio-Typ', `la_combinedAnzeigenamen` = 'Regio;Typus regionis' WHERE Formular = "einzelbeleg" and Datenfeld = "NewAreal";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Function', `fr_beschriftung` = 'Fonction', `la_beschriftung` = 'Functio' WHERE Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Funktion";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Text Witnesses', `fr_beschriftung` = 'Témoins textuels', `la_beschriftung` = 'Testimonia textus' WHERE Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Textzeuge";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Text Witnesses', `fr` = 'Témoins textuels' WHERE Formular = "handschrift" and Textfeld = "Titel";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Text Witnesses', `fr` = 'Témoins textuels', `la` = 'Testimonia textus' WHERE Formular = "freie_suche" and Textfeld = "!OrderTextzeugen";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Date of text witness', `fr_beschriftung` = 'Datation du témoin', `la_beschriftung` = 'Datatio testimoniorum' WHERE Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Textzeuge_Datierung";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Writing provenance of the text witness', `fr_beschriftung` = 'Provenance scripturaire du témoin textuel', `la_beschriftung` = 'Origo testis scripturae' WHERE Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Textzeuge_Schriftheimat";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Library origin of the text witness', `fr_beschriftung` = 'Provenance bibliothécaire du témoin textuel', `la_beschriftung` = 'Origo bibliothecae testis' WHERE Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_Textzeuge_Bibliotheksheimat";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Provenance (Single Reference)', `fr_beschriftung` = 'Provenance (Référence individuelle)', `la_beschriftung` = 'Provenientiae (Testimonia)' WHERE Formular = "freie_suche" and Datenfeld = "Ausgabe_Provenance_Einzelbeleg";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Currently out of service', `fr` = 'Actuellement non fonctionnel', `la` = 'Nunc sine functione' WHERE Formular = "freie_suche" and Textfeld = "KeineFunktion";
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Fourth Step', `fr` = 'Quatrième étape', `la` = 'Gradus IV' WHERE Formular = "freie_suche" and Textfeld = "Tab4";

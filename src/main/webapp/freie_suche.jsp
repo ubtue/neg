@@ -33,7 +33,9 @@
 
     	// replace [help] with link to help >>
     	var p = $('#truncate-hint');
-    	p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='gast/hilfe'>$1</a>"));
+        var baseUrl = "<%= Utils.getBaseUrl(request) %>";
+
+        p.html(p.text().trim().replace(/\[(.+)\]/, "<a href='" + baseUrl + "/gast/infos?sharedHtml=hilfe'>$1</a>"));
     	// <<
 
         var i = 4; // check how many input exists on the document and add 1 for the add command to work
@@ -124,7 +126,7 @@
               <tbody>
                 <tr>
                   <th width="200">
-                    <% Language.printDatafield(out,session, formular,"NeGIDjump");%>
+                    <% Language.printTextfield(out, session, "jump", "JumpTo");%>
                   </th>
                   <td width="450">
                     <span></span><input type="text"  title="NeG-ID" placeholder="NeG-ID" name="jumpValueID" size="5">
@@ -236,7 +238,7 @@
                       <jsp:param name="Datenfeld" value="PersonZeitraum"/>
                     </jsp:include>
                     <br>
-                    Format: 6Jh2, 750, 750-810, 5Jh1-7Jh2
+                    <% Language.printTextfield(out,session, formular,"Datumsformat");%>: 6Jh2, 750, 750-810, 5Jh1-7Jh2
                   </td>
                 </tr>
 
@@ -317,7 +319,7 @@
                 </tr>
                 <tr>
                   <th width="200" valign="top">
-                      <% Language.printDatafield(out,session, formular,"Quellengattung");%>
+                       <% Language.printDatafield(out, session, formular, "QuelleGattung");%>
                   </th>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -350,7 +352,7 @@
                       <jsp:param name="Formular" value="freie_suche"/>
                       <jsp:param name="Datenfeld" value="ProvenanceEinzelbeleg"/>
                     </jsp:include>
-                  </td>                  
+                  </td>
                 </tr>
 
               </tbody>
@@ -441,7 +443,7 @@
                       <% Language.printDatafield(out,session, formular,"Ausgabe_Zweitglied");%>
                   </td>
                 </tr>
-                                <tr>
+                <tr>
                   <td width="25">
                     <jsp:include page="inc.erzeugeFormular.jsp">
                       <jsp:param name="Formular" value="freie_suche"/>
@@ -452,7 +454,6 @@
                       <% Language.printDatafield(out,session, formular,"Ausgabe_MGHLemma");%>
                   </td>
                 </tr>
-
                 <tr>
                   <td width="25">
                     <jsp:include page="inc.erzeugeFormular.jsp">
@@ -467,7 +468,7 @@
 
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr><td colspan="2"><h3>
-                        <% Language.printTextfield(out,session, formular,"ZurPerson");%>
+                        <% Language.printTextfield(out, session, "gast_freie_suche", "ZurPerson");%>
                         </h3></td></tr>
                 <tr>
                   <td width="25">
@@ -566,7 +567,7 @@
 
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr><td colspan="2"><h3>
-                        <% Language.printTextfield(out,session, formular,"ZumEinzelbeleg");%>
+                        <% Language.printTextfield(out, session, "gast_freie_suche", "ZumEinzelbeleg");%>
                         </h3></td></tr>
                 <tr>
                   <td width="25">
@@ -587,7 +588,7 @@
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                      <% Language.printDatafield(out,session, formular,"Ausgabe_Quelle_Datierung");%>
+                      <% Language.printDatafield(out, session, formular, "QuelleZeitraum");%>
                   </td>
                 </tr>
                 <tr>
@@ -665,7 +666,7 @@
                     </jsp:include>
                   </td>
                   <td width="350" valign="top">
-                      <% Language.printDatafield(out,session, formular,"Ausgabe_Einzelbeleg_Areal");%>
+                      <% Language.printDatafield(out,session, formular,"Ausgabe_Person_Areal");%>
                     <font color="blue">**</font>
                   </td>
                 </tr>
