@@ -123,8 +123,6 @@
 Response:
 {
   "mghLemma": "sebastiānus",
-  "letzteAenderungVon": "Team",
-  "letzteAenderung": "06.08.2024 11:54:26",
   "id": "M6360"
 }
     </pre>
@@ -137,8 +135,6 @@ Response:
 "items": [
   {
     "mghLemma": "sebastiānus",
-    "letzteAenderungVon": "Team",
-    "letzteAenderung": "06.08.2024 11:54:26",
     "id": "M6360"
   },
   {

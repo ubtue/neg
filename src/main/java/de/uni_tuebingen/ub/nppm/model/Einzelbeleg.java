@@ -1019,11 +1019,8 @@ public class Einzelbeleg {
 
         // Datumsfelder
         Utils.addIfValid(jsonObject, "erstellt", this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
-        Utils.addIfValid(jsonObject, "letzteAenderung", this.getLetzteAenderung() != null ? Utils.formatDate(this.getLetzteAenderung()) : null);
 
         // Bearbeiter
-        Utils.addIfValid(jsonObject, "letzteAenderungVon", this.getLetzteAenderungVon() != null ? Utils.sanitize(this.getLetzteAenderungVon().getNachname()) : null);
-        Utils.addIfValid(jsonObject, "erstelltVon", this.getErstelltVon() != null ? Utils.sanitize(this.getErstelltVon().getNachname()) : null);
         Utils.addIfValid(jsonObject, "gehoertGruppe", this.getGehoertGruppe() != null ? Utils.sanitize(this.getGehoertGruppe().getBezeichnung()) : null);
 
         // Genauigkeitsfelder
