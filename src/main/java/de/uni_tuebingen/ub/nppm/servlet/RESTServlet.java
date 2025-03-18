@@ -8,6 +8,7 @@ import de.uni_tuebingen.ub.nppm.model.Person;
 import de.uni_tuebingen.ub.nppm.model.Quelle;
 import de.uni_tuebingen.ub.nppm.util.IdentifierMapper;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -84,26 +85,36 @@ public class RESTServlet extends HttpServlet {
                     MghLemma lemma = (MghLemma) IdentifierMapper.getModelByIdentifier(id);
                     if (lemma != null) {
                         jsonObject = lemma.getJSON();
+                    }else{
+                        jsonObject.put("error", "Lemma not found with ID " + id);
                     }
                 } else if (id.startsWith("N")) {
                     NamenKommentar nk = (NamenKommentar) IdentifierMapper.getModelByIdentifier(id);
                     if (nk != null) {
                         jsonObject = nk.getJSON();
+                    }else{
+                        jsonObject.put("error", "Namenkommentar not found with ID " + id);
                     }
                 } else if (id.startsWith("B")) {
                     Einzelbeleg einzelbeleg = (Einzelbeleg) IdentifierMapper.getModelByIdentifier(id);
                     if (einzelbeleg != null) {
                         jsonObject = einzelbeleg.getJSON();
+                    }else{
+                        jsonObject.put("error", "Einzelbeleg not found with ID " + id);
                     }
                 } else if(id.startsWith("P")) {
                     Person person = (Person) IdentifierMapper.getModelByIdentifier(id);
                     if (person != null) {
                         jsonObject = person.getJSON();
+                    }else {
+                        jsonObject.put("error", "Person not found with ID " + id);
                     }
                 } else if(id.startsWith("Q")) {
                     Quelle quelle = (Quelle) IdentifierMapper.getModelByIdentifier(id);
                     if (quelle != null) {
                         jsonObject = quelle.getJSON();
+                    }else{
+                        jsonObject.put("error", "Quelle not found with ID " + id);
                     }
                 }
                 jsonArray.put(jsonObject);
@@ -139,16 +150,19 @@ public class RESTServlet extends HttpServlet {
             if (lemmaText != null) {
                 JSONObject jsonObject = new JSONObject();
                 // Suche nach dem passenden Lemma anhand der Belegform
-                MghLemma lemma = LemmaDB.getLemmaByBelegform(lemmaText);
-                if (lemma != null) {
+                List<MghLemma> lemma = LemmaDB.getLemmaByBelegform(lemmaText);
+                if (lemma.size() == 1) {
                     // Rückgabe des Lemmas
-                    int lemmaId = lemma.getId();
-                    String lemmaStr = lemma.getMghLemma();
+                    int lemmaId = lemma.get(0).getId();
+                    String lemmaStr = lemma.get(0).getMghLemma();
                     jsonObject.put("ID", lemmaId);
                     jsonObject.put("Lemma", lemmaStr);
-                } else {
+                } else if(lemma.size() == 0) {
                     // Falls kein Lemma gefunden wird, entsprechendes Error-Handling
                     jsonObject.put("error", "Lemma not found for Belegform: " + lemmaText);
+                } else if(lemma.size() > 1){
+                    // Falls mehr als 1 Lemma gefunden wird, entsprechendes Error-Handling
+                    jsonObject.put("error", "More than one Lemma found for Belegform: " + lemmaText);
                 }
                 jsonArray.put(jsonObject);
             }

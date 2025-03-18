@@ -54,18 +54,18 @@ public class LemmaDB extends AbstractBase {
         return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' ORDER BY Zweitglied ASC");
     }
 
-    public static MghLemma getLemmaByBelegform(String belegform) throws Exception {
+    public static List<MghLemma> getLemmaByBelegform(String belegform) throws Exception {
         String sql = "SELECT ml.* FROM mgh_lemma ml "
                 + "JOIN einzelbeleg_hatmghlemma ehm ON ml.ID = ehm.MGHLemmaID "
                 + "JOIN einzelbeleg eb ON ehm.EinzelbelegID = eb.ID "
                 + "WHERE eb.Belegform = :belegform "
-                + "ORDER BY ml.MGHLemma "
-                + "LIMIT 1";
+                + "ORDER BY ml.MGHLemma ";
 
         try (Session session = getSession()) {
             NativeQuery<MghLemma> sqlQuery = session.createNativeQuery(sql, MghLemma.class);
             sqlQuery.setParameter("belegform", belegform);
-            return sqlQuery.uniqueResultOptional().orElse(null);
+            List<MghLemma> results = sqlQuery.getResultList();
+            return results; // Genau ein Treffer
         }
     }
 }

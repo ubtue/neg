@@ -37,10 +37,6 @@ public class IdentifierMapper {
         } else if (identifier.startsWith("Q")) {
             ret = QuelleDB.getById(Integer.valueOf(identifier.substring(1)),Quelle.class);
         }
-
-        if(ret == null){
-            throw new Exception(new IdNotFoundException("ID " + String.valueOf(identifier) + " ist nicht vorhanden"));
-        }
         return ret;
     }
 }
