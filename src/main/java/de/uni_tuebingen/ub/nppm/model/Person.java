@@ -1,7 +1,9 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.*;
 import java.util.*;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "person")
@@ -380,5 +382,33 @@ public class Person {
 
     public void removeEinzelbeleg(int id) {
         this.getEinzelbeleg().removeIf(e -> e.getId() == id);
+    }
+
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        // Allgemeine Informationen
+        Utils.addIfValid(jsonObject, "id", "P" + this.getId());
+        Utils.addIfValid(jsonObject, "pkz", this.getPkz());
+        Utils.addIfValid(jsonObject, "gnd", this.getGnd());
+        Utils.addIfValid(jsonObject, "standardname", Utils.sanitize(this.getStandardname()));
+        Utils.addIfValid(jsonObject, "geschlecht", this.getGeschlecht() != null ? Utils.sanitize(this.getGeschlecht().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "fiktiv", this.getFiktiv() != null ? Utils.sanitize(this.getFiktiv().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "bearbeitungsstatus", this.getBearbeitungsstatus() != null ? Utils.sanitize(this.getBearbeitungsstatus().getBezeichnung()) : null);
+
+        // Kommentare
+        Utils.addIfValid(jsonObject, "kommentarEthnie", Utils.sanitize(this.getKommentarEthnie()));
+        Utils.addIfValid(jsonObject, "kommentarAreal", Utils.sanitize(this.getKommentarAreal()));
+        Utils.addIfValid(jsonObject, "identifizierungsproblem", Utils.sanitize(this.getIdentifizierungsproblem()));
+
+        // Orte und Metadaten
+        Utils.addIfValid(jsonObject, "ort", Utils.sanitize(this.getOrt()));
+        Utils.addIfValid(jsonObject, "letzteAenderung", this.getLetzteAenderung() != null ? Utils.formatDate(this.getLetzteAenderung()) : null);
+        Utils.addIfValid(jsonObject, "letzteAenderungVon", this.getLetzteAenderungVon() != null ? Utils.sanitize(this.getLetzteAenderungVon().getNachname()) : null);
+        Utils.addIfValid(jsonObject, "erstellt", this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
+        Utils.addIfValid(jsonObject, "erstelltVon", this.getErstelltVon() != null ? Utils.sanitize(this.getErstelltVon().getNachname()) : null);
+        Utils.addIfValid(jsonObject, "gehoertGruppe", this.getGehoertGruppe() != null ? Utils.sanitize(this.getGehoertGruppe().getBezeichnung()) : null);
+
+        return jsonObject;
     }
 }
