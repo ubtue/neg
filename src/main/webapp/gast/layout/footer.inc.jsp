@@ -17,7 +17,7 @@
                                 Eberhard Karls Universit&auml;t T&uuml;bingen<br>
                                 Wilhelmstr. 36<br>
                                 72074 Tübingen<br>
-                                <a class="ut-link ut-link--email ut-link--block ut-link--context-icon" href="mailto:neg@uni-tuebingen.de">neg@uni-tuebingen.de</a><br>
+                                <a class="ut-link ut-link--email ut-link--block ut-link--context-icon" href="mailto:nppm@uni-tuebingen.de">nppm@uni-tuebingen.de</a><br>
                             </address>
                         </div>
                     </div>
