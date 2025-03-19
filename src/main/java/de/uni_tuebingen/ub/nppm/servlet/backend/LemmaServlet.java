@@ -8,7 +8,7 @@ public class LemmaServlet extends AbstractBackendServlet {
 
     @Override
     protected String getTitle() {
-        return "MGH-Lemma";
+        return "mgh_lemma";
     }
 
     @Override
