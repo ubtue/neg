@@ -11,13 +11,13 @@
   } catch (NumberFormatException e) {}
 
   if ((title.toLowerCase()).equals("einzelbeleg")) {
-    //out.println("<form method=\"POST\">");
+    out.println("<form method=\"POST\">");
     %>
 
     <input type="hidden" name="id" value="<%= id %>">
     <input type="submit" name="duplicate" value=<%= duplicate %>>
 
     <%
-    //out.println("</form>");
+    out.println("</form>");
   }
 %>
