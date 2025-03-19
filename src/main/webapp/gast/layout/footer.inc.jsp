@@ -1,5 +1,6 @@
 <%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils" isThreadSafe="false" %>
+<%@ include file="../../functions.jsp" %>
 <footer id="ut-identifier--footer" class="ut-page__footer ut-page-footer">
     <div class="container">
         <div class="ut-grid ut-grid--deck ut-grid--444 ut-page-footer__quicklinks">
@@ -11,7 +12,7 @@
                     <div class="ut-panel__collapse collapse" id="footerpanel-1-pc">
                         <div class="ut-panel__body ">
                             <address class="ut-page-footer__contact" tabindex="0">
-                                <strong>Nomen et Gens</strong><br>
+                                <strong><%= DBtoHTML(Language.getTextfield(session, "logo", "NPPM")) %></strong><br>
                                 Seminar f&uuml;r mittelalterliche Geschichte<br>
                                 Eberhard Karls Universit&auml;t T&uuml;bingen<br>
                                 Wilhelmstr. 36<br>

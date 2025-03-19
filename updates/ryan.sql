@@ -99,3 +99,7 @@ UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Provenance (Single Ref
 UPDATE `neg`.`datenbank_texte` SET `gb` = 'Currently out of service', `fr` = 'Actuellement non fonctionnel', `la` = 'Nunc sine functione' WHERE Formular = "freie_suche" and Textfeld = "KeineFunktion";
 
 UPDATE `neg`.`datenbank_texte` SET `gb` = 'Fourth Step', `fr` = 'Quatrième étape', `la` = 'Gradus IV' WHERE Formular = "freie_suche" and Textfeld = "Tab4";
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('logo ', 'NPPM', 'Namen, Personen und Personengruppen des Mittelalters (NPPM)', 'Names, Persons, and Groups of People of the Middle Ages (NPPM)', 'Noms, personnes et groupes de personnes du Moyen Âge (NPPM)', 'Nomina, Personae et Coetus Hominum Medii Aevi (NPPM)');
+
+UPDATE `neg`.`datenbank_texte` SET `de` = 'Springe zu NPPM-ID:', `gb` = 'Jump to NPPM-ID:', `fr` = 'Aller à NPPM-ID:', `la` = 'Salta ad NPPM-ID:' WHERE Formular = "jump" and Textfeld = "JumpTo";
