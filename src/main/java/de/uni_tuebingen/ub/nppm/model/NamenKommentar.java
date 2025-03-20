@@ -200,12 +200,6 @@ public class NamenKommentar {
                 Utils.sanitize(this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null));
         Utils.addIfValid(jsonObject, "gehoertGruppe",
                 Utils.sanitize(this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null));
-        Utils.addIfValid(jsonObject, "erstellt",
-                this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
-        Utils.addIfValid(jsonObject, "letzteAenderung",
-                this.getLetzteAenderung() != null ? Utils.formatDate(this.getLetzteAenderung()) : null);
-        Utils.addIfValid(jsonObject, "erstelltVon",
-                Utils.sanitize(this.getErstelltVon() != null ? this.getErstelltVon().getNachname() : null));
         Utils.addIfValid(jsonObject, "hinweise", Utils.sanitize(this.getHinweise()));
         Utils.addIfValid(jsonObject, "protokoll", Utils.sanitize(this.getProtokoll()));
         Utils.addIfValid(jsonObject, "dateiname", Utils.sanitize(this.getDateiname()));
