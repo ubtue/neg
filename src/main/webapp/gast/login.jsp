@@ -12,7 +12,7 @@
     <HEAD>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <TITLE>
-            Nomen et Gens | Login
+            NPPM | Login
         </TITLE>
         <link rel="stylesheet" href="../layout/layout.css" type="text/css">
         <style>
@@ -51,7 +51,7 @@
             <input type="hidden" name="action" value="login">
             <div class="flexbox-container" >
                 <div class="flex-item-title">
-                    <h1 class="login">Nomen et Gens</h1>
+                    <h1 class="login"><%= DBtoHTML(Language.getTextfield(session, "logo", "NPPM")) %></h1>
                 </div>
                 <div class="flex-item-title flex-item-table">
                     <table border="0">

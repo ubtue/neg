@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.EinzelbelegDB" isThreadSafe="false" %>
 <%@ page import="java.text.SimpleDateFormat" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
@@ -7,17 +8,39 @@
 
 <%
   int id = -1;
-  if (request.getParameter("duplicate") != null && request.getParameter("duplicate").equals("duplizieren")) {
+  if (request.getParameter("duplicate") != null && request.getParameter("duplicate").equals( Language.getTextfield(session, "navigation", "Duplizieren"))) {
     id = Integer.parseInt(request.getParameter("id"));
 
-    // Datensatz "einzelbeleg" duplizieren
-    String sql = "INSERT INTO einzelbeleg";
-    sql += " (EditionID, HandschriftID, QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, UeberlieferungDatierung,";
-    sql += " GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert,";
-    sql += " QuelleBisTag, QuelleBisMonat, QuelleBisJahr, QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert";
-    sql += " ) SELECT EditionID, HandschriftID, QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, UeberlieferungDatierung,";
-    sql += " GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert,";
-    sql += " QuelleBisTag, QuelleBisMonat, QuelleBisJahr, QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert FROM einzelbeleg WHERE ID="+id+";";
+    String sql = "INSERT INTO einzelbeleg (";
+sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
+sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
+sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
+sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
+sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
+sql += "GenauigkeitVonMonat, GenauigkeitVonJahr, GenauigkeitVonJahrhundert, DatierungUngewiss, KommentarDatierung, ";
+sql += "LetzteAenderung, LetzteAenderungVon, Erstellt, ErstelltVon, GehoertGruppe, GenauigkeitBisTag, GenauigkeitBisMonat, ";
+sql += "GenauigkeitBisJahr, GenauigkeitBisJahrhundert, GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, ";
+sql += "GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, ";
+sql += "GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert, QuelleBisTag, QuelleBisMonat, QuelleBisJahr, ";
+sql += "QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert, KommentarPerson, ";
+sql += "MGHLemmaKorrigiert, KonventID, BeziehungGemeinschaftID, KritikID, KontextID, TitelText, pal_abgrenzung, ";
+sql += "inh_abgrenzung, nr_in_strukt, seite, raster, schreiber, provenance_source, provenance_id) ";
+sql += "SELECT ";
+sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
+sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
+sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
+sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
+sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
+sql += "GenauigkeitVonMonat, GenauigkeitVonJahr, GenauigkeitVonJahrhundert, DatierungUngewiss, KommentarDatierung, ";
+sql += "NOW(), LetzteAenderungVon, NOW(), ErstelltVon, GehoertGruppe, GenauigkeitBisTag, GenauigkeitBisMonat, ";
+sql += "GenauigkeitBisJahr, GenauigkeitBisJahrhundert, GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, ";
+sql += "GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, ";
+sql += "GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert, QuelleBisTag, QuelleBisMonat, QuelleBisJahr, ";
+sql += "QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert, KommentarPerson, ";
+sql += "MGHLemmaKorrigiert, KonventID, BeziehungGemeinschaftID, KritikID, KontextID, TitelText, pal_abgrenzung, ";
+sql += "inh_abgrenzung, nr_in_strukt, seite, raster, schreiber, provenance_source, provenance_id ";
+sql += "FROM einzelbeleg WHERE ID="+id+";";
+
 
     EinzelbelegDB.insertBySql(sql);
 
@@ -27,7 +50,7 @@
 
     if(idNeu != null){
       sql = "INSERT INTO einzelbeleg_textkritik";
-      sql += " (EinzelbelegID, EditionID, HandschriftID, Variante, Bemerkung) SELECT '"+idNeu+"', EditionID, HandschriftID, Variante, Bemerkung FROM einzelbeleg_textkritik WHERE EinzelbelegID="+id+";";
+      sql += " (EinzelbelegID, EditionID, HandschriftID, Variante, Bemerkung, provenance_source, provenance_id) SELECT '"+idNeu+"', EditionID, HandschriftID, Variante, Bemerkung, provenance_source, provenance_id FROM einzelbeleg_textkritik WHERE EinzelbelegID="+id+";";
       EinzelbelegDB.insertBySql(sql);
       id=idNeu;
     }

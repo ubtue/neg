@@ -194,7 +194,7 @@
             </h4>
             <h2 class="ut-heading ut-nav-area__current-level">
                 <a class="ut-link ut-nav-area__link" title="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>" aria-label="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>"  href="/neg">
-                    Nomen et Gens
+                    <%= DBtoHTML(Language.getTextfield(session, "logo", "NPPM")) %>
                 </a>
             </h2>
         </nav>

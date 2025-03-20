@@ -22,8 +22,8 @@
                 int selected = -1;
                 if (rowlist.size() > i) {
                     row = rowlist.get(i);
-                    selected = Integer.parseInt(row.get(zielAttribut).toString());
-                    out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + row.get("ID").toString() + "\">");
+                    selected = Integer.parseInt(String.valueOf(row.get(zielAttribut)));
+                    out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + String.valueOf(row.get("ID")) + "\">");
                 } else {
                     repeat = false;
                 }
@@ -38,9 +38,9 @@
                 List<Map> rowlist2 = AbstractBase.getMappedList("SELECT * FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
                 for (Map row2 : rowlist2) {
                     if (!isReadOnly) {
-                        out.println("<option value='" + row2.get("ID").toString() + "' " + (Integer.parseInt(row2.get("ID").toString()) == selected ? "selected" : "") + ">" + DBtoHTML(row2.get("Bezeichnung").toString()) + "</option>");
-                    } else if (repeat && Integer.parseInt(row2.get("ID").toString()) == selected) {
-                        out.println(DBtoHTML(row2.get("Bezeichnung").toString()));
+                        out.println("<option value='" + String.valueOf(row2.get("ID")) + "' " + (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected ? "selected" : "") + ">" + DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) + "</option>");
+                    } else if (repeat && Integer.parseInt(String.valueOf(row2.get("ID"))) == selected) {
+                        out.println(DBtoHTML(String.valueOf(row2.get("Bezeichnung"))));
                     }
                 }
                 if (!isReadOnly) {
@@ -48,7 +48,7 @@
                 }
                 out.println("</td>");
                 if (repeat) {
-                    String href = "javascript:deleteEntry('" + zielTabelle + "', '" + row.get("ID").toString() + "', '" + returnpage + "', '" + id + "');";
+                    String href = "javascript:deleteEntry('" + zielTabelle + "', '" + String.valueOf(row.get("ID")) + "', '" + returnpage + "', '" + id + "');";
 
                     if (!isReadOnly) {
                         out.println("<td class=\"ut-table__item ut-table__body__item\">");

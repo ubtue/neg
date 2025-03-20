@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <HTML>
   <HEAD>
-    <TITLE>Nomen et Gens - ${title}</TITLE>
+    <TITLE>NPPM - ${title}</TITLE>
     <meta http-equiv="Content-Type"
       content="text/html; charset=utf-8">
     <link rel="stylesheet" href="<%=Utils.getBaseUrl(request)%>/layout/layout.css" type="text/css">

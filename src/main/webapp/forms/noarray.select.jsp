@@ -117,7 +117,7 @@
 
                 List<Map> rowlist = AbstractBase.getMappedList(sql);
                 for (Map row : rowlist) {
-                    String value = row.get("Bezeichnung").toString();
+                    String value = String.valueOf(row.get("Bezeichnung"));
                     if (datenfeld.startsWith("Namenkommentar")) {
                         value = format(value, "PLemma");
                     } else {
@@ -125,8 +125,8 @@
                     }
 
                     if (!isReadOnly) {
-                        out.println("<option value=\"" + Integer.parseInt(row.get("ID").toString()) + "\" " + (Integer.parseInt(row.get("ID").toString()) == selected ? "selected" : "") + ">" + value + "</option>");
-                    } else if (Integer.parseInt(row.get("ID").toString()) == selected) {
+                        out.println("<option value=\"" + Integer.parseInt(String.valueOf(row.get("ID"))) + "\" " + (Integer.parseInt(String.valueOf(row.get("ID"))) == selected ? "selected" : "") + ">" + value + "</option>");
+                    } else if (Integer.parseInt(String.valueOf(row.get("ID"))) == selected) {
                         out.println(value);
                     }
                 }

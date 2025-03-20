@@ -4,7 +4,7 @@
 <html lang="###LANGUAGE_CODE###" class="no-js mod_picture mod_localstorage mod_cssremunit mod_placeholder mod_srcset mod_mediaqueries mod_no-touchevents mod_formvalidation mod_flexbox mod_csstransitions js-state__ut-nav-is-closed">
   <head>
     <%
-    String fullTitle = "Nomen et Gens";
+    String fullTitle = "NPPM";
     String title = (String)request.getAttribute("title");
     if (title != null && !title.isEmpty()) {
         fullTitle += " | " + title;

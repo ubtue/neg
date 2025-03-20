@@ -8,14 +8,14 @@
 
      if (row != null) {
         out.print(
-           DBtoHTML(row.get("Vorname").toString())
+           DBtoHTML(String.valueOf(row.get("Vorname")))
           +" "
-          +DBtoHTML(row.get("Nachname").toString())
+          +DBtoHTML(String.valueOf(row.get("Nachname")))
           +" ("
-          +DBtoHTML(row.get("Login").toString())
+          +DBtoHTML(String.valueOf(row.get("Login")))
           +")"
           +" ("
-          +DBtoHTML(row.get("Bezeichnung").toString())
+          +DBtoHTML(String.valueOf(row.get("Bezeichnung")))
           +")");
       }
   }

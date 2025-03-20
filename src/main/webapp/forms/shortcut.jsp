@@ -64,8 +64,7 @@
             }
 
             Object valueObj = row.get(bez);
-            if (valueObj != null && !valueObj.toString().equals("")) {
-                // String value = format(valueObj.toString(), bez);
+            if (valueObj != null && !String.valueOf(valueObj).equals("")) {
                 String value = format(String.valueOf(valueObj), bez);
                 if (value != null) {
                     int max = Math.min(7, value.length());
@@ -78,7 +77,7 @@
                         }
                     }
                     value = value.substring(0, max);
-                    value = "<a style='color:#ffffff;' href='?ID=" + row.get("ID").toString() + "'>" + value + "..." + "</a>";
+                    value = "<a style='color:#ffffff;' href='?ID=" + String.valueOf(row.get("ID")) + "'>" + value + "..." + "</a>";
                     res = value + "\t" + res;
                 }
             }
@@ -88,7 +87,6 @@
 
     Map row = AbstractBase.getMappedRow(sql2);
     if (row != null && !row.isEmpty()) {
-        // String value = format(row.get(bez).toString(), bez);
         String value = format(String.valueOf(row.get(bez)), bez);
         if (value != null) {
             int max = Math.min(10, value.length());
@@ -114,7 +112,6 @@
                 break;
             }
 
-            //String value = format(row3.get(bez).toString(), bez);
             String value = format(String.valueOf(row3.get(bez)), bez);
             if (value != null) {
                 int max = Math.min(7, value.length());
@@ -127,7 +124,7 @@
                     }
                 }
                 value = value.substring(0, max);
-                value = "<a style='color:#ffffff;' href='?ID=" + row3.get("ID").toString() + "'>" + value + "..." + "</a>";
+                value = "<a style='color:#ffffff;' href='?ID=" + String.valueOf(row3.get("ID")) + "'>" + value + "..." + "</a>";
                 out.println(value + "\t");
             }
         }

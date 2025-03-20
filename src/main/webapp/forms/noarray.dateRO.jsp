@@ -27,8 +27,8 @@
             int resultIndex = 0;
             for (String zielattribut : zielattributArray) {
                 String zielattributGen = "Genauigkeit" + zielattribut;
-                results[resultIndex++] = row.get(zielattributGen) == null ? null : row.get(zielattributGen).toString();
-                results[resultIndex++] = row.get(zielattribut) == null ? null : row.get(zielattribut).toString();
+                results[resultIndex++] = row.get(zielattributGen) == null ? null : String.valueOf(row.get(zielattributGen));
+                results[resultIndex++] = row.get(zielattribut) == null ? null : String.valueOf(row.get(zielattribut));
             }
 
             // Initialize all display variables
@@ -98,7 +98,7 @@
             bisGen = row2 != null && !bisGen.equals("-1") ? String.valueOf(row2.get("Bezeichnung")) : "";
 
             // Print output depeding on whether "bis" is set as well or not
-            if (bis != null && von != null && !bis.equals(von) && !bis.equals("0") && !bis.equals("")) {	
+            if (bis != null && von != null && !bis.equals(von) && !bis.equals("0") && !bis.equals("")) {
                 String vonTotal = vonGen + " " + von;
                 String bisTotal = bisGen + " " + bis;
                 vonTotal = vonTotal.trim();

@@ -254,7 +254,7 @@
                     </td>
                     <td>
                         <div class="input-container">
-                            <input type="password" name="PasswortNeu" id="passwortNeu">
+                            <input type="password" name="PasswortNeu" id="passwortNeu" minlength="6">
                             <span class="toggle-eye" onclick="togglePassword('passwortNeu', this)">👁</span>
                         </div>
                     </td>
@@ -268,7 +268,7 @@
                     </td>
                     <td>
                         <div class="input-container">
-                            <input type="password" name="PasswortNeuWdh" id="passwortNeuWdh">
+                            <input type="password" name="PasswortNeuWdh" id="passwortNeuWdh" minlength="6">
                             <span class="toggle-eye" onclick="togglePassword('passwortNeuWdh', this)">👁</span>
                         </div>
                     </td>

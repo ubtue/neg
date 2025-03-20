@@ -17,14 +17,14 @@
 
         int selected = -1;
         if (row != null) {
-            selected = Integer.parseInt(row.get(zielAttribut).toString());
+            selected = Integer.parseInt(String.valueOf(row.get(zielAttribut)));
         } else {
             Map row3 = AbstractBase.getMappedRow("SELECT edition.ID ID"
                     + " FROM edition, quelle_inedition, einzelbeleg"
                     + " WHERE einzelbeleg.ID = " + id + " AND einzelbeleg.QuelleID = quelle_inedition.QuelleID AND quelle_inedition.EditionID = edition.ID AND quelle_inedition.Standard=1");
 
             if (row3 != null) {
-                selected = Integer.parseInt(row3.get("ID").toString());
+                selected = Integer.parseInt(String.valueOf(row3.get("ID")));
             }
         }
 

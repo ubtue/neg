@@ -9,12 +9,12 @@
         int i = 0;
         for (Map row : rowlist) {
             out.println("<tr>");
-            out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + row.get("ID").toString() + "\">");
+            out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + String.valueOf(row.get("ID")) + "\">");
 
 
-                out.println("<input type=\"hidden\" name=\"" + datenfeld + "[" + i + "]\" value=\"" + row.get("value").toString() + "\" />");
-                out.println("<td>" + row.get(auswahlherkunft + ".Bezeichnung").toString() + "</td>");
-                String href = "javascript:deleteEntry('" + zielTabelle + "', '" + row.get(zielTabelle + ".ID").toString() + "', '" + returnpage + "', '" + id + "');";
+                out.println("<input type=\"hidden\" name=\"" + datenfeld + "[" + i + "]\" value=\"" + String.valueOf(row.get("value")) + "\" />");
+                out.println("<td>" +  String.valueOf(row.get(auswahlherkunft + ".Bezeichnung")) + "</td>");;
+                String href = "javascript:deleteEntry('" + zielTabelle + "', '" + String.valueOf(row.get(zielTabelle + ".ID")) + "', '" + returnpage + "', '" + id + "');";
                 out.println("<td>");
                 out.println("<a href=\"" + href + "\">");
                 out.println(txt_delete);
@@ -30,7 +30,7 @@
         out.println("<select name=\"" + datenfeld + "[" + i + "]\">");
         List<Map> rowlist2 = AbstractBase.getMappedList("SELECT * FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
         for (Map row2 : rowlist2) {
-            out.println("<option value=\"" + row2.get("ID").toString() + "\" " + (row2.get("ID").toString().equals("-1") ? "selected" : "") + ">" + DBtoHTML(row2.get("Bezeichnung").toString()) + "</option>");
+            out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" " + (String.valueOf(row2.get("ID")).equals("-1") ? "selected" : "") + ">" + DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) + "</option>");
         }
         out.println("</select>");
         out.println("</td>");
