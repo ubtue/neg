@@ -3,6 +3,7 @@ package de.uni_tuebingen.ub.nppm.servlet.backend;
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Language;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -51,7 +52,7 @@ public class ContentServlet extends AbstractBackendServlet {
                     if (content != null) {
                         ContentDB.updateHtmlFile(content, newHtmlContent);
                         // Redirect to the tinyMce.jsp page after saving
-                        response.sendRedirect("edit?loadFile=" + fileName);
+                        response.sendRedirect(Utils.getBaseUrl(request) + "/edit?loadFile=" + fileName);
                         return;  // Important to return after redirect to stop further execution
                     }
                 } catch (Exception e) {

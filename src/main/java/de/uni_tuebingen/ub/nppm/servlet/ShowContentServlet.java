@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.io.OutputStream;
 import javax.persistence.NoResultException;
 import javax.servlet.http.Cookie;
@@ -57,10 +58,10 @@ public class ShowContentServlet extends HttpServlet {
                 os.flush();
                 os.close();
             } else {
-                resp.sendRedirect("file?context=CMS");
+                resp.sendRedirect(Utils.getBaseUrl(req) + "/file?context=CMS");
             }
         } catch (Exception e) {
-            resp.sendRedirect("file?context=CMS");
+            resp.sendRedirect(Utils.getBaseUrl(req) + "/file?context=CMS");
         }
     }
 }
