@@ -5,7 +5,7 @@
 <%@ include file="../functions.jsp" %>
 
 <div id="navigation">
-    <a href="einzelbeleg">
+    <a href="<%=Utils.getBaseUrl(request)%>/einzelbeleg">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -13,7 +13,7 @@
     </a>
     <br>
     <hr>
-    <a href="person">
+    <a href="<%=Utils.getBaseUrl(request)%>/person">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="person"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -21,7 +21,7 @@
     </a>
     <br>
     <hr>
-    <a href="namenkommentar">
+    <a href="<%=Utils.getBaseUrl(request)%>/namenkommentar">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="namenkommentar"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -29,7 +29,7 @@
     </a>
     <br>
     <hr>
-    <a href="lemma">
+    <a href="<%=Utils.getBaseUrl(request)%>/lemma">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="mgh_lemma"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -37,7 +37,7 @@
     </a>
     <br>
     <hr>
-    <a href="quelle">
+    <a href="<%=Utils.getBaseUrl(request)%>/quelle">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="quelle"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -45,7 +45,7 @@
     </a>
     <br>
     <hr>
-    <a href="edition">
+    <a href="<%=Utils.getBaseUrl(request)%>/edition">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="edition"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -53,7 +53,7 @@
     </a>
     <br>
     <hr>
-    <a href="handschrift">
+    <a href="<%=Utils.getBaseUrl(request)%>/handschrift">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="handschrift"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -61,7 +61,7 @@
     </a>
     <br>
     <hr>
-    <a href="suche">
+    <a href="<%=Utils.getBaseUrl(request)%>/suche">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="suche"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -69,7 +69,7 @@
     </a>
     <br>
     <hr>
-    <a href="ohneVerknuepfung">
+    <a href="<%=Utils.getBaseUrl(request)%>/ohneVerknuepfung">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="openLink"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -77,7 +77,7 @@
     </a>
     <br>
     <hr>
-    <a href="freie_suche">
+    <a href="<%=Utils.getBaseUrl(request)%>/freie_suche">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="freie_suche"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -85,7 +85,7 @@
     </a>
     <hr>
     <hr>
-    <a href="einstellungen">
+    <a href="<%=Utils.getBaseUrl(request)%>/einstellungen">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="einstellungen"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -98,7 +98,7 @@
 
     <br>
     <hr>
-    <a href="administration">
+    <a href="<%=Utils.getBaseUrl(request)%>/administration">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="administration"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -106,7 +106,7 @@
     </a>
     <br>
     <hr>
-    <a href="file">
+    <a href="<%=Utils.getBaseUrl(request)%>/file">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="inhaltBearbeiten"/>
             <jsp:param name="Textfeld" value="Titel"/>
@@ -118,7 +118,7 @@
     <br>
     <hr>
     <hr>
-    <a href="logout?go=gast">
+    <a href="<%=Utils.getBaseUrl(request)%>/logout?go=gast">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="abmelden"/>
             <jsp:param name="Textfeld" value="Titel"/>
