@@ -177,6 +177,7 @@ Response:
     </pre>
 
 <h2>Error Handling</h2>
+<h3>Single Item Queries</h3>
 <p>The REST API returns errors in the following scenarios:</p>
 
 <table border="1">
@@ -190,7 +191,7 @@ Response:
         <td>400 (Bad Request)</td>
         <td>Invalid request format: {path}</td>
         <td>The request format is incorrect (missing or malformed identifiers).</td>
-        <td><code>/rest/items/</code></td>
+        <td><code>/rest/item/</code></td>
     </tr>
     <tr>
         <td>400 (Bad Request)</td>
@@ -242,6 +243,36 @@ Response:
         <td><code>/rest/item/M1</code> (if database is down)</td>
     </tr>
 </table>
+
+<h3>Multiple Item Queries</h3>
+<p>The following error scenarios may occur when querying multiple items:</p>
+<table border="1">
+    <tr>
+        <th>Error Code</th>
+        <th>Message</th>
+        <th>Description</th>
+        <th>Example URL</th>
+    </tr>
+    <tr>
+        <td>400 (Bad Request)</td>
+        <td>Invalid request format: {path}</td>
+        <td>The request format is incorrect (missing or malformed identifiers).</td>
+        <td><code>/rest/items/</code></td>
+    </tr>
+    <tr>
+        <td>500 (Internal Server Error)</td>
+        <td>Internal server error due to malformed item identifiers</td>
+        <td>The URL path does not match the expected format for multiple items (e.g., missing commas or invalid characters).</td>
+        <td><code>/rest/items/M6361M6362</code></td>
+    </tr>
+    <tr>
+        <td>500 (Internal Server Error)</td>
+        <td>Internal Server Error: {message}</td>
+        <td>An unexpected error occurred while processing the request.</td>
+        <td><code>/rest/items/M6361,M6362</code> (if database is down)</td>
+    </tr>
+</table>
+
 
     <h2>Notes</h2>
     <ul>
