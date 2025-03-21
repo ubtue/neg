@@ -189,7 +189,7 @@ Response:
     <tr>
         <td>400 (Bad Request)</td>
         <td>Invalid request format: {path}</td>
-        <td>The request format is incorrect, e.g., missing or malformed identifiers.</td>
+        <td>The request format is incorrect (missing or malformed identifiers).</td>
         <td><code>/rest/items/</code></td>
     </tr>
     <tr>
