@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class AjaxServlet extends HttpServlet {
 
@@ -214,7 +215,7 @@ public class AjaxServlet extends HttpServlet {
                     }
 
                     if (lemmaIdToEinzelbelegIdsMap.size() == 1) {
-                         sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "replaceLemma"));
+                        sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "replaceLemma"));
                     } else {
                         sb.append(DatenbankDB.getLabel(language, "einzelbeleg", "cleanData"));
                     }
@@ -250,8 +251,8 @@ public class AjaxServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 // Logik zum Speichern des Zusatznamen-Kommentars
-              // EinzelbelegDB.insertFunktion(EinzelbelegID, lemmaID);
-              EinzelbelegDB.insertLemma(EinzelbelegID, lemmaID);
+                // EinzelbelegDB.insertFunktion(EinzelbelegID, lemmaID);
+                EinzelbelegDB.insertLemma(EinzelbelegID, lemmaID);
 
                 response.setContentType("application/json; charset=UTF-8");
                 JSONObject jsonObject = new JSONObject();
@@ -262,7 +263,7 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
-     private void newParentNode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void newParentNode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             // This method is called via AJAX to change the parent ID.
             Integer id = Integer.parseInt(request.getParameter("id")); // Hier die ID des verschobenen Nodes
@@ -271,15 +272,72 @@ public class AjaxServlet extends HttpServlet {
             String temp = request.getParameter("parentId");
             if (temp != null && !temp.isEmpty()) {
                 parentId = Integer.parseInt(temp); // Hier die neue Parent-ID
-            }           
-                SelektionDB.updateParentId(table, id, parentId);
-           
+            }
+            SelektionDB.updateParentId(table, id, parentId);
+
         } catch (Exception ex) {
             Logger.getLogger(AjaxServlet.class.getName()).log(Level.SEVERE, null, ex);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("An error occurred while processing your request.");
         }
 
+    }
+
+    private void doduplicate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try{
+             HttpSession session = request.getSession(true); 
+
+        int id = -1;
+        if (request.getParameter("duplicate") != null && request.getParameter("duplicate").equals(Language.getTextfield(session, "navigation", "Duplizieren"))) {
+            id = Integer.parseInt(request.getParameter("id"));
+
+            String sql = "INSERT INTO einzelbeleg (";
+            sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
+            sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
+            sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
+            sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
+            sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
+            sql += "GenauigkeitVonMonat, GenauigkeitVonJahr, GenauigkeitVonJahrhundert, DatierungUngewiss, KommentarDatierung, ";
+            sql += "LetzteAenderung, LetzteAenderungVon, Erstellt, ErstelltVon, GehoertGruppe, GenauigkeitBisTag, GenauigkeitBisMonat, ";
+            sql += "GenauigkeitBisJahr, GenauigkeitBisJahrhundert, GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, ";
+            sql += "GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, ";
+            sql += "GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert, QuelleBisTag, QuelleBisMonat, QuelleBisJahr, ";
+            sql += "QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert, KommentarPerson, ";
+            sql += "MGHLemmaKorrigiert, KonventID, BeziehungGemeinschaftID, KritikID, KontextID, TitelText, pal_abgrenzung, ";
+            sql += "inh_abgrenzung, nr_in_strukt, seite, raster, schreiber, provenance_source, provenance_id) ";
+            sql += "SELECT ";
+            sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
+            sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
+            sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
+            sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
+            sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
+            sql += "GenauigkeitVonMonat, GenauigkeitVonJahr, GenauigkeitVonJahrhundert, DatierungUngewiss, KommentarDatierung, ";
+            sql += "NOW(), LetzteAenderungVon, NOW(), ErstelltVon, GehoertGruppe, GenauigkeitBisTag, GenauigkeitBisMonat, ";
+            sql += "GenauigkeitBisJahr, GenauigkeitBisJahrhundert, GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, ";
+            sql += "GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, ";
+            sql += "GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert, QuelleBisTag, QuelleBisMonat, QuelleBisJahr, ";
+            sql += "QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert, KommentarPerson, ";
+            sql += "MGHLemmaKorrigiert, KonventID, BeziehungGemeinschaftID, KritikID, KontextID, TitelText, pal_abgrenzung, ";
+            sql += "inh_abgrenzung, nr_in_strukt, seite, raster, schreiber, provenance_source, provenance_id ";
+            sql += "FROM einzelbeleg WHERE ID=" + id + ";";
+
+            EinzelbelegDB.insertBySql(sql);
+
+            // This is a risky strategy because it is not thread-safe.
+            // However, there is no better solution when using direct sql queries right now.
+            Integer idNeu = EinzelbelegDB.getIntNative("SELECT ID FROM einzelbeleg ORDER BY ID DESC LIMIT 0, 1;");
+
+            if (idNeu != null) {
+                sql = "INSERT INTO einzelbeleg_textkritik";
+                sql += " (EinzelbelegID, EditionID, HandschriftID, Variante, Bemerkung, provenance_source, provenance_id) SELECT '" + idNeu + "', EditionID, HandschriftID, Variante, Bemerkung, provenance_source, provenance_id FROM einzelbeleg_textkritik WHERE EinzelbelegID=" + id + ";";
+                EinzelbelegDB.insertBySql(sql);
+                id = idNeu;
+            }
+
+        } // ENDE if (springen)
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
@@ -290,10 +348,11 @@ public class AjaxServlet extends HttpServlet {
         } else if ("confirmZusatzNamenKommentar".equals(action)) {
             confirmZusatzNamenKommentar(request, response);
         } else if ("newParentNode".equals(action)) {
-             newParentNode(request, response);
+            newParentNode(request, response);
+        } else if ("doduplicate".equals(action)) {
+            doduplicate(request, response);
         }
     }
-    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
