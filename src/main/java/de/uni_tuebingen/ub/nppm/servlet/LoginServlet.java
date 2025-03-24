@@ -66,16 +66,16 @@ public class LoginServlet extends HttpServlet {
 
         // Weiterleiten
         if (benutzer.isGast()) {
-            response.sendRedirect("gast/startseite");
+            response.sendRedirect(Utils.getBaseUrl(request) + "/gast/startseite");
         } else {
-            response.sendRedirect("/neg/einzelbeleg");
+            response.sendRedirect(Utils.getBaseUrl(request) + "/einzelbeleg");
         }
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             if (AuthHelper.isBenutzerLogin(request)) {
-                response.sendRedirect("einzelbeleg");
+                response.sendRedirect(Utils.getBaseUrl(request) + "/einzelbeleg");
             } else if (request.getParameter("action") != null) {
                 if (request.getParameter("action").equals("login")) {
                     processLoginAction(request, response);
