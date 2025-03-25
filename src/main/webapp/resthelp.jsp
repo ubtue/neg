@@ -240,7 +240,7 @@ Response:
         <td>500 (Internal Server Error)</td>
         <td>Internal Server Error: {message}</td>
         <td>An unexpected error occurred while processing the request.</td>
-        <td><code>/rest/item/M1</code> (if database is down)</td>
+        <td><code>/rest/item/M6362</code> (if database is down)</td>
     </tr>
 </table>
 
@@ -252,24 +252,50 @@ Response:
         <th>Message</th>
         <th>Description</th>
         <th>Example URL</th>
+        <th>JSON Response</th>
     </tr>
     <tr>
         <td>400 (Bad Request)</td>
         <td>Invalid request format: {path}</td>
         <td>The request format is incorrect (missing or malformed identifiers).</td>
         <td><code>/rest/items/</code></td>
+        <td>-</td>
     </tr>
     <tr>
         <td>500 (Internal Server Error)</td>
-        <td>Internal server error due to malformed item identifiers</td>
+        <td>Internal Server Error: {message}</td>
         <td>The URL path does not match the expected format for multiple items (e.g., missing commas or invalid characters).</td>
         <td><code>/rest/items/M6361M6362</code></td>
+        <td>-</td>
     </tr>
     <tr>
         <td>500 (Internal Server Error)</td>
         <td>Internal Server Error: {message}</td>
         <td>An unexpected error occurred while processing the request.</td>
         <td><code>/rest/items/M6361,M6362</code> (if database is down)</td>
+        <td>-</td>
+    </tr>
+
+    <tr>
+        <td>200 (Ok)</td>
+        <td>Item not found with ID {id}</td>
+        <td>If at least one of the requested item IDs does not exist, the response will still return the available items, along with an indication of the missing ones.</td>
+        <td><code>/rest/items/M6361,M9999999</code></td>
+        <td>
+            <pre>
+                {
+                    "items": [
+                        {
+                            "mghLemma": "leub-n",
+                            "id": "M6361"
+                        },
+                        {
+                            "error": "Lemma not found with ID M9999999"
+                        }
+                    ]
+                }
+            </pre>
+        </td>
     </tr>
 </table>
 
