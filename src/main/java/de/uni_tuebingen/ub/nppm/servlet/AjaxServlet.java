@@ -1,9 +1,11 @@
 package de.uni_tuebingen.ub.nppm.servlet;
 
 import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.model.Einzelbeleg;
 import de.uni_tuebingen.ub.nppm.model.MghLemma;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
+import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.Language;
 import org.json.*;
 import java.io.IOException;
@@ -284,61 +286,157 @@ public class AjaxServlet extends HttpServlet {
     }
 
     private void doduplicate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try{
-             HttpSession session = request.getSession(true); 
+        try {
+            HttpSession session = request.getSession(true);
 
-        int id = -1;
-        if (request.getParameter("duplicate") != null && request.getParameter("duplicate").equals(Language.getTextfield(session, "navigation", "Duplizieren"))) {
-            id = Integer.parseInt(request.getParameter("id"));
+            Benutzer benutzer = AuthHelper.getBenutzer(request);
 
-            String sql = "INSERT INTO einzelbeleg (";
-            sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
-            sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
-            sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
-            sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
-            sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
-            sql += "GenauigkeitVonMonat, GenauigkeitVonJahr, GenauigkeitVonJahrhundert, DatierungUngewiss, KommentarDatierung, ";
-            sql += "LetzteAenderung, LetzteAenderungVon, Erstellt, ErstelltVon, GehoertGruppe, GenauigkeitBisTag, GenauigkeitBisMonat, ";
-            sql += "GenauigkeitBisJahr, GenauigkeitBisJahrhundert, GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, ";
-            sql += "GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, ";
-            sql += "GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert, QuelleBisTag, QuelleBisMonat, QuelleBisJahr, ";
-            sql += "QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert, KommentarPerson, ";
-            sql += "MGHLemmaKorrigiert, KonventID, BeziehungGemeinschaftID, KritikID, KontextID, TitelText, pal_abgrenzung, ";
-            sql += "inh_abgrenzung, nr_in_strukt, seite, raster, schreiber, provenance_source, provenance_id) ";
-            sql += "SELECT ";
-            sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
-            sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
-            sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
-            sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
-            sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
-            sql += "GenauigkeitVonMonat, GenauigkeitVonJahr, GenauigkeitVonJahrhundert, DatierungUngewiss, KommentarDatierung, ";
-            sql += "NOW(), LetzteAenderungVon, NOW(), ErstelltVon, GehoertGruppe, GenauigkeitBisTag, GenauigkeitBisMonat, ";
-            sql += "GenauigkeitBisJahr, GenauigkeitBisJahrhundert, GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, ";
-            sql += "GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, ";
-            sql += "GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert, QuelleBisTag, QuelleBisMonat, QuelleBisJahr, ";
-            sql += "QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert, KommentarPerson, ";
-            sql += "MGHLemmaKorrigiert, KonventID, BeziehungGemeinschaftID, KritikID, KontextID, TitelText, pal_abgrenzung, ";
-            sql += "inh_abgrenzung, nr_in_strukt, seite, raster, schreiber, provenance_source, provenance_id ";
-            sql += "FROM einzelbeleg WHERE ID=" + id + ";";
+            String benutzerGruppe = String.valueOf(benutzer.getGruppe().getID());
 
-            EinzelbelegDB.insertBySql(sql);
+            String benutzerId = String.valueOf(benutzer.getID());
 
-            // This is a risky strategy because it is not thread-safe.
-            // However, there is no better solution when using direct sql queries right now.
-            Integer idNeu = EinzelbelegDB.getIntNative("SELECT ID FROM einzelbeleg ORDER BY ID DESC LIMIT 0, 1;");
 
-            if (idNeu != null) {
-                sql = "INSERT INTO einzelbeleg_textkritik";
-                sql += " (EinzelbelegID, EditionID, HandschriftID, Variante, Bemerkung, provenance_source, provenance_id) SELECT '" + idNeu + "', EditionID, HandschriftID, Variante, Bemerkung, provenance_source, provenance_id FROM einzelbeleg_textkritik WHERE EinzelbelegID=" + id + ";";
+            int id = -1;
+            if (request.getParameter("duplicate") != null && request.getParameter("duplicate").equals(Language.getTextfield(session, "navigation", "Duplizieren"))) {
+                id = Integer.parseInt(request.getParameter("id"));
+
+                String sql = "INSERT INTO einzelbeleg (";
+                sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
+                sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
+                sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
+                sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
+                sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
+                sql += "GenauigkeitVonMonat, GenauigkeitVonJahr, GenauigkeitVonJahrhundert, DatierungUngewiss, KommentarDatierung, ";
+                sql += "LetzteAenderung, LetzteAenderungVon, Erstellt, ErstelltVon, GehoertGruppe, GenauigkeitBisTag, GenauigkeitBisMonat, ";
+                sql += "GenauigkeitBisJahr, GenauigkeitBisJahrhundert, GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, ";
+                sql += "GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, ";
+                sql += "GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert, QuelleBisTag, QuelleBisMonat, QuelleBisJahr, ";
+                sql += "QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert, KommentarPerson, ";
+                sql += "MGHLemmaKorrigiert, KonventID, BeziehungGemeinschaftID, KritikID, KontextID, TitelText, pal_abgrenzung, ";
+                sql += "inh_abgrenzung, nr_in_strukt, seite, raster, schreiber) ";
+                sql += "SELECT ";
+                sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
+                sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
+                sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
+                sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
+                sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
+                sql += "GenauigkeitVonMonat, GenauigkeitVonJahr, GenauigkeitVonJahrhundert, DatierungUngewiss, KommentarDatierung, ";
+                sql += "NOW()," + benutzerId + ", NOW()," + benutzerId + "," + benutzerGruppe + ", GenauigkeitBisTag, GenauigkeitBisMonat, ";
+                sql += "GenauigkeitBisJahr, GenauigkeitBisJahrhundert, GenauigkeitQuelleBisTag, GenauigkeitQuelleBisMonat, ";
+                sql += "GenauigkeitQuelleBisJahr, GenauigkeitQuelleBisJahrhundert, GenauigkeitQuelleVonTag, GenauigkeitQuelleVonMonat, ";
+                sql += "GenauigkeitQuelleVonJahr, GenauigkeitQuelleVonJahrhundert, QuelleBisTag, QuelleBisMonat, QuelleBisJahr, ";
+                sql += "QuelleBisJahrhundert, QuelleVonTag, QuelleVonMonat, QuelleVonJahr, QuelleVonJahrhundert, KommentarPerson, ";
+                sql += "MGHLemmaKorrigiert, KonventID, BeziehungGemeinschaftID, KritikID, KontextID, TitelText, pal_abgrenzung, ";
+                sql += "inh_abgrenzung, nr_in_strukt, seite, raster, schreiber ";
+                sql += "FROM einzelbeleg WHERE ID=" + id + ";";
+
                 EinzelbelegDB.insertBySql(sql);
-                id = idNeu;
-            }
 
-        } // ENDE if (springen)
+                // This is a risky strategy because it is not thread-safe.
+                // However, there is no better solution when using direct sql queries right now.
+                Integer idNeu = EinzelbelegDB.getIntNative("SELECT ID FROM einzelbeleg ORDER BY ID DESC LIMIT 0, 1;");
+
+                if (idNeu != null) {
+                    //Einzelbeleg Textkritik
+                    sql = "INSERT INTO einzelbeleg_textkritik";
+                    sql += " (EinzelbelegID, EditionID, HandschriftID, Variante, Bemerkung, provenance_source, provenance_id) SELECT '" + idNeu + "', EditionID, HandschriftID, Variante, Bemerkung, provenance_source, provenance_id FROM einzelbeleg_textkritik WHERE EinzelbelegID=" + id + ";";
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg Bemerkunngen
+                    sql = "INSERT INTO bemerkung (Bemerkung, EinzelbelegID, GruppeID, BenutzerID)\n" +
+                          "SELECT Bemerkung, " + idNeu + ", GruppeID, BenutzerID\n" +
+                          "FROM bemerkung\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                     EinzelbelegDB.insertBySql(sql);
+
+                     //Einzelbeleg Angabe zur Person
+                    sql = "INSERT INTO einzelbeleg_hatangabe (EinzelbelegID, AngabeID)\n" +
+                          "SELECT " + idNeu + ", AngabeID\n" +
+                          "FROM einzelbeleg_hatangabe\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg Philologischer Kommentar
+                    sql = "INSERT INTO einzelbeleg_hatnamenkommentar (EinzelbelegID, NamenkommentarID)\n" +
+                          "SELECT " + idNeu + ", NamenkommentarID\n" +
+                          "FROM einzelbeleg_hatnamenkommentar\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg Lemma
+                    sql = "INSERT INTO einzelbeleg_hatmghlemma (EinzelbelegID, MGHLemmaID)\n" +
+                          "SELECT " + idNeu + ", MGHLemmaID\n" +
+                          "FROM einzelbeleg_hatmghlemma\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg PersonID
+                    sql = "INSERT INTO einzelbeleg_hatperson (EinzelbelegID, PersonID, gesichert)\n" +
+                          "SELECT " + idNeu + ", PersonID, gesichert\n" +
+                          "FROM einzelbeleg_hatperson\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg Amt / Weihe
+                    sql = "INSERT INTO einzelbeleg_hatamtweihe (EinzelbelegID, AmtWeiheID)\n" +
+                          "SELECT " + idNeu + ", AmtWeiheID\n" +
+                          "FROM einzelbeleg_hatamtweihe\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg Ethnie
+                    sql = "INSERT INTO einzelbeleg_hatethnie (EinzelbelegID, EthnieID)\n" +
+                          "SELECT " + idNeu + ", EthnieID\n" +
+                          "FROM einzelbeleg_hatethnie\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg Stand
+                    sql = "INSERT INTO einzelbeleg_hatstand (EinzelbelegID, StandID)\n" +
+                          "SELECT " + idNeu + ", StandID\n" +
+                          "FROM einzelbeleg_hatstand\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg Titel Kritik
+                     sql = "INSERT INTO einzelbeleg_hattitelkritik (EinzelbelegID, TitelkritikID)\n" +
+                          "SELECT " + idNeu + ", TitelkritikID\n" +
+                          "FROM einzelbeleg_hattitelkritik\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg Funktion Nummer
+                    sql = "INSERT INTO einzelbeleg_hatfunktion (EinzelbelegID, FunktionID, Nummer)\n" +
+                          "SELECT " + idNeu + ", FunktionID, Nummer\n" +
+                          "FROM einzelbeleg_hatfunktion\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+
+                    //Einzelbeleg Areal Areal-Typ
+                    sql = "INSERT INTO einzelbeleg_hatareal (EinzelbelegID, ArealID, ArealTypID)\n" +
+                          "SELECT " + idNeu + ", ArealID, ArealTypID\n" +
+                          "FROM einzelbeleg_hatareal\n" +
+                          "WHERE EinzelbelegID = " + id + ";";
+
+                    EinzelbelegDB.insertBySql(sql);
+                }
+
+            } // ENDE if (springen)
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

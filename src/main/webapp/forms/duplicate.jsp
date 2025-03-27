@@ -20,6 +20,7 @@
     </form>
 
     <script>
+
         $(document).ready(function () {
             let einzelbelegID = <%= id %>;
             let duplicate = "<%= duplicate %>";
@@ -30,13 +31,14 @@
 
             // Event für den Button
             $("#duplicateButton").on("click", function () {
+
                 if (confirm(duplicateSuccess)) {
                     $.ajax({
                         type: "POST",
                         url: ajaxUrl,
                         data: { action: "doduplicate", id: einzelbelegID, duplicate: duplicate },
                         success: function () {
-                           location.reload();
+                            window.location = window.location.href;
                         },
                         error: function (jqXHR) {
                             alert(duplicateError + " " + jqXHR.status);
