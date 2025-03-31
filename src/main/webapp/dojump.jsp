@@ -11,12 +11,14 @@
 
     if (request.getParameter("jumpID") != null && (request.getParameter("jumpID").equals("los") || request.getParameter("jumpID").equals(">"))) {
         String newID = request.getParameter("jumpValueID");
+        String guestTable = request.getParameter("jumpTableGuest");
         String newForm = "";
+        
         if (newID.startsWith("B") || newID.startsWith("b")) {
             newForm = "einzelbeleg";
         } else if (newID.startsWith("P") || newID.startsWith("p")) {
             newForm = "person";
-        } else if (newID.startsWith("N") || newID.startsWith("n")) {
+        } else if (!"guestTable".equals(guestTable) && (newID.startsWith("N") || newID.startsWith("n"))) {
             newForm = "namenkommentar";
         } else if (newID.startsWith("Q") || newID.startsWith("q")) {
             newForm = "quelle";
