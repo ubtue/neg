@@ -25,7 +25,7 @@
         } else if (newID.startsWith("T") || newID.startsWith("t")) {
             newForm = "handschrift";
         } else if (newID.startsWith("M") || newID.startsWith("m")) {
-            newForm = "mghlemma";
+            newForm = "lemma";
         } else {
             throw new IdInvalidException();
         }
