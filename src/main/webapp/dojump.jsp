@@ -12,25 +12,27 @@
     if (request.getParameter("jumpID") != null && (request.getParameter("jumpID").equals("los") || request.getParameter("jumpID").equals(">"))) {
         String newID = request.getParameter("jumpValueID");
         String guestTable = request.getParameter("jumpTableGuest");
+        String jumpTable = request.getParameter("jumpTable");
         String newForm = "";
-        
-        if (newID.startsWith("B") || newID.startsWith("b")) {
+
+        if (newID.startsWith("B") || newID.startsWith("b")|| ("einzelbeleg".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "einzelbeleg";
-        } else if (newID.startsWith("P") || newID.startsWith("p")) {
+        } else if (newID.startsWith("P") || newID.startsWith("p")|| "person".equals(jumpTable) || ("person".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "person";
-        } else if (!"guestTable".equals(guestTable) && (newID.startsWith("N") || newID.startsWith("n"))) {
+        } else if (!"guestTable".equals(guestTable) && (newID.startsWith("N") || newID.startsWith("n") || ("namenkommentar".equals(jumpTable) && newID.matches("^[0-9].*")))) {
             newForm = "namenkommentar";
-        } else if (newID.startsWith("Q") || newID.startsWith("q")) {
+        } else if (newID.startsWith("Q") || newID.startsWith("q") || ("quelle".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "quelle";
-        } else if (newID.startsWith("E") || newID.startsWith("e")) {
+        } else if (newID.startsWith("E") || newID.startsWith("e") || ("edition".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "edition";
-        } else if (newID.startsWith("T") || newID.startsWith("t")) {
+        } else if (newID.startsWith("T") || newID.startsWith("t") || ("handschrift".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "handschrift";
-        } else if (newID.startsWith("M") || newID.startsWith("m")) {
+        } else if (newID.startsWith("M") || newID.startsWith("m") || ("mgh_lemma".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "lemma";
         } else {
             throw new IdInvalidException();
         }
+
         out.println("<script type=\"text/javascript\">");
         String url = request.getRequestURL().toString();
         out.println(url);
@@ -42,7 +44,11 @@
             out.println("window.stop();");
             out.println("location.replace('" + url + "error.jsp');");
         } else {
-            out.println("location.replace('" + url + newForm + "?ID='+" + newID.substring(1) + ");");
+            if (newID.matches("^[BPNQETMbpnqetm].*")) { // Alle gewünschten Buchstaben
+                out.println("location.replace('" + url + newForm + "?ID='+" + newID.substring(1) + ");");
+            } else {
+                out.println("location.replace('" + url + newForm + "?ID='+" + newID + ");");
+            }
         }
         out.println("</script>");
 
