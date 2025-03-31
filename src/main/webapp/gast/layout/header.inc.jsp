@@ -210,14 +210,14 @@
                             <!-- ###TOPNAV### Start -->
                             <ul class="ut-nav__list ut-nav__list--level-1 lory-slides js_slides">
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="1">
-                                    ${param.current eq 'startseite' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'startseite' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/startseite" aria-label="<% Language.printTextfield(out, session, "startseite", "Titel");%>" tabindex="0">
+                                    ${param.current eq 'start' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'start' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=start" aria-label="<% Language.printTextfield(out, session, "startseite", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="startseite"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
                                         </jsp:include>
                                     </a>
-                                    ${param.current eq 'startseite' ? '</div>' : ''}
+                                    ${param.current eq 'start' ? '</div>' : ''}
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="2">
                                     ${param.current eq 'einzelbeleg' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}

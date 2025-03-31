@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet {
 
         // Weiterleiten
         if (benutzer.isGast()) {
-            response.sendRedirect(Utils.getBaseUrl(request) + "/gast/startseite");
+            response.sendRedirect(Utils.getBaseUrl(request) + "/gast/infos?sharedHtml=start");
         } else {
             response.sendRedirect(Utils.getBaseUrl(request) + "/einzelbeleg");
         }
