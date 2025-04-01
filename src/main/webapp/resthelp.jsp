@@ -289,8 +289,9 @@ Response:
                             "mghLemma": "leub-n",
                             "id": "M6361"
                         },
-                        {
-                            "error": "Lemma not found with ID M9999999"
+                        {                            
+                            "error": "Lemma not found with ID M9999999",
+                            "id": "M9999999"
                         }
                     ]
                 }

@@ -121,6 +121,7 @@ public class RESTServlet extends HttpServlet {
                 jsonObject = lemma.getJSON();
             } else {
                 jsonObject.put("error", "Lemma not found with ID " + id);
+                jsonObject.put("id", id);
             }
         } else if (id.startsWith("N")) {
             NamenKommentar nk = (NamenKommentar) IdentifierMapper.getModelByIdentifier(id);
@@ -128,6 +129,7 @@ public class RESTServlet extends HttpServlet {
                 jsonObject = nk.getJSON();
             } else {
                 jsonObject.put("error", "Namenkommentar not found with ID " + id);
+                jsonObject.put("id", id);
             }
         } else if (id.startsWith("B")) {
             Einzelbeleg einzelbeleg = (Einzelbeleg) IdentifierMapper.getModelByIdentifier(id);
@@ -135,6 +137,7 @@ public class RESTServlet extends HttpServlet {
                 jsonObject = einzelbeleg.getJSON();
             } else {
                 jsonObject.put("error", "Einzelbeleg not found with ID " + id);
+                jsonObject.put("id", id);
             }
         } else if (id.startsWith("P")) {
             Person person = (Person) IdentifierMapper.getModelByIdentifier(id);
@@ -142,6 +145,7 @@ public class RESTServlet extends HttpServlet {
                 jsonObject = person.getJSON();
             } else {
                 jsonObject.put("error", "Person not found with ID " + id);
+                jsonObject.put("id", id);
             }
         } else if (id.startsWith("Q")) {
             Quelle quelle = (Quelle) IdentifierMapper.getModelByIdentifier(id);
@@ -149,6 +153,7 @@ public class RESTServlet extends HttpServlet {
                 jsonObject = quelle.getJSON();
             } else {
                 jsonObject.put("error", "Quelle not found with ID " + id);
+                jsonObject.put("id", id);
             }
         }
         return jsonObject;
