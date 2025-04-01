@@ -17,7 +17,7 @@
 
         if (newID.startsWith("B") || newID.startsWith("b")|| ("einzelbeleg".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "einzelbeleg";
-        } else if (newID.startsWith("P") || newID.startsWith("p")|| "person".equals(jumpTable) || ("person".equals(jumpTable) && newID.matches("^[0-9].*"))) {
+        } else if (newID.startsWith("P") || newID.startsWith("p")|| ("person".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "person";
         } else if (!"guestTable".equals(guestTable) && (newID.startsWith("N") || newID.startsWith("n") || ("namenkommentar".equals(jumpTable) && newID.matches("^[0-9].*")))) {
             newForm = "namenkommentar";
