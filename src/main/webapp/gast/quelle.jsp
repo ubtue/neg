@@ -54,14 +54,14 @@
     Urkunde urkunde = quelle.getUrkunde();
 %>
 
-<h1 class="ut-heading ut-heading--h1">
+<h3 class="ut-heading ut-heading--h3">
     <a class="ut-link" href="<%=Utils.getBaseUrl(request)%>/gast/quelle?page=stat">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="stat"/>
             <jsp:param name="Textfeld" value="Titel"/>
         </jsp:include>
     </a>
-</h1>
+</h3>
 
 <jsp:include page="../dojump.jsp">
     <jsp:param name="form" value="gast_quelle" />
@@ -157,9 +157,10 @@
 </table>
 
 <!----------Einzelbelege---------->
-<h1 class="ut-heading ut-heading--h1">
+<h3 class="ut-heading ut-heading--h3">
     <a class="ut-link" href="<%= Utils.getBaseUrl(request)%>/gast/suchergebnis?Quellenliste=<%= id%>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&Ausgabe_Einzelbeleg_Quellengattung=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit="><% Language.printTextfield(out, session, "einzelbeleg", "Titel");%></a>
-</h1>
+</h3>
+<br>
 
 <%
     List<Object[]> resultList = ModulIncDB.getListQuelleEditionen(String.valueOf(id));
@@ -169,6 +170,7 @@
 
 <!----------Ueberlieferung---------->
 <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "quelle", "TabUeberlieferung");%></h3>
+
 <jsp:include page="../inc.modul.jsp">
     <jsp:param name="ID" value="<%= id%>" />
     <jsp:param name="Formular" value="quelle" />
