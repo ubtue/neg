@@ -7,6 +7,8 @@
 // when this template is called. So check for the session instead:
     boolean isGast = session == null || session.getAttribute("Gast") == null || (session.getAttribute("Gast") != null && (boolean) session.getAttribute("Gast") == true);
 
+    String guestTable = request.getParameter("jumpTableGuest");
+
 %>
 
 <%!
@@ -61,7 +63,7 @@
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);%>
         <span><%= "de".equals(session.getAttribute("Sprache"))
                 ? "Zugriff verweigert: Sie verfügen nicht über die erforderlichen Administratorrechte."
-                : "ID must start with B, P, M, N, Q, T, or E and end with a number (e.g. P7404)."%>
+                : "Access denied: You do not have the required administrator privileges."%>
         </span>
         <% } else if (containsCause(exception, BenutzerNotSetException.class)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);%>
@@ -69,11 +71,18 @@
                 ? "Bitte melden Sie sich an, um Zugriff auf diesen Bereich zu erhalten."
                 : "Please log in to access this area."%>
         </span>
-        <% } else if (containsCause(exception, IdInvalidException.class)) {
+        <% } else if (!"guestTable".equals(guestTable) && containsCause(exception, IdInvalidException.class)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);%>
         <span><%= "de".equals(session.getAttribute("Sprache"))
                 ? "ID muss mit B, P, M, N, Q, T, oder E beginnen und mit einer Nummer enden (z.B. P7404)."
-                : "Access denied: You do not have the required administrator privileges."%>
+                : "ID must start with B, P, M, N, Q, T, or E and end with a number (e.g. P7404)."%>
+        </span>
+
+        <% } else if ("guestTable".equals(guestTable) && containsCause(exception, IdInvalidException.class)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);%>
+        <span><%= "de".equals(session.getAttribute("Sprache"))
+                ? "ID muss mit B, P, M, Q, T, oder E beginnen und mit einer Nummer enden (z.B. P7404)."
+                : "ID must start with B, P, M, Q, T, or E and end with a number (e.g. P7404)."%>
         </span>
 
         <% } else if (containsCause(exception, IdNotPublicException.class)) {

@@ -56,7 +56,22 @@
 
     // Hole die aktuelle Spracheinstellung aus der Session
     String language = (String) session.getAttribute("Sprache");
+
+    int id = -1;
+    String title = (String) request.getAttribute("title"); // Holt den Titel aus der Anfrage
+    if (title == null) {
+        title = "Default Title"; // Setzt einen Standardtitel, falls keiner übergeben wird
+    }
+
+    try {
+        id = Integer.parseInt(request.getParameter("ID"));
+    } catch (NumberFormatException e) {
+    }
 %>
+
+<jsp:include page="../../dojump.jsp">
+    <jsp:param name="form" value="gast_einzelbeleg" />
+</jsp:include>
 
 <header>
     <nav class="ut-nav ut-nav--skipanchors" aria-label="Bereiche überspringen">
@@ -278,6 +293,24 @@
                                         </jsp:include>
                                     </a>
                                     ${param.current eq 'freie_suche' ? '</div>' : ''}
+                                </li>
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="8">
+                                    <form name="jumpForm" method="post" >
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
+                                               href="#"
+                                               onclick="document.querySelector('form[name=jumpForm]').submit(); return false;"
+                                               aria-label="ID Button" tabindex="0">
+                                                ID
+                                            </a>
+                                            <input class="ut-form__field" type="text" name="jumpValueID" placeholder="z.B. P7404" aria-labelledby="jumpLabel" aria-required="true" style="width: 120px;">
+                                            <input type="hidden" name="jumpTableGuest" value="guestTable">
+                                            <input type="hidden" name="jumpTable" value="<%= title%>">
+                                            <input type="hidden" name="akt" value="<%= id%>">
+                                            <input type="hidden" name="jumpID" value="los">
+
+                                        </div>
+                                    </form>
                                 </li>
                             </ul>
                             <!-- ###TOPNAV### End -->

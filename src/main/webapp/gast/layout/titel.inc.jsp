@@ -23,34 +23,9 @@
 
 %>
 
-<div class="ut-wrapper ut-wrapper--color-components-1" style="padding-top: 10px; padding-bottom: 10px;">
-<div class="container" id="jump-to" >
-<form method="post" >
-<div id="jump-1">
-  <!------------Jump1------------>
-  <jsp:include page="../forms/jumpID.jsp">
-    <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
-    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase() %>"/>
-    <jsp:param name="filter" value="<%= filter %>"/>
-    <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
-  </jsp:include>
-</div>
-<div id="jump-2">
-  <!------------Jump2------------>
-  <jsp:include page="../forms/jump.jsp">
-    <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
-    <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
-    <jsp:param name="filter" value="<%= filter %>"/>
-    <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
-  </jsp:include>
-</div>
-<div class="clear"></div>
-</form>
-</div>
-</div>
-
 <!------------prev-next------------>
 <div class="container" style="display: flex; justify-content: center; padding-top: 10px ">
+
   <jsp:include page="../forms/link.jsp">
     <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
     <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
