@@ -15,19 +15,19 @@
         String jumpTable = request.getParameter("jumpTable");
         String newForm = "";
 
-        if (newID.startsWith("B") || newID.startsWith("b")|| ("einzelbeleg".equals(jumpTable) && newID.matches("^[0-9].*"))) {
+        if (newID.startsWith("B") || newID.startsWith("b")|| ("einzelbeleg".equals(jumpTable) && newID.matches("^[0-9].*")) || ("Einzelbelege".equals(jumpTable) && newID.matches("^[0-9].*"))  ) {
             newForm = "einzelbeleg";
-        } else if (newID.startsWith("P") || newID.startsWith("p")|| ("person".equals(jumpTable) && newID.matches("^[0-9].*"))) {
+        } else if (newID.startsWith("P") || newID.startsWith("p")||  ("person".equals(jumpTable) && newID.matches("^[0-9].*")) || ("Personen".equals(jumpTable) && newID.matches("^[0-9].*"))  ) {
             newForm = "person";
         } else if (!"guestTable".equals(guestTable) && (newID.startsWith("N") || newID.startsWith("n") || ("namenkommentar".equals(jumpTable) && newID.matches("^[0-9].*")))) {
             newForm = "namenkommentar";
-        } else if (newID.startsWith("Q") || newID.startsWith("q") || ("quelle".equals(jumpTable) && newID.matches("^[0-9].*"))) {
+        } else if (newID.startsWith("Q") || newID.startsWith("q") || ("quelle".equals(jumpTable) && newID.matches("^[0-9].*")) || ("Quellen".equals(jumpTable) && newID.matches("^[0-9].*"))  ) {
             newForm = "quelle";
         } else if (newID.startsWith("E") || newID.startsWith("e") || ("edition".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "edition";
         } else if (newID.startsWith("T") || newID.startsWith("t") || ("handschrift".equals(jumpTable) && newID.matches("^[0-9].*"))) {
             newForm = "handschrift";
-        } else if (newID.startsWith("M") || newID.startsWith("m") || ("mgh_lemma".equals(jumpTable) && newID.matches("^[0-9].*"))) {
+        } else if (newID.startsWith("M") || newID.startsWith("m") || ("mgh_lemma".equals(jumpTable) && newID.matches("^[0-9].*")) || ("Namen".equals(jumpTable) && newID.matches("^[0-9].*"))  ) {
             newForm = "lemma";
         } else {
             throw new IdInvalidException();
