@@ -295,9 +295,12 @@
                                     ${param.current eq 'freie_suche' ? '</div>' : ''}
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="8">
-                                        <form method="post" >
-                                            <div style="display: flex; align-items: center; gap: 10px;">
-                                            <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="#"  onclick="return false;"  aria-label="ID Button" tabindex="0">
+                                    <form name="jumpForm" method="post" >
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
+                                               href="#"
+                                               onclick="document.querySelector('form[name=jumpForm]').submit(); return false;"
+                                               aria-label="ID Button" tabindex="0">
                                                 ID
                                             </a>
                                             <input class="ut-form__field" type="text" name="jumpValueID" placeholder="z.B. P7404" aria-labelledby="jumpLabel" aria-required="true" style="width: 120px;">
@@ -305,8 +308,9 @@
                                             <input type="hidden" name="jumpTable" value="<%= title%>">
                                             <input type="hidden" name="akt" value="<%= id%>">
                                             <input type="hidden" name="jumpID" value="los">
-                                            </div>
-                                        </form>
+
+                                        </div>
+                                    </form>
                                 </li>
                             </ul>
                             <!-- ###TOPNAV### End -->
