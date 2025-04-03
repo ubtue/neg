@@ -58,7 +58,7 @@
     conditions.add("quelle.zuVeroeffentlichen=1");
     conditions.add("mgh_lemma.ID=" + id);
 
-    List<String> fields = new ArrayList<>();    
+    List<String> fields = new ArrayList<>();
     fields.add("person.Standardname");
     fields.add("person.ID");
     fields.add("selektion_amtweihe.Bezeichnung");
@@ -82,10 +82,8 @@
     fields.add("einzelbeleg.BisJahr");
     fields.add("einzelbeleg.BisJahrhundert");
     fields.add("selektion_lebendverstorben.Bezeichnung");
-    fields.add("einzelbeleg_textkritik.Variante");
 
-
-    List<String> fieldNames = new ArrayList<>();    
+    List<String> fieldNames = new ArrayList<>();
     fieldNames.add("person.Standardname");
     fieldNames.add("selektion_amtweihe.Bezeichnung");
     fieldNames.add("person_hatamtstandweihe.Zeitraum");
@@ -106,7 +104,6 @@
     fieldNames.add("einzelbeleg.BisJahr");
     fieldNames.add("einzelbeleg.BisJahrhundert");
     fieldNames.add("selektion_lebendverstorben.Bezeichnung");
-    fieldNames.add("einzelbeleg_textkritik.Variante");
 
     List<String> tables = new ArrayList<>();
     tables.add("mghlemma");
@@ -114,14 +111,12 @@
 
    String sprache = "de";
 
-
    //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
    if (session != null && session.getAttribute("Sprache") != null)
          sprache = (String)session.getAttribute("Sprache");
 
-
    List<String> joins = new ArrayList<>();
-   List<String> headlines = new ArrayList<>();    
+   List<String> headlines = new ArrayList<>();
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeiheZeitraum"));
@@ -142,8 +137,6 @@
     headlines.add("bis J.");
     headlines.add("bis Jh.");
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Lebend"));
-    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Varianten"));
-
 %>
 
 <jsp:include page="../dojump.jsp">
