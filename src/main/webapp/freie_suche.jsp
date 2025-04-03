@@ -5,10 +5,6 @@
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 
-<jsp:include page="doduplicate.jsp" />
-
-
-
 
 <%
     int id = Constants.UNDEFINED_ID;
@@ -16,7 +12,6 @@
     Filter.setFilter(request, formular, out);
     Language.setLanguage(request);
 %>
-
 
 <div>
 <style>

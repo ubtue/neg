@@ -56,7 +56,22 @@
 
     // Hole die aktuelle Spracheinstellung aus der Session
     String language = (String) session.getAttribute("Sprache");
+
+    int id = -1;
+    String title = (String) request.getAttribute("title"); // Holt den Titel aus der Anfrage
+    if (title == null) {
+        title = "Default Title"; // Setzt einen Standardtitel, falls keiner übergeben wird
+    }
+
+    try {
+        id = Integer.parseInt(request.getParameter("ID"));
+    } catch (NumberFormatException e) {
+    }
 %>
+
+<jsp:include page="../../dojump.jsp">
+    <jsp:param name="form" value="gast_einzelbeleg" />
+</jsp:include>
 
 <header>
     <nav class="ut-nav ut-nav--skipanchors" aria-label="Bereiche überspringen">
@@ -193,7 +208,7 @@
                 </a>
             </h4>
             <h2 class="ut-heading ut-nav-area__current-level">
-                <a class="ut-link ut-nav-area__link" title="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>" aria-label="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>"  href="/neg">
+                <a class="ut-link ut-nav-area__link" title="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>" aria-label="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>"  href="<%=Utils.getBaseUrl(request)%>">
                     <%= DBtoHTML(Language.getTextfield(session, "logo", "NPPM")) %>
                 </a>
             </h2>
@@ -210,14 +225,14 @@
                             <!-- ###TOPNAV### Start -->
                             <ul class="ut-nav__list ut-nav__list--level-1 lory-slides js_slides">
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="1">
-                                    ${param.current eq 'startseite' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'startseite' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/startseite" aria-label="<% Language.printTextfield(out, session, "startseite", "Titel");%>" tabindex="0">
+                                    ${param.current eq 'start' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'start' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=start" aria-label="<% Language.printTextfield(out, session, "startseite", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="startseite"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
                                         </jsp:include>
                                     </a>
-                                    ${param.current eq 'startseite' ? '</div>' : ''}
+                                    ${param.current eq 'start' ? '</div>' : ''}
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="2">
                                     ${param.current eq 'einzelbeleg' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
@@ -278,6 +293,24 @@
                                         </jsp:include>
                                     </a>
                                     ${param.current eq 'freie_suche' ? '</div>' : ''}
+                                </li>
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="8">
+                                    <form name="jumpForm" method="post" >
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
+                                               href="#"
+                                               onclick="document.querySelector('form[name=jumpForm]').submit(); return false;"
+                                               aria-label="ID Button" tabindex="0">
+                                                ID
+                                            </a>
+                                            <input class="ut-form__field" type="text" name="jumpValueID" placeholder="z.B. P7404" aria-labelledby="jumpLabel" aria-required="true" style="width: 120px;">
+                                            <input type="hidden" name="jumpTableGuest" value="guestTable">
+                                            <input type="hidden" name="jumpTable" value="<%= title%>">
+                                            <input type="hidden" name="akt" value="<%= id%>">
+                                            <input type="hidden" name="jumpID" value="los">
+
+                                        </div>
+                                    </form>
                                 </li>
                             </ul>
                             <!-- ###TOPNAV### End -->

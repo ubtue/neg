@@ -39,19 +39,15 @@
     }
 
     if (throwException) {
-<<<<<<< HEAD
-        throw new IdNotPublicException("Philologischer Kommentar ID N" + id + " ist nicht zu veröffentlichen");
-=======
         if (session.getAttribute("Sprache").equals("de")) {
                 throw new IdNotPublicException("Philologisches Lemma ID N" + id + " ist nicht zu veröffentlichen");
             } else{
                 throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " is not to be published");
             }
->>>>>>> develop
     }
 
     String formular = "namenkommentar";
-    
+
     String tableString = "einzelbeleg LEFT OUTER JOIN einzelbeleg_hatperson ON einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID LEFT OUTER JOIN person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN einzelbeleg_hatnamenkommentar ON einzelbeleg_hatnamenkommentar.EinzelbelegID=einzelbeleg.ID LEFT OUTER JOIN namenkommentar ON namenkommentar.ID=einzelbeleg_hatnamenkommentar.NamenkommentarID INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID";
     String order = "";
     String export = "browse";

@@ -12,7 +12,6 @@
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
-<jsp:include page="doduplicate.jsp" />
 
 <%
     String formular = "einzelbeleg";

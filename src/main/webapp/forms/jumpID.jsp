@@ -1,5 +1,5 @@
-<%@ include file="../../configuration.jsp" %>
-<%@ include file="../../functions.jsp" %>
+<%@ include file="../configuration.jsp" %>
+<%@ include file="../functions.jsp" %>
 
 <%
     int id = -1;
