@@ -80,13 +80,13 @@
 </jsp:include>
 <%
 
-} else if (request.getRequestURL().toString().contains("/quelle/")) {%>
+} else if (request.getRequestURL().toString().contains("/lemma/")) {%>
 <jsp:include page="../../dojump.jsp">
     <jsp:param name="form" value="gast_mgh_lemma" />
 </jsp:include>
 <%
 
-} else if (request.getRequestURL().toString().contains("/quelle/")) {%>
+} else if (request.getRequestURL().toString().contains("/person/")) {%>
 <jsp:include page="../../dojump.jsp">
     <jsp:param name="form" value="gast_person" />
 </jsp:include>
