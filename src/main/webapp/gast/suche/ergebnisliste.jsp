@@ -2,6 +2,91 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="java.util.*"%>
 
+<%!
+    public void printPageNavigation(JspWriter out, HttpServletRequest request, int pageoffset, int pageLimit, int linecount, String export) throws IOException {
+        if (!"liste".equals(export) && !"browse".equals(export)) {
+            return;
+        }
+
+        out.println("<div class=\"resultlistnavigation\" align=\"center\">");
+
+        int pages = (linecount + pageLimit - 1) / pageLimit;
+
+        // Previous Button
+        if (pageoffset > 0) {
+            String prevUrl = "?pageoffset=" + (pageoffset - 1);
+            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                String paramName = e.nextElement();
+                if (!paramName.equals("pageoffset")) {
+                    prevUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                }
+            }
+            out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + prevUrl + "';\">Previous</button>&nbsp;");
+        }
+
+        // Page Number Buttons
+        for (int i = 0; i < pages; i++) {
+            if (i == 0 && i <= pageoffset - 10) {
+                String pageUrl = "?pageoffset=" + i;
+                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                    String paramName = e.nextElement();
+                    if (!paramName.equals("pageoffset")) {
+                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                    }
+                }
+                out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">1</button>&nbsp;...&nbsp;");
+            }
+
+            if (i < pageoffset + 10 && i > pageoffset - 10) {
+                if (i == pageoffset) {
+                    out.print("<button class=\"ut-btn ut-btn--color-primary-1 current-button\" disabled>");
+                    out.print((i + 1));
+                    out.print("</button>&nbsp;");
+                } else {
+                    String pageUrl = "?pageoffset=" + i;
+                    for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                        String paramName = e.nextElement();
+                        if (!paramName.equals("pageoffset")) {
+                            pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                        }
+                    }
+                    out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
+                    out.print((i + 1));
+                    out.print("</button>&nbsp;");
+                }
+            }
+
+            if (i == pages - 1 && i >= pageoffset + 10) {
+                String pageUrl = "?pageoffset=" + i;
+                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                    String paramName = e.nextElement();
+                    if (!paramName.equals("pageoffset")) {
+                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                    }
+                }
+                out.print("...&nbsp;<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
+                out.print((i + 1));
+                out.print("</button>&nbsp;");
+            }
+        }
+
+        // Next Button
+        if (pageoffset < pages - 1) {
+            String nextUrl = "?pageoffset=" + (pageoffset + 1);
+            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                String paramName = e.nextElement();
+                if (!paramName.equals("pageoffset")) {
+                    nextUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                }
+            }
+            out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + nextUrl + "';\">Next</button>");
+        }
+
+        out.println("</div>");
+    }
+
+%>
+
 <%
 
     if (true) {
@@ -62,6 +147,8 @@
         int linecount = SucheDB.getLinecount(tablesString, conditionsString);
 
         out.println("<h3 class=\"ut-heading ut-heading--h3\">Gesamte Treffer: " + linecount + "</h3>");
+        // ########## SEITENNAVIGATION #########
+        printPageNavigation(out, request, pageoffset, pageLimit, linecount, export);
 
         String sql = "SELECT " + fieldsString + " FROM " + tablesString + " WHERE (" + conditionsString + ") " + order; //GROUP BY "+fieldsString+"
         if (export.equals("liste") || export.equals("browse")) {
@@ -200,41 +287,6 @@
         // ########## EXCEL #########
 
         // ########## SEITENNAVIGATION #########
-        if (export.equals("liste") || export.equals("browse")) {
-            out.println("<p class=\"resultlistnavigation\" align=\"center\">");
-            int pages = (linecount / pageLimit) + 1;
-            for (int i = 0; i < pages; i++) {
-                // Link für Seite erzeugen
-                String parameter = "?pageoffset=" + i;
-                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                    String paramName = e.nextElement();
-                    if (!paramName.equals("pageoffset")) {
-                        parameter += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                    }
-                }
-
-                // Link zur ersten Seite anzeigen falls nötig
-                if (i == 0 && i <= pageoffset - 10) {
-                    out.println("<a class=\"ut-link\" href=\"" + parameter + "\">" + (i + 1) + "</a>&nbsp;...&nbsp;");
-                }
-
-                // gelinkte Seitennummer anzeigen
-                if (i < pageoffset + 10 && i > pageoffset - 10) {
-                    if (i == pageoffset) {
-                        out.println("<b>");
-                    }
-                    out.println("<a class=\"ut-link\" href=\"" + parameter + "\">" + (i + 1) + "</a>&nbsp;");
-                    if (i == pageoffset) {
-                        out.println("</b>");
-                    }
-                }
-                // Link zur letzten Seite anzeigen falls nÃ¶tig
-                if (i == pages - 1 && i >= pageoffset + 10) {
-                    out.println("...&nbsp;<a class=\"ut-link\" href=\"" + parameter + "\">" + (i + 1) + "</a>&nbsp;");
-                }
-            }
-            out.println("</p>");
-        }
-        // ########## SEITENNAVIGATION #########
+        printPageNavigation(out, request, pageoffset, pageLimit, linecount, export);
     }
 %>

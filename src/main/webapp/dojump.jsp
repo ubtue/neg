@@ -21,6 +21,13 @@
             String jumpTable = request.getParameter("jumpTable");
             String newForm = "";
 
+            /*
+            // e.g. if the jump target is just 7404 (without P prefix) and we do not have a default form given
+            if (title.equals("") && !newID.matches("^[A-Z]")) {
+                throw new IdInvalidException();
+            }       
+            */
+
             if (newID.startsWith("B") || newID.startsWith("b") || ("einzelbeleg".equals(jumpTable) && newID.matches("^[0-9].*")) || ("Einzelbelege".equals(jumpTable) && newID.matches("^[0-9].*"))) {
                 newForm = "einzelbeleg";
             } else if (newID.startsWith("P") || newID.startsWith("p") || ("person".equals(jumpTable) && newID.matches("^[0-9].*")) || ("Personen".equals(jumpTable) && newID.matches("^[0-9].*"))) {
