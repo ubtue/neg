@@ -67,11 +67,39 @@
         id = Integer.parseInt(request.getParameter("ID"));
     } catch (NumberFormatException e) {
     }
-%>
 
+    String form = "";
+    if (request.getRequestURL().toString().contains("/einzelbeleg/")) {%>
 <jsp:include page="../../dojump.jsp">
     <jsp:param name="form" value="gast_einzelbeleg" />
 </jsp:include>
+<%
+    } else if (request.getRequestURL().toString().contains("/quelle/")) {%>
+<jsp:include page="../../dojump.jsp">
+    <jsp:param name="form" value="gast_quelle" />
+</jsp:include>
+<%
+
+} else if (request.getRequestURL().toString().contains("/quelle/")) {%>
+<jsp:include page="../../dojump.jsp">
+    <jsp:param name="form" value="gast_mgh_lemma" />
+</jsp:include>
+<%
+
+} else if (request.getRequestURL().toString().contains("/quelle/")) {%>
+<jsp:include page="../../dojump.jsp">
+    <jsp:param name="form" value="gast_person" />
+</jsp:include>
+<%
+}
+else {
+%>
+<jsp:include page="../../dojump.jsp">
+    <jsp:param name="form" value="" />
+</jsp:include>
+<%
+    }
+%>
 
 <header>
     <nav class="ut-nav ut-nav--skipanchors" aria-label="Bereiche überspringen">
@@ -209,7 +237,7 @@
             </h4>
             <h2 class="ut-heading ut-nav-area__current-level">
                 <a class="ut-link ut-nav-area__link" title="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>" aria-label="<% Language.printTextfield(out, session, "logo", "NomenEtGens");%>"  href="<%=Utils.getBaseUrl(request)%>">
-                    <%= DBtoHTML(Language.getTextfield(session, "logo", "NPPM")) %>
+                    <%= DBtoHTML(Language.getTextfield(session, "logo", "NPPM"))%>
                 </a>
             </h2>
         </nav>
@@ -266,7 +294,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="5">
                                     ${param.current eq 'quelle' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'quelle' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/quelle" aria-label="<% Language.printTextfield(out, session, "quelle", "Titel"); %>" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'quelle' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/quelle" aria-label="<% Language.printTextfield(out, session, "quelle", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="quelle"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -276,7 +304,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="6">
                                     ${param.current eq 'einfaches_ergebnis' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einfaches_ergebnis' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis" aria-label="<% Language.printTextfield(out, session, "suche", "Titel"); %>" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einfaches_ergebnis' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis" aria-label="<% Language.printTextfield(out, session, "suche", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="gast_freie_suche"/>
                                             <jsp:param name="Textfeld" value="Suchen"/>
@@ -307,8 +335,8 @@
                                             <input type="hidden" name="jumpTableGuest" value="guestTable">
                                             <input type="hidden" name="jumpTable" value="<%= title%>">
                                             <input type="hidden" name="akt" value="<%= id%>">
+                                            <input type="hidden" name="ID" value="<%= id%>">
                                             <input type="hidden" name="jumpID" value="los">
-
                                         </div>
                                     </form>
                                 </li>

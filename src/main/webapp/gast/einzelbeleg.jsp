@@ -69,10 +69,6 @@
         }
 %>
 
-<jsp:include page="../dojump.jsp">
-    <jsp:param name="form" value="gast_einzelbeleg" />
-</jsp:include>
-
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="Einzelbeleg" />
     <jsp:param name="ID" value="<%= id%>" />

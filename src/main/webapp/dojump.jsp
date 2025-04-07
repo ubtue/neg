@@ -6,11 +6,15 @@
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
-<%    int id = -1;
+<%
+    int id = -1;
     String title = request.getParameter("form");
     String newID = request.getParameter("jumpValueID");
+    if (newID != null) {
+        newID = newID.trim();
+    }
 
-    if (newID != null && !newID.trim().isEmpty()) {
+    if (newID != null && !newID.isEmpty()) {
 
         if (request.getParameter("jumpID") != null && (request.getParameter("jumpID").equals("los") || request.getParameter("jumpID").equals(">"))) {
             String guestTable = request.getParameter("jumpTableGuest");
@@ -126,3 +130,4 @@
         } // ENDE if (springen)
     }
 %>
+

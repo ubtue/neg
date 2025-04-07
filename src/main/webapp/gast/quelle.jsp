@@ -63,10 +63,6 @@
     </a>
 </h3>
 
-<jsp:include page="../dojump.jsp">
-    <jsp:param name="form" value="gast_quelle" />
-</jsp:include>
-
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="Quelle" />
     <jsp:param name="ID" value="<%= id%>" />
