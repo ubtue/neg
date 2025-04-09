@@ -192,7 +192,7 @@
     }
 
     public String html_sort_title_up(int page, String filterTitle, int recordsPerPage, String jumpToID, HttpSession session) throws Exception {
-        return "<a class=\"ut-link sort-link \" href=\"?jumpToID=" + jumpToID + "&sort=titleUp&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + Language.getTextfield(session, "stat", "SortUp") + "</a>";
+        return "<a class=\"ut-link sort-link \" href=\"?jumpToID=" + jumpToID + "&sort=titleUp&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + Language.getTextfield(session, "stat", "SortAZ") + "</a>";
     }
 
     public String html_sort_belege_up(int page, String filterTitle, int recordsPerPage, String jumpToID, HttpSession session) throws Exception {
@@ -204,7 +204,7 @@
     }
 
     public String html_sort_title_down(int page, String filterTitle, int recordsPerPage, String jumpToID, HttpSession session) throws Exception {
-        return "<a class=\"ut-link sort-link \" href=\"?jumpToID=" + jumpToID + "&sort=titleDown&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + Language.getTextfield(session, "stat", "SortDown") + "</a>";
+        return "<a class=\"ut-link sort-link \" href=\"?jumpToID=" + jumpToID + "&sort=titleDown&page=stat&filterTitle=" + filterTitle + "&recordsPerPage=" + recordsPerPage + "&currentPage=" + page + "\">" + Language.getTextfield(session, "stat", "SortZA") + "</a>";
     }
 
     public void print_pagination(JspWriter out, int currentPage, int recordsPerPage, String filterTitle, int nOfPages, String sort, String jumpToID) throws Exception {
@@ -239,11 +239,7 @@
 %>
 <div class="statistica">
     <p>
-    <h1 class="ut-heading ut-heading--h1"><% Language.printTextfield(out, session, "stat", "Titel");%></h1>
-    <a class="ut-link" href="<%=Utils.getBaseUrl(request)%>/gast/quelle"><% Language.printTextfield(out, session, "einstellungen", "Zurueck");%></a>
-    <br><br>
     <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "stat", "ListeDerQuellenAnzahl");%></h3>
-    <br>
     <%
         print_pagination(out, currentPage, recordsPerPage, filterTitle, nOfPages, sort, jumpToID);
     %>

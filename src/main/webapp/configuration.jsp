@@ -23,7 +23,7 @@
     // Speicherort der Datei "tabellen.txt" (nur für den Import)
     String tblFile = "E:/tabellen.txt";
 
-    int pageLimit = 30;		// Wichtig für Abfragen
+    int pageLimit = 10;		// Wichtig für Abfragen
     int sessionTimeout = 60 * 60;
     int numberSize = 5;		// Anzahl der Nummerierungsstellen in PKZ, Belegnummer, etc.
 

@@ -7,71 +7,6 @@
     int filter = 0;
     String formular = "freie_suche";
 %>
-<div>
-    <script type="text/javascript">
-        function CheckAll(index, check, praefix) {
-            for (i = 0; i < document.forms[index].elements.length; i++) {
-                if (document.forms[index].elements[i].type == "checkbox" && document.forms[index].elements[i].name.indexOf(praefix) > -1) {
-                    document.forms[index].elements[i].checked = check;
-                }
-            }
-        }
-    </script>
-
-    <script type="text/javascript">
-        $(function () { // when document has loaded
-
-            // replace [help] with link to help >>
-            let p = $('.truncate-hint');
-            p.html(p.text().trim().replace(/\[(.+)\]/, "<a class=\"ut-link\" href='hilfe'>$1</a>"));
-            // <<
-
-            let i = 4; // check how many input exists on the document and add 1 for the add command to work
-            $('#addButton').click(function () { // when you click the add button
-                if (i < 15) {
-        <%
-            out.print("$('<tr><th>Dann nach</th><td>");
-            out.print("<select name=\"order'+i+'\">");
-            out.print("  <option value=\"-1\">--</option>");
-
-            String sprache = "de";
-            if (session != null && session.getAttribute("Sprache") != null) {
-                sprache = (String) session.getAttribute("Sprache");
-            }
-
-            try {
-                List<java.util.Map> result = DatenbankDB.getMappedList("SELECT * FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
-                for (java.util.Map map : result) {
-                    out.print("<option value=\"" + map.get("Textfeld") + "\">");
-                    out.print(map.get(sprache));
-                    out.print("</option>");
-                }
-                out.print("</select>");
-
-                out.print("<input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"ASC\" checked/>");
-                out.print("aufsteigend");
-                out.print(" &nbsp;");
-                out.print(" <input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"DESC\" />");
-                out.print("absteigend");
-                out.print("<br>Zeitraum (nur f&uuml;r Datierung): <input type=\"text\" name=\"order'+i+'zeit\" />  ");
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            out.print("</td></tr>').appendTo('div#tab-3 table tbody');");
-//    out.print("</td></tr>').appendTo('div#tab3 div#main table tbody');");
-        %>
-                    // if you have the input inside a form, change body to form in the appendTo
-                    i++; //after the click i will be i = 3 if you click again i will be i = 4
-                }
-            });
-        });
-    </script>
-
-    <noscript></noscript>
-
-</div>
 
 <div class="wrapper">
 
@@ -324,21 +259,13 @@
                     <div class="clear"> </div>
                     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
                         <tbody class="ut-table__body">
-                            <tr class="ut-table__row"><td class="ut-table__item ut-table__body__item" colspan="2">
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item" colspan="2">
                                     <h3 class="ut-heading ut-heading--h3">
                                         <% Language.printTextfield(out, session, "gast_freie_suche", "ZumNamen"); %>
-                                    </h3></td></tr>
-                            <!--<tr class="ut-table__row">
-                                <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
-                                        <jsp:param name="Formular" value="freie_suche"/>
-                                        <jsp:param name="Datenfeld" value="Ausgabe_Namenlemma"/>
-                                    </jsp:include>
+                                    </h3>
                                 </td>
-                                <td class="ut-table__item ut-table__body__item">-->
-                                    <% //Language.printDatafield(out, session, formular, "Ausgabe_Namenlemma"); %>
-                                <!--</td>
-                            </tr>-->
+                            </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -623,39 +550,107 @@
 </FORM>
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    let tabs = document.querySelectorAll('.ut-tab-list__item');
-    let buttons = document.querySelectorAll('.search-next');
+    document.addEventListener("DOMContentLoaded", function () {
+        let tabs = document.querySelectorAll('.ut-tab-list__item');
+        let buttons = document.querySelectorAll('.search-next');
 
-    // Funktion zum Aktivieren des Tabs und Deaktivieren der anderen Tabs
-    function activateTab(tabId) {
-        // Alle Tabs inaktiv setzen
-        tabs.forEach(function(tab) {
-            tab.querySelector('a').classList.remove('active');
+        // Funktion zum Aktivieren des Tabs und Deaktivieren der anderen Tabs
+        function activateTab(tabId) {
+            // Alle Tabs inaktiv setzen
+            tabs.forEach(function (tab) {
+                tab.querySelector('a').classList.remove('active');
+            });
+            // Den angeklickten Tab aktiv setzen
+            let activeTab = document.querySelector('[data-id="' + tabId + '"]');
+            if (activeTab) {
+                activeTab.querySelector('a').classList.add('active');
+            }
+        }
+
+        // Event Listener fÃ¼r die Buttons hinzufÃ¼gen
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                let tabId = this.getAttribute('data-id');
+                activateTab(tabId);
+            });
         });
-        // Den angeklickten Tab aktiv setzen
-        let activeTab = document.querySelector('[data-id="' + tabId + '"]');
-        if (activeTab) {
-            activeTab.querySelector('a').classList.add('active');
+
+        // Event Listener fÃ¼r die Tabs hinzufÃ¼gen
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                let tabId = this.getAttribute('data-id');
+                activateTab(tabId);
+            });
+        });
+    });
+
+    function CheckAll(index, check, praefix) {
+        let forms = document.forms;
+        let targetForm = null;
+        for (let i = 0; i < forms.length; i++) {
+            if (forms[i].querySelector('input[name^="' + praefix + '"]')) {
+                targetForm = forms[i];
+                break;
+            }
+        }
+        if (!targetForm)
+            return;
+
+        for (let i = 0; i < targetForm.elements.length; i++) {
+            if (targetForm.elements[i].type === "checkbox" && targetForm.elements[i].name.indexOf(praefix) > -1) {
+                targetForm.elements[i].checked = check;
+            }
         }
     }
 
-    // Event Listener fÃ¼r die Buttons hinzufÃ¼gen
-    buttons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            let tabId = this.getAttribute('data-id');
-            activateTab(tabId);
-        });
-    });
+    $(function () { // when document has loaded
 
-    // Event Listener fÃ¼r die Tabs hinzufÃ¼gen
-    tabs.forEach(function(tab) {
-        tab.addEventListener('click', function() {
-            let tabId = this.getAttribute('data-id');
-            activateTab(tabId);
+        // replace [help] with link to help >>
+        let p = $('.truncate-hint');
+        p.html(p.text().trim().replace(/\[(.+)\]/, "<a class=\"ut-link\" href='hilfe'>$1</a>"));
+        // <<
+
+        let i = 4; // check how many input exists on the document and add 1 for the add command to work
+        $('#addButton').click(function () { // when you click the add button
+            if (i < 15) {
+    <%
+        out.print("$('<tr><th>Dann nach</th><td>");
+        out.print("<select name=\"order'+i+'\">");
+        out.print("  <option value=\"-1\">--</option>");
+
+        String sprache = "de";
+        if (session != null && session.getAttribute("Sprache") != null) {
+            sprache = (String) session.getAttribute("Sprache");
+        }
+
+        try {
+            List<java.util.Map> result = DatenbankDB.getMappedList("SELECT * FROM datenbank_texte WHERE Formular='freie_suche' AND Textfeld LIKE \"Order%\"");
+            for (java.util.Map map : result) {
+                out.print("<option value=\"" + map.get("Textfeld") + "\">");
+                out.print(map.get(sprache));
+                out.print("</option>");
+            }
+            out.print("</select>");
+
+            out.print("<input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"ASC\" checked/>");
+            out.print("aufsteigend");
+            out.print(" &nbsp;");
+            out.print(" <input type=\"radio\" name=\"order'+i+'ASCDESC\" value=\"DESC\" />");
+            out.print("absteigend");
+            out.print("<br>Zeitraum (nur f&uuml;r Datierung): <input type=\"text\" name=\"order'+i+'zeit\" />  ");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        out.print("</td></tr>').appendTo('div#tab-3 table tbody');");
+//    out.print("</td></tr>').appendTo('div#tab3 div#main table tbody');");
+    %>
+                // if you have the input inside a form, change body to form in the appendTo
+                i++; //after the click i will be i = 3 if you click again i will be i = 4
+            }
         });
     });
-});
 </script>
 
 <script type="text/javascript">
