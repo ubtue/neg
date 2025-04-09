@@ -101,6 +101,25 @@
 %>
 
 <%
+    String einzelbelegeVonQuelle = request.getParameter("einzelbelegeVonQuelle");
+    if ("true".equals(einzelbelegeVonQuelle)) {
+        int quellenId = Integer.parseInt(request.getParameter("Quellenliste"));
+%>
+<h3 class="ut-heading ut-heading--h3">
+    <% Language.printTextfield(out, session, "quelle", "Bezeichnung");%>
+    <jsp:include page="../inc.erzeugeFormular.jsp">
+        <jsp:param name="ID" value="<%= quellenId%>"/>
+        <jsp:param name="Formular" value="quelle"/>
+        <jsp:param name="Datenfeld" value="Bezeichnung"/>
+        <jsp:param name="size" value="50"/>
+        <jsp:param name="Readonly" value="yes"/>
+    </jsp:include>
+</h3>
+<%
+    }
+%>
+
+<%
     int pageLimitX = 10;
     int limit = 0;
     int offset = 0;
@@ -1239,8 +1258,8 @@
         }
 
         sql = "SELECT DISTINCT " + fieldsString + " FROM " + tablesString + " WHERE (" + conditionsString + ") " + order; //GROUP BY "+fieldsString+"
-         //    if (export.equals("liste") || export.equals("browse"))
-         //      sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
+        //    if (export.equals("liste") || export.equals("browse"))
+        //      sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
 
 //out.println(sql);
         List<Map> rowlist = SucheDB.getMappedList(sql);
@@ -1267,14 +1286,17 @@
             String aufklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneAufklappen");
             String zuklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneZuklappen");
 
-            out.println("<div id=\"level-functions\">");
-            out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + aufklappen + "\" onClick=\"expandNextLevel('complete')\"><img src=\"layout/images/open_next_level.png\" alt=\"Aufklappen\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + aufklappen + "</button>");
-            out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + zuklappen + "\" onClick=\"collapseNextLevel('complete')\"><img src=\"layout/images/close_next_level.png\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + zuklappen + "</button>");
-            out.println("</div>");
+            if (!"true".equals(einzelbelegeVonQuelle)) {
+                out.println("<div id=\"level-functions\">");
+                out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + aufklappen + "\" onClick=\"expandNextLevel('complete')\"><img src=\"layout/images/open_next_level.png\" alt=\"Aufklappen\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + aufklappen + "</button>");
+                out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + zuklappen + "\" onClick=\"collapseNextLevel('complete')\"><img src=\"layout/images/close_next_level.png\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + zuklappen + "</button>");
+                out.println("</div>");
+            }
 
             header += "<thead class=\"ut-table__header \">";
             header += "<tr class=\"ut-table__row\">";
-            for (int i = 0; i < headlines.size(); i++) {
+            int startIndex = "true".equals(einzelbelegeVonQuelle) ? 1 : 0;
+            for (int i = startIndex; i < headlines.size(); i++) {
                 if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
                     header += "<th class=\"ut-table__item ut-table__header__item\" scope=\"col\">";
                     String direction = "";
@@ -1467,7 +1489,7 @@
                     out.print("<td class=\"ut-table__item ut-table__body__item\" valign=\"top\" align=\"center\"><a class=\"ut-link\" href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu</a></td>");
                 }
 
-                for (int i = 0; i < fieldNames.size(); i++) {
+                for (int i = startIndex; i < fieldNames.size(); i++) {
                     if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
                         out.print("<td class=\"ut-table__item ut-table__body__item\" valign=\"top\">");
                         if (row.get(fieldNames.get(i)) != null && !DBtoHTML(row.get(fieldNames.get(i))).equals("")) {
@@ -1565,7 +1587,7 @@
 <%                }
 
         // ########## LISTE/BROWSE #########
- // ########## EXCEL #########
+        // ########## EXCEL #########
         if (export.equals("excel")) {
             PrintWriter excel = new PrintWriter(new FileWriter(this.getServletContext().getRealPath("/") + "print\\output_" + session.getAttribute("Benutzername") + ".csv"));
             for (int z = 0; z < orderSize; z++) {
