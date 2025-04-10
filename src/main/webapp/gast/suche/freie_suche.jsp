@@ -1398,7 +1398,7 @@
                         }
 
                         String text = "";
-                        
+
                         text = Utils.safeToString(row.get(orderV[z]), "-");
 
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
@@ -1407,9 +1407,7 @@
                         if (orderV[z].startsWith("person.ID")) {
                              text = Utils.safeToString(row.get("person.Standardname"), "-");
                         }
-                        if (text == null) {
-                            text = "-";
-                        }
+                        
                         String titel = orderV[z];
 
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
