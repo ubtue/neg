@@ -1398,11 +1398,9 @@
                         }
 
                         String text = "";
-                        Object value_2 = row.get(orderV[z]);
+                        
+                        text = Utils.safeToString(row.get(orderV[z]), "-");
 
-                        if (value_2 != null) {
-                            text = value_2.toString();
-                        }
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
                             text = Utils.safeToString(row.get("einzelbeleg.Belegform"), "-");
                         }
