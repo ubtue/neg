@@ -1404,10 +1404,10 @@
                             text = value_2.toString();
                         }
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
-                            text = row.get("einzelbeleg.Belegform").toString();
+                            text = Utils.safeToString(row.get("einzelbeleg.Belegform"), "-");
                         }
                         if (orderV[z].startsWith("person.ID")) {
-                            text = row.get("person.Standardname").toString();
+                             text = Utils.safeToString(row.get("person.Standardname"), "-");
                         }
                         if (text == null) {
                             text = "-";

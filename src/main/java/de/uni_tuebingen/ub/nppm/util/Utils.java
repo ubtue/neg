@@ -17,6 +17,18 @@ import org.json.JSONObject;
 
 public class Utils {
 
+    public static String safeToString(Object o) {
+        return safeToString(o, "");
+    }
+
+    public static String safeToString(Object o, String fallback) {
+        if (o == null) {
+            return fallback;
+        } else {
+            return escapeHTML(String.valueOf(o));
+        }
+    }
+
     public static boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);
@@ -30,7 +42,7 @@ public class Utils {
         try {
             InitialContext initialContext = new javax.naming.InitialContext();
             Object entry = initialContext.lookup("java:comp/env/development");
-            return entry == null || ((String)entry).equals("true");
+            return entry == null || ((String) entry).equals("true");
         } catch (NamingException ex) {
             return false;
         }
@@ -51,7 +63,7 @@ public class Utils {
         return baseUrl;
     }
 
-     public static String getAjaxUrl(HttpServletRequest request) {
+    public static String getAjaxUrl(HttpServletRequest request) {
         return getBaseUrl(request) + "/ajax";
     }
 
