@@ -1,0 +1,1 @@
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('gast_freie_suche', 'BelegformSuchanfrage', 'Belegform des Namens, z.B. Robertus', 'Form of Reference of the name, e.g., Robertus', 'Forme de la référence du nom, p.ex. Robertus', 'Forma Testimonii nominis, e.g. Robertus');
