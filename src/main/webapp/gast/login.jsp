@@ -32,6 +32,23 @@
                 position: relative;
                 display: inline-block;
             }
+
+            .input-container input {
+                padding-right: 30px;
+                box-sizing: border-box;
+            }
+
+            .input-container input,
+            input[name="username"] {
+                width: 100%;
+                box-sizing: border-box;
+                padding-right: 30px;
+            }
+
+            td > input[name="username"] {
+                padding-right: 0;
+            }
+
             .toggle-eye {
                 position: absolute;
                 right: 10px;
@@ -51,7 +68,7 @@
             <input type="hidden" name="action" value="login">
             <div class="flexbox-container" >
                 <div class="flex-item-title">
-                    <h1 class="login"><%= DBtoHTML(Language.getTextfield(session, "logo", "NPPM")) %></h1>
+                    <h1 class="login"><%= DBtoHTML(Language.getTextfield(session, "logo", "NPPM"))%></h1>
                 </div>
                 <div class="flex-item-title flex-item-table">
                     <table border="0">
@@ -69,7 +86,7 @@
                                         <jsp:param name="Textfeld" value="Benutzername"/>
                                     </jsp:include>
                                 </label></th>
-                            <td><input name="username" maxlength="20" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "Benutzername"))%>" /></td>
+                            <td><input name="username" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "Benutzername"))%>" /></td>
                         </tr>
                         <tr>
                             <th><label for="password">
@@ -80,7 +97,7 @@
                                 </label></th>
                             <td>
                                 <div class="input-container">
-                                    <input type="password" id="passwordx" name="password" maxlength="20" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "Passwort"))%>" />
+                                    <input type="password" id="passwordx" name="password" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "Passwort"))%>" />
                                     <span class="toggle-eye" onclick="togglePassword('passwordx', this)">&#128065;</span> <!-- Auge -->
 
                                 </div>
@@ -93,7 +110,7 @@
 
 
                 <p> &nbsp; </p><!-- comment -->
-                <a href="../forgotPassword"><%= DBtoHTML(Language.getTextfield(session, "login", "PasswortVergessen")) %></a>
+                <a href="../forgotPassword"><%= DBtoHTML(Language.getTextfield(session, "login", "PasswortVergessen"))%></a>
             </div>  <!-- ende flexbox-container -->
         </form>
     <center>
@@ -103,7 +120,7 @@
                 <jsp:param name="title" value="<%= request.getParameter("title")%>"/>
             </jsp:include>
         </form>
-</center>
+    </center>
 </BODY>
 </HTML>
 
