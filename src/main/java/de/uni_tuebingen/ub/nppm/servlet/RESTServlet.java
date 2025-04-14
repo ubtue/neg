@@ -57,10 +57,12 @@ public class RESTServlet extends HttpServlet {
                         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request path format: " + pathInfo);
                     }
                 } else {
+                    response.setCharacterEncoding("UTF-8");
                     RequestDispatcher rd = request.getRequestDispatcher("../resthelp.jsp");
                     rd.include(request, response);
                 }
             } else {
+                response.setCharacterEncoding("UTF-8");
                 RequestDispatcher rd = request.getRequestDispatcher("resthelp.jsp");
                 rd.include(request, response);
             }
@@ -70,107 +72,153 @@ public class RESTServlet extends HttpServlet {
     }
 
     private void processSingleIdentifier(String identifier, HttpServletResponse response) throws Exception {
-        String[] ids = new String[1];
-        ids[0] = identifier;
-        processMultipleIdentifiers(ids, response);
+        try {
+            JSONObject jsonObject = getJsonForIdentifier(identifier);
+
+            if (jsonObject.has("error")) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, jsonObject.getString("error"));
+                return;
+            }
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            //Nicht als Array zurückliefern
+            response.getWriter().println(jsonObject.toString(2));
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error: " + e.getMessage());
+        }
     }
 
     private void processMultipleIdentifiers(String[] identifiers, HttpServletResponse response) throws Exception {
-        JSONArray jsonArray = new JSONArray();
+        try {
+            JSONArray jsonArray = new JSONArray();
 
-        for (String id : identifiers) {
-            if (id != null) {
-                JSONObject jsonObject = new JSONObject(); // Jedes Objekt einzeln
-                if (id.startsWith("M")) {
-                    MghLemma lemma = (MghLemma) IdentifierMapper.getModelByIdentifier(id);
-                    if (lemma != null) {
-                        jsonObject = lemma.getJSON();
-                    }else{
-                        jsonObject.put("error", "Lemma not found with ID " + id);
-                    }
-                } else if (id.startsWith("N")) {
-                    NamenKommentar nk = (NamenKommentar) IdentifierMapper.getModelByIdentifier(id);
-                    if (nk != null) {
-                        jsonObject = nk.getJSON();
-                    }else{
-                        jsonObject.put("error", "Namenkommentar not found with ID " + id);
-                    }
-                } else if (id.startsWith("B")) {
-                    Einzelbeleg einzelbeleg = (Einzelbeleg) IdentifierMapper.getModelByIdentifier(id);
-                    if (einzelbeleg != null) {
-                        jsonObject = einzelbeleg.getJSON();
-                    }else{
-                        jsonObject.put("error", "Einzelbeleg not found with ID " + id);
-                    }
-                } else if(id.startsWith("P")) {
-                    Person person = (Person) IdentifierMapper.getModelByIdentifier(id);
-                    if (person != null) {
-                        jsonObject = person.getJSON();
-                    }else {
-                        jsonObject.put("error", "Person not found with ID " + id);
-                    }
-                } else if(id.startsWith("Q")) {
-                    Quelle quelle = (Quelle) IdentifierMapper.getModelByIdentifier(id);
-                    if (quelle != null) {
-                        jsonObject = quelle.getJSON();
-                    }else{
-                        jsonObject.put("error", "Quelle not found with ID " + id);
-                    }
+            for (String id : identifiers) {
+                if (id != null) {
+                    jsonArray.put(getJsonForIdentifier(id));
                 }
-                jsonArray.put(jsonObject);
             }
-        }
-        
-        JSONObject finalJson = null;
-        finalJson = new JSONObject();
-        finalJson.put("items", jsonArray);
-        
-        // JSON als Antwort senden
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        if(finalJson != null)
+
+            // Immer ein Array zurückgeben, auch wenn nur ein Element enthalten ist
+            JSONObject finalJson = new JSONObject();
+            finalJson.put("items", jsonArray);
+
+            // JSON als Antwort senden
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
             response.getWriter().println(finalJson.toString(2));
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error: " + e.getMessage());
+        }
     }
 
-    private void processSingleLemma(String lemmaText, HttpServletResponse response) throws Exception {
-        String[] lemmas = new String[1];
-        lemmas[0] = lemmaText;
-        processMultipleLemmas(lemmas, response);
-    }
+    private JSONObject getJsonForIdentifier(String id) throws Exception {
+        JSONObject jsonObject = new JSONObject();
 
-    private void processMultipleLemmas(String[] lemmaTexts, HttpServletResponse response) throws Exception {
-        JSONArray jsonArray = new JSONArray();
-
-        for (String lemmaText : lemmaTexts) {
-            if (lemmaText != null) {
-                JSONObject jsonObject = new JSONObject();
-                // Suche nach dem passenden Lemma anhand der Belegform
-                List<MghLemma> lemma = LemmaDB.getLemmaByBelegform(lemmaText);
-                if (lemma.size() == 1) {
-                    // Rückgabe des Lemmas
-                    int lemmaId = lemma.get(0).getId();
-                    String lemmaStr = lemma.get(0).getMghLemma();
-                    jsonObject.put("ID", lemmaId);
-                    jsonObject.put("Lemma", lemmaStr);
-                } else if(lemma.size() == 0) {
-                    // Falls kein Lemma gefunden wird, entsprechendes Error-Handling
-                    jsonObject.put("error", "Lemma not found for Belegform: " + lemmaText);
-                } else if(lemma.size() > 1){
-                    // Falls mehr als 1 Lemma gefunden wird, entsprechendes Error-Handling
-                    jsonObject.put("error", "More than one Lemma found for Belegform: " + lemmaText);
-                }
-                jsonArray.put(jsonObject);
+        if (id.startsWith("M")) {
+            MghLemma lemma = (MghLemma) IdentifierMapper.getModelByIdentifier(id);
+            if (lemma != null) {
+                jsonObject = lemma.getJSON();
+            } else {
+                jsonObject.put("error", "Lemma not found with ID " + id);
+                jsonObject.put("id", id);
+            }
+        } else if (id.startsWith("N")) {
+            NamenKommentar nk = (NamenKommentar) IdentifierMapper.getModelByIdentifier(id);
+            if (nk != null) {
+                jsonObject = nk.getJSON();
+            } else {
+                jsonObject.put("error", "Namenkommentar not found with ID " + id);
+                jsonObject.put("id", id);
+            }
+        } else if (id.startsWith("B")) {
+            Einzelbeleg einzelbeleg = (Einzelbeleg) IdentifierMapper.getModelByIdentifier(id);
+            if (einzelbeleg != null) {
+                jsonObject = einzelbeleg.getJSON();
+            } else {
+                jsonObject.put("error", "Einzelbeleg not found with ID " + id);
+                jsonObject.put("id", id);
+            }
+        } else if (id.startsWith("P")) {
+            Person person = (Person) IdentifierMapper.getModelByIdentifier(id);
+            if (person != null) {
+                jsonObject = person.getJSON();
+            } else {
+                jsonObject.put("error", "Person not found with ID " + id);
+                jsonObject.put("id", id);
+            }
+        } else if (id.startsWith("Q")) {
+            Quelle quelle = (Quelle) IdentifierMapper.getModelByIdentifier(id);
+            if (quelle != null) {
+                jsonObject = quelle.getJSON();
+            } else {
+                jsonObject.put("error", "Quelle not found with ID " + id);
+                jsonObject.put("id", id);
             }
         }
+        return jsonObject;
+    }
 
-        JSONObject finalJson = null;
-        finalJson = new JSONObject();
-        finalJson.put("LemmaArray", jsonArray);
+    private JSONObject getJsonForLemma(String belegform) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        List<MghLemma> lemmas = LemmaDB.getLemmaByBelegform(belegform);
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        if (finalJson != null) {
+        if (lemmas.isEmpty()) {
+            jsonObject.put("error", "Lemma not found for Belegform: " + belegform);
+        } else if (lemmas.size() == 1) {
+            MghLemma lemma = lemmas.get(0);
+            jsonObject.put("ID", "M" + lemma.getId());
+            jsonObject.put("Lemma", lemma.getMghLemma());
+        } else {
+            JSONArray lemmaArray = new JSONArray();
+            for (MghLemma lemma : lemmas) {
+                JSONObject lemmaObj = new JSONObject();
+                lemmaObj.put("ID", "M" + lemma.getId());
+                lemmaObj.put("Lemma", lemma.getMghLemma());
+                lemmaArray.put(lemmaObj);
+            }
+            jsonObject.put("error", "More than one Lemma found for Belegform: " + belegform);
+            jsonObject.put("results", lemmaArray);
+        }
+
+        return jsonObject;
+    }
+
+    private void processSingleLemma(String belegform, HttpServletResponse response) throws Exception {
+        JSONObject jsonObject;
+        try {
+            jsonObject = getJsonForLemma(belegform);
+
+            if (jsonObject.has("error")) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, jsonObject.getString("error"));
+                return;
+            }
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().println(jsonObject.toString(2));
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error: " + e.getMessage());
+        }
+    }
+
+    private void processMultipleLemmas(String[] belegformen, HttpServletResponse response) throws Exception {
+        try {
+            JSONArray jsonArray = new JSONArray();
+            for (String b : belegformen) {
+                if (b != null) {
+                    jsonArray.put(getJsonForLemma(b));
+                }
+            }
+            JSONObject finalJson = new JSONObject();
+            //immer als array zurückgeben
+            finalJson.put("items", jsonArray);
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
             response.getWriter().println(finalJson.toString(2));
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error: " + e.getMessage());
         }
     }
 }
