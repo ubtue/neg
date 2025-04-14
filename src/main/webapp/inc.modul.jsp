@@ -1176,10 +1176,7 @@
             <jsp:param name="Formular" value="mgh_lemma" />
             <jsp:param name="Textfeld" value="Person" />
         </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="mgh_lemma" />
-            <jsp:param name="Textfeld" value="Standardname" />
-        </jsp:include></th>
+    <th></th>
     <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="mgh_lemma" />
             <jsp:param name="Textfeld" value="Datierung" />
@@ -1396,10 +1393,7 @@
             <jsp:param name="Formular" value="namenkommentar" />
             <jsp:param name="Textfeld" value="Person" />
         </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="namenkommentar" />
-            <jsp:param name="Textfeld" value="Standardname" />
-        </jsp:include></th>
+    <th></th>
     <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="namenkommentar" />
             <jsp:param name="Textfeld" value="Datierung" />
