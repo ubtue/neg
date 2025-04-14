@@ -193,9 +193,9 @@
 
             String dmghIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/gast/layout/icons/dmgh.gif\" border=\"0\" alt=\"dMGH Link\" title=\"" + dmghUrl[1] + "\">";
 
-            String temp = belegform;
-            temp += String.format("<a href='%s' title='%s' class='dmghlink' target='_blank'>%s</a>", dmghUrl[0], dmghUrl[1], dmghIcon);
+            String spacer = "<span style='display:inline-block; width:5px;'></span>";
 
+            String temp = belegform + spacer + String.format("<a href='%s' title='%s' class='dmghlink' target='_blank'>%s</a>", dmghUrl[0], dmghUrl[1], dmghIcon);
             return temp;
         }
     }
