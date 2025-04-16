@@ -17,3 +17,11 @@ UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Ämter', `gb_beschrift
 UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Dating', `fr_beschriftung` = 'Datation', `la_beschriftung` = 'Definitio temporis' WHERE Formular = "gast_quelle" and Datenfeld = "Datierung";
 
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('gast_quelle', 'WeitereEditionen', 'Weitere Editionen', 'Further Editions', 'Éditions supplémentaires', 'Editiones alterae');
+
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'ErstZweitGlied', 'Erst-/ ZweitGlied', 'select', '0', 'First/ Second part', 'Première/ Deuxième partie', 'Prima/ Secunda pars');
+
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'Sortierung1', 'Gruppieren nach', 'textfield', '0', 'sort according to', 'trier par', 'primo in genera digerere');
+
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'Sortierung2', 'Anschließend nach', 'textfield', '0', 'afterwards according to', 'ensuite par', 'deinde');
+
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'Sortierung3', 'Dann nach', 'textfield', '0', 'finally according to', 'finalement par', 'postremo');
