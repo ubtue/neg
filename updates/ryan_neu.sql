@@ -7,3 +7,9 @@ INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Seite`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('gast_einzelbeleg', 'EditionKapitel', 'Kapitel', 'textfield', '0', 'einzelbeleg', 'EditionKapitel', 'einzelbeleg', 'Chapter', 'Chapitre', 'Capitulum');
 
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Seite`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('gast_einzelbeleg', 'EditionSeite', 'Seite', 'textfield', '0', 'einzelbeleg', 'EditionSeite', 'einzelbeleg', 'Page', 'Page', 'Pagina');
+
+UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Person', `gb_beschriftung` = 'Person', `fr_beschriftung` = 'Personne', `la_beschriftung` = 'Persona' WHERE Formular = "person" and Datenfeld = "Standardname";
+
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('gast_person', 'Identifizierungsproblem', 'Kommentar', 'textarea', '0', 'person', 'Identifizierungsproblem', 'Comment', 'Commentaire', 'Commentarius');
+
+UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Ämter', `gb_beschriftung` = 'Offices', `fr_beschriftung` = 'Fonctions', `la_beschriftung` = 'Officia' WHERE Formular = "person" and Datenfeld = "AmtWeihe";
