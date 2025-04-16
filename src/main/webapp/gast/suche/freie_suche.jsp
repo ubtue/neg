@@ -1353,11 +1353,7 @@
 
                 for (int z = 0; z < orderSize; z++) {
                     int jahr = 0;
-                    String jahrV = "";
-                    Object value = row.get(orderV[z]);
-                    if (value != null) {
-                        jahrV = value.toString();
-                    }
+                    String jahrV = Utils.safeToString(row.get(orderV[z]));
 
                     int zeitraum = 0;
                     if (orderV[z].endsWith("Jahr")) {
@@ -1366,7 +1362,7 @@
                         } catch (Exception ex) {
                             zeitraum = 25;
                         }
-                        if (jahrV == null || jahrV.isEmpty()) {
+                        if (jahrV.isEmpty()) {
                             jahr = 0;
                         } else {
                             jahr = Integer.parseInt(jahrV);
@@ -1407,7 +1403,7 @@
                         if (orderV[z].startsWith("person.ID")) {
                              text = Utils.safeToString(row.get("person.Standardname"), "-");
                         }
-                        
+
                         String titel = orderV[z];
 
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
@@ -1605,11 +1601,11 @@
             for (Map row : rowlist) {
                 for (int z = 0; z < orderSize; z++) {
                     int jahr = 0;
-                    String jahrV = row.get(orderV[z]).toString();
+                    String jahrV = Utils.safeToString(row.get(orderV[z]));
                     int zeitraum = 0;
                     if (orderV[z].endsWith("Jahr")) {
                         zeitraum = Integer.parseInt(request.getParameter("order" + (z + 1) + "zeit"));
-                        if (jahrV == null) {
+                        if (jahrV.isEmpty()) {
                             jahr = 0;
                         } else {
                             jahr = Integer.parseInt(jahrV);
@@ -1631,13 +1627,11 @@
                             excel.print(";");
                         }
 
-                        String text = row.get(orderV[z]).toString();
+                        String text = Utils.safeToString(row.get(orderV[z]), "-");
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
-                            text = row.get("einzelbeleg.Belegform").toString();
+                            text = Utils.safeToString(row.get("einzelbeleg.Belegform"));
                         }
-                        if (text == null) {
-                            text = "-";
-                        }
+
                         String titel = orderV[z];
 
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
@@ -1665,7 +1659,8 @@
 
                     if (fieldName.endsWith("Jahrhundert") || fieldName.endsWith("Jahr") || fieldName.endsWith("Monat") || fieldName.endsWith("Tag") || !order.contains(fieldName)) {
 
-                        if (row.get(fieldName) == null || row.get(fieldName).toString().equals("null")) {
+                        Object value = row.get(fieldName);
+                        if (value == null || "null".equalsIgnoreCase(Utils.safeToString(value).trim())) {
                             excel.print("\"-\";");
                         } else {
                             excel.print("\"" + row.get(fieldName) + "\";");
@@ -1709,11 +1704,11 @@
             for (Map row : rowlist) {
                 for (int z = 0; z < orderSize; z++) {
                     int jahr = 0;
-                    String jahrV = row.get(orderV[z]).toString();
+                    String jahrV =Utils.safeToString(row.get(orderV[z]));
                     int zeitraum = 0;
                     if (orderV[z].endsWith("Jahr")) {
                         zeitraum = Integer.parseInt(request.getParameter("order" + (z + 1) + "zeit"));
-                        if (jahrV == null) {
+                        if (jahrV.isEmpty()) {
                             jahr = 0;
                         } else {
                             jahr = Integer.parseInt(jahrV);
@@ -1744,13 +1739,11 @@
                             t += "\t";
                         }
 
-                        String text = row.get(orderV[z]).toString();
+                        String text = Utils.safeToString(row.get(orderV[z]), "-");
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
-                            text = row.get("einzelbeleg.Belegform").toString();
+                            text = Utils.safeToString(row.get("einzelbeleg.Belegform"));
                         }
-                        if (text == null) {
-                            text = "-";
-                        }
+
                         String titel = orderV[z];
                         //     out.println(z + "::" + orderV[z]);
 
@@ -1781,10 +1774,11 @@
 
                     if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
 
-                        if (row.get(fieldNames.get(i)) == null || row.get(fieldNames.get(i)).equals("null")) {
+                        Object value = row.get(fieldNames.get(i));
+                        if (value == null || "null".equalsIgnoreCase(Utils.safeToString(value).trim())) {
                             tab.addCell(new Cell(new Paragraph("-", new Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
                         } else {
-                            tab.addCell(new Cell(new Paragraph(row.get(fieldNames.get(i)).toString(), new Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
+                            tab.addCell(new Cell(new Paragraph(Utils.safeToString(row.get(fieldNames.get(i))), new Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
                         }
                     }
                 }
