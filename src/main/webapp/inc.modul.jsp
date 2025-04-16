@@ -1007,8 +1007,8 @@
 %>
 <td  class="ut-table__item ut-table__body__item">
     <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="quelle" />
-        <jsp:param name="Textfeld" value="WeitereEditionen" />
+        <jsp:param name="Formular" value="gast_quelle" />
+        <jsp:param name="Datenfeld" value="WeitereEditionen" />
     </jsp:include>
 </td>
 

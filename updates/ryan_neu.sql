@@ -13,3 +13,7 @@ UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Person', `gb_beschrift
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('gast_person', 'Identifizierungsproblem', 'Kommentar', 'textarea', '0', 'person', 'Identifizierungsproblem', 'Comment', 'Commentaire', 'Commentarius');
 
 UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Ämter', `gb_beschriftung` = 'Offices', `fr_beschriftung` = 'Fonctions', `la_beschriftung` = 'Officia' WHERE Formular = "person" and Datenfeld = "AmtWeihe";
+
+UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Dating', `fr_beschriftung` = 'Datation', `la_beschriftung` = 'Definitio temporis' WHERE Formular = "gast_quelle" and Datenfeld = "Datierung";
+
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('gast_quelle', 'WeitereEditionen', 'Weitere Editionen', 'Further Editions', 'Éditions supplémentaires', 'Editiones alterae');
