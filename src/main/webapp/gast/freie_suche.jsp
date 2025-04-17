@@ -227,17 +227,6 @@
                                     </jsp:include>
                                 </td>
                             </tr>
-                            <tr class="ut-table__row">
-                                <td class="ut-table__item ut-table__body__item">
-                                    <% Language.printDatafield(out, session, formular, "Seite"); %>
-                                </td>
-                                <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
-                                        <jsp:param name="Formular" value="freie_suche"/>
-                                        <jsp:param name="Datenfeld" value="Seite"/>
-                                    </jsp:include>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <div style="text-align: right;">

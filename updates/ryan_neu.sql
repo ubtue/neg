@@ -18,7 +18,7 @@ UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Dating', `fr_beschrift
 
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('gast_quelle', 'WeitereEditionen', 'Weitere Editionen', 'Further Editions', 'Éditions supplémentaires', 'Editiones alterae');
 
-INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'ErstZweitGlied', 'Erst-/ ZweitGlied', 'select', '0', 'First/ Second part', 'Première/ Deuxième partie', 'Prima/ Secunda pars');
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'ErstZweitGlied', 'Erst-/ Zweitglied', 'select', '0', 'First/ Second part', 'Première/ Deuxième partie', 'Prima/ Secunda pars');
 
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'Sortierung1', 'Gruppieren nach', 'textfield', '0', 'sort according to', 'trier par', 'primo in genera digerere');
 
@@ -27,3 +27,9 @@ INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'Sortierung3', 'Dann nach', 'textfield', '0', 'finally according to', 'finalement par', 'postremo');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('startseite', 'Datenschutzerklaerung', 'Datenschutzerklärung', 'Privacy Policy', 'Politique de confidentialité', 'Declaratio secreti');
+
+UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'ID', `gb_beschriftung` = 'ID', `fr_beschriftung` = 'ID', `la_beschriftung` = 'ID' WHERE Formular = "freie_suche" and Datenfeld = "NeGID";
+
+UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Person', `gb_beschriftung` = 'Person', `fr_beschriftung` = 'Personne', `la_beschriftung` = 'Persona' WHERE Formular = "freie_suche" and Datenfeld = "Personenname";
+
+UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'lebend / verstorben', `gb_beschriftung` = 'alive/dead', `la_beschriftung` = 'vivus/mortuus' WHERE Formular = "freie_suche" and Datenfeld = "Ausgabe_Einzelbeleg_lebend";
