@@ -25,3 +25,5 @@ INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'Sortierung2', 'Anschließend nach', 'textfield', '0', 'afterwards according to', 'ensuite par', 'deinde');
 
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'Sortierung3', 'Dann nach', 'textfield', '0', 'finally according to', 'finalement par', 'postremo');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('startseite', 'Datenschutzerklaerung', 'Datenschutzerklärung', 'Privacy Policy', 'Politique de confidentialité', 'Declaratio secreti');
