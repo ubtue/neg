@@ -51,6 +51,7 @@ body.popup {
   padding:		10px;
   height:		100%;
   min-width:		800px;
+  margin-top:           10px;
 }
 
 #titel {
@@ -59,11 +60,11 @@ body.popup {
   position:		absolute;
   top:			0px;
   left:			151px;
-  height:		100px;
   padding-left:		10px;
   vertical-align:	middle;
   padding-right:	10px;
   min-width:		800px;
+  padding-bottom:       10px;
 }
 
 #titel h1 {
