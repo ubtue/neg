@@ -33,7 +33,7 @@ public class LemmaDB extends AbstractBase {
             return (MghLemma) query.getSingleResult();
         }
     }
-    
+
     public static List<MghLemma> getByName(String name) throws Exception{
         String sql = "SELECT * FROM mgh_lemma WHERE MGHLemma" + " LIKE '%" + name + "%' ";
         sql += " ORDER BY MGHLemma";
@@ -55,7 +55,7 @@ public class LemmaDB extends AbstractBase {
     }
 
     public static List<MghLemma> getLemmaByBelegform(String belegform) throws Exception {
-        String sql = "SELECT ml.* FROM mgh_lemma ml "
+        String sql = "SELECT DISTINCT ml.* FROM mgh_lemma ml "
                 + "JOIN einzelbeleg_hatmghlemma ehm ON ml.ID = ehm.MGHLemmaID "
                 + "JOIN einzelbeleg eb ON ehm.EinzelbelegID = eb.ID "
                 + "WHERE eb.Belegform = :belegform "
