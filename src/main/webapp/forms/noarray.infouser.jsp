@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
 
@@ -8,14 +9,14 @@
 
      if (row != null) {
         out.print(
-           DBtoHTML(String.valueOf(row.get("Vorname")))
+           DBtoHTML(Utils.safeToString(row.get("Vorname")))
           +" "
-          +DBtoHTML(String.valueOf(row.get("Nachname")))
+          +DBtoHTML(Utils.safeToString(row.get("Nachname")))
           +" ("
-          +DBtoHTML(String.valueOf(row.get("Login")))
+          +DBtoHTML(Utils.safeToString(row.get("Login")))
           +")"
           +" ("
-          +DBtoHTML(String.valueOf(row.get("Bezeichnung")))
+          +DBtoHTML(Utils.safeToString(row.get("Bezeichnung")))
           +")");
       }
   }
