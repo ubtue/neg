@@ -36,6 +36,12 @@ public class IdentifierMapper {
             ret = PersonDB.getById(Integer.valueOf(identifier.substring(1)),Person.class);
         } else if (identifier.startsWith("Q")) {
             ret = QuelleDB.getById(Integer.valueOf(identifier.substring(1)),Quelle.class);
+            if (ret != null){
+                Quelle q = (Quelle)ret;
+                if (q.getZuVeroeffentlichen() != null && q.getZuVeroeffentlichen() != 1){
+                    throw new Exception(new IdNotPublicException("Quelle ID " + identifier + " ist nicht zu veröffentlichen"));
+                }
+            }
         }
         return ret;
     }
