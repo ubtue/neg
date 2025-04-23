@@ -117,7 +117,7 @@
 
                 List<Map> rowlist = AbstractBase.getMappedList(sql);
                 for (Map row : rowlist) {
-                    String value = String.valueOf(row.get("Bezeichnung"));
+                    String value = Utils.safeToString(row.get("Bezeichnung"));
                     if (datenfeld.startsWith("Namenkommentar")) {
                         value = format(value, "PLemma");
                     } else {
