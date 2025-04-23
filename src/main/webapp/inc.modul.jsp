@@ -1527,13 +1527,15 @@
                 if (plemmaList != null && !plemmaList.isEmpty()) {
 
                     for (String plemma : plemmaList) {
-
                         String lemma = plemma;
 
-                        out.println(format(lemma, "PLemma"));
+                        if (lemma != null) {
+                            out.println(format(lemma, "PLemma"));
+                        } else {
+                            out.println("");
+                        }
                     }
                 }
-
             } catch (Exception e) {
                 out.println(e);
             }
