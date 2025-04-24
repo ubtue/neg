@@ -120,9 +120,7 @@
                     String value = Utils.safeToString(row.get("Bezeichnung"));
                     if (datenfeld.startsWith("Namenkommentar")) {
                         value = format(value, "PLemma");
-                    } else {
-                        value = DBtoHTML(value);
-                    }
+                    } 
 
                     if (!isReadOnly) {
                         out.println("<option value=\"" + Integer.parseInt(String.valueOf(row.get("ID"))) + "\" " + (Integer.parseInt(String.valueOf(row.get("ID"))) == selected ? "selected" : "") + ">" + value + "</option>");
