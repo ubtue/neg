@@ -7,6 +7,7 @@ import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
 import de.uni_tuebingen.ub.nppm.model.Person;
 import de.uni_tuebingen.ub.nppm.model.Quelle;
 import de.uni_tuebingen.ub.nppm.util.IdentifierMapper;
+import de.uni_tuebingen.ub.nppm.exception.IdNotPublicException;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -28,7 +29,7 @@ import org.json.*;
                 http://localhost:8080/neg/rest/
  */
 public class RESTServlet extends HttpServlet {
-    
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
@@ -76,12 +77,17 @@ public class RESTServlet extends HttpServlet {
             JSONObject jsonObject = getJsonForIdentifier(identifier);
 
             if (jsonObject.has("error")) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, jsonObject.getString("error"));
+                if (jsonObject.getString("error").contains("is not public")) {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, jsonObject.getString("error"));
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, jsonObject.getString("error"));
+                }
                 return;
             }
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
+
             //Nicht als Array zurückliefern
             response.getWriter().println(jsonObject.toString(2));
         } catch (Exception e) {
@@ -114,45 +120,55 @@ public class RESTServlet extends HttpServlet {
 
     private JSONObject getJsonForIdentifier(String id) throws Exception {
         JSONObject jsonObject = new JSONObject();
+        Object o = null;
+        String errorSuffix = " with ID " + id + " not found";
+
+        try {
+            o = IdentifierMapper.getModelByIdentifier(id);
+        } catch (IdNotPublicException e) {
+            errorSuffix = " with ID " + id + " is not public";
+        } catch (Exception e) {
+            errorSuffix = " with ID " + id + " could not be resolved";
+        }
 
         if (id.startsWith("M")) {
-            MghLemma lemma = (MghLemma) IdentifierMapper.getModelByIdentifier(id);
-            if (lemma != null) {
+            if (o != null) {
+                MghLemma lemma = (MghLemma)o;
                 jsonObject = lemma.getJSON();
             } else {
-                jsonObject.put("error", "Lemma not found with ID " + id);
+                jsonObject.put("error", "Lemma" + errorSuffix);
                 jsonObject.put("id", id);
             }
         } else if (id.startsWith("N")) {
-            NamenKommentar nk = (NamenKommentar) IdentifierMapper.getModelByIdentifier(id);
-            if (nk != null) {
+            if (o != null) {
+                NamenKommentar nk = (NamenKommentar)o;
                 jsonObject = nk.getJSON();
             } else {
-                jsonObject.put("error", "Namenkommentar not found with ID " + id);
+                jsonObject.put("error", "Namenkommentar" + errorSuffix);
                 jsonObject.put("id", id);
             }
         } else if (id.startsWith("B")) {
-            Einzelbeleg einzelbeleg = (Einzelbeleg) IdentifierMapper.getModelByIdentifier(id);
-            if (einzelbeleg != null) {
+            if (o != null) {
+                Einzelbeleg einzelbeleg = (Einzelbeleg)o;
                 jsonObject = einzelbeleg.getJSON();
             } else {
-                jsonObject.put("error", "Einzelbeleg not found with ID " + id);
+                jsonObject.put("error", "Einzelbeleg" + errorSuffix);
                 jsonObject.put("id", id);
             }
         } else if (id.startsWith("P")) {
-            Person person = (Person) IdentifierMapper.getModelByIdentifier(id);
-            if (person != null) {
+            if (o != null) {
+                Person person = (Person)o;
                 jsonObject = person.getJSON();
             } else {
-                jsonObject.put("error", "Person not found with ID " + id);
+                jsonObject.put("error", "Person" + errorSuffix);
                 jsonObject.put("id", id);
             }
         } else if (id.startsWith("Q")) {
-            Quelle quelle = (Quelle) IdentifierMapper.getModelByIdentifier(id);
-            if (quelle != null) {
+            if (o != null) {
+                Quelle quelle = (Quelle)o;
                 jsonObject = quelle.getJSON();
             } else {
-                jsonObject.put("error", "Quelle not found with ID " + id);
+                jsonObject.put("error", "Quelle" + errorSuffix);
                 jsonObject.put("id", id);
             }
         }

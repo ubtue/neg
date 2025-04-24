@@ -14,7 +14,7 @@ import de.uni_tuebingen.ub.nppm.model.Person;
 import de.uni_tuebingen.ub.nppm.model.Quelle;
 
 public class IdentifierMapper {
-    public static Object getModelByIdentifier(String identifier) throws Exception {
+    public static Object getModelByIdentifier(String identifier) throws Exception, IdNotPublicException {
         Object ret = null;
         // Map identifier to Model Class
         if (identifier.startsWith("M")) {
@@ -28,7 +28,7 @@ public class IdentifierMapper {
                 Quelle q = ((Einzelbeleg)ret).getQuelle();
                 if(q != null){
                     if(q.getZuVeroeffentlichen() == null || q.getZuVeroeffentlichen() != 1){
-                        throw new Exception(new IdNotPublicException("Einzelbeleg ID " + identifier + " ist nicht zu veröffentlichen"));
+                        throw new IdNotPublicException("Einzelbeleg ID " + identifier + " ist nicht zu veröffentlichen");
                     }
                 }
             }
@@ -36,6 +36,12 @@ public class IdentifierMapper {
             ret = PersonDB.getById(Integer.valueOf(identifier.substring(1)),Person.class);
         } else if (identifier.startsWith("Q")) {
             ret = QuelleDB.getById(Integer.valueOf(identifier.substring(1)),Quelle.class);
+            if (ret != null){
+                Quelle q = (Quelle)ret;
+                if (q.getZuVeroeffentlichen() != null && q.getZuVeroeffentlichen() != 1){
+                    throw new IdNotPublicException("Quelle ID " + identifier + " ist nicht zu veröffentlichen");
+                }
+            }
         }
         return ret;
     }
