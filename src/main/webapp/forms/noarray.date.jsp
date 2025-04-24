@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
@@ -38,7 +39,7 @@
             for (int j = 0; j < combinedFeldnamen.length; j++) {
                 String accuracyIndex = "Genauigkeit" + zielattributArray[j]; // e.g. GenauigkeitVonJahr
                 String valueIndex = zielattributArray[j]; // e.g. VonJahr
-                if (row.get(accuracyIndex) != null && !String.valueOf(row.get(accuracyIndex)).equals("-1") || (row.get(valueIndex) != null && !String.valueOf(row.get(valueIndex)).equals("0"))) {
+                if (row.get(accuracyIndex) != null && !Utils.safeToString(row.get(accuracyIndex)).equals("-1") || (row.get(valueIndex) != null && !Utils.safeToString(row.get(valueIndex)).equals("0"))) {
                     empty = false;
                     break;
                 }
@@ -61,9 +62,9 @@
 
                 for (Map row2 : rowlist2) {
                     if (!isReadOnly) {
-                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" " + (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected ? "selected" : "") + ">" + DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) + "</option>");
+                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" " + (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected ? "selected" : "") + ">" + DBtoHTML(Utils.safeToString(row2.get("Bezeichnung"))) + "</option>");
                     } else if (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected) {
-                        String bez = String.valueOf(row2.get("Bezeichnung"));
+                        String bez = Utils.safeToString(row2.get("Bezeichnung"), "--");
                         if (!bez.equals("--")) {
                             out.println(DBtoHTML(bez));
                         }
@@ -94,7 +95,7 @@
 
                 for (Map row2 : rowlist2) {
                     if (!isReadOnly) {
-                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" >" + DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) + "</option>");
+                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" >" + DBtoHTML(Utils.safeToString(row2.get("Bezeichnung"))) + "</option>");
                     }
                 }
                 if (!isReadOnly) {
