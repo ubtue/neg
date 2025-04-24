@@ -63,9 +63,9 @@
                 break;
             }
 
-            Object valueObj = row.get(bez);
-            if (valueObj != null && !String.valueOf(valueObj).equals("")) {
-                String value = format(String.valueOf(valueObj), bez);
+            String value = Utils.safeToString(row.get(bez));
+            if (!value.equals("")) {
+                value = format(value, bez);
                 if (value != null) {
                     int max = Math.min(7, value.length());
                     if (bez.equals("PLemma")) {
