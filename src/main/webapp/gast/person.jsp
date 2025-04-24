@@ -121,7 +121,7 @@
     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
         <tbody class="ut-table__body">
             <tr class="ut-table__row">
-                <td class="ut-table__item ut-table__body__item"><% Language.printTextfield(out, session, "person", "Person");%> </td>
+                <td class="ut-table__item ut-table__body__item"><%= Language.getDatafield(session, "person", "Standardname")%> </td>
                 <td class="ut-table__item ut-table__body__item">
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= id%>" />
@@ -162,13 +162,13 @@
 
             <jsp:include page="../inc.erzeugeFormular.jsp">
                 <jsp:param name="ID" value="<%= id%>" />
-                <jsp:param name="Formular" value="person" />
+                <jsp:param name="Formular" value="gast_person" />
                 <jsp:param name="Datenfeld" value="Identifizierungsproblem" />
                 <jsp:param name="cols" value="40" />
                 <jsp:param name="rows" value="5" />
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
-                <jsp:param name="Label" value="<%=Language.getTextfield(session, "person", "Identifizierungsproblem")%>"/>
+                <jsp:param name="Label" value="<%=Language.getDatafield(session, "gast_person", "Identifizierungsproblem")%>"/>
                 <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>
 
@@ -188,7 +188,7 @@
                 <jsp:param name="Datenfeld" value="AmtWeihe" />
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
-                <jsp:param name="Label" value="<%=Language.getTextfield(session, "person", "Aemter")%>"/>
+                <jsp:param name="Label" value="<%=Language.getDatafield(session, "person", "AmtWeihe")%>"/>
                 <jsp:param name="CountRow" value="noCount" />
                 <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>

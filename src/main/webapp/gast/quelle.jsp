@@ -111,7 +111,7 @@
             <jsp:param name="Datenfeld" value="Datierung"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getTextfield(session, "quelle", "Datierung")%>"/>
+            <jsp:param name="Label" value="<%=Language.getDatafield(session, "gast_quelle", "Datierung")%>"/>
             <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 

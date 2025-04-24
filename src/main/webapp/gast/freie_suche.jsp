@@ -29,9 +29,8 @@
 
                 <!-- ##### SUCHFELDER ##### -->
                 <div class="container" id="tab-1" >
-                    <div  style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="truncate-hint"><% Language.printTextfield(out, session, formular, "TruncateHint"); %></span>
-                        <h5 class="ut-heading ut-heading--h5" style="margin: 0;"> <% Language.printTextfield(out, session, "gast_freie_suche", "Schritt1Von3"); %></h5>
+                    <div style="display: flex; justify-content: flex-end; align-items: end;">
+                        <h5 class="ut-heading ut-heading--h5"> <% Language.printTextfield(out, session, "gast_freie_suche", "Schritt1Von3"); %></h5>
                     </div>
                     <div class="clear"> </div>
                     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
@@ -73,7 +72,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <% Language.printTextfield(out, session, formular, "ErstZweitGlied"); %>
+                                    <% Language.printDatafield(out, session, formular, "ErstZweitGlied"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../inc.erzeugeFormular.jsp">
@@ -225,17 +224,6 @@
                                     <jsp:include page="../inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
                                         <jsp:param name="Datenfeld" value="QuelleZeitraum"/>
-                                    </jsp:include>
-                                </td>
-                            </tr>
-                            <tr class="ut-table__row">
-                                <td class="ut-table__item ut-table__body__item">
-                                    <% Language.printDatafield(out, session, formular, "Seite"); %>
-                                </td>
-                                <td class="ut-table__item ut-table__body__item">
-                                    <jsp:include page="../inc.erzeugeFormular.jsp">
-                                        <jsp:param name="Formular" value="freie_suche"/>
-                                        <jsp:param name="Datenfeld" value="Seite"/>
                                     </jsp:include>
                                 </td>
                             </tr>
@@ -491,7 +479,7 @@
                         <tbody class="ut-table__body">
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <% Language.printTextfield(out, session, formular, "Sortierung1"); %>
+                                    <% Language.printDatafield(out, session, formular, "Sortierung1"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../forms/search.order.jsp">
@@ -501,7 +489,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <% Language.printTextfield(out, session, formular, "Sortierung2"); %>
+                                    <% Language.printDatafield(out, session, formular, "Sortierung2"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../forms/search.order.jsp">
@@ -511,7 +499,7 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <% Language.printTextfield(out, session, formular, "Sortierung3");%>
+                                    <% Language.printDatafield(out, session, formular, "Sortierung3");%>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../forms/search.order.jsp">
