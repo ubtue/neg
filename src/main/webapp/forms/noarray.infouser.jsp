@@ -9,14 +9,14 @@
 
      if (row != null) {
         out.print(
-           DBtoHTML(Utils.safeToString(row.get("Vorname")))
+           Utils.safeToString(row.get("Vorname"))
           +" "
-          +DBtoHTML(Utils.safeToString(row.get("Nachname")))
+          + Utils.safeToString(row.get("Nachname"))
           +" ("
-          +DBtoHTML(Utils.safeToString(row.get("Login")))
+          + Utils.safeToString(row.get("Login"))
           +")"
           +" ("
-          +DBtoHTML(Utils.safeToString(row.get("Bezeichnung")))
+          + Utils.safeToString(row.get("Bezeichnung"))
           +")");
       }
   }
