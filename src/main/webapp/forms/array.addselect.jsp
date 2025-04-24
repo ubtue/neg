@@ -32,9 +32,9 @@
                     String value2_Bezeichnung = Utils.safeToString(columns2[1]);
 
                     if (!isReadOnly) {
-                        out.println("<option value=\"" + value2_id + "\" " + (value2_id.equals(selected) ? "selected" : "") + ">" + DBtoHTML(value2_Bezeichnung) + "</option>");
+                        out.println("<option value=\"" + value2_id + "\" " + (value2_id.equals(selected) ? "selected" : "") + ">" + value2_Bezeichnung + "</option>");
                     } else if (value2_id.equals(selected)) {
-                        out.println(DBtoHTML(value2_Bezeichnung));
+                        out.println(value2_Bezeichnung);
                     }
                 }
 
@@ -85,7 +85,7 @@
                 for (Object[] columns2 : rowlist3) {
                     String value2_id = Utils.safeToString(columns2[0]);
                     String value2_Bezeichnung = Utils.safeToString(columns2[1]);
-                    out.print("<option value=\"" + value2_id + "\">" + DBtoHTML(value2_Bezeichnung) + "</option>");
+                    out.print("<option value=\"" + value2_id + "\">" + value2_Bezeichnung + "</option>");
                 }
                 out.println("</select>");
                 out.println("<td>&nbsp;</td><td><a href=\"javascript:popup('addselect', this, '" + auswahlherkunft + "', '" + datenfeld + "[" + i + "]', '');\">" + txt_newentry + "</a></td>");
