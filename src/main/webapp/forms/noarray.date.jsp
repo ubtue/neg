@@ -62,7 +62,7 @@
 
                 for (Map row2 : rowlist2) {
                     if (!isReadOnly) {
-                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" " + (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected ? "selected" : "") + ">" + DBtoHTML(Utils.safeToString(row2.get("Bezeichnung"))) + "</option>");
+                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" " + (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected ? "selected" : "") + ">" + Utils.safeToString(row2.get("Bezeichnung")) + "</option>");
                     } else if (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected) {
                         String bez = Utils.safeToString(row2.get("Bezeichnung"), "--");
                         if (!bez.equals("--")) {
@@ -95,7 +95,7 @@
 
                 for (Map row2 : rowlist2) {
                     if (!isReadOnly) {
-                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" >" + DBtoHTML(Utils.safeToString(row2.get("Bezeichnung"))) + "</option>");
+                        out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" >" + Utils.safeToString(row2.get("Bezeichnung")) + "</option>");
                     }
                 }
                 if (!isReadOnly) {
