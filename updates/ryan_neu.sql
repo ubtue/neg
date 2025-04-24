@@ -16,7 +16,7 @@ UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Ämter', `gb_beschrift
 
 UPDATE `neg`.`datenbank_mapping` SET `gb_beschriftung` = 'Dating', `fr_beschriftung` = 'Datation', `la_beschriftung` = 'Definitio temporis' WHERE Formular = "gast_quelle" and Datenfeld = "Datierung";
 
-INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('gast_quelle', 'WeitereEditionen', 'Weitere Editionen', 'Further Editions', 'Éditions supplémentaires', 'Editiones alterae');
+INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('gast_quelle', 'WeitereEditionen', 'Weitere Editionen', 'textfield', '0', 'Further Editions', 'Éditions supplémentaires', 'Editiones alterae');
 
 INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `gb_beschriftung`, `fr_beschriftung`, `la_beschriftung`) VALUES ('freie_suche', 'ErstZweitGlied', 'Erst-/ Zweitglied', 'select', '0', 'First/ Second part', 'Première/ Deuxième partie', 'Prima/ Secunda pars');
 
