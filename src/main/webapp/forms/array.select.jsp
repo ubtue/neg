@@ -39,9 +39,9 @@
                 List<Map> rowlist2 = AbstractBase.getMappedList("SELECT * FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
                 for (Map row2 : rowlist2) {
                     if (!isReadOnly) {
-                        out.println("<option value='" + String.valueOf(row2.get("ID")) + "' " + (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected ? "selected" : "") + ">" + DBtoHTML(Utils.safeToString(row2.get("Bezeichnung"))) + "</option>");
+                        out.println("<option value='" + String.valueOf(row2.get("ID")) + "' " + (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected ? "selected" : "") + ">" + Utils.safeToString(row2.get("Bezeichnung")) + "</option>");
                     } else if (repeat && Integer.parseInt(String.valueOf(row2.get("ID"))) == selected) {
-                        out.println(DBtoHTML(Utils.safeToString(row2.get("Bezeichnung"))));
+                        out.println(Utils.safeToString(row2.get("Bezeichnung")));
                     }
                 }
                 if (!isReadOnly) {
