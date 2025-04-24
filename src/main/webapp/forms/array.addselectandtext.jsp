@@ -31,7 +31,7 @@
         out.println("<select name=\"" + datenfeld + "[" + i + "]\">");
         List<Map> rowlist2 = AbstractBase.getMappedList("SELECT * FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
         for (Map row2 : rowlist2) {
-            out.println("<option value=\"" + Utils.safeToString(row2.get("ID")) + "\" " + (Utils.safeToString(row2.get("ID")).equals("-1") ? "selected" : "") + ">" + DBtoHTML(Utils.safeToString(row2.get("Bezeichnung"))) + "</option>");
+            out.println("<option value=\"" + Utils.safeToString(row2.get("ID")) + "\" " + (Utils.safeToString(row2.get("ID")).equals("-1") ? "selected" : "") + ">" + Utils.safeToString(row2.get("Bezeichnung")) + "</option>");
         }
         out.println("</select>");
         out.println("</td>");
