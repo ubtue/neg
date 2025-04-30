@@ -69,37 +69,7 @@
     }
 
     String form = "";
-    if (request.getRequestURL().toString().contains("/einzelbeleg/")) {%>
-<jsp:include page="../../dojump.jsp">
-    <jsp:param name="form" value="gast_einzelbeleg" />
-</jsp:include>
-<%
-    } else if (request.getRequestURL().toString().contains("/quelle/")) {%>
-<jsp:include page="../../dojump.jsp">
-    <jsp:param name="form" value="gast_quelle" />
-</jsp:include>
-<%
-
-} else if (request.getRequestURL().toString().contains("/lemma/")) {%>
-<jsp:include page="../../dojump.jsp">
-    <jsp:param name="form" value="gast_mgh_lemma" />
-</jsp:include>
-<%
-
-} else if (request.getRequestURL().toString().contains("/person/")) {%>
-<jsp:include page="../../dojump.jsp">
-    <jsp:param name="form" value="gast_person" />
-</jsp:include>
-<%
-}
-else {
-%>
-<jsp:include page="../../dojump.jsp">
-    <jsp:param name="form" value="" />
-</jsp:include>
-<%
-    }
-%>
+  %>
 
 <header>
     <nav class="ut-nav ut-nav--skipanchors" aria-label="Bereiche überspringen">
@@ -323,7 +293,7 @@ else {
                                     ${param.current eq 'freie_suche' ? '</div>' : ''}
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="8">
-                                    <form name="jumpForm" method="post" >
+                                    <form name="jumpForm" method="post" action="dojumpid" >
                                         <div style="display: flex; align-items: center; gap: 10px;">
                                             <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
                                                href="#"

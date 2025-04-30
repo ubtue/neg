@@ -39,6 +39,83 @@ public class PersonDB extends AbstractBase {
         }
     }
 
+    public static Integer getNextPublicPersonId(int id) throws Exception {
+        try (Session session = getSession()) {
+            // 1. Kleinste und größte veröffentlichte Person ID holen
+            String minMaxSQL = "SELECT MIN(p.ID), MAX(p.ID) "
+                    + "FROM person p "
+                    + "WHERE p.ID IN ("
+                    + "  SELECT ep.PersonID "
+                    + "  FROM einzelbeleg_hatperson ep "
+                    + "  JOIN einzelbeleg e ON ep.EinzelbelegID = e.ID "
+                    + "  JOIN quelle q ON e.QuelleID = q.ID "
+                    + "  WHERE q.ZuVeroeffentlichen = 1"
+                    + ")";
+            Object[] minMaxResult = (Object[]) session.createNativeQuery(minMaxSQL).getSingleResult();
+            Integer minId = minMaxResult[0] != null ? ((Number) minMaxResult[0]).intValue() : null;
+            Integer maxId = minMaxResult[1] != null ? ((Number) minMaxResult[1]).intValue() : null;
+
+            if (minId == null || maxId == null) {
+                return null; // Keine öffentliche Person vorhanden
+            }
+
+            // Behandle ungültige IDs (z.B. negative Werte)
+            if (id < 0) {
+                return minId;
+            }
+
+            // Fall 1: ID kleiner als kleinste public ID
+            if (id < minId) {
+                return minId;
+            }
+            // Fall 2: ID größer als größte public ID
+            if (id > maxId) {
+                return maxId;
+            }
+
+            // 2. Prüfen, ob die übergebene ID existiert und öffentlich ist
+            String checkPublicSQL = "SELECT p.ID "
+                    + "FROM person p "
+                    + "WHERE p.ID = :id "
+                    + "AND p.ID IN ("
+                    + "  SELECT ep.PersonID "
+                    + "  FROM einzelbeleg_hatperson ep "
+                    + "  JOIN einzelbeleg e ON ep.EinzelbelegID = e.ID "
+                    + "  JOIN quelle q ON e.QuelleID = q.ID "
+                    + "  WHERE q.ZuVeroeffentlichen = 1"
+                    + ")";
+            NativeQuery checkQuery = session.createNativeQuery(checkPublicSQL);
+            checkQuery.setParameter("id", id);
+
+            Object isPublic = checkQuery.uniqueResult();
+
+            if (isPublic != null) {
+                // Fall 3: ID existiert und ist public
+                return id;
+            }
+
+            // Fall 4: ID existiert, aber nicht public → Suche die nächste höhere öffentliche ID
+            String nextPublicSQL = "SELECT p.ID "
+                    + "FROM person p "
+                    + "WHERE p.ID IN ("
+                    + "  SELECT ep.PersonID "
+                    + "  FROM einzelbeleg_hatperson ep "
+                    + "  JOIN einzelbeleg e ON ep.EinzelbelegID = e.ID "
+                    + "  JOIN quelle q ON e.QuelleID = q.ID "
+                    + "  WHERE q.ZuVeroeffentlichen = 1"
+                    + ") "
+                    + "AND p.ID > :id "
+                    + "ORDER BY p.ID ASC";
+
+            NativeQuery nextQuery = session.createNativeQuery(nextPublicSQL);
+            nextQuery.setParameter("id", id);
+            nextQuery.setMaxResults(1);
+
+            Object nextPublic = nextQuery.uniqueResult();
+            return nextPublic != null ? ((Number) nextPublic).intValue() : maxId; // Falls keiner gefunden → größte ID
+        }
+    }
+
     public static List getListPersonPublic() throws Exception {
         try (Session session = getSession()) {
             String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";

@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.servlet;
 
 import de.uni_tuebingen.ub.nppm.db.DatenbankDB;
+import de.uni_tuebingen.ub.nppm.exception.IdInvalidException;
 import de.uni_tuebingen.ub.nppm.util.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,13 +67,13 @@ public abstract class AbstractServlet extends HttpServlet {
         return "";
     }
 
-    abstract protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    abstract protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception, IdInvalidException;
 
     abstract protected String getHeaderTemplate();
 
     abstract protected String getFooterTemplate();
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception, IdInvalidException {
 
         this.currentRequest = request;
         this.currentResponse = response;
@@ -91,13 +92,16 @@ public abstract class AbstractServlet extends HttpServlet {
         addResponseFooter(request, response);
     }
 
-    protected void doHelper(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        try {
-            processRequest(request, response);
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
+   protected void doHelper(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    try {
+        processRequest(request, response);
+    } catch (IdInvalidException e) {
+        throw new ServletException(e);
+    } catch (Exception e) {
+        throw new ServletException(e);
     }
+}
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
