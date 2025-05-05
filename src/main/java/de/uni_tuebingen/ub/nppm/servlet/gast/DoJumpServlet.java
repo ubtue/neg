@@ -21,8 +21,12 @@ public class DoJumpServlet extends AbstractGastServlet {
     }
 
     @Override
-    protected String getNavigationTitle() {
-        return "person";
+    protected String getNavigationTitle(HttpServletRequest request, HttpServletResponse response) {
+        String current = (String) request.getParameter("current");
+        if (current == null) {
+            current = "start"; // Fallback nur wenn nicht gesetzt
+        }
+        return current;
     }
 
     @Override

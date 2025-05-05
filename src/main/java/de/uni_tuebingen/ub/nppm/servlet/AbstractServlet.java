@@ -24,7 +24,8 @@ public abstract class AbstractServlet extends HttpServlet {
     protected void addResponseHeader(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher(getHeaderTemplate());
         request.setAttribute("title", DatenbankDB.getLabel(Language.getLanguage(request), getTitle(), "Titel"));
-        request.setAttribute("navigationTitle", getNavigationTitle());
+       // request.setAttribute("navigationTitle", getNavigationTitle());
+       request.setAttribute("navigationTitle", getDynamicNavigationTitle(request, response));
 
         List<String> css_list = getAdditionalCss();
         String additional_css = "";
@@ -66,6 +67,16 @@ public abstract class AbstractServlet extends HttpServlet {
     protected String getNavigationTitle() {
         return "";
     }
+
+   protected String getNavigationTitle(HttpServletRequest request, HttpServletResponse response) {
+    // Standardmäßig rufen wir die einfache Methode auf
+    return getNavigationTitle();
+}
+
+   // Wird im Header-Aufbau benutzt
+protected String getDynamicNavigationTitle(HttpServletRequest request, HttpServletResponse response) {
+    return getNavigationTitle(request, response);
+}
 
     abstract protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception, IdInvalidException;
 

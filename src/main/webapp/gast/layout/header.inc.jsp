@@ -69,6 +69,11 @@
     }
 
     String form = "";
+
+ String current = (String) request.getParameter("current");
+        if (current == null) {
+            current = "start"; // Fallback nur wenn nicht gesetzt
+        }
   %>
 
 <header>
@@ -224,7 +229,7 @@
                             <ul class="ut-nav__list ut-nav__list--level-1 lory-slides js_slides">
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="1">
                                     ${param.current eq 'start' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'start' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=start" aria-label="<% Language.printTextfield(out, session, "startseite", "Titel");%>" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'start' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=start&current=start" aria-label="<% Language.printTextfield(out, session, "startseite", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="startseite"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -234,7 +239,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="2">
                                     ${param.current eq 'einzelbeleg' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einzelbeleg' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einzelbeleg" aria-label="<% Language.printTextfield(out, session, "einzelbeleg", "Titel");%>"  tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einzelbeleg' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einzelbeleg?current=einzelbeleg" aria-label="<% Language.printTextfield(out, session, "einzelbeleg", "Titel");%>"  tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="einzelbeleg"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -244,7 +249,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="3">
                                     ${param.current eq 'person' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'person' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/person" aria-label="<% Language.printTextfield(out, session, "person", "Titel");%>"  tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'person' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/person?current=person" aria-label="<% Language.printTextfield(out, session, "person", "Titel");%>"  tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="person"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -254,7 +259,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="4">
                                     ${param.current eq 'namenkommentar' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'namenkommentar' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/lemma" aria-label="<% Language.printTextfield(out, session, "namen", "Namen");%>" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'namenkommentar' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/lemma?current=namenkommentar" aria-label="<% Language.printTextfield(out, session, "namen", "Namen");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="namenkommentar"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -264,7 +269,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="5">
                                     ${param.current eq 'quelle' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'quelle' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/quelle" aria-label="<% Language.printTextfield(out, session, "quelle", "Titel");%>" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'quelle' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/quelle?current=quelle" aria-label="<% Language.printTextfield(out, session, "quelle", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="quelle"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -274,7 +279,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="6">
                                     ${param.current eq 'einfaches_ergebnis' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einfaches_ergebnis' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis" aria-label="<% Language.printTextfield(out, session, "suche", "Titel");%>" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einfaches_ergebnis' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis?current=einfaches_ergebnis" aria-label="<% Language.printTextfield(out, session, "suche", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="gast_freie_suche"/>
                                             <jsp:param name="Textfeld" value="Suchen"/>
@@ -284,7 +289,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="7">
                                     ${param.current eq 'freie_suche' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Titel");%>" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche?current=freie_suche" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Titel");%>" tabindex="0">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="gast_freie_suche"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -307,6 +312,8 @@
                                             <input type="hidden" name="akt" value="<%= id%>">
                                             <input type="hidden" name="ID" value="<%= id%>">
                                             <input type="hidden" name="jumpID" value="los">
+                                                 <!-- HIER das aktuelle TAB übergeben -->
+                                            <input type="hidden" name="current" value="<%= current %>">
                                         </div>
                                     </form>
                                 </li>
