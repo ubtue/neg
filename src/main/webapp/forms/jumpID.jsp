@@ -19,6 +19,7 @@
     <input class="ut-form__input ut-form__field " id="id_field" type="text" name="jumpValueID" placeholder="z.B. P7404">
     <input type="hidden" name="jumpTable" value="<%= title%>">
     <input type="hidden" name="akt" value="<%= id%>">
+    <input type="hidden" name="jumpID" value="los">
     <button name="jumpID" type="submit" value="los">
         <% Language.printTextfield(out, session, "jump", "Los");%>
     </button>

@@ -6,8 +6,7 @@
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
-<%
-    int id = -1;
+<%    int id = -1;
     String title = request.getParameter("form");
     String newID = request.getParameter("jumpValueID");
     if (newID != null) {
@@ -25,9 +24,8 @@
             // e.g. if the jump target is just 7404 (without P prefix) and we do not have a default form given
             if (title.equals("") && !newID.matches("^[A-Z]")) {
                 throw new IdInvalidException();
-            }       
-            */
-
+            }
+             */
             if (newID.startsWith("B") || newID.startsWith("b") || ("einzelbeleg".equals(jumpTable) && newID.matches("^[0-9].*")) || ("Einzelbelege".equals(jumpTable) && newID.matches("^[0-9].*"))) {
                 newForm = "einzelbeleg";
             } else if (newID.startsWith("P") || newID.startsWith("p") || ("person".equals(jumpTable) && newID.matches("^[0-9].*")) || ("Personen".equals(jumpTable) && newID.matches("^[0-9].*"))) {
@@ -64,77 +62,79 @@
                 }
             }
             out.println("</script>");
+        }
+    }
 
-        } else if (request.getParameter("jump") != null && request.getParameter("jump").equals("los")) {
-            //  out.println("JUMP: " + request.getParameter("jumpType") + "::" + request.getParameter("jumpValue") + "__" + request.getParameter("akt"));
+    if (request.getParameter("jump") != null && request.getParameter("jump").equals("los")) {
+        //  out.println("JUMP: " + request.getParameter("jumpType") + "::" + request.getParameter("jumpValue") + "__" + request.getParameter("akt"));
 
-            String form = request.getParameter("jumpTable");
+        String form = request.getParameter("jumpTable");
 
-            String guest = "";
-            if (title.contains("gast_")) {
-                title = title.substring(5);
-                guest = "gast_";
+        String guest = "";
+        if (title.contains("gast_")) {
+            title = title.substring(5);
+            guest = "gast_";
+        }
+
+        int akt = -1;
+
+        String debug = "debug";
+
+        int filter = 0;
+
+        if (session.getAttribute(title + "filter") != null) {
+            filter = ((Integer) session.getAttribute(title + "filter")).intValue();
+        }
+
+        //get the filter sql string
+        String sql = "";
+        try {
+            sql = Filter.getFilterSql(request, guest + title);
+        } catch (Exception e) {
+            sql = "SELECT * FROM " + title;
+        }
+        //modify sql string
+        sql = sql.replace("*", "count(*) c");
+        akt = AbstractBase.getIntNative(sql + (sql.contains("WHERE") ? " AND " : " WHERE ") + title + ".ID < " + request.getParameter("akt")) + 1;
+
+        if (akt > 0) {
+            if (request.getParameter("jumpType").equals("-1")) {
+                try {
+                    akt -= Integer.parseInt(request.getParameter("jumpValue"));
+                } catch (Exception ex) {
+                    ;
+                }
+            } else if (request.getParameter("jumpType").equals("1")) {
+                try {
+                    akt += Integer.parseInt(request.getParameter("jumpValue"));
+                } catch (Exception ex) {
+                    ;
+                }
+            } else if (request.getParameter("jumpType").equals("0")) {
+                try {
+                    akt = Integer.parseInt(request.getParameter("jumpValue"));
+                } catch (Exception ex) {
+                    ;
+                }
             }
+            akt--;
 
-            int akt = -1;
-
-            String debug = "debug";
-
-            int filter = 0;
-
-            if (session.getAttribute(title + "filter") != null) {
-                filter = ((Integer) session.getAttribute(title + "filter")).intValue();
-            }
-
-            //get the filter sql string
-            String sql = "";
             try {
                 sql = Filter.getFilterSql(request, guest + title);
             } catch (Exception e) {
-                sql = "SELECT * FROM " + title;
+                sql = "SELECT " + title + ".ID FROM " + title;
             }
-            //modify sql string
-            sql = sql.replace("*", "count(*) c");
-            akt = AbstractBase.getIntNative(sql + (sql.contains("WHERE") ? " AND " : " WHERE ") + title + ".ID < " + request.getParameter("akt")) + 1;
 
-            if (akt > 0) {
-                if (request.getParameter("jumpType").equals("-1")) {
-                    try {
-                        akt -= Integer.parseInt(request.getParameter("jumpValue"));
-                    } catch (Exception ex) {
-                        ;
-                    }
-                } else if (request.getParameter("jumpType").equals("1")) {
-                    try {
-                        akt += Integer.parseInt(request.getParameter("jumpValue"));
-                    } catch (Exception ex) {
-                        ;
-                    }
-                } else if (request.getParameter("jumpType").equals("0")) {
-                    try {
-                        akt = Integer.parseInt(request.getParameter("jumpValue"));
-                    } catch (Exception ex) {
-                        ;
-                    }
-                }
-                akt--;
+            sql = sql.replace("*", title + ".ID");
+            id = AbstractBase.getIntNative(sql + " ORDER BY " + title + ".ID LIMIT " + akt + ", 1");
 
-                try {
-                    sql = Filter.getFilterSql(request, guest + title);
-                } catch (Exception e) {
-                    sql = "SELECT " + title + ".ID FROM " + title;
-                }
+            out.println("<script type=\"text/javascript\">");
+            out.println(
+                    "location.replace(window.location.protocol+'//'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+"
+                    + id + ");");
+            out.println("</script>");
+        }
+    } // ENDE if (springen)
 
-                sql = sql.replace("*", title + ".ID");
-                id = AbstractBase.getIntNative(sql + " ORDER BY " + title + ".ID LIMIT " + akt + ", 1");
-
-                out.println("<script type=\"text/javascript\">");
-                out.println(
-                        "location.replace(window.location.protocol+'//'+window.location.hostname+':'+window.location.port+window.location.pathname+'?ID='+"
-                        + id + ");");
-                out.println("</script>");
-            }
-        } // ENDE if (springen)
-    }
 %>
 
