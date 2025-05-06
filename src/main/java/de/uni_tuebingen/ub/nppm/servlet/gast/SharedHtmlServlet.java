@@ -72,7 +72,13 @@ public class SharedHtmlServlet extends AbstractGastServlet {
     }
 
     @Override
-    protected String getNavigationTitle() {
-        return "start";
+    protected String getDynamicNavigationTitle(HttpServletRequest request, HttpServletResponse response) {
+        String current = (String) request.getParameter("current");
+
+        if(current != null && current.equals("start")){
+            return "start";
+        }
+    
+        return "";
     }
 }
