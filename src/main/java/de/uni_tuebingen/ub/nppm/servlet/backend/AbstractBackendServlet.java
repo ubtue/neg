@@ -3,6 +3,7 @@ package de.uni_tuebingen.ub.nppm.servlet.backend;
 import de.uni_tuebingen.ub.nppm.exception.BenutzerNotSetException;
 import de.uni_tuebingen.ub.nppm.exception.BenutzerNotAdminException;
 import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
+import de.uni_tuebingen.ub.nppm.exception.IdInvalidException;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.servlet.AbstractServlet;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
@@ -55,13 +56,14 @@ public abstract class AbstractBackendServlet extends AbstractServlet {
         try {
             processRequest(request, response);
         } catch (BenutzerNotSetException e) {
-            // Show login page
             try {
                 RequestDispatcher rd = request.getRequestDispatcher("logout.jsp");
                 rd.forward(request, response);
             } catch (Exception ee) {
                 throw new ServletException(ee);
             }
+        } catch (IdInvalidException e) {
+            throw new ServletException("ID nicht gefunden", e);
         } catch (Exception e) {
             throw new ServletException(e);
         }
