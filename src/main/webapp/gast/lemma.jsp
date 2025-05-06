@@ -30,20 +30,32 @@
 
         Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
 
-        boolean throwException = true;
-
+        boolean throwIdNotPublicException = true;
+        boolean throwContainsInvalidStrException = true;
         for (Einzelbeleg eb : listEinzelbeleg) {
             if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                throwException = false;
+                throwIdNotPublicException = false;
                 break;
             }
         }
 
-        if (throwException) {
+        if(!lemma.getMghLemma().contains("[???]")){
+            throwContainsInvalidStrException = false;
+        }
+
+        if (throwIdNotPublicException) {
             if (session.getAttribute("Sprache").equals("de")) {
                 throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
             } else{
                 throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " is not to be published");
+            }
+        }
+
+        if (throwContainsInvalidStrException) {
+            if (session.getAttribute("Sprache").equals("de")) {
+                throw new ContainsInvalidStrException("Lemma ID M" + id + " enthält ungültige Zeichenkette -> '[???]'");
+            } else{
+                throw new ContainsInvalidStrException("Lemma ID M" + String.valueOf(id) + " contains invalid string -> '[???]'");
             }
         }
     }
@@ -144,6 +156,7 @@
     <jsp:param name="ID" value="<%= id%>" />
     <jsp:param name="size" value="" />
     <jsp:param name="Formular" value="mgh_lemma" />
+    <jsp:param name="excludeText" value="[???]" />
 </jsp:include>
 
 <!----------ID---------->
