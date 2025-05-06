@@ -1,5 +1,4 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.*" isThreadSafe="false" %>
 <%
     if (feldtyp.startsWith("link") && array) {
@@ -10,6 +9,8 @@
 
         Set<String> alreadyPrinted = "EinzelbelegRODistinct".equals(datenfeld)
             ? new HashSet<>() : null;
+
+        List<String> links = new ArrayList<>();
 
         for (Map row : rowlist) {
             Map row2 = AbstractBase.getMappedRow(
@@ -31,8 +32,20 @@
                 }
 
                 String add = fields[3];
-                out.println("<a class=\"ut-link\" href=\"" + add + "?ID=" + String.valueOf(row.get(fields[1])) + "\">" + bez + "</a><br>");
+                String link = "<a class=\"ut-link\" href=\"" + add + "?ID=" + String.valueOf(row.get(fields[1])) + "\">" + bez + "</a><br>";
+                links.add(link);
             }
+        }
+
+        // Sortiere die Links alphabetisch anhand des sichtbaren Texts (bez)
+        Collections.sort(links, new Comparator<String>() {
+            public int compare(String a, String b) {
+                return a.replaceAll("<[^>]+>", "").compareToIgnoreCase(b.replaceAll("<[^>]+>", ""));
+            }
+        });
+
+        for (String link : links) {
+            out.println(link);
         }
     }
 %>
