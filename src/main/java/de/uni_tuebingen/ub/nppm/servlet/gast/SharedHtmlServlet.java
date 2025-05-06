@@ -70,4 +70,9 @@ public class SharedHtmlServlet extends AbstractGastServlet {
             writer.flush();
         }
     }
+
+    @Override
+    protected String getNavigationTitle() {
+        return "start";
+    }
 }
