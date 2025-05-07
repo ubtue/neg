@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import de.uni_tuebingen.ub.nppm.db.PersonDB;
 import de.uni_tuebingen.ub.nppm.db.QuelleDB;
 import de.uni_tuebingen.ub.nppm.exception.IdInvalidException;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -111,8 +112,7 @@ public class DoJumpServlet extends AbstractGastServlet {
                             publicID = PersonDB.getNextPublicPersonId(Integer.parseInt(newID));
                             break;
                     }
-
-                    response.sendRedirect(url + newForm + "?ID=" + publicID);
+                    response.sendRedirect(Utils.getBaseUrl(request) + "/gast/" + newForm + "?ID=" + publicID);
                 }
             }
         }
