@@ -193,3 +193,21 @@ right: 350px; top: 10px; display: none; }
 .autocomplete-suggestions strong { font-weight: normal; color: #BF3D3D; }
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+/*
+Die Breite der Text Felder(Erweiterte Suche) anpassen.
+Dies ist notwendig, da die Breite für TextFelder in inc.erzeugeFormular fix auf 250px ist.
+Um Seiteneffekte zu ermeiden lasse ich das so und setze die neue Breite hier mit css
+*/
+#erweiterte-suche #tab-1 .ut-table__row > td:nth-child(2) input {
+    width: 350px !important;
+}
+
+
+#erweiterte-suche #tab-1 .ut-table__row > td:nth-child(2) select {
+    width: 350px !important;
+}
+
+#erweiterte-suche #tab-1 .ut-table__row > td:first-child {
+    width: 370px !important;
+}
