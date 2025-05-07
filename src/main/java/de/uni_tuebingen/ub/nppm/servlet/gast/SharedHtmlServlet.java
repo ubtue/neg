@@ -75,6 +75,13 @@ public class SharedHtmlServlet extends AbstractGastServlet {
     protected String getDynamicNavigationTitle(HttpServletRequest request, HttpServletResponse response) {
         String current = (String) request.getParameter("current");
 
+        //Wenn current == null und sharedHtml == start muss current trotzdem gesetzt sein,
+        //da sonst der Start Button nicht gehighlightet wird
+        String sharedHtml = (String) request.getParameter("sharedHtml");
+        if(current == null && sharedHtml != null && sharedHtml.trim().equals("start")){
+            current = "start";
+        }
+
         if(current != null && current.equals("start")){
             return "start";
         }

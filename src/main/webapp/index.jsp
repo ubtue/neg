@@ -14,6 +14,6 @@ if (AuthHelper.isBenutzerLogin(request)) {
     <jsp:forward page="einzelbeleg" />
     <%
 } else  {
-    response.sendRedirect(Utils.getBaseUrl(request) + "/gast/infos?sharedHtml=start");
+    response.sendRedirect(Utils.getBaseUrl(request) + "/gast/infos?sharedHtml=start&current=start");
 }
 %>
