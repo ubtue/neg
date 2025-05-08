@@ -17,7 +17,7 @@
                 } else {
                     String belegformHtml = DBtoHTML(format(value_zielAttribut, isKlarlemma ? "Klarlemma" : ""));
                     if (formular.equals("einzelbeleg") && datenfeld.equals("Belegform")) {
-                        belegformHtml = getBelegformLinked(id, belegformHtml);
+                        belegformHtml = getBelegformExternalLinked(request, id, belegformHtml);
                     }
 
                     if (schemaOrgProperty != null && !schemaOrgProperty.isEmpty())
@@ -45,8 +45,7 @@
             out.println(">");
         }
         if (!tooltip.equals("")) {
-            out.println("<a href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\"" + tooltip + "\"> ? </a>");
+            out.println("<a class=\"ut-link\" href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\"" + tooltip + "\"> ? </a>");
         }
-
     }
 %>

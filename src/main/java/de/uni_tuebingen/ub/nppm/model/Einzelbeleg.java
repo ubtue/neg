@@ -6,7 +6,10 @@ import java.util.*;
 import javax.persistence.criteria.*;
 import org.hibernate.Session;
 import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.Utils;
+import java.text.SimpleDateFormat;
 import org.hibernate.query.NativeQuery;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "einzelbeleg")
@@ -984,5 +987,69 @@ public class Einzelbeleg {
 
     public void setKritikId(Integer kritikId) {
         this.kritikId = kritikId;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        // Allgemein
+        Utils.addIfValid(jsonObject, "id", "B" + this.getId());
+        Utils.addIfValid(jsonObject, "editionId", this.getEdition() != null ? "E" + this.getEdition().getId() : null);
+        Utils.addIfValid(jsonObject, "quelleId", this.getQuelle() != null ? "Q" + this.getQuelle().getId() : null);
+        Utils.addIfValid(jsonObject, "handschriftId", this.getHandschrift() != null ? "T" + this.getHandschrift().getId() : null);
+        Utils.addIfValid(jsonObject, "belegnummer", this.getBelegnummer());
+        Utils.addIfValid(jsonObject, "kontext", Utils.sanitize(this.getKontext()));
+        Utils.addIfValid(jsonObject, "geschlecht", this.getGeschlecht() != null ? Utils.sanitize(this.getGeschlecht().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "lebendVerstorben", this.getLebendVerstorben() != null ? Utils.sanitize(this.getLebendVerstorben().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "ueberlieferungDatierung", Utils.sanitize(this.getUeberlieferungDatierung()));
+        Utils.addIfValid(jsonObject, "belegform", Utils.sanitize(this.getBelegform()));
+        Utils.addIfValid(jsonObject, "griechisch", Utils.sanitize(this.getGriechisch()));
+        Utils.addIfValid(jsonObject, "diakritisch", Utils.sanitize(this.getDiakritisch()));
+        Utils.addIfValid(jsonObject, "kasus", this.getKasus() != null ? Utils.sanitize(this.getKasus().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "grammatikGeschlecht", this.getGrammatikGeschlecht() != null ? Utils.sanitize(this.getGrammatikGeschlecht().getBezeichnung()) : null);
+
+        // Kommentare
+        Utils.addIfValid(jsonObject, "aswQuellenzitat", Utils.sanitize(this.getAswQuellenzitat()));
+        Utils.addIfValid(jsonObject, "bemerkung", Utils.sanitize(this.getBemerkung()));
+        Utils.addIfValid(jsonObject, "kommentarEthnie", Utils.sanitize(this.getKommentarEthnie()));
+        Utils.addIfValid(jsonObject, "kommentarAreal", Utils.sanitize(this.getKommentarAreal()));
+        Utils.addIfValid(jsonObject, "kommentarVerwandtschaft", Utils.sanitize(this.getKommentarVerwandtschaft()));
+        Utils.addIfValid(jsonObject, "kommentarDatierung", Utils.sanitize(this.getKommentarDatierung()));
+        Utils.addIfValid(jsonObject, "kommentarPerson", Utils.sanitize(this.getKommentarPerson()));
+
+        // Datumsfelder
+        Utils.addIfValid(jsonObject, "erstellt", this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
+
+        // Bearbeiter
+        Utils.addIfValid(jsonObject, "gehoertGruppe", this.getGehoertGruppe() != null ? Utils.sanitize(this.getGehoertGruppe().getBezeichnung()) : null);
+
+        // Genauigkeitsfelder
+        Utils.addIfValid(jsonObject, "genauigkeitBisTag", Utils.sanitize(this.getGenauigkeitBisTag() != null ? this.getGenauigkeitBisTag().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitBisMonat", Utils.sanitize(this.getGenauigkeitBisMonat() != null ? this.getGenauigkeitBisMonat().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitBisJahr", Utils.sanitize(this.getGenauigkeitBisJahr() != null ? this.getGenauigkeitBisJahr().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitBisJahrhundert", Utils.sanitize(this.getGenauigkeitBisJahrhundert() != null ? this.getGenauigkeitBisJahrhundert().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitVonTag", Utils.sanitize(this.getGenauigkeitVonTag() != null ? this.getGenauigkeitVonTag().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitVonMonat", Utils.sanitize(this.getGenauigkeitVonMonat() != null ? this.getGenauigkeitVonMonat().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitVonJahr", Utils.sanitize(this.getGenauigkeitVonJahr() != null ? this.getGenauigkeitVonJahr().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "genauigkeitVonJahrhundert", Utils.sanitize(this.getGenauigkeitVonJahrhundert() != null ? this.getGenauigkeitVonJahrhundert().getBezeichnung() : null));
+
+        // Quelle Informationen
+        Utils.addIfValid(jsonObject, "quelleGattung", this.getQuelleGattung() != null ? Utils.sanitize(this.getQuelleGattung().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "quelleEchtheit", this.getQuelleEchtheit() != null ? Utils.sanitize(this.getQuelleEchtheit().getBezeichnung()) : null);
+        Utils.addIfValid(jsonObject, "quelleDatierung", Utils.sanitize(this.getQuelleDatierung()));
+        Utils.addIfValid(jsonObject, "quelleBisTag", this.getQuelleBisTag());
+        Utils.addIfValid(jsonObject, "quelleBisMonat", this.getQuelleBisMonat());
+        Utils.addIfValid(jsonObject, "quelleBisJahr", this.getQuelleBisJahr());
+        Utils.addIfValid(jsonObject, "quelleBisJahrhundert", this.getQuelleBisJahrhundert());
+        Utils.addIfValid(jsonObject, "quelleVonTag", this.getQuelleVonTag());
+        Utils.addIfValid(jsonObject, "quelleVonMonat", this.getQuelleVonMonat());
+        Utils.addIfValid(jsonObject, "quelleVonJahr", this.getQuelleVonJahr());
+        Utils.addIfValid(jsonObject, "quelleVonJahrhundert", this.getQuelleVonJahrhundert());
+
+        // Editionsinformationen
+        Utils.addIfValid(jsonObject, "editionKapitel", Utils.sanitize(this.getEditionKapitel()));
+        Utils.addIfValid(jsonObject, "editionSeite", Utils.sanitize(this.getEditionSeite()));
+
+        return jsonObject;
     }
 }

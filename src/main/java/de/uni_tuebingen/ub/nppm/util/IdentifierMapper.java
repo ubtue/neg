@@ -1,0 +1,48 @@
+package de.uni_tuebingen.ub.nppm.util;
+
+import de.uni_tuebingen.ub.nppm.db.EinzelbelegDB;
+import de.uni_tuebingen.ub.nppm.db.LemmaDB;
+import de.uni_tuebingen.ub.nppm.db.NamenKommentarDB;
+import de.uni_tuebingen.ub.nppm.db.PersonDB;
+import de.uni_tuebingen.ub.nppm.db.QuelleDB;
+import de.uni_tuebingen.ub.nppm.exception.IdNotFoundException;
+import de.uni_tuebingen.ub.nppm.exception.IdNotPublicException;
+import de.uni_tuebingen.ub.nppm.model.Einzelbeleg;
+import de.uni_tuebingen.ub.nppm.model.MghLemma;
+import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
+import de.uni_tuebingen.ub.nppm.model.Person;
+import de.uni_tuebingen.ub.nppm.model.Quelle;
+
+public class IdentifierMapper {
+    public static Object getModelByIdentifier(String identifier) throws Exception, IdNotPublicException {
+        Object ret = null;
+        // Map identifier to Model Class
+        if (identifier.startsWith("M")) {
+            ret = LemmaDB.getById(Integer.valueOf(identifier.substring(1)),MghLemma.class);
+        } else if (identifier.startsWith("N")) {
+            ret = NamenKommentarDB.getById(Integer.valueOf(identifier.substring(1)),NamenKommentar.class);
+        } else if (identifier.startsWith("B")) {
+            ret = EinzelbelegDB.getById(Integer.valueOf(identifier.substring(1)),Einzelbeleg.class);
+            //check if einzelbeleg is zuVeröffentlichen
+            if(ret != null){
+                Quelle q = ((Einzelbeleg)ret).getQuelle();
+                if(q != null){
+                    if(q.getZuVeroeffentlichen() == null || q.getZuVeroeffentlichen() != 1){
+                        throw new IdNotPublicException("Einzelbeleg ID " + identifier + " ist nicht zu veröffentlichen");
+                    }
+                }
+            }
+        } else if (identifier.startsWith("P")) {
+            ret = PersonDB.getById(Integer.valueOf(identifier.substring(1)),Person.class);
+        } else if (identifier.startsWith("Q")) {
+            ret = QuelleDB.getById(Integer.valueOf(identifier.substring(1)),Quelle.class);
+            if (ret != null){
+                Quelle q = (Quelle)ret;
+                if (q.getZuVeroeffentlichen() != null && q.getZuVeroeffentlichen() != 1){
+                    throw new IdNotPublicException("Quelle ID " + identifier + " ist nicht zu veröffentlichen");
+                }
+            }
+        }
+        return ret;
+    }
+}

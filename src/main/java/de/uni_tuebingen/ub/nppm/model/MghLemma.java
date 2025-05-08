@@ -1,8 +1,11 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.util.Utils;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "mgh_lemma")
@@ -115,4 +118,16 @@ public class MghLemma {
         this.getEinzelbelege().removeIf(e -> e.getId() == id);
     }
 
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        // Felder hinzufügen und direkt bereinigen
+        Utils.addIfValid(jsonObject, "mghLemma", Utils.sanitize(this.getMghLemma()));
+        Utils.addIfValid(jsonObject, "bearbeitungsstatus", Utils.sanitize(this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "gehoertGruppe", Utils.sanitize(this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "erstellt", this.getErstellt() != null ? Utils.formatDate(this.getErstellt()) : null);
+        Utils.addIfValid(jsonObject, "id", "M" + this.getId());
+
+        return jsonObject;
+    }
 }

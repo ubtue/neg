@@ -16,9 +16,113 @@
 
 <%@ page import="org.apache.commons.lang3.StringUtils" isThreadSafe="false" %>
 
+<%!
+    public void printPageNavigation(JspWriter out, HttpServletRequest request, int pageoffset, int pageLimit, int linecount, String export) throws IOException {
+        if (!"liste".equals(export) && !"browse".equals(export)) {
+            return;
+        }
+
+        out.println("<div class=\"resultlistnavigation\" align=\"center\">");
+
+        int pages = (linecount + pageLimit - 1) / pageLimit;
+
+        // Previous Button
+        if (pageoffset > 0) {
+            String prevUrl = "?pageoffset=" + (pageoffset - 1);
+            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                String paramName = e.nextElement();
+                if (!paramName.equals("pageoffset")) {
+                    prevUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                }
+            }
+            out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + prevUrl + "';\">Previous</button>&nbsp;");
+        }
+
+        // Page Number Buttons
+        for (int i = 0; i < pages; i++) {
+            if (i == 0 && i <= pageoffset - 10) {
+                String pageUrl = "?pageoffset=" + i;
+                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                    String paramName = e.nextElement();
+                    if (!paramName.equals("pageoffset")) {
+                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                    }
+                }
+                out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">1</button>&nbsp;...&nbsp;");
+            }
+
+            if (i < pageoffset + 10 && i > pageoffset - 10) {
+                if (i == pageoffset) {
+                    out.print("<button class=\"ut-btn ut-btn--color-primary-1 current-button\" disabled>");
+                    out.print((i + 1));
+                    out.print("</button>&nbsp;");
+                } else {
+                    String pageUrl = "?pageoffset=" + i;
+                    for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                        String paramName = e.nextElement();
+                        if (!paramName.equals("pageoffset")) {
+                            pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                        }
+                    }
+                    out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
+                    out.print((i + 1));
+                    out.print("</button>&nbsp;");
+                }
+            }
+
+            if (i == pages - 1 && i >= pageoffset + 10) {
+                String pageUrl = "?pageoffset=" + i;
+                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                    String paramName = e.nextElement();
+                    if (!paramName.equals("pageoffset")) {
+                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                    }
+                }
+                out.print("...&nbsp;<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
+                out.print((i + 1));
+                out.print("</button>&nbsp;");
+            }
+        }
+
+        // Next Button
+        if (pageoffset < pages - 1) {
+            String nextUrl = "?pageoffset=" + (pageoffset + 1);
+            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                String paramName = e.nextElement();
+                if (!paramName.equals("pageoffset")) {
+                    nextUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                }
+            }
+            out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + nextUrl + "';\">Next</button>");
+        }
+
+        out.println("</div>");
+    }
+%>
+
 <%
+    String einzelbelegeVonQuelle = request.getParameter("einzelbelegeVonQuelle");
+    if ("true".equals(einzelbelegeVonQuelle)) {
+        int quellenId = Integer.parseInt(request.getParameter("Quellenliste"));
+%>
+<h3 class="ut-heading ut-heading--h3">
+    <% Language.printTextfield(out, session, "quelle", "Bezeichnung");%>
+    <jsp:include page="../inc.erzeugeFormular.jsp">
+        <jsp:param name="ID" value="<%= quellenId%>"/>
+        <jsp:param name="Formular" value="quelle"/>
+        <jsp:param name="Datenfeld" value="Bezeichnung"/>
+        <jsp:param name="size" value="50"/>
+        <jsp:param name="Readonly" value="yes"/>
+    </jsp:include>
+</h3>
+<%
+    }
+%>
+
+<%
+    int pageLimitX = 10;
     int limit = 0;
-    int offset = 5;
+    int offset = 0;
     try {
         limit = Integer.parseInt(request.getParameter("limit"));
     } catch (Exception ex) {
@@ -62,27 +166,25 @@
             if (!tableString.contains("quelle")) {
                 tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
             }
-        }else if (newID.startsWith("E") || newID.startsWith("e")) {
+        } else if (newID.startsWith("E") || newID.startsWith("e")) {
             conditions.add("edition.ID='" + newForm + "'");
 
             if (!tableString.contains("edition")) {
                 tableString += " INNER JOIN edition ON einzelbeleg.EditionID = edition.ID";
             }
-        }else if (newID.startsWith("M") || newID.startsWith("m")) {
+        } else if (newID.startsWith("M") || newID.startsWith("m")) {
             conditions.add("mgh_lemma.ID='" + newForm + "'");
             mghlemma = true;
         }
-
-
-    }//ce end
+    }
 
     // ######### SUCHANFRAGE ##########
     // ### ZUM NAMEN ###
-    if (!request.getParameter("Namenkommentar2").equals("-1") && request.getParameter("Namenkommentar").equals("-1")) {
+    if (request.getParameter("Namenkommentar2") != null && request.getParameter("Namenkommentar") != null && !request.getParameter("Namenkommentar2").equals("-1") && request.getParameter("Namenkommentar").equals("-1")) {
         conditions.add("namenkommentar.ID=" + request.getParameter("Namenkommentar2"));
         namenkommentar = true;
     }
-    if (!request.getParameter("Namenkommentar").equals("-1")) {
+    if (request.getParameter("Namenkommentar") != null && !request.getParameter("Namenkommentar").equals("-1")) {
         conditions.add("namenkommentar.ID=" + request.getParameter("Namenkommentar"));
         namenkommentar = true;
     }
@@ -90,6 +192,20 @@
         conditions.add("mgh_lemma.MGHLemma LIKE '" + request.getParameter("MGHLemma").trim() + "'");
         mghlemma = true;
     }
+
+    String erstgliedParam = request.getParameter("ErstGliedSelect");
+    String zweitgliedParam = request.getParameter("ZweitGliedSelect");
+
+    if (erstgliedParam != null && !erstgliedParam.trim().isEmpty() && !erstgliedParam.equals("-")) {
+        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', 1) LIKE '" + erstgliedParam.trim() + "'");
+        mghlemma = true;
+    }
+
+    if (zweitgliedParam != null && !zweitgliedParam.trim().isEmpty() && !zweitgliedParam.equals("-")) {
+        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', -1) LIKE '" + zweitgliedParam.trim() + "'");
+        mghlemma = true;
+    }
+
     // ### ZUR PERSON ###
     if (!request.getParameter("Personenname").trim().equals("")) {
         conditions.add("(person.Standardname LIKE '" + request.getParameter("Personenname").trim() + "' OR person_variante.Variante LIKE '" + request.getParameter("Personenname").trim() + "')");
@@ -338,8 +454,8 @@
 
     String pageString = request.getParameter("Seite");
     if (pageString != null && !pageString.isEmpty()) {
-            conditions.add("einzelbeleg.EditionSeite = '" + request.getParameter("Seite") + "'");
-            einzelbeleg = true;
+        conditions.add("einzelbeleg.EditionSeite = '" + request.getParameter("Seite") + "'");
+        einzelbeleg = true;
     }
 
     // ######### SUCHANFRAGE ##########
@@ -515,9 +631,9 @@
         fieldNames.add("selektion_quellengattung.Bezeichnung");
         if (!tableString.contains("selektion_quellengattung")) {
             tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
-    }
+        }
 
-    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "QuelleGattung"));
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "QuelleGattung"));
 
         einzelbeleg = true;
     }
@@ -1020,10 +1136,14 @@
 
         tablesString = tableString;
 
+        int linecount = SucheDB.getLinecount(tablesString, conditionsString);
+
         int pageoffset = 0;
         if (request.getParameter("pageoffset") != null) {
             pageoffset = Integer.parseInt(request.getParameter("pageoffset"));
         }
+
+        offset = pageoffset * pageLimitX;  // pageLimitX ist die Anzahl der Ergebnisse pro Seite
 
         if (fields.size() == 0) {
             out.println("Bitte w&auml;hlen Sie mind. ein Ausgabefeld aus (Schritt 2).");
@@ -1032,387 +1152,403 @@
 
         String sql = "SELECT " + countString + " FROM " + tablesString + " WHERE (" + conditionsString + ")"; // GROUP BY "+fieldsString;
 
-    if (!countString.equals("")) {
-        java.util.List<Object[]> resultList = DatenbankDB.getListNative(sql);
+        if (!countString.equals("")) {
+            java.util.List<Object[]> resultList = DatenbankDB.getListNative(sql);
 
-        if (!resultList.isEmpty()) {
-            Object firstResult = resultList.get(0); // Erstes Element aus der Ergebnisliste abrufen
+            if (!resultList.isEmpty()) {
+                Object firstResult = resultList.get(0); // Erstes Element aus der Ergebnisliste abrufen
 
-            if (firstResult instanceof Object[]) {
-                Object[] innerArray = (Object[]) firstResult;
-                StringBuilder output = new StringBuilder();
+                if (firstResult instanceof Object[]) {
+                    Object[] innerArray = (Object[]) firstResult;
+                    StringBuilder output = new StringBuilder();
 
-                for (int i = 0; i < count.size(); i++) {
-                    if (innerArray[i] instanceof Number) {
-                        int countValue = ((Number) innerArray[i]).intValue();  //Zählererbnis
+                    for (int i = 0; i < count.size(); i++) {
+                        if (innerArray[i] instanceof Number) {
+                            int countValue = ((Number) innerArray[i]).intValue();  //Zählererbnis
 
-                        if (countValue >= 0) {
-                            output.append("Insgesamt ");
-                            output.append(countValue).append(" ");
+                            if (countValue >= 0) {
+                                output.append("Insgesamt ");
+                                output.append(countValue).append(" ");
 
-                            // Spezifische Ausgabe basierend auf dem Titel
-                            if (count.get(i).startsWith("namenkommentar")) {
-                                if (countValue > 1 || countValue == 0) {
-                                    output.append("Namenkommentare");
-                                } else {
-                                    output.append("Namenkommentar");
+                                // Spezifische Ausgabe basierend auf dem Titel
+                                if (count.get(i).startsWith("namenkommentar")) {
+                                    if (countValue > 1 || countValue == 0) {
+                                        output.append("Namenkommentare");
+                                    } else {
+                                        output.append("Namenkommentar");
+                                    }
+                                } else if (count.get(i).startsWith("mgh_lemma")) {
+                                    output.append("MGH-Lemma");
+                                } else if (count.get(i).startsWith("person")) {
+                                    if (countValue > 1 || countValue == 0) {
+                                        output.append("Personen");
+                                    } else {
+                                        output.append("Person");
+                                    }
+                                } else if (count.get(i).startsWith("quelle")) {
+                                    if (countValue > 1 || countValue == 0) {
+                                        output.append("Quellen");
+                                    } else {
+                                        output.append("Quelle");
+                                    }
+                                } else if (count.get(i).startsWith("einzelbeleg")) {
+                                    if (countValue > 1 || countValue == 0) {
+                                        output.append("Belege");
+                                    } else {
+                                        output.append("Beleg");
+                                    }
                                 }
-                            } else if (count.get(i).startsWith("mgh_lemma")) {
-                                output.append("MGH-Lemma");
-                            } else if (count.get(i).startsWith("person")) {
-                                if (countValue > 1 || countValue == 0) {
-                                    output.append("Personen");
-                                } else {
-                                    output.append("Person");
-                                }
-                            } else if (count.get(i).startsWith("quelle")) {
-                                if (countValue > 1 || countValue == 0) {
-                                    output.append("Quellen");
-                                } else {
-                                    output.append("Quelle");
-                                }
-                            } else if (count.get(i).startsWith("einzelbeleg")) {
-                                if (countValue > 1 || countValue == 0) {
-                                    output.append("Belege");
-                                } else {
-                                    output.append("Beleg");
-                                }
+
+                                output.append(", ");
                             }
-
-                            output.append(", ");
-                        }
-                    }
-                }
-
-                // Ausgabe der Gesamtanzahl und Entfernen des letzten Kommas
-                String totalCountOutput = output.toString();
-                if (!totalCountOutput.isEmpty()) {
-                    totalCountOutput = totalCountOutput.substring(0, totalCountOutput.length() - 2); // Letztes Komma entfernen
-                    out.println(totalCountOutput);
-                }
-            } else {
-
-                int countValue = ((Number) firstResult).intValue();
-                if (countValue > 0) {
-                    // Erstelle eine Ausgabe für das einzelne Ergebnis
-                    StringBuilder output = new StringBuilder("Insgesamt ");
-                    output.append(countValue).append(" ");
-
-                    if (count.get(0).startsWith("namenkommentar")) {
-                        if (countValue > 1 || countValue == 0) {
-                            output.append("Namenkommentare");
-                        } else {
-                            output.append("Namenkommentar");
-                        }
-                    } else if (count.get(0).startsWith("mgh_lemma")) {
-                        output.append("MGH-Lemma");
-                    } else if (count.get(0).startsWith("person")) {
-                        if (countValue > 1 || countValue == 0) {
-                            output.append("Personen");
-                        } else {
-                            output.append("Person");
-                        }
-                    } else if (count.get(0).startsWith("quelle")) {
-                        if (countValue > 1 || countValue == 0) {
-                            output.append("Quellen");
-                        } else {
-                            output.append("Quelle");
-                        }
-                    } else if (count.get(0).startsWith("einzelbeleg")) {
-                        if (countValue > 1 || countValue == 0) {
-                            output.append("Belege");
-                        } else {
-                            output.append("Beleg");
                         }
                     }
 
-                    output.append(", ");
-
-                    // Ausgabe der Gesamtanzahl
+                    // Ausgabe der Gesamtanzahl und Entfernen des letzten Kommas
                     String totalCountOutput = output.toString();
-                    totalCountOutput = totalCountOutput.substring(0, totalCountOutput.length() - 2); // Letztes Komma entfernen
-                    out.println(totalCountOutput);
+                    if (!totalCountOutput.isEmpty()) {
+                        totalCountOutput = totalCountOutput.substring(0, totalCountOutput.length() - 2); // Letztes Komma entfernen
+                        out.println(totalCountOutput);
+                    }
+                } else {
+
+                    int countValue = ((Number) firstResult).intValue();
+                    if (countValue > 0) {
+                        // Erstelle eine Ausgabe für das einzelne Ergebnis
+                        StringBuilder output = new StringBuilder("Insgesamt ");
+                        output.append(countValue).append(" ");
+
+                        if (count.get(0).startsWith("namenkommentar")) {
+                            if (countValue > 1 || countValue == 0) {
+                                output.append("Namenkommentare");
+                            } else {
+                                output.append("Namenkommentar");
+                            }
+                        } else if (count.get(0).startsWith("mgh_lemma")) {
+                            output.append("MGH-Lemma");
+                        } else if (count.get(0).startsWith("person")) {
+                            if (countValue > 1 || countValue == 0) {
+                                output.append("Personen");
+                            } else {
+                                output.append("Person");
+                            }
+                        } else if (count.get(0).startsWith("quelle")) {
+                            if (countValue > 1 || countValue == 0) {
+                                output.append("Quellen");
+                            } else {
+                                output.append("Quelle");
+                            }
+                        } else if (count.get(0).startsWith("einzelbeleg")) {
+                            if (countValue > 1 || countValue == 0) {
+                                output.append("Belege");
+                            } else {
+                                output.append("Beleg");
+                            }
+                        }
+
+                        output.append(", ");
+
+                        // Ausgabe der Gesamtanzahl
+                        String totalCountOutput = output.toString();
+                        totalCountOutput = totalCountOutput.substring(0, totalCountOutput.length() - 2); // Letztes Komma entfernen
+                        out.println(totalCountOutput);
+                    }
                 }
             }
         }
-    }
 
-    sql = "SELECT DISTINCT " + fieldsString + " FROM " + tablesString + " WHERE (" + conditionsString + ") " + order; //GROUP BY "+fieldsString+"
-    //     if (export.equals("liste") || export.equals("browse"))
-    //       sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
+        sql = "SELECT DISTINCT " + fieldsString + " FROM " + tablesString + " WHERE (" + conditionsString + ") " + order; //GROUP BY "+fieldsString+"
+        //    if (export.equals("liste") || export.equals("browse"))
+        //      sql += " LIMIT "+(pageoffset*pageLimit)+", "+pageLimit;
 
 //out.println(sql);
-    List<Map> rowlist = SucheDB.getMappedList(sql);
+        List<Map> rowlist = SucheDB.getMappedList(sql);
 
-    //    out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
-    int orderSize = 0;
-    for (int z = 0; z < orderV.length; z++) {
-        if (orderV[z] != null && !orderV[z].equals("-")) {
-            orderSize++;
-        }
-    }
-    boolean[] first = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
-    String oldValue[] = new String[15];
-
-    // ########## LISTE/BROWSE ##########
-    if (export.equals("liste") || export.equals("browse")) {
-
-        String header = "";
-
-        out.print("<div id=\"level-functions\"><div class=\"open_next_level\" onClick=\"expandNextLevel('complete')\" >Weitere Ebene aufklappen</div>");
-        out.print("<div class=\"close_prev_level\" onClick=\"collapseNextLevel('complete')\">Weitere Ebene zuklappen</div></div>");
-
-        //      out.println("<table class=\"resultlist\">");
-        header += "<tr>";
-        for (int i = 0; i < headlines.size(); i++) {
-            if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
-                header += "<th>";
-                // Link für Seite erzeugen
-                String direction = "";
-                if (order.contains(fieldNames.get(i))) {
-                    direction = order.substring(order.indexOf(fieldNames.get(i) + " ") + fieldNames.get(i).length() + 1, min(order.length(), order.indexOf(fieldNames.get(i) + " ") + fieldNames.get(i).length() + 5));
-                    if (direction.contains("DESC")) {
-                        direction = "DESC";
-                    } else {
-                        direction = "ASC";
-                    }
-                }
-
-                String parameter = "?neworder=" + fieldNames.get(i);
-                if (direction.equals("ASC")) {
-                    parameter += "&newdirection=DESC";
-                } else {
-                    parameter += "&newdirection=ASC";
-                }
-
-                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                    String paramName = e.nextElement();
-                    if (!paramName.contains("order") && !paramName.equals("newdirection")) {
-                        parameter += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                    }
-                }
-
-                header += headlines.get(i);
-
-                header += "</th>";
+        //    out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
+        int orderSize = 0;
+        for (int z = 0; z < orderV.length; z++) {
+            if (orderV[z] != null && !orderV[z].equals("-")) {
+                orderSize++;
             }
         }
-        boolean even = false;
-        header += "</tr>";
-        out.print("<p id='result-loading'>Suchergebnis l\u00E4dt...</p>");
-        out.print("<ul class=\"mktree\" id=\"complete\" style='display:none'>");
+        boolean[] first = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+        String oldValue[] = new String[15];
 
-        if (orderSize == 0) {
-            out.print("<table class=\"resultlist\">" + header + "<tr>");
-        }
+        // ########## SEITENNAVIGATION #########
+        printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        // ########## SEITENNAVIGATION #########
 
-        boolean found = false;
+        // ########## LISTE/BROWSE ##########
+        if ("liste".equals(export) || "browse".equals(export)) {
 
-        java.util.List<java.util.Map<String, String>> searchRes = FrontendExtendedSearch.getSearchResult(fieldsString, tablesString, conditionsString, order, fields.toArray(new String[fields.size()]));
+            String header = "";
 
-        for (java.util.Map row : searchRes) {
-            found = true;
+            String aufklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneAufklappen");
+            String zuklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneZuklappen");
 
-            for (int z = 0; z < orderSize; z++) {
-                int jahr = 0;
-                String jahrV = "";
-                Object value = row.get(orderV[z]);
-                if (value != null) {
-                    jahrV = value.toString();
-                }
-
-                int zeitraum = 0;
-                if (orderV[z].endsWith("Jahr")) {
-                    try {
-                        zeitraum = Integer.parseInt(request.getParameter("order" + (z + 1) + "zeit"));
-                    } catch (Exception ex) {
-                        zeitraum = 25;
-                    }
-                    if (jahrV == null || jahrV.isEmpty()) {
-                        jahr = 0;
-                    } else {
-                        jahr = Integer.parseInt(jahrV);
-                    }
-                    if (zeitraum != 0) {
-                        jahr = jahr / zeitraum;
-                    }
-                    jahrV = String.valueOf(jahr);
-                }
-
-                if (first[z] || row.get(orderV[z]) != null && !jahrV.equalsIgnoreCase(oldValue[z])) {
-                    oldValue[z] = jahrV;
-                    if (!first[z]) {
-                        out.print("</table>");
-                        for (int z2 = z; z2 < orderSize; z2++) {
-                            out.print("</ul></li>");
-                        }
-                    }
-                    first[z] = false;
-                    for (int z2 = z + 1; z2 < orderSize; z2++) {
-                        first[z2] = true;
-                    }
-
-                    if (z > 0) {
-                        out.print("<li class=\"liClosed\" style=\"font-size:medium\">");
-                    } else {
-                        out.print("<li class=\"liOpen\" style=\"font-size:large\">");
-                    }
-
-                    String text = "";
-                    Object value_2 = row.get(orderV[z]);
-
-                    if (value_2 != null) {
-                        text = value_2.toString();
-                    }
-                    if (orderV[z].startsWith("einzelbeleg.ID")) {
-                        text = row.get("einzelbeleg.Belegform").toString();
-                    }
-                    if (orderV[z].startsWith("person.ID")) {
-                        text = row.get("person.Standardname").toString();
-                    }
-                    if (text == null) {
-                        text = "-";
-                    }
-                    String titel = orderV[z];
-
-                    if (orderV[z].startsWith("einzelbeleg.ID")) {
-                        titel = "einzelbeleg.Belegform";
-                    }
-                    if (orderV[z].startsWith("person.ID")) {
-                        titel = "person.Standardname";
-                    }
-                    titel = headlines.get(fieldNames.indexOf(titel));
-
-                    out.print(titel + ":");
-                    boolean link = false;
-                    if (export.equals("browse") && !text.equals("-")) {
-                        if (orderV[z].equals("einzelbeleg.ID")) {
-                            out.print("<a href=\"einzelbeleg?ID=" + row.get("einzelbelegID") + "\">");
-                            link = true;
-                        } else if (orderV[z].equals("person.ID")) {
-                            out.print("<a href=\"person?ID=" + row.get("personID") + "\">");
-                            link = true;
-                        } else if (orderV[z].equals("perszu.Standardname")) {
-                            out.print("<a href=\"person?ID=" + row.get("perszuID") + "\">");
-                            link = true;
-                        } else if (orderV[z].equals("namenkommentar.PLemma")) {
-                            out.print("<a href=\"namenkommentar?ID=" + row.get("namenkommentarID") + "\">");
-                            link = true;
-                        } else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
-                            out.print("<a href=\"mghlemma?ID=" + row.get("mgh_lemmaID") + "\">");
-                            link = true;
-                        } else if (orderV[z].equals("quelle.Bezeichnung")) {
-                            out.print("<a href=\"quelle?ID=" + row.get("quelleID") + "\">");
-                            link = true;
-                        } else if (orderV[z].equals("edition.Titel")) {
-                            try {
-                                out.print("<a href=\"edition?ID=" + row.get("edition.ID") + "\">");
-                                link = true;
-                            } catch (Exception e) {
-                                link = false;
-                            }
-                        } else if (orderV[z].contains("ID")) {
-                            out.print("<a href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu: ");
-                            link = true;
-                        }
-                    }
-
-                    if (orderV[z].startsWith("einzelbeleg.ID")) {
-                        out.print(format(DBtoHTML(text), "einzelbeleg.Belegform"));
-                    } else if (orderV[z].endsWith("Jahr")) {
-                        int ja = Integer.parseInt(oldValue[z]);
-                        out.print("" + (ja * zeitraum) + "-" + ((ja + 1) * zeitraum - 1));
-                    } else {
-
-                        String format = orderV[z];
-                        if (orderV[z].equals("Erstglied") || orderV[z].equals("Zweitglied")) {
-                            format = "PLemma";
-                        }
-                        out.print(format(DBtoHTML(text), format));
-                    }
-                    if (link) {
-                        out.print("</a>&nbsp;");
-                    }
-
-                    if (z == orderSize - 1) {
-                        out.print("<ul><table class=\"resultlist\">" + header + "<tr>");
-                    } else {
-                        out.print("<ul>");
-                    }
-                }
+            if (!"true".equals(einzelbelegeVonQuelle)) {
+                out.println("<div id=\"level-functions\">");
+                out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + aufklappen + "\" onClick=\"expandNextLevel('complete')\"><img src=\"layout/images/open_next_level.png\" alt=\"Aufklappen\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + aufklappen + "</button>");
+                out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + zuklappen + "\" onClick=\"collapseNextLevel('complete')\"><img src=\"layout/images/close_next_level.png\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + zuklappen + "</button>");
+                out.println("</div>");
             }
 
-            out.print("<tr class=\"" + (even ? "" : "un") + "even\">");
-            if (!formular.equals("favorit") && !formular.equals("freie_suche") && !formular.equals("namenkommentar") && !formular.equals("literatur")) {
-                out.print("<td valign=\"top\" align=\"center\"><a href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu</a></td>");
-            }
-
-            for (int i = 0; i < fieldNames.size(); i++) {
+            header += "<thead class=\"ut-table__header \">";
+            header += "<tr class=\"ut-table__row\">";
+            int startIndex = "true".equals(einzelbelegeVonQuelle) ? 1 : 0;
+            for (int i = startIndex; i < headlines.size(); i++) {
                 if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
-                    out.print("<td class=\"resultlist\" valign=\"top\">");
-                    if (row.get(fieldNames.get(i)) != null && !DBtoHTML(row.get(fieldNames.get(i))).equals("")) {
-                        String cell = DBtoHTML(row.get(fieldNames.get(i)));
-                        if (export.equals("browse")) {
-                            boolean link = false;
-                            if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
-                                out.print("<a href=\"einzelbeleg?ID=" + row.get("einzelbelegID") + "\">");
+                    header += "<th class=\"ut-table__item ut-table__header__item\" scope=\"col\">";
+                    String direction = "";
+                    if (order.contains(fieldNames.get(i))) {
+                        direction = order.substring(order.indexOf(fieldNames.get(i) + " ") + fieldNames.get(i).length() + 1, Math.min(order.length(), order.indexOf(fieldNames.get(i) + " ") + fieldNames.get(i).length() + 5));
+                        if (direction.contains("DESC")) {
+                            direction = "DESC";
+                        } else {
+                            direction = "ASC";
+                        }
+                    }
+
+                    String parameter = "?neworder=" + fieldNames.get(i);
+                    if (direction.equals("ASC")) {
+                        parameter += "&newdirection=DESC";
+                    } else {
+                        parameter += "&newdirection=ASC";
+                    }
+
+                    for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                        String paramName = e.nextElement();
+                        if (!paramName.contains("order") && !paramName.equals("newdirection")) {
+                            parameter += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                        }
+                    }
+
+                    header += headlines.get(i);
+
+                    header += "</th>";
+                }
+            }
+            // out.println("</thead>");
+
+            boolean even = false;
+            header += "</tr>";
+            header += "</thead>";
+            out.print("<p id='result-loading'>Suchergebnis lädt...</p>");
+            out.print("<ul class=\"mktree\" id=\"complete\" style='display:none'>");
+
+            if (orderSize == 0) {
+                out.print("<table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3 \">" + header + "<tbody class=\"ut-table__body \">" + "<tr class=\"ut-table__row\">");
+            }
+
+            boolean found = false;
+
+            List<Map<String, String>> searchRes = FrontendExtendedSearch.getSearchResult(
+                    fieldsString, tablesString, conditionsString, order,
+                    fields.toArray(new String[fields.size()]),
+                    pageLimitX, offset
+            );
+
+            for (java.util.Map row : searchRes) {
+                found = true;
+
+                for (int z = 0; z < orderSize; z++) {
+                    int jahr = 0;
+                    String jahrV = Utils.safeToString(row.get(orderV[z]));
+
+                    int zeitraum = 0;
+                    if (orderV[z].endsWith("Jahr")) {
+                        try {
+                            zeitraum = Integer.parseInt(request.getParameter("order" + (z + 1) + "zeit"));
+                        } catch (Exception ex) {
+                            zeitraum = 25;
+                        }
+                        if (jahrV.isEmpty()) {
+                            jahr = 0;
+                        } else {
+                            jahr = Integer.parseInt(jahrV);
+                        }
+                        if (zeitraum != 0) {
+                            jahr = jahr / zeitraum;
+                        }
+                        jahrV = String.valueOf(jahr);
+                    }
+
+                    if (first[z] || row.get(orderV[z]) != null && !jahrV.equalsIgnoreCase(oldValue[z])) {
+                        oldValue[z] = jahrV;
+                        if (!first[z]) {
+                            out.print("</tbody>");
+                            out.print("</table>");
+                            for (int z2 = z; z2 < orderSize; z2++) {
+                                out.print("</ul></li>");
+                            }
+                        }
+                        first[z] = false;
+                        for (int z2 = z + 1; z2 < orderSize; z2++) {
+                            first[z2] = true;
+                        }
+
+                        if (z > 0) {
+                            out.print("<li class=\"liClosed\" style=\"font-size:medium\">");
+                        } else {
+                            out.print("<li class=\"liOpen\" style=\"font-size:large\">");
+                        }
+
+                        String text = "";
+
+                        text = Utils.safeToString(row.get(orderV[z]), "-");
+
+                        if (orderV[z].startsWith("einzelbeleg.ID")) {
+                            text = Utils.safeToString(row.get("einzelbeleg.Belegform"), "-");
+                        }
+                        if (orderV[z].startsWith("person.ID")) {
+                             text = Utils.safeToString(row.get("person.Standardname"), "-");
+                        }
+
+                        String titel = orderV[z];
+
+                        if (orderV[z].startsWith("einzelbeleg.ID")) {
+                            titel = "einzelbeleg.Belegform";
+                        }
+                        if (orderV[z].startsWith("person.ID")) {
+                            titel = "person.Standardname";
+                        }
+                        titel = headlines.get(fieldNames.indexOf(titel));
+
+                        out.print(titel + ":");
+                        boolean link = false;
+                        if (export.equals("browse") && !text.equals("-")) {
+                            if (orderV[z].equals("einzelbeleg.ID")) {
+                                out.print("<a class=\"ut-link\" href=\"einzelbeleg?ID=" + row.get("einzelbelegID") + "\">");
                                 link = true;
-                            } else if (fieldNames.get(i).contains("person.Standardname")) {
-                                out.print("<a href=\"person?ID=" + row.get("personID") + "\">");
+                            } else if (orderV[z].equals("person.ID")) {
+                                out.print("<a class=\"ut-link\" href=\"person?ID=" + row.get("personID") + "\">");
                                 link = true;
-                            } else if (fieldNames.get(i).contains("perszu.Standardname")) {
-                                out.print("<a href=\"person?ID=" + row.get("perszuID") + "\">");
+                            } else if (orderV[z].equals("perszu.Standardname")) {
+                                out.print("<a class=\"ut-link\" href=\"person?ID=" + row.get("perszuID") + "\">");
                                 link = true;
-                            } else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                                out.print("<a href=\"namenkommentar?ID=" + row.get("namenkommentarID") + "\">");
+                            } else if (orderV[z].equals("namenkommentar.PLemma")) {
+                                out.print("<a class=\"ut-link\" href=\"namenkommentar?ID=" + row.get("namenkommentarID") + "\">");
                                 link = true;
-                            } else if (fieldNames.get(i).contains("mgh_lemma.MGHLemma")) {
-                                out.print("<a href=\"mghlemma?ID=" + row.get("mgh_lemmaID") + "\">");
+                            } else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
+                                out.print("<a class=\"ut-link\" href=\"lemma?ID=" + row.get("mgh_lemmaID") + "\">");
                                 link = true;
-                            } else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
-                                out.print("<a href=\"quelle?ID=" + row.get("quelleID") + "\">");
+                            } else if (orderV[z].equals("quelle.Bezeichnung")) {
+                                out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");
                                 link = true;
-                            } else if (fieldNames.get(i).contains("edition.Titel")) {
-                                link = false;
-                            } else if (fieldNames.get(i).contains("ID")) {
-                                out.print("<a href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu: ");
+                            } else if (orderV[z].equals("edition.Titel")) {
+                                try {
+                                    out.print("<a class=\"ut-link\" href=\"edition?ID=" + row.get("edition.ID") + "\">");
+                                    link = true;
+                                } catch (Exception e) {
+                                    link = false;
+                                }
+                            } else if (orderV[z].contains("ID")) {
+                                out.print("<a class=\"ut-link\" href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu: ");
                                 link = true;
                             }
-                            if (fieldNames.get(i).endsWith("PLemma") || fieldNames.get(i).equals("Erstglied") || fieldNames.get(i).equals("Zweitglied")) {
-                                cell = format(cell, "PLemma");
+                        }
+
+                        if (orderV[z].startsWith("einzelbeleg.ID")) {
+                            out.print(format(DBtoHTML(text), "einzelbeleg.Belegform"));
+                        } else if (orderV[z].endsWith("Jahr")) {
+                            int ja = Integer.parseInt(oldValue[z]);
+                            out.print("" + (ja * zeitraum) + "-" + ((ja + 1) * zeitraum - 1));
+                        } else {
+
+                            String format = orderV[z];
+                            if (orderV[z].equals("Erstglied") || orderV[z].equals("Zweitglied")) {
+                                format = "PLemma";
                             }
-                            out.print(cell);
-                            if (link) {
-                                out.print("</a>");
+                            out.print(format(DBtoHTML(text), format));
+                        }
+                        if (link) {
+                            out.print("</a>&nbsp;");
+                        }
+
+                        if (z == orderSize - 1) {
+                            out.print("<ul><table class=\"ut-table ut-table--striped ut-table--striped--color-primary-3  \">" + header + "<tbody class=\"ut-table__body \">" + "<tr class=\"ut-table__row\">");
+                        } else {
+                            out.print("<ul>");
+                        }
+                    }
+                }
+
+                //out.print("<tr class=\"" + (even ? "" : "un") + "even\">");
+                // out.print("<tr class=\"" + (even ? "" : "un") + "even ut-table__row\">");
+                out.print("<tr class=\"ut-table__row\">");
+
+                if (!formular.equals("favorit") && !formular.equals("freie_suche") && !formular.equals("namenkommentar") && !formular.equals("literatur")) {
+                    out.print("<td class=\"ut-table__item ut-table__body__item\" valign=\"top\" align=\"center\"><a class=\"ut-link\" href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu</a></td>");
+                }
+
+                for (int i = startIndex; i < fieldNames.size(); i++) {
+                    if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
+                        out.print("<td class=\"ut-table__item ut-table__body__item\" valign=\"top\">");
+                        if (row.get(fieldNames.get(i)) != null && !DBtoHTML(row.get(fieldNames.get(i))).equals("")) {
+                            String cell = DBtoHTML(row.get(fieldNames.get(i)));
+                            if (export.equals("browse")) {
+                                boolean link = false;
+                                if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
+                                    out.print("<a class=\"ut-link\" href=\"einzelbeleg?ID=" + row.get("einzelbelegID") + "\">");
+                                    link = true;
+                                } else if (fieldNames.get(i).contains("person.Standardname")) {
+                                    out.print("<a class=\"ut-link\" href=\"person?ID=" + row.get("personID") + "\">");
+                                    link = true;
+                                } else if (fieldNames.get(i).contains("perszu.Standardname")) {
+                                    out.print("<a class=\"ut-link\" href=\"person?ID=" + row.get("perszuID") + "\">");
+                                    link = true;
+                                } else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
+                                    out.print("<a class=\"ut-link\" href=\"namenkommentar?ID=" + row.get("namenkommentarID") + "\">");
+                                    link = true;
+                                } else if (fieldNames.get(i).contains("mgh_lemma.MGHLemma")) {
+                                    out.print("<a class=\"ut-link\" href=\"lemma?ID=" + row.get("mgh_lemmaID") + "\">");
+                                    link = true;
+                                } else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
+                                    out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");
+                                    link = true;
+                                } else if (fieldNames.get(i).contains("edition.Titel")) {
+                                    link = false;
+                                } else if (fieldNames.get(i).contains("ID")) {
+                                    out.print("<a class=\"ut-link\" href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu: ");
+                                    link = true;
+                                }
+                                if (fieldNames.get(i).endsWith("PLemma") || fieldNames.get(i).equals("Erstglied") || fieldNames.get(i).equals("Zweitglied")) {
+                                    cell = format(cell, "PLemma");
+                                }
+                                out.print(cell);
+                                if (link) {
+                                    out.print("</a>");
+                                }
+                            } else {
+                                if (fieldNames.get(i).endsWith("PLemma") || fieldNames.get(i).equals("Erstglied") || fieldNames.get(i).equals("Zweitglied")) {
+                                    cell = format(cell, "PLemma");
+                                }
+
+                                out.print(cell);
                             }
                         } else {
-                            if (fieldNames.get(i).endsWith("PLemma") || fieldNames.get(i).equals("Erstglied") || fieldNames.get(i).equals("Zweitglied")) {
-                                cell = format(cell, "PLemma");
-                            }
-
-                            out.print(cell);
+                            out.print("&nbsp;");
                         }
-                    } else {
-                        out.print("&nbsp;");
+                        out.print("</td>");
                     }
-                    out.print("</td>");
                 }
+                out.print("</tr>");
+                even = !even;
             }
+
             out.print("</tr>");
-            even = !even;
-        }
+            out.print("</tbody>");
+            out.print("</table>");
 
-        out.print("</tr>");
-        out.print("</table>");
-        for (int z = orderSize - 1; z >= 0; z--) {
-            out.print("</ul></li>");
-        }
+            for (int z = orderSize - 1; z >= 0; z--) {
+                out.print("</ul></li>");
+            }
 
-        if (!found) {
-            out.println("Kein Eintrag vorhanden, der dem Suchkriterium entspricht.");
-        }
+            if (!found) {
+                out.println("Kein Eintrag vorhanden, der dem Suchkriterium entspricht.");
+            }
 
-        out.print("</ul>");
+            out.print("</ul>");
 
 %>
 <script type="text/javascript">
@@ -1441,8 +1577,8 @@
     });
 </script>
 <%                }
-        // ########## LISTE/BROWSE #########
 
+        // ########## LISTE/BROWSE #########
         // ########## EXCEL #########
         if (export.equals("excel")) {
             PrintWriter excel = new PrintWriter(new FileWriter(this.getServletContext().getRealPath("/") + "print\\output_" + session.getAttribute("Benutzername") + ".csv"));
@@ -1465,11 +1601,11 @@
             for (Map row : rowlist) {
                 for (int z = 0; z < orderSize; z++) {
                     int jahr = 0;
-                    String jahrV = row.get(orderV[z]).toString();
+                    String jahrV = Utils.safeToString(row.get(orderV[z]));
                     int zeitraum = 0;
                     if (orderV[z].endsWith("Jahr")) {
                         zeitraum = Integer.parseInt(request.getParameter("order" + (z + 1) + "zeit"));
-                        if (jahrV == null) {
+                        if (jahrV.isEmpty()) {
                             jahr = 0;
                         } else {
                             jahr = Integer.parseInt(jahrV);
@@ -1491,13 +1627,11 @@
                             excel.print(";");
                         }
 
-                        String text = row.get(orderV[z]).toString();
+                        String text = Utils.safeToString(row.get(orderV[z]), "-");
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
-                            text = row.get("einzelbeleg.Belegform").toString();
+                            text = Utils.safeToString(row.get("einzelbeleg.Belegform"));
                         }
-                        if (text == null) {
-                            text = "-";
-                        }
+
                         String titel = orderV[z];
 
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
@@ -1525,7 +1659,8 @@
 
                     if (fieldName.endsWith("Jahrhundert") || fieldName.endsWith("Jahr") || fieldName.endsWith("Monat") || fieldName.endsWith("Tag") || !order.contains(fieldName)) {
 
-                        if (row.get(fieldName) == null || row.get(fieldName).toString().equals("null")) {
+                        Object value = row.get(fieldName);
+                        if (value == null || "null".equalsIgnoreCase(Utils.safeToString(value).trim())) {
                             excel.print("\"-\";");
                         } else {
                             excel.print("\"" + row.get(fieldName) + "\";");
@@ -1535,7 +1670,7 @@
                 excel.println();
             }
             excel.close();
-            out.println("<a href='../../print/output_" + session.getAttribute("Benutzername") + ".csv'>herunterladen</a>");
+            out.println("<a class=\"ut-link\" href='../../print/output_" + session.getAttribute("Benutzername") + ".csv'>herunterladen</a>");
         }
         // ########## EXCEL #########
 
@@ -1569,11 +1704,11 @@
             for (Map row : rowlist) {
                 for (int z = 0; z < orderSize; z++) {
                     int jahr = 0;
-                    String jahrV = row.get(orderV[z]).toString();
+                    String jahrV =Utils.safeToString(row.get(orderV[z]));
                     int zeitraum = 0;
                     if (orderV[z].endsWith("Jahr")) {
                         zeitraum = Integer.parseInt(request.getParameter("order" + (z + 1) + "zeit"));
-                        if (jahrV == null) {
+                        if (jahrV.isEmpty()) {
                             jahr = 0;
                         } else {
                             jahr = Integer.parseInt(jahrV);
@@ -1604,13 +1739,11 @@
                             t += "\t";
                         }
 
-                        String text = row.get(orderV[z]).toString();
+                        String text = Utils.safeToString(row.get(orderV[z]), "-");
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
-                            text = row.get("einzelbeleg.Belegform").toString();
+                            text = Utils.safeToString(row.get("einzelbeleg.Belegform"));
                         }
-                        if (text == null) {
-                            text = "-";
-                        }
+
                         String titel = orderV[z];
                         //     out.println(z + "::" + orderV[z]);
 
@@ -1641,10 +1774,11 @@
 
                     if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
 
-                        if (row.get(fieldNames.get(i)) == null || row.get(fieldNames.get(i)).equals("null")) {
+                        Object value = row.get(fieldNames.get(i));
+                        if (value == null || "null".equalsIgnoreCase(Utils.safeToString(value).trim())) {
                             tab.addCell(new Cell(new Paragraph("-", new Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
                         } else {
-                            tab.addCell(new Cell(new Paragraph(row.get(fieldNames.get(i)).toString(), new Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
+                            tab.addCell(new Cell(new Paragraph(Utils.safeToString(row.get(fieldNames.get(i))), new Font(Font.TIMES_ROMAN, 8, Font.NORMAL, new Color(0, 0, 0)))));
                         }
                     }
                 }
@@ -1652,45 +1786,11 @@
             document.add(tab);
             document.close();
 
-            out.println("<a href='../../print/output_" + session.getAttribute("Benutzername") + ".rtf'>herunterladen</a>");
+            out.println("<a class=\"ut-link\" href='../../print/output_" + session.getAttribute("Benutzername") + ".rtf'>herunterladen</a>");
         }
         // ########## rtf #########
-
         // ########## SEITENNAVIGATION #########
-        /*    if (export.equals("liste") || export.equals("browse")) {
-out.println("<p class=\"resultlistnavigation\" align=\"center\">");
-int pages = (linecount / pageLimit)+1;
-for (int i=0; i< pages; i++) {
-  // Link fÃ¼r Seite erzeugen
-  String parameter = "?pageoffset="+i;
-  for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements(); ) {
-    String paramName = e.nextElement();
-    if (!paramName.equals("pageoffset"))
-      parameter += "&"+paramName+"="+urlEncode(request.getParameter(paramName));
-  }
-
-  // Link zur ersten Seite anzeigen falls nÃ¶tig
-  if (i ==  0 && i <= pageoffset - 10) {
-    out.println("<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;...&nbsp;");
-  }
-
-  // gelinkte Seitennummer anzeigen
-  if (i < pageoffset + 10 && i > pageoffset - 10) {
-    if (i==pageoffset) {
-      out.println("<b>");
-    }
-    out.println("<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;");
-    if (i==pageoffset) {
-      out.println("</b>");
-    }
-  }
-  // Link zur letzten Seite anzeigen falls nÃ¶tig
-  if (i ==  pages-1 && i >= pageoffset + 10) {
-    out.println("...&nbsp;<a href=\""+parameter+"\">"+(i+1)+"</a>&nbsp;");
-  }
-}
-out.println("</p>");
-}*/
+        printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
         // ########## SEITENNAVIGATION #########
     }
 %>

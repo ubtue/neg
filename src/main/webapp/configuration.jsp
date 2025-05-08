@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.AuthHelper"%>
 <%
     request.setCharacterEncoding("UTF-8");
@@ -22,19 +23,20 @@
     // Speicherort der Datei "tabellen.txt" (nur für den Import)
     String tblFile = "E:/tabellen.txt";
 
-    int pageLimit = 30;		// Wichtig für Abfragen
+    int pageLimit = 10;		// Wichtig für Abfragen
     int sessionTimeout = 60 * 60;
     int numberSize = 5;		// Anzahl der Nummerierungsstellen in PKZ, Belegnummer, etc.
 
-    String txt_search = "<img src=\"layout/icons/search2.gif\" border=\"0\" alt=\"suchen\" title=\"suchen\">";  // "suchen";
-    String txt_delete = "<img src=\"layout/icons/delete2.gif\" border=\"0\" alt=\"l&ouml;schen\" title=\"l&ouml;schen\">";  // "l&ouml;schen";
-    String txt_newentry = "<img src=\"layout/icons/newentry2.gif\" border=\"0\" alt=\"neuer Eintrag\" title=\"neuer Eintrag\">";  // "neuer Eintrag";
+    String txt_search = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/search2.gif\" border=\"0\" alt=\"suchen\" title=\"suchen\">";  // "suchen";
+    String txt_delete = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/delete2.gif\" border=\"0\" alt=\"l&ouml;schen\" title=\"l&ouml;schen\">"; // "l&ouml;schen";
+    String txt_newentry = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/newentry2.gif\" border=\"0\" alt=\"neuer Eintrag\" title=\"neuer Eintrag\">";  // "neuer Eintrag";
+
     String gndIcon = "";
 
     if (AuthHelper.isGastLogin(request)) {
-        gndIcon = "<img src=\"../layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">";   // "GND Link"
+        gndIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/gast/layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">"; // "GND Link"
     } else {
-        gndIcon = "<img src=\"layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">";   // "GND Link"
+        gndIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">";   // "GND Link"
     }
 
     String commentFolder_personenkommentar = "personenkommentar";

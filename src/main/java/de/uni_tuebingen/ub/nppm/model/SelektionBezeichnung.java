@@ -9,7 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public abstract class SelektionBezeichnung extends Selektion {
     @Column(name = "Bezeichnung", length=255)
     private String bezeichnung;
-
+    
     public String getBezeichnung() {
         return bezeichnung;
     }

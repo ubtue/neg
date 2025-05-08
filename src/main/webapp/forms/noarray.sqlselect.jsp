@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
@@ -17,14 +18,14 @@
 
         int selected = -1;
         if (row != null) {
-            selected = Integer.parseInt(row.get(zielAttribut).toString());
+            selected = Integer.parseInt(String.valueOf(row.get(zielAttribut)));
         } else {
             Map row3 = AbstractBase.getMappedRow("SELECT edition.ID ID"
                     + " FROM edition, quelle_inedition, einzelbeleg"
                     + " WHERE einzelbeleg.ID = " + id + " AND einzelbeleg.QuelleID = quelle_inedition.QuelleID AND quelle_inedition.EditionID = edition.ID AND quelle_inedition.Standard=1");
 
             if (row3 != null) {
-                selected = Integer.parseInt(row3.get("ID").toString());
+                selected = Integer.parseInt(String.valueOf(row3.get("ID")));
             }
         }
 
@@ -35,16 +36,24 @@
         List<Map> rowlist2 = AbstractBase.getMappedList(sql);
         //   out.println("<option value=\"-1\">nicht bearbeitet</option>");
         for (Map row2 : rowlist2) {
-            if (!isReadOnly) {
-                out.println("<option value=\"" + row2.get("ID").toString() + "\" " + (Integer.parseInt(row2.get("ID").toString()) == selected ? "selected" : "") + ">" + DBtoHTML(row2.get("Bezeichnung").toString()) + "</option>");
-            } else if (Integer.parseInt(row2.get("ID").toString()) == selected) {
-                out.println(DBtoHTML(row2.get("Bezeichnung").toString()));
+            String bezeichnung =  Utils.safeToString(row2.get("Bezeichnung")) ;
+
+            String id_temp =  Utils.safeToString(row2.get("ID"));
+
+            if (!id_temp.isEmpty() && !bezeichnung.isEmpty()) {
+                if (!isReadOnly) {
+                    out.println(String.format("<option value=\"%s\" %s>%s</option>",
+                            id_temp,
+                            (Integer.parseInt(id_temp) == selected ? "selected" : ""),
+                            bezeichnung));
+                } else if (Integer.parseInt(id_temp) == selected) {
+                    out.println(bezeichnung);
+                }
             }
         }
 
         if (!isReadOnly) {
             out.println("</select>");
         }
-
     }
 %>

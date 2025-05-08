@@ -1,8 +1,11 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.*;
 import java.util.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "quelle")
@@ -115,6 +118,12 @@ public class Quelle {
 
     @ManyToMany(mappedBy = "quellen")
     private Set<Edition> editions = new HashSet<>();
+
+    @ManyToMany(mappedBy = "quelle")
+    private Set<Einzelbeleg> einzelbelege = new HashSet<>();
+
+    @OneToOne(mappedBy = "quelle")
+    private Urkunde urkunde;
 
     public Integer getId() {
         return id;
@@ -362,6 +371,87 @@ public class Quelle {
 
     public void removeEdition(int id){
         this.getEditions().removeIf(e -> e.getId() == id);
+    }
+
+    public Urkunde getUrkunde() {
+        return urkunde;
+    }
+
+    public Set<Einzelbeleg> getEinzelbelege() {
+        return einzelbelege;
+    }
+
+    public void setEinzelbelege(Set<Einzelbeleg> einzelbelege) {
+        this.einzelbelege = einzelbelege;
+    }
+
+    public void addEinzelbeleg(Einzelbeleg e){
+        this.getEinzelbelege().add(e);
+    }
+
+    public void removeEinzelbeleg(int id){
+        this.getEinzelbelege().removeIf(e -> e.getId() == id);
+    }
+
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        // Allgemeine Informationen
+        Utils.addIfValid(jsonObject, "id", this.getId() != null ? "Q" + this.getId() : null);
+        Utils.addIfValid(jsonObject, "bezeichnung", Utils.sanitize(this.getBezeichnung()));
+        Utils.addIfValid(jsonObject, "quellennummer", Utils.sanitize(this.getQuellennummer()));
+        Utils.addIfValid(jsonObject, "quellenKommentarDatei", Utils.sanitize(this.getQuellenKommentarDatei()));
+        Utils.addIfValid(jsonObject, "ueberlieferungsKommentarDatei", Utils.sanitize(this.getUeberlieferungsKommentarDatei()));
+
+        // Bearbeitungsstatus
+        Utils.addIfValid(jsonObject, "bearbeitungsstatus", this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getId() : null);
+
+        // Datierungsinformationen
+        Utils.addIfValid(jsonObject, "vonTag", this.getVonTag());
+        Utils.addIfValid(jsonObject, "vonMonat", this.getVonMonat());
+        Utils.addIfValid(jsonObject, "vonJahr", this.getVonJahr());
+        Utils.addIfValid(jsonObject, "vonJahrhundert", this.getVonJahrhundert());
+        Utils.addIfValid(jsonObject, "bisTag", this.getBisTag());
+        Utils.addIfValid(jsonObject, "bisMonat", this.getBisMonat());
+        Utils.addIfValid(jsonObject, "bisJahr", this.getBisJahr());
+        Utils.addIfValid(jsonObject, "bisJahrhundert", this.getBisJahrhundert());
+        Utils.addIfValid(jsonObject, "genauigkeitVonTag", this.getGenauigkeitVonTag() != null ? this.getGenauigkeitVonTag().getBezeichnung() : null);
+        Utils.addIfValid(jsonObject, "genauigkeitVonMonat", this.getGenauigkeitVonMonat() != null ? this.getGenauigkeitVonMonat().getBezeichnung() : null);
+        Utils.addIfValid(jsonObject, "genauigkeitVonJahr", this.getGenauigkeitVonJahr() != null ? this.getGenauigkeitVonJahr().getBezeichnung() : null);
+        Utils.addIfValid(jsonObject, "genauigkeitVonJahrhundert", this.getGenauigkeitVonJahrhundert() != null ? this.getGenauigkeitVonJahrhundert().getBezeichnung() : null);
+        Utils.addIfValid(jsonObject, "genauigkeitBisTag", this.getGenauigkeitBisTag() != null ? this.getGenauigkeitBisTag().getBezeichnung() : null);
+        Utils.addIfValid(jsonObject, "genauigkeitBisMonat", this.getGenauigkeitBisMonat() != null ? this.getGenauigkeitBisMonat().getBezeichnung() : null);
+        Utils.addIfValid(jsonObject, "genauigkeitBisJahr", this.getGenauigkeitBisJahr() != null ? this.getGenauigkeitBisJahr().getBezeichnung() : null);
+        Utils.addIfValid(jsonObject, "genauigkeitBisJahrhundert", this.getGenauigkeitBisJahrhundert() != null ? this.getGenauigkeitBisJahrhundert().getBezeichnung() : null);
+        Utils.addIfValid(jsonObject, "datierungUngewiss", this.getDatierungUngewiss());
+
+        // Kommentare
+        Utils.addIfValid(jsonObject, "kommentarDatierung", Utils.sanitize(this.getKommentarDatierung()));
+
+        // Gruppenzugehörigkeit
+        Utils.addIfValid(jsonObject, "gehoertGruppe", this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null);
+
+        // Veröffentlichungsstatus
+        Utils.addIfValid(jsonObject, "zuVeroeffentlichen", this.getZuVeroeffentlichen());
+
+        // Editions-IDs
+        JSONArray editionsArray = new JSONArray();
+        for (Edition e : this.getEditions()) {
+            editionsArray.put("E" + e.getId());
+        }
+        jsonObject.put("editions", editionsArray);
+
+        // Einzelbeleg-IDs
+        JSONArray einzelbelegeArray = new JSONArray();
+        for (Einzelbeleg e : this.getEinzelbelege()) {
+            einzelbelegeArray.put("B" + e.getId());
+        }
+        jsonObject.put("einzelbelege", einzelbelegeArray);
+
+        // Urkunde-ID
+        Utils.addIfValid(jsonObject, "urkunde", this.getUrkunde() != null ? "U" + this.getUrkunde().getId() : null);
+
+        return jsonObject;
     }
 
 }

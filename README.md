@@ -21,6 +21,7 @@ Prerequisites:
     <!-- Optional -->
     <Environment name="matomoURL" value="" type="java.lang.String"/>
     <Environment name="matomoSiteId" value="" type="java.lang.String"/>
+    <Environment name="development" value="true" type="java.lang.String"/>
 
     <!-- Mail -->
     <Environment name="smtpHost" value="smtpserv.uni-tuebingen.de" type="java.lang.String"/>
@@ -31,7 +32,7 @@ Prerequisites:
 ```
 - Java >= 1.11.0
 - MySQL >= 8.0
-  - innodb_buffer_pool_size=512M
+  - innodb_buffer_pool_size=1024M
   - collation-server = utf8_unicode_ci
   - character-set-server = utf8mb4
   - group_concat_max_len = 100000000

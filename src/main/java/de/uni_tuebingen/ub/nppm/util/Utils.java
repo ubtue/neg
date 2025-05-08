@@ -3,14 +3,31 @@ package de.uni_tuebingen.ub.nppm.util;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
 import org.apache.commons.text.StringEscapeUtils;
+import org.json.JSONObject;
 
 public class Utils {
+
+    public static String safeToString(Object o) {
+        return safeToString(o, "");
+    }
+
+    public static String safeToString(Object o, String fallback) {
+        if (o == null) {
+            return fallback;
+        } else {
+            return escapeHTML(String.valueOf(o));
+        }
+    }
 
     public static boolean isNumeric(String str) {
         try {
@@ -19,6 +36,21 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    public static boolean isDevelopmentEnvironment() {
+        try {
+            InitialContext initialContext = new javax.naming.InitialContext();
+            Object entry = initialContext.lookup("java:comp/env/development");
+            return entry == null || ((String) entry).equals("true");
+        } catch (NamingException ex) {
+            return false;
+        }
+
+    }
+
+    public static boolean isGastEnvironment(HttpServletRequest request) {
+        return request.getRequestURL().toString().contains("/gast/");
     }
 
     public static String getBaseUrl(HttpServletRequest request) {
@@ -31,7 +63,7 @@ public class Utils {
         return baseUrl;
     }
 
-     public static String getAjaxUrl(HttpServletRequest request) {
+    public static String getAjaxUrl(HttpServletRequest request) {
         return getBaseUrl(request) + "/ajax";
     }
 
@@ -252,7 +284,7 @@ public class Utils {
                             out.print("<a href=\"namenkommentar?ID=" + (int) rs.get("namenkommentarID") + "\">");
                             link = true;
                         } else if (orderV[z].equals("MGHLemma") && rs.get("mgh_lemmaID") != null) {
-                            out.print("<a href=\"mghlemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
+                            out.print("<a href=\"lemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
                             link = true;
                         } else if (orderV[z].equals("Bezeichnung") && rs.get("quelleID") != null) {                              // ?
                             out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
@@ -325,7 +357,7 @@ public class Utils {
                             out.print("<a href=\"namenkommentar?ID=" + (int) rs.get("namenkommentarID") + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("MGHLemma") && rs.get("mgh_lemmaID") != null) {
-                            out.print("<a href=\"mghlemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
+                            out.print("<a href=\"lemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("Bezeichnung") && rs.get("quelleID") != null) {        //?
                             out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
@@ -370,6 +402,27 @@ public class Utils {
         }
 
         out.print("</ul>");
+    }
+
+    // Hilfsfunktion zum Hinzufügen von Feldern, wenn sie gültig sind
+    public static void addIfValid(JSONObject jsonObject, String key, Object value) {
+        if (value != null) {
+            jsonObject.put(key, value);
+        }
+    }
+
+    // Hilfsfunktion zum Bereinigen von Strings
+    public static String sanitize(String value) {
+        if (value == null || "null".equalsIgnoreCase(value) || "-".equals(value.trim()) || "--".equals(value.trim()) || value.trim().isEmpty()) {
+            return null;
+        }
+        return value;
+    }
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+    public static String formatDate(Date date) {
+        return date != null ? DATE_FORMAT.format(date) : null;
     }
 
 }

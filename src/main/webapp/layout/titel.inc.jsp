@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ include file="../configuration.jsp" %>
 
 <%
@@ -51,7 +52,11 @@
                     <jsp:param name="Command" value="new"/>
                 </jsp:include>
 
-                <% // Nur Anzeigen, wenn eigener Datensatz oder Datensatz ohne Besitzer
+                <%
+                    String speichernText = Language.getTextfield(session, "navigation", "Speichern");
+                    String reset = Language.getTextfield(session, "navigation", "Abbrechen");
+
+                    // Nur Anzeigen, wenn eigener Datensatz oder Datensatz ohne Besitzer
                     int akt = 0;
 
                     //id = Integer.parseInt(request.getParameter("ID"));
@@ -61,8 +66,8 @@
                     if (!disabled.equals(" disabled"))
                         out.println("    <script type=\"text/javascript\">shortcut.add(\"Ctrl+Shift+S\",function() {document.forms[0].speichern.click();	},{	'type':'keydown',	'propagate':false,	'target':document});</script>");
                 %>
-                <input id="speichernX" type="submit" name="speichern" value="speichern" <%= disabled%>>
-                <input type="reset" name="abbrechen" value="zur&uuml;cksetzen" <%= disabled%>>
+                <input id="speichernX" type="submit" name="speichern" value="<%= speichernText %>" <%= disabled %>>
+                <input type="reset" name="abbrechen" value="<%= reset %>" <%= disabled%>>
                 <jsp:include page="../forms/link.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
@@ -144,7 +149,8 @@
                 </jsp:include>
             </td>
             <td align="right" style="color:white;font-weight:bold;">
-                Eintrag           <jsp:include page="../forms/counter.jsp">
+                <% Language.printTextfield(out, session, "titel_inc", "Eintrag");%>
+                <jsp:include page="../forms/counter.jsp">
                     <jsp:param name="ID" value="<%= id%>"/>
                     <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
                     <jsp:param name="filter" value="<%= filter%>"/>

@@ -1,5 +1,7 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.util.Utils;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "namenkommentar")
@@ -185,4 +188,24 @@ public class NamenKommentar {
     public void removeEinzelbeleg(int id) {
         this.getEinzelbeleg().removeIf(e -> e.getId() == id);
     }
+
+    public JSONObject getJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        // Felder hinzufügen und direkt bereinigen
+        Utils.addIfValid(jsonObject, "ELemma", Utils.sanitize(this.geteLemma()));
+        Utils.addIfValid(jsonObject, "PLemma", Utils.sanitize(this.getpLemma()));
+        Utils.addIfValid(jsonObject, "MGHLemma", Utils.sanitize(this.getMghLemma()));
+        Utils.addIfValid(jsonObject, "bearbeitungsstatus",
+                Utils.sanitize(this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "gehoertGruppe",
+                Utils.sanitize(this.getGehoertGruppe() != null ? this.getGehoertGruppe().getBezeichnung() : null));
+        Utils.addIfValid(jsonObject, "hinweise", Utils.sanitize(this.getHinweise()));
+        Utils.addIfValid(jsonObject, "protokoll", Utils.sanitize(this.getProtokoll()));
+        Utils.addIfValid(jsonObject, "dateiname", Utils.sanitize(this.getDateiname()));
+        Utils.addIfValid(jsonObject, "id", "N" + this.getId());
+
+        return jsonObject;
+    }
+
 }

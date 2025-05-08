@@ -2,6 +2,7 @@ package de.uni_tuebingen.ub.nppm.util;
 
 import javax.servlet.http.*;
 import de.uni_tuebingen.ub.nppm.db.DatenbankDB;
+import java.io.PrintWriter;
 import javax.servlet.jsp.JspWriter;
 public class Language {
 
@@ -42,22 +43,30 @@ public class Language {
         }
     }
 
-    public static void printDatafield(JspWriter out,HttpSession session, String formular, String datenfeld) throws Exception{
+    public static String getDatafield(HttpSession session, String formular, String datenfeld) throws Exception {
+        String html = "";
+
         String lang = getLanguage(session);
         String[] langArray = {lang, Constants.DEFAULT_LANG};
         boolean isSet = false;
-        out.print("<label for=\""+datenfeld+"\">");
+        html += "<label for=\""+datenfeld+"\">";
         for(String l : langArray){
             String print = DatenbankDB.getMapping(l, formular, datenfeld);
             if(print != null){
-                out.println(print);
+                html += print;
                 isSet = true;
                 break;
             }
         }
-        out.print("</label>");
+        html += "</label>";
         if(!isSet)
-            out.println("no datafield available: " + formular + " " + datenfeld);
+            html += "no datafield available: " + formular + " " + datenfeld;
+
+        return html;
+    }
+
+    public static void printDatafield(JspWriter out, HttpSession session, String formular, String datenfeld) throws Exception{
+        out.println(getDatafield(session, formular, datenfeld));
     }
 
     public static String getTextfield(HttpSession session, String formular, String textfield) throws Exception {
@@ -74,6 +83,11 @@ public class Language {
     }
 
     public static void printTextfield(JspWriter out,HttpSession session, String formular, String textfield) throws Exception{
+        out.println(getTextfield(session, formular, textfield));
+    }
+
+    //In order to use this function in a Servlet, I need a PrintWriter there.
+    public static void printTextfield(PrintWriter out, HttpSession session, String formular, String textfield) throws Exception {
         out.println(getTextfield(session, formular, textfield));
     }
 

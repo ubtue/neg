@@ -1,3 +1,5 @@
+<%@page import="de.uni_tuebingen.ub.nppm.model.NamenKommentar"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
 <%@ page import="java.sql.DriverManager" isThreadSafe="false"%>
 <%@ page import="java.util.ArrayList" isThreadSafe="false"%>
@@ -10,11 +12,39 @@
 <%@ page import="com.lowagie.text.*" isThreadSafe="false"%>
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false"%>
 <%@ page import="java.io.*" isThreadSafe="false"%>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 
 <jsp:include page="../dofilter.jsp" />
 
-<%
-    int id = Integer.parseInt(request.getParameter("ID"));
+<%    int id = Integer.parseInt(request.getParameter("ID"));
+
+    NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
+
+    if (namenkommentar == null) {
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Philologisches Lemma ID N" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " does not exist");
+        }
+    }
+
+    Set<Einzelbeleg> listEinzelbeleg = namenkommentar.getEinzelbeleg();
+
+    boolean throwException = true;
+
+    for (Einzelbeleg eb : listEinzelbeleg) {
+        if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
+            throwException = false;
+        }
+    }
+
+    if (throwException) {
+        if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Philologisches Lemma ID N" + id + " ist nicht zu veröffentlichen");
+            } else{
+                throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " is not to be published");
+            }
+    }
 
     String formular = "namenkommentar";
 
@@ -78,9 +108,10 @@
     tables.add("person");
     String sprache = "de";
 
-     //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
-    if (session != null && session.getAttribute("Sprache") != null)
-        sprache = (String)session.getAttribute("Sprache");
+    //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
+    if (session != null && session.getAttribute("Sprache") != null) {
+        sprache = (String) session.getAttribute("Sprache");
+    }
 
     List<String> joins = new ArrayList<>();
     List<String> headlines = new ArrayList<>();
@@ -109,76 +140,59 @@
 %>
 
 <jsp:include page="../dojump.jsp">
-	<jsp:param name="form" value="gast_namenkommentar" />
+    <jsp:param name="form" value="gast_namenkommentar" />
 </jsp:include>
-
-
 
 <jsp:include page="layout/titel.inc.jsp">
-	<jsp:param name="title" value="namenkommentar" />
-	<jsp:param name="ID" value="<%= id %>" />
-	<jsp:param name="size" value="" />
-	<jsp:param name="Formular" value="namenkommentar" />
+    <jsp:param name="title" value="namenkommentar" />
+    <jsp:param name="ID" value="<%= id%>" />
+    <jsp:param name="size" value="" />
+    <jsp:param name="Formular" value="namenkommentar" />
 </jsp:include>
 
-
-
-
 <!----------ID---------->
-  <div id="id">
+<div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
-      <jsp:param name="ID" value="<%=id%>"/>
-      <jsp:param name="title" value="gast_namenkommentar"/>
+        <jsp:param name="ID" value="<%=id%>"/>
+        <jsp:param name="title" value="gast_namenkommentar"/>
     </jsp:include>
-  </div>
+</div>
 
-<!---------- ---------->
-<table class="content-table">
-	<tbody>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "namenkommentar", "Plemma"); %> </th>
-			<td>
-              <jsp:include page="../inc.modul.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="namenkommentar" />
-				<jsp:param name="Modul" value="PLemma" />
-				<jsp:param name="size" value="25" />
-				<jsp:param name="Readonly" value="yes" />
-			  </jsp:include>
+<table class="ut-table ut-table--striped ut-table--striped--color-primary-3" style="width: 100%; table-layout: fixed; border-collapse: collapse; border-spacing: 0;">
+    <tbody class="ut-table__body ">
+        <tr class="ut-table__row" style="vertical-align: top; text-align: left;">
+            <td class="ut-table__item" style="padding-right: 0px; text-align: left; white-space: nowrap;">
+                <% Language.printDatafield(out, session, "namenkommentar", "Plemma"); %>
             </td>
-		</tr>
-		<tr>
-                    <th><% Language.printDatafield(out, session, "namenkommentar", "EinzelbelegRO"); %> </th>
-			<td>
-              <jsp:include page="../inc.erzeugeFormular.jsp">
-				<jsp:param name="ID" value="<%= id %>" />
-				<jsp:param name="Formular" value="namenkommentar" />
-				<jsp:param name="Datenfeld" value="EinzelbelegRO" />
-				<jsp:param name="Readonly" value="yes" />
-			  </jsp:include>
-            </td>
-		</tr>
-		<!--  tr>
-              <td width="200"><% Language.printTextfield(out, session, "namenkommentar", "BemerkungRO"); %>
-                <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                  <jsp:param name="Formular" value="namenkommentar"/>
-                  <jsp:param name="Textfeld" value="BemerkungRO"/>
+            <td class="ut-table__item" style="padding-left: 0px;">
+                <jsp:include page="../inc.modul.jsp">
+                    <jsp:param name="ID" value="<%= id %>" />
+                    <jsp:param name="Formular" value="namenkommentar" />
+                    <jsp:param name="Modul" value="PLemma" />
+                    <jsp:param name="size" value="25" />
+                    <jsp:param name="Readonly" value="yes" />
                 </jsp:include>
-              </td>
-              <td width="450">
+            </td>
+        </tr>
+
+        <tr class="ut-table__row" style="vertical-align: top; text-align: left;">
+            <td class="ut-table__item" style="padding-right: 0px; text-align: left; white-space: nowrap;">
+                <% Language.printDatafield(out, session, "namenkommentar", "EinzelbelegRO"); %>
+            </td>
+            <td class="ut-table__item" style="padding-left: 0px;">
                 <jsp:include page="../inc.erzeugeFormular.jsp">
-                  <jsp:param name="ID" value="<%=id%>"/>
-                  <jsp:param name="Formular" value="namenkommentar"/>
-                  <jsp:param name="Datenfeld" value="BemerkungAlle"/>
-                  <jsp:param name="Readonly" value="yes"/>
+                    <jsp:param name="ID" value="<%= id %>" />
+                    <jsp:param name="Formular" value="namenkommentar" />
+                    <jsp:param name="Datenfeld" value="EinzelbelegRO" />
+                    <jsp:param name="Readonly" value="yes" />
                 </jsp:include>
-              </td>
-            </tr-->
-	</tbody>
+            </td>
+        </tr>
+    </tbody>
 </table>
+
+
 <!----------Treffer insgesamt---------->
-<div style="overflow:auto;">
-
-<%@ include file="suche/ergebnisliste.jsp"%>
-
+<div class="container" style="overflow:auto;">
+    <%@ include file="suche/ergebnisliste.jsp"%>
 </div>
