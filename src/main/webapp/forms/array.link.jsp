@@ -1,15 +1,40 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.*" isThreadSafe="false" %>
+
 <%
+    /*
+     Variante 1: Distinkte, alphabetisch sortierte Links
+    - Behandelt Links wie gleich, auch wenn sie sich nur durch Groß-/Kleinschreibung unterscheiden.
+    - Bevorzugt dabei Großschreibung.
+    - Gibt jeden Link nur einmal aus (also keine Duplikate).
+    - Sortiert alphabetisch (ohne Berücksichtigung von <a> Tags).
+
+        <jsp:param name="Datenfeld" value="EinzelbelegRODistinct" />
+
+
+    Variante 2: Alle Links ausgeben, keine Sortierung
+    - Gibt jeden Link so aus, wie er in der Datenbank steht.
+    - Macht keinen Unterschied zwischen Groß- und Kleinschreibung.
+    - Sortiert nicht, zeigt die Reihenfolge aus der Datenbank.
+    - Zeigt auch doppelte Links an, wenn vorhanden.
+
+    <jsp:param name="Datenfeld" value="EinzelbelegRO" />
+    */
+
+
     if (feldtyp.startsWith("link") && array) {
         String[] fields = feldtyp.substring(feldtyp.lastIndexOf('(') + 1, feldtyp.lastIndexOf(')')).split(",");
         List<Map> rowlist = AbstractBase.getMappedList(
             "SELECT * FROM " + zielTabelle + " WHERE " + formularAttribut + "=\"" + id + "\""
         );
 
-        Set<String> alreadyPrinted = "EinzelbelegRODistinct".equals(datenfeld)
+        Set<String> alreadyPrintedNormalized = "EinzelbelegRODistinct".equals(datenfeld)
             ? new HashSet<>() : null;
+
+        Map<String, String> normalizedToOriginal = new HashMap<>();
+        Map<String, String> normalizedToId = new HashMap<>();
+
+        List<String> links = new ArrayList<>();
 
         for (Map row : rowlist) {
             Map row2 = AbstractBase.getMappedRow(
@@ -25,14 +50,52 @@
                     }
                 }
 
-                if (alreadyPrinted != null) {
-                    if (alreadyPrinted.contains(bez)) continue;
-                    alreadyPrinted.add(bez);
-                }
+                if (alreadyPrintedNormalized != null) {
+                    String normalized = bez.toLowerCase();
 
-                String add = fields[3];
-                out.println("<a class=\"ut-link\" href=\"" + add + "?ID=" + String.valueOf(row.get(fields[1])) + "\">" + bez + "</a><br>");
+                    if (normalizedToOriginal.containsKey(normalized)) {
+                        String existing = normalizedToOriginal.get(normalized);
+                        if (Character.isUpperCase(existing.charAt(0))) {
+                            continue;
+                        }
+                        if (Character.isUpperCase(bez.charAt(0))) {
+                            normalizedToOriginal.put(normalized, bez);
+                            normalizedToId.put(normalized, String.valueOf(row.get(fields[1])));
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        normalizedToOriginal.put(normalized, bez);
+                        normalizedToId.put(normalized, String.valueOf(row.get(fields[1])));
+                    }
+                } else {
+                    String add = fields[3];
+                    String link = "<a class=\"ut-link\" href=\"" + add + "?ID=" + String.valueOf(row.get(fields[1])) + "\">" + bez + "</a><br>";
+                    links.add(link);
+                }
             }
+        }
+
+        if (alreadyPrintedNormalized != null) {
+            links.clear();
+            for (String normalized : normalizedToOriginal.keySet()) {
+                String bez = normalizedToOriginal.get(normalized);
+                String zielId = normalizedToId.get(normalized);
+                String add = fields[3];
+                String link = "<a class=\"ut-link\" href=\"" + add + "?ID=" + zielId + "\">" + bez + "</a><br>";
+                links.add(link);
+            }
+
+            // Nur sortieren wenn EinzelbelegRODistinct aktiv ist
+            Collections.sort(links, new Comparator<String>() {
+                public int compare(String a, String b) {
+                    return a.replaceAll("<[^>]+>", "").compareToIgnoreCase(b.replaceAll("<[^>]+>", ""));
+                }
+            });
+        }
+
+        for (String link : links) {
+            out.println(link);
         }
     }
 %>
