@@ -1394,7 +1394,7 @@
                         }
 
                         String text = "";
-
+                        //uses escapeHTML
                         text = Utils.safeToString(row.get(orderV[z]), "-");
 
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
@@ -1449,7 +1449,8 @@
                         }
 
                         if (orderV[z].startsWith("einzelbeleg.ID")) {
-                            out.print(format(DBtoHTML(text), "einzelbeleg.Belegform"));
+                            //already escaped
+                            out.print(format(text, "einzelbeleg.Belegform"));
                         } else if (orderV[z].endsWith("Jahr")) {
                             int ja = Integer.parseInt(oldValue[z]);
                             out.print("" + (ja * zeitraum) + "-" + ((ja + 1) * zeitraum - 1));
@@ -1459,7 +1460,8 @@
                             if (orderV[z].equals("Erstglied") || orderV[z].equals("Zweitglied")) {
                                 format = "PLemma";
                             }
-                            out.print(format(DBtoHTML(text), format));
+                            //already escaped
+                            out.print(format(text, format));
                         }
                         if (link) {
                             out.print("</a>&nbsp;");
