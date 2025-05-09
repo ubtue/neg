@@ -206,6 +206,10 @@
         mghlemma = true;
     }
 
+    if (mghlemma) {
+        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%[???]%'");
+    }
+
     // ### ZUR PERSON ###
     if (!request.getParameter("Personenname").trim().equals("")) {
         conditions.add("(person.Standardname LIKE '" + request.getParameter("Personenname").trim() + "' OR person_variante.Variante LIKE '" + request.getParameter("Personenname").trim() + "')");
