@@ -246,7 +246,9 @@ public class Utils {
                     }
 
                     String text = "";
-                    if (rs.get(orderV[z]) == null) {
+                    if ("Standardname".equals(orderV[z]) && rs.get(orderV[z]) == null) {
+                        text = "ohne Personen zuordnung";
+                    } else if (rs.get(orderV[z]) == null) {
                         text = "-";
                     } else {
                         text = rs.get(orderV[z]).toString();
@@ -264,7 +266,12 @@ public class Utils {
 
                     titel = headlines.get(fieldNames.indexOf(titel));
 
-                    out.print(titel + ": ");
+                    if (titel.isEmpty()) {
+                        out.print(titel);
+                    } else {
+                        out.print(titel + ": ");
+                    }
+
                     boolean link = false;
 
                     if (!text.equals("-")) {
@@ -290,16 +297,6 @@ public class Utils {
                             out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
                             link = true;
                         }
-                        /* only for Administrator old code maybe for later use
-                            else if (orderV[z].equals("editionTitel") && rs.get("editionID") != null) {
-                                try {
-                                    out.print("<a href=\"edition?ID=" + (int) rs.get("editionID") + "\">");
-                                    link = true;
-                                } catch (Exception e) {
-                                    link = false;
-                                }
-                            } */
-
                     }
 
                     if (orderV[z].startsWith("einzelbelegID")) {
@@ -363,16 +360,6 @@ public class Utils {
                             out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
                             link = true;
                         }
-                        /* only for Administrator old code maybe for later use
-                            else if (fieldNames.get(i).contains("editionTitel")) { //vielleicht löschen
-                                try {
-                                    out.print("<a href=\"edition?ID=" + (int) rs.get("editionID") + "\">");
-                                    link = true;
-                                } catch (Exception e) {
-                                    link = false;
-                                }
-                            }
-                         */
 
                         if (fieldNames.get(i).endsWith("PLemma") || fieldNames.get(i).equals("Erstglied") || fieldNames.get(i).equals("Zweitglied")) {
                             cell = format(cell, "PLemma");
@@ -403,7 +390,7 @@ public class Utils {
 
         out.print("</ul>");
     }
-
+    
     // Hilfsfunktion zum Hinzufügen von Feldern, wenn sie gültig sind
     public static void addIfValid(JSONObject jsonObject, String key, Object value) {
         if (value != null) {

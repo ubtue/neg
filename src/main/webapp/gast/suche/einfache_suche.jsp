@@ -22,33 +22,11 @@
         int orderSize = 0;
 
         String belegform = "";
-        boolean firstBeleg = true;
-
-        if (query.toUpperCase().matches("[BPNQ][0-9]+")) {
-            String newID = query;
-            String newForm = "";
-            if (newID.startsWith("B") || newID.startsWith("b")) {
-                newForm = "einzelbeleg";
-            } else if (newID.startsWith("P") || newID.startsWith("p")) {
-                newForm = "person";
-            } else if (newID.startsWith("N") || newID.startsWith("n")) {
-                newForm = "namenkommentar";
-            } else if (newID.startsWith("Q") || newID.startsWith("q")) {
-                newForm = "quelle";
-            }
-            out.println("<script type=\"text/javascript\">");
-            String url = request.getRequestURL().toString();
-
-            url = url.substring(0, url.lastIndexOf('/') + 1);
-            out.println("location.replace('" + url + newForm + "?ID='+" + newID.substring(1) + ");");
-            out.println("</script>");
-
-        }
 
         query = query.trim();
 
         if (query.length() < 3) {
-            throw new Exception("<b>Bitte geben Sie mindestens 3 Zeichen als Suchtext an.</b>");
+            throw new Exception("<b>Bitte geben Sie mindestens 3 Zeichen als Suchtext an.</b>");  //Übersetzen
         }
 
         String query_like = query;
@@ -82,9 +60,12 @@
         out.println("<ul class=\"mktree\" id=\"complete\">");
 
         headlines = new ArrayList<>();
-        headlines.add("MGHLemma");
-        headlines.add("Standardname");
+        headlines.add("");
+        headlines.add("");
+        headlines.add("Belegform");
         headlines.add("Quelle");
+        headlines.add("Nr./S.");
+        headlines.add("Rast.");
         headlines.add("Edition");
         headlines.add("c.");
         headlines.add("S.");
@@ -92,7 +73,7 @@
         headlines.add("Q von Jh.");
         headlines.add("Q bis J.");
         headlines.add("Q bis Jh.");
-        headlines.add("Belegform");
+
         headlines.add("EB von J.");
         headlines.add("EB von Jh.");
         headlines.add("EB bis J.");
@@ -102,7 +83,10 @@
         fieldNames = new ArrayList<>();
         fieldNames.add("MGHLemma");
         fieldNames.add("Standardname");
+        fieldNames.add("Belegform");
         fieldNames.add("Bezeichnung");
+        fieldNames.add("seite");
+        fieldNames.add("raster");
         fieldNames.add("editionTitel");
         fieldNames.add("EditionKapitel");
         fieldNames.add("EditionSeite");
@@ -110,7 +94,7 @@
         fieldNames.add("quelleVonJahrhundert");
         fieldNames.add("quelleBisJahr");
         fieldNames.add("quelleBisJahrhundert");
-        fieldNames.add("Belegform");
+
         fieldNames.add("VonJahr");
         fieldNames.add("VonJahrhundert");
         fieldNames.add("BisJahr");
@@ -120,11 +104,11 @@
         orderSize = 0;
         String order = "ORDER BY mgh_lemma.MGHLemma ASC, person.Standardname ASC, (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) DIV 25), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC ";
 
-        String orderV1[] = {"MGHLemma", "Standardname", "Belegform", "quelleBerJahr"};
+        String orderV1[] = {"MGHLemma", "Standardname", "Belegform"};
 
         String sql = "SELECT DISTINCT mgh_lemma.MGHLemma, mgh_lemma.ID as mgh_lemmaID, person.Standardname, person.ID as personID, "
                 + "quelle.Bezeichnung, "
-                + "quelle.ID as quelleID, edition.Titel as editionTitel, edition.ID as editionID, e2.EditionKapitel, e2.EditionSeite, quelle.VonTag as quelleVonTag, "
+                + "quelle.ID as quelleID, edition.Titel as editionTitel, edition.ID as editionID, e2.EditionKapitel, e2.EditionSeite, e2.seite AS seite, e2.raster AS raster, quelle.VonTag as quelleVonTag, "
                 + "quelle.VonMonat as quelleVonMonat, quelle.VonJahr as quelleVonJahr, quelle.VonJahrhundert as quelleVonJahrhundert, quelle.BisTag as quelleBisTag, quelle.BisMonat as quelleBisMonat, quelle.BisJahr as quelleBisJahr, "
                 + "quelle.BisJahrhundert as quelleBisJahrhundert, e2.Belegform, e2.ID as e2ID, e2.VonTag, e2.VonMonat, "
                 + "e2.VonJahr, e2.VonJahrhundert, e2.BisTag, e2.BisMonat, e2.BisJahr, "
@@ -141,7 +125,6 @@
                 + "quelle.BisJahrhundert) DIV 25), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC";
 
         belegform = "";
-        firstBeleg = true;
 
         java.util.List<Map> resultAsMap = SucheDB.getEinfacheSucheResult(sql);
 
