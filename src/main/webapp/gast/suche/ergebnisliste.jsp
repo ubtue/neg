@@ -1,3 +1,4 @@
+<%@page import="java.io.IOException"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="java.util.*"%>
@@ -18,7 +19,7 @@
             for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
                 String paramName = e.nextElement();
                 if (!paramName.equals("pageoffset")) {
-                    prevUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                    prevUrl += "&" + paramName + "=" + Utils.urlEncode(request.getParameter(paramName));
                 }
             }
             out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + prevUrl + "';\">Previous</button>&nbsp;");
@@ -31,7 +32,7 @@
                 for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
                     String paramName = e.nextElement();
                     if (!paramName.equals("pageoffset")) {
-                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                        pageUrl += "&" + paramName + "=" + Utils.urlEncode(request.getParameter(paramName));
                     }
                 }
                 out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">1</button>&nbsp;...&nbsp;");
@@ -47,7 +48,7 @@
                     for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
                         String paramName = e.nextElement();
                         if (!paramName.equals("pageoffset")) {
-                            pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                            pageUrl += "&" + paramName + "=" + Utils.urlEncode(request.getParameter(paramName));
                         }
                     }
                     out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
@@ -61,7 +62,7 @@
                 for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
                     String paramName = e.nextElement();
                     if (!paramName.equals("pageoffset")) {
-                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                        pageUrl += "&" + paramName + "=" + Utils.urlEncode(request.getParameter(paramName));
                     }
                 }
                 out.print("...&nbsp;<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
@@ -76,7 +77,7 @@
             for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
                 String paramName = e.nextElement();
                 if (!paramName.equals("pageoffset")) {
-                    nextUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
+                    nextUrl += "&" + paramName + "=" + Utils.urlEncode(request.getParameter(paramName));
                 }
             }
             out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + nextUrl + "';\">Next</button>");
