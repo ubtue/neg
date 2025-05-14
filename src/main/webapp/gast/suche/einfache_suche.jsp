@@ -41,10 +41,9 @@
         String subquery;
         //query_like = query_like.replace("*", "%");  //Wenn du * als Wildcard zulassen willst
         if (query_like.contains("%") || query_like.contains("_")) {
-            //Hier reicht es die ID abzufragen (s. Hauptquery)
-            subquery = "SELECT ID FROM einzelbeleg WHERE Belegform LIKE '" + query_like + "'";
+            subquery = "einzelbeleg.Belegform LIKE '" + query_like + "'";
         } else {
-            subquery = "SELECT ID FROM einzelbeleg WHERE Belegform = '" + query_like + "'";
+            subquery = "einzelbeleg.Belegform = '" + query_like + "'";
         }
 
         out.println("<script>console.log('Using query term: " + query_like.replaceAll("'", "\\'") + "')</script>");
@@ -107,23 +106,24 @@
 
         String orderV1[] = {"MGHLemma", "Standardname", "Belegform"};
 
-        String sql = "SELECT DISTINCT mgh_lemma.MGHLemma, mgh_lemma.ID as mgh_lemmaID, person.Standardname, person.ID as personID, "
-                + "quelle.Bezeichnung, "
-                + "quelle.ID as quelleID, edition.Titel as editionTitel, edition.ID as editionID, e2.EditionKapitel, e2.EditionSeite, e2.seite AS seite, e2.raster AS raster, quelle.VonTag as quelleVonTag, "
-                + "quelle.VonMonat as quelleVonMonat, quelle.VonJahr as quelleVonJahr, quelle.VonJahrhundert as quelleVonJahrhundert, quelle.BisTag as quelleBisTag, quelle.BisMonat as quelleBisMonat, quelle.BisJahr as quelleBisJahr, "
-                + "quelle.BisJahrhundert as quelleBisJahrhundert, e2.Belegform, e2.ID as e2ID, e2.VonTag, e2.VonMonat, "
-                + "e2.VonJahr, e2.VonJahrhundert, e2.BisTag, e2.BisMonat, e2.BisJahr, "
-                + "e2.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS "
-                + "quelleBerJahr FROM (" + subquery + ") as e1 LEFT OUTER JOIN einzelbeleg_hatmghlemma ehk1 ON "
-                + "ehk1.EinzelbelegID=e1.ID LEFT OUTER JOIN mgh_lemma ON "
-                + "mgh_lemma.ID=ehk1.MGHLemmaID LEFT OUTER JOIN einzelbeleg_hatmghlemma ehk2 "
-                + "ON mgh_lemma.ID=ehk2.MGHLemmaID "
-                + "LEFT OUTER JOIN einzelbeleg e2 ON ehk2.EinzelbelegID=e2.ID LEFT OUTER JOIN einzelbeleg_hatperson ON e2.ID=einzelbeleg_hatperson.EinzelbelegID "
-                + "LEFT OUTER JOIN person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN quelle ON "
-                + "e2.QuelleID=quelle.ID LEFT OUTER JOIN edition ON e2.EditionID=edition.ID WHERE "
-                + "(quelle.zuVeroeffentlichen='1') ORDER BY mgh_lemma.MGHLemma ASC, "
-                + "person.Standardname ASC, e2.Belegform ASC, (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, "
-                + "quelle.BisJahrhundert) DIV 25), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC";
+        String sql = "SELECT DISTINCT mgh_lemma.MGHLemma, mgh_lemma.ID AS mgh_lemmaID, person.Standardname, person.ID AS personID, quelle.Bezeichnung, quelle.ID AS quelleID, edition.Titel AS editionTitel, edition.ID AS editionID, einzelbeleg.EditionKapitel, einzelbeleg.EditionSeite, einzelbeleg.seite, einzelbeleg.raster AS raster, quelle.VonTag AS quelleVonTag, quelle.VonMonat AS quelleVonMonat, quelle.VonJahr AS quelleVonJahr, quelle.VonJahrhundert AS quelleVonJahrhundert, quelle.BisTag AS quelleBisTag, quelle.BisMonat AS quelleBisMonat, quelle.BisJahr AS quelleBisJahr, quelle.BisJahrhundert AS quelleBisJahrhundert, einzelbeleg.Belegform, einzelbeleg.ID AS e2ID, einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr, einzelbeleg.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr"
+                   + " FROM einzelbeleg"
+                   + " LEFT JOIN einzelbeleg_hatmghlemma ehk1 ON ehk1.EinzelbelegID=einzelbeleg.ID"
+                   + " LEFT JOIN mgh_lemma ON mgh_lemma.ID=ehk1.MGHLemmaID"
+                   + " LEFT JOIN einzelbeleg_hatperson ON einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID"
+                   + " LEFT JOIN person ON einzelbeleg_hatperson.PersonID=person.ID"
+                   + " LEFT JOIN quelle ON einzelbeleg.QuelleID=quelle.ID"
+                   + " LEFT JOIN edition ON einzelbeleg.EditionID=edition.ID"
+                   + " WHERE quelle.zuVeroeffentlichen='1'"
+                   + " AND mgh_lemma.ID IN"
+                   + " ("
+                   + " SELECT DISTINCT mgh_lemma.ID FROM einzelbeleg"
+                   + " LEFT JOIN einzelbeleg_hatmghlemma ON einzelbeleg.ID = einzelbeleg_hatmghlemma.EinzelbelegID"
+                   + " LEFT JOIN mgh_lemma ON mgh_lemma.ID = einzelbeleg_hatmghlemma.MGHLemmaID"
+                   + " WHERE " + subquery
+                   + " )"
+                   + " ORDER BY mgh_lemma.MGHLemma ASC, person.Standardname ASC, einzelbeleg.Belegform ASC, (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) DIV 25), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC;";
+
 
         belegform = "";
 
