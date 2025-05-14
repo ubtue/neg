@@ -11,6 +11,8 @@ public class PaginationRenderer {
         out.println("<nav aria-label=\"Navigation for rows\">");
         out.println("<ul class=\"ut-nav__list\">");
 
+        out.println(htmlFirstButton(params, request));
+
         if (params.getCurrentPage() > 1) {
             out.println(htmlPrevButton(params, request));
         }
@@ -27,6 +29,8 @@ public class PaginationRenderer {
             out.println(htmlNextButton(params, request));
         }
 
+        out.println(htmlLastButton(params, nOfPages, request));
+        
         out.println("</ul>");
         out.println("</nav>");
         out.println("</div>");
@@ -100,6 +104,34 @@ public class PaginationRenderer {
         return "<a class=\"ut-link sort-link\" href=\"" + url + "\">"
                 + Language.getTextfield(session, "stat", "SortDown")
                 + "</a>";
+    }
+
+    public static String htmlFirstButton(PaginationParams params, HttpServletRequest request) {
+        if (params.getCurrentPage() <= 1) {
+            return "";
+        }
+
+        String url = params.buildUrl(request, "quelle", 1, null);
+
+        return "<li class=\"ut-nav__item\">"
+                + "<button class=\"ut-btn ut-btn--color-primary-3 first-button\" onclick=\"window.location.href='" + url + "';\">First</button>"
+                + "<a class=\"ut-link page-link first-link\" href=\"" + url + "\" style=\"display: none;\">|&lt;</a>"
+                + "</li>"
+                + responsiveScript("first");
+    }
+
+    public static String htmlLastButton(PaginationParams params, int nOfPages, HttpServletRequest request) {
+        if (params.getCurrentPage() >= nOfPages) {
+            return "";
+        }
+
+        String url = params.buildUrl(request, "quelle", nOfPages, null);
+
+        return "<li class=\"ut-nav__item\">"
+                + "<button class=\"ut-btn ut-btn--color-primary-3 last-button\" onclick=\"window.location.href='" + url + "';\">Last</button>"
+                + "<a class=\"ut-link page-link last-link\" href=\"" + url + "\" style=\"display: none;\">&gt;|</a>"
+                + "</li>"
+                + responsiveScript("last");
     }
 
     private static String responsiveScript(String type) {
