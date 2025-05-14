@@ -56,7 +56,7 @@
             String sourceId = getCauseMessage(exception, IdNotFoundException.class);
             out.println(sourceId);
         } else if(containsCause(exception, ContainsInvalidStrException.class)){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_SEE_OTHER);
             String sourceId = getCauseMessage(exception, ContainsInvalidStrException.class);
             out.println(sourceId);
         }
