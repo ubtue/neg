@@ -36,21 +36,21 @@ public class PaginationRenderer {
         out.println("</div>");
     }
 
-    private static String htmlPrevButton(PaginationParams params, HttpServletRequest request) {
+    private static String htmlPrevButton(PaginationParams params, HttpServletRequest request) throws Exception {
         String url = params.buildUrl(request,"quelle", params.getCurrentPage() - 1, null);
-
+        String prev = Language.getTextfield(request.getSession(), "stat", "Prev");
         return "<li class=\"ut-nav__item\">"
-             + "<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + url + "';\">Previous</button>"
+             + "<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + url + "';\">"+prev+"</button>"
              + "<a class=\"ut-link page-link prev-link\" href=\"" + url + "\" style=\"display: none;\"><</a>"
              + "</li>"
              + responsiveScript("prev");
     }
 
-    private static String htmlNextButton(PaginationParams params, HttpServletRequest request) {
+    private static String htmlNextButton(PaginationParams params, HttpServletRequest request) throws Exception {
         String url = params.buildUrl(request,"quelle", params.getCurrentPage() + 1, null);
-
+        String next = Language.getTextfield(request.getSession(), "stat", "Next");
         return "<li class=\"ut-nav__item\">"
-             + "<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + url + "';\">Next</button>"
+             + "<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + url + "';\">"+next+"</button>"
              + "<a class=\"ut-link page-link next-link\" href=\"" + url + "\" style=\"display: none;\">></a>"
              + "</li>"
              + responsiveScript("next");
@@ -106,29 +106,29 @@ public class PaginationRenderer {
                 + "</a>";
     }
 
-    public static String htmlFirstButton(PaginationParams params, HttpServletRequest request) {
+    public static String htmlFirstButton(PaginationParams params, HttpServletRequest request) throws Exception {
         if (params.getCurrentPage() <= 1) {
             return "";
         }
 
         String url = params.buildUrl(request, "quelle", 1, null);
-
+        String first = Language.getTextfield(request.getSession(), "stat", "First");
         return "<li class=\"ut-nav__item\">"
-                + "<button class=\"ut-btn ut-btn--color-primary-3 first-button\" onclick=\"window.location.href='" + url + "';\">First</button>"
+                + "<button class=\"ut-btn ut-btn--color-primary-3 first-button\" onclick=\"window.location.href='" + url + "';\">"+first+"</button>"
                 + "<a class=\"ut-link page-link first-link\" href=\"" + url + "\" style=\"display: none;\">|&lt;</a>"
                 + "</li>"
                 + responsiveScript("first");
     }
 
-    public static String htmlLastButton(PaginationParams params, int nOfPages, HttpServletRequest request) {
+    public static String htmlLastButton(PaginationParams params, int nOfPages, HttpServletRequest request) throws Exception {
         if (params.getCurrentPage() >= nOfPages) {
             return "";
         }
 
         String url = params.buildUrl(request, "quelle", nOfPages, null);
-
+        String last = Language.getTextfield(request.getSession(), "stat", "Last");
         return "<li class=\"ut-nav__item\">"
-                + "<button class=\"ut-btn ut-btn--color-primary-3 last-button\" onclick=\"window.location.href='" + url + "';\">Last</button>"
+                + "<button class=\"ut-btn ut-btn--color-primary-3 last-button\" onclick=\"window.location.href='" + url + "';\">"+last+"</button>"
                 + "<a class=\"ut-link page-link last-link\" href=\"" + url + "\" style=\"display: none;\">&gt;|</a>"
                 + "</li>"
                 + responsiveScript("last");
