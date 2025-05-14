@@ -41,9 +41,10 @@
         String subquery;
         //query_like = query_like.replace("*", "%");  //Wenn du * als Wildcard zulassen willst
         if (query_like.contains("%") || query_like.contains("_")) {
-            subquery = "SELECT * FROM einzelbeleg WHERE Belegform LIKE '" + query_like + "'";
+            //Hier reicht es die ID abzufragen (s. Hauptquery)
+            subquery = "SELECT ID FROM einzelbeleg WHERE Belegform LIKE '" + query_like + "'";
         } else {
-            subquery = "SELECT * FROM einzelbeleg WHERE Belegform = '" + query_like + "'";
+            subquery = "SELECT ID FROM einzelbeleg WHERE Belegform = '" + query_like + "'";
         }
 
         out.println("<script>console.log('Using query term: " + query_like.replaceAll("'", "\\'") + "')</script>");
