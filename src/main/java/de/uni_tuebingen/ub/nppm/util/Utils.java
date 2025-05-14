@@ -247,7 +247,7 @@ public class Utils {
 
                     String text = "";
                     if ("Standardname".equals(orderV[z]) && rs.get(orderV[z]) == null) {
-                        text = "ohne Personen zuordnung";
+                        text = "ohne Personenzuordnung";
                     } else if (rs.get(orderV[z]) == null) {
                         text = "-";
                     } else {
@@ -390,7 +390,7 @@ public class Utils {
 
         out.print("</ul>");
     }
-    
+
     // Hilfsfunktion zum Hinzufügen von Feldern, wenn sie gültig sind
     public static void addIfValid(JSONObject jsonObject, String key, Object value) {
         if (value != null) {
