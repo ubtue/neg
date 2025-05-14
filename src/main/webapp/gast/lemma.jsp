@@ -21,11 +21,9 @@
     MghLemma lemma = LemmaDB.getById(id);
 
     if (lemma == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
-        } else{
-            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "IdNotFoundError");
+        msg = msg.replace("###ID###", String.valueOf(id));
+        throw new IdNotFoundException(msg);
     } else {
 
         Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
@@ -44,19 +42,15 @@
         }
 
         if (throwIdNotPublicException) {
-            if (session.getAttribute("Sprache").equals("de")) {
-                throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
-            } else{
-                throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " is not to be published");
-            }
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "LemmaNotPublicError");
+            msg = msg.replace("###ID###", String.valueOf(id));
+            throw new IdNotPublicException(msg);
         }
 
         if (throwContainsInvalidStrException) {
-            if (session.getAttribute("Sprache").equals("de")) {
-                throw new ContainsInvalidStrException("Lemma ID M" + id + " enthält ungültige Zeichenkette -> '[???]'");
-            } else{
-                throw new ContainsInvalidStrException("Lemma ID M" + String.valueOf(id) + " contains invalid string -> '[???]'");
-            }
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "LemmaInvalidString");
+            msg = msg.replace("###ID###", String.valueOf(id));
+            throw new ContainsInvalidStrException(msg);
         }
     }
 
