@@ -1275,7 +1275,9 @@
         String oldValue[] = new String[15];
 
         // ########## SEITENNAVIGATION #########
-        printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        if("".equals( order)){
+            printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        }
         // ########## SEITENNAVIGATION #########
 
         // ########## LISTE/BROWSE ##########
@@ -1286,7 +1288,7 @@
             String aufklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneAufklappen");
             String zuklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneZuklappen");
 
-            if (!"true".equals(einzelbelegeVonQuelle)) {
+            if (!"true".equals(einzelbelegeVonQuelle) && !"".equals( order)) {
                 out.println("<div id=\"level-functions\">");
                 out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + aufklappen + "\" onClick=\"expandNextLevel('complete')\"><img src=\"layout/images/open_next_level.png\" alt=\"Aufklappen\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + aufklappen + "</button>");
                 out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + zuklappen + "\" onClick=\"collapseNextLevel('complete')\"><img src=\"layout/images/close_next_level.png\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + zuklappen + "</button>");
@@ -1342,11 +1344,17 @@
 
             boolean found = false;
 
-            List<Map<String, String>> searchRes = FrontendExtendedSearch.getSearchResult(
+           List<Map<String, String>> searchRes;
+
+            if("".equals( order)){
+                searchRes = FrontendExtendedSearch.getSearchResult(
                     fieldsString, tablesString, conditionsString, order,
                     fields.toArray(new String[fields.size()]),
                     pageLimitX, offset
-            );
+                );
+            } else{
+                searchRes = FrontendExtendedSearch.getSearchResult(fieldsString, tablesString, conditionsString, order, fields.toArray(new String[fields.size()]));
+            }
 
             for (java.util.Map row : searchRes) {
                 found = true;
@@ -1792,7 +1800,9 @@
         }
         // ########## rtf #########
         // ########## SEITENNAVIGATION #########
-        printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        if("".equals( order)){
+            printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        }
         // ########## SEITENNAVIGATION #########
     }
 %>
