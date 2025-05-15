@@ -21,11 +21,9 @@
     NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
 
     if (namenkommentar == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Philologisches Lemma ID N" + String.valueOf(id) + " ist nicht vorhanden");
-        } else{
-            throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"namenkommentar", "IdNotFoundError");
+        msg = msg.replace("###ID###", String.valueOf(id));
+        throw new IdNotFoundException(msg);
     }
 
     Set<Einzelbeleg> listEinzelbeleg = namenkommentar.getEinzelbeleg();
@@ -35,15 +33,15 @@
     for (Einzelbeleg eb : listEinzelbeleg) {
         if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
             throwException = false;
+            //once it is false we can break
+            break;
         }
     }
 
     if (throwException) {
-        if (session.getAttribute("Sprache").equals("de")) {
-                throw new IdNotPublicException("Philologisches Lemma ID N" + id + " ist nicht zu veröffentlichen");
-            } else{
-                throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " is not to be published");
-            }
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"namenkommentar", "NotPublicError");
+            msg = msg.replace("###ID###", String.valueOf(id));
+            throw new IdNotPublicException(msg);
     }
 
     String formular = "namenkommentar";

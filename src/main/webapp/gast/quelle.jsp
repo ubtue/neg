@@ -35,19 +35,15 @@
 
     Quelle quelle = QuelleDB.getById(id);
     if (quelle == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
-        } else {
-            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"quelle", "IdNotFoundError");
+        msg = msg.replace("###ID###", String.valueOf(id));
+        throw new IdNotFoundException(msg);
     }
 
     if (quelle.getZuVeroeffentlichen() != 1) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotPublicException("Quellen ID Q" + id + " ist nicht zu veröffentlichen");
-        } else {
-            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " is not to be published");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(), "quelle", "NotPublicError");
+        msg = msg.replace("###ID###", String.valueOf(id));
+        throw new IdNotPublicException(msg);
     }
 
     String formular = "quelle";
