@@ -8,26 +8,8 @@
 
 <jsp:include page="../dofilter.jsp" />
 
-<style>
-    .flex-header {
-        position: relative;
-        display: flex; /* Optional, falls du Flexbox verwenden möchtest */
-        align-items: center; /* Stellt sicher, dass die Kinder (Button und h3) vertikal ausgerichtet sind */
-    }
+<link rel="stylesheet" type="text/css" href="<%=Utils.getBaseUrl(request)%>/gast/layout/gast_quelle.css" >
 
-    #toggleButton {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        height: auto; /* Optional, wenn der Button eine flexible Höhe haben soll */
-    }
-
-    h3.ut-heading {
-        margin: 0;
-        line-height: 1.5;
-    }
-</style>
 
 <%    int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));

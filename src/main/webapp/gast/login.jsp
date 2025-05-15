@@ -15,53 +15,7 @@
             NPPM | Login
         </TITLE>
         <link rel="stylesheet" href="../layout/layout.css" type="text/css">
-        <style>
-            .flexbox-container{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                margin: 200px 0px 0px 0px;
-            }
-
-            .flex-item-table{
-                align-items: first;
-            }
-
-            .input-container {
-                position: relative;
-                display: inline-block;
-            }
-
-            .input-container input {
-                padding-right: 30px;
-                box-sizing: border-box;
-            }
-
-            .input-container input,
-            input[name="username"] {
-                width: 100%;
-                box-sizing: border-box;
-                padding-right: 30px;
-            }
-
-            td > input[name="username"] {
-                padding-right: 0;
-            }
-
-            .toggle-eye {
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                cursor: pointer;
-                font-size: 18px;
-                background: none;
-                border: none;
-                outline: none;
-                color: gray;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="<%=Utils.getBaseUrl(request)%>/gast/layout/gast_login.css" >
     </HEAD>
     <BODY>
         <form method="POST">
