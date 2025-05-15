@@ -217,7 +217,7 @@
             </h2>
         </nav>
         <div class="ut-page__switchblock ut-switchblock">
-            <div id="switchblock-menu" class="ut-switchblock__item">
+            <div id="switchblock-menu" class="ut-switchblock__item menuBarFitcontent">
                 <div class="ut-switchblock__header">
                     <span class="ut-switchblock__title">Menu</span>
                     <span class="ut-switchblock__close-icon ut-icon ut-icon-cancel" role="button"></span>
@@ -297,7 +297,7 @@
                                     </a>
                                     ${param.current eq 'freie_suche' ? '</div>' : ''}
                                 </li>
-                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="8">
+                                <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide jumpIDBoxWrapper" data-level-count="8">
                                     <form name="jumpForm" method="post" action="dojumpid" >
                                         <div style="display: flex; align-items: center; gap: 10px;">
                                             <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
