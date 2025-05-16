@@ -1,7 +1,11 @@
 package de.uni_tuebingen.ub.nppm.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
@@ -412,4 +417,28 @@ public class Utils {
         return date != null ? DATE_FORMAT.format(date) : null;
     }
 
+    //Als Fallback wird die aktuelle Systemzeit zurückgegeben um sicherzustellen das die css datei neu geladen wird
+    public static long getLastModifiedTimestampForCSS(ServletContext context, String path) throws MalformedURLException, URISyntaxException {
+        URL resource = context.getResource(path);
+
+        // Frühzeitiger Ausstieg: kein Zugriff auf Ressource oder kein File-URL
+        if (resource == null || !"file".equals(resource.getProtocol())) {
+            return System.currentTimeMillis(); // Fallback: Cache-Busting sicherstellen
+        }
+
+        File file = new File(resource.toURI());
+
+        // Datei existiert nicht: trotzdem Fallback geben
+        if (!file.exists()) {
+            return System.currentTimeMillis();
+        }
+
+        // Datei existiert: Änderungszeit zurückgeben
+        return file.lastModified();
+    }
+
+    public static String getVersionedHref(HttpServletRequest request, ServletContext context, String path) throws MalformedURLException, URISyntaxException {
+        long timestamp = getLastModifiedTimestampForCSS(context, path);
+        return getBaseUrl(request) + path + "?v=" + timestamp;
+    }
 }

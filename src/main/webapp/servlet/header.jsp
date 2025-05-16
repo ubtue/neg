@@ -6,7 +6,7 @@
     <TITLE>NPPM - ${title}</TITLE>
     <meta http-equiv="Content-Type"
       content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="<%=Utils.getBaseUrl(request)%>/layout/layout.css" type="text/css">
+    <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/layout/layout.css")%>" type="text/css">
 
     <script src="<%=Utils.getBaseUrl(request)%>/javascript/funktionen.js" type="text/javascript"></script>
     <script src="<%=Utils.getBaseUrl(request)%>/webjars/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>

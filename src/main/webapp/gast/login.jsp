@@ -7,15 +7,14 @@
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
-
 <HTML>
     <HEAD>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <TITLE>
             NPPM | Login
         </TITLE>
-        <link rel="stylesheet" href="../layout/layout.css" type="text/css">
-        <link rel="stylesheet" type="text/css" href="<%=Utils.getBaseUrl(request)%>/gast/layout/gast_login.css" >
+        <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/layout/layout.css")%>" type="text/css">
+        <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/gast_login.css")%>" type="text/css">
     </HEAD>
     <BODY>
         <form method="POST">

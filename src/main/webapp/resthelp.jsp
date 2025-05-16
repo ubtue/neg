@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>REST API Documentation</title>
-    <link rel="stylesheet" type="text/css" href="<%=Utils.getBaseUrl(request)%>/layout/resthelp.css" >
+    <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/layout/resthelp.css")%>" type="text/css">
 </head>
 <body>
     <h1>REST API Documentation</h1>

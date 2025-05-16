@@ -6,8 +6,7 @@
 
 <jsp:include page="../dofilter.jsp" />
 
-<link rel="stylesheet" type="text/css" href="<%=Utils.getBaseUrl(request)%>/gast/layout/gast_einzelbeleg.css" >
-
+<link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/gast_einzelbeleg.css")%>" type="text/css">
 
 <%
     int id = Integer.parseInt(request.getParameter("ID"));

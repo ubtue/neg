@@ -3,7 +3,7 @@
 <%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@page import="java.util.*"%>
 
-<link rel="stylesheet" type="text/css" href="<%=Utils.getBaseUrl(request)%>/gast/layout/gast_stat.css" >
+<link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/gast_stat.css")%>" type="text/css">
 
 <%
     /*Set filterTitle for Quelle*/
