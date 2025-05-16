@@ -213,7 +213,6 @@ Um Seiteneffekte zu ermeiden lasse ich das so und setze die neue Breite hier mit
 }
 
 .menuBarFitcontent{
-    min-width: 1200px !important;
     width: fit-content !important;
 }
 
