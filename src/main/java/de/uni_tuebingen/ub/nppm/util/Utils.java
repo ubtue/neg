@@ -417,27 +417,28 @@ public class Utils {
         return date != null ? DATE_FORMAT.format(date) : null;
     }
 
-    //Als Fallback wird die aktuelle Systemzeit zurückgegeben um sicherzustellen das die css datei neu geladen wird
-    public static long getLastModifiedTimestampForLocalAsset(ServletContext context, String path) throws MalformedURLException, URISyntaxException {
+    public static long getLastModifiedTimestampForLocalAsset(ServletContext context, String path) throws Exception {
         URL resource = context.getResource(path);
 
-        // Frühzeitiger Ausstieg: kein Zugriff auf Ressource oder kein File-URL
-        if (resource == null || !"file".equals(resource.getProtocol())) {
-            return System.currentTimeMillis(); // Fallback: Cache-Busting sicherstellen
+        if (resource == null) {
+            throw new Exception("Resource not found: " + path);
+        }
+
+        if (!"file".equals(resource.getProtocol())) {
+            throw new Exception("Unexpected protocol: " + resource.getProtocol() + " for path: " + path);
         }
 
         File file = new File(resource.toURI());
 
-        // Datei existiert nicht: trotzdem Fallback geben
         if (!file.exists()) {
-            return System.currentTimeMillis();
+            throw new Exception("File does not exist: " + file.getAbsolutePath());
         }
 
-        // Datei existiert: Änderungszeit zurückgeben
+        //Änderungszeit zurückgeben
         return file.lastModified();
     }
 
-    public static String getVersionedHref(HttpServletRequest request, ServletContext context, String path) throws MalformedURLException, URISyntaxException {
+    public static String getVersionedHref(HttpServletRequest request, ServletContext context, String path) throws Exception {
         long timestamp = getLastModifiedTimestampForLocalAsset(context, path);
         String baseUrl = getBaseUrl(request);
         String href;
