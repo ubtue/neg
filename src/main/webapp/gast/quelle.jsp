@@ -35,14 +35,12 @@
 
     Quelle quelle = QuelleDB.getById(id);
     if (quelle == null) {
-        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"quelle", "IdNotFoundError");
-        msg = msg.replace("###ID###", String.valueOf(id));
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"quelle", "IdNotFoundError",String.valueOf(id));
         throw new IdNotFoundException(msg);
     }
 
     if (quelle.getZuVeroeffentlichen() != 1) {
-        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(), "quelle", "NotPublicError");
-        msg = msg.replace("###ID###", String.valueOf(id));
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(), "quelle", "NotPublicError",String.valueOf(id));
         throw new IdNotPublicException(msg);
     }
 

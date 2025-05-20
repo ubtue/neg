@@ -51,6 +51,11 @@ public class DatenbankDB extends AbstractBase {
         }
     }
 
+    public static String getLabel(String language, String formular, String textfeld, Object... args) throws Exception  {
+        String template = DatenbankDB.getLabel(language, formular, textfeld);
+        return String.format(template, args);
+    }
+
     public static String getLabel(String language, String formular, String textfeld) throws Exception {
         DatenbankTexte item = getLabel(formular, textfeld);
 

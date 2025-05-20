@@ -21,8 +21,7 @@
     NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
 
     if (namenkommentar == null) {
-        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"namenkommentar", "IdNotFoundError");
-        msg = msg.replace("###ID###", String.valueOf(id));
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"namenkommentar", "IdNotFoundError",String.valueOf(id));
         throw new IdNotFoundException(msg);
     }
 
@@ -39,8 +38,7 @@
     }
 
     if (throwException) {
-            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"namenkommentar", "NotPublicError");
-            msg = msg.replace("###ID###", String.valueOf(id));
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"namenkommentar", "NotPublicError",String.valueOf(id));
             throw new IdNotPublicException(msg);
     }
 

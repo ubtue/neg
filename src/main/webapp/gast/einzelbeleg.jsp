@@ -53,14 +53,12 @@
     Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
 
         if(einzelbeleg == null){
-            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"einzelbeleg", "IdNotFoundError");
-            msg = msg.replace("###ID###", String.valueOf(id));
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"einzelbeleg", "IdNotFoundError",String.valueOf(id));
             throw new IdNotFoundException(msg);            
         }
 
         if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
-            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"einzelbeleg", "NotPublicError");
-            msg = msg.replace("###ID###", String.valueOf(id));
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"einzelbeleg", "NotPublicError",String.valueOf(id));
             throw new IdNotPublicException(msg);
         }
 %>

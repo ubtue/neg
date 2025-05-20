@@ -52,8 +52,7 @@
 
     Person person = PersonDB.getById(id);
     if (person == null) {
-        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "IdNotFoundError");
-        msg = msg.replace("###ID###", String.valueOf(id));
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "IdNotFoundError",String.valueOf(id));
         throw new IdNotFoundException(msg);
 
     } else {
@@ -69,8 +68,7 @@
         }
 
         if (throwException) {
-            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "NotPublicError");
-            msg = msg.replace("###ID###", String.valueOf(id));
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "NotPublicError",String.valueOf(id));
             throw new IdNotPublicException(msg);
 
         }
