@@ -298,9 +298,10 @@
                                     ${param.current eq 'freie_suche' ? '</div>' : ''}
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide jumpIDBoxWrapper" data-level-count="8">
+                                    <div class="mobile-fix-menu-item-wrapper">
                                     <form name="jumpForm" method="post" action="dojumpid" >
                                         <div style="display: flex; align-items: center; gap: 10px;">
-                                            <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
+                                            <a class="mobile-fix-menu-item ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
                                                href="#"
                                                onclick="document.querySelector('form[name=jumpForm]').submit(); return false;"
                                                aria-label="ID Button" tabindex="0">
@@ -316,6 +317,7 @@
                                             <input type="hidden" name="current" value="<%= current %>">
                                         </div>
                                     </form>
+                                    </div>
                                 </li>
                             </ul>
                             <!-- ###TOPNAV### End -->
