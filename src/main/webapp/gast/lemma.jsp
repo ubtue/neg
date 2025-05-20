@@ -21,30 +21,36 @@
     MghLemma lemma = LemmaDB.getById(id);
 
     if (lemma == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
-        } else{
-            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "IdNotFoundError");
+        msg = msg.replace("###ID###", String.valueOf(id));
+        throw new IdNotFoundException(msg);
     } else {
 
         Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
 
-        boolean throwException = true;
-
+        boolean throwIdNotPublicException = true;
+        boolean throwContainsInvalidStrException = true;
         for (Einzelbeleg eb : listEinzelbeleg) {
             if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                throwException = false;
+                throwIdNotPublicException = false;
                 break;
             }
         }
 
-        if (throwException) {
-            if (session.getAttribute("Sprache").equals("de")) {
-                throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
-            } else{
-                throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " is not to be published");
-            }
+        if(!lemma.getMghLemma().contains("[???]")){
+            throwContainsInvalidStrException = false;
+        }
+
+        if (throwIdNotPublicException) {
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "LemmaNotPublicError");
+            msg = msg.replace("###ID###", String.valueOf(id));
+            throw new IdNotPublicException(msg);
+        }
+
+        if (throwContainsInvalidStrException) {
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "LemmaInvalidString");
+            msg = msg.replace("###ID###", String.valueOf(id));
+            throw new ContainsInvalidStrException(msg);
         }
     }
 
@@ -144,6 +150,7 @@
     <jsp:param name="ID" value="<%= id%>" />
     <jsp:param name="size" value="" />
     <jsp:param name="Formular" value="mgh_lemma" />
+    <jsp:param name="excludeText" value="[???]" />
 </jsp:include>
 
 <!----------ID---------->

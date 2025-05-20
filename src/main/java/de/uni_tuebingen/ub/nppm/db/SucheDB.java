@@ -23,16 +23,26 @@ public class SucheDB extends AbstractBase {
         return getList(SucheFavoriten.class);
     }
 
-    public static List<String> getAutocompleteText(String country, String form, String query) throws Exception {
+    public static List<String> getAutocompleteText(String field, String form, String query) throws Exception {
         verifyDynamicTable(form);
-        verifyDynamicColumn(country);
+        verifyDynamicColumn(field);
 
-        String sql = "SELECT DISTINCT " + country + " FROM " + form;
+        String sql = "SELECT DISTINCT " + field + " FROM " + form;
         boolean addWhereStatement = !query.equals("?");
         if (addWhereStatement) {
-            sql += " WHERE " + country + " LIKE CONCAT('%', ?1, '%') ";
+            sql += " WHERE " + field + " LIKE CONCAT('%', ?1, '%') ";
+        }        
+
+        // in der auto completion->frontend->erweiterte suche keine einträge mit [???] zeigen
+        if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
+            if (addWhereStatement) {
+                sql += " AND " + field + " NOT LIKE '%[???]%'";
+            } else {
+                sql += " WHERE " + field + " NOT LIKE '%[???]%'";
+            }
         }
-        sql += " ORDER BY " + country;
+
+        sql += " ORDER BY " + field;
 
         try (Session session = getSession()) {
 
