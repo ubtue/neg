@@ -42,7 +42,6 @@ public abstract class AbstractServlet extends HttpServlet {
                 fullHref = cssPath;
             } else {
                 // Interner CSS-Pfad Cache-Busting über Timestamp
-
                 String resolvedPath;
 
                 // Wenn Pfad mit "/" beginnt, ist er bereits absolut
@@ -54,7 +53,7 @@ public abstract class AbstractServlet extends HttpServlet {
                     resolvedPath = currentPath.replaceAll("/[^/]*$", "/") + cssPath;
                 }
 
-                // Timestamp ermitteln (echter lastModified oder aktueller Fallback)
+                // Timestamp ermitteln
                 long timestamp = Utils.getLastModifiedTimestampForLocalAsset(context, resolvedPath);
 
                 // URL mit Base-Pfad und Versionstimestamp aufbauen
