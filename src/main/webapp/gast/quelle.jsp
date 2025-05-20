@@ -8,7 +8,7 @@
 
 <jsp:include page="../dofilter.jsp" />
 
-<link rel="stylesheet" href="<%= Utils.getVersionedHref(request, application, "/gast/layout/gast_quelle.css") %>">
+<link rel="stylesheet" href="<%= Utils.getVersionedHref(request, application, "/gast/layout/quelle.css") %>">
 
 
 <%    int id = 1;

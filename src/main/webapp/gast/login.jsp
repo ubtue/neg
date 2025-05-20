@@ -14,7 +14,7 @@
             NPPM | Login
         </TITLE>
         <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/layout/layout.css")%>" type="text/css">
-        <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/gast_login.css")%>" type="text/css">
+        <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/login.css")%>" type="text/css">
     </HEAD>
     <BODY>
         <form method="POST">

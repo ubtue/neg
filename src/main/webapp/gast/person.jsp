@@ -8,7 +8,7 @@
 
 <jsp:include page="../dofilter.jsp" />
 
-<link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/gast_person.css")%>" type="text/css">
+<link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/person.css")%>" type="text/css">
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
     boolean buttonOnOff = "true".equals(request.getParameter("allfields"));
