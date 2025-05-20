@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,12 +28,46 @@ public abstract class AbstractServlet extends HttpServlet {
        // request.setAttribute("navigationTitle", getNavigationTitle());
        request.setAttribute("navigationTitle", getDynamicNavigationTitle(request, response));
 
-        List<String> css_list = getAdditionalCss();
-        String additional_css = "";
-        for (String css : css_list) {
-            additional_css += "<link rel=\"stylesheet\" href=\"" + css + "\" type=\"text/css\">";
+        // Zugriff auf ServletContext für Dateipfade
+        ServletContext context = request.getServletContext();
+
+        List<String> cssList = getAdditionalCss();
+        StringBuilder additionalCss = new StringBuilder();
+
+        for (String cssPath : cssList) {
+            String fullHref;
+
+            if (cssPath.startsWith("http")) {
+                // Externe CSS-Dateien ohne Modifikation übernehmen
+                fullHref = cssPath;
+            } else {
+                // Interner CSS-Pfad Cache-Busting über Timestamp
+
+                String resolvedPath;
+
+                // Wenn Pfad mit "/" beginnt, ist er bereits absolut
+                if (cssPath.startsWith("/")) {
+                    resolvedPath = cssPath;
+                } else {
+                    // Relativer Pfad in Kontextpfad umwandeln
+                    String currentPath = request.getServletPath(); // z. B. /seite/index.jsp
+                    resolvedPath = currentPath.replaceAll("/[^/]*$", "/") + cssPath;
+                }
+
+                // Timestamp ermitteln (echter lastModified oder aktueller Fallback)
+                long timestamp = Utils.getLastModifiedTimestampForCSS(context, resolvedPath);
+
+                // URL mit Base-Pfad und Versionstimestamp aufbauen
+                fullHref = Utils.getBaseUrl(request) + resolvedPath + "?v=" + timestamp;
+            }
+
+            // <link>-Tag hinzufügen
+            additionalCss.append("<link rel=\"stylesheet\" href=\"");
+            additionalCss.append(fullHref);
+            additionalCss.append("\" type=\"text/css\">\n");
         }
-        request.setAttribute("additionalCss", additional_css);
+
+        request.setAttribute("additionalCss", additionalCss.toString());
 
         List<String> js_list = getAdditionalJavaScript();
         String additional_js = "";

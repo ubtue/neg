@@ -439,6 +439,17 @@ public class Utils {
 
     public static String getVersionedHref(HttpServletRequest request, ServletContext context, String path) throws MalformedURLException, URISyntaxException {
         long timestamp = getLastModifiedTimestampForCSS(context, path);
-        return getBaseUrl(request) + path + "?v=" + timestamp;
+        String baseUrl = getBaseUrl(request);
+        String href;
+
+        if (!baseUrl.endsWith("/") && !path.startsWith("/")) {
+            href = baseUrl + "/" + path;
+        } else if (baseUrl.endsWith("/") && path.startsWith("/")) {
+            href = baseUrl + path.substring(1);
+        } else {
+            href = baseUrl + path;
+        }
+
+        return href + "?v=" + timestamp;
     }
 }
