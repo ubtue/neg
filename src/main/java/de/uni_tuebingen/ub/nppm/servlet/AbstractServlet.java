@@ -55,7 +55,7 @@ public abstract class AbstractServlet extends HttpServlet {
                 }
 
                 // Timestamp ermitteln (echter lastModified oder aktueller Fallback)
-                long timestamp = Utils.getLastModifiedTimestampForCSS(context, resolvedPath);
+                long timestamp = Utils.getLastModifiedTimestampForLocalAsset(context, resolvedPath);
 
                 // URL mit Base-Pfad und Versionstimestamp aufbauen
                 fullHref = Utils.getBaseUrl(request) + resolvedPath + "?v=" + timestamp;

@@ -418,7 +418,7 @@ public class Utils {
     }
 
     //Als Fallback wird die aktuelle Systemzeit zurückgegeben um sicherzustellen das die css datei neu geladen wird
-    public static long getLastModifiedTimestampForCSS(ServletContext context, String path) throws MalformedURLException, URISyntaxException {
+    public static long getLastModifiedTimestampForLocalAsset(ServletContext context, String path) throws MalformedURLException, URISyntaxException {
         URL resource = context.getResource(path);
 
         // Frühzeitiger Ausstieg: kein Zugriff auf Ressource oder kein File-URL
@@ -438,7 +438,7 @@ public class Utils {
     }
 
     public static String getVersionedHref(HttpServletRequest request, ServletContext context, String path) throws MalformedURLException, URISyntaxException {
-        long timestamp = getLastModifiedTimestampForCSS(context, path);
+        long timestamp = getLastModifiedTimestampForLocalAsset(context, path);
         String baseUrl = getBaseUrl(request);
         String href;
 
