@@ -3,11 +3,6 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="java.util.*"%>
 
-<%!
-    
-
-%>
-
 <%
 
     if (true) {
