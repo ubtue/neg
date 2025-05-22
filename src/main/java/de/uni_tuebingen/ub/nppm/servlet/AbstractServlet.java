@@ -21,61 +21,66 @@ public abstract class AbstractServlet extends HttpServlet {
     protected void initRequest(HttpServletRequest request) throws Exception {
         Language.setLanguage(request);
     }
-
     protected void addResponseHeader(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher(getHeaderTemplate());
         request.setAttribute("title", DatenbankDB.getLabel(Language.getLanguage(request), getTitle(), "Titel"));
-       // request.setAttribute("navigationTitle", getNavigationTitle());
-       request.setAttribute("navigationTitle", getDynamicNavigationTitle(request, response));
+        // request.setAttribute("navigationTitle", getNavigationTitle());
+        request.setAttribute("navigationTitle", getDynamicNavigationTitle(request, response));
 
-        // Zugriff auf ServletContext für Dateipfade
         ServletContext context = request.getServletContext();
 
+        // --- CSS ---
         List<String> cssList = getAdditionalCss();
         StringBuilder additionalCss = new StringBuilder();
-
         for (String cssPath : cssList) {
-            String fullHref;
-
-            if (cssPath.startsWith("http")) {
-                // Externe CSS-Dateien ohne Modifikation übernehmen
-                fullHref = cssPath;
-            } else {
-                // Interner CSS-Pfad Cache-Busting über Timestamp
-                String resolvedPath;
-
-                // Wenn Pfad mit "/" beginnt, ist er bereits absolut
-                if (cssPath.startsWith("/")) {
-                    resolvedPath = cssPath;
-                } else {
-                    // Relativer Pfad in Kontextpfad umwandeln
-                    String currentPath = request.getServletPath(); // z. B. /seite/index.jsp
-                    resolvedPath = currentPath.replaceAll("/[^/]*$", "/") + cssPath;
-                }
-
-                // Timestamp ermitteln
-                long timestamp = Utils.getLastModifiedTimestampForLocalAsset(context, resolvedPath);
-
-                // URL mit Base-Pfad und Versionstimestamp aufbauen
-                fullHref = Utils.getBaseUrl(request) + resolvedPath + "?v=" + timestamp;
-            }
-
-            // <link>-Tag hinzufügen
-            additionalCss.append("<link rel=\"stylesheet\" href=\"");
-            additionalCss.append(fullHref);
-            additionalCss.append("\" type=\"text/css\">\n");
+            String href = buildVersionedAssetUrl(request, context, cssPath);
+            additionalCss
+                    .append("<link rel=\"stylesheet\" href=\"")
+                    .append(href)
+                    .append("\" type=\"text/css\">\n");
         }
-
         request.setAttribute("additionalCss", additionalCss.toString());
 
-        List<String> js_list = getAdditionalJavaScript();
-        String additional_js = "";
-        for (String js : js_list) {
-            additional_js += "<script src=\"" + js + "\" type=\"text/javascript\"></script>";
+        // --- JavaScript ---
+        List<String> jsList = getAdditionalJavaScript();
+        StringBuilder additionalJs = new StringBuilder();
+        for (String jsPath : jsList) {
+            String src = buildVersionedAssetUrl(request, context, jsPath);
+            additionalJs
+                    .append("<script src=\"")
+                    .append(src)
+                    .append("\" type=\"text/javascript\"></script>\n");
         }
-        request.setAttribute("additionalJs", additional_js);
+        request.setAttribute("additionalJs", additionalJs.toString());
 
         rd.include(request, response);
+    }
+
+
+    /*
+    Gibt für einen gegebenen asset-Pfad entweder unverändert die externe URL
+    zurück (wenn er mit "http" beginnt) oder baut die Versionierung per
+    Timestamp aus LastModified zusammen.
+     */
+    private String buildVersionedAssetUrl(HttpServletRequest request,
+            ServletContext context,
+            String assetPath) throws Exception {
+        // Externe URLs unverändert übernehmen
+        if (assetPath.startsWith("http://") || assetPath.startsWith("https://")) {
+            return assetPath;
+        }
+
+        // Relativen Pfad in absoluten umwandeln
+        String resolvedPath;
+        if (assetPath.startsWith("/")) {
+            resolvedPath = assetPath;
+        } else {
+            String current = request.getServletPath();      // z.B. "/seite/index.jsp"
+            resolvedPath = current.replaceAll("/[^/]*$", "/") + assetPath;
+        }
+
+        // Versions-URL per Utils
+        return Utils.getVersionedHref(request, context, resolvedPath);
     }
 
     protected void addResponseFooter(HttpServletRequest request, HttpServletResponse response) throws Exception {

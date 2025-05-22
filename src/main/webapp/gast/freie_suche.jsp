@@ -641,6 +641,12 @@
     });
 </script>
 
+<%
+   //global link for the css that is included in enableTooltips
+   String btCssHref = Utils.getVersionedHref(request, application, "/layout/bt.css");
+%>
 <script type="text/javascript">
+    // global machen
+    window.btCssHref = "<%= btCssHref %>";
     enableTooltips();
 </script>
