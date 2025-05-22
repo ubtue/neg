@@ -1,5 +1,6 @@
-package de.uni_tuebingen.ub.nppm.util;
+package de.uni_tuebingen.ub.nppm.util.statistic.pagination;
 
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;

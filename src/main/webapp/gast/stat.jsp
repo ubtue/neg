@@ -1,3 +1,5 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationRenderer"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationParams"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.*"%>

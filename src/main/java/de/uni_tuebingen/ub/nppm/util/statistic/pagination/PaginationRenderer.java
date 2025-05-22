@@ -1,5 +1,6 @@
-package de.uni_tuebingen.ub.nppm.util;
+package de.uni_tuebingen.ub.nppm.util.statistic.pagination;
 
+import de.uni_tuebingen.ub.nppm.util.Language;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
@@ -38,7 +39,7 @@ public class PaginationRenderer {
 
     private static String htmlPrevButton(PaginationParams params, HttpServletRequest request) throws Exception {
         String url = params.buildUrl(request,"quelle", params.getCurrentPage() - 1, null);
-        String prev = Language.getTextfield(request.getSession(), "stat", "Prev");
+        String prev = Language.getTextfield(request.getSession(), "pagination", "Prev");
         return "<li class=\"ut-nav__item\">"
              + "<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + url + "';\">"+prev+"</button>"
              + "<a class=\"ut-link page-link prev-link\" href=\"" + url + "\" style=\"display: none;\"><</a>"
@@ -48,7 +49,7 @@ public class PaginationRenderer {
 
     private static String htmlNextButton(PaginationParams params, HttpServletRequest request) throws Exception {
         String url = params.buildUrl(request,"quelle", params.getCurrentPage() + 1, null);
-        String next = Language.getTextfield(request.getSession(), "stat", "Next");
+        String next = Language.getTextfield(request.getSession(), "pagination", "Next");
         return "<li class=\"ut-nav__item\">"
              + "<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + url + "';\">"+next+"</button>"
              + "<a class=\"ut-link page-link next-link\" href=\"" + url + "\" style=\"display: none;\">></a>"
@@ -78,7 +79,7 @@ public class PaginationRenderer {
         String url = params.buildUrl(request,"quelle", params.getCurrentPage(), "titleUp");
 
         return "<a class=\"ut-link sort-link\" href=\"" + url + "\">"
-                + Language.getTextfield(session, "stat", "SortAZ")
+                + Language.getTextfield(session, "pagination", "SortAZ")
                 + "</a>";
     }
 
@@ -86,7 +87,7 @@ public class PaginationRenderer {
         String url = params.buildUrl(request,"quelle", params.getCurrentPage(), "titleDown");
 
         return "<a class=\"ut-link sort-link\" href=\"" + url + "\">"
-                + Language.getTextfield(session, "stat", "SortZA")
+                + Language.getTextfield(session, "pagination", "SortZA")
                 + "</a>";
     }
 
@@ -94,7 +95,7 @@ public class PaginationRenderer {
         String url = params.buildUrl(request, "quelle", params.getCurrentPage(), "belegeUp");
 
         return "<a class=\"ut-link sort-link\" href=\"" + url + "\">"
-                + Language.getTextfield(session, "stat", "SortUp")
+                + Language.getTextfield(session, "pagination", "SortUp")
                 + "</a>";
     }
 
@@ -102,7 +103,7 @@ public class PaginationRenderer {
         String url = params.buildUrl(request,"quelle", params.getCurrentPage(), "belegeDown");
 
         return "<a class=\"ut-link sort-link\" href=\"" + url + "\">"
-                + Language.getTextfield(session, "stat", "SortDown")
+                + Language.getTextfield(session, "pagination", "SortDown")
                 + "</a>";
     }
 
@@ -112,7 +113,7 @@ public class PaginationRenderer {
         }
 
         String url = params.buildUrl(request, "quelle", 1, null);
-        String first = Language.getTextfield(request.getSession(), "stat", "First");
+        String first = Language.getTextfield(request.getSession(), "pagination", "First");
         return "<li class=\"ut-nav__item\">"
                 + "<button class=\"ut-btn ut-btn--color-primary-3 first-button\" onclick=\"window.location.href='" + url + "';\">"+first+"</button>"
                 + "<a class=\"ut-link page-link first-link\" href=\"" + url + "\" style=\"display: none;\">|&lt;</a>"
@@ -126,7 +127,7 @@ public class PaginationRenderer {
         }
 
         String url = params.buildUrl(request, "quelle", nOfPages, null);
-        String last = Language.getTextfield(request.getSession(), "stat", "Last");
+        String last = Language.getTextfield(request.getSession(), "pagination", "Last");
         return "<li class=\"ut-nav__item\">"
                 + "<button class=\"ut-btn ut-btn--color-primary-3 last-button\" onclick=\"window.location.href='" + url + "';\">"+last+"</button>"
                 + "<a class=\"ut-link page-link last-link\" href=\"" + url + "\" style=\"display: none;\">&gt;|</a>"
