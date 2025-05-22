@@ -5,44 +5,7 @@
 <%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@page import="java.util.*"%>
 
-<style>
-
-    .ut-nav__list {
-        display: flex;
-        justify-content: center; /* Zentriert die Paginierung */
-        gap: 6px;
-    }
-
-    .ut-nav__item {
-        display: inline-block;
-    }
-
-    .page-link.active {
-        color: #ffffff; /* Weißer Text */
-        background-color: #dc3545; /* Roter Hintergrund für die aktive Seite */
-        cursor: default; /* Kein Zeiger für die aktuelle Seite */
-        padding: 5px 10px; /* Etwas Polsterung, damit der Text nicht zu nah am Rand ist */
-        border-radius: 5px; /* Abgerundete Ecken für den Button */
-        text-decoration: none; /* Kein Unterstrich */
-        display: inline-block; /* Damit es wie ein Button aussieht */
-        font-size: 20px; /* Schriftgröße anpassen */
-        line-height: 1.4; /* Zeilenhöhe für besseren Abstand zwischen Text und Rand */
-        vertical-align: middle; /* Verhindert, dass der Text vertikal nicht richtig ausgerichtet ist */
-    }
-
-
-    @media (max-width: 650px) {
-        .ut-link.page-link {
-            font-size: 20px;  /* Schriftgröße erhöhen */
-
-        }
-
-        .ut-nav__list {
-            gap: 14px;
-        }
-    }
-</style>
-
+<link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/stat.css")%>" type="text/css">
 
 <%
     PaginationParams params = new PaginationParams();
