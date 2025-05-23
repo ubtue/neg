@@ -21,8 +21,7 @@
     MghLemma lemma = LemmaDB.getById(id);
 
     if (lemma == null) {
-        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "IdNotFoundError");
-        msg = msg.replace("###ID###", String.valueOf(id));
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "IdNotFoundError",String.valueOf(id));
         throw new IdNotFoundException(msg);
     } else {
 
@@ -42,14 +41,12 @@
         }
 
         if (throwIdNotPublicException) {
-            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "LemmaNotPublicError");
-            msg = msg.replace("###ID###", String.valueOf(id));
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "NotPublicError",String.valueOf(id));
             throw new IdNotPublicException(msg);
         }
 
         if (throwContainsInvalidStrException) {
-            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "LemmaInvalidString");
-            msg = msg.replace("###ID###", String.valueOf(id));
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "LemmaInvalidString",String.valueOf(id));
             throw new ContainsInvalidStrException(msg);
         }
     }
