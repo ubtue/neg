@@ -21,8 +21,11 @@
     NamenKommentar namenkommentar = NamenKommentarDB.getById(id);
 
     if (namenkommentar == null) {
-        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"namenkommentar", "IdNotFoundError",String.valueOf(id));
-        throw new IdNotFoundException(msg);
+        if (session.getAttribute("Sprache").equals("de")) {
+            throw new IdNotFoundException("Philologisches Lemma ID N" + String.valueOf(id) + " ist nicht vorhanden");
+        } else{
+            throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " does not exist");
+        }
     }
 
     Set<Einzelbeleg> listEinzelbeleg = namenkommentar.getEinzelbeleg();
@@ -32,14 +35,15 @@
     for (Einzelbeleg eb : listEinzelbeleg) {
         if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
             throwException = false;
-            //once it is false we can break
-            break;
         }
     }
 
     if (throwException) {
-            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"namenkommentar", "NotPublicError",String.valueOf(id));
-            throw new IdNotPublicException(msg);
+        if (session.getAttribute("Sprache").equals("de")) {
+                throw new IdNotPublicException("Philologisches Lemma ID N" + id + " ist nicht zu veröffentlichen");
+            } else{
+                throw new IdNotFoundException("Philological lemma ID N" + String.valueOf(id) + " is not to be published");
+            }
     }
 
     String formular = "namenkommentar";
