@@ -32,6 +32,7 @@
     <jsp:param name="Command" value="first"/>
     <jsp:param name="filter" value="<%= filter %>"/>
     <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
+    <jsp:param name="excludeText" value="<%= request.getParameter("excludeText") %>"/>
   </jsp:include>
 
   <jsp:include page="../forms/link.jsp">
@@ -40,6 +41,7 @@
     <jsp:param name="Command" value="back"/>
     <jsp:param name="filter" value="<%= filter %>"/>
     <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
+    <jsp:param name="excludeText" value="<%= request.getParameter("excludeText") %>"/>
   </jsp:include>
 
     <!------------Eintraege------------>
@@ -57,6 +59,7 @@
       <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
       <jsp:param name="filter" value="<%= filter %>"/>
       <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
+      <jsp:param name="excludeText" value="<%= request.getParameter("excludeText") %>"/>
     </jsp:include>
     </span>
 
@@ -66,6 +69,7 @@
     <jsp:param name="Command" value="next"/>
     <jsp:param name="filter" value="<%= filter %>"/>
     <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
+    <jsp:param name="excludeText" value="<%= request.getParameter("excludeText") %>"/>
   </jsp:include>
 
   <jsp:include page="../forms/link.jsp">
@@ -74,5 +78,6 @@
     <jsp:param name="Command" value="last"/>
     <jsp:param name="filter" value="<%= filter %>"/>
     <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
+    <jsp:param name="excludeText" value="<%= request.getParameter("excludeText") %>"/>
   </jsp:include>
 </div>

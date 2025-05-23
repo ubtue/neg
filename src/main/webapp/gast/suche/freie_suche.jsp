@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.suche.pagination.PrintPagination"%>
 <%@page import="java.math.BigInteger"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.model.*"%>
@@ -15,90 +16,6 @@
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false" %>
 
 <%@ page import="org.apache.commons.lang3.StringUtils" isThreadSafe="false" %>
-
-<%!
-    public void printPageNavigation(JspWriter out, HttpServletRequest request, int pageoffset, int pageLimit, int linecount, String export) throws IOException {
-        if (!"liste".equals(export) && !"browse".equals(export)) {
-            return;
-        }
-
-        out.println("<div class=\"resultlistnavigation\" align=\"center\">");
-
-        int pages = (linecount + pageLimit - 1) / pageLimit;
-
-        // Previous Button
-        if (pageoffset > 0) {
-            String prevUrl = "?pageoffset=" + (pageoffset - 1);
-            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                String paramName = e.nextElement();
-                if (!paramName.equals("pageoffset")) {
-                    prevUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                }
-            }
-            out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + prevUrl + "';\">Previous</button>&nbsp;");
-        }
-
-        // Page Number Buttons
-        for (int i = 0; i < pages; i++) {
-            if (i == 0 && i <= pageoffset - 10) {
-                String pageUrl = "?pageoffset=" + i;
-                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                    String paramName = e.nextElement();
-                    if (!paramName.equals("pageoffset")) {
-                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                    }
-                }
-                out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">1</button>&nbsp;...&nbsp;");
-            }
-
-            if (i < pageoffset + 10 && i > pageoffset - 10) {
-                if (i == pageoffset) {
-                    out.print("<button class=\"ut-btn ut-btn--color-primary-1 current-button\" disabled>");
-                    out.print((i + 1));
-                    out.print("</button>&nbsp;");
-                } else {
-                    String pageUrl = "?pageoffset=" + i;
-                    for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                        String paramName = e.nextElement();
-                        if (!paramName.equals("pageoffset")) {
-                            pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                        }
-                    }
-                    out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
-                    out.print((i + 1));
-                    out.print("</button>&nbsp;");
-                }
-            }
-
-            if (i == pages - 1 && i >= pageoffset + 10) {
-                String pageUrl = "?pageoffset=" + i;
-                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                    String paramName = e.nextElement();
-                    if (!paramName.equals("pageoffset")) {
-                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                    }
-                }
-                out.print("...&nbsp;<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
-                out.print((i + 1));
-                out.print("</button>&nbsp;");
-            }
-        }
-
-        // Next Button
-        if (pageoffset < pages - 1) {
-            String nextUrl = "?pageoffset=" + (pageoffset + 1);
-            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                String paramName = e.nextElement();
-                if (!paramName.equals("pageoffset")) {
-                    nextUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                }
-            }
-            out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + nextUrl + "';\">Next</button>");
-        }
-
-        out.println("</div>");
-    }
-%>
 
 <%
     String einzelbelegeVonQuelle = request.getParameter("einzelbelegeVonQuelle");
@@ -204,6 +121,10 @@
     if (zweitgliedParam != null && !zweitgliedParam.trim().isEmpty() && !zweitgliedParam.equals("-")) {
         conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', -1) LIKE '" + zweitgliedParam.trim() + "'");
         mghlemma = true;
+    }
+
+    if (mghlemma) {
+        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%[???]%'");
     }
 
     // ### ZUR PERSON ###
@@ -1275,7 +1196,7 @@
         String oldValue[] = new String[15];
 
         // ########## SEITENNAVIGATION #########
-        printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        PrintPagination.printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
         // ########## SEITENNAVIGATION #########
 
         // ########## LISTE/BROWSE ##########
@@ -1792,7 +1713,7 @@
         }
         // ########## rtf #########
         // ########## SEITENNAVIGATION #########
-        printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        PrintPagination.printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
         // ########## SEITENNAVIGATION #########
     }
 %>

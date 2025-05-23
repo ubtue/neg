@@ -55,7 +55,12 @@
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             String sourceId = getCauseMessage(exception, IdNotFoundException.class);
             out.println(sourceId);
-        } else if (containsCause(exception, LoginException.class)) {
+        } else if(containsCause(exception, ContainsInvalidStrException.class)){
+            response.setStatus(HttpServletResponse.SC_SEE_OTHER);
+            String sourceId = getCauseMessage(exception, ContainsInvalidStrException.class);
+            out.println(sourceId);
+        }
+        else if (containsCause(exception, LoginException.class)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             String sourceId = getCauseMessage(exception, LoginException.class);
             out.println(sourceId);
