@@ -3,6 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.model.Content.Context;
+import de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationParams;
 import java.util.Collections;
 import java.util.Comparator;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,7 +19,13 @@ public class QuelleDB extends AbstractBase {
         return getList(Quelle.class);
     }
 
-    public static List getList(Integer currentPage, Integer recordsPerPage, String filterTitle, String sort, String jumpToID) throws Exception {
+    public static List getList(PaginationParams params) throws Exception {
+        String jumpToID = params.getJumpToID();
+        String sort = params.getSort();
+        String filterTitle = params.getFilters().get("filterTitle");
+        Integer currentPage = params.getCurrentPage();
+        Integer recordsPerPage = params.getRecordsPerPage();
+        if (filterTitle == null) filterTitle = "";
         try (Session session = getSession()) {
             String q = "";
             if (jumpToID != null && jumpToID.length() > 0) {

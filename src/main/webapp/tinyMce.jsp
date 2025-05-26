@@ -28,7 +28,7 @@
     }
 %>
 <header>
-    <script type="text/javascript" src="layout/tinymce/tinymce.min.js"></script>
+    <script src="<%=Utils.getVersionedHref(request, application, "/layout/tinymce/tinymce.min.js")%>" type="text/javascript"></script>
     <script type="text/javascript">
         let language = '<%= myLanguage%>';
         tinymce.init({

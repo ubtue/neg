@@ -1,7 +1,11 @@
 package de.uni_tuebingen.ub.nppm.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
@@ -412,4 +417,40 @@ public class Utils {
         return date != null ? DATE_FORMAT.format(date) : null;
     }
 
+    public static long getLastModifiedTimestampForLocalAsset(ServletContext context, String path) throws Exception {
+        URL resource = context.getResource(path);
+
+        if (resource == null) {
+            throw new Exception("Resource not found: " + path);
+        }
+
+        if (!"file".equals(resource.getProtocol())) {
+            throw new Exception("Unexpected protocol: " + resource.getProtocol() + " for path: " + path);
+        }
+
+        File file = new File(resource.toURI());
+
+        if (!file.exists()) {
+            throw new Exception("File does not exist: " + file.getAbsolutePath());
+        }
+
+        //Änderungszeit zurückgeben
+        return file.lastModified();
+    }
+
+    public static String getVersionedHref(HttpServletRequest request, ServletContext context, String path) throws Exception {
+        long timestamp = getLastModifiedTimestampForLocalAsset(context, path);
+        String baseUrl = getBaseUrl(request);
+        String href;
+
+        if (!baseUrl.endsWith("/") && !path.startsWith("/")) {
+            href = baseUrl + "/" + path;
+        } else if (baseUrl.endsWith("/") && path.startsWith("/")) {
+            href = baseUrl + path.substring(1);
+        } else {
+            href = baseUrl + path;
+        }
+
+        return href + "?v=" + timestamp;
+    }
 }

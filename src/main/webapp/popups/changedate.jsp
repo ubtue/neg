@@ -17,8 +17,8 @@
 <HTML>
   <HEAD>
     <TITLE>NPPM - <% Language.printTextfield(out, session, "changedate", "NeuerEintrag");%></TITLE>
-    <link rel="stylesheet" href="../layout/layout.css" type="text/css">
-    <script src="../javascript/funktionen.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/layout/layout.css")%>" type="text/css">
+    <script src="<%=Utils.getVersionedHref(request, application, "/javascript/funktionen.js")%>" type="text/javascript"></script>
     <noscript></noscript>
   </HEAD>
 

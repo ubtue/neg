@@ -61,8 +61,8 @@
 
                     //id = Integer.parseInt(request.getParameter("ID"));
                     String disabled = "";
-
-                    out.println("    <script src=\"javascript/shortcuts.js\" type=\"text/javascript\"></script>");
+                    String href = Utils.getVersionedHref(request, application, "/javascript/shortcuts.js");
+                    out.println("    <script src=\""+href+"\" type=\"text/javascript\"></script>");
                     if (!disabled.equals(" disabled"))
                         out.println("    <script type=\"text/javascript\">shortcut.add(\"Ctrl+Shift+S\",function() {document.forms[0].speichern.click();	},{	'type':'keydown',	'propagate':false,	'target':document});</script>");
                 %>
