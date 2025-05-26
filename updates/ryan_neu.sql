@@ -22,4 +22,20 @@ INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('suche', 'BisJahrhundert', 'bis Jh.', 'until C.', 'jusq. S.', 'usq. S.');
 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('freie_suche', 'Insgesamt', 'Insgesamt', 'A total of', 'Un total de', 'In summa');
 
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('mgh_lemma', 'Lemmata', 'Lemmata', 'Lemmata', 'Lemmes', 'Lemmata');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('namenkommentar', 'Namenkommentar', 'Namenkommentar', 'Name comment', 'Commentaire de nom', 'Commentarius nominis');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('namenkommentar', 'Namenkommentare', 'Namenkommentare', 'Name comments', 'Commentaires de nom', 'Commentarii nominum');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('quelle', 'Quelle', 'Quelle', 'Source', 'Source', 'Fons');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('einzelbeleg', 'Einzelbeleg', 'Einzelbeleg', 'Reference', 'Référence', 'Testimonium');
+
+UPDATE `neg`.`datenbank_texte` SET `gb` = 'Single References', `fr` = 'Références individuelles' WHERE Formular = 'einzelbeleg' and Textfeld = 'Titel';
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('freie_suche', 'BitteSchritt2', ' Bitte wählen Sie mind. ein Ausgabefeld aus (Schritt 2).', 'Please select at least one output field (Step 2).', 'Veuillez sélectionner au moins un champ de sortie (Étape 2).', 'Placere eligas saltem unum campum outputum (Gradus 2).');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('freie_suche', 'KeinEintragVorhanden', ' Kein Eintrag vorhanden, der dem Suchkriterium entspricht.', 'No entry matching the search criteria.', 'Aucune entrée ne correspond aux critères de recherche.', 'Ingressus nullus inventus est qui criteriis quaestionibus aequet.');

@@ -1087,7 +1087,7 @@
         offset = pageoffset * pageLimitX;  // pageLimitX ist die Anzahl der Ergebnisse pro Seite
 
         if (fields.size() == 0) {
-            out.println("Bitte w&auml;hlen Sie mind. ein Ausgabefeld aus (Schritt 2).");
+            out.println(Language.getTextfield(session, "freie_suche", "BitteSchritt2"));
             return;
         }
 
@@ -1108,35 +1108,39 @@
                             int countValue = ((Number) innerArray[i]).intValue();  //Zählererbnis
 
                             if (countValue >= 0) {
-                                output.append("Insgesamt ");
+                                output.append(Language.getTextfield(session, "freie_suche", "Insgesamt") + " ");
                                 output.append(countValue).append(" ");
 
                                 // Spezifische Ausgabe basierend auf dem Titel
                                 if (count.get(i).startsWith("namenkommentar")) {
                                     if (countValue > 1 || countValue == 0) {
-                                        output.append("Namenkommentare");
+                                        output.append(Language.getTextfield(session, "namenkommentar", "Namenkommentare"));
                                     } else {
-                                        output.append("Namenkommentar");
+                                        output.append(Language.getTextfield(session, "namenkommentar", "Namenkommentar"));
                                     }
                                 } else if (count.get(i).startsWith("mgh_lemma")) {
-                                    output.append("MGH-Lemma");
+                                    if (countValue > 1 || countValue == 0) {
+                                        output.append(Language.getTextfield(session, "mgh_lemma", "Lemmata"));
+                                    } else {
+                                        output.append(Language.getTextfield(session, "mgh_lemma", "Titel"));
+                                    }
                                 } else if (count.get(i).startsWith("person")) {
                                     if (countValue > 1 || countValue == 0) {
-                                        output.append("Personen");
+                                        output.append(Language.getTextfield(session, "person", "Titel"));
                                     } else {
-                                        output.append("Person");
+                                        output.append(Language.getTextfield(session, "person", "Person"));
                                     }
                                 } else if (count.get(i).startsWith("quelle")) {
                                     if (countValue > 1 || countValue == 0) {
-                                        output.append("Quellen");
+                                        output.append(Language.getTextfield(session, "quelle", "Titel"));
                                     } else {
-                                        output.append("Quelle");
+                                        output.append(Language.getTextfield(session, "quelle", "Quelle"));
                                     }
                                 } else if (count.get(i).startsWith("einzelbeleg")) {
                                     if (countValue > 1 || countValue == 0) {
-                                        output.append("Belege");
+                                        output.append(Language.getTextfield(session, "einzelbeleg", "Titel"));
                                     } else {
-                                        output.append("Beleg");
+                                        output.append(Language.getTextfield(session, "einzelbeleg", "Einzelbeleg"));
                                     }
                                 }
 
@@ -1161,29 +1165,33 @@
 
                         if (count.get(0).startsWith("namenkommentar")) {
                             if (countValue > 1 || countValue == 0) {
-                                output.append("Namenkommentare");
+                                output.append(Language.getTextfield(session, "namenkommentar", "Namenkommentare"));
                             } else {
-                                output.append("Namenkommentar");
+                                output.append(Language.getTextfield(session, "namenkommentar", "Namenkommentar"));
                             }
                         } else if (count.get(0).startsWith("mgh_lemma")) {
-                            output.append("MGH-Lemma");
+                            if (countValue > 1 || countValue == 0) {
+                                output.append(Language.getTextfield(session, "mgh_lemma", "Lemmata"));
+                            } else {
+                                output.append(Language.getTextfield(session, "mgh_lemma", "Titel"));
+                            }
                         } else if (count.get(0).startsWith("person")) {
                             if (countValue > 1 || countValue == 0) {
-                                output.append("Personen");
+                                output.append(Language.getTextfield(session, "person", "Titel"));
                             } else {
-                                output.append("Person");
+                                output.append(Language.getTextfield(session, "person", "Person"));
                             }
                         } else if (count.get(0).startsWith("quelle")) {
                             if (countValue > 1 || countValue == 0) {
-                                output.append("Quellen");
+                                output.append(Language.getTextfield(session, "quelle", "Titel"));
                             } else {
-                                output.append("Quelle");
+                                output.append(Language.getTextfield(session, "quelle", "Quelle"));
                             }
                         } else if (count.get(0).startsWith("einzelbeleg")) {
                             if (countValue > 1 || countValue == 0) {
-                                output.append("Belege");
+                                output.append(Language.getTextfield(session, "einzelbeleg", "Titel"));
                             } else {
-                                output.append("Beleg");
+                                output.append(Language.getTextfield(session, "einzelbeleg", "Einzelbeleg"));
                             }
                         }
 
@@ -1496,7 +1504,7 @@
             }
 
             if (!found) {
-                out.println("Kein Eintrag vorhanden, der dem Suchkriterium entspricht.");
+                out.println(Language.getTextfield(session, "freie_suche", "KeinEintragVorhanden"));
             }
 
             out.print("</ul>");
