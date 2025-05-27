@@ -17,20 +17,6 @@ public class PrintPagination {
 
         int pages = (linecount + pageLimit - 1) / pageLimit;
 
-        // --- First Button ---
-        if (pageoffset > 0) {
-            String firstUrl = "?pageoffset=0";
-            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                String paramName = e.nextElement();
-                if (!paramName.equals("pageoffset")) {
-                    firstUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                }
-            }
-            String first = Language.getTextfield(request.getSession(), "pagination", "First");
-            out.print("<button class=\"ut-btn ut-btn--color-primary-3 first-button\" "
-                    + "onclick=\"window.location.href='" + firstUrl + "';\">"
-                    + first + "</button>&nbsp;");
-        }
         // Previous Button
         if (pageoffset > 0) {
             String prevUrl = "?pageoffset=" + (pageoffset - 1);
@@ -101,21 +87,6 @@ public class PrintPagination {
             }
             String next = Language.getTextfield(request.getSession(), "pagination", "Next");
             out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + nextUrl + "';\">" + next + "</button>");
-        }
-
-        // --- Last Button ---
-        if (pageoffset < pages - 1) {
-            String lastUrl = "?pageoffset=" + (pages - 1);
-            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                String paramName = e.nextElement();
-                if (!paramName.equals("pageoffset")) {
-                    lastUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                }
-            }
-            String last = Language.getTextfield(request.getSession(), "pagination", "Last");
-            out.print("&nbsp;<button class=\"ut-btn ut-btn--color-primary-3 last-button\" "
-                    + "onclick=\"window.location.href='" + lastUrl + "';\">"
-                    + last + "</button>");
         }
 
         out.println("</div>");
