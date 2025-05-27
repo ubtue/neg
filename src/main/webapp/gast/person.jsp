@@ -15,11 +15,8 @@
 
     Person person = PersonDB.getById(id);
     if (person == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
-        } else {
-            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "IdNotFoundError",String.valueOf(id));
+        throw new IdNotFoundException(msg);
 
     } else {
         Set<Einzelbeleg> listEinzelbeleg = person.getEinzelbeleg();
@@ -34,11 +31,8 @@
         }
 
         if (throwException) {
-            if (session.getAttribute("Sprache").equals("de")) {
-                throw new IdNotPublicException("Person ID P" + String.valueOf(id) + " ist nicht zu veröffentlichen");
-            } else {
-                throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " is not to be published");
-            }
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "NotPublicError",String.valueOf(id));
+            throw new IdNotPublicException(msg);
 
         }
     }
