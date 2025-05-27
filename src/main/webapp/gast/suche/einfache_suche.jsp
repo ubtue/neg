@@ -90,6 +90,13 @@
 
         java.util.List<Map> resultAsMap = SucheDB.getEinfacheSucheResult(query);
 
+        for (Map<String, Object> row : resultAsMap) {
+            Object val = row.get("quelleBerJahr");
+            if (val != null && val.toString().equals("99999")) {
+                row.put("quelleBerJahr", "-");
+            }
+        }
+
         boolean found = false;
 
         if (!resultAsMap.isEmpty()) {

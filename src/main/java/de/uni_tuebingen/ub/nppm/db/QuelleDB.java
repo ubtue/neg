@@ -152,4 +152,11 @@ public class QuelleDB extends AbstractBase {
         }
     }
 
+    public static List<Integer> getAllPublicQuellenIds() throws Exception {
+        try (Session session = getSession()) {
+            String sql = "SELECT DISTINCT q.ID FROM quelle q WHERE q.ZuVeroeffentlichen = 1 ORDER BY q.ID";
+            return session.createNativeQuery(sql).getResultList();
+        }
+    }
+
 }//end Class

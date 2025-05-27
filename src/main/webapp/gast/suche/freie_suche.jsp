@@ -51,13 +51,13 @@
     List<String> conditions = new ArrayList<>();
 
     List<String> fields = new ArrayList<>();
-    List<String> fieldNames = new ArrayList<>();
+    List<String> fieldNames = new ArrayList<>();  //Ergebnisse
     List<String> count = new ArrayList<>();
 
     List<String> tables = new ArrayList<>();
     List<String> joins = new ArrayList<>();
 
-    List<String> headlines = new ArrayList<>();
+    List<String> headlines = new ArrayList<>();  //header - name
 
     // Welche Grund-Tabellen (Einzelbeleg / Person / Namenkommentar) werden benötigt...
     boolean einzelbeleg = false;
@@ -386,6 +386,60 @@
     }
 
     // ######### AUSGABEFELDER ##########
+    // ### Zum Einzelbeleg ###  //Damit Beleg ganz am Anfang steht
+    if (request.getParameter("Ausgabe_Einzelbeleg_Belegform") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegform").equals("on")) {
+        fields.add("einzelbeleg.Belegform");
+        fields.add("einzelbeleg.ID AS einzelbelegID");
+        count.add("einzelbeleg.ID");
+        fieldNames.add("einzelbeleg.Belegform");
+        //headlines.add("Belegform");
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Belegform"));
+
+        einzelbeleg = true;
+    }
+
+    if (request.getParameter("Ausgabe_Einzelbeleg_Belegstelle") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegstelle").equals("on")) {
+
+        fields.add("einzelbeleg.seite");
+        fieldNames.add("einzelbeleg.seite");
+        headlines.add(Language.getTextfield(session, "suche", "NummerSeite"));
+
+        fields.add("einzelbeleg.raster");
+        fieldNames.add("einzelbeleg.raster");
+        headlines.add(Language.getTextfield(session, "suche", "Raster"));
+
+        fields.add("quelle.Bezeichnung");
+        fields.add("quelle.ID AS quelleID");
+        count.add("quelle.ID");
+        fieldNames.add("quelle.Bezeichnung");
+        if (!tableString.contains("quelle")) {
+            tableString += " LEFT OUTER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
+        }
+        //headlines.add("Quelle");
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
+
+        fields.add("edition.Titel");
+        //fields.add("edition.ID");
+        fieldNames.add("edition.Titel");
+        if (!tableString.contains("edition")) {
+            tableString += " LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID";
+        }
+        //headlines.add("Edition");
+        headlines.add(DatenbankDB.getMapping(sprache, "quelle", "Edition"));
+
+        fields.add("einzelbeleg.EditionKapitel");
+        fieldNames.add("einzelbeleg.EditionKapitel");
+        //headlines.add("Kapitel");
+        headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionKapitel"));
+
+        fields.add("einzelbeleg.EditionSeite");
+        fieldNames.add("einzelbeleg.EditionSeite");
+        // headlines.add("Seite");
+        headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionSeite"));
+
+        einzelbeleg = true;
+    }
+
     // ### Zum Namen ###
     if (request.getParameter("Ausgabe_Namenlemma") != null && request.getParameter("Ausgabe_Namenlemma").equals("on")) {
         fields.add("namenkommentar.PLemma");
@@ -514,39 +568,6 @@
         person = true;
     }
 
-    // ### Zum Einzelbeleg ###
-    if (request.getParameter("Ausgabe_Einzelbeleg_Belegstelle") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegstelle").equals("on")) {
-        fields.add("quelle.Bezeichnung");
-        fields.add("quelle.ID AS quelleID");
-        count.add("quelle.ID");
-        fieldNames.add("quelle.Bezeichnung");
-        if (!tableString.contains("quelle")) {
-            tableString += " LEFT OUTER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
-        }
-        //headlines.add("Quelle");
-        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
-
-        fields.add("edition.Titel");
-        //fields.add("edition.ID");
-        fieldNames.add("edition.Titel");
-        if (!tableString.contains("edition")) {
-            tableString += " LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID";
-        }
-        //headlines.add("Edition");
-        headlines.add(DatenbankDB.getMapping(sprache, "quelle", "Edition"));
-
-        fields.add("einzelbeleg.EditionKapitel");
-        fieldNames.add("einzelbeleg.EditionKapitel");
-        //headlines.add("Kapitel");
-        headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionKapitel"));
-
-        fields.add("einzelbeleg.EditionSeite");
-        fieldNames.add("einzelbeleg.EditionSeite");
-        // headlines.add("Seite");
-        headlines.add(DatenbankDB.getMapping(sprache, "einzelbeleg", "EditionSeite"));
-
-        einzelbeleg = true;
-    }
     if (request.getParameter("Ausgabe_Einzelbeleg_Quellengattung") != null && request.getParameter("Ausgabe_Einzelbeleg_Quellengattung").equals("on")) {
         fields.add("selektion_quellengattung.Bezeichnung");
         fieldNames.add("selektion_quellengattung.Bezeichnung");
@@ -558,16 +579,7 @@
 
         einzelbeleg = true;
     }
-    if (request.getParameter("Ausgabe_Einzelbeleg_Belegform") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegform").equals("on")) {
-        fields.add("einzelbeleg.Belegform");
-        fields.add("einzelbeleg.ID AS einzelbelegID");
-        count.add("einzelbeleg.ID");
-        fieldNames.add("einzelbeleg.Belegform");
-        //headlines.add("Belegform");
-        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Belegform"));
 
-        einzelbeleg = true;
-    }
     if (request.getParameter("Ausgabe_Einzelbeleg_Kontext") != null && request.getParameter("Ausgabe_Einzelbeleg_Kontext").equals("on")) {
         fields.add("einzelbeleg.Kontext");
         fieldNames.add("einzelbeleg.Kontext");
@@ -593,14 +605,14 @@
         fieldNames.add("einzelbeleg.BisMonat");
         fieldNames.add("einzelbeleg.BisJahr");
         fieldNames.add("einzelbeleg.BisJahrhundert");
-        headlines.add("von T.");
-        headlines.add("von M.");
-        headlines.add("von J.");
-        headlines.add("von Jh.");
-        headlines.add("bis T.");
-        headlines.add("bis M.");
-        headlines.add("bis J.");
-        headlines.add("bis Jh.");
+        headlines.add(Language.getTextfield(session, "suche", "VonTag"));
+        headlines.add(Language.getTextfield(session, "suche", "VonMonat"));
+        headlines.add(Language.getTextfield(session, "suche", "VonJahr"));
+        headlines.add(Language.getTextfield(session, "suche", "VonJahrhundert"));
+        headlines.add(Language.getTextfield(session, "suche", "BisTag"));
+        headlines.add(Language.getTextfield(session, "suche", "BisMonat"));
+        headlines.add(Language.getTextfield(session, "suche", "BisJahr"));
+        headlines.add(Language.getTextfield(session, "suche", "BisJahrhundert"));
         einzelbeleg = true;
     }
     if (request.getParameter("Ausgabe_Einzelbeleg_lebend") != null && request.getParameter("Ausgabe_Einzelbeleg_lebend").equals("on")) {
@@ -855,6 +867,14 @@
                 einzelbeleg = true;
 
                 if (request.getParameter("Ausgabe_Einzelbeleg_Belegstelle") == null || !request.getParameter("Ausgabe_Einzelbeleg_Belegstelle").equals("on")) {
+                    fields.add("einzelbeleg.seite");
+                    fieldNames.add("einzelbeleg.seite");
+                    headlines.add("Nr./S.");
+
+                    fields.add("einzelbeleg.raster");
+                    fieldNames.add("einzelbeleg.raster");
+                    headlines.add("Rast.");
+
                     fields.add("quelle.Bezeichnung");
                     fields.add("quelle.ID");
                     count.add("quelle.ID");
@@ -1067,7 +1087,7 @@
         offset = pageoffset * pageLimitX;  // pageLimitX ist die Anzahl der Ergebnisse pro Seite
 
         if (fields.size() == 0) {
-            out.println("Bitte w&auml;hlen Sie mind. ein Ausgabefeld aus (Schritt 2).");
+            out.println(Language.getTextfield(session, "freie_suche", "BitteSchritt2"));
             return;
         }
 
@@ -1088,35 +1108,39 @@
                             int countValue = ((Number) innerArray[i]).intValue();  //Zählererbnis
 
                             if (countValue >= 0) {
-                                output.append("Insgesamt ");
+                                output.append(Language.getTextfield(session, "freie_suche", "Insgesamt") + " ");
                                 output.append(countValue).append(" ");
 
                                 // Spezifische Ausgabe basierend auf dem Titel
                                 if (count.get(i).startsWith("namenkommentar")) {
                                     if (countValue > 1 || countValue == 0) {
-                                        output.append("Namenkommentare");
+                                        output.append(Language.getTextfield(session, "namenkommentar", "Namenkommentare"));
                                     } else {
-                                        output.append("Namenkommentar");
+                                        output.append(Language.getTextfield(session, "namenkommentar", "Namenkommentar"));
                                     }
                                 } else if (count.get(i).startsWith("mgh_lemma")) {
-                                    output.append("MGH-Lemma");
+                                    if (countValue > 1 || countValue == 0) {
+                                        output.append(Language.getTextfield(session, "mgh_lemma", "Lemmata"));
+                                    } else {
+                                        output.append(Language.getTextfield(session, "mgh_lemma", "Titel"));
+                                    }
                                 } else if (count.get(i).startsWith("person")) {
                                     if (countValue > 1 || countValue == 0) {
-                                        output.append("Personen");
+                                        output.append(Language.getTextfield(session, "person", "Titel"));
                                     } else {
-                                        output.append("Person");
+                                        output.append(Language.getTextfield(session, "person", "Person"));
                                     }
                                 } else if (count.get(i).startsWith("quelle")) {
                                     if (countValue > 1 || countValue == 0) {
-                                        output.append("Quellen");
+                                        output.append(Language.getTextfield(session, "quelle", "Titel"));
                                     } else {
-                                        output.append("Quelle");
+                                        output.append(Language.getTextfield(session, "quelle", "Quelle"));
                                     }
                                 } else if (count.get(i).startsWith("einzelbeleg")) {
                                     if (countValue > 1 || countValue == 0) {
-                                        output.append("Belege");
+                                        output.append(Language.getTextfield(session, "einzelbeleg", "Titel"));
                                     } else {
-                                        output.append("Beleg");
+                                        output.append(Language.getTextfield(session, "einzelbeleg", "Einzelbeleg"));
                                     }
                                 }
 
@@ -1141,29 +1165,33 @@
 
                         if (count.get(0).startsWith("namenkommentar")) {
                             if (countValue > 1 || countValue == 0) {
-                                output.append("Namenkommentare");
+                                output.append(Language.getTextfield(session, "namenkommentar", "Namenkommentare"));
                             } else {
-                                output.append("Namenkommentar");
+                                output.append(Language.getTextfield(session, "namenkommentar", "Namenkommentar"));
                             }
                         } else if (count.get(0).startsWith("mgh_lemma")) {
-                            output.append("MGH-Lemma");
+                            if (countValue > 1 || countValue == 0) {
+                                output.append(Language.getTextfield(session, "mgh_lemma", "Lemmata"));
+                            } else {
+                                output.append(Language.getTextfield(session, "mgh_lemma", "Titel"));
+                            }
                         } else if (count.get(0).startsWith("person")) {
                             if (countValue > 1 || countValue == 0) {
-                                output.append("Personen");
+                                output.append(Language.getTextfield(session, "person", "Titel"));
                             } else {
-                                output.append("Person");
+                                output.append(Language.getTextfield(session, "person", "Person"));
                             }
                         } else if (count.get(0).startsWith("quelle")) {
                             if (countValue > 1 || countValue == 0) {
-                                output.append("Quellen");
+                                output.append(Language.getTextfield(session, "quelle", "Titel"));
                             } else {
-                                output.append("Quelle");
+                                output.append(Language.getTextfield(session, "quelle", "Quelle"));
                             }
                         } else if (count.get(0).startsWith("einzelbeleg")) {
                             if (countValue > 1 || countValue == 0) {
-                                output.append("Belege");
+                                output.append(Language.getTextfield(session, "einzelbeleg", "Titel"));
                             } else {
-                                output.append("Beleg");
+                                output.append(Language.getTextfield(session, "einzelbeleg", "Einzelbeleg"));
                             }
                         }
 
@@ -1196,7 +1224,9 @@
         String oldValue[] = new String[15];
 
         // ########## SEITENNAVIGATION #########
-        PrintPagination.printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        if ("".equals(order)) {
+            PrintPagination.printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        }
         // ########## SEITENNAVIGATION #########
 
         // ########## LISTE/BROWSE ##########
@@ -1207,7 +1237,7 @@
             String aufklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneAufklappen");
             String zuklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneZuklappen");
 
-            if (!"true".equals(einzelbelegeVonQuelle)) {
+            if (!"true".equals(einzelbelegeVonQuelle) && !"".equals(order)) {
                 out.println("<div id=\"level-functions\">");
                 out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + aufklappen + "\" onClick=\"expandNextLevel('complete')\"><img src=\"layout/images/open_next_level.png\" alt=\"Aufklappen\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + aufklappen + "</button>");
                 out.println("<button class=\"ut-btn \" type=\"button\" aria-label=\"" + zuklappen + "\" onClick=\"collapseNextLevel('complete')\"><img src=\"layout/images/close_next_level.png\" style=\"vertical-align: middle;height: 23px; width: 30px; margin-right: 5px;\">" + zuklappen + "</button>");
@@ -1263,11 +1293,17 @@
 
             boolean found = false;
 
-            List<Map<String, String>> searchRes = FrontendExtendedSearch.getSearchResult(
-                    fieldsString, tablesString, conditionsString, order,
-                    fields.toArray(new String[fields.size()]),
-                    pageLimitX, offset
-            );
+            List<Map<String, String>> searchRes;
+
+            if ("".equals(order)) {
+                searchRes = FrontendExtendedSearch.getSearchResult(
+                        fieldsString, tablesString, conditionsString, order,
+                        fields.toArray(new String[fields.size()]),
+                        pageLimitX, offset
+                );
+            } else {
+                searchRes = FrontendExtendedSearch.getSearchResult(fieldsString, tablesString, conditionsString, order, fields.toArray(new String[fields.size()]));
+            }
 
             for (java.util.Map row : searchRes) {
                 found = true;
@@ -1322,7 +1358,7 @@
                             text = Utils.safeToString(row.get("einzelbeleg.Belegform"), "-");
                         }
                         if (orderV[z].startsWith("person.ID")) {
-                             text = Utils.safeToString(row.get("person.Standardname"), "-");
+                            text = Utils.safeToString(row.get("person.Standardname"), "-");
                         }
 
                         String titel = orderV[z];
@@ -1468,7 +1504,7 @@
             }
 
             if (!found) {
-                out.println("Kein Eintrag vorhanden, der dem Suchkriterium entspricht.");
+                out.println(Language.getTextfield(session, "freie_suche", "KeinEintragVorhanden"));
             }
 
             out.print("</ul>");
@@ -1627,7 +1663,7 @@
             for (Map row : rowlist) {
                 for (int z = 0; z < orderSize; z++) {
                     int jahr = 0;
-                    String jahrV =Utils.safeToString(row.get(orderV[z]));
+                    String jahrV = Utils.safeToString(row.get(orderV[z]));
                     int zeitraum = 0;
                     if (orderV[z].endsWith("Jahr")) {
                         zeitraum = Integer.parseInt(request.getParameter("order" + (z + 1) + "zeit"));
@@ -1713,7 +1749,9 @@
         }
         // ########## rtf #########
         // ########## SEITENNAVIGATION #########
-        PrintPagination.printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        if ("".equals(order)) {
+            PrintPagination.printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
+        }
         // ########## SEITENNAVIGATION #########
     }
 %>

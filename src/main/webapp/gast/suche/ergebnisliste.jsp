@@ -1,10 +1,11 @@
 <%@page import="de.uni_tuebingen.ub.nppm.util.suche.pagination.PrintPagination"%>
+<%@page import="java.io.IOException"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="java.util.*"%>
 
-<%
 
+<%
     if (true) {
         conditions = removeDuplicates(conditions);
         fields = removeDuplicates(fields);

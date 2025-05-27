@@ -110,4 +110,19 @@ public class LemmaDB extends AbstractBase {
             return results; // Genau ein Treffer
         }
     }
+
+    public static List<Integer> getAllPublicLemmaIds() throws Exception {
+        try (Session session = getSession()) {
+            String sql = "SELECT DISTINCT ehm.MGHLemmaID "
+                    + "FROM einzelbeleg_hatmghlemma ehm "
+                    + "JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID "
+                    + "JOIN quelle q ON q.ID = e.QuelleID "
+                    + "JOIN mgh_lemma l ON l.ID = ehm.MGHLemmaID "
+                    + // <- hier korrigiert
+                    "WHERE q.ZuVeroeffentlichen = 1 "
+                    + "ORDER BY ehm.MGHLemmaID";
+
+            return session.createNativeQuery(sql).getResultList();
+        }
+    }
 }

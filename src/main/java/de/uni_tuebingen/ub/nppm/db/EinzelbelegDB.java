@@ -193,4 +193,13 @@ public class EinzelbelegDB extends AbstractBase {
             return session.createQuery(query).getResultList();
         }
     }
+
+    public static List<Integer> getAllPublicEinzelbelegIds() throws Exception {
+        try (Session session = getSession()) {
+            String sql = "SELECT DISTINCT e.ID FROM einzelbeleg e "
+                    + "JOIN quelle q ON e.QuelleID = q.ID "
+                    + "WHERE q.zuVeroeffentlichen = 1 ORDER BY e.ID";
+            return session.createNativeQuery(sql).getResultList();
+        }
+    }
 }
