@@ -224,7 +224,7 @@ public class EinzelbelegDB extends AbstractBase {
     public static List<Integer> getAllPublicEinzelbelegIds() throws Exception {
         try (Session session = getSession()) {
             /*
-                Exclude Einzelbelege that are linked to a MGHLemma which contains [???0 in Frontend]
+                Exclude Einzelbelege that are linked to a MGHLemma which contains [???] in Frontend
             */
             String sql = "SELECT e.ID "
                     + "FROM einzelbeleg e "
