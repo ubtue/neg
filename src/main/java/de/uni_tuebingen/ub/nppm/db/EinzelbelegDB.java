@@ -5,9 +5,11 @@ import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
@@ -39,6 +41,27 @@ public class EinzelbelegDB extends AbstractBase {
         }
     }
 
+    /**
+     * Liefert ein Predicate, das alle Einzelbelege ausschließt, die mit
+     * mindestens einem MghLemma verknüpft sind, dessen Text den Substring
+     * "[???]" enthält.
+     *
+     * @param root die Root-Entität Einzelbeleg
+     * @param cb der CriteriaBuilder
+     * @param query die umgebende CriteriaQuery (oder Subquery)
+     * @return ein Predicate, das NOT EXISTS (Subquery) umsetzt
+     */
+    private static Predicate excludeInvalidLemmas(Root<Einzelbeleg> root,
+            CriteriaBuilder cb,
+            CriteriaQuery<?> query) {
+        Subquery<Integer> sq = query.subquery(Integer.class);
+        Root<Einzelbeleg> subRoot = sq.correlate(root);
+        Join<Einzelbeleg, MghLemma> jm = subRoot.join("mghLemma");
+        sq.select(subRoot.get("id"))
+                .where(cb.like(jm.get("mghLemma"), "%[???]%"));
+        return cb.not(cb.exists(sq));
+    }
+
     public static Integer getNextPublicEinzelbeleg(int id) throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -49,7 +72,9 @@ public class EinzelbelegDB extends AbstractBase {
             boundsQuery.multiselect(
                     criteriaBuilder.min(boundRoot.get("id")),
                     criteriaBuilder.max(boundRoot.get("id"))
-            ).where(criteriaBuilder.equal(boundRoot.get("quelle").get("zuVeroeffentlichen"), 1));
+            ).where(criteriaBuilder.equal(boundRoot.get("quelle").get("zuVeroeffentlichen"), 1),
+                    excludeInvalidLemmas(boundRoot, criteriaBuilder, boundsQuery)
+            );
 
             Query<Object[]> boundsQueryResult = session.createQuery(boundsQuery);
             Object[] boundsResult = boundsQueryResult.uniqueResult();
@@ -82,7 +107,8 @@ public class EinzelbelegDB extends AbstractBase {
             criteriaQuery.select(root.get("id"))
                     .where(
                             criteriaBuilder.equal(root.get("id"), id),
-                            criteriaBuilder.equal(root.get("quelle").get("zuVeroeffentlichen"), 1)
+                            criteriaBuilder.equal(root.get("quelle").get("zuVeroeffentlichen"), 1),
+                            excludeInvalidLemmas(root, criteriaBuilder, criteriaQuery)
                     );
 
             Query<Integer> query = session.createQuery(criteriaQuery);
@@ -99,7 +125,8 @@ public class EinzelbelegDB extends AbstractBase {
             nextCriteriaQuery.select(nextRoot.get("id"))
                     .where(
                             criteriaBuilder.greaterThan(nextRoot.get("id"), id),
-                            criteriaBuilder.equal(nextRoot.get("quelle").get("zuVeroeffentlichen"), 1)
+                            criteriaBuilder.equal(nextRoot.get("quelle").get("zuVeroeffentlichen"), 1),
+                            excludeInvalidLemmas(nextRoot, criteriaBuilder, nextCriteriaQuery)
                     )
                     .orderBy(criteriaBuilder.asc(nextRoot.get("id")));
 
@@ -196,9 +223,16 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static List<Integer> getAllPublicEinzelbelegIds() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT DISTINCT e.ID FROM einzelbeleg e "
-                    + "JOIN quelle q ON e.QuelleID = q.ID "
-                    + "WHERE q.zuVeroeffentlichen = 1 ORDER BY e.ID";
+            /*
+                Exclude Einzelbelege that are linked to a MGHLemma which contains [???] in Frontend
+            */
+            String sql = "SELECT e.ID "
+                    + "FROM einzelbeleg e "
+                    + "  JOIN quelle q ON e.QuelleID = q.ID AND q.zuVeroeffentlichen = 1 "
+                    + "  LEFT JOIN einzelbeleg_hatmghlemma eh ON eh.EinzelbelegID = e.ID "
+                    + "  LEFT JOIN mgh_lemma m ON m.ID = eh.MGHLemmaID AND m.MGHLemma LIKE '%[???]%' "
+                    + "WHERE m.ID IS NULL "
+                    + "ORDER BY e.ID";
             return session.createNativeQuery(sql).getResultList();
         }
     }

@@ -1,5 +1,7 @@
+<%@page import="java.util.Set"%>
 <%@page import="de.uni_tuebingen.ub.nppm.exception.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.MghLemma"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
@@ -14,15 +16,30 @@
 
     Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
 
-        if(einzelbeleg == null){
-            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"einzelbeleg", "IdNotFoundError",String.valueOf(id));
-            throw new IdNotFoundException(msg);            
-        }
+    if (einzelbeleg == null) {
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(), "einzelbeleg", "IdNotFoundError", String.valueOf(id));
+        throw new IdNotFoundException(msg);
+    }
 
-        if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
-            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"einzelbeleg", "NotPublicError",String.valueOf(id));
-            throw new IdNotPublicException(msg);
+    if (einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1) {
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(), "einzelbeleg", "NotPublicError", String.valueOf(id));
+        throw new IdNotPublicException(msg);
+    }
+
+    boolean throwContainsInvalidStrException = false;
+
+    for (MghLemma lemmaObj : einzelbeleg.getMghLemma()) {
+        String text = lemmaObj.getMghLemma();
+        if (text != null && text.contains("[???]")) {
+            throwContainsInvalidStrException = true;
+            break;
         }
+    }
+
+    if (throwContainsInvalidStrException) {
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"einzelbeleg","EinzelbelegInvalidLemmaString",String.valueOf(einzelbeleg.getId()));
+        throw new ContainsInvalidStrException(msg);
+    }
 %>
 
 <jsp:include page="layout/titel.inc.jsp">
