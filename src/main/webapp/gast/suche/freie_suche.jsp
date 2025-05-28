@@ -400,14 +400,6 @@
 
     if (request.getParameter("Ausgabe_Einzelbeleg_Belegstelle") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegstelle").equals("on")) {
 
-        fields.add("einzelbeleg.seite");
-        fieldNames.add("einzelbeleg.seite");
-        headlines.add(Language.getTextfield(session, "suche", "NummerSeite"));
-
-        fields.add("einzelbeleg.raster");
-        fieldNames.add("einzelbeleg.raster");
-        headlines.add(Language.getTextfield(session, "suche", "Raster"));
-
         fields.add("quelle.Bezeichnung");
         fields.add("quelle.ID AS quelleID");
         count.add("quelle.ID");
@@ -417,6 +409,14 @@
         }
         //headlines.add("Quelle");
         headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
+
+        fields.add("einzelbeleg.seite");
+        fieldNames.add("einzelbeleg.seite");
+        headlines.add(Language.getTextfield(session, "suche", "NummerSeite"));
+
+        fields.add("einzelbeleg.raster");
+        fieldNames.add("einzelbeleg.raster");
+        headlines.add(Language.getTextfield(session, "suche", "Raster"));
 
         fields.add("edition.Titel");
         //fields.add("edition.ID");
@@ -668,9 +668,9 @@
         }
         // headlines.add("Variante");
         headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Varianten"));
-        headlines.add("Bib.Sig.");
-        headlines.add("TZ v. J.");
-        headlines.add("TZ b. J.");
+        headlines.add(Language.getTextfield(session, "suche", "Signatur"));
+        headlines.add(Language.getTextfield(session, "suche", "TZvJ"));
+        headlines.add(Language.getTextfield(session, "suche", "TZbJ"));
 
         einzelbeleg = true;
     }
@@ -766,7 +766,7 @@
                 }
             } else if (request.getParameter("order" + i).equals("OrderPersonen")) {
                 order += " person.Standardname";
-                orderV[i - 1] = "person.ID";
+                orderV[i - 1] = "person.Standardname";
                 person = true;
 
                 if (request.getParameter("Ausgabe_Person_Standardname") == null || !request.getParameter("Ausgabe_Person_Standardname").equals("on")) {
@@ -922,9 +922,9 @@
                     }
                     // headlines.add("Variante");
                     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Varianten"));
-                    headlines.add("Bib.Sig.");
-                    headlines.add("TZ v. J.");
-                    headlines.add("TZ b. J.");
+                    headlines.add(Language.getTextfield(session, "suche", "Signatur"));
+                    headlines.add(Language.getTextfield(session, "suche", "TZvJ"));
+                    headlines.add(Language.getTextfield(session, "suche", "TZbJ"));
 
                     einzelbeleg = true;
                 }
@@ -1523,10 +1523,16 @@
 
             out.print("</ul>");
 
+            String entry = Language.getTextfield(session, "titel_inc", "Eintrag");
+            String entries = Language.getTextfield(session, "suche", "Eintraege");
+
 %>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function (e) {
         var result_list = document.getElementById("complete");
+        var entry = "<%= entry %>";
+        var entries = "<%= entries %>";
+
         try {
             var array = result_list.getElementsByTagName("li");
             for (var j = 0; j < array.length; j++) {
@@ -1538,9 +1544,9 @@
                 else
                     count = ul.nextSibling.childNodes.length;
                 if (count == 1)
-                    ul.data = ul.data + "(" + count + " Eintrag)";
+                    ul.data = ul.data + "(" + count + " " + entry + ")";
                 else
-                    ul.data = ul.data + "(" + count + " Eintr\u00E4ge)";
+                    ul.data = ul.data + "(" + count + " " + entries + ")";
             }
         } catch (ex) {
         } finally {
