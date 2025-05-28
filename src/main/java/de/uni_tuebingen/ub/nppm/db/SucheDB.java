@@ -239,6 +239,7 @@ public class SucheDB extends AbstractBase {
                    + " LEFT JOIN quelle ON einzelbeleg.QuelleID=quelle.ID"
                    + " LEFT JOIN edition ON einzelbeleg.EditionID=edition.ID"
                    + " WHERE quelle.zuVeroeffentlichen='1'"
+                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%[???]%')"
                    + " AND mgh_lemma.ID IN"
                    + " ("
                    + " SELECT DISTINCT mgh_lemma.ID FROM einzelbeleg"
