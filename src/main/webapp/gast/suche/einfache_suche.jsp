@@ -26,7 +26,7 @@
         query = query.trim();
 
         if (query.length() < 3) {
-            throw new Exception("<b>Bitte geben Sie mindestens 3 Zeichen als Suchtext an.</b>");  //Übersetzen
+            throw new Exception("<b>" + Language.getTextfield(session, "suche", "Bitte3Zeichen") + "</b>");
         }
 
         String aufklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneAufklappen");
@@ -42,23 +42,23 @@
         headlines = new ArrayList<>();
         headlines.add("");
         headlines.add("");
-        headlines.add("Belegform");
-        headlines.add("Quelle");
-        headlines.add("Nr./S.");
-        headlines.add("Rast.");
-        headlines.add("Edition");
-        headlines.add("c.");
-        headlines.add("S.");
-        headlines.add("Q von J.");
-        headlines.add("Q von Jh.");
-        headlines.add("Q bis J.");
-        headlines.add("Q bis Jh.");
+        headlines.add(Language.getTextfield(session, "suche", "Belegform"));
+        headlines.add(Language.getTextfield(session, "freie_suche", "Quelle"));
+        headlines.add(Language.getTextfield(session, "suche", "NummerSeite"));
+        headlines.add(Language.getTextfield(session, "suche", "Raster"));
+        headlines.add(Language.getTextfield(session, "quelle", "Edition"));
+        headlines.add(Language.getTextfield(session, "suche", "Cap"));
+        headlines.add(Language.getTextfield(session, "suche", "Pag"));
+        headlines.add(Language.getTextfield(session, "suche", "QvJ"));
+        headlines.add(Language.getTextfield(session, "suche", "QvJh"));
+        headlines.add(Language.getTextfield(session, "suche", "QbJ"));
+        headlines.add(Language.getTextfield(session, "suche", "QbJh"));
 
-        headlines.add("EB von J.");
-        headlines.add("EB von Jh.");
-        headlines.add("EB bis J.");
-        headlines.add("EB bis Jh.");
-        headlines.add("Q Jahr");
+        headlines.add(Language.getTextfield(session, "suche", "EBvJ"));
+        headlines.add(Language.getTextfield(session, "suche", "EBvJh"));
+        headlines.add(Language.getTextfield(session, "suche", "EBbJ"));
+        headlines.add(Language.getTextfield(session, "suche", "EBbJh"));
+        headlines.add(Language.getTextfield(session, "suche", "QJahr"));
 
         fieldNames = new ArrayList<>();
         fieldNames.add("MGHLemma");
@@ -108,9 +108,14 @@
         }
 
         out.println("</ul>");
+
+        String entry = Language.getTextfield(session, "titel_inc", "Eintrag");
+        String entries = Language.getTextfield(session, "suche", "Eintraege");
 %>
 <script type="text/javascript">
     var array = document.getElementsByTagName("li");
+    var entry = "<%= entry %>";
+    var entries = "<%= entries %>";
     for (var j = 0; j < array.length; j++) {
         if (array[j].getElementsByTagName("ul").length == 0)
             continue;
@@ -123,15 +128,15 @@
             count = ul.nextSibling.childNodes.length;
         //     alert(ul.data);
         if (count == 1)
-            ul.data = ul.data + "(" + count + " Eintrag)";
+            ul.data = ul.data + "(" + count + " " + entry + ")";
         else
-            ul.data = ul.data + "(" + count + " Eintr\u00E4ge)";
+            ul.data = ul.data + "(" + count + " " + entries + ")";
     }
 </script>
 
 <%
         if (!found) {
-            out.println("<b>F&uuml;r Ihre Suchanfrage wurden keine Ergebnisse gefunden</b>");
+            out.println("<b>" + Language.getTextfield(session, "suche", "KeinErgebnis") + "</b>");
         }
 
     } catch (Exception e) {
