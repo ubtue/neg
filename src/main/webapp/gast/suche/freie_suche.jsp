@@ -743,26 +743,26 @@
             } else if (request.getParameter("order" + i).equals("OrderErstglied")) {
                 order += " Erstglied";
                 orderV[i - 1] = "Erstglied";
-                namenkommentar = true;
+                mghlemma = true;
 
                 if (request.getParameter("Ausgabe_Erstglied") == null || !request.getParameter("Ausgabe_Erstglied").equals("on")) {
-                    fields.add("substring_index(`namenkommentar`.`PLemma`,_utf8'~',1) AS `Erstglied`");
+                    fields.add("substring_index(mgh_lemma.MGHLemma,_utf8'~',1) AS Erstglied");
                     fieldNames.add("Erstglied");
-                    tables.add("namenkommentar");
+                    tables.add("mgh_lemma");
                     headlines.add("Erstglied");
-                    namenkommentar = true;
+                    mghlemma = true;
                 }
             } else if (request.getParameter("order" + i).equals("OrderZweitglied")) {
                 order += " Zweitglied";
                 orderV[i - 1] = "Zweitglied";
-                namenkommentar = true;
+                mghlemma = true;
 
                 if (request.getParameter("Ausgabe_Zweitglied") == null || !request.getParameter("Ausgabe_Zweitglied").equals("on")) {
-                    fields.add("substring_index(`namenkommentar`.`PLemma`,_utf8'~',-(1)) AS `Zweitglied`");
+                    fields.add("substring_index(mgh_lemma.MGHLemma,_utf8'~',-(1)) AS Zweitglied");
                     fieldNames.add("Zweitglied");
-                    tables.add("namenkommentar");
+                    tables.add("mgh_lemma");
                     headlines.add("Zweitglied");
-                    namenkommentar = true;
+                    mghlemma = true;
                 }
             } else if (request.getParameter("order" + i).equals("OrderPersonen")) {
                 order += " person.Standardname";
@@ -1360,6 +1360,12 @@
                         if (orderV[z].startsWith("person.ID")) {
                             text = Utils.safeToString(row.get("person.Standardname"), "-");
                         }
+                        if (orderV[z] != null && (orderV[z].startsWith("Zweitglied") || orderV[z].equals("Zweitglied"))) {
+                            text = Utils.safeToString(row.get("Zweitglied"), "-");
+                        }
+                        if (orderV[z] != null && (orderV[z].startsWith("Erstglied") || orderV[z].equals("Erstglied"))) {
+                            text = Utils.safeToString(row.get("Erstglied"), "-");
+                        }
 
                         String titel = orderV[z];
 
@@ -1369,6 +1375,14 @@
                         if (orderV[z].startsWith("person.ID")) {
                             titel = "person.Standardname";
                         }
+
+                        if (orderV[z].startsWith("Zweitglied")) {
+                            titel = "Zweitglied";
+                        }
+                        if (orderV[z].startsWith("Erstglied")) {
+                            titel = "Erstglied";
+                        }
+
                         titel = headlines.get(fieldNames.indexOf(titel));
 
                         out.print(titel + ":");
