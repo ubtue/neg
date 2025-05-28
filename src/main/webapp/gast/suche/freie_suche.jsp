@@ -766,7 +766,7 @@
                 }
             } else if (request.getParameter("order" + i).equals("OrderPersonen")) {
                 order += " person.Standardname";
-                orderV[i - 1] = "person.ID";
+                orderV[i - 1] = "person.Standardname";
                 person = true;
 
                 if (request.getParameter("Ausgabe_Person_Standardname") == null || !request.getParameter("Ausgabe_Person_Standardname").equals("on")) {
