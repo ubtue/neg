@@ -36,7 +36,7 @@
             }
         }
 
-        if(!lemma.getMghLemma().contains("[???]")){
+        if(!lemma.getMghLemma().contains(Constants.forbiddenLemmaSubstring)){
             throwContainsInvalidStrException = false;
         }
 
@@ -147,7 +147,7 @@
     <jsp:param name="ID" value="<%= id%>" />
     <jsp:param name="size" value="" />
     <jsp:param name="Formular" value="mgh_lemma" />
-    <jsp:param name="excludeText" value="[???]" />
+    <jsp:param name="excludeText" value= "<%= Constants.forbiddenLemmaSubstring%>" />
 </jsp:include>
 
 <!----------ID---------->

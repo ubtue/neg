@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.Constants;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,12 +34,12 @@ public class SucheDB extends AbstractBase {
             sql += " WHERE " + field + " LIKE CONCAT('%', ?1, '%') ";
         }        
 
-        // in der auto completion->frontend->erweiterte suche keine einträge mit [???] zeigen
+        // in der auto completion->frontend->erweiterte suche keine einträge mit Constants.forbiddenLemmaSubstring zeigen
         if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
             if (addWhereStatement) {
-                sql += " AND " + field + " NOT LIKE '%[???]%'";
+                sql += " AND " + field + " NOT LIKE '%"+Constants.forbiddenLemmaSubstring+"%'";
             } else {
-                sql += " WHERE " + field + " NOT LIKE '%[???]%'";
+                sql += " WHERE " + field + " NOT LIKE '%"+Constants.forbiddenLemmaSubstring+"%'";
             }
         }
 
@@ -239,7 +240,7 @@ public class SucheDB extends AbstractBase {
                    + " LEFT JOIN quelle ON einzelbeleg.QuelleID=quelle.ID"
                    + " LEFT JOIN edition ON einzelbeleg.EditionID=edition.ID"
                    + " WHERE quelle.zuVeroeffentlichen='1'"
-                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%[???]%')"
+                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%"+Constants.forbiddenLemmaSubstring+"%')"
                    + " AND mgh_lemma.ID IN"
                    + " ("
                    + " SELECT DISTINCT mgh_lemma.ID FROM einzelbeleg"

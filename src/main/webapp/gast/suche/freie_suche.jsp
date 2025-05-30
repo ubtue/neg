@@ -124,7 +124,7 @@
     }
 
     if (mghlemma) {
-        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%[???]%'");
+        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%"+Constants.forbiddenLemmaSubstring+"%'");
     }
 
     // ### ZUR PERSON ###
@@ -978,10 +978,10 @@
             orderV[i] = "-";
         }
         /*
-        Keine Einzelbelege ausgeben die mit einem Lemma verküpft sind welches [???] enthält
+        Keine Einzelbelege ausgeben die mit einem Lemma verküpft sind welches Constants.forbiddenLemmaSubstring enthält
         */
         if (einzelbeleg) {
-            conditions.add("(mgh_lemma.MGHLemma NOT LIKE '%[???]%')");
+            conditions.add("(mgh_lemma.MGHLemma NOT LIKE '%"+Constants.forbiddenLemmaSubstring+"%')");
             mghlemma = true;
         }
 
