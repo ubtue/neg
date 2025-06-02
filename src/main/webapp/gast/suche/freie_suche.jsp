@@ -270,7 +270,7 @@
         conditions.add("(VON_JAHR_JHDT(einzelbeleg.vonJahr, einzelbeleg.vonJahrhundert, einzelbeleg.bisJahrhundert)<99999 and BIS_JAHR_JHDT(einzelbeleg.bisJahr, einzelbeleg.bisJahrhundert, einzelbeleg.vonJahrhundert)>-99999 and (VON_JAHR_JHDT(einzelbeleg.vonJahr, einzelbeleg.vonJahrhundert, einzelbeleg.bisJahrhundert)>=" + vonNum + " and BIS_JAHR_JHDT(einzelbeleg.bisJahr, einzelbeleg.bisJahrhundert, einzelbeleg.vonJahrhundert)<=" + bisNum + ") OR"
                 + "(VON_JAHR_JHDT(einzelbeleg.vonJahr, einzelbeleg.vonJahrhundert, einzelbeleg.bisJahrhundert)<=" + vonNum + " and BIS_JAHR_JHDT(einzelbeleg.bisJahr, einzelbeleg.bisJahrhundert, einzelbeleg.vonJahrhundert)>=" + bisNum + "))");
         einzelbeleg = true;
-    }    
+    }
 
     // ### ZUR QUELLE ###
     if (!tableString.contains(" quelle ")) {
@@ -979,7 +979,7 @@
         }
         /*
         Keine Einzelbelege ausgeben die mit einem Lemma verküpft sind welches [???] enthält
-        */
+         */
         if (einzelbeleg) {
             conditions.add("(mgh_lemma.MGHLemma NOT LIKE '%[???]%')");
             mghlemma = true;
@@ -1392,13 +1392,13 @@
 
                         titel = headlines.get(fieldNames.indexOf(titel));
 
-                        out.print(titel + ":");
+                        out.print(titel + ": ");
                         boolean link = false;
                         if (export.equals("browse") && !text.equals("-")) {
                             if (orderV[z].equals("einzelbeleg.ID")) {
                                 out.print("<a class=\"ut-link\" href=\"einzelbeleg?ID=" + row.get("einzelbelegID") + "\">");
                                 link = true;
-                            } else if (orderV[z].equals("person.ID")) {
+                            } else if ((orderV[z].equals("person.Standardname") || orderV[z].equals("person.ID")) && row.get("personID") != null) {
                                 out.print("<a class=\"ut-link\" href=\"person?ID=" + row.get("personID") + "\">");
                                 link = true;
                             } else if (orderV[z].equals("perszu.Standardname")) {
@@ -1442,7 +1442,9 @@
                             out.print(format(text, format));
                         }
                         if (link) {
-                            out.print("</a>&nbsp;");
+                            out.print("</a> &nbsp;");
+                        } else {
+                            out.print(" ");
                         }
 
                         if (z == orderSize - 1) {
@@ -1537,8 +1539,8 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function (e) {
         var result_list = document.getElementById("complete");
-        var entry = "<%= entry %>";
-        var entries = "<%= entries %>";
+        var entry = "<%= entry%>";
+        var entries = "<%= entries%>";
 
         try {
             var array = result_list.getElementsByTagName("li");

@@ -305,7 +305,7 @@ public class Utils {
                     }
 
                     if (orderV[z].startsWith("einzelbelegID")) {
-                        out.print(format(text, "Belegform"));
+                        out.print(format(escapeHTML(text), "Belegform"));
                     } else if (orderV[z].endsWith("Jahr")) {
                         int ja = Integer.parseInt(oldValue[z]);
                         out.print("" + (ja * zeitraum) + "-" + ((ja + 1) * zeitraum - 1));
@@ -315,10 +315,10 @@ public class Utils {
                         if (orderV[z].equals("Erstglied") || orderV[z].equals("Zweitglied")) {
                             format = "PLemma";
                         }
-                        out.print(format(text, format));
+                        out.print(format(escapeHTML(text), format));
                     }
                     if (link) {
-                        out.print("</a> ");
+                        out.print("</a> &nbsp;");
                     } else {
                         out.print(" ");
                     }
