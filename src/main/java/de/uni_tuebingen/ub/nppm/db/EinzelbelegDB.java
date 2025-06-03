@@ -4,6 +4,7 @@ import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -231,7 +232,7 @@ public class EinzelbelegDB extends AbstractBase {
                     + "FROM einzelbeleg e "
                     + "  JOIN quelle q ON e.QuelleID = q.ID AND q.zuVeroeffentlichen = 1 "
                     + "  LEFT JOIN einzelbeleg_hatmghlemma eh ON eh.EinzelbelegID = e.ID "
-                    + "  LEFT JOIN mgh_lemma m ON m.ID = eh.MGHLemmaID AND m.MGHLemma LIKE '%"+Constants.forbiddenLemmaSubstring+"%' "
+                    + "  LEFT JOIN mgh_lemma m ON m.ID = eh.MGHLemmaID AND m.MGHLemma LIKE '%"+Utils.DBtoDB(Constants.forbiddenLemmaSubstring)+"%' "
                     + "WHERE m.ID IS NULL "
                     + "ORDER BY e.ID";
             return session.createNativeQuery(sql).getResultList();

@@ -21,12 +21,7 @@
     }
 
     String DBtoDB(String s) {
-        if (s != null) {
-            s = s.replace("\\", "\\\\").
-                    replace("\'", "\\'").
-                    replace("\"", "\\\"");
-        }
-        return s;
+        return Utils.DBtoDB(s);
     }
 
     String DBtoJS(String s) {

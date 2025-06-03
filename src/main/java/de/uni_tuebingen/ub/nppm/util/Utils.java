@@ -34,6 +34,15 @@ public class Utils {
         }
     }
 
+    public static String DBtoDB(String s) {
+        if (s != null) {
+            s = s.replace("\\", "\\\\").
+                    replace("\'", "\\'").
+                    replace("\"", "\\\"");
+        }
+        return s;
+    }
+
     public static boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);

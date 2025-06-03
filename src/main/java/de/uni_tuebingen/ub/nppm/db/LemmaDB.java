@@ -3,6 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 
@@ -47,7 +48,7 @@ public class LemmaDB extends AbstractBase {
                     + "      JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "      JOIN quelle q ON e.QuelleID = q.ID "
                     + "      WHERE q.ZuVeroeffentlichen = 1 AND mgh_lemma.ID = :id "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+Constants.forbiddenLemmaSubstring+"%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+Utils.DBtoDB(Constants.forbiddenLemmaSubstring)+"%' "
                     + "    ) THEN :id "
                     + "    ELSE ( "
                     + "      SELECT MIN(mgh_lemma.ID) "
@@ -56,7 +57,7 @@ public class LemmaDB extends AbstractBase {
                     + "      JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "      JOIN quelle q ON e.QuelleID = q.ID "
                     + "      WHERE q.ZuVeroeffentlichen = 1 AND mgh_lemma.ID > :id "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+Constants.forbiddenLemmaSubstring+"%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+Utils.DBtoDB(Constants.forbiddenLemmaSubstring)+"%' "
                     + "    ) "
                     + "  END AS resultId "
                     + "FROM ( "
@@ -66,7 +67,7 @@ public class LemmaDB extends AbstractBase {
                     + "  JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "  JOIN quelle q ON e.QuelleID = q.ID "
                     + "  WHERE q.ZuVeroeffentlichen = 1 "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+Constants.forbiddenLemmaSubstring+"%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+Utils.DBtoDB(Constants.forbiddenLemmaSubstring)+"%' "
                     + ") AS ids";
 
             NativeQuery query = session.createNativeQuery(sql);
