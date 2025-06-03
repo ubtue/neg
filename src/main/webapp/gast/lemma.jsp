@@ -185,6 +185,7 @@
                     <jsp:param name="Formular" value="mgh_lemma" />
                     <jsp:param name="Datenfeld" value="EinzelbelegRODistinct" />
                     <jsp:param name="Readonly" value="yes" />
+                    <jsp:param name="Ausrichtung" value="horozontal" />
                 </jsp:include>
             </td>
         </tr>
