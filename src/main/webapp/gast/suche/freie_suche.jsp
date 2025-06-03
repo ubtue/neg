@@ -400,15 +400,19 @@
 
     if (request.getParameter("Ausgabe_Einzelbeleg_Belegstelle") != null && request.getParameter("Ausgabe_Einzelbeleg_Belegstelle").equals("on")) {
 
+    if (!"true".equals(einzelbelegeVonQuelle)) {
         fields.add("quelle.Bezeichnung");
+        fieldNames.add("quelle.Bezeichnung");
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
+    }
+
         fields.add("quelle.ID AS quelleID");
         count.add("quelle.ID");
-        fieldNames.add("quelle.Bezeichnung");
+
         if (!tableString.contains("quelle")) {
             tableString += " LEFT OUTER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
         }
         //headlines.add("Quelle");
-        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Quelle"));
 
         fields.add("einzelbeleg.seite");
         fieldNames.add("einzelbeleg.seite");
@@ -1253,7 +1257,7 @@
 
             header += "<thead class=\"ut-table__header \">";
             header += "<tr class=\"ut-table__row\">";
-            int startIndex = "true".equals(einzelbelegeVonQuelle) ? 1 : 0;
+            int startIndex = 0;
             for (int i = startIndex; i < headlines.size(); i++) {
                 if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
                     header += "<th class=\"ut-table__item ut-table__header__item\" scope=\"col\">";

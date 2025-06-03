@@ -4,6 +4,14 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="java.util.*"%>
 
+<%!
+    private static <T> void moveItem(List<T> list, T item, int newIndex) {
+        if (list.remove(item)) {
+            list.add(newIndex, item);
+        }
+    }
+%>
+
 
 <%
     if (true) {
@@ -31,6 +39,59 @@
                 fieldsString += ", " + QueryHelper.getFieldAliasSelect(fields.get(i));
             }
         }
+
+        String[] fieldArray = fieldsString.split(",\\s*");  // Aufteilen an Komma + optionalen Leerzeichen
+        List<String> fieldList = new ArrayList<>(Arrays.asList(fieldArray));
+
+        // Belegform ganz nach vorne
+        String feld = "einzelbeleg.Belegform AS einzelbeleg_Belegform";
+        moveItem(fieldList, feld, 0);
+        moveItem(fieldNames, "einzelbeleg.Belegform", 0);
+        moveItem(headlines, "Belegform", 0);
+
+
+        // Quelle an zweite Stelle (Index 1)
+        feld = "quelle.Bezeichnung AS quelle_Bezeichnung";
+        moveItem(fieldList, feld, 1);
+        moveItem(fieldNames, "quelle.Bezeichnung", 1);
+        moveItem(headlines, "Quelle", 1);
+
+
+        // Neues Feld an Position 3 einfügen (Index 2)
+        feld = "einzelbeleg.Seite AS einzelbeleg_Seite";
+        fieldList.add(2, feld);
+        fieldNames.add(2, "einzelbeleg.Seite");
+        headlines.add(2, "Nr./Seite");
+
+         // Neues Feld an Position 4 einfügen (Index 3)
+        feld = "einzelbeleg.Raster AS einzelbeleg_Raster";
+        fieldList.add(3, feld);
+        fieldNames.add(3, "einzelbeleg.Raster");
+        headlines.add(3, "Rast.");
+
+        feld = "edition.Titel AS edition_Titel";
+        moveItem(fieldList, feld, 4);
+        moveItem(fieldNames, "edition.Titel", 4);
+        moveItem(headlines, "Edition", 4);
+
+        feld = "einzelbeleg.EditionKapitel AS einzelbeleg_EditionKapitel";
+        moveItem(fieldList, feld, 5);
+        moveItem(fieldNames, "einzelbeleg.EditionKapitel", 5);
+        moveItem(headlines, "Kapitel in der Edition", 5);
+
+        feld = "einzelbeleg.EditionSeite AS einzelbeleg_EditionSeite";
+        moveItem(fieldList, feld, 6);
+        moveItem(fieldNames, "einzelbeleg.EditionSeite", 6);
+        moveItem(headlines, "Seiten in der Edition", 6);
+
+        feld = "einzelbeleg.Kontext AS einzelbeleg_Kontext";
+        moveItem(fieldList, feld, 7);
+        moveItem(fieldNames, "einzelbeleg.Kontext", 7);
+        moveItem(headlines, "Kontext", 7);
+
+
+        // fieldsString wieder zusammensetzen
+        fieldsString = String.join(", ", fieldList);
 
         // Tabellen
         String tablesString = "";

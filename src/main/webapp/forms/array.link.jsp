@@ -19,17 +19,16 @@
     - Zeigt auch doppelte Links an, wenn vorhanden.
 
     <jsp:param name="Datenfeld" value="EinzelbelegRO" />
-    */
-
+     */
 
     if (feldtyp.startsWith("link") && array) {
         String[] fields = feldtyp.substring(feldtyp.lastIndexOf('(') + 1, feldtyp.lastIndexOf(')')).split(",");
         List<Map> rowlist = AbstractBase.getMappedList(
-            "SELECT * FROM " + zielTabelle + " WHERE " + formularAttribut + "=\"" + id + "\""
+                "SELECT * FROM " + zielTabelle + " WHERE " + formularAttribut + "=\"" + id + "\""
         );
 
         Set<String> alreadyPrintedNormalized = "EinzelbelegRODistinct".equals(datenfeld)
-            ? new HashSet<>() : null;
+                ? new HashSet<>() : null;
 
         Map<String, String> normalizedToOriginal = new HashMap<>();
         Map<String, String> normalizedToId = new HashMap<>();
@@ -38,7 +37,7 @@
 
         for (Map row : rowlist) {
             Map row2 = AbstractBase.getMappedRow(
-                "SELECT " + fields[2] + " FROM " + fields[0] + " WHERE tab.ID=" + String.valueOf(row.get(fields[1]))
+                    "SELECT " + fields[2] + " FROM " + fields[0] + " WHERE tab.ID=" + String.valueOf(row.get(fields[1]))
             );
 
             if (row2 != null) {
@@ -94,8 +93,25 @@
             });
         }
 
-        for (String link : links) {
-            out.println(link);
+        String ausrichtung = request.getParameter("Ausrichtung");
+        if ("horizontal".equalsIgnoreCase(ausrichtung)) {
+            int count = 0;
+            for (int i = 0; i < links.size(); i++) {
+                out.print(links.get(i).replaceAll("<br>", "")); // <br> entfernen für horizontale Darstellung
+
+                count++;
+                if (count % 5 == 0 || i == links.size() - 1) {
+                    out.println("<br>"); // nach 5 Links oder am Ende der Liste: Zeilenumbruch
+                    count = 0;
+                } else {
+                    out.print(", &nbsp;");
+                }
+            }
+        } else {
+            for (String link : links) {
+                out.println(link);
+            }
         }
+
     }
 %>
