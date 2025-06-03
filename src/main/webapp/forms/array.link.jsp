@@ -94,7 +94,7 @@
         }
 
         String ausrichtung = request.getParameter("Ausrichtung");
-        if ("horizontal ".equalsIgnoreCase(ausrichtung)) {
+        if ("horizontal".equalsIgnoreCase(ausrichtung)) {
             int count = 0;
             for (int i = 0; i < links.size(); i++) {
                 out.print(links.get(i).replaceAll("<br>", "")); // <br> entfernen für horizontale Darstellung
