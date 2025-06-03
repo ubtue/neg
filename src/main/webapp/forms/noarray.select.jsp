@@ -87,7 +87,9 @@
                 }
             }
         } else {
-
+            /*  Erst und Zweitglied select bezieht sich nur auf die Gast umgebung,
+                Deshalb werden hier Lemmas die Constants.forbiddenLemmaSubstring enthalten nicht berücksichtigt.
+            */
             if (datenfeld.equals("ErstGliedSelect")) {
 
                 List<String> erstGliedlist = LemmaDB.getListErstglied();
