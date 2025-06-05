@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.Constants;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.io.OutputStream;
 import javax.persistence.NoResultException;
@@ -19,7 +20,7 @@ public class ShowContentServlet extends HttpServlet {
         String name = req.getParameter("name");
 
         Cookie[] cookies = req.getCookies();
-        String selectedLanguage = "gb";  //Standardwert wenn kein Cookie gesetzt worden ist
+        String selectedLanguage = Constants.DEFAULT_LANG;  //Standardwert wenn kein Cookie gesetzt worden ist
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("selectedLanguage")) {

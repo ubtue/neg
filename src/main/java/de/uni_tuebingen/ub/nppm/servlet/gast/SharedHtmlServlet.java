@@ -2,6 +2,7 @@ package de.uni_tuebingen.ub.nppm.servlet.gast;
 
 import de.uni_tuebingen.ub.nppm.db.ContentDB;
 import de.uni_tuebingen.ub.nppm.model.Content;
+import de.uni_tuebingen.ub.nppm.util.Constants;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -36,7 +37,7 @@ public class SharedHtmlServlet extends AbstractGastServlet {
 
         // Wenn keine Sprache in der Session gespeichert ist, eine Standardsprache setzen
         if (selectedLanguage == null) {
-            selectedLanguage = "gb"; // Standard: Englisch
+            selectedLanguage = Constants.DEFAULT_LANG; // Standard: Englisch
             request.getSession().setAttribute("Sprache", selectedLanguage);
         }
 
@@ -61,10 +62,10 @@ public class SharedHtmlServlet extends AbstractGastServlet {
             Content content = null;
             try{
                 //Versuche erst englisch zu holen
-                content = ContentDB.getByNameAndLanguage(myFile, "gb");
+                content = ContentDB.getByNameAndLanguage(myFile, Constants.DEFAULT_LANG);
             }catch(NoResultException e1){
                 // Fehlerbehandlung benutze Standard Sprache Deutsch, da für nicht alle wie Hilfe.html eine Englische Version vorhanden ist
-                content = ContentDB.getByNameAndLanguage(myFile, "de");
+                content = ContentDB.getByNameAndLanguage(myFile, Constants.FALLBACK_LANG);
             }
             if(content == null){
                 throw new NoResultException("No Content found for "+myFile);
