@@ -7,7 +7,7 @@
     int filter = 0;
     String formular = "freie_suche";
 %>
-
+<h1>DEBUG ich bin das Suchformular</h1>
 <div class="wrapper">
 
     <div class="container" >

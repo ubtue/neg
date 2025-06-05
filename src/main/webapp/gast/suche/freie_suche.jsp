@@ -20,7 +20,7 @@
 <%
     String einzelbelegeVonQuelle = request.getParameter("einzelbelegeVonQuelle");
     if ("true".equals(einzelbelegeVonQuelle)) {
-        int quellenId = Integer.parseInt(request.getParameter("Quellenliste"));
+        int quellenId = Integer.parseInt(request.getParameter("Quellenliste"));    
 %>
 <h3 class="ut-heading ut-heading--h3">
     <% Language.printTextfield(out, session, "quelle", "Bezeichnung");%>
@@ -1235,6 +1235,7 @@
         String oldValue[] = new String[15];
 
         // ########## SEITENNAVIGATION #########
+        out.println("<h1>ich bin das suchergebnis</h1>");
         if ("".equals(order)) {
             PrintPagination.printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
         }
