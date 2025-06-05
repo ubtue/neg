@@ -97,7 +97,7 @@ public class ContentDB extends AbstractBase {
             }
         }
     }
-
+    //Throws Exception javax.persistence.NoResultException when Language is not available, because of get SingleResult
     public static Content getByNameAndLanguage(String name, String language) throws Exception {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();

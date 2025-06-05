@@ -19,7 +19,7 @@ public class ShowContentServlet extends HttpServlet {
         String name = req.getParameter("name");
 
         Cookie[] cookies = req.getCookies();
-        String selectedLanguage = "null";  //Standardwert wenn kein Cookie gesetzt worden ist
+        String selectedLanguage = "gb";  //Standardwert wenn kein Cookie gesetzt worden ist
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("selectedLanguage")) {

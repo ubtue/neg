@@ -5,6 +5,7 @@ import de.uni_tuebingen.ub.nppm.model.Content;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import javax.persistence.NoResultException;
 
 public class SharedHtmlServlet extends AbstractGastServlet {
 
@@ -35,23 +36,22 @@ public class SharedHtmlServlet extends AbstractGastServlet {
 
         // Wenn keine Sprache in der Session gespeichert ist, eine Standardsprache setzen
         if (selectedLanguage == null) {
-            selectedLanguage = "de"; // Standard: Deutsch
+            selectedLanguage = "gb"; // Standard: Englisch
             request.getSession().setAttribute("Sprache", selectedLanguage);
         }
+
+        PrintWriter writer_ = response.getWriter();
 
         // HTML-Dateiname aus der Anfrage holen und .html anhängen, wenn nötig
         String myFile = request.getParameter("sharedHtml");
         if (myFile != null && !myFile.endsWith(".html")) {
             myFile += ".html";
         }
-
         try {
             // Inhalt aus der Datenbank basierend auf dem Dateinamen und der Sprache holen
             Content content = ContentDB.getByNameAndLanguage(myFile, selectedLanguage);
-
             if (content != null) {
                 response.setContentType("text/html; charset=UTF-8");
-
                 // Inhalt senden
                 PrintWriter writer = response.getWriter();
                 byte[] htmlBytes = content.getContent();
@@ -59,10 +59,18 @@ public class SharedHtmlServlet extends AbstractGastServlet {
                 writer.flush();
             }
 
-        } catch (Exception e) {
-            // Fehlerbehandlung benutze Standard Sprache Deutsch, da für nicht alle wie Hilfe.html eine Englische Version vorhanden ist
-            Content content = ContentDB.getByNameAndLanguage(myFile, "de");
-
+        } catch (NoResultException e) {
+            Content content = null;
+            try{
+                //Versuche erst englisch zu holen
+                content = ContentDB.getByNameAndLanguage(myFile, "gb");
+            }catch(NoResultException e1){
+                // Fehlerbehandlung benutze Standard Sprache Deutsch, da für nicht alle wie Hilfe.html eine Englische Version vorhanden ist
+                content = ContentDB.getByNameAndLanguage(myFile, "de");
+            }
+            if(content == null){
+                throw new NoResultException("No Content found for "+myFile);
+            }
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter writer = response.getWriter();
             byte[] htmlBytes = content.getContent();

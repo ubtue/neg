@@ -320,7 +320,7 @@
 
   // ######### SUCHANFRAGE ##########
 
-    String sprache = "de";
+    String sprache = "gb";
   if (session != null && session.getAttribute("Sprache") != null)
     sprache = (String)session.getAttribute("Sprache");
   /*
