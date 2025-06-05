@@ -178,7 +178,7 @@
             <td class="cell-padding">
                 <form name="formFileLanguage_<%=id%>">
                     <input type="hidden" name="content_name" value="<%=name%>">
-                    <input type="hidden" name="content_language" value="gb">
+                    <input type="hidden" name="content_language" value="<%=Constants.DEFAULT_LANG%>">
                     <input type="submit" style="display:none;">
                 </form>
 
