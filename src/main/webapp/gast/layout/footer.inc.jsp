@@ -67,6 +67,9 @@
                 <nav class="ut-nav ut-nav--meta-bottom" aria-label="Metanavigation">
                     <ul class="ut-nav__list ">
                         <li class="ut-nav__item " data-level-count="1">
+                            <a class="ut-link ut-link--external ut-link--context-icon" href="https://uni-tuebingen.de/datenschutzerklaerung/" target="_blank" ><%= DBtoHTML(Language.getTextfield(session, "startseite", "Datenschutzerklaerung"))%></a>
+                        </li>
+                        <li class="ut-nav__item " data-level-count="1">
                             <a class="ut-link ut-nav__link" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=impressum"><% Language.printTextfield(out, session, "impressum", "Titel"); %></a>
                         </li>
                     </ul>

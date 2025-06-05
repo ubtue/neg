@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
@@ -9,12 +10,12 @@
         int i = 0;
         for (Map row : rowlist) {
             out.println("<tr>");
-            out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + String.valueOf(row.get("ID")) + "\">");
+            out.println("<input type=\"hidden\" name =\"" + datenfeld + "[" + i + "]" + "_entryid\" value=\"" + Utils.safeToString(row.get("ID")) + "\">");
 
 
-                out.println("<input type=\"hidden\" name=\"" + datenfeld + "[" + i + "]\" value=\"" + String.valueOf(row.get("value")) + "\" />");
-                out.println("<td>" +  String.valueOf(row.get(auswahlherkunft + ".Bezeichnung")) + "</td>");;
-                String href = "javascript:deleteEntry('" + zielTabelle + "', '" + String.valueOf(row.get(zielTabelle + ".ID")) + "', '" + returnpage + "', '" + id + "');";
+                out.println("<input type=\"hidden\" name=\"" + datenfeld + "[" + i + "]\" value=\"" + Utils.safeToString(row.get("value")) + "\" />");
+                out.println("<td>" +  Utils.safeToString(row.get(auswahlherkunft + ".Bezeichnung")) + "</td>");;
+                String href = "javascript:deleteEntry('" + zielTabelle + "', '" + Utils.safeToString(row.get(zielTabelle + ".ID")) + "', '" + returnpage + "', '" + id + "');";
                 out.println("<td>");
                 out.println("<a href=\"" + href + "\">");
                 out.println(txt_delete);
@@ -30,7 +31,7 @@
         out.println("<select name=\"" + datenfeld + "[" + i + "]\">");
         List<Map> rowlist2 = AbstractBase.getMappedList("SELECT * FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
         for (Map row2 : rowlist2) {
-            out.println("<option value=\"" + String.valueOf(row2.get("ID")) + "\" " + (String.valueOf(row2.get("ID")).equals("-1") ? "selected" : "") + ">" + DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) + "</option>");
+            out.println("<option value=\"" + Utils.safeToString(row2.get("ID")) + "\" " + (Utils.safeToString(row2.get("ID")).equals("-1") ? "selected" : "") + ">" + Utils.safeToString(row2.get("Bezeichnung")) + "</option>");
         }
         out.println("</select>");
         out.println("</td>");

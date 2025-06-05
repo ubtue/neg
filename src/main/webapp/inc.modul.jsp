@@ -1007,8 +1007,8 @@
 %>
 <td  class="ut-table__item ut-table__body__item">
     <jsp:include page="inc.erzeugeBeschriftung.jsp">
-        <jsp:param name="Formular" value="quelle" />
-        <jsp:param name="Textfeld" value="WeitereEditionen" />
+        <jsp:param name="Formular" value="gast_quelle" />
+        <jsp:param name="Datenfeld" value="WeitereEditionen" />
     </jsp:include>
 </td>
 
@@ -1176,10 +1176,7 @@
             <jsp:param name="Formular" value="mgh_lemma" />
             <jsp:param name="Textfeld" value="Person" />
         </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="mgh_lemma" />
-            <jsp:param name="Textfeld" value="Standardname" />
-        </jsp:include></th>
+    <th></th>
     <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="mgh_lemma" />
             <jsp:param name="Textfeld" value="Datierung" />
@@ -1396,10 +1393,7 @@
             <jsp:param name="Formular" value="namenkommentar" />
             <jsp:param name="Textfeld" value="Person" />
         </jsp:include></th>
-    <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="namenkommentar" />
-            <jsp:param name="Textfeld" value="Standardname" />
-        </jsp:include></th>
+    <th></th>
     <th><jsp:include page="inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="namenkommentar" />
             <jsp:param name="Textfeld" value="Datierung" />
@@ -1533,13 +1527,15 @@
                 if (plemmaList != null && !plemmaList.isEmpty()) {
 
                     for (String plemma : plemmaList) {
-
                         String lemma = plemma;
 
-                        out.println(format(lemma, "PLemma"));
+                        if (lemma != null) {
+                            out.println(format(lemma, "PLemma"));
+                        } else {
+                            out.println("");
+                        }
                     }
                 }
-
             } catch (Exception e) {
                 out.println(e);
             }

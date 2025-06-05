@@ -55,7 +55,12 @@
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             String sourceId = getCauseMessage(exception, IdNotFoundException.class);
             out.println(sourceId);
-        } else if (containsCause(exception, LoginException.class)) {
+        } else if(containsCause(exception, ContainsInvalidStrException.class)){
+            response.setStatus(HttpServletResponse.SC_SEE_OTHER);
+            String sourceId = getCauseMessage(exception, ContainsInvalidStrException.class);
+            out.println(sourceId);
+        }
+        else if (containsCause(exception, LoginException.class)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             String sourceId = getCauseMessage(exception, LoginException.class);
             out.println(sourceId);
@@ -81,8 +86,8 @@
         <% } else if ("guestTable".equals(guestTable) && containsCause(exception, IdInvalidException.class)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);%>
         <span><%= "de".equals(session.getAttribute("Sprache"))
-                ? "ID muss mit B, P, M, Q, T, oder E beginnen und mit einer Nummer enden (z.B. P7404)."
-                : "ID must start with B, P, M, Q, T, or E and end with a number (e.g. P7404)."%>
+                ? "ID muss mit B, P, M oder Q beginnen und mit einer Nummer enden (z.B. P7404)."
+                : "ID must start with B, P, M or Q and end with a number (e.g. P7404)."%>
         </span>
 
         <% } else if (containsCause(exception, IdNotPublicException.class)) {

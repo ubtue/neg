@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="layout/layout.css" type="text/css">
+        <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/layout/layout.css")%>" type="text/css">
         <title>Reset Password</title>
         <style>
 
@@ -34,6 +34,38 @@
                 display: flex;
                 justify-content: center;
             }
+
+            .input-container {
+                position: relative;
+                display: inline-block;
+                width: 300px; /* gleiche Breite wie das Input-Feld */
+            }
+
+            .input-container input[type="password"],
+            .input-container input[type="text"] {
+                padding-right: 40px; /* Platz für das Auge/Schloss */
+                width: 100%;
+                font-size: 18px;
+                box-sizing: border-box; /* verhindert Schrumpfen bei Symbol */
+            }
+
+            .toggle-eye {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                font-size: 18px;
+                background: none;
+                border: none;
+                outline: none;
+                color: gray;
+                width: 24px;
+                text-align: center;
+                display: inline-block;
+            }
+
+
             .div-1 {
                 background-color: #EBEBEB;
                 padding: 10px 20px 10px 20px;
@@ -51,10 +83,6 @@
             }
 
             input[type="submit"]{
-                font-size: 18px;
-            }
-
-            input[type="password"]{
                 font-size: 18px;
             }
 
@@ -116,10 +144,10 @@
         %>
         <h1><%= DBtoHTML(Language.getTextfield(session, "login", "LinkUngueltig"))%></h1>
         <h1><a href=" <%= Utils.getBaseUrl(request) + temp%> " ><%= DBtoHTML(Language.getTextfield(session, "login", "NeuerLink"))%></a></h1>
-        <%
-        } else { //show layout for Reset your Password by typing twice your new Password in Fields
+            <%
+            } else { //show layout for Reset your Password by typing twice your new Password in Fields
 
-        %>
+            %>
 
         <div class="forgotPassword_container">
             <div class="div-1">
@@ -129,8 +157,14 @@
                 <div class="div-1">
                     <form method="post" action="newPassword" id="register-form">
                         <div class="div-2">
-                            <input type="password" name="newPassword" value="" minlength="6" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "PasswortNeu"))%>" />
-                            <input type="password" name="repeatPassword" value="" minlength="6" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "WiederholePasswort"))%>" />
+                            <div class="input-container">
+                                <input type="password" id="passwordNew" name="newPassword" value="" minlength="6" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "PasswortNeu"))%>" />
+                                <span class="toggle-eye" onclick="togglePassword('passwordNew', this)">&#128065;</span> <!-- Auge -->
+                            </div>
+                            <div class="input-container">
+                                <input type="password"  id="passwordRepeat" name="repeatPassword" value="" minlength="6" placeholder="<%= DBtoHTML(Language.getTextfield(session, "login", "WiederholePasswort"))%>" />
+                                <span class="toggle-eye" onclick="togglePassword('passwordRepeat', this)">&#128065;</span> <!-- Auge -->
+                            </div>
                             <input type="submit" value="<%= DBtoHTML(Language.getTextfield(session, "login", "Reset"))%>" />
                             <input type="hidden" name="url_uuid" value="<%= uuid_content%>">
                             <input type="hidden" name="url_email" value="<%= email_content%>">
@@ -148,3 +182,16 @@
         %>
     </body>
 </html>
+
+<script>
+    function togglePassword(fieldId, eyeIcon) {
+        let inputField = document.getElementById(fieldId);
+        if (inputField.type === "password") {
+            inputField.type = "text";
+            eyeIcon.innerHTML = "&#128274;"; // Schloss-Symbol 🔒
+        } else {
+            inputField.type = "password";
+            eyeIcon.innerHTML = "&#128065;"; // Auge-Symbol 👁
+        }
+    }
+</script>

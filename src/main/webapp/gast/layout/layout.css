@@ -193,3 +193,52 @@ right: 350px; top: 10px; display: none; }
 .autocomplete-suggestions strong { font-weight: normal; color: #BF3D3D; }
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+/*
+Die Breite der Text Felder(Erweiterte Suche) anpassen.
+Dies ist notwendig, da die Breite für TextFelder in inc.erzeugeFormular fix auf 250px ist.
+Um Seiteneffekte zu ermeiden lasse ich das so und setze die neue Breite hier mit css
+*/
+#erweiterte-suche #tab-1 .ut-table__row > td:nth-child(2) input {
+    width: 350px !important;
+}
+
+
+#erweiterte-suche #tab-1 .ut-table__row > td:nth-child(2) select {
+    width: 350px !important;
+}
+
+#erweiterte-suche #tab-1 .ut-table__row > td:first-child {
+    width: 370px !important;
+}
+
+.jumpIDBoxWrapper{
+    margin-right: 3px !important;
+}
+
+/*
+   Anpassung für mobile Ansicht. Das Menu Item und Wrapper müssen geändert werden damit das input Feld jumToID richtig dargestellt wird.
+*/
+/* Nur in mobiler Ansicht anzeigen. Die Regel geht aus webapp/gast/vendor/ut-typo3/css/merged.css heraus */
+@media only screen and (max-width: 1039px) {
+    .mobile-fix-menu-item {
+        border-bottom: 0px !important;/*underline wird im wrapper angezeigt damit es auch das input feld miteinschließt*/
+    }
+
+    /*typo3 ut style für den wrapper mit underline*/
+    .mobile-fix-menu-item-wrapper {
+        padding: .5rem 1rem;
+        text-decoration: none;
+        color: #444e57;
+        border-bottom: 1px solid #dddddd;
+        font-size: 1.143rem;
+        line-height: 2;
+    }
+}
+
+/*Löst das Problem das in der Desktop Ansicht das jumpToID Feld nicht ganz dargestellt wird*/
+@media only screen and (min-width: 1040px) {
+  .menuBarFitcontent {
+    width: fit-content !important;
+  }
+}

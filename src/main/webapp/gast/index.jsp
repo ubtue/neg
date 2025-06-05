@@ -5,7 +5,7 @@
 <head>
 <title><% Language.printTextfield(out, session, "login", "Umzug");%></title>
 <meta name="author" content="rst">
-<meta http-equiv="refresh" content="1; URL=<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=start">
+<meta http-equiv="refresh" content="1; URL=<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=start&current=start">
 </head>
 <body text="#000000" bgcolor="#FFFFFF" link="#FF0000" alink="#FF0000" vlink="#FF0000">
     <table height=100% width=100% >

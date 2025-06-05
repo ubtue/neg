@@ -8,55 +8,15 @@
 
 <jsp:include page="../dofilter.jsp" />
 
-<style>
-    .myTable .ut-table {
-        table-layout: auto; /* Automatische Breitenanpassung */
-        width: 100%;
-    }
-
-    .myTable .ut-table__row td {
-        width: auto; /* Breite der Zellen soll sich anpassen */
-    }
-
-    .myTable .ut-table__row td:first-child {
-        white-space: nowrap; /* Verhindert das Umbruchverhalten */
-    }
-
-    .myTable .ut-table__row td:last-child {
-        width: 100%; /* Die zweite Spalte nimmt den verbleibenden Platz ein */
-    }
-
-    .flex-header {
-        position: relative;
-        display: flex; /* Optional, falls du Flexbox verwenden möchtest */
-        align-items: center; /* Stellt sicher, dass die Kinder (Button und h3) vertikal ausgerichtet sind */
-    }
-
-    #toggleButton {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        height: auto; /* Optional, wenn der Button eine flexible Höhe haben soll */
-    }
-
-    h3.ut-heading {
-        margin: 0;
-        line-height: 1.5;
-    }
-
-</style>
+<link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/person.css")%>" type="text/css">
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
     boolean buttonOnOff = "true".equals(request.getParameter("allfields"));
 
     Person person = PersonDB.getById(id);
     if (person == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
-        } else {
-            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "IdNotFoundError",String.valueOf(id));
+        throw new IdNotFoundException(msg);
 
     } else {
         Set<Einzelbeleg> listEinzelbeleg = person.getEinzelbeleg();
@@ -71,20 +31,12 @@
         }
 
         if (throwException) {
-            if (session.getAttribute("Sprache").equals("de")) {
-                throw new IdNotPublicException("Person ID P" + String.valueOf(id) + " ist nicht zu veröffentlichen");
-            } else {
-                throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " is not to be published");
-            }
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "NotPublicError",String.valueOf(id));
+            throw new IdNotPublicException(msg);
 
         }
     }
 %>
-
-
-<jsp:include page="../dojump.jsp">
-    <jsp:param name="form" value="gast_person" />
-</jsp:include>
 
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="Person" />
@@ -126,7 +78,7 @@
     <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
         <tbody class="ut-table__body">
             <tr class="ut-table__row">
-                <td class="ut-table__item ut-table__body__item"><% Language.printTextfield(out, session, "person", "Person");%> </td>
+                <td class="ut-table__item ut-table__body__item"><%= Language.getDatafield(session, "person", "Standardname")%> </td>
                 <td class="ut-table__item ut-table__body__item">
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%= id%>" />
@@ -167,13 +119,13 @@
 
             <jsp:include page="../inc.erzeugeFormular.jsp">
                 <jsp:param name="ID" value="<%= id%>" />
-                <jsp:param name="Formular" value="person" />
+                <jsp:param name="Formular" value="gast_person" />
                 <jsp:param name="Datenfeld" value="Identifizierungsproblem" />
                 <jsp:param name="cols" value="40" />
                 <jsp:param name="rows" value="5" />
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
-                <jsp:param name="Label" value="<%=Language.getTextfield(session, "person", "Identifizierungsproblem")%>"/>
+                <jsp:param name="Label" value="<%=Language.getDatafield(session, "gast_person", "Identifizierungsproblem")%>"/>
                 <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>
 
@@ -193,7 +145,7 @@
                 <jsp:param name="Datenfeld" value="AmtWeihe" />
                 <jsp:param name="Readonly" value="yes" />
                 <jsp:param name="Darstellung" value="Tabellenzeile"/>
-                <jsp:param name="Label" value="<%=Language.getTextfield(session, "person", "Aemter")%>"/>
+                <jsp:param name="Label" value="<%=Language.getDatafield(session, "person", "AmtWeihe")%>"/>
                 <jsp:param name="CountRow" value="noCount" />
                 <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
             </jsp:include>

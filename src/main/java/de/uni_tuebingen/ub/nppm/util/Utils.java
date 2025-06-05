@@ -1,7 +1,11 @@
 package de.uni_tuebingen.ub.nppm.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
@@ -16,6 +21,18 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONObject;
 
 public class Utils {
+
+    public static String safeToString(Object o) {
+        return safeToString(o, "");
+    }
+
+    public static String safeToString(Object o, String fallback) {
+        if (o == null) {
+            return fallback;
+        } else {
+            return escapeHTML(String.valueOf(o));
+        }
+    }
 
     public static boolean isNumeric(String str) {
         try {
@@ -30,7 +47,7 @@ public class Utils {
         try {
             InitialContext initialContext = new javax.naming.InitialContext();
             Object entry = initialContext.lookup("java:comp/env/development");
-            return entry == null || ((String)entry).equals("true");
+            return entry == null || ((String) entry).equals("true");
         } catch (NamingException ex) {
             return false;
         }
@@ -51,7 +68,7 @@ public class Utils {
         return baseUrl;
     }
 
-     public static String getAjaxUrl(HttpServletRequest request) {
+    public static String getAjaxUrl(HttpServletRequest request) {
         return getBaseUrl(request) + "/ajax";
     }
 
@@ -234,7 +251,9 @@ public class Utils {
                     }
 
                     String text = "";
-                    if (rs.get(orderV[z]) == null) {
+                    if ("Standardname".equals(orderV[z]) && rs.get(orderV[z]) == null) {
+                        text = "ohne Personenzuordnung";
+                    } else if (rs.get(orderV[z]) == null) {
                         text = "-";
                     } else {
                         text = rs.get(orderV[z]).toString();
@@ -252,7 +271,12 @@ public class Utils {
 
                     titel = headlines.get(fieldNames.indexOf(titel));
 
-                    out.print(titel + ": ");
+                    if (titel.isEmpty()) {
+                        out.print(titel);
+                    } else {
+                        out.print(titel + ": ");
+                    }
+
                     boolean link = false;
 
                     if (!text.equals("-")) {
@@ -278,16 +302,6 @@ public class Utils {
                             out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
                             link = true;
                         }
-                        /* only for Administrator old code maybe for later use
-                            else if (orderV[z].equals("editionTitel") && rs.get("editionID") != null) {
-                                try {
-                                    out.print("<a href=\"edition?ID=" + (int) rs.get("editionID") + "\">");
-                                    link = true;
-                                } catch (Exception e) {
-                                    link = false;
-                                }
-                            } */
-
                     }
 
                     if (orderV[z].startsWith("einzelbelegID")) {
@@ -304,7 +318,7 @@ public class Utils {
                         out.print(format(escapeHTML(text), format));
                     }
                     if (link) {
-                        out.print("</a> ");
+                        out.print("</a> &nbsp;");
                     } else {
                         out.print(" ");
                     }
@@ -351,16 +365,6 @@ public class Utils {
                             out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
                             link = true;
                         }
-                        /* only for Administrator old code maybe for later use
-                            else if (fieldNames.get(i).contains("editionTitel")) { //vielleicht löschen
-                                try {
-                                    out.print("<a href=\"edition?ID=" + (int) rs.get("editionID") + "\">");
-                                    link = true;
-                                } catch (Exception e) {
-                                    link = false;
-                                }
-                            }
-                         */
 
                         if (fieldNames.get(i).endsWith("PLemma") || fieldNames.get(i).equals("Erstglied") || fieldNames.get(i).equals("Zweitglied")) {
                             cell = format(cell, "PLemma");
@@ -413,4 +417,40 @@ public class Utils {
         return date != null ? DATE_FORMAT.format(date) : null;
     }
 
+    public static long getLastModifiedTimestampForLocalAsset(ServletContext context, String path) throws Exception {
+        URL resource = context.getResource(path);
+
+        if (resource == null) {
+            throw new Exception("Resource not found: " + path);
+        }
+
+        if (!"file".equals(resource.getProtocol())) {
+            throw new Exception("Unexpected protocol: " + resource.getProtocol() + " for path: " + path);
+        }
+
+        File file = new File(resource.toURI());
+
+        if (!file.exists()) {
+            throw new Exception("File does not exist: " + file.getAbsolutePath());
+        }
+
+        //Änderungszeit zurückgeben
+        return file.lastModified();
+    }
+
+    public static String getVersionedHref(HttpServletRequest request, ServletContext context, String path) throws Exception {
+        long timestamp = getLastModifiedTimestampForLocalAsset(context, path);
+        String baseUrl = getBaseUrl(request);
+        String href;
+
+        if (!baseUrl.endsWith("/") && !path.startsWith("/")) {
+            href = baseUrl + "/" + path;
+        } else if (baseUrl.endsWith("/") && path.startsWith("/")) {
+            href = baseUrl + path.substring(1);
+        } else {
+            href = baseUrl + path;
+        }
+
+        return href + "?v=" + timestamp;
+    }
 }

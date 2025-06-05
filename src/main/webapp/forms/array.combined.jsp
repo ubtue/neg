@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 <%@ page import="java.util.ArrayList" isThreadSafe="false" %>
 <%@ page import="java.util.List" isThreadSafe="false" %>
@@ -141,8 +142,8 @@
                                     + (Integer.parseInt(String.valueOf(row2.get("ID"))) == selected ? "selected"
                                     : "")
                                     + ">"
-                                    + DBtoHTML(String.valueOf(row2
-                                            .get("Bezeichnung")))
+                                    + Utils.safeToString(row2
+                                            .get("Bezeichnung"))
                                     + "</option>");
                         }
                         out.print("</select>");
@@ -175,7 +176,7 @@
                                     + (Integer.parseInt(String.valueOf(row2.get("ID"))) == -1 ? "selected"
                                     : "")
                                     + ">"
-                                    + DBtoHTML(String.valueOf(row2.get("Bezeichnung")))
+                                    + Utils.safeToString(row2.get("Bezeichnung"))
                                     + "</option>");
                         }
                         out.print("</select>");
@@ -213,11 +214,11 @@
                                                 + (currentId == selected ? "selected"
                                                         : "")
                                                 + ">"
-                                                + String.valueOf(row2.get("Bezeichnung"))
+                                                + Utils.safeToString(row2.get("Bezeichnung"))
                                                 + "</option>");
                             } else if (currentId == selected) {
                                 if (repeat) {
-                                    out.println(String.valueOf(row2.get("Bezeichnung")));
+                                    out.println(Utils.safeToString(row2.get("Bezeichnung")));
                                 } else if (!alreadyOne) {
                                     out.println("-");
                                 }
@@ -247,7 +248,7 @@
                                 out.println("<tr><td><a href=\"edition?ID="
                                         + String.valueOf(row2.get("ID"))
                                         + "\">"
-                                        + String.valueOf(row2.get("Bezeichnung"))
+                                        + Utils.safeToString(row2.get("Bezeichnung"))
                                         + "</a><input type=\"hidden\" name=\""
                                         + combinedFeldnamen[j]
                                         + "_ed["
@@ -345,8 +346,8 @@
 
                         for (Map row2 : rowlist2) {
                             // Sicherstellen, dass die Bezeichnung nicht null ist
-                            String bezeichnung = row2.get("Bezeichnung") != null ? DBtoHTML(String.valueOf(row2.get("Bezeichnung"))) : "";
-                            String id_temp = row2.get("ID") != null ? String.valueOf(row2.get("ID")) : "";
+                            String bezeichnung = Utils.safeToString(row2.get("Bezeichnung"));
+                            String id_temp = String.valueOf(row2.get("ID"));
 
                             if (!id_temp.isEmpty() && !bezeichnung.isEmpty()) {
                                 if (!isReadOnly) {
@@ -426,10 +427,7 @@
                                     + String.valueOf(row.get(fields[1])));
 
                             if (row2 != null) {
-                                out.println(row2
-                                        .get(fields[2]) != null ? DBtoHTML(String.valueOf(row2
-                                        .get(fields[2])))
-                                        : "");
+                                out.println(Utils.safeToString(row2.get(fields[2])));
                             }
                         }
                     } else if (combinedFeldtypen[j].startsWith("list")) {
@@ -447,8 +445,7 @@
                                     + fields[0] + "ID=sel.ID AND zt." + fields[1] + "="
                                     + String.valueOf(row.get(fields[1])));
                             for (Map row2 : rowlist2) {
-                                out.println((row2.get("Bezeichnung") != null ? DBtoHTML(String.valueOf(row2.get("Bezeichnung")))
-                                        : ""));
+                                out.println(Utils.safeToString(row2.get("Bezeichnung")));
                                 out.println("<br>");
                             }
                         }
@@ -482,16 +479,15 @@
 
                                 for (Map<String, Object> rowtemp : rowlist2) {
 
-                                    vonTag = rowtemp.get("VonTag") != null ? String.valueOf(rowtemp.get("VonTag")) : "";
-                                    vonMonat = rowtemp.get("VonMonat") != null ? String.valueOf(rowtemp.get("VonMonat")) : "";
-                                    vonJahr = rowtemp.get("VonJahr") != null ? String.valueOf(rowtemp.get("VonJahr")) : "";
-                                    vonJhdt = rowtemp.get("VonJahrhundert") != null ? String.valueOf(rowtemp.get("VonJahrhundert")) : "";
+                                    vonTag = Utils.safeToString(rowtemp.get("VonTag"));
+                                    vonMonat = Utils.safeToString(rowtemp.get("VonMonat"));
+                                    vonJahr = Utils.safeToString(rowtemp.get("VonJahr"));
+                                    vonJhdt = Utils.safeToString(rowtemp.get("VonJahrhundert"));
 
-                                    bisTag = rowtemp.get("BisTag") != null ? String.valueOf(rowtemp.get("BisTag")) : "";
-                                    bisMonat = rowtemp.get("BisMonat") != null ? String.valueOf(rowtemp.get("BisMonat")) : "";
-                                    bisJahr = rowtemp.get("BisJahr") != null ? String.valueOf(rowtemp.get("BisJahr")) : "";
-                                    bisJhdt = rowtemp.get("BisJahrhundert") != null ? String.valueOf(rowtemp.get("BisJahrhundert")) : "";
-
+                                    bisTag = Utils.safeToString(rowtemp.get("BisTag"));
+                                    bisMonat = Utils.safeToString(rowtemp.get("BisMonat"));
+                                    bisJahr = Utils.safeToString(rowtemp.get("BisJahr"));
+                                    bisJhdt = Utils.safeToString(rowtemp.get("BisJahrhundert"));
                                 }
 
                                 String von = "";
@@ -583,25 +579,25 @@
                                     + i
                                     + "]\">");
                             if (row.get(combinedFeldnamen[j] + "VonJahr") != null) {
-                                out.print(String.valueOf(row.get(combinedFeldnamen[j] + "VonJahr")));
+                                out.print(Utils.safeToString(row.get(combinedFeldnamen[j] + "VonJahr")));
                             } else {
                                 out.println("0");
                             }
                             out.print("(");
                             if (row.get(combinedFeldnamen[j] + "VonJahrhundert") != null) {
-                                out.print(String.valueOf(row.get(combinedFeldnamen[j] + "VonJahrhundert")));
+                                out.print(Utils.safeToString(row.get(combinedFeldnamen[j] + "VonJahrhundert")));
                             } else {
                                 out.println("0");
                             }
                             out.print(". Jhd)-");
                             if (row.get(combinedFeldnamen[j] + "BisJahr") != null) {
-                                out.print(String.valueOf(row.get(combinedFeldnamen[j] + "BisJahr")));
+                                out.print(Utils.safeToString(row.get(combinedFeldnamen[j] + "BisJahr")));
                             } else {
                                 out.println("0");
                             }
                             out.print("(");
                             if (row.get(combinedFeldnamen[j] + "BisJahrhundert") != null) {
-                                out.print(String.valueOf(row.get(combinedFeldnamen[j] + "BisJahrhundert")));
+                                out.print(Utils.safeToString(row.get(combinedFeldnamen[j] + "BisJahrhundert")));
                             } else {
                                 out.println("0");
                             }
@@ -611,7 +607,7 @@
                                     + i
                                     + "]', '");
                             if (row.get("ID") != null) {
-                                out.print(String.valueOf(row.get("ID")));
+                                out.print(Utils.safeToString(row.get("ID")));
                             }
                             out.println("');\"><img src=\"layout/icons/calendar.gif\" border=0></a>");
                         }

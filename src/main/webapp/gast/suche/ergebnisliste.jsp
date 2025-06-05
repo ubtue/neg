@@ -1,9 +1,19 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.suche.pagination.PrintPagination"%>
+<%@page import="java.io.IOException"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="java.util.*"%>
 
-<%
+<%!
+    private static <T> void moveItem(List<T> list, T item, int newIndex) {
+        if (list.remove(item)) {
+            list.add(newIndex, item);
+        }
+    }
+%>
 
+
+<%
     if (true) {
         conditions = removeDuplicates(conditions);
         fields = removeDuplicates(fields);
@@ -29,6 +39,59 @@
                 fieldsString += ", " + QueryHelper.getFieldAliasSelect(fields.get(i));
             }
         }
+
+        String[] fieldArray = fieldsString.split(",\\s*");  // Aufteilen an Komma + optionalen Leerzeichen
+        List<String> fieldList = new ArrayList<>(Arrays.asList(fieldArray));
+
+        // Belegform ganz nach vorne
+        String feld = "einzelbeleg.Belegform AS einzelbeleg_Belegform";
+        moveItem(fieldList, feld, 0);
+        moveItem(fieldNames, "einzelbeleg.Belegform", 0);
+        moveItem(headlines, "Belegform", 0);
+
+
+        // Quelle an zweite Stelle (Index 1)
+        feld = "quelle.Bezeichnung AS quelle_Bezeichnung";
+        moveItem(fieldList, feld, 1);
+        moveItem(fieldNames, "quelle.Bezeichnung", 1);
+        moveItem(headlines, "Quelle", 1);
+
+
+        // Neues Feld an Position 3 einfügen (Index 2)
+        feld = "einzelbeleg.Seite AS einzelbeleg_Seite";
+        fieldList.add(2, feld);
+        fieldNames.add(2, "einzelbeleg.Seite");
+        headlines.add(2, "Nr./Seite");
+
+         // Neues Feld an Position 4 einfügen (Index 3)
+        feld = "einzelbeleg.Raster AS einzelbeleg_Raster";
+        fieldList.add(3, feld);
+        fieldNames.add(3, "einzelbeleg.Raster");
+        headlines.add(3, "Rast.");
+
+        feld = "edition.Titel AS edition_Titel";
+        moveItem(fieldList, feld, 4);
+        moveItem(fieldNames, "edition.Titel", 4);
+        moveItem(headlines, "Edition", 4);
+
+        feld = "einzelbeleg.EditionKapitel AS einzelbeleg_EditionKapitel";
+        moveItem(fieldList, feld, 5);
+        moveItem(fieldNames, "einzelbeleg.EditionKapitel", 5);
+        moveItem(headlines, "Kapitel in der Edition", 5);
+
+        feld = "einzelbeleg.EditionSeite AS einzelbeleg_EditionSeite";
+        moveItem(fieldList, feld, 6);
+        moveItem(fieldNames, "einzelbeleg.EditionSeite", 6);
+        moveItem(headlines, "Seiten in der Edition", 6);
+
+        feld = "einzelbeleg.Kontext AS einzelbeleg_Kontext";
+        moveItem(fieldList, feld, 7);
+        moveItem(fieldNames, "einzelbeleg.Kontext", 7);
+        moveItem(headlines, "Kontext", 7);
+
+
+        // fieldsString wieder zusammensetzen
+        fieldsString = String.join(", ", fieldList);
 
         // Tabellen
         String tablesString = "";
@@ -62,6 +125,8 @@
         int linecount = SucheDB.getLinecount(tablesString, conditionsString);
 
         out.println("<h3 class=\"ut-heading ut-heading--h3\">Gesamte Treffer: " + linecount + "</h3>");
+        // ########## SEITENNAVIGATION #########
+        PrintPagination.printPageNavigation(out, request, pageoffset, pageLimit, linecount, export);
 
         String sql = "SELECT " + fieldsString + " FROM " + tablesString + " WHERE (" + conditionsString + ") " + order; //GROUP BY "+fieldsString+"
         if (export.equals("liste") || export.equals("browse")) {
@@ -200,41 +265,6 @@
         // ########## EXCEL #########
 
         // ########## SEITENNAVIGATION #########
-        if (export.equals("liste") || export.equals("browse")) {
-            out.println("<p class=\"resultlistnavigation\" align=\"center\">");
-            int pages = (linecount / pageLimit) + 1;
-            for (int i = 0; i < pages; i++) {
-                // Link für Seite erzeugen
-                String parameter = "?pageoffset=" + i;
-                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                    String paramName = e.nextElement();
-                    if (!paramName.equals("pageoffset")) {
-                        parameter += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                    }
-                }
-
-                // Link zur ersten Seite anzeigen falls nötig
-                if (i == 0 && i <= pageoffset - 10) {
-                    out.println("<a class=\"ut-link\" href=\"" + parameter + "\">" + (i + 1) + "</a>&nbsp;...&nbsp;");
-                }
-
-                // gelinkte Seitennummer anzeigen
-                if (i < pageoffset + 10 && i > pageoffset - 10) {
-                    if (i == pageoffset) {
-                        out.println("<b>");
-                    }
-                    out.println("<a class=\"ut-link\" href=\"" + parameter + "\">" + (i + 1) + "</a>&nbsp;");
-                    if (i == pageoffset) {
-                        out.println("</b>");
-                    }
-                }
-                // Link zur letzten Seite anzeigen falls nÃ¶tig
-                if (i == pages - 1 && i >= pageoffset + 10) {
-                    out.println("...&nbsp;<a class=\"ut-link\" href=\"" + parameter + "\">" + (i + 1) + "</a>&nbsp;");
-                }
-            }
-            out.println("</p>");
-        }
-        // ########## SEITENNAVIGATION #########
+        PrintPagination.printPageNavigation(out, request, pageoffset, pageLimit, linecount, export);
     }
 %>

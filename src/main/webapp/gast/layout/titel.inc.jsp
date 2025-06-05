@@ -1,78 +1,64 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.suche.pagination.PrintPagination"%>
+<%@page import="java.io.IOException"%>
+<%@page import="java.util.List"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ include file="../../configuration.jsp" %>
 
-<%
-  int id = -1;
-  String title = request.getParameter("title");
+<%    int id = -1;
+    String title = "gast_" + request.getParameter("title").toLowerCase();
 
-  //Filter berechnen
-  session = request.getSession(true);
-  int filter = 0;
-  String filterParameter = null;
-  try {
-    filter = ((Integer) session.getAttribute("filter")).intValue();
-    filterParameter = (String) session.getAttribute("filterParameter");
-  }
-  catch (Exception e) {}
+    String guest = "";
+    String sql_max = "";
+    String sql_akt = "";
 
-  try {
-    id = Integer.parseInt(request.getParameter("ID"));
-  }
-  catch (NumberFormatException e) {}
+    if (title != null && title.contains("gast_")) {
+        title = title.substring(5);
+        guest = "gast_";
+    }
+
+    int akt = 0;
+    int max = 0;
+
+    //Filter berechnen
+    session = request.getSession(true);
+    int filter = 0;
+    String filterParameter = null;
+    try {
+        filter = ((Integer) session.getAttribute("filter")).intValue();
+        filterParameter = (String) session.getAttribute("filterParameter");
+    } catch (Exception e) {
+    }
+
+    try {
+        id = Integer.parseInt(request.getParameter("ID"));
+    } catch (NumberFormatException e) {
+    }
+
+    if (title != null && !title.equals("") && id > 0) {
+        // SQL generieren
+        sql_max = DatenbankDB.getFilterSql(guest + title, filter);
+        sql_max = sql_max.replace("*", "count(*) c");
+        sql_max = sql_max.replace("###", filterParameter != null ? filterParameter : "");
+
+        sql_akt = sql_max + (sql_max.contains("WHERE") ? " AND " : " WHERE ") + title + ".ID < " + id;
+
+        try {
+            akt = AbstractBase.getIntNative(sql_akt) + 1;
+            max = AbstractBase.getIntNative(sql_max);
+        } catch (Exception e) {
+            akt = 0;
+            max = 0;
+        }
+    }
 
 
+    int pageoffset = 0;
+    if (request.getParameter("pageoffset") != null) {
+        pageoffset = Integer.parseInt(request.getParameter("pageoffset"));
+    }
+
+    String export = "browse";
+
+    PrintPagination.printPageNavigation(out, request, pageoffset, pageLimit, max, export, title);
 %>
-
-<!------------prev-next------------>
-<div class="container" style="display: flex; justify-content: center; padding-top: 10px ">
-
-  <jsp:include page="../forms/link.jsp">
-    <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
-    <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
-    <jsp:param name="Command" value="first"/>
-    <jsp:param name="filter" value="<%= filter %>"/>
-    <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
-  </jsp:include>
-
-  <jsp:include page="../forms/link.jsp">
-    <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
-    <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
-    <jsp:param name="Command" value="back"/>
-    <jsp:param name="filter" value="<%= filter %>"/>
-    <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
-  </jsp:include>
-
-    <!------------Eintraege------------>
-
-  <span class="counter">
-  <jsp:include page="../../forms/filter.jsp">
-    <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
-    <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
-    <jsp:param name="filter" value="<%= filter %>"/>
-    <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
-  </jsp:include>
-      <% Language.printTextfield(out, session, "titel_inc", "Eintrag");%>
-  <jsp:include page="../../forms/counter.jsp">
-      <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
-      <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
-      <jsp:param name="filter" value="<%= filter %>"/>
-      <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
-    </jsp:include>
-    </span>
-
-  <jsp:include page="../forms/link.jsp">
-    <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
-    <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
-    <jsp:param name="Command" value="next"/>
-    <jsp:param name="filter" value="<%= filter %>"/>
-    <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
-  </jsp:include>
-
-  <jsp:include page="../forms/link.jsp">
-    <jsp:param name="ID" value="<%= request.getParameter("ID") %>"/>
-    <jsp:param name="title" value="<%= "gast_"+request.getParameter("title").toLowerCase() %>"/>
-    <jsp:param name="Command" value="last"/>
-    <jsp:param name="filter" value="<%= filter %>"/>
-    <jsp:param name="filterParameter" value="<%= filterParameter %>"/>
-  </jsp:include>
-</div>

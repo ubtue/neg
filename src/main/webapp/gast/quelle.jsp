@@ -8,26 +8,8 @@
 
 <jsp:include page="../dofilter.jsp" />
 
-<style>
-    .flex-header {
-        position: relative;
-        display: flex; /* Optional, falls du Flexbox verwenden möchtest */
-        align-items: center; /* Stellt sicher, dass die Kinder (Button und h3) vertikal ausgerichtet sind */
-    }
+<link rel="stylesheet" href="<%= Utils.getVersionedHref(request, application, "/gast/layout/quelle.css") %>">
 
-    #toggleButton {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        height: auto; /* Optional, wenn der Button eine flexible Höhe haben soll */
-    }
-
-    h3.ut-heading {
-        margin: 0;
-        line-height: 1.5;
-    }
-</style>
 
 <%    int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));
@@ -35,37 +17,27 @@
 
     Quelle quelle = QuelleDB.getById(id);
     if (quelle == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
-        } else {
-            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"quelle", "IdNotFoundError",String.valueOf(id));
+        throw new IdNotFoundException(msg);
     }
 
     if (quelle.getZuVeroeffentlichen() != 1) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotPublicException("Quellen ID Q" + id + " ist nicht zu veröffentlichen");
-        } else {
-            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " is not to be published");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(), "quelle", "NotPublicError",String.valueOf(id));
+        throw new IdNotPublicException(msg);
     }
 
     String formular = "quelle";
     Urkunde urkunde = quelle.getUrkunde();
 %>
 
-<h1 class="ut-heading ut-heading--h1">
+<h3 class="ut-heading ut-heading--h3">
     <a class="ut-link" href="<%=Utils.getBaseUrl(request)%>/gast/quelle?page=stat">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
             <jsp:param name="Formular" value="stat"/>
             <jsp:param name="Textfeld" value="Titel"/>
         </jsp:include>
     </a>
-</h1>
-
-<jsp:include page="../dojump.jsp">
-    <jsp:param name="form" value="gast_quelle" />
-</jsp:include>
+</h3>
 
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="Quelle" />
@@ -115,7 +87,7 @@
             <jsp:param name="Datenfeld" value="Datierung"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getTextfield(session, "quelle", "Datierung")%>"/>
+            <jsp:param name="Label" value="<%=Language.getDatafield(session, "gast_quelle", "Datierung")%>"/>
             <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
         </jsp:include>
 
@@ -157,9 +129,10 @@
 </table>
 
 <!----------Einzelbelege---------->
-<h1 class="ut-heading ut-heading--h1">
-    <a class="ut-link" href="<%= Utils.getBaseUrl(request)%>/gast/suchergebnis?Quellenliste=<%= id%>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&Ausgabe_Einzelbeleg_Quellengattung=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit="><% Language.printTextfield(out, session, "einzelbeleg", "Titel");%></a>
-</h1>
+<h3 class="ut-heading ut-heading--h3">
+    <a class="ut-link" href="<%= Utils.getBaseUrl(request)%>/gast/suchergebnis?einzelbelegeVonQuelle=true&Quellenliste=<%= id%>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit="><% Language.printTextfield(out, session, "einzelbeleg", "Titel");%></a>
+</h3>
+<br>
 
 <%
     List<Object[]> resultList = ModulIncDB.getListQuelleEditionen(String.valueOf(id));
@@ -169,6 +142,7 @@
 
 <!----------Ueberlieferung---------->
 <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "quelle", "TabUeberlieferung");%></h3>
+
 <jsp:include page="../inc.modul.jsp">
     <jsp:param name="ID" value="<%= id%>" />
     <jsp:param name="Formular" value="quelle" />
