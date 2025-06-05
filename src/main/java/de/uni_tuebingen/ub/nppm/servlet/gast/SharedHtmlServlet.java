@@ -40,8 +40,6 @@ public class SharedHtmlServlet extends AbstractGastServlet {
             request.getSession().setAttribute("Sprache", selectedLanguage);
         }
 
-        PrintWriter writer_ = response.getWriter();
-
         // HTML-Dateiname aus der Anfrage holen und .html anhängen, wenn nötig
         String myFile = request.getParameter("sharedHtml");
         if (myFile != null && !myFile.endsWith(".html")) {
