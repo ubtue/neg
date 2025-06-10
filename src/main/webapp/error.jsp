@@ -98,6 +98,7 @@
             out.println(sourceId);
         } else if (Utils.isDevelopmentEnvironment()) {%>
         <%
+            //Stacktrace enthält auch exception message
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             exception.printStackTrace(pw);
