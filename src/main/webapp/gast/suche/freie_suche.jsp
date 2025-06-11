@@ -48,7 +48,11 @@
     String formular = request.getParameter("form");
     String tableString = "";
 
+    //wird mit AND verknüpft
     List<String> conditions = new ArrayList<>();
+
+    //Wird mit OR verknüpft
+    List<String> orConditions = new ArrayList<>();
 
     List<String> fields = new ArrayList<>();
     List<String> fieldNames = new ArrayList<>();  //Ergebnisse
@@ -278,13 +282,18 @@
     }
     conditions.add("quelle.zuVeroeffentlichen=1");
     einzelbeleg = true;
-    if (!request.getParameter("Quelle").trim().equals("") && request.getParameter("Quellenliste").equals("-1")) {
+    if (!request.getParameter("Quelle").trim().equals("") && (request.getParameterValues("Quellenliste[]") == null)) {
         conditions.add("quelle.Bezeichnung LIKE '" + request.getParameter("Quelle").trim() + "'");
         namenkommentar = true;
     }
-    if (!request.getParameter("Quellenliste").equals("-1")) {
-        conditions.add("quelle.ID=" + request.getParameter("Quellenliste"));
-        einzelbeleg = true;
+    String[] quellenliste;
+    if ((quellenliste = request.getParameterValues("Quellenliste[]")) != null) {
+        for (String qid : quellenliste) {
+            if (!qid.equals("-1")) {
+                orConditions.add("quelle.ID=" + qid);
+                einzelbeleg = true;
+            }
+        }
     }
     if (request.getParameter("Quellengattung") != null && Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
         conditions.add("einzelbeleg.QuelleGattungID = '" + request.getParameter("Quellengattung") + "'");
@@ -1037,13 +1046,32 @@
 
         // Bedingungen
         String conditionsString = "";
+
+        String andPart = "";
         if (conditions.size() > 0) {
-            conditionsString += conditions.get(0);
+            andPart += conditions.get(0);
             for (int i = 1; i < conditions.size(); i++) {
-                conditionsString += " AND " + conditions.get(i);
+                andPart += " AND " + conditions.get(i);
             }
+        }
+
+        String orPart = "";
+        if (orConditions.size() > 0) {
+            orPart += orConditions.get(0);
+            for (int i = 1; i < orConditions.size(); i++) {
+                orPart += " OR " + orConditions.get(i);
+            }
+            orPart = "(" + orPart + ")";
+        }
+
+        if (!andPart.isEmpty() && !orPart.isEmpty()) {
+            conditionsString = andPart + " AND " + orPart;
+        } else if (!andPart.isEmpty()) {
+            conditionsString = andPart;
+        } else if (!orPart.isEmpty()) {
+            conditionsString = orPart;
         } else {
-            conditionsString += "1";
+            conditionsString = "1";
         }
 
         // Ausgabefelder
