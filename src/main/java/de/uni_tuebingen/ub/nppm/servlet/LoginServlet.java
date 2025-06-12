@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
+import de.uni_tuebingen.ub.nppm.db.ContentDB;
 import de.uni_tuebingen.ub.nppm.model.Benutzer;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import de.uni_tuebingen.ub.nppm.exception.*;
 import de.uni_tuebingen.ub.nppm.util.Language;
+import java.sql.Timestamp;
 
 public class LoginServlet extends HttpServlet {
 
@@ -22,7 +24,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
 
-
+        String selectedLanguage = (String) request.getSession().getAttribute("Sprache");
 
         if (login == null || login.isEmpty() || !BenutzerDB.hasLogin(login)) {
             throw new LoginException(Language.getTextfield(session, "login", "BenutzerExistiertNicht"));
@@ -47,6 +49,24 @@ public class LoginServlet extends HttpServlet {
         String passwordSalted = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), saltBytes);
         if (!passwordSalted.equals(benutzer.getPassword())) {
             throw new LoginException(Language.getTextfield(session, "login", "PasswortUngueltig"));
+        }
+
+        int aktuelle_version = 0;
+
+        if (selectedLanguage.equals("de")) {
+            aktuelle_version = benutzer.getDataAgreementVersion_de();
+        } else {
+            aktuelle_version = benutzer.getDataAgreementVersion_gb();
+            selectedLanguage = "gb";
+        }
+
+        int data_agreement_version = ContentDB.getByNameAndLanguage("dataagreement.html", selectedLanguage).getVersion();
+
+        if (data_agreement_version != aktuelle_version) {
+            session.setAttribute("username", request.getParameter("username"));
+            session.setAttribute("password", request.getParameter("password"));
+            response.sendRedirect("/neg/gast/dataagreement");
+            return;
         }
 
         // Falls Session vorhanden, löschen
@@ -90,11 +110,10 @@ public class LoginServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
                 rd.include(request, response);
             }
-        }catch (LoginException e) {
+        } catch (LoginException e) {
             request.setAttribute("javax.servlet.error.exception", e);
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             response.sendError(500, e.getMessage());
         }
     }
@@ -109,7 +128,36 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            String setDataAgreed = request.getParameter("setDataAgreed");
+            String selectedLanguage = (String) request.getSession().getAttribute("Sprache");
 
+            // French and Latin are disabled for safety. If needed, modify the code here to enable them.
+            if (!selectedLanguage.equals("de")) {
+                selectedLanguage = "gb";
+            }
+
+            int version = ContentDB.getByNameAndLanguage("dataagreement.html", selectedLanguage).getVersion();
+            if ("true".equals(setDataAgreed)) {
+                String login = request.getParameter("username");
+
+                if (login != null && BenutzerDB.hasLogin(login)) {
+                    Benutzer benutzer = BenutzerDB.getByLogin(login);
+
+                    if (selectedLanguage.equals("de")) {
+                       benutzer.setDataAgreementVersion_de(version);
+                       benutzer.setDataAgreementAcceptedAt_de(new Timestamp(System.currentTimeMillis()));
+                    } else {
+                        benutzer.setDataAgreementVersion_gb(version);
+                        benutzer.setDataAgreementAcceptedAt_gb(new Timestamp(System.currentTimeMillis()));
+                    }
+
+                    BenutzerDB.saveOrUpdate(benutzer);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         processRequest(request, response);
     }
 }

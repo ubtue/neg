@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 
@@ -54,6 +55,52 @@ public class Benutzer {
 
     @Column(name = "Salt")
     private String Salt;
+
+    @Column(name = "data_agreement_version_de", nullable = false)
+    private Integer dataAgreementVersion_de = 0;
+
+
+    @Column(name = "data_agreement_accepted_at_de")
+    private Timestamp DataAgreementAcceptedAt_de;
+
+    @Column(name = "data_agreement_version_gb", nullable = false)
+    private Integer dataAgreementVersion_gb = 0;
+
+
+    @Column(name = "data_agreement_accepted_at_gb")
+    private Timestamp DataAgreementAcceptedAt_gb;
+
+    public Integer getDataAgreementVersion_de() {
+        return dataAgreementVersion_de;
+    }
+
+    public void setDataAgreementVersion_de(Integer dataAgreementVersion_de) {
+        this.dataAgreementVersion_de = dataAgreementVersion_de;
+    }
+
+    public Timestamp getDataAgreementAcceptedAt_de() {
+        return DataAgreementAcceptedAt_de;
+    }
+
+    public void setDataAgreementAcceptedAt_de(Timestamp DataAgreementAcceptedAt_de) {
+        this.DataAgreementAcceptedAt_de = DataAgreementAcceptedAt_de;
+    }
+
+    public Integer getDataAgreementVersion_gb() {
+        return dataAgreementVersion_gb;
+    }
+
+    public void setDataAgreementVersion_gb(Integer dataAgreementVersion_gb) {
+        this.dataAgreementVersion_gb = dataAgreementVersion_gb;
+    }
+
+    public Timestamp getDataAgreementAcceptedAt_gb() {
+        return DataAgreementAcceptedAt_gb;
+    }
+
+    public void setDataAgreementAcceptedAt_gb(Timestamp DataAgreementAcceptedAt_gb) {
+        this.DataAgreementAcceptedAt_gb = DataAgreementAcceptedAt_gb;
+    }
 
     public String getResetToken() {
         return ResetToken;

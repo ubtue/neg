@@ -35,6 +35,14 @@
         <url-pattern>/gast/person</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>DataAgreementServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.DataAgreementServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DataAgreementServlet</servlet-name>
+        <url-pattern>/gast/dataagreement</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>DoJumpServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.DoJumpServlet</servlet-class>
     </servlet>

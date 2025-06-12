@@ -31,7 +31,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void putToDatabase(Content dataContent) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             session.beginTransaction();
             session.save(dataContent);
             session.getTransaction().commit();
@@ -39,7 +39,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void saveFile(String path, String name, String content_Type, Context context) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             byte[] contentBytes = readBytesFromFile(path);
             Content content = new Content(name, content_Type, contentBytes, context);
             putToDatabase(content);
@@ -48,16 +48,17 @@ public class ContentDB extends AbstractBase {
 
     //überladet nur zur zeit
     public static void saveFile(String path, String name, String content_Type, Context context, String language) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             byte[] contentBytes = readBytesFromFile(path);
             Content content = new Content(name, content_Type, contentBytes, context, language);
+            content.setVersion(1);
             putToDatabase(content);
         }
     }
 
     public static byte[] readBytesFromFile(String filePath) throws Exception {
         File inputFile = new File(filePath);
-        try ( FileInputStream inputStream = new FileInputStream(inputFile)) {
+        try (FileInputStream inputStream = new FileInputStream(inputFile)) {
             byte[] fileBytes = new byte[(int) inputFile.length()];
             inputStream.read(fileBytes);
             return fileBytes;
@@ -69,10 +70,10 @@ public class ContentDB extends AbstractBase {
     }
 
     public static Content getByName(String name) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root<Content> myContent  = criteria.from(Content.class);
+            Root<Content> myContent = criteria.from(Content.class);
             criteria.select(myContent);
             criteria.where(builder.equal(myContent.get(Content_.NAME), name));
             Content content = session.createQuery(criteria).getSingleResult();
@@ -81,7 +82,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static Content getFirstResultByName(String name) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> root = criteria.from(Content.class);
@@ -99,7 +100,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static Content getByNameAndLanguage(String name, String language) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -117,7 +118,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static List<Content> getList() throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -128,7 +129,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static List<Content> getList(String context) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -144,8 +145,6 @@ public class ContentDB extends AbstractBase {
         }
     }
 
-
-
     // unused function for future use ...
     public static void copyContentFromDatabaseTableToTempFolder(String outputDirectory) throws Exception {
         List<Content> contents = ContentDB.getList();
@@ -159,7 +158,7 @@ public class ContentDB extends AbstractBase {
 
     // unused function for future use ...
     public static void copyHTMLFromDatabaseTableToTempFolder(String outputDirectory, String name) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -172,16 +171,14 @@ public class ContentDB extends AbstractBase {
         }
     }
 
-
-
     private static void saveBytesToFile(String filePath, byte[] fileBytes) throws Exception {
-        try ( FileOutputStream outputStream = new FileOutputStream(filePath)) {
+        try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
             outputStream.write(fileBytes);
         }
     }
 
     public static void deleteById(Integer id) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -196,7 +193,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void deleteByName(String name) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -210,7 +207,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void deleteByNameAndLanguage(String name, String language) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -230,7 +227,7 @@ public class ContentDB extends AbstractBase {
 
     //Search if name exists in database
     public static boolean searchName(String name) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -243,7 +240,7 @@ public class ContentDB extends AbstractBase {
 
     //Search if name and language exists in database
     public static boolean searchNameAndLanguage(String name, String language) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> content = criteria.from(Content.class);
@@ -261,7 +258,7 @@ public class ContentDB extends AbstractBase {
 
     //Search if ID exists in database
     public static boolean searchId(int id) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> content = criteria.from(Content.class);
@@ -273,7 +270,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void saveOrUpdate(Content content) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             session.getTransaction().begin();
             session.saveOrUpdate(content);
             session.getTransaction().commit();
@@ -292,5 +289,17 @@ public class ContentDB extends AbstractBase {
             }
         }
         return selectedLanguage;
+    }
+
+    public static String loadHtmlContent(String name, String language) {
+        try {
+            Content content = ContentDB.getByNameAndLanguage(name, language);
+            if (content != null && content.getContent() != null) {
+                return new String(content.getContent(), "UTF-8");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "<!-- Inhalt nicht gefunden -->";
     }
 }

@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -44,6 +45,28 @@ public class Content {
 
     @Column(name = "language", length = 255)
     String language;
+
+    @Column(name = "version", nullable = false)
+    private Integer version = 1;
+
+    @Column(name = "created_at", insertable = false)
+    private Timestamp createdAt;
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     //Constructors
     //Default Constructor is neccessary !!! - don delete

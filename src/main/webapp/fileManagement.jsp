@@ -100,19 +100,23 @@
                 <% Language.printTextfield(out, session, "fileManagement", "ContextWahl");%>
             </option>
             <option value="NAMENKOMMENTAR" aria-label="<%= Language.getTextfield(session, "fileManagement", "Namenkommentar")%>" <% if (contextEnum == Content.Context.NAMENKOMMENTAR) {
-                    out.print("selected"); }%>>
+                    out.print("selected");
+                }%>>
                 <%= Language.getTextfield(session, "fileManagement", "Namenkommentar")%>
             </option>
             <option value="QUELLENKOMMENTAR" aria-label="<%= Language.getTextfield(session, "fileManagement", "Quellenkommentar")%>" <% if (contextEnum == Content.Context.QUELLENKOMMENTAR) {
-                    out.print("selected"); }%>>
+                    out.print("selected");
+                }%>>
                 <%= Language.getTextfield(session, "fileManagement", "Quellenkommentar")%>
             </option>
             <option value="UEBERLIEFERUNGSKOMMENTAR" aria-label="<%= Language.getTextfield(session, "fileManagement", "Überlieferungskommentar")%>" <% if (contextEnum == Content.Context.UEBERLIEFERUNGSKOMMENTAR) {
-                    out.print("selected"); }%>>
+                    out.print("selected");
+                }%>>
                 <%= Language.getTextfield(session, "fileManagement", "Überlieferungskommentar")%>
             </option>
             <option value="CMS" <% if (contextEnum == Content.Context.CMS) {
-                    out.print("selected"); } %>>
+                    out.print("selected");
+                } %>>
                 CONTENT MANAGEMENT SYSTEM
             </option>
         </select>
@@ -125,7 +129,7 @@
             boolean showPage = (!context.isEmpty());
             if (showPage) {
                 List<Integer> ids = new ArrayList<>(); // IDs-Liste initialisieren
-%>
+    %>
     <form action="file?context=<%=context%>&fileAccess=fileUpload" method="post" enctype="multipart/form-data">
         <div class="file-input-wrapper" role="group" aria-labelledby="file-upload-label">
             <label id="file-upload-label" for="file-upload" class="file-input-label"><%= Language.getTextfield(session, "fileManagement", "ChooseFiles")%></label>
@@ -139,15 +143,15 @@
     <br>
 
     <%
-        if(context.equals("CMS")){
-          %>
-        <div class="tab-container">
-            <button data-language="de" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%>" onclick="setLanguage('de')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%></button>
-            <button data-language="gb" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%>" onclick="setLanguage('gb')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%></button>
-            <button data-language="fr" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%>" onclick="setLanguage('fr')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%></button>
-            <button data-language="la" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%>" onclick="setLanguage('la')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%></button>
-        </div>
-          <%
+        if (context.equals("CMS")) {
+    %>
+    <div class="tab-container">
+        <button data-language="de" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%>" onclick="setLanguage('de')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_de")%></button>
+        <button data-language="gb" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%>" onclick="setLanguage('gb')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_en")%></button>
+        <button data-language="fr" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%>" onclick="setLanguage('fr')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_fr_2")%></button>
+        <button data-language="la" class="select-language" type="button" aria-label="<%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%>" onclick="setLanguage('la')"><%= Language.getTextfield(session, "sprachauswahl", "Sprache_la_2")%></button>
+    </div>
+    <%
         }
     %>
 
@@ -168,7 +172,7 @@
                         String fileUrl = Utils.getBaseUrl(request) + "/content?name=" + urlEncode(name);
                         id++;
                         ids.add(id); // ID zur Liste hinzufügen
-        %>
+%>
         <tr>
             <td>
                 <a id="fileLink_<%=id%>" style="display: none;" href="<%=fileUrl%>" target="_blank"><%=name%></a>
@@ -201,13 +205,21 @@
                     <input type="hidden" id="contentNameReplace_<%=id%>" name="contentNameReplace" value="<%= content.getName()%>">
                 </form>
                 <hr>
+
                 <form id="deleteFileForm_<%=id%>" style="display: none;"  action="file" method="post" onsubmit="return confirmDelete('<%=id%>');">
+                    <%
+                        if (!"dataagreement.html".equals(content.getName())) {
+                    %>
                     <input class="full-width-button" type="submit" name="deleteFile" aria-label="<%= Language.getTextfield(session, "fileManagement", "Delete")%>" value="<%= Language.getTextfield(session, "fileManagement", "Delete")%>">
+                    <%
+                        }
+                    %>
                     <input type="hidden" name="fileAccess" value="fileDelete">
                     <input type="hidden" name="id" value="<%=content.getID()%>">
                     <input type="hidden" name="context" value="<%=context%>">
                     <input type="hidden" id="contentName_<%=id%>" value="<%= content.getName()%>">
                 </form>
+
             </td>
         </tr>
         <%

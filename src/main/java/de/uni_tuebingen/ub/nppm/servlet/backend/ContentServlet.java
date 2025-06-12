@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,12 +51,23 @@ public class ContentServlet extends AbstractBackendServlet {
 
                 try {
                     Content content = ContentDB.getByNameAndLanguage(fileName, language);
-                    if (content != null) {
-                        ContentDB.updateHtmlFile(content, newHtmlContent);
-                        // Redirect to the tinyMce.jsp page after saving
-                        response.sendRedirect(Utils.getBaseUrl(request) + "/edit?loadFile=" + fileName);
-                        return;  // Important to return after redirect to stop further execution
+                    if (content != null && content.getContent() != null) {
+                        // Lade alten Inhalt aus dem bestehenden Content-Objekt
+                        String currentHtmlContent = new String(content.getContent(), StandardCharsets.UTF_8);
+
+                        if (!currentHtmlContent.trim().equals(newHtmlContent.trim())) {
+                            // Nur speichern und Version erhöhen, wenn sich wirklich etwas geändert hat
+                            int version = content.getVersion() != null ? content.getVersion() : 0;
+                            content.setVersion(version + 1);
+                            content.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+                            ContentDB.updateHtmlFile(content, newHtmlContent);
+                        }
                     }
+
+                    // Immer weiterleiten, egal ob gespeichert wurde oder nicht
+                    response.sendRedirect(Utils.getBaseUrl(request) + "/edit?loadFile=" + fileName);
+                    return;
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -252,16 +265,22 @@ public class ContentServlet extends AbstractBackendServlet {
 
                             Content content = null;
                             String selectedLanguage = getCookieLanguage(request, response);
+                            String pathname = writeItemToTempFile(item);
+                            byte[] bytes = ContentDB.readBytesFromFile(pathname);
 
                             if (contentType.equals("text/html")) {
                                 content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
+                                String newHtmlContent = new String(bytes, StandardCharsets.UTF_8);
+                                String currentHtmlContent = content.getContent() != null ? new String(content.getContent(), StandardCharsets.UTF_8) : "";
+                                if (!currentHtmlContent.trim().equals(newHtmlContent.trim())) {
+                                    int version = content.getVersion() != null ? content.getVersion() : 0;
+                                    content.setVersion(version + 1);
+                                    content.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+                                }
                             } else {
                                 content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
                             }
 
-                            String pathname = writeItemToTempFile(item);
-
-                            byte[] bytes = ContentDB.readBytesFromFile(pathname);
                             content.setContent(bytes);
                             ContentDB.saveOrUpdate(content);
 
@@ -411,4 +430,3 @@ public class ContentServlet extends AbstractBackendServlet {
         return selectedLanguage;
     }
 }//end class
-
