@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
             throw new LoginException(Language.getTextfield(session, "login", "PasswortUngueltig"));
         }
 
-        int aktuelle_version = 0;
+        int aktuelle_version = -1;
 
         if (selectedLanguage.equals("de")) {
             aktuelle_version = benutzer.getDataAgreementVersion_de();

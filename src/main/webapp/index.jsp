@@ -13,7 +13,7 @@
         String selectedLanguage = (String) request.getSession().getAttribute("Sprache");
         Benutzer benutzer = BenutzerDB.getById(AuthHelper.getBenutzer(request).getID());
 
-        int aktuelle_version = 0;
+        int aktuelle_version = -1;
 
         if (selectedLanguage.equals("de")) {
             aktuelle_version = benutzer.getDataAgreementVersion_de();
@@ -26,7 +26,7 @@
         int data_agreement_version = ContentDB.getByNameAndLanguage("dataagreement.html", selectedLanguage).getVersion();
 
         if (data_agreement_version != aktuelle_version) {
-            response.sendRedirect("gast/login");
+            response.sendRedirect(Utils.getBaseUrl(request) + "/gast/login");
         } else {
 %>
 <jsp:forward page="einzelbeleg" />
