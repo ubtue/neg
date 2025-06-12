@@ -177,6 +177,25 @@
                             </jsp:include>
                         </td>
                     </tr>
+                    <tr>
+                        <td width="200">
+                            <% Language.printDatafield(out, session, formular, "WikiData");%>
+                        </td>
+                        <td width="450">
+                            <jsp:include page="inc.erzeugeFormular.jsp">
+                                <jsp:param name="ID" value="<%= id%>" />
+                                <jsp:param name="Formular" value="person" />
+                                <jsp:param name="Datenfeld" value="WikiData" />
+                                <jsp:param name="size" value="50" />
+                            </jsp:include>
+
+                            <jsp:include page="inc.erzeugeFormular.jsp">
+                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="Formular" value="person" />
+                                <jsp:param name="Datenfeld" value="WikidataLink" />
+                            </jsp:include>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
