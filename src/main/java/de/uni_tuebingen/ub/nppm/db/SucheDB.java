@@ -31,7 +31,7 @@ public class SucheDB extends AbstractBase {
         boolean addWhereStatement = !query.equals("?");
         if (addWhereStatement) {
             sql += " WHERE " + field + " LIKE CONCAT('%', ?1, '%') ";
-        }        
+        }
 
         // in der auto completion->frontend->erweiterte suche keine einträge mit [???] zeigen
         if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
@@ -221,7 +221,7 @@ public class SucheDB extends AbstractBase {
         }
     }
 
-    public static List<Map> getEinfacheSucheResult(String search) throws Exception {
+   public static List<Map> getEinfacheSucheResult(String search) throws Exception {
         String searchTerm = search;
         // if search in double quotes, use verbatim, otherwise replace spaces with % wildcards
         if (searchTerm.startsWith("\"") && searchTerm.endsWith("\"")) {
@@ -230,7 +230,7 @@ public class SucheDB extends AbstractBase {
         }
         //searchTerm = searchTerm.replace("*", "%");  //Wenn du * als Wildcard zulassen willst
 
-        String sql = "SELECT DISTINCT mgh_lemma.MGHLemma, mgh_lemma.ID AS mgh_lemmaID, person.Standardname, person.ID AS personID, quelle.Bezeichnung, quelle.ID AS quelleID, edition.Titel AS editionTitel, edition.ID AS editionID, einzelbeleg.EditionKapitel, einzelbeleg.EditionSeite, einzelbeleg.seite, einzelbeleg.raster AS raster, quelle.VonTag AS quelleVonTag, quelle.VonMonat AS quelleVonMonat, quelle.VonJahr AS quelleVonJahr, quelle.VonJahrhundert AS quelleVonJahrhundert, quelle.BisTag AS quelleBisTag, quelle.BisMonat AS quelleBisMonat, quelle.BisJahr AS quelleBisJahr, quelle.BisJahrhundert AS quelleBisJahrhundert, einzelbeleg.Belegform, einzelbeleg.ID AS e2ID, einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr, einzelbeleg.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr"
+        String sql = "SELECT DISTINCT mgh_lemma.MGHLemma, mgh_lemma.ID AS mgh_lemmaID, person.Standardname, person.ID AS personID, quelle.Bezeichnung, quelle.ID AS quelleID, edition.Zitierweise AS editionZitierweise, edition.ID AS editionID, einzelbeleg.EditionKapitel, einzelbeleg.EditionSeite, einzelbeleg.seite, einzelbeleg.raster AS raster, quelle.VonTag AS quelleVonTag, quelle.VonMonat AS quelleVonMonat, quelle.VonJahr AS quelleVonJahr, quelle.VonJahrhundert AS quelleVonJahrhundert, quelle.BisTag AS quelleBisTag, quelle.BisMonat AS quelleBisMonat, quelle.BisJahr AS quelleBisJahr, quelle.BisJahrhundert AS quelleBisJahrhundert, einzelbeleg.Belegform, einzelbeleg.ID AS e2ID, einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr, einzelbeleg.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr"
                    + " FROM einzelbeleg"
                    + " LEFT JOIN einzelbeleg_hatmghlemma ehk1 ON ehk1.EinzelbelegID=einzelbeleg.ID"
                    + " LEFT JOIN mgh_lemma ON mgh_lemma.ID=ehk1.MGHLemmaID"

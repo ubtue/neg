@@ -422,9 +422,9 @@
         fieldNames.add("einzelbeleg.raster");
         headlines.add(Language.getTextfield(session, "suche", "Raster"));
 
-        fields.add("edition.Titel");
+        fields.add("edition.Zitierweise");
         //fields.add("edition.ID");
-        fieldNames.add("edition.Titel");
+        fieldNames.add("edition.Zitierweise");
         if (!tableString.contains("edition")) {
             tableString += " LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID";
         }
@@ -1417,7 +1417,7 @@
                             } else if (orderV[z].equals("quelle.Bezeichnung")) {
                                 out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");
                                 link = true;
-                            } else if (orderV[z].equals("edition.Titel")) {
+                            } else if (orderV[z].equals("edition.Zitierweise")) {
                                 try {
                                     out.print("<a class=\"ut-link\" href=\"edition?ID=" + row.get("edition.ID") + "\">");
                                     link = true;
@@ -1492,7 +1492,7 @@
                                 } else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
                                     out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");
                                     link = true;
-                                } else if (fieldNames.get(i).contains("edition.Titel")) {
+                                } else if (fieldNames.get(i).contains("edition.Zitierweise")) {
                                     link = false;
                                 } else if (fieldNames.get(i).contains("ID")) {
                                     out.print("<a class=\"ut-link\" href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu: ");

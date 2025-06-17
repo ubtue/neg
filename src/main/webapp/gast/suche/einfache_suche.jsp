@@ -67,7 +67,7 @@
         fieldNames.add("Bezeichnung");
         fieldNames.add("seite");
         fieldNames.add("raster");
-        fieldNames.add("editionTitel");
+        fieldNames.add("editionZitierweise");
         fieldNames.add("EditionKapitel");
         fieldNames.add("EditionSeite");
         fieldNames.add("quelleVonJahr");
