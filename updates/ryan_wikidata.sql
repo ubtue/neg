@@ -19,3 +19,9 @@ UPDATE `neg`.`datenbank_mapping` SET `de_Beschriftung` = 'Stand Person', `gb_bes
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('freie_suche', 'OrderStandEinzelbeleg', 'Stand Einzelbeleg', 'Status (Single Reference)', 'Statut (référence indivuelle)', 'Status (testimonium)');
 
 INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('freie_suche', 'OrderAmtWeiheEinzelbeleg', 'Amt/Weihe Einzelbeleg', 'Office/Consecration (Single Reference)', 'Fonction/Ordination (référence indivuelle)', 'Officium/Consecratio (testimonium)');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('statlemma', 'Titel', 'Statistik', 'Statistics', 'Statistiques', 'Statistica');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('statlemma', 'ListeDerLemmataAnzahl', 'Liste der Lemmata mit Anzahl der Belege', 'List of lemmata with the number of references', 'Liste des lemmes avec le nombre de références', 'Index lemmatum cum numero testimoniorum');
+
+INSERT INTO `neg`.`datenbank_texte` (`Formular`, `Textfeld`, `de`, `gb`, `fr`, `la`) VALUES ('statlemma', 'LemmaFilter', 'Lemma-Filter', 'Filter by lemma', 'Filtrer par lemme', 'Filtrum per lemmata');
