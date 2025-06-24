@@ -1,3 +1,5 @@
+<%@page import="java.io.PrintWriter"%>
+<%@page import="java.io.StringWriter"%>
 <%@ page isErrorPage="true" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
@@ -95,7 +97,14 @@
             String sourceId = getCauseMessage(exception, IdNotPublicException.class);
             out.println(sourceId);
         } else if (Utils.isDevelopmentEnvironment()) {%>
-    <pre><%=exception.getMessage()%></pre>
+        <%
+            //Stacktrace enthält auch exception message
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            exception.printStackTrace(pw);
+            String stacktrace = sw.toString();
+        %>
+    <pre><%= stacktrace%></pre>
     <% } else {%>
     <span>
         <%= "de".equals(session.getAttribute("Sprache"))
