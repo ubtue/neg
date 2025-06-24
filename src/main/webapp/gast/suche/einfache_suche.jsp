@@ -1,3 +1,5 @@
+<%@page import="java.util.HashSet"%>
+<%@page import="java.util.Set"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.SucheDB"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
@@ -67,7 +69,7 @@
         fieldNames.add("Bezeichnung");
         fieldNames.add("seite");
         fieldNames.add("raster");
-        fieldNames.add("editionTitel");
+        fieldNames.add("editionZitierweise");
         fieldNames.add("EditionKapitel");
         fieldNames.add("EditionSeite");
         fieldNames.add("quelleVonJahr");
@@ -99,6 +101,55 @@
 
         boolean found = false;
 
+        Set<String> uniqueStandardnamen = new HashSet<>();
+        Set<String> uniqueBelegformen = new HashSet<>();
+
+        for (Map<String, Object> row : resultAsMap) {
+            Object sn = row.get("Standardname");
+            if (sn != null && !sn.toString().trim().isEmpty()) {
+                uniqueStandardnamen.add(sn.toString().trim());
+            }
+
+            Object bf = row.get("Belegform");
+            if (bf != null && !bf.toString().trim().isEmpty()) {
+                uniqueBelegformen.add(bf.toString().trim());
+            }
+        }
+
+        StringBuilder output = new StringBuilder();
+
+        int personCount = uniqueStandardnamen.size();
+        if (personCount >= 0) {
+            output.append(Language.getTextfield(session, "freie_suche", "Insgesamt")).append(" ");
+            output.append(personCount).append(" ");
+            if (personCount == 1) {
+                output.append(Language.getTextfield(session, "person", "Person"));
+            } else {
+                output.append(Language.getTextfield(session, "person", "Titel"));
+            }
+            output.append(", ");
+        }
+
+        int belegformCount = uniqueBelegformen.size();
+        if (belegformCount >= 0) {
+            output.append(Language.getTextfield(session, "freie_suche", "Insgesamt")).append(" ");
+            output.append(belegformCount).append(" ");
+            if (belegformCount == 1) {
+                output.append(Language.getTextfield(session, "einzelbeleg", "Einzelbeleg"));
+            } else {
+                output.append(Language.getTextfield(session, "einzelbeleg", "Titel"));
+            }
+            output.append(", ");
+        }
+
+        // Entferne letztes Komma + Leerzeichen
+        if (output.length() >= 2) {
+            output.setLength(output.length() - 2);
+        }
+
+        // Ausgabe
+        out.println("<p><strong>" + output.toString() + "</strong></p>");
+
         if (!resultAsMap.isEmpty()) {
             found = true;
             out.print("<li  style=\"width:45%;float:left;margin-left:1em\"  class=\"liOpen\" style=\"font-size:large\">Lemma <ul>");
@@ -114,8 +165,8 @@
 %>
 <script type="text/javascript">
     var array = document.getElementsByTagName("li");
-    var entry = "<%= entry %>";
-    var entries = "<%= entries %>";
+    var entry = "<%= entry%>";
+    var entries = "<%= entries%>";
     for (var j = 0; j < array.length; j++) {
         if (array[j].getElementsByTagName("ul").length == 0)
             continue;

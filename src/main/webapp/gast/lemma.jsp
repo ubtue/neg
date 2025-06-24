@@ -142,6 +142,15 @@
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Lebend"));
 %>
 
+<h3 class="ut-heading ut-heading--h3">
+    <a class="ut-link" href="<%=Utils.getBaseUrl(request)%>/gast/lemma?page=stat">
+        <jsp:include page="../inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="statlemma"/>
+            <jsp:param name="Textfeld" value="Titel"/>
+        </jsp:include>
+    </a>
+</h3>
+
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="mgh_lemma" />
     <jsp:param name="ID" value="<%= id%>" />

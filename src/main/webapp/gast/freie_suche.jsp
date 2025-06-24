@@ -178,6 +178,17 @@
                             </tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
+                                    <% Language.printDatafield(out, session, "gast_freie_suche", "StandEinzelbeleg"); %>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
+                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                        <jsp:param name="Formular" value="gast_freie_suche"/>
+                                        <jsp:param name="Datenfeld" value="StandEinzelbeleg"/>
+                                    </jsp:include>
+                                </td>
+                            </tr>
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item">
                                     <% Language.printDatafield(out, session, formular, "EthnieEinzelbeleg"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
@@ -369,6 +380,30 @@
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
                                     <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Belegstelle"); %>
+                                </td>
+                            </tr>
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item">
+                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                        <jsp:param name="Formular" value="freie_suche"/>
+                                        <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_AmtWeihe"/>
+                                    </jsp:include>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
+                                    <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_AmtWeihe"); %>
+                                    <font color="blue"></font>
+                                </td>
+                            </tr>
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item">
+                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                        <jsp:param name="Formular" value="freie_suche"/>
+                                        <jsp:param name="Datenfeld" value="Ausgabe_Stand_Einzelbeleg"/>
+                                    </jsp:include>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
+                                    <% Language.printDatafield(out, session, formular, "Ausgabe_Stand_Einzelbeleg"); %>
+                                    <font color="blue"></font>
                                 </td>
                             </tr>
                             <tr class="ut-table__row">

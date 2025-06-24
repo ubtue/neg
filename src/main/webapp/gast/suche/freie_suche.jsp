@@ -175,6 +175,12 @@
         conditions.add("einzelbeleg_hatamtweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         einzelbeleg = true;
     }
+    if (Integer.parseInt(request.getParameter("StandEinzelbeleg")) > -1) {
+        tableString += " INNER JOIN einzelbeleg_hatstand  ON einzelbeleg.ID=einzelbeleg_hatstand.EinzelbelegID";
+        List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("StandEinzelbeleg")), SelektionStand.class).getSubtreeIdsRecursive();
+        conditions.add("einzelbeleg_hatstand.StandID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
+        einzelbeleg = true;
+    }
     if (request.getParameter("EthnieEinzelbeleg") != null && Integer.parseInt(request.getParameter("EthnieEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatethnie ON einzelbeleg.ID=einzelbeleg_hatethnie.EinzelbelegID";
         conditions.add("einzelbeleg_hatethnie.EthnieID = '" + request.getParameter("EthnieEinzelbeleg") + "'");
@@ -422,9 +428,9 @@
         fieldNames.add("einzelbeleg.raster");
         headlines.add(Language.getTextfield(session, "suche", "Raster"));
 
-        fields.add("edition.Titel");
+        fields.add("edition.Zitierweise");
         //fields.add("edition.ID");
-        fieldNames.add("edition.Titel");
+        fieldNames.add("edition.Zitierweise");
         if (!tableString.contains("edition")) {
             tableString += " LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID";
         }
@@ -476,18 +482,19 @@
         headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_Standardname"));
         person = true;
     }
+    // für Person
     if (request.getParameter("Ausgabe_Person_AmtWeihe") != null && request.getParameter("Ausgabe_Person_AmtWeihe").equals("on")) {
-        fields.add("selektion_amtweihe.Bezeichnung");
-        fieldNames.add("selektion_amtweihe.Bezeichnung");
+        fields.add("amtweihe_person.Bezeichnung AS AmtWeihe_Person");
+        fieldNames.add("AmtWeihe_Person");
+
         if (!tableString.contains("person_hatamtstandweihe")) {
             tableString += " LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";
         }
-        if (!tableString.contains("selektion_amtweihe")) {
-            tableString += " LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID";
+        if (!tableString.contains("amtweihe_person")) {
+            tableString += " LEFT OUTER JOIN selektion_amtweihe AS amtweihe_person ON person_hatamtstandweihe.AmtWeiheID=amtweihe_person.ID";
         }
-        //   headlines.add("Amt / Weihe");
-        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
 
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
         person = true;
     }
     if (request.getParameter("Ausgabe_Person_AmtWeiheZeitraum") != null && request.getParameter("Ausgabe_Person_AmtWeiheZeitraum").equals("on")) {
@@ -500,18 +507,52 @@
         headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeiheZeitraum"));
         person = true;
     }
-    if (request.getParameter("Ausgabe_Stand") != null && request.getParameter("Ausgabe_Stand").equals("on")) {
-        fields.add("selektion_stand.Bezeichnung");
-        fieldNames.add("selektion_stand.Bezeichnung");
+    // Ausgabe für Person → Stand
+    if ("on".equals(request.getParameter("Ausgabe_Stand"))) {
+        // Alias für die Stand-Tabelle bei Person
+        fields.add("stand_person.Bezeichnung AS Stand_Person");
+        fieldNames.add("Stand_Person");
+
         if (!tableString.contains("person_hatstand")) {
-            tableString += " LEFT OUTER JOIN person_hatstand ON person.ID=person_hatstand.PersonID";
+            tableString += " LEFT OUTER JOIN person_hatstand ON person.ID = person_hatstand.PersonID";
         }
-        if (!tableString.contains("selektion_stand")) {
-            tableString += " LEFT OUTER JOIN selektion_stand ON person_hatstand.StandID=selektion_stand.ID";
+        if (!tableString.contains("stand_person")) {
+            tableString += " LEFT OUTER JOIN selektion_stand AS stand_person ON person_hatstand.StandID = stand_person.ID";
         }
-        //   headlines.add("Stand");
+
         headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Stand"));
         person = true;
+    }
+    // für Einzelbeleg
+    if (request.getParameter("Ausgabe_Einzelbeleg_AmtWeihe") != null && request.getParameter("Ausgabe_Einzelbeleg_AmtWeihe").equals("on")) {
+        fields.add("amtweihe_eb.Bezeichnung AS AmtWeihe_Einzelbeleg");
+        fieldNames.add("AmtWeihe_Einzelbeleg");
+
+        if (!tableString.contains("einzelbeleg_hatamtweihe")) {
+            tableString += " LEFT OUTER JOIN einzelbeleg_hatamtweihe ON einzelbeleg.ID=einzelbeleg_hatamtweihe.EinzelbelegID";
+        }
+        if (!tableString.contains("amtweihe_eb")) {
+            tableString += " LEFT OUTER JOIN selektion_amtweihe AS amtweihe_eb ON einzelbeleg_hatamtweihe.AmtWeiheID=amtweihe_eb.ID";
+        }
+
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_AmtWeihe"));
+        einzelbeleg = true;
+    }
+    // Ausgabe für Einzelbeleg → Stand
+    if ("on".equals(request.getParameter("Ausgabe_Stand_Einzelbeleg"))) {
+        // Alias für die Stand-Tabelle beim Einzelbeleg
+        fields.add("stand_eb.Bezeichnung AS Stand_Einzelbeleg");
+        fieldNames.add("Stand_Einzelbeleg");
+
+        if (!tableString.contains("einzelbeleg_hatstand")) {
+            tableString += " LEFT OUTER JOIN einzelbeleg_hatstand ON einzelbeleg.ID = einzelbeleg_hatstand.EinzelbelegID";
+        }
+        if (!tableString.contains("stand_eb")) {
+            tableString += " LEFT OUTER JOIN selektion_stand AS stand_eb ON einzelbeleg_hatstand.StandID = stand_eb.ID";
+        }
+
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Stand_Einzelbeleg"));
+        einzelbeleg = true;
     }
     if (request.getParameter("Ausgabe_Person_Ethnie") != null && request.getParameter("Ausgabe_Person_Ethnie").equals("on")) {
         fields.add("selektion_ethnie.Bezeichnung");
@@ -798,40 +839,80 @@
                     person = true;
                 }
             } else if (request.getParameter("order" + i).equals("OrderAmtWeihe")) {
-                order += " selektion_amtweihe.Bezeichnung";
-                orderV[i - 1] = "selektion_amtweihe.Bezeichnung";
+                order += " AmtWeihe_Person"; // <-- nur Aliasname!
+                orderV[i - 1] = "AmtWeihe_Person"; // <-- nur Aliasname
                 person = true;
 
                 if (request.getParameter("Ausgabe_Person_AmtWeihe") == null || !request.getParameter("Ausgabe_Person_AmtWeihe").equals("on")) {
-                    fields.add("selektion_amtweihe.Bezeichnung");
-                    fieldNames.add("selektion_amtweihe.Bezeichnung");
+                    fields.add("amtweihe_person.Bezeichnung AS AmtWeihe_Person"); // <-- mit Alias
+                    fieldNames.add("AmtWeihe_Person"); // <-- nur Aliasname
+
                     if (!tableString.contains("person_hatamtstandweihe")) {
                         tableString += " LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";
                     }
-                    if (!tableString.contains("selektion_amtweihe")) {
-                        tableString += " LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID";
+                    if (!tableString.contains("amtweihe_person")) { //AS amtweihe_person
+                        tableString += " LEFT OUTER JOIN selektion_amtweihe AS amtweihe_person ON person_hatamtstandweihe.AmtWeiheID=amtweihe_person.ID";
                     }
+
                     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Person_AmtWeihe"));
 
                     person = true;
                 }
+            } else if (request.getParameter("order" + i).equals("OrderAmtWeiheEinzelbeleg")) {
+                order += " AmtWeihe_Einzelbeleg"; // <-- nur Aliasname!
+                orderV[i - 1] = "AmtWeihe_Einzelbeleg"; // <-- nur Aliasname
+                einzelbeleg = true;
+
+                if (request.getParameter("Ausgabe_Einzelbeleg_AmtWeihe") == null || !request.getParameter("Ausgabe_Einzelbeleg_AmtWeihe").equals("on")) {
+                    fields.add("amtweihe_eb.Bezeichnung AS AmtWeihe_Einzelbeleg"); // <-- mit Alias
+                    fieldNames.add("AmtWeihe_Einzelbeleg"); // <-- nur Aliasname
+
+                    if (!tableString.contains("einzelbeleg_hatamtweihe")) {
+                        tableString += " LEFT OUTER JOIN einzelbeleg_hatamtweihe ON einzelbeleg.ID=einzelbeleg_hatamtweihe.EinzelbelegID";
+                    }
+                    if (!tableString.contains("amtweihe_eb")) { //  AS amtweihe_eb
+                        tableString += " LEFT OUTER JOIN selektion_amtweihe AS amtweihe_eb ON einzelbeleg_hatamtweihe.AmtWeiheID=amtweihe_eb.ID";
+                    }
+
+                    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_AmtWeihe"));
+
+                    einzelbeleg = true;
+                }
             } else if (request.getParameter("order" + i).equals("OrderStand")) {
-                order += " selektion_stand.Bezeichnung";
-                orderV[i - 1] = "selektion_stand.Bezeichnung";
+                order += " Stand_Person"; // <-- nur Aliasname!
+                orderV[i - 1] = "Stand_Person"; // <-- nur Aliasname!
                 person = true;
 
                 if (request.getParameter("Ausgabe_Stand") == null || !request.getParameter("Ausgabe_Stand").equals("on")) {
-                    fields.add("selektion_stand.Bezeichnung");
-                    fieldNames.add("selektion_stand.Bezeichnung");
+                    fields.add("stand_person.Bezeichnung AS Stand_Person");
+                    fieldNames.add("Stand_Person"); // <-- nur Aliasname!
                     if (!tableString.contains("person_hatstand")) {
-                        tableString += " LEFT OUTER JOIN person_hatstand ON person.ID=person_hatstand.PersonID";
+                        tableString += " LEFT OUTER JOIN person_hatstand ON person.ID = person_hatstand.PersonID";
                     }
-                    if (!tableString.contains("selektion_stand")) {
-                        tableString += " LEFT OUTER JOIN selektion_stand ON person_hatstand.StandID=selektion_stand.ID";
+                    if (!tableString.contains("stand_person")) { // AS stand_person
+                        tableString += " LEFT OUTER JOIN selektion_stand AS stand_person ON person_hatstand.StandID = stand_person.ID";
                     }
                     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Stand"));
 
                     person = true;
+                }
+            } else if (request.getParameter("order" + i).equals("OrderStandEinzelbeleg")) {
+                order += " Stand_Einzelbeleg"; // <-- nur Aliasname!
+                orderV[i - 1] = "Stand_Einzelbeleg"; // <-- nur Aliasname!
+                einzelbeleg = true;
+
+                if (request.getParameter("Ausgabe_Stand_Einzelbeleg") == null || !request.getParameter("Ausgabe_Stand_Einzelbeleg").equals("on")) {
+                    fields.add("stand_eb.Bezeichnung AS Stand_Einzelbeleg");
+                    fieldNames.add("Stand_Einzelbeleg"); // <-- nur Aliasname!
+                    if (!tableString.contains("einzelbeleg_hatstand")) {
+                        tableString += " LEFT OUTER JOIN einzelbeleg_hatstand ON einzelbeleg.ID = einzelbeleg_hatstand.EinzelbelegID";
+                    }
+                    if (!tableString.contains("stand_eb")) { // AS stand_person
+                        tableString += " LEFT OUTER JOIN selektion_stand AS stand_eb ON einzelbeleg_hatstand.StandID = stand_eb.ID";
+                    }
+                    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Stand_Einzelbeleg"));
+
+                    einzelbeleg = true;
                 }
             } else if (request.getParameter("order" + i).equals("OrderEthnie")) {
                 order += " selektion_ethnie.Bezeichnung";
@@ -1417,7 +1498,7 @@
                             } else if (orderV[z].equals("quelle.Bezeichnung")) {
                                 out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");
                                 link = true;
-                            } else if (orderV[z].equals("edition.Titel")) {
+                            } else if (orderV[z].equals("edition.Zitierweise")) {
                                 try {
                                     out.print("<a class=\"ut-link\" href=\"edition?ID=" + row.get("edition.ID") + "\">");
                                     link = true;
@@ -1492,7 +1573,7 @@
                                 } else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
                                     out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");
                                     link = true;
-                                } else if (fieldNames.get(i).contains("edition.Titel")) {
+                                } else if (fieldNames.get(i).contains("edition.Zitierweise")) {
                                     link = false;
                                 } else if (fieldNames.get(i).contains("ID")) {
                                     out.print("<a class=\"ut-link\" href=\"" + formular + "?ID=" + row.get(formular + ".ID") + "\">Gehe zu: ");
