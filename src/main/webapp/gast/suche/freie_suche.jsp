@@ -175,12 +175,6 @@
         conditions.add("einzelbeleg_hatamtweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         einzelbeleg = true;
     }
-    if (Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")) > -1) {
-        tableString += " INNER JOIN einzelbeleg_hatamtweihe ON einzelbeleg.ID=einzelbeleg_hatamtweihe.EinzelbelegID";
-        List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")), SelektionAmtWeihe.class).getSubtreeIdsRecursive();
-        conditions.add("einzelbeleg_hatamtweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
-        einzelbeleg = true;
-    }
     if (Integer.parseInt(request.getParameter("StandEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatstand  ON einzelbeleg.ID=einzelbeleg_hatstand.EinzelbelegID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("StandEinzelbeleg")), SelektionStand.class).getSubtreeIdsRecursive();
