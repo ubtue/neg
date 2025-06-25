@@ -173,13 +173,13 @@
         conditions.add("einzelbeleg.Kontext LIKE '" + request.getParameter("Kontext").trim() + "'");
         einzelbeleg = true;
     }
-    if (Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")) > -1) {
+    if (request.getParameter("AmtWeiheEinzelbeleg") != null && Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatamtweihe ON einzelbeleg.ID=einzelbeleg_hatamtweihe.EinzelbelegID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")), SelektionAmtWeihe.class).getSubtreeIdsRecursive();
         conditions.add("einzelbeleg_hatamtweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         einzelbeleg = true;
     }
-    if (Integer.parseInt(request.getParameter("StandEinzelbeleg")) > -1) {
+    if (request.getParameter("StandEinzelbeleg") != null && Integer.parseInt(request.getParameter("StandEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatstand  ON einzelbeleg.ID=einzelbeleg_hatstand.EinzelbelegID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("StandEinzelbeleg")), SelektionStand.class).getSubtreeIdsRecursive();
         conditions.add("einzelbeleg_hatstand.StandID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
@@ -1344,7 +1344,6 @@
         String oldValue[] = new String[15];
 
         // ########## SEITENNAVIGATION #########
-        out.println("<h1>ich bin das suchergebnis</h1>");
         if ("".equals(order)) {
             PrintPagination.printPageNavigation(out, request, pageoffset, pageLimitX, linecount, export);
         }
