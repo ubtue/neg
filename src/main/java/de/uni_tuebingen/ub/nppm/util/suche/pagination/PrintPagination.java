@@ -145,14 +145,21 @@ public class PrintPagination {
     public static void printPageNavigation(JspWriter out, HttpServletRequest request, String export, String title) throws Exception {
         printPageNavigation(out, request, null, null, null, export, title);
     }
-
-    // Hilfsfunktion: baut Seiten-URL basierend auf Request und Ziel-Seitennummer
+    //funktioniert jetzt auch für array parameter
     private static String buildPageUrl(HttpServletRequest request, int pageoffset) {
         StringBuilder url = new StringBuilder("?pageoffset=" + pageoffset);
         for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
             String paramName = e.nextElement();
             if (!paramName.equals("pageoffset")) {
-                url.append("&").append(paramName).append("=").append(URLEncoder.encode(request.getParameter(paramName), StandardCharsets.UTF_8));
+                String[] values = request.getParameterValues(paramName);
+                if (values != null) {
+                    for (String value : values) {
+                        url.append("&")
+                                .append(URLEncoder.encode(paramName, StandardCharsets.UTF_8))
+                                .append("=")
+                                .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
+                    }
+                }
             }
         }
         return url.toString();

@@ -20,7 +20,7 @@
 <%
     String einzelbelegeVonQuelle = request.getParameter("einzelbelegeVonQuelle");
     if ("true".equals(einzelbelegeVonQuelle)) {
-        int quellenId = Integer.parseInt(request.getParameter("Quellenliste"));
+        int quellenId = Integer.parseInt(request.getParameter("Quellenliste[]"));
 %>
 <h3 class="ut-heading ut-heading--h3">
     <% Language.printTextfield(out, session, "quelle", "Bezeichnung");%>
