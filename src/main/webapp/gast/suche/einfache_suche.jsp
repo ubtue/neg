@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="java.util.Set"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
@@ -13,7 +14,9 @@
 <%@ page import="java.io.*" isThreadSafe="false" %>
 <%@ page import="java.awt.Color" isThreadSafe="false" %>
 
-
+<a href="<%= Utils.getBaseUrl(request) %>/gast/export_csv?query=<%= URLEncoder.encode(request.getParameter("query"), "UTF-8") %>" class="ut-btn">
+    Export als CSV
+</a>
 <%
     String query = request.getParameter("query");
 
