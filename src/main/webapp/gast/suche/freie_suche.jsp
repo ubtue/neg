@@ -1152,7 +1152,7 @@
         } else if (!orPart.isEmpty()) {
             conditionsString = orPart;
         } else {
-            conditionsString = "1";
+            conditionsString += "1";
         }
 
         // Ausgabefelder
