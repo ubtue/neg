@@ -4,9 +4,25 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="java.util.*"%>
 
+<%!
+    private static <T> void moveItem(List<T> list, T item, int newIndex) {
+        if (list.remove(item)) {
+            list.add(newIndex, item);
+        }
+    }
+%>
+
 
 <%
     if (true) {
+
+        for (int i = 0; i < fields.size(); i++) {
+            if ("edition.Titel".equals(fields.get(i))) {
+                fields.set(i, "edition.Zitierweise");
+                break; // falls es nur einmal vorkommt
+            }
+        }
+
         conditions = removeDuplicates(conditions);
         fields = removeDuplicates(fields);
         tables = removeDuplicates(tables);
@@ -31,6 +47,61 @@
                 fieldsString += ", " + QueryHelper.getFieldAliasSelect(fields.get(i));
             }
         }
+
+        String[] fieldArray = fieldsString.split(",\\s*");  // Aufteilen an Komma + optionalen Leerzeichen
+        List<String> fieldList = new ArrayList<>(Arrays.asList(fieldArray));
+
+        int index = fieldNames.indexOf("edition.Titel");
+        if (index != -1) {
+            fieldNames.set(index, "edition.Zitierweise");
+        }
+
+        // Belegform ganz nach vorne
+        String feld = "einzelbeleg.Belegform AS einzelbeleg_Belegform";
+        moveItem(fieldList, feld, 0);
+        moveItem(fieldNames, "einzelbeleg.Belegform", 0);
+        moveItem(headlines, "Belegform", 0);
+
+        // Quelle an zweite Stelle (Index 1)
+        feld = "quelle.Bezeichnung AS quelle_Bezeichnung";
+        moveItem(fieldList, feld, 1);
+        moveItem(fieldNames, "quelle.Bezeichnung", 1);
+        moveItem(headlines, "Quelle", 1);
+
+        // Neues Feld an Position 3 einfügen (Index 2)
+        feld = "einzelbeleg.Seite AS einzelbeleg_Seite";
+        fieldList.add(2, feld);
+        fieldNames.add(2, "einzelbeleg.Seite");
+        headlines.add(2, "Nr./Seite");
+
+        // Neues Feld an Position 4 einfügen (Index 3)
+        feld = "einzelbeleg.Raster AS einzelbeleg_Raster";
+        fieldList.add(3, feld);
+        fieldNames.add(3, "einzelbeleg.Raster");
+        headlines.add(3, "Rast.");
+
+        feld = "edition.Zitierweise AS editionZitierweise";
+        moveItem(fieldList, feld, 4);
+        moveItem(fieldNames, "edition.Zitierweise", 4);
+        moveItem(headlines, "Edition", 4);
+
+        feld = "einzelbeleg.EditionKapitel AS einzelbeleg_EditionKapitel";
+        moveItem(fieldList, feld, 5);
+        moveItem(fieldNames, "einzelbeleg.EditionKapitel", 5);
+        moveItem(headlines, "Kapitel in der Edition", 5);
+
+        feld = "einzelbeleg.EditionSeite AS einzelbeleg_EditionSeite";
+        moveItem(fieldList, feld, 6);
+        moveItem(fieldNames, "einzelbeleg.EditionSeite", 6);
+        moveItem(headlines, "Seiten in der Edition", 6);
+
+        feld = "einzelbeleg.Kontext AS einzelbeleg_Kontext";
+        moveItem(fieldList, feld, 7);
+        moveItem(fieldNames, "einzelbeleg.Kontext", 7);
+        moveItem(headlines, "Kontext", 7);
+
+        // fieldsString wieder zusammensetzen
+        fieldsString = String.join(", ", fieldList);
 
         // Tabellen
         String tablesString = "";
@@ -150,7 +221,7 @@
                             } else if (fieldName.contains("quelle.Bezeichnung") && row.get(QueryHelper.getFieldAliasResult("quelle.ID")) != null) {
                                 out.print("<a class=\"ut-link\" href=\"quelle?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("quelle.ID"))) + "\">");
                                 link = true;
-                            } else if (fieldName.contains("edition.Titel") && row.get(QueryHelper.getFieldAliasResult("edition.ID")) != null) {
+                            } else if (fieldName.contains("edition.Zitierweise") && row.get(QueryHelper.getFieldAliasResult("edition.ID")) != null) {
                                 try {
                                     out.print("<a class=\"ut-link\" href=\"edition?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("edition.ID"))) + "\">");
                                     link = true;

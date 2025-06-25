@@ -22,7 +22,11 @@ public class NamenServlet extends AbstractGastServlet {
 
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-       if (request.getParameter("ID") == null) {
+       if(request.getParameter("page") != null && request.getParameter("page").equals("stat")){
+            RequestDispatcher rd = request.getRequestDispatcher("statistiklemma.jsp");
+            rd.include(request, response);
+        }
+        else if (request.getParameter("ID") == null) {
             response.sendRedirect(request.getContextPath() + "/gast/lemma?ID=" + LemmaDB.getFirstPublicMGHLemma().getId());
         } else {
             RequestDispatcher rd = request.getRequestDispatcher("lemma.jsp");

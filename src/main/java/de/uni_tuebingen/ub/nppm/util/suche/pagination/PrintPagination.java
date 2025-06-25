@@ -68,12 +68,12 @@ public class PrintPagination {
 
         // Previous Button
         if (currentIndex > 0) {
+            String prev = Language.getTextfield(request.getSession(), "pagination", "Prev");
             if (useIdMode) {
                 int prevID = publicIds.get(currentIndex - 1);
-                out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='?ID=" + prevID + "';\">Previous</button>&nbsp;");
+                out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='?ID=" + prevID + "';\">" + prev + "</button>&nbsp;");
             } else {
                 String prevUrl = buildPageUrl(request, currentIndex - 1);
-                String prev = Language.getTextfield(request.getSession(), "pagination", "Prev");
                 out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + prevUrl + "';\">" + prev + "</button>&nbsp;");
             }
         }
@@ -123,12 +123,12 @@ public class PrintPagination {
 
         // Next Button
         if (currentIndex < totalPages - 1) {
+            String next = Language.getTextfield(request.getSession(), "pagination", "Next");
             if (useIdMode) {
                 int nextID = publicIds.get(currentIndex + 1);
-                out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='?ID=" + nextID + "';\">Next</button>");
+                out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='?ID=" + nextID + "';\">" + next + "</button>");
             } else {
                 String nextUrl = buildPageUrl(request, currentIndex + 1);
-                String next = Language.getTextfield(request.getSession(), "pagination", "Next");
                 out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + nextUrl + "';\">" + next + "</button>");
             }
         }

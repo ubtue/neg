@@ -4,8 +4,10 @@ import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
 import de.uni_tuebingen.ub.nppm.util.Utils;
+import de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationParams;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 public class LemmaDB extends AbstractBase {
 
@@ -125,6 +127,111 @@ public class LemmaDB extends AbstractBase {
                     + "ORDER BY ehm.MGHLemmaID";
 
             return session.createNativeQuery(sql).getResultList();
+        }
+    }
+
+    public static Long countStat(String filterTitle) throws Exception {
+        if (filterTitle == null) {
+            filterTitle = "";
+        }
+
+        try (Session session = getSession()) {
+            String hql = "SELECT COUNT(DISTINCT l.id) "
+                    + "FROM MghLemma l "
+                    + "JOIN l.einzelbelege e "
+                    + "JOIN e.quelle q "
+                    + "WHERE q.zuVeroeffentlichen = 1 "
+                    + "AND l.mghLemma LIKE :lemma";
+
+            Query<Long> query = session.createQuery(hql, Long.class);
+            query.setParameter("lemma", "%" + filterTitle + "%");
+
+            return query.uniqueResult();
+        }
+    }
+
+    public static long getEinzelbelegeCount(int lemmaId) throws Exception {
+        try (Session session = getSession()) {
+            String sql = "SELECT COUNT(DISTINCT e.ID) "
+                    + "FROM einzelbeleg_hatmghlemma ehm "
+                    + "JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID "
+                    + "JOIN quelle q ON q.ID = e.QuelleID "
+                    + "WHERE ehm.MGHLemmaID = :lemmaId AND q.ZuVeroeffentlichen = 1";
+
+            Query<?> query = session.createNativeQuery(sql);
+            query.setParameter("lemmaId", lemmaId);
+
+            Object result = query.getSingleResult();
+            return ((Number) result).longValue();
+        }
+    }
+
+    public static List<MghLemma> getList(PaginationParams params) throws Exception {
+        String jumpToID = params.getJumpToID();
+        String sort = params.getSort();
+        String filterTitle = params.getFilters().get("filterTitle");
+        Integer currentPage = params.getCurrentPage();
+        Integer recordsPerPage = params.getRecordsPerPage();
+
+        if (filterTitle == null) {
+            filterTitle = "";
+        }
+
+        try (Session session = getSession()) {
+            if (jumpToID != null && !jumpToID.isEmpty()) {
+                // Einzelnes Lemma gezielt per ID holen
+                String hql = "FROM MghLemma l WHERE l.id = :id";
+                Query<MghLemma> query = session.createQuery(hql, MghLemma.class);
+                query.setParameter("id", Integer.valueOf(jumpToID));
+                return query.list();
+            } else {
+                Integer offset = null;
+                if (currentPage != null && recordsPerPage != null) {
+                    offset = (currentPage - 1) * recordsPerPage;
+                }
+
+                String sql;
+                if (sort != null && sort.startsWith("title")) {
+                    sql = "SELECT DISTINCT l.* "
+                            + "FROM mgh_lemma l "
+                            + "JOIN einzelbeleg_hatmghlemma ehm ON l.ID = ehm.MGHLemmaID "
+                            + "JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID "
+                            + "JOIN quelle q ON q.ID = e.QuelleID "
+                            + "WHERE q.ZuVeroeffentlichen = 1 "
+                            + "AND l.MGHLemma LIKE :lemma "
+                            + "ORDER BY l.MGHLemma " + (sort.equals("titleDown") ? "DESC" : "ASC");
+
+                } else if (sort != null && sort.startsWith("belege")) {
+                    sql = "SELECT DISTINCT l.* "
+                            + "FROM mgh_lemma l "
+                            + "JOIN einzelbeleg_hatmghlemma ehm ON l.ID = ehm.MGHLemmaID "
+                            + "JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID "
+                            + "JOIN quelle q ON q.ID = e.QuelleID "
+                            + "WHERE q.ZuVeroeffentlichen = 1 "
+                            + "AND l.MGHLemma LIKE :lemma "
+                            + "GROUP BY l.ID "
+                            + "ORDER BY COUNT(e.ID) " + (sort.equals("belegeDown") ? "DESC" : "ASC");
+
+                } else {
+                    sql = "SELECT DISTINCT l.* "
+                            + "FROM mgh_lemma l "
+                            + "JOIN einzelbeleg_hatmghlemma ehm ON l.ID = ehm.MGHLemmaID "
+                            + "JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID "
+                            + "JOIN quelle q ON q.ID = e.QuelleID "
+                            + "WHERE q.ZuVeroeffentlichen = 1 "
+                            + "AND l.MGHLemma LIKE :lemma";
+                }
+
+                Query<MghLemma> query = session.createNativeQuery(sql, MghLemma.class);
+                query.setParameter("lemma", "%" + filterTitle + "%");
+
+                if (offset != null) {
+                    query.setFirstResult(offset);
+                    query.setMaxResults(recordsPerPage);
+                }
+
+                return query.getResultList();
+            }
         }
     }
 }
