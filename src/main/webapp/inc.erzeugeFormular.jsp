@@ -155,8 +155,8 @@
 <%@ include file="forms/noarray.sqlselect.jsp" %>
 <%@ include file="forms/noarray.textarea.jsp" %>
 <%@ include file="forms/noarray.textfield.jsp" %>
-<%@ include file="forms/noarray.gndlink.jsp" %>
 <%@ include file="forms/noarray.simple.multiselect.jsp" %>
+<%@ include file="forms/noarray.iconlink.jsp" %>
 
 <%    // Read the value from buffer & restore our default html writer
     out = out_html;
