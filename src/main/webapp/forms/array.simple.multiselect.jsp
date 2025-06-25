@@ -1,5 +1,5 @@
 <%
-    if (feldtyp.equals("noarray.simple.multiselect") && !array) {
+    if (feldtyp.equals("array.simple.multiselect") && !array) {
         out.println("<div id=\"" + datenfeld + "-wrapper\" class=\"select-wrapper\">");
 
         // Erster Select-Feldblock
