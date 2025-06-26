@@ -143,7 +143,7 @@
         String dmghUrl = "";
         String linkinfo = "";
 
-        String sql = "select b.editionseite seite, e.bandnummer band, d.bezeichnung url "
+        String sql = "select b.editionseite seite, e.bandnummer band, d.bezeichnung url, b.seite seite_fallback "
                 + "from einzelbeleg b, edition e, selektion_dmghband d "
                 + "where b.editionid = e.id "
                 + "and d.id > 0 "
@@ -156,10 +156,18 @@
             String seiteZeile = columns[0] != null ? String.valueOf(columns[0]).trim() : "";
             Pattern p = Pattern.compile("^[^\\d]*(?<seite>\\d+)[^\\d]*(?<zeile>\\d+[^-]*)?(?<rest>.*?)$");
             Matcher m = p.matcher(seiteZeile);
+            String seite = null;
+            String zeile = null;
 
             if (m.find()) {
-                String seite = m.group("seite") != null ? m.group("seite").replaceAll("^0+", "") : "";
-                String zeile = m.group("zeile") != null ? m.group("zeile").replaceAll("^0+", "") : "";
+                seite = m.group("seite") != null ? m.group("seite").replaceAll("^0+", "") : null;
+                zeile = m.group("zeile") != null ? m.group("zeile").replaceAll("^0+", "") : null;
+            
+                // Fallback: aus b.seite
+                if (seite == null || seite.isEmpty()) {
+                    seite = columns[3] != null ? String.valueOf(columns[3]).trim().replaceAll("^0+", "") : "";
+                }
+
                 String band = columns[1] != null ? String.valueOf(columns[1]).trim().replace("/", ",").replace("II", "2").replace("I", "1") : "";
                 String url = columns[2] != null ? String.valueOf(columns[2]).trim() : "";
 
@@ -170,7 +178,6 @@
                 }
             }
         }
-
         return new String[]{
             dmghUrl,
             linkinfo
