@@ -156,12 +156,10 @@
             String seiteZeile = columns[0] != null ? String.valueOf(columns[0]).trim() : "";
             Pattern p = Pattern.compile("^[^\\d]*(?<seite>\\d+)[^\\d]*(?<zeile>\\d+[^-]*)?(?<rest>.*?)$");
             Matcher m = p.matcher(seiteZeile);
-            String seite = null;
-            String zeile = null;
 
             if (m.find()) {
-                seite = m.group("seite") != null ? m.group("seite").replaceAll("^0+", "") : null;
-                zeile = m.group("zeile") != null ? m.group("zeile").replaceAll("^0+", "") : null;
+                String seite = m.group("seite") != null ? m.group("seite").replaceAll("^0+", "") : "";
+                String zeile = m.group("zeile") != null ? m.group("zeile").replaceAll("^0+", "") : "";
             
                 // Fallback: aus b.seite
                 if (seite == null || seite.isEmpty()) {
