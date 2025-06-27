@@ -19,7 +19,7 @@ public class StaticHtmlServlet extends AbstractGastServlet {
         }
         page = request.getParameter("page");
 
-        RequestDispatcher rd = request.getRequestDispatcher(page + ".jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("static/" + page + ".jsp");
         rd.include(request, response);
     }
 }

@@ -3,9 +3,7 @@
 <!--
     Original privacy statement, see: https://uni-tuebingen.de/datenschutzerklaerung/
     All changes to the original should be marked as class="changed"!!!
-    Uncomment the following block to highlight changed sections for debugging purposes:
 -->
-
 
 <% if (Utils.isDevelopmentEnvironment()) { %>
     <style type="text/css">
