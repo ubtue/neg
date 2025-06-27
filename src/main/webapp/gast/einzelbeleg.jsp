@@ -30,7 +30,7 @@
 
     for (MghLemma lemmaObj : einzelbeleg.getMghLemma()) {
         String text = lemmaObj.getMghLemma();
-        if (text != null && text.contains("[???]")) {
+        if (text != null && text.contains(Constants.forbiddenLemmaSubstring)) {
             throwContainsInvalidStrException = true;
             break;
         }

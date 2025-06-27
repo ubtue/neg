@@ -3,6 +3,8 @@ package de.uni_tuebingen.ub.nppm.db;
 import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.Constants;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -44,7 +46,7 @@ public class EinzelbelegDB extends AbstractBase {
     /**
      * Liefert ein Predicate, das alle Einzelbelege ausschließt, die mit
      * mindestens einem MghLemma verknüpft sind, dessen Text den Substring
-     * "[???]" enthält.
+     * Constants.forbiddenLemmaSubstring enthält.
      *
      * @param root die Root-Entität Einzelbeleg
      * @param cb der CriteriaBuilder
@@ -58,7 +60,7 @@ public class EinzelbelegDB extends AbstractBase {
         Root<Einzelbeleg> subRoot = sq.correlate(root);
         Join<Einzelbeleg, MghLemma> jm = subRoot.join("mghLemma");
         sq.select(subRoot.get("id"))
-                .where(cb.like(jm.get("mghLemma"), "%[???]%"));
+                .where(cb.like(jm.get("mghLemma"), "%"+Constants.forbiddenLemmaSubstring+"%"));
         return cb.not(cb.exists(sq));
     }
 
@@ -224,13 +226,13 @@ public class EinzelbelegDB extends AbstractBase {
     public static List<Integer> getAllPublicEinzelbelegIds() throws Exception {
         try (Session session = getSession()) {
             /*
-                Exclude Einzelbelege that are linked to a MGHLemma which contains [???] in Frontend
+                Exclude Einzelbelege that are linked to a MGHLemma which Constants.forbiddenLemmaSubstring in Frontend
             */
             String sql = "SELECT e.ID "
                     + "FROM einzelbeleg e "
                     + "  JOIN quelle q ON e.QuelleID = q.ID AND q.zuVeroeffentlichen = 1 "
                     + "  LEFT JOIN einzelbeleg_hatmghlemma eh ON eh.EinzelbelegID = e.ID "
-                    + "  LEFT JOIN mgh_lemma m ON m.ID = eh.MGHLemmaID AND m.MGHLemma LIKE '%[???]%' "
+                    + "  LEFT JOIN mgh_lemma m ON m.ID = eh.MGHLemmaID AND m.MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%' "
                     + "WHERE m.ID IS NULL "
                     + "ORDER BY e.ID";
             return session.createNativeQuery(sql).getResultList();

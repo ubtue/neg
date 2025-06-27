@@ -9,4 +9,6 @@ public class Constants {
     public static String FALLBACK_LANG = "de";
     //Statisctics
     public static final Integer RECORDS_PER_PAGE = 100;
+    //Exclude Lemmas in Frontend that contains [???]
+    public static final String forbiddenLemmaSubstring = "[???]";
 }
