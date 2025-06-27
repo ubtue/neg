@@ -112,7 +112,7 @@
     tables.add("mghlemma");
     tables.add("person");
 
-   String sprache = "de";
+   String sprache = Constants.DEFAULT_LANG;
 
    //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
    if (session != null && session.getAttribute("Sprache") != null)

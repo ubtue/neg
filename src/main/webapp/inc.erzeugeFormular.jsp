@@ -61,7 +61,7 @@
     String sprache = (String) session.getAttribute("Sprache");
     //set standard language
     if (sprache == null) {
-        sprache = "de";
+        sprache = Constants.DEFAULT_LANG;
     }
     String beschriftung = "";
     String platzhalter = "";
