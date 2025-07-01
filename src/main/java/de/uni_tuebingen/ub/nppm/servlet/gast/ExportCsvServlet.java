@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import com.opencsv.CSVWriter;
 import de.uni_tuebingen.ub.nppm.db.SucheDB;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,19 +39,22 @@ public class ExportCsvServlet extends HttpServlet {
             return;
         }
 
-        try (PrintWriter out = response.getWriter()) {
-            // CSV-Kopfzeile
-            out.println(String.join(";", fieldNames));
+        try (
+                OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8); CSVWriter csvWriter = new CSVWriter(osw, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+            // Kopfzeile
+            csvWriter.writeNext(fieldNames.toArray(new String[0]));
 
+            // Datenzeilen
             for (Map row : result) {
-                List<String> values = new ArrayList<>();
-                for (String field : fieldNames) {
-                    Object val = row.get(field);
-                    String text = val == null ? "" : val.toString().replace("\"", "\"\"");
-                    values.add("\"" + text + "\"");
+                String[] data = new String[fieldNames.size()];
+                for (int i = 0; i < fieldNames.size(); i++) {
+                    Object val = row.get(fieldNames.get(i));
+                    data[i] = val == null ? "" : val.toString();
                 }
-                out.println(String.join(";", values));
+                csvWriter.writeNext(data);
             }
+            csvWriter.flush();
         }
     }
 }
