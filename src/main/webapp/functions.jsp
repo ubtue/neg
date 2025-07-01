@@ -143,24 +143,26 @@
         String dmghUrl = "";
         String linkinfo = "";
 
-        String sql = "select b.editionseite seite, e.bandnummer band, d.bezeichnung url, b.seite seite_fallback "
-                + "from einzelbeleg b, edition e, selektion_dmghband d "
-                + "where b.editionid = e.id "
-                + "and d.id > 0 "
-                + "and e.dmghbandid = d.id "
-                + "and b.id = " + einzelbelegID;
+        String sql = "SELECT b.editionseite AS seite, e.bandnummer AS band, d.bezeichnung AS url, b.seite AS seite_fallback " +
+             "FROM einzelbeleg b " +
+             "JOIN quelle_inedition qi ON b.quelleid = qi.quelleid " +
+             "JOIN edition e ON qi.editionid = e.id " +
+             "JOIN selektion_dmghband d ON e.dmghbandid = d.id " +
+             "WHERE d.id > 0 " +
+             "AND b.id = " + einzelbelegID;
 
         Object[] columns = AbstractBase.getRowNative(sql);
 
         if (columns != null && columns.length > 0) {
-            String seiteZeile = columns[0] != null ? String.valueOf(columns[0]).trim() : "";
-            Pattern p = Pattern.compile("^[^\\d]*(?<seite>\\d+)[^\\d]*(?<zeile>\\d+[^-]*)?(?<rest>.*?)$");
-            Matcher m = p.matcher(seiteZeile);
-
-            if (m.find()) {
-                String seite = m.group("seite") != null ? m.group("seite").replaceAll("^0+", "") : "";
-                String zeile = m.group("zeile") != null ? m.group("zeile").replaceAll("^0+", "") : "";
-            
+                String seiteZeile = columns[0] != null ? String.valueOf(columns[0]).trim() : "";
+                Pattern p = Pattern.compile("^[^\\d]*(?<seite>\\d+)[^\\d]*(?<zeile>\\d+[^-]*)?(?<rest>.*?)$");
+                Matcher m = p.matcher(seiteZeile);
+                String zeile = "";
+                String seite = "";
+                if (m.find()) {
+                    seite = m.group("seite") != null ? m.group("seite").replaceAll("^0+", "") : "";
+                    zeile = m.group("zeile") != null ? m.group("zeile").replaceAll("^0+", "") : "";
+                }
                 // Fallback: aus b.seite
                 if (seite == null || seite.isEmpty()) {
                     seite = columns[3] != null ? String.valueOf(columns[3]).trim().replaceAll("^0+", "") : "";
@@ -175,7 +177,6 @@
                             url.replace("_", " "), band, seite, zeile);
                 }
             }
-        }
         return new String[]{
             dmghUrl,
             linkinfo
