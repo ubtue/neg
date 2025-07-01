@@ -7,6 +7,9 @@ import java.util.*;
 
 import com.opencsv.CSVWriter;
 import de.uni_tuebingen.ub.nppm.db.SucheDB;
+import de.uni_tuebingen.ub.nppm.util.Language;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,11 +28,35 @@ public class ExportCsvServlet extends HttpServlet {
         response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(filename, StandardCharsets.UTF_8) + "\"");
 
         List<String> fieldNames = Arrays.asList(
-                "MGHLemma", "Standardname", "Belegform", "Bezeichnung", "seite",
+                "Belegform", "Bezeichnung", "seite",
                 "raster", "editionZitierweise", "EditionKapitel", "EditionSeite",
                 "quelleVonJahr", "quelleVonJahrhundert", "quelleBisJahr", "quelleBisJahrhundert",
                 "VonJahr", "VonJahrhundert", "BisJahr", "BisJahrhundert", "quelleBerJahr"
         );
+
+        List<String> headlines = new ArrayList<>();
+
+        try {
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "Belegform"));
+            headlines.add(Language.getTextfield(request.getSession(), "freie_suche", "Quelle"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "NummerSeite"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "Raster"));
+            headlines.add(Language.getTextfield(request.getSession(), "quelle", "Edition"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "Cap"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "Pag"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "QvJ"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "QvJh"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "QbJ"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "QbJh"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "EBvJ"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "EBvJh"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "EBbJ"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "EBbJh"));
+            headlines.add(Language.getTextfield(request.getSession(), "suche", "QJahr"));
+        } catch (Exception ex) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,ex.getLocalizedMessage());
+        }
+
 
         List<Map> result;
         try {
@@ -43,7 +70,7 @@ public class ExportCsvServlet extends HttpServlet {
                 OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8); CSVWriter csvWriter = new CSVWriter(osw, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER,
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
             // Kopfzeile
-            csvWriter.writeNext(fieldNames.toArray(new String[0]));
+            csvWriter.writeNext(headlines.toArray(new String[0]));
 
             // Datenzeilen
             for (Map row : result) {
