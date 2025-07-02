@@ -91,7 +91,7 @@
                     <jsp:include page="../inc.erzeugeFormular.jsp">
                         <jsp:param name="ID" value="<%=id%>" />
                         <jsp:param name="Formular" value="person" />
-                        <jsp:param name="Datenfeld" value="GNDLink" />
+                        <jsp:param name="Datenfeld" value="IconLink" />
                     </jsp:include>
                      &nbsp;
                     <jsp:include page="../inc.erzeugeFormular.jsp">
