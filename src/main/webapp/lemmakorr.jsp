@@ -16,16 +16,6 @@
     Language.setLanguage(request);
 %>
 
-<jsp:include page="dosave.jsp">
-    <jsp:param name="form" value="person" />
-    <jsp:param name="ID" value="0" />
-</jsp:include>
-
-<jsp:include page="dojump.jsp">
-    <jsp:param name="form" value="person" />
-</jsp:include>
-
-
 <div id="container" class="container mt-2">
     <div id="initials" class="">DATENBANK LÄDT...</div>
     <div id="list" class="fill-height"></div>
