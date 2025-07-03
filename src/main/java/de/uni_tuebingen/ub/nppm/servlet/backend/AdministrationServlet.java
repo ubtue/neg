@@ -6,6 +6,8 @@ import de.uni_tuebingen.ub.nppm.model.BenutzerGruppe;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.Language;
 import de.uni_tuebingen.ub.nppm.util.SaltHash;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -95,5 +97,20 @@ public class AdministrationServlet extends AbstractBackendServlet {
 
         RequestDispatcher rd = request.getRequestDispatcher("administration.jsp");
         rd.include(request, response);
+    }
+
+    @Override
+    protected List<String> getAdditionalJavaScript() {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("javascript/helper.js");
+        list.add("javascript/lemmaKorr.js");
+        return list;
+    }
+
+    @Override
+    protected List<String> getAdditionalCss() {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("layout/lemmaKorr.css");
+        return list;
     }
 }
