@@ -15,9 +15,11 @@
 <%
     Language.setLanguage(request);
 %>
-
+<jsp:include page="layout/titel.administration.jsp" />
+<div id="form">
 <div id="container" class="container mt-2">
     <div id="initials" class="">DATENBANK LÄDT...</div>
     <div id="list" class="fill-height"></div>
+</div>
 </div>
 

@@ -7,10 +7,13 @@ import de.uni_tuebingen.ub.nppm.model.MghLemma;
 import de.uni_tuebingen.ub.nppm.model.NamenKommentar;
 import de.uni_tuebingen.ub.nppm.util.AuthHelper;
 import de.uni_tuebingen.ub.nppm.util.Language;
+import de.uni_tuebingen.ub.nppm.util.LemmaKorrBelegRow;
 import org.json.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -450,6 +453,21 @@ public class AjaxServlet extends HttpServlet {
         } else if ("doduplicate".equals(action)) {
             doduplicate(request, response);
         }
+        //Lemmakorr Funktionen
+        else if ("getAllInitials".equals(action)) {
+            getAllInitials(request, response);
+        } else if ("getFromInitial".equals(action)) {
+            getFromInitial(request, response);
+        } else if ("updateLemma".equals(action)) {
+            updateLemma(request, response);
+        } else if ("setLemmaKorr".equals(action)) {
+            setLemmaKorr(request, response);
+        } else if ("keepAlive".equals(action)) {
+            keepAlive(request, response);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"error\":\"Falsche Methode\"}");
+        }
     }
 
     @Override
@@ -472,4 +490,128 @@ public class AjaxServlet extends HttpServlet {
 
         response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
     }
+
+    private void getAllInitials(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            // Holt die echten Initials aus der DB
+            Map<String, Integer> initials = de.uni_tuebingen.ub.nppm.db.EinzelbelegDB.getAllBelegInitials();
+            JSONObject result = new JSONObject().put("result", initials);
+            writeJson(response, result);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write(e.getLocalizedMessage());
+        }
+    }
+
+    private void getFromInitial(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String initial = request.getParameter("initial");
+        List<LemmaKorrBelegRow> list = new ArrayList<>();
+        try {
+            // Nur noch die Datenbank "neg" verwenden
+            list.addAll(EinzelbelegDB.getLemmaBelegRowsFromBelegInitial(initial,"neg"));
+
+            // Sortierung
+            list.sort((a, b) -> {
+                int cmp = a.lemma.compareTo(b.lemma);
+                if (cmp != 0) {
+                    return cmp;
+                }
+                cmp = a.beleg.compareToIgnoreCase(b.beleg);
+                if (cmp != 0) {
+                    return cmp;
+                }
+                return Boolean.compare(a.korr, b.korr);
+            });
+
+            // In JSON umwandeln
+            JSONArray arr = new JSONArray();
+            for (LemmaKorrBelegRow row : list) {
+                arr.put(new JSONObject()
+                        .put("lemma", row.lemma)
+                        .put("beleg", row.beleg)
+                        .put("korr", row.korr)
+                        .put("id", row.id)
+                        .put("db", row.db)
+                );
+            }
+            JSONObject result = new JSONObject().put("result", arr);
+            writeJson(response, result);
+
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write(e.getLocalizedMessage());
+        }
+    }
+
+    private void updateLemma(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        JSONObject result = new JSONObject();
+        String lemma = request.getParameter("value");
+        String belegIdListStr = request.getParameter("list");
+        if (lemma == null || belegIdListStr == null) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Missing Parameters");
+            return;
+        }
+        List<Integer> belegIdList = new ArrayList<>();
+        try {
+            JSONArray arr = new JSONArray(belegIdListStr);
+            for (int i = 0; i < arr.length(); i++) {
+                belegIdList.add(arr.getInt(i));
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write(e.getLocalizedMessage());
+            return;
+        }
+        // Datenbank-Update
+        boolean ok = LemmaDB.updateLemma(belegIdList, lemma);
+        result.put("result", ok);
+        writeJson(response, result);
+    }
+
+    private void setLemmaKorr(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        JSONObject result = new JSONObject();
+        String belegIdListStr = request.getParameter("list");
+        String korrStr = request.getParameter("value");
+        if (belegIdListStr == null || korrStr == null) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Missing Parameters");
+            return;
+        }
+
+        List<Integer> belegIdList = new ArrayList<>();
+        try {
+            JSONArray arr = new JSONArray(belegIdListStr);
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                if(obj.has("id")) {
+                    belegIdList.add(obj.getInt("id"));
+                }
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write(e.getLocalizedMessage());
+            return;
+        }
+
+        boolean korr = korrStr.equals("1") || korrStr.equalsIgnoreCase("true");
+
+        boolean ok = LemmaDB.setLemmaKorr(belegIdList, korr);
+        result.put("result", ok);
+        writeJson(response, result);
+    }
+
+    private void keepAlive(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        JSONObject result = new JSONObject().put("result", true);
+        writeJson(response, result);
+    }
+
+    private void writeJson(HttpServletResponse response, JSONObject obj) throws IOException {
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(obj.toString());
+        out.flush();
+    }
+
 }

@@ -1,3 +1,5 @@
+const SERVLET_URL = AJAX_URL;
+
 ﻿var Global = {
     db: null,
     activeInitial: null,
@@ -130,8 +132,8 @@ function updateLemma(row, callback) {
     row.find('input').prop('disabled', true);
     let entry = getEntryFromRow(row);
     console.log('Updating lemma...', entry);
-    $.post('../server/LemmaKorr.php', {
-        method: 'updateLemma',
+    $.post(SERVLET_URL, {
+        action: 'updateLemma',
         value: entry.lemma,
         list: JSON.stringify(entry.list)
     }, (response) => {
@@ -199,8 +201,8 @@ function setLemmaDone(a, callback) {
         return;
     }
     console.log('Setting lemma done...', entry);
-    $.post('../server/LemmaKorr.php', {
-        method: 'setLemmaKorr',
+    $.post(SERVLET_URL, {
+        action: 'setLemmaKorr',
         value: 'true',
         list: JSON.stringify(entry.list)
     }, (response) => {
@@ -308,8 +310,8 @@ function renderList(btn) {
     $('#erledigteToggle').remove();
     let listContainer = $('#list').empty().text('LISTE LÄDT...');
     console.log('Fetching lemmas...');
-    $.post('../server/LemmaKorr.php', {
-        method: 'getFromInitial',
+    $.post(SERVLET_URL, {
+        action: 'getFromInitial',
         initial: btn.data('initial')
     }, (response) => {
         _renderListInternal(listContainer, response.result);    
@@ -484,13 +486,14 @@ function initUi() {
 // ----------------------------------------------------------------------------
 $(document).ready(() => {
 // ----------------------------------------------------------------------------
-    if($('form').length > 0) {
+//Auth is provided by neg backend
+    //if($('form').length > 0) {
         // auth form displayed
-        return;
-    }
+    //    return;
+    //}
     console.log('Loading initials...');
-    $.post('../server/LemmaKorr.php', {
-        method: 'getAllInitials'
+    $.post(SERVLET_URL, {
+        action: 'getAllInitials'
     }, response => {
         console.log('...DONE');
         Global.initials = response.result;
@@ -498,8 +501,8 @@ $(document).ready(() => {
         renderInitials();
         setInterval(() => {
             console.log('Keeping session alive...');
-            $.post('../server/LemmaKorr.php', {
-                method: 'keepAlive'
+            $.post(SERVLET_URL, {
+                action: 'keepAlive'
             });
         }, 300000);
     });
