@@ -15,7 +15,7 @@
 <%@ page import="java.awt.Color" isThreadSafe="false" %>
 
 <a href="<%= Utils.getBaseUrl(request) %>/gast/export_csv?query=<%= URLEncoder.encode(request.getParameter("query"), "UTF-8") %>" class="ut-btn">
-    Export als CSV
+    <%=Language.getTextfield(session, "suche", "Export")%>
 </a>
 <%
     String query = request.getParameter("query");

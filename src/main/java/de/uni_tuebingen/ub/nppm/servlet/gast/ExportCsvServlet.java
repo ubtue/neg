@@ -24,7 +24,12 @@ public class ExportCsvServlet extends HttpServlet {
         }
 
         response.setContentType("text/csv; charset=UTF-8");
-        String filename = "suchergebnisse.csv";
+        String filename = "searchResult.csv"; //fallback filename
+        try {
+            filename = Language.getTextfield(request.getSession(), "such_ergebnis", "Titel")+".csv";
+        } catch (Exception ex) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,ex.getLocalizedMessage());
+        }
         response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(filename, StandardCharsets.UTF_8) + "\"");
 
         List<String> fieldNames = Arrays.asList(
