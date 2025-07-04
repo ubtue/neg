@@ -141,13 +141,6 @@
         <url-pattern>/einzelbeleg_comp</url-pattern>
     </servlet-mapping>
     <servlet>
-    <servlet-name>LemmaKorrServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.LemmaKorrServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LemmaKorrServlet</servlet-name>
-        <url-pattern>/lemmakorr</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>BackendNamenkommentarServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.NamenkommentarServlet</servlet-class>
