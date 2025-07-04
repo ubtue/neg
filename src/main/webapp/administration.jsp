@@ -168,7 +168,7 @@
             </table>            
             <% } else if ("tab4".equals(activeTab)) { %>
                 <div id="container" class="container mt-2">
-                    <div id="initials" class="">DATENBANK LÄDT...</div>
+                    <div id="initials" class=""><%= Language.getTextfield(session, "admin", "DBloading")%></div>
                     <div id="list" class="fill-height"></div>
                 </div>
             <% } %>
