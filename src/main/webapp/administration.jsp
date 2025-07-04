@@ -39,7 +39,7 @@
                 <li><a href="administration?tab=tab1" <%= "tab1".equals(activeTab) ? "class='active'" : ""%>><%= Language.getTextfield(session, "administration", "TabBenutzerVerwalten")%></a></li>
                 <li><a href="administration?tab=tab2" <%= "tab2".equals(activeTab) ? "class='active'" : ""%>><%= Language.getTextfield(session, "administration", "TabBenutzerNeu")%></a></li>
                 <li><a href="administration?tab=tab3" <%= "tab3".equals(activeTab) ? "class='active'" : ""%>><%= Language.getTextfield(session, "administration", "TabAuswahlfelder")%></a></li>
-                <li><a href="administration?tab=tab4" <%= "tab4".equals(activeTab) ? "class='active'" : ""%>>LemmaKorrektur</a></li>
+                <li><a href="administration?tab=tab4" <%= "tab4".equals(activeTab) ? "class='active'" : ""%>><%= Language.getTextfield(session, "administration", "TabLemmaKorrektur")%></a></li>
             </ul>
         </div>
 
@@ -168,7 +168,7 @@
             </table>            
             <% } else if ("tab4".equals(activeTab)) { %>
                 <div id="container" class="container mt-2">
-                    <div id="initials" class=""><%= Language.getTextfield(session, "admin", "DBloading")%></div>
+                    <div id="initials" class=""><%= Language.getTextfield(session, "administration", "DBloading")%></div>
                     <div id="list" class="fill-height"></div>
                 </div>
             <% } %>
