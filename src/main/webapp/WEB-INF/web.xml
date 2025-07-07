@@ -304,6 +304,15 @@
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ExportCsvServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.ExportCsvServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExportCsvServlet</servlet-name>
+        <url-pattern>/gast/export_csv</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
         <welcome-file>index.html</welcome-file>
