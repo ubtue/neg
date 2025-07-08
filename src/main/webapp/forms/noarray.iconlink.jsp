@@ -1,7 +1,7 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
 
 <%
-    if (feldtyp.equals("gndlink") && !array || feldtyp.equals("wikidatalink") && !array) {
+    if ((feldtyp.equals("gndlink") && !array) || (feldtyp.equals("wikidatalink") && !array) || (feldtyp.equals("geschichtsquellen") && !array)) {
         String iconId = AbstractBase.getStringNative("SELECT " + zielAttribut + " FROM " + zielTabelle + " WHERE ID=\"" + id + "\"");
         if (iconId != null && !iconId.trim().equals("")) {
 
