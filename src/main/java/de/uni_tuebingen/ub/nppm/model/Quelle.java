@@ -414,7 +414,7 @@ public class Quelle {
         Utils.addIfValid(jsonObject, "quellennummer", Utils.sanitize(this.getQuellennummer()));
         Utils.addIfValid(jsonObject, "quellenKommentarDatei", Utils.sanitize(this.getQuellenKommentarDatei()));
         Utils.addIfValid(jsonObject, "ueberlieferungsKommentarDatei", Utils.sanitize(this.getUeberlieferungsKommentarDatei()));
-
+        Utils.addIfValid(jsonObject, "quelleGattung", this.getQuelleGattung() != null ? Utils.sanitize(this.getQuelleGattung().getBezeichnung()) : null);
         // Bearbeitungsstatus
         Utils.addIfValid(jsonObject, "bearbeitungsstatus", this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getId() : null);
 

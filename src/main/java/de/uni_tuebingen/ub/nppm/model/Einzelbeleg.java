@@ -1021,8 +1021,7 @@ public class Einzelbeleg {
         Utils.addIfValid(jsonObject, "genauigkeitVonJahr", Utils.sanitize(this.getGenauigkeitVonJahr() != null ? this.getGenauigkeitVonJahr().getBezeichnung() : null));
         Utils.addIfValid(jsonObject, "genauigkeitVonJahrhundert", Utils.sanitize(this.getGenauigkeitVonJahrhundert() != null ? this.getGenauigkeitVonJahrhundert().getBezeichnung() : null));
 
-        // Quelle Informationen
-        Utils.addIfValid(jsonObject, "quelleGattung", this.getQuelleGattung() != null ? Utils.sanitize(this.getQuelleGattung().getBezeichnung()) : null);
+        // Quelle Informationen        
         Utils.addIfValid(jsonObject, "quelleEchtheit", this.getQuelleEchtheit() != null ? Utils.sanitize(this.getQuelleEchtheit().getBezeichnung()) : null);
         Utils.addIfValid(jsonObject, "quelleDatierung", Utils.sanitize(this.getQuelleDatierung()));
         Utils.addIfValid(jsonObject, "quelleBisTag", this.getQuelleBisTag());

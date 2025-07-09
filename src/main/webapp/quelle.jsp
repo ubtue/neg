@@ -205,6 +205,19 @@
                         </td>
                         <td>&nbsp;</td>
                     </tr>
+                    <tr>
+                        <td width="200" valign="top">
+                            <% Language.printDatafield(out, session, formular, "Quellengattung");%>
+                        </td>
+                        <td width="450">
+                            <jsp:include page="inc.erzeugeFormular.jsp">
+                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="Formular" value="quelle" />
+                                <jsp:param name="Datenfeld" value="Quellengattung" />
+                            </jsp:include>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
                 </tbody>
             </table>
             <br>
