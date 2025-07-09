@@ -227,6 +227,7 @@
   }
   if (Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
     List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("Quellengattung")), SelektionQuellengattung.class).getSubtreeIdsRecursive();
+    tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
     conditions.add("quelle.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     einzelbeleg = true;
   }
