@@ -302,7 +302,7 @@ public class AjaxServlet extends HttpServlet {
 
                 String sql = "INSERT INTO einzelbeleg (";
                 sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
-                sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
+                sql += "QuelleID, EditionKapitel, EditionSeite, QuelleEchtheitID, QuelleDatierung, ";
                 sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
                 sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
                 sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
@@ -316,7 +316,7 @@ public class AjaxServlet extends HttpServlet {
                 sql += "inh_abgrenzung, nr_in_strukt, seite, raster, schreiber) ";
                 sql += "SELECT ";
                 sql += "Belegnummer, Kontext_vor, Kontext, Kontext_nach, GeschlechtID, LebendVerstorbenID, EditionID, HandschriftID, ";
-                sql += "QuelleID, EditionKapitel, EditionSeite, QuelleGattungID, QuelleEchtheitID, QuelleDatierung, ";
+                sql += "QuelleID, EditionKapitel, EditionSeite, QuelleEchtheitID, QuelleDatierung, ";
                 sql += "UeberlieferungDatierung, Belegform, Griechisch, Diakritisch, KasusID, GrammatikGeschlechtID, ASWQuellenzitat, ";
                 sql += "Bemerkung, BearbeitungsstatusID, KommentarEthnie, KommentarAreal, KommentarVerwandtschaft, Eindeutig, ";
                 sql += "VonTag, VonMonat, VonJahr, VonJahrhundert, BisTag, BisMonat, BisJahr, BisJahrhundert, GenauigkeitVonTag, ";
