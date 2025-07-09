@@ -16,6 +16,10 @@ public class Quelle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
+    
+    @ManyToOne(targetEntity = SelektionQuellengattung.class)
+    @JoinColumn(name = "QuelleGattungID", referencedColumnName = "ID")
+    private SelektionQuellengattung quelleGattung;
 
     @Column(name = "Bezeichnung", length=255)
     private String bezeichnung;
@@ -139,6 +143,14 @@ public class Quelle {
 
     public String getQuellennummer() {
         return quellennummer;
+    }
+    
+    public SelektionQuellengattung getQuelleGattung() {
+        return quelleGattung;
+    }
+
+    public void setQuelleGattung(SelektionQuellengattung quelleGattung) {
+        this.quelleGattung = quelleGattung;
     }
 
     public void setQuellennummer(String quellennummer) {
