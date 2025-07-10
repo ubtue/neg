@@ -157,7 +157,7 @@
             found = true;
             out.print("<li  style=\"width:45%;float:left;margin-left:1em\"  class=\"liOpen\" style=\"font-size:large\">Lemma <ul>");
 
-            Utils.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV1, order, "", false);
+            Utils.simpleSearch(request,out, headlines, fieldNames, resultAsMap, orderV1, order, "", false);
             out.println("</ul></li>");
         }
 
