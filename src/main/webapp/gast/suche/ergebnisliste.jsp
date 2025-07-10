@@ -128,13 +128,13 @@
         }
 
         if (fields.size() == 0) {
-            out.println("Bitte wählen Sie mind. ein Ausgabefeld aus (Schritt 2).");
+            out.println(Language.getTextfield(session, "suche", "schritt2"));
             return;
         }
 
         int linecount = SucheDB.getLinecount(tablesString, conditionsString);
 
-        out.println("<h3 class=\"ut-heading ut-heading--h3\">Gesamte Treffer: " + linecount + "</h3>");
+        out.println("<h3 class=\"ut-heading ut-heading--h3\">"+Language.getTextfield(session, "suche", "gesamteTreffer") +" "+ linecount + "</h3>");
         // ########## SEITENNAVIGATION #########
         PrintPagination.printPageNavigation(out, request, pageoffset, pageLimit, linecount, export);
 

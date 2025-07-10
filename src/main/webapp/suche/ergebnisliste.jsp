@@ -1,3 +1,4 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@page import="de.uni_tuebingen.ub.nppm.db.SucheDB"%>
 <%@page import="java.util.*"%>
 <%
@@ -62,12 +63,12 @@
 
 
 	  if(fields.size()==0){
-	  	out.println("Bitte wählen Sie mind. ein Ausgabefeld aus (Schritt 2).");
+	  	out.println(Language.getTextfield(session, "suche", "schritt2"));
 	  	return;
 	  }
 
       int linecount = SucheDB.getLinecount(tablesString, conditionsString);
-      out.println("<p><i>insgesamt <b>"+linecount+"</b> Treffer</i></p>");
+      out.println("<p><i>"+Language.getTextfield(session, "suche", "insgesamt")+" <b>"+linecount+"</b> "+Language.getTextfield(session, "suche", "treffer")+"</i></p>");
 
       // ########## LISTE/BROWSE ##########
       if (export.equals("liste") || export.equals("browse")) {
