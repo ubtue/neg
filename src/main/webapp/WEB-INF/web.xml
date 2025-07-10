@@ -109,6 +109,14 @@
         <url-pattern>/gast/infos</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>StaticHtmlServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.StaticHtmlServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StaticHtmlServlet</servlet-name>
+        <url-pattern>/gast/static</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>EinstellungenServlet</servlet-name>
         <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.EinstellungenServlet</servlet-class>
     </servlet>
