@@ -66,12 +66,17 @@
     <h3 class="ut-heading ut-heading--h3">
         <% Language.printTextfield(out, session, "quelle", "Bezeichnung");%>
         <jsp:include page="../inc.erzeugeFormular.jsp">
-        <jsp:param name="ID" value="<%= id%>"/>
-        <jsp:param name="Formular" value="quelle"/>
-        <jsp:param name="Datenfeld" value="Bezeichnung"/>
-        <jsp:param name="size" value="50"/>
-        <jsp:param name="Readonly" value="yes"/>
-    </jsp:include>
+            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="Formular" value="quelle"/>
+            <jsp:param name="Datenfeld" value="Bezeichnung"/>
+            <jsp:param name="size" value="50"/>
+            <jsp:param name="Readonly" value="yes"/>
+        </jsp:include>
+        <jsp:include page="../inc.erzeugeFormular.jsp">
+            <jsp:param name="ID" value="<%=id%>" />
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Datenfeld" value="GeschichtsquellenLink" />
+        </jsp:include>
     </h3>
     <button class="ut-btn ut-btn--color-primary-4" id="toggleButton" style="margin-top: -8px;" onclick="toggleAllFields()">
         <% Language.getTextfield(session, "fields", "On"); %>
