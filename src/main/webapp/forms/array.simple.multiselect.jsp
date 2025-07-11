@@ -1,3 +1,7 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.Gastquelle"%>
+<%@page import="de.uni_tuebingen.ub.nppm.db.SelektionDB"%>
+<%@page import="java.util.List"%>
 <%
     if (feldtyp.equals("array.simple.multiselect") && !array) {
         out.println("<div id=\"" + datenfeld + "-wrapper\" class=\"select-wrapper\">");
@@ -6,10 +10,10 @@
         out.println("<div class=\"select-block\">");
         out.println("<select name=\"" + datenfeld + "[]\">");
 
-        List<Object[]> rows2 = AbstractBase.getListNative("SELECT ID, Bezeichnung FROM " + auswahlherkunft + " ORDER BY Bezeichnung ASC");
-        for (Object[] columns2 : rows2) {
-            int value2_id = Integer.parseInt(String.valueOf(columns2[0]));
-            String value2_Bezeichnung = Utils.safeToString(columns2[1]);
+        List<Gastquelle> rows2 = SelektionDB.getAllGastquelle();
+        for (Gastquelle columns2 : rows2) {
+            int value2_id = Integer.parseInt(String.valueOf(columns2.getId()));
+            String value2_Bezeichnung = Utils.safeToString(columns2.getBezeichnung());
             out.println("<option value=\"" + value2_id + "\">" + value2_Bezeichnung + "</option>");
         }
 
