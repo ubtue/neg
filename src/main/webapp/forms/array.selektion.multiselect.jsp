@@ -3,7 +3,7 @@
 <%@page import="de.uni_tuebingen.ub.nppm.db.SelektionDB"%>
 <%@page import="java.util.List"%>
 <%
-    if (feldtyp.equals("array.simple.multiselect") && !array) {
+    if (feldtyp.equals("array.selektion.multiselect") && !array) {
         out.println("<div id=\"" + datenfeld + "-wrapper\" class=\"select-wrapper\">");
 
         // Erster Select-Feldblock
