@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
         if (data_agreement_version != aktuelle_version) {
             session.setAttribute("username", request.getParameter("username"));
             session.setAttribute("password", request.getParameter("password"));
-            response.sendRedirect("/neg/gast/dataagreement");
+            response.sendRedirect(Utils.getBaseUrl(request)+"/gast/dataagreement");
             return;
         }
 
