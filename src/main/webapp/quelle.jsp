@@ -218,6 +218,26 @@
                         </td>
                         <td>&nbsp;</td>
                     </tr>
+                    <tr>                        
+                        <td width="200">
+                            <% Language.printDatafield(out, session, formular, "Geschichtsquellen");%>
+                        </td>
+                        <td width="450">
+                            <jsp:include page="inc.erzeugeFormular.jsp">
+                                <jsp:param name="ID" value="<%= id%>" />
+                                <jsp:param name="Formular" value="quelle" />
+                                <jsp:param name="Datenfeld" value="Geschichtsquellen" />
+                                <jsp:param name="size" value="50" />
+                            </jsp:include>
+
+                            <jsp:include page="inc.erzeugeFormular.jsp">
+                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="Formular" value="quelle" />
+                                <jsp:param name="Datenfeld" value="GeschichtsquellenLink" />
+                            </jsp:include>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
                 </tbody>
             </table>
             <br>
