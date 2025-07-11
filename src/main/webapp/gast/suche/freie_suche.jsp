@@ -16,18 +16,6 @@
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false" %>
 
 <%@ page import="org.apache.commons.lang3.StringUtils" isThreadSafe="false" %>
-
-<%!
-    // Hilfsfunktion für sichere Zahlenprüfung
-    boolean safeNumeric(String s) {
-        return s != null && Utils.isNumeric(s);
-    }
-
-    // Hilfsfunktion für sichere String-Einfügung in SQL
-    String safeDB(String s) {
-        return DBtoDB(s);
-    }
-%>
 <%
 
     String einzelbelegeVonQuelle = request.getParameter("einzelbelegeVonQuelle");
@@ -90,38 +78,38 @@
     if (neGID != null && !neGID.trim().equals("")) {
         String newID = request.getParameter("NeGID");
         String newForm = newID.substring(1);
-        String sqlEscapedForm = safeDB(newForm);
+        String sqlEscapedForm = DBtoDB(newForm);
         if (newID.startsWith("B") || newID.startsWith("b")) {
-            if (safeNumeric(newForm)) {
+            if (Utils.safeNumeric(newForm)) {
                 conditions.add("einzelbeleg.ID='" + sqlEscapedForm + "'");
                 einzelbeleg = true;
             }
         } else if (newID.startsWith("P") || newID.startsWith("p")) {
-            if (safeNumeric(newForm)) {
+            if (Utils.safeNumeric(newForm)) {
                 conditions.add("person.ID='" + sqlEscapedForm + "'");
                 person = true;
             }
         } else if (newID.startsWith("N") || newID.startsWith("n")) {
-            if (safeNumeric(newForm)) {
+            if (Utils.safeNumeric(newForm)) {
                 conditions.add("namenkommentar.ID='" + sqlEscapedForm + "'");
                 namenkommentar = true;
             }
         } else if (newID.startsWith("Q") || newID.startsWith("q")) {
-            if (safeNumeric(newForm)) {
+            if (Utils.safeNumeric(newForm)) {
                 conditions.add("quelle.ID='" + sqlEscapedForm + "'");
                 if (!tableString.contains("quelle")) {
                     tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
                 }
             }
         } else if (newID.startsWith("E") || newID.startsWith("e")) {
-            if (safeNumeric(newForm)) {
+            if (Utils.safeNumeric(newForm)) {
                 conditions.add("edition.ID='" + sqlEscapedForm + "'");
                 if (!tableString.contains("edition")) {
                     tableString += " INNER JOIN edition ON einzelbeleg.EditionID = edition.ID";
                 }
             }
         } else if (newID.startsWith("M") || newID.startsWith("m")) {
-            if (safeNumeric(newForm)) {
+            if (Utils.safeNumeric(newForm)) {
                 conditions.add("mgh_lemma.ID='" + sqlEscapedForm + "'");
                 mghlemma = true;
             }
@@ -130,16 +118,16 @@
 
     // ######### SUCHANFRAGE ##########
     // ### ZUM NAMEN ###
-    if (safeNumeric(request.getParameter("Namenkommentar2")) && safeNumeric(request.getParameter("Namenkommentar")) && !request.getParameter("Namenkommentar2").equals("-1") && request.getParameter("Namenkommentar").equals("-1")) {
+    if (Utils.safeNumeric(request.getParameter("Namenkommentar2")) && Utils.safeNumeric(request.getParameter("Namenkommentar")) && !request.getParameter("Namenkommentar2").equals("-1") && request.getParameter("Namenkommentar").equals("-1")) {
         conditions.add("namenkommentar.ID=" + request.getParameter("Namenkommentar2"));
         namenkommentar = true;
     }
-    if (safeNumeric(request.getParameter("Namenkommentar")) && !request.getParameter("Namenkommentar").equals("-1")) {
+    if (Utils.safeNumeric(request.getParameter("Namenkommentar")) && !request.getParameter("Namenkommentar").equals("-1")) {
         conditions.add("namenkommentar.ID=" + request.getParameter("Namenkommentar"));
         namenkommentar = true;
     }
     if (request.getParameter("MGHLemma") != null && !request.getParameter("MGHLemma").trim().equals("")) {
-        conditions.add("mgh_lemma.MGHLemma LIKE '" + safeDB(request.getParameter("MGHLemma").trim()) + "'");
+        conditions.add("mgh_lemma.MGHLemma LIKE '" + DBtoDB(request.getParameter("MGHLemma").trim()) + "'");
         mghlemma = true;
     }
 
@@ -147,12 +135,12 @@
     String zweitgliedParam = request.getParameter("ZweitGliedSelect");
 
     if (erstgliedParam != null && !erstgliedParam.trim().isEmpty() && !erstgliedParam.equals("-")) {
-        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', 1) LIKE '" + safeDB(erstgliedParam.trim()) + "'");
+        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', 1) LIKE '" + DBtoDB(erstgliedParam.trim()) + "'");
         mghlemma = true;
     }
 
     if (zweitgliedParam != null && !zweitgliedParam.trim().isEmpty() && !zweitgliedParam.equals("-")) {
-        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', -1) LIKE '" + safeDB(zweitgliedParam.trim()) + "'");
+        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', -1) LIKE '" + DBtoDB(zweitgliedParam.trim()) + "'");
         mghlemma = true;
     }
 
@@ -162,33 +150,33 @@
 
     // ### ZUR PERSON ###
     if (request.getParameter("Personenname") != null && !request.getParameter("Personenname").trim().equals("")) {
-        String pn = safeDB(request.getParameter("Personenname").trim());
+        String pn = DBtoDB(request.getParameter("Personenname").trim());
         conditions.add("(person.Standardname LIKE '" + pn + "' OR person_variante.Variante LIKE '" + pn + "')");
         tableString += " LEFT OUTER JOIN person_variante ON person.ID=person_variante.personID";
         person = true;
     }
-    if (safeNumeric(request.getParameter("Geschlecht")) && Integer.parseInt(request.getParameter("Geschlecht")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("Geschlecht")) && Integer.parseInt(request.getParameter("Geschlecht")) > -1) {
         conditions.add("person.Geschlecht = '" + request.getParameter("Geschlecht") + "'");
         person = true;
     }
-    if (safeNumeric(request.getParameter("AmtWeihePerson")) && Integer.parseInt(request.getParameter("AmtWeihePerson")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("AmtWeihePerson")) && Integer.parseInt(request.getParameter("AmtWeihePerson")) > -1) {
         tableString += " INNER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("AmtWeihePerson")), SelektionAmtWeihe.class).getSubtreeIdsRecursive();
         conditions.add("person_hatamtstandweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         person = true;
     }
-    if (safeNumeric(request.getParameter("StandPerson")) && Integer.parseInt(request.getParameter("StandPerson")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("StandPerson")) && Integer.parseInt(request.getParameter("StandPerson")) > -1) {
         tableString += " INNER JOIN person_hatstand ON person.ID=person_hatstand.PersonID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("StandPerson")), SelektionStand.class).getSubtreeIdsRecursive();
         conditions.add("person_hatstand.StandID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         person = true;
     }
-    if (safeNumeric(request.getParameter("EthniePerson")) && Integer.parseInt(request.getParameter("EthniePerson")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("EthniePerson")) && Integer.parseInt(request.getParameter("EthniePerson")) > -1) {
         tableString += " INNER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID";
         conditions.add("person_hatethnie.EthnieID = '" + request.getParameter("EthniePerson") + "'");
         person = true;
     }
-    if (safeNumeric(request.getParameter("Verwandtschaftsgrad")) && Integer.parseInt(request.getParameter("Verwandtschaftsgrad")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("Verwandtschaftsgrad")) && Integer.parseInt(request.getParameter("Verwandtschaftsgrad")) > -1) {
         tableString += " INNER JOIN person_verwandtmit ON person.ID=person_verwandtmit.PersonIDvon";
         conditions.add("person_verwandtmit.VerwandtschaftsgradID = '" + request.getParameter("Verwandtschaftsgrad") + "'");
         person = true;
@@ -196,36 +184,36 @@
 
     // ### ZUM EINZELBELEG ###
     if (request.getParameter("Belegform") != null && !request.getParameter("Belegform").trim().equals("")) {
-        conditions.add("einzelbeleg.Belegform LIKE '" + safeDB(request.getParameter("Belegform").trim()) + "'");
+        conditions.add("einzelbeleg.Belegform LIKE '" + DBtoDB(request.getParameter("Belegform").trim()) + "'");
         einzelbeleg = true;
     }
     if (request.getParameter("Kontext") != null && !request.getParameter("Kontext").trim().equals("")) {
-        conditions.add("einzelbeleg.Kontext LIKE '" + safeDB(request.getParameter("Kontext").trim()) + "'");
+        conditions.add("einzelbeleg.Kontext LIKE '" + DBtoDB(request.getParameter("Kontext").trim()) + "'");
         einzelbeleg = true;
     }
-    if (safeNumeric(request.getParameter("AmtWeiheEinzelbeleg")) && Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("AmtWeiheEinzelbeleg")) && Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatamtweihe ON einzelbeleg.ID=einzelbeleg_hatamtweihe.EinzelbelegID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")), SelektionAmtWeihe.class).getSubtreeIdsRecursive();
         conditions.add("einzelbeleg_hatamtweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         einzelbeleg = true;
     }
-    if (safeNumeric(request.getParameter("StandEinzelbeleg")) && Integer.parseInt(request.getParameter("StandEinzelbeleg")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("StandEinzelbeleg")) && Integer.parseInt(request.getParameter("StandEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatstand  ON einzelbeleg.ID=einzelbeleg_hatstand.EinzelbelegID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("StandEinzelbeleg")), SelektionStand.class).getSubtreeIdsRecursive();
         conditions.add("einzelbeleg_hatstand.StandID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         einzelbeleg = true;
     }
-    if (safeNumeric(request.getParameter("EthnieEinzelbeleg")) && Integer.parseInt(request.getParameter("EthnieEinzelbeleg")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("EthnieEinzelbeleg")) && Integer.parseInt(request.getParameter("EthnieEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatethnie ON einzelbeleg.ID=einzelbeleg_hatethnie.EinzelbelegID";
         conditions.add("einzelbeleg_hatethnie.EthnieID = '" + request.getParameter("EthnieEinzelbeleg") + "'");
         einzelbeleg = true;
     }
-    if (safeNumeric(request.getParameter("Funktion")) && Integer.parseInt(request.getParameter("Funktion")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("Funktion")) && Integer.parseInt(request.getParameter("Funktion")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatfunktion ON einzelbeleg.ID=einzelbeleg_hatfunktion.EinzelbelegID";
         conditions.add("einzelbeleg_hatfunktion.FunktionID = '" + request.getParameter("Funktion") + "'");
         einzelbeleg = true;
     }
-    if (safeNumeric(request.getParameter("QuelleGattung")) && Integer.parseInt(request.getParameter("QuelleGattung")) > 0) {
+    if (Utils.safeNumeric(request.getParameter("QuelleGattung")) && Integer.parseInt(request.getParameter("QuelleGattung")) > 0) {
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("QuelleGattung")), SelektionQuellengattung.class).getSubtreeIdsRecursive();
         conditions.add("einzelbeleg.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     }
@@ -319,20 +307,20 @@
     conditions.add("quelle.zuVeroeffentlichen=1");
     einzelbeleg = true;
     if (request.getParameter("Quelle") != null && !request.getParameter("Quelle").trim().equals("") && (request.getParameterValues("Quellenliste[]") == null)) {
-        conditions.add("quelle.Bezeichnung LIKE '" + safeDB(request.getParameter("Quelle").trim()) + "'");
+        conditions.add("quelle.Bezeichnung LIKE '" + DBtoDB(request.getParameter("Quelle").trim()) + "'");
         namenkommentar = true;
     }
     String[] quellenliste;
     if ((quellenliste = request.getParameterValues("Quellenliste[]")) != null) {
         for (String qid : quellenliste) {
             // Nur numerische IDs akzeptieren
-            if (!qid.equals("-1") && safeNumeric(qid)) {
+            if (!qid.equals("-1") && Utils.safeNumeric(qid)) {
                 orConditions.add("quelle.ID=" + qid);
                 einzelbeleg = true;
             }
         }
     }
-    if (safeNumeric(request.getParameter("Quellengattung")) && Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("Quellengattung")) && Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
         conditions.add("einzelbeleg.QuelleGattungID = '" + request.getParameter("Quellengattung") + "'");
         einzelbeleg = true;
     }
@@ -421,7 +409,7 @@
 
     String pageString = request.getParameter("Seite");
     if (pageString != null && !pageString.isEmpty()) {
-        conditions.add("einzelbeleg.EditionSeite = '" + safeDB(request.getParameter("Seite")) + "'");
+        conditions.add("einzelbeleg.EditionSeite = '" + DBtoDB(request.getParameter("Seite")) + "'");
         einzelbeleg = true;
     }
 
