@@ -167,9 +167,9 @@
                 %>
             </table>            
             <% } else if ("tab4".equals(activeTab)) { %>
-                <div id="container" class="container mt-2">
-                    <div id="initials" class=""><%= Language.getTextfield(session, "administration", "DBloading")%></div>
-                    <div id="list" class="fill-height"></div>
+                <div id="lemmaKorr-container" class="container mt-2">
+                    <div id="lemmaKorr-initials" class=""><%= Language.getTextfield(session, "administration", "DBloading")%></div>
+                    <div id="lemmaKorr-list" class="fill-height"></div>
                 </div>
             <% } %>
         </div>

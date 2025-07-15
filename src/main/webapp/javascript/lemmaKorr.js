@@ -12,10 +12,10 @@ const SERVLET_URL = AJAX_URL;
 // ----------------------------------------------------------------------------
 function setHighlight(e) {
 // ----------------------------------------------------------------------------
-    let cur = $('.highlight');
+    let cur = $('.lemmaKorr-highlight');
     if(!cur.is(e)) {
-        cur.removeClass('highlight');
-        e.addClass('highlight');
+        cur.removeClass('lemmaKorr-highlight');
+        e.addClass('lemmaKorr-highlight');
     }
     return e;
 }
@@ -33,10 +33,10 @@ function lemmaClicked() {
         if(![13, 27].includes(e.keyCode))
             return;
         if(e.keyCode === 13) { // ENTER
-            updateLemma(span.parents('.entry'), newLemma => {
+            updateLemma(span.parents('.lemmaKorr-entry'), newLemma => {
                 if(newLemma === false)
                     return;
-                setLemmaDone(span.parents('.entry').find('.korr > a'), () => {
+                setLemmaDone(span.parents('.lemmaKorr-entry').find('.lemmaKorr-korr > a'), () => {
                     span.text(newLemma).show();
                     input.remove();
                 });
@@ -57,7 +57,7 @@ function lemmaClicked() {
 function setClipboardText(text) {
 // ----------------------------------------------------------------------------
     Global.clipboard = text;
-    $('#clipboardText').text(text);
+    $('#lemmaKorr-clipboardText').text(text);
 }
 
 // ----------------------------------------------------------------------------
@@ -66,31 +66,31 @@ function clipboardClicked() {
     let a = $(this);
     if(a.text() === 'K') {
         if(!Global.clipboard) {
-            $('.clip > a').each(function() {
+            $('.lemmaKorr-clip > a').each(function() {
                 let a = $(this);
                 if(a.text() === 'E')
                     a.attr({ href: 'javascript:void(0)' }).click(clipboardClicked);
             });
         }
-        setClipboardText(a.parents('.entry').find('.lemma').first().text());
+        setClipboardText(a.parents('.lemmaKorr-entry').find('.lemmaKorr-lemma').first().text());
         console.log('Copied "' + Global.clipboard + '" to clipboard');
     }
     else {
-        let input = a.parents('.entry').find('input');
+        let input = a.parents('.lemmaKorr-entry').find('input');
         if(input.length === 1) {
             input.val(Global.clipboard);
             input.focus();
         }
         else {
-            let span = a.parents('.entry').find('.lemma');
+            let span = a.parents('.lemmaKorr-entry').find('.lemmaKorr-lemma');
             let curLemma = span.text();
             span.text(Global.clipboard);
-            updateLemma(span.parents('.entry'), newLemma => {
+            updateLemma(span.parents('.lemmaKorr-entry'), newLemma => {
                 if(newLemma === false) {
                     span.text(curLemma);
                     return;
                 }
-                setLemmaDone(span.parents('.entry').find('.korr > a'), () => {
+                setLemmaDone(span.parents('.lemmaKorr-entry').find('.lemmaKorr-korr > a'), () => {
                     span.text(newLemma).show();
                 });
             });
@@ -110,7 +110,7 @@ function getEntryFromRow(row) {
         korr: entry.korr,
         lemma: row.find('input').length === 1
             ? row.find('input').val().trim()
-            : row.find('.lemma').text().trim(),
+            : row.find('.lemmaKorr-lemma').text().trim(),
         beleg: entry.beleg,
         list: entry.list
     }
@@ -121,9 +121,9 @@ function updateEntryFromRow(row) {
 // ----------------------------------------------------------------------------
     let id = Number(row.get(0).id.substr(1)); // id is "eXXX"
     let entry = Global.groupedEntries[id];
-    entry.korr = row.find('.korr > a').length === 0;
-    entry.lemma = row.find('.lemma').text();
-    entry.beleg = row.find('.beleg').text();
+    entry.korr = row.find('.lemmaKorr-korr > a').length === 0;
+    entry.lemma = row.find('.lemmaKorr-lemma').text();
+    entry.beleg = row.find('.lemmaKorr-beleg').text();
 }
 
 // ----------------------------------------------------------------------------
@@ -154,31 +154,31 @@ function updateLemma(row, callback) {
 // ----------------------------------------------------------------------------
 function hideLemmasDone() {
 // ----------------------------------------------------------------------------
-    $('#list').hide();
-    $('.entry.done').hide();
-    let entry = $('.done:has(.highlight)');
+    $('#lemmaKorr-list').hide();
+    $('.lemmaKorr-entry.lemmaKorr-done').hide();
+    let entry = $('.lemmaKorr-done:has(.lemmaKorr-highlight)');
     while(entry.length === 1) {
-        entry = entry.next('.entry');
+        entry = entry.next('.lemmaKorr-entry');
         if(entry.hasClass('open')) {
-            setHighlight(entry.find('.lemma'));
+            setHighlight(entry.find('.lemmaKorr-lemma'));
             break;
         }
     }
-    $('#list').show();
+    $('#lemmaKorr-list').show();
 }
 
 // ----------------------------------------------------------------------------
 function showLemmasDone() {
 // ----------------------------------------------------------------------------
-    $('#list').hide();
-    $('.entry.done').show();
-    $('#list').show();
+    $('#lemmaKorr-list').hide();
+    $('.lemmaKorr-entry.lemmaKorr-done').show();
+    $('#lemmaKorr-list').show();
 }
 
 // ----------------------------------------------------------------------------
 function updateCountAfterKorrektur() {
 // ----------------------------------------------------------------------------
-    let initialBtn = $('#initials button.active'),
+    let initialBtn = $('#lemmaKorr-initials button.active'),
         todoBox = $('#todoCount'),
         korrBox = $('#korrCount');
     todoBox.data('count', todoBox.data('count') - 1).text(Number(todoBox.data('count').toLocaleString()));
@@ -194,7 +194,7 @@ function setLemmaDone(a, callback) {
         callback && callback();
         return;
     }
-    let row = a.parents('.entry');
+    let row = a.parents('.lemmaKorr-entry');
     let entry = getEntryFromRow(row);
     if(entry.korr) { // already done
         callback && callback();
@@ -211,7 +211,7 @@ function setLemmaDone(a, callback) {
             return;
         }
         console.log('...DONE');
-        a.parents('.entry').removeClass('open').addClass('done');
+        a.parents('.lemmaKorr-entry').removeClass('open').addClass('lemmaKorr-done');
         a.parents('span').text(a.text());
         callback && callback(); 
         updateCountAfterKorrektur();
@@ -259,45 +259,45 @@ function _renderListInternal(listContainer, list) {
         let korr = entry.korr 
             ? '✓' 
             : "<a href='javascript:void(0)'>✓</a>";
-        let korrCss = entry.korr ? 'done' : 'open';
+        let korrCss = entry.korr ? 'lemmaKorr-done' : 'open';
         if(!entry.korr)
             todoCount++;
         let e = document.createElement('div');
         e.id = 'e' + key;
-        e.className = `entry ${korrCss}`;
+        e.className = `lemmaKorr-entry ${korrCss}`;
         if(entry.korr && !allKorr)
             e.style.display = 'none';
         e.innerHTML = 
-            `<span class="korr">${korr}</span>
-            <span class="clip">
+            `<span class="lemmaKorr-korr">${korr}</span>
+            <span class="lemmaKorr-clip">
                 <a>K</a>
                 <a>E</a>
             </span>
-            <span class="lemma">${entry.lemma}</span>
-            <span class="beleg">${entry.beleg}</span>
+            <span class="lemmaKorr-lemma">${entry.lemma}</span>
+            <span class="lemmaKorr-beleg">${entry.beleg}</span>
             <span class="list">${entry.list.length} Beleg(e)</span>`;
         f.appendChild(e);
     });
     listContainer.empty();
     listContainer[0].appendChild(f);
-    $('.lemma').click(lemmaClicked);
-    $('.entry').each(function() {
+    $('.lemmaKorr-lemma').click(lemmaClicked);
+    $('.lemmaKorr-entry').each(function() {
         if(this.style.display !== 'none') {
-            setHighlight($(this).find('.lemma'));
+            setHighlight($(this).find('.lemmaKorr-lemma'));
             return false;
         }
     });
     if(typeof Global.clipboard === 'string') {
-        $('.clip > a').attr({ href: 'javascript:void(0)' }).click(clipboardClicked);
+        $('.lemmaKorr-clip > a').attr({ href: 'javascript:void(0)' }).click(clipboardClicked);
     }
     else {
-        $('.clip > a').each(function() {
+        $('.lemmaKorr-clip > a').each(function() {
             let a = $(this);
             if(a.text() === 'K')
                 a.attr({ href: 'javascript:void(0)' }).click(clipboardClicked);
         });
     }
-    $('.korr > a').click(lemmaDoneClicked);
+    $('.lemmaKorr-korr > a').click(lemmaDoneClicked);
     renderErledigteToggle(Global.groupedEntries.length, todoCount);
     $(window).deferredResize(windowResized, 250);
     windowResized();
@@ -308,7 +308,7 @@ function _renderListInternal(listContainer, list) {
 function renderList(btn) {
 // ----------------------------------------------------------------------------
     $('#erledigteToggle').remove();
-    let listContainer = $('#list').empty().text('LISTE LÄDT...');
+    let listContainer = $('#lemmaKorr-list').empty().text('LISTE LÄDT...');
     console.log('Fetching lemmas...');
     $.post(SERVLET_URL, {
         action: 'Lemmakorr_getFromInitial',
@@ -336,13 +336,13 @@ function initialClicked() {
 function renderErledigteToggle(totalCount, todoCount) {
 // ----------------------------------------------------------------------------
     $('#erledigteToggle').remove();
-    $('#initials').after(
+    $('#lemmaKorr-initials').after(
         $('<p/>').attr({id: 'erledigteToggle'})
             .append('Korrigierte Lemmata: ')
             .append($('<button/>').text('ausblenden').click(hideLemmasDone))
             .append($('<button/>').text('einblenden').click(showLemmasDone))
             .append($('<span/>').css({'margin-left': '1.5rem', 'margin-right': '0.5rem'}).text('Interne Zwischenablage:'))
-            .append($('<span/>').attr({ id: 'clipboardText' }).text(typeof Global.clipboard === 'string' ? Global.clipboard : '---')).append($('<span/>').css({'margin-left': '1.5rem', 'margin-right': '0.5rem'})
+            .append($('<span/>').attr({ id: 'lemmaKorr-clipboardText' }).text(typeof Global.clipboard === 'string' ? Global.clipboard : '---')).append($('<span/>').css({'margin-left': '1.5rem', 'margin-right': '0.5rem'})
                 .append('Gesamt <span id="totalCount"></span> | Korrigiert <span id="korrCount"></span> | Offen <span id="todoCount"></span>')
             )
     );
@@ -354,7 +354,7 @@ function renderErledigteToggle(totalCount, todoCount) {
 // ----------------------------------------------------------------------------
 function renderInitials() {
 // ----------------------------------------------------------------------------
-    let div = $('#initials').empty();
+    let div = $('#lemmaKorr-initials').empty();
     
     Object.keys(Global.initials).forEach(i => {
         div.append(
@@ -372,7 +372,7 @@ function renderInitials() {
 // ----------------------------------------------------------------------------
 function windowResized() {
 // ----------------------------------------------------------------------------
-    let div = $('#list');
+    let div = $('#lemmaKorr-list');
     div.css({ 
         height: Math.max(100, window.innerHeight - div.offset().top - 28)
     });    
@@ -384,7 +384,7 @@ function scrollToRow(row) {
     if(Global.scrollTimer)
         clearTimeout(Global.scrollTimer);
     Global.scrollTimer = setTimeout(() => {
-        let list = $('#list');
+        let list = $('#lemmaKorr-list');
         let nt = row.offset().top,
             nh = row.height(),
             st = list.scrollTop(),
@@ -417,10 +417,10 @@ function isTextSelected() {
 // ----------------------------------------------------------------------------
 function documentKeyDown(e) {
 // ----------------------------------------------------------------------------
-    let cur = $('.highlight');
+    let cur = $('.lemmaKorr-highlight');
     if(cur.length === 0)
         return;
-    let curEntry = cur.parents('.entry');
+    let curEntry = cur.parents('.lemmaKorr-entry');
     if([38, 40].includes(e.keyCode)) {
         if(curEntry.find('input').length > 0) // ignore
             return;
@@ -445,7 +445,7 @@ function documentKeyDown(e) {
             }
         }
         if(win && win.length === 1) {
-            setHighlight(win.find('.lemma'));
+            setHighlight(win.find('.lemmaKorr-lemma'));
             win.find('input').focus();
             scrollToRow(win);
         }
@@ -453,9 +453,9 @@ function documentKeyDown(e) {
     }
     else if(e.keyCode === 13) { // ENTER
         if(e.ctrlKey === true) { // set as done
-            setLemmaDone(cur.parents('.entry').find('.korr > a'));
+            setLemmaDone(cur.parents('.lemmaKorr-entry').find('.lemmaKorr-korr > a'));
         }
-        else if(cur.parents('.entry').find('input').length === 0) {
+        else if(cur.parents('.lemmaKorr-entry').find('input').length === 0) {
             cur.trigger('click'); // change to input mode
         }
     }
