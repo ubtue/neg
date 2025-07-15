@@ -454,16 +454,16 @@ public class AjaxServlet extends HttpServlet {
             doduplicate(request, response);
         }
         //Lemmakorr Funktionen
-        else if ("getAllInitials".equals(action)) {
-            getAllInitials(request, response);
-        } else if ("getFromInitial".equals(action)) {
-            getFromInitial(request, response);
-        } else if ("updateLemma".equals(action)) {
-            updateLemma(request, response);
-        } else if ("setLemmaKorr".equals(action)) {
-            setLemmaKorr(request, response);
-        } else if ("keepAlive".equals(action)) {
-            keepAlive(request, response);
+        else if ("Lemmakorr_getAllInitials".equals(action)) {
+            Lemmakorr_getAllInitials(request, response);
+        } else if ("Lemmakorr_getFromInitial".equals(action)) {
+            Lemmakorr_getFromInitial(request, response);
+        } else if ("Lemmakorr_updateLemma".equals(action)) {
+            Lemmakorr_updateLemma(request, response);
+        } else if ("Lemmakorr_setLemmaKorr".equals(action)) {
+            Lemmakorr_setLemmaKorr(request, response);
+        } else if ("Lemmakorr_keepAlive".equals(action)) {
+            Lemmakorr_keepAlive(request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("{\"error\":\"Falsche Methode\"}");
@@ -491,10 +491,10 @@ public class AjaxServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
     }
 
-    private void getAllInitials(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void Lemmakorr_getAllInitials(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             // Holt die echten Initials aus der DB
-            Map<String, Integer> initials = de.uni_tuebingen.ub.nppm.db.EinzelbelegDB.getAllBelegInitials();
+            Map<String, Integer> initials = EinzelbelegDB.getAllBelegInitials();
             JSONObject result = new JSONObject().put("result", initials);
             writeJson(response, result);
         } catch (Exception e) {
@@ -503,7 +503,7 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
-    private void getFromInitial(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void Lemmakorr_getFromInitial(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String initial = request.getParameter("initial");
         List<LemmaKorrBelegRow> list = new ArrayList<>();
         try {
@@ -543,7 +543,7 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
-    private void updateLemma(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void Lemmakorr_updateLemma(HttpServletRequest request, HttpServletResponse response) throws IOException {
         JSONObject result = new JSONObject();
         String lemma = request.getParameter("value");
         String belegIdListStr = request.getParameter("list");
@@ -569,7 +569,7 @@ public class AjaxServlet extends HttpServlet {
         writeJson(response, result);
     }
 
-    private void setLemmaKorr(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void Lemmakorr_setLemmaKorr(HttpServletRequest request, HttpServletResponse response) throws IOException {
         JSONObject result = new JSONObject();
         String belegIdListStr = request.getParameter("list");
         String korrStr = request.getParameter("value");
@@ -601,7 +601,7 @@ public class AjaxServlet extends HttpServlet {
         writeJson(response, result);
     }
 
-    private void keepAlive(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void Lemmakorr_keepAlive(HttpServletRequest request, HttpServletResponse response) throws IOException {
         JSONObject result = new JSONObject().put("result", true);
         writeJson(response, result);
     }

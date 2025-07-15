@@ -133,7 +133,7 @@ function updateLemma(row, callback) {
     let entry = getEntryFromRow(row);
     console.log('Updating lemma...', entry);
     $.post(SERVLET_URL, {
-        action: 'updateLemma',
+        action: 'Lemmakorr_updateLemma',
         value: entry.lemma,
         list: JSON.stringify(entry.list)
     }, (response) => {
@@ -202,7 +202,7 @@ function setLemmaDone(a, callback) {
     }
     console.log('Setting lemma done...', entry);
     $.post(SERVLET_URL, {
-        action: 'setLemmaKorr',
+        action: 'Lemmakorr_setLemmaKorr',
         value: 'true',
         list: JSON.stringify(entry.list)
     }, (response) => {
@@ -311,7 +311,7 @@ function renderList(btn) {
     let listContainer = $('#list').empty().text('LISTE LÄDT...');
     console.log('Fetching lemmas...');
     $.post(SERVLET_URL, {
-        action: 'getFromInitial',
+        action: 'Lemmakorr_getFromInitial',
         initial: btn.data('initial')
     }, (response) => {
         _renderListInternal(listContainer, response.result);    
@@ -493,7 +493,7 @@ $(document).ready(() => {
     //}
     console.log('Loading initials...');
     $.post(SERVLET_URL, {
-        action: 'getAllInitials'
+        action: 'Lemmakorr_getAllInitials'
     }, response => {
         console.log('...DONE');
         Global.initials = response.result;
@@ -502,7 +502,7 @@ $(document).ready(() => {
         setInterval(() => {
             console.log('Keeping session alive...');
             $.post(SERVLET_URL, {
-                action: 'keepAlive'
+                action: 'Lemmakorr_keepAlive'
             });
         }, 300000);
     });
