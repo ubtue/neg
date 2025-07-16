@@ -102,6 +102,7 @@ public class AdministrationServlet extends AbstractBackendServlet {
     @Override
     protected List<String> getAdditionalJavaScript() {
         ArrayList<String> list = new ArrayList<String>();
+        list.add("javascript/jquery.ba-resize.min.js");
         list.add("javascript/helper.js");
         list.add("javascript/lemmaKorr.js");
         return list;
