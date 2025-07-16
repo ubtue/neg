@@ -6,6 +6,7 @@ import de.uni_tuebingen.ub.nppm.util.Constants;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationParams;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
@@ -232,6 +233,116 @@ public class LemmaDB extends AbstractBase {
 
                 return query.getResultList();
             }
+        }
+    }
+
+    public static boolean updateLemma(List<Integer> belegIdList, String lemma) {
+        if (belegIdList == null || belegIdList.isEmpty()) {
+            return true;
+        }
+        Transaction tx = null;
+        try (Session session = getSession()) {
+            tx = session.beginTransaction();
+
+            //Lemma-ID suchen oder anlegen
+            Integer lemmaId = getExistingLemma(session, lemma);
+            if (lemmaId == null) {
+                lemmaId = createNewLemma(session, lemma);
+                if (lemmaId == null) {
+                    throw new Exception("Error creating lemma");
+                }
+            }
+
+            //Für jedes Beleg-Id prüfen/verknüpfen/aktualisieren
+            for (Integer belegId : belegIdList) {
+                Integer linkId = getExistingBelegLemmaLink(session, belegId);
+                if (linkId == null) {
+                    if (!createNewBelegLemmaLink(session, belegId, lemmaId)) {
+                        throw new Exception("Error creating the document-lemma link");
+                    }
+                } else {
+                    if (!updateBelegLemmaLink(session, linkId, lemmaId)) {
+                        throw new Exception("Error updating the document-lemma link");
+                    }
+                }
+            }
+            tx.commit();
+            return true;
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return false;
+        }
+    }
+
+    private static Integer getExistingLemma(Session session, String lemma) {
+        Object id = session.createNativeQuery(
+                "SELECT id FROM mgh_lemma WHERE CAST(mghlemma AS BINARY) = CAST(:lemma AS BINARY)")
+                .setParameter("lemma", lemma)
+                .uniqueResult();
+        return id != null ? ((Number) id).intValue() : null;
+    }
+
+    private static Integer createNewLemma(Session session, String lemma) {
+        session.createNativeQuery(
+                "INSERT INTO mgh_lemma (mghlemma, bearbeitungsstatusid) VALUES (:lemma, 0)")
+                .setParameter("lemma", lemma)
+                .executeUpdate();
+        Object id = session.createNativeQuery("SELECT LAST_INSERT_ID()").uniqueResult();
+        return id != null ? ((Number) id).intValue() : null;
+    }
+
+    private static Integer getExistingBelegLemmaLink(Session session, int belegId) {
+        Object id = session.createNativeQuery(
+                "SELECT id FROM einzelbeleg_hatmghlemma WHERE einzelbelegid = :belegId LIMIT 1")
+                .setParameter("belegId", belegId)
+                .uniqueResult();
+        return id != null ? ((Number) id).intValue() : null;
+    }
+
+    private static boolean createNewBelegLemmaLink(Session session, int belegId, int lemmaId) {
+        int res = session.createNativeQuery(
+                "INSERT INTO einzelbeleg_hatmghlemma (einzelbelegid, mghlemmaid) VALUES (:belegId, :lemmaId)")
+                .setParameter("belegId", belegId)
+                .setParameter("lemmaId", lemmaId)
+                .executeUpdate();
+        return res > 0;
+    }
+
+    private static boolean updateBelegLemmaLink(Session session, int linkId, int lemmaId) {
+        int res = session.createNativeQuery(
+                "UPDATE einzelbeleg_hatmghlemma SET mghlemmaid = :lemmaId WHERE id = :linkId")
+                .setParameter("lemmaId", lemmaId)
+                .setParameter("linkId", linkId)
+                .executeUpdate();
+        return res > 0;
+    }
+
+    public static boolean setLemmaKorr(List<Integer> belegIdList, boolean korr) {
+        if (belegIdList == null || belegIdList.isEmpty()) {
+            return true;
+        }
+        Transaction tx = null;
+        try (Session session = getSession()) {
+            tx = session.beginTransaction();
+            for (Integer belegId : belegIdList) {
+                int updated = session.createNativeQuery(
+                        "UPDATE einzelbeleg SET mghlemmakorrigiert = :korr WHERE id = :id")
+                        .setParameter("korr", korr ? 1 : 0)
+                        .setParameter("id", belegId)
+                        .executeUpdate();
+                if (updated != 1) {
+                    throw new Exception("Update fehlgeschlagen für ID: " + belegId);
+                }
+            }
+            tx.commit();
+            return true;
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return false;
         }
     }
 }

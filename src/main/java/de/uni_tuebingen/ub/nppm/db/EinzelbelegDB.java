@@ -4,7 +4,11 @@ import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
+import de.uni_tuebingen.ub.nppm.util.LemmaKorrBelegRow;
 import de.uni_tuebingen.ub.nppm.util.Utils;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -238,4 +242,72 @@ public class EinzelbelegDB extends AbstractBase {
             return session.createNativeQuery(sql).getResultList();
         }
     }
+
+    public static Map<String, Integer> getAllBelegInitials() throws Exception {
+        try (Session session = getSession()) {
+            String sql = "SELECT UPPER(LEFT(m.MGHLemma, 1)) AS initial, " +
+                "SUM(CASE WHEN e.MGHLemmaKorrigiert = 0 OR e.MGHLemmaKorrigiert IS NULL THEN 1 ELSE 0 END) AS todo " +
+                "FROM einzelbeleg e " +
+                "LEFT OUTER JOIN einzelbeleg_hatmghlemma em ON e.ID = em.EinzelbelegID " +
+                "LEFT OUTER JOIN mgh_lemma m ON m.ID = em.MGHLemmaID " +
+                "GROUP BY initial " +
+                "ORDER BY initial";
+
+            @SuppressWarnings("unchecked")
+            List<Object[]> rows = session.createNativeQuery(sql).getResultList();
+
+            Map<String, Integer> result = new LinkedHashMap<>();
+            for (Object[] row : rows) {
+                String initial = row[0] != null ? row[0].toString() : "";
+                int todo = row[1] != null ? ((Number) row[1]).intValue() : 0;
+                // Wenn das Initial schon existiert, summiere auf
+                result.merge(initial, todo, Integer::sum);
+            }
+            return result;
+        }
+    }
+
+    public static List<LemmaKorrBelegRow> getLemmaBelegRowsFromBelegInitial(String initial, String db) throws Exception {
+        List<LemmaKorrBelegRow> result = new ArrayList<>();
+        try (Session session = getSession()) {
+            String sql;
+            Query query;
+            if (initial == null || initial.isEmpty()) {
+                sql = "SELECT e.ID, '' AS lemma, LOWER(TRIM(e.belegform)) AS beleg, e.MGHLemmaKorrigiert AS korr, ? AS db "
+                        + "FROM einzelbeleg e "
+                        + "LEFT OUTER JOIN einzelbeleg_hatmghlemma em ON e.ID = em.EinzelbelegID "
+                        + "LEFT OUTER JOIN mgh_lemma m ON m.ID = em.MGHLemmaID "
+                        + "WHERE m.MGHLemma IS NULL OR m.MGHLemma = ''";
+                query = session.createNativeQuery(sql);
+                query.setParameter(1, db);
+            } else {
+                sql = "SELECT e.ID, m.MGHLemma AS lemma, LOWER(TRIM(e.belegform)) AS beleg, e.MGHLemmaKorrigiert AS korr, ? AS db "
+                        + "FROM einzelbeleg e "
+                        + "LEFT OUTER JOIN einzelbeleg_hatmghlemma em ON e.ID = em.EinzelbelegID "
+                        + "LEFT OUTER JOIN mgh_lemma m ON m.ID = em.MGHLemmaID "
+                        + "WHERE CAST(UPPER(LEFT(m.MGHLemma, 1)) AS BINARY) = CAST(? AS BINARY)";
+                query = session.createNativeQuery(sql);
+                query.setParameter(1, db);
+                query.setParameter(2, initial);
+            }
+            List<Object[]> rows = query.getResultList();
+            for (Object[] row : rows) {
+                int id = ((Number) row[0]).intValue();
+                String lemma = row[1] != null ? row[1].toString() : "";
+                String beleg = row[2] != null ? row[2].toString() : "";
+                boolean korr = false;
+                if (row[3] instanceof Boolean) {
+                    korr = (Boolean) row[3];
+                } else if (row[3] instanceof Number) {
+                    korr = ((Number) row[3]).intValue() != 0;
+                }
+                String dbName = row[4] != null ? row[4].toString() : "";
+                result.add(new LemmaKorrBelegRow(id, lemma, beleg, korr, dbName));
+            }
+        }
+        return result;
+    }
+
+
+
 }
