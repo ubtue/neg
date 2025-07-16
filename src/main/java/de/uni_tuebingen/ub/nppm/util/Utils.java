@@ -22,6 +22,11 @@ import org.json.JSONObject;
 
 public class Utils {
 
+    // Hilfsfunktion für sichere Zahlenprüfung
+    public static boolean safeNumeric(String s) {
+        return s != null && Utils.isNumeric(s);
+    }
+
     public static String safeToString(Object o) {
         return safeToString(o, "");
     }

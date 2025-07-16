@@ -6,12 +6,14 @@ import de.uni_tuebingen.ub.nppm.db.PersonDB;
 import de.uni_tuebingen.ub.nppm.db.QuelleDB;
 import de.uni_tuebingen.ub.nppm.util.Language;
 import static de.uni_tuebingen.ub.nppm.util.Utils.urlEncode;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspWriter;
+import org.apache.http.client.utils.URIBuilder;
 
 public class PrintPagination {
 
@@ -145,16 +147,29 @@ public class PrintPagination {
     public static void printPageNavigation(JspWriter out, HttpServletRequest request, String export, String title) throws Exception {
         printPageNavigation(out, request, null, null, null, export, title);
     }
-
-    // Hilfsfunktion: baut Seiten-URL basierend auf Request und Ziel-Seitennummer
+    //funktioniert jetzt auch für array parameter
     private static String buildPageUrl(HttpServletRequest request, int pageoffset) {
-        StringBuilder url = new StringBuilder("?pageoffset=" + pageoffset);
-        for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-            String paramName = e.nextElement();
-            if (!paramName.equals("pageoffset")) {
-                url.append("&").append(paramName).append("=").append(URLEncoder.encode(request.getParameter(paramName), StandardCharsets.UTF_8));
+        try {
+            String requestURL = request.getRequestURL().toString(); // Basis-URL (ohne Query)
+            URIBuilder uriBuilder = new URIBuilder(requestURL);
+
+            uriBuilder.setParameter("pageoffset", String.valueOf(pageoffset));
+
+            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                String paramName = e.nextElement();
+                if (!paramName.equals("pageoffset")) {
+                    String[] values = request.getParameterValues(paramName);
+                    if (values != null) {
+                        for (String value : values) {
+                            uriBuilder.addParameter(paramName, value);
+                        }
+                    }
+                }
             }
+
+            return uriBuilder.build().toString();
+        } catch (URISyntaxException ex) {
+            throw new RuntimeException("URL Build failed", ex);
         }
-        return url.toString();
     }
 }
