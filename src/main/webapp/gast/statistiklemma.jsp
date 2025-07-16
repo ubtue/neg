@@ -62,7 +62,11 @@
         <th class="ut-table__item ut-table__header__item" scope="col">
             <b><% Language.printTextfield(out, session, "mgh_lemma", "Titel");%></b>
             <form method="GET" style="display: flex; align-items: center;">
-                <input class="ut-form__input ut-form__field" name="filterTitle" type="text" size="40" value="<%=params.getFilter("filterTitle")%>" placeholder="<% Language.printTextfield(out, session, "statlemma", "LemmaFilter");%>" aria-required="true" style="width: 400px; margin-right: 2px;"/>
+                <jsp:include page="../inc.erzeugeFormular.jsp">
+                    <jsp:param name="Formular" value="statistik"/>
+                    <jsp:param name="Datenfeld" value="filterTitle"/>
+                    <jsp:param name="ValueAutomcomplete" value="<%=params.getFilter("filterTitle")%>"/>
+                </jsp:include>                
                 <input name="page" type="hidden" value="stat"/>
                 <input name="sort" type="hidden" value="<%=params.getSort()%>"/>
                 <button class="ut-btn ut-btn--color-primary-2" type="submit" style="margin-left: 2px;">

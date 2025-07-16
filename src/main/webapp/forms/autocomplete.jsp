@@ -3,9 +3,19 @@
 <%
     if (feldtyp.equals("autocomplete")) {
 
-        out.println("<input type=\"text\" style=\"width: 250px\" id=\"" + datenfeld + "\" name=\"" + datenfeld + "\" " + (size > 0 ? "size=\"" + size + "\" " : ""));
-        if (formular.endsWith("freie_suche")) {
-            out.print(" placeholder=\"" + platzhalter + "\" ");
+        out.print("<input type=\"text\" style=\"width: 250px;");
+        if ("filterTitle".equals(datenfeld)) {
+            out.print(" height: 40px;");
+        }
+        out.print("\" id=\"" + datenfeld + "\" name=\"" + datenfeld + "\" ");
+        if (size > 0) {
+            out.print("size=\"" + size + "\" ");
+        }
+        if (valueAutomcomplete != null && !valueAutomcomplete.trim().isEmpty()) {
+            out.print("value=\"" + Utils.escapeHTML(valueAutomcomplete) + "\" ");
+        }
+        if (formular.endsWith("freie_suche") || formular.equals("statistik")) {
+            out.print("placeholder=\"" + platzhalter + "\" ");
         }
         out.println("/>");
 
