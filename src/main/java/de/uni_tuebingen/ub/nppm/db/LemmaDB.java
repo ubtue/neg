@@ -3,6 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationParams;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
@@ -49,7 +50,7 @@ public class LemmaDB extends AbstractBase {
                     + "      JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "      JOIN quelle q ON e.QuelleID = q.ID "
                     + "      WHERE q.ZuVeroeffentlichen = 1 AND mgh_lemma.ID = :id "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%[???]%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%' "
                     + "    ) THEN :id "
                     + "    ELSE ( "
                     + "      SELECT MIN(mgh_lemma.ID) "
@@ -58,7 +59,7 @@ public class LemmaDB extends AbstractBase {
                     + "      JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "      JOIN quelle q ON e.QuelleID = q.ID "
                     + "      WHERE q.ZuVeroeffentlichen = 1 AND mgh_lemma.ID > :id "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%[???]%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%' "
                     + "    ) "
                     + "  END AS resultId "
                     + "FROM ( "
@@ -68,7 +69,7 @@ public class LemmaDB extends AbstractBase {
                     + "  JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "  JOIN quelle q ON e.QuelleID = q.ID "
                     + "  WHERE q.ZuVeroeffentlichen = 1 "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%[???]%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%' "
                     + ") AS ids";
 
             NativeQuery query = session.createNativeQuery(sql);
@@ -92,11 +93,11 @@ public class LemmaDB extends AbstractBase {
     }
 
     public static List<String> getListErstglied() throws Exception {
-        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' ORDER BY Erstglied ASC");
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%' ORDER BY Erstglied ASC");
     }
 
     public static List<String> getListZweitglied() throws Exception {
-        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' ORDER BY Zweitglied ASC");
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%' ORDER BY Zweitglied ASC");
     }
 
     public static List<MghLemma> getLemmaByBelegform(String belegform) throws Exception {

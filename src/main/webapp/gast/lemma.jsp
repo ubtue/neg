@@ -36,7 +36,7 @@
             }
         }
 
-        if(!lemma.getMghLemma().contains("[???]")){
+        if(!lemma.getMghLemma().contains(Constants.forbiddenLemmaSubstring)){
             throwContainsInvalidStrException = false;
         }
 
@@ -112,7 +112,7 @@
     tables.add("mghlemma");
     tables.add("person");
 
-   String sprache = "de";
+   String sprache = Constants.DEFAULT_LANG;
 
    //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
    if (session != null && session.getAttribute("Sprache") != null)
@@ -156,7 +156,7 @@
     <jsp:param name="ID" value="<%= id%>" />
     <jsp:param name="size" value="" />
     <jsp:param name="Formular" value="mgh_lemma" />
-    <jsp:param name="excludeText" value="[???]" />
+    <jsp:param name="excludeText" value= "<%= Constants.forbiddenLemmaSubstring%>" />
 </jsp:include>
 
 <!----------ID---------->

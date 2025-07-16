@@ -49,7 +49,7 @@
             language = "fr";
             session.setAttribute("Sprache", language);
         } else {
-            language = "gb";
+            language = Constants.DEFAULT_LANG;
             session.setAttribute("Sprache", language);
         }
     }

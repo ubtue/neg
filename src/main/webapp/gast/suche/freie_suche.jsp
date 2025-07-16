@@ -145,7 +145,7 @@
     }
 
     if (mghlemma) {
-        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%[???]%'");
+        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%'");
     }
 
     // ### ZUR PERSON ###
@@ -415,7 +415,7 @@
 
 
     // ######### SUCHANFRAGE ##########
-    String sprache = "de";
+    String sprache = Constants.DEFAULT_LANG;
     if (session != null && session.getAttribute("Sprache") != null) {
         sprache = (String) session.getAttribute("Sprache");
     }
@@ -1092,10 +1092,10 @@
             orderV[i] = "-";
         }
         /*
-        Keine Einzelbelege ausgeben die mit einem Lemma verküpft sind welches [???] enthält
-         */
+        Keine Einzelbelege ausgeben die mit einem Lemma verküpft sind welches Constants.forbiddenLemmaSubstring enthält
+        */
         if (einzelbeleg) {
-            conditions.add("(mgh_lemma.MGHLemma NOT LIKE '%[???]%')");
+            conditions.add("(mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%')");
             mghlemma = true;
         }
 

@@ -191,7 +191,7 @@ public class Utils {
         return lemma;
     }
 
-    public static void simpleSearch(JspWriter out, List<String> headlines, List<String> fieldNames, List<Map> rsMap, String orderV[], String order, String open, boolean countTables) throws IOException {
+    public static void simpleSearch(HttpServletRequest req, JspWriter out, List<String> headlines, List<String> fieldNames, List<Map> rsMap, String orderV[], String order, String open, boolean countTables) throws IOException, Exception {
 
         int topCount = 0;
 
@@ -257,7 +257,7 @@ public class Utils {
 
                     String text = "";
                     if ("Standardname".equals(orderV[z]) && rs.get(orderV[z]) == null) {
-                        text = "ohne Personenzuordnung";
+                        text = Language.getTextfield(req.getSession(), "suche", "pzuordnung");
                     } else if (rs.get(orderV[z]) == null) {
                         text = "-";
                     } else {

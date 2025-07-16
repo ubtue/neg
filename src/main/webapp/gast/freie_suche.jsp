@@ -640,7 +640,7 @@
         out.print("<select name=\"order'+i+'\">");
         out.print("  <option value=\"-1\">--</option>");
 
-        String sprache = "de";
+        String sprache = Constants.DEFAULT_LANG;
         if (session != null && session.getAttribute("Sprache") != null) {
             sprache = (String) session.getAttribute("Sprache");
         }
