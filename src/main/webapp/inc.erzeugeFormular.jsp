@@ -16,6 +16,7 @@
     String sorted = request.getParameter("Sorted");
     String klarlemma = request.getParameter("Klarlemma");
     String typeFile = request.getParameter("type");
+    String valueAutomcomplete = request.getParameter("ValueAutomcomplete");
     String def = "";
     String disabled = "";
     String darstellung = request.getParameter("Darstellung") != null ? request.getParameter("Darstellung") : "";
