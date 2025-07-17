@@ -2,12 +2,12 @@
 
 <%
     if (feldtyp.equals("autocomplete")) {
-
-        out.print("<input type=\"text\" style=\"width: 250px;");
+        String cssClass = "autocomplete-input";
         if ("filterTitle".equals(datenfeld)) {
-            out.print(" height: 40px;");
+            cssClass += " filter-title";
         }
-        out.print("\" id=\"" + datenfeld + "\" name=\"" + datenfeld + "\" ");
+
+        out.print("<input type=\"text\" class=\"" + cssClass + "\" id=\"" + datenfeld + "\" name=\"" + datenfeld + "\" ");
         if (size > 0) {
             out.print("size=\"" + size + "\" ");
         }
@@ -19,13 +19,12 @@
         }
         out.println("/>");
 
-        // Instead of the "autocomplete" function we use the "devbridgeAutocomplete" function from jQuery-Autocomplete to avoid known issues / naming conflicts with jQuery UI.
         out.println("<script>");
         out.println("$(\"#" + datenfeld + "\").devbridgeAutocomplete({serviceUrl: \""+ Utils.getBaseUrl(request) + "/ajax\", params: {action: \"autocomplete\", form:\"" + auswahlherkunft + "\", field:\"" + formularAttribut + "\"}});");
         out.println("</script>");
-        if (!tooltip.equals("")) {
-            out.println("<a href=\"javascript:return false;\" style=\"text-decoration:none;color:gray;\" title=\"" + tooltip + "\"> ? </a>");
-        }
 
+        if (!tooltip.equals("")) {
+            out.println("<a href=\"javascript:return false;\" class=\"tooltip-link\" title=\"" + tooltip + "\"> ? </a>");
+        }
     }
 %>
