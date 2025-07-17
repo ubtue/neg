@@ -7,7 +7,6 @@
     int filter = 0;
     String formular = "freie_suche";
 %>
-
 <div class="wrapper">
 
     <div class="container" >

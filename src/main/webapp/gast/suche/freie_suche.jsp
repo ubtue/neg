@@ -16,11 +16,15 @@
 <%@ page import="com.lowagie.text.rtf.*" isThreadSafe="false" %>
 
 <%@ page import="org.apache.commons.lang3.StringUtils" isThreadSafe="false" %>
-
 <%
+
     String einzelbelegeVonQuelle = request.getParameter("einzelbelegeVonQuelle");
     if ("true".equals(einzelbelegeVonQuelle)) {
-        int quellenId = Integer.parseInt(request.getParameter("Quellenliste"));
+        int quellenId = 0;
+        String[] quellenListe = request.getParameterValues("Quellenliste[]");
+        if (quellenListe != null && quellenListe.length > 0) {
+            quellenId = Integer.parseInt(quellenListe[0]);
+        }
 %>
 <h3 class="ut-heading ut-heading--h3">
     <% Language.printTextfield(out, session, "quelle", "Bezeichnung");%>
@@ -48,7 +52,11 @@
     String formular = request.getParameter("form");
     String tableString = "";
 
+    //wird mit AND verknüpft
     List<String> conditions = new ArrayList<>();
+
+    //Wird mit OR verknüpft
+    List<String> orConditions = new ArrayList<>();
 
     List<String> fields = new ArrayList<>();
     List<String> fieldNames = new ArrayList<>();  //Ergebnisse
@@ -66,47 +74,60 @@
     boolean mghlemma = false;
 
 //NeG-ID
-    if (!request.getParameter("NeGID").trim().equals("")) {
+    String neGID = request.getParameter("NeGID");
+    if (neGID != null && !neGID.trim().equals("")) {
         String newID = request.getParameter("NeGID");
         String newForm = newID.substring(1);
+        String sqlEscapedForm = DBtoDB(newForm);
         if (newID.startsWith("B") || newID.startsWith("b")) {
-            conditions.add("einzelbeleg.ID='" + newForm + "'");
-            einzelbeleg = true;
+            if (Utils.safeNumeric(newForm)) {
+                conditions.add("einzelbeleg.ID='" + sqlEscapedForm + "'");
+                einzelbeleg = true;
+            }
         } else if (newID.startsWith("P") || newID.startsWith("p")) {
-            conditions.add("person.ID='" + newForm + "'");
-            person = true;
+            if (Utils.safeNumeric(newForm)) {
+                conditions.add("person.ID='" + sqlEscapedForm + "'");
+                person = true;
+            }
         } else if (newID.startsWith("N") || newID.startsWith("n")) {
-            conditions.add("namenkommentar.ID='" + newForm + "'");
-            namenkommentar = true;
+            if (Utils.safeNumeric(newForm)) {
+                conditions.add("namenkommentar.ID='" + sqlEscapedForm + "'");
+                namenkommentar = true;
+            }
         } else if (newID.startsWith("Q") || newID.startsWith("q")) {
-            conditions.add("quelle.ID='" + newForm + "'");
-            if (!tableString.contains("quelle")) {
-                tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
+            if (Utils.safeNumeric(newForm)) {
+                conditions.add("quelle.ID='" + sqlEscapedForm + "'");
+                if (!tableString.contains("quelle")) {
+                    tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
+                }
             }
         } else if (newID.startsWith("E") || newID.startsWith("e")) {
-            conditions.add("edition.ID='" + newForm + "'");
-
-            if (!tableString.contains("edition")) {
-                tableString += " INNER JOIN edition ON einzelbeleg.EditionID = edition.ID";
+            if (Utils.safeNumeric(newForm)) {
+                conditions.add("edition.ID='" + sqlEscapedForm + "'");
+                if (!tableString.contains("edition")) {
+                    tableString += " INNER JOIN edition ON einzelbeleg.EditionID = edition.ID";
+                }
             }
         } else if (newID.startsWith("M") || newID.startsWith("m")) {
-            conditions.add("mgh_lemma.ID='" + newForm + "'");
-            mghlemma = true;
+            if (Utils.safeNumeric(newForm)) {
+                conditions.add("mgh_lemma.ID='" + sqlEscapedForm + "'");
+                mghlemma = true;
+            }
         }
     }
 
     // ######### SUCHANFRAGE ##########
     // ### ZUM NAMEN ###
-    if (request.getParameter("Namenkommentar2") != null && request.getParameter("Namenkommentar") != null && !request.getParameter("Namenkommentar2").equals("-1") && request.getParameter("Namenkommentar").equals("-1")) {
+    if (Utils.safeNumeric(request.getParameter("Namenkommentar2")) && Utils.safeNumeric(request.getParameter("Namenkommentar")) && !request.getParameter("Namenkommentar2").equals("-1") && request.getParameter("Namenkommentar").equals("-1")) {
         conditions.add("namenkommentar.ID=" + request.getParameter("Namenkommentar2"));
         namenkommentar = true;
     }
-    if (request.getParameter("Namenkommentar") != null && !request.getParameter("Namenkommentar").equals("-1")) {
+    if (Utils.safeNumeric(request.getParameter("Namenkommentar")) && !request.getParameter("Namenkommentar").equals("-1")) {
         conditions.add("namenkommentar.ID=" + request.getParameter("Namenkommentar"));
         namenkommentar = true;
     }
-    if (!request.getParameter("MGHLemma").trim().equals("")) {
-        conditions.add("mgh_lemma.MGHLemma LIKE '" + request.getParameter("MGHLemma").trim() + "'");
+    if (request.getParameter("MGHLemma") != null && !request.getParameter("MGHLemma").trim().equals("")) {
+        conditions.add("mgh_lemma.MGHLemma LIKE '" + DBtoDB(request.getParameter("MGHLemma").trim()) + "'");
         mghlemma = true;
     }
 
@@ -114,12 +135,12 @@
     String zweitgliedParam = request.getParameter("ZweitGliedSelect");
 
     if (erstgliedParam != null && !erstgliedParam.trim().isEmpty() && !erstgliedParam.equals("-")) {
-        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', 1) LIKE '" + erstgliedParam.trim() + "'");
+        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', 1) LIKE '" + DBtoDB(erstgliedParam.trim()) + "'");
         mghlemma = true;
     }
 
     if (zweitgliedParam != null && !zweitgliedParam.trim().isEmpty() && !zweitgliedParam.equals("-")) {
-        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', -1) LIKE '" + zweitgliedParam.trim() + "'");
+        conditions.add("SUBSTRING_INDEX(mgh_lemma.MGHLemma, '~', -1) LIKE '" + DBtoDB(zweitgliedParam.trim()) + "'");
         mghlemma = true;
     }
 
@@ -128,70 +149,71 @@
     }
 
     // ### ZUR PERSON ###
-    if (!request.getParameter("Personenname").trim().equals("")) {
-        conditions.add("(person.Standardname LIKE '" + request.getParameter("Personenname").trim() + "' OR person_variante.Variante LIKE '" + request.getParameter("Personenname").trim() + "')");
+    if (request.getParameter("Personenname") != null && !request.getParameter("Personenname").trim().equals("")) {
+        String pn = DBtoDB(request.getParameter("Personenname").trim());
+        conditions.add("(person.Standardname LIKE '" + pn + "' OR person_variante.Variante LIKE '" + pn + "')");
         tableString += " LEFT OUTER JOIN person_variante ON person.ID=person_variante.personID";
         person = true;
     }
-    if (Integer.parseInt(request.getParameter("Geschlecht")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("Geschlecht")) && Integer.parseInt(request.getParameter("Geschlecht")) > -1) {
         conditions.add("person.Geschlecht = '" + request.getParameter("Geschlecht") + "'");
         person = true;
     }
-    if (Integer.parseInt(request.getParameter("AmtWeihePerson")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("AmtWeihePerson")) && Integer.parseInt(request.getParameter("AmtWeihePerson")) > -1) {
         tableString += " INNER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("AmtWeihePerson")), SelektionAmtWeihe.class).getSubtreeIdsRecursive();
         conditions.add("person_hatamtstandweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         person = true;
     }
-    if (Integer.parseInt(request.getParameter("StandPerson")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("StandPerson")) && Integer.parseInt(request.getParameter("StandPerson")) > -1) {
         tableString += " INNER JOIN person_hatstand ON person.ID=person_hatstand.PersonID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("StandPerson")), SelektionStand.class).getSubtreeIdsRecursive();
         conditions.add("person_hatstand.StandID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         person = true;
     }
-    if (Integer.parseInt(request.getParameter("EthniePerson")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("EthniePerson")) && Integer.parseInt(request.getParameter("EthniePerson")) > -1) {
         tableString += " INNER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID";
         conditions.add("person_hatethnie.EthnieID = '" + request.getParameter("EthniePerson") + "'");
         person = true;
     }
-    if (request.getParameter("Verwandtschaftsgrad") != null && Integer.parseInt(request.getParameter("Verwandtschaftsgrad")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("Verwandtschaftsgrad")) && Integer.parseInt(request.getParameter("Verwandtschaftsgrad")) > -1) {
         tableString += " INNER JOIN person_verwandtmit ON person.ID=person_verwandtmit.PersonIDvon";
         conditions.add("person_verwandtmit.VerwandtschaftsgradID = '" + request.getParameter("Verwandtschaftsgrad") + "'");
         person = true;
     }
 
     // ### ZUM EINZELBELEG ###
-    if (!request.getParameter("Belegform").trim().equals("")) {
-        conditions.add("einzelbeleg.Belegform LIKE '" + request.getParameter("Belegform").trim() + "'");
+    if (request.getParameter("Belegform") != null && !request.getParameter("Belegform").trim().equals("")) {
+        conditions.add("einzelbeleg.Belegform LIKE '" + DBtoDB(request.getParameter("Belegform").trim()) + "'");
         einzelbeleg = true;
     }
-    if (!request.getParameter("Kontext").trim().equals("")) {
-        conditions.add("einzelbeleg.Kontext LIKE '" + request.getParameter("Kontext").trim() + "'");
+    if (request.getParameter("Kontext") != null && !request.getParameter("Kontext").trim().equals("")) {
+        conditions.add("einzelbeleg.Kontext LIKE '" + DBtoDB(request.getParameter("Kontext").trim()) + "'");
         einzelbeleg = true;
     }
-    if (Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("AmtWeiheEinzelbeleg")) && Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatamtweihe ON einzelbeleg.ID=einzelbeleg_hatamtweihe.EinzelbelegID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("AmtWeiheEinzelbeleg")), SelektionAmtWeihe.class).getSubtreeIdsRecursive();
         conditions.add("einzelbeleg_hatamtweihe.AmtWeiheID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         einzelbeleg = true;
     }
-    if (Integer.parseInt(request.getParameter("StandEinzelbeleg")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("StandEinzelbeleg")) && Integer.parseInt(request.getParameter("StandEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatstand  ON einzelbeleg.ID=einzelbeleg_hatstand.EinzelbelegID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("StandEinzelbeleg")), SelektionStand.class).getSubtreeIdsRecursive();
         conditions.add("einzelbeleg_hatstand.StandID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         einzelbeleg = true;
     }
-    if (request.getParameter("EthnieEinzelbeleg") != null && Integer.parseInt(request.getParameter("EthnieEinzelbeleg")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("EthnieEinzelbeleg")) && Integer.parseInt(request.getParameter("EthnieEinzelbeleg")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatethnie ON einzelbeleg.ID=einzelbeleg_hatethnie.EinzelbelegID";
         conditions.add("einzelbeleg_hatethnie.EthnieID = '" + request.getParameter("EthnieEinzelbeleg") + "'");
         einzelbeleg = true;
     }
-    if (request.getParameter("Funktion") != null && Integer.parseInt(request.getParameter("Funktion")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("Funktion")) && Integer.parseInt(request.getParameter("Funktion")) > -1) {
         tableString += " INNER JOIN einzelbeleg_hatfunktion ON einzelbeleg.ID=einzelbeleg_hatfunktion.EinzelbelegID";
         conditions.add("einzelbeleg_hatfunktion.FunktionID = '" + request.getParameter("Funktion") + "'");
         einzelbeleg = true;
     }
-    if (request.getParameter("QuelleGattung") != null && Integer.parseInt(request.getParameter("QuelleGattung")) > 0) {
+    if (Utils.safeNumeric(request.getParameter("QuelleGattung")) && Integer.parseInt(request.getParameter("QuelleGattung")) > 0) {
         tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("QuelleGattung")), SelektionQuellengattung.class).getSubtreeIdsRecursive();
         conditions.add("quelle.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
@@ -286,15 +308,21 @@
     }
     conditions.add("quelle.zuVeroeffentlichen=1");
     einzelbeleg = true;
-    if (!request.getParameter("Quelle").trim().equals("") && request.getParameter("Quellenliste").equals("-1")) {
-        conditions.add("quelle.Bezeichnung LIKE '" + request.getParameter("Quelle").trim() + "'");
+    if (request.getParameter("Quelle") != null && !request.getParameter("Quelle").trim().equals("") && (request.getParameterValues("Quellenliste[]") == null)) {
+        conditions.add("quelle.Bezeichnung LIKE '" + DBtoDB(request.getParameter("Quelle").trim()) + "'");
         namenkommentar = true;
     }
-    if (!request.getParameter("Quellenliste").equals("-1")) {
-        conditions.add("quelle.ID=" + request.getParameter("Quellenliste"));
-        einzelbeleg = true;
+    String[] quellenliste;
+    if ((quellenliste = request.getParameterValues("Quellenliste[]")) != null) {
+        for (String qid : quellenliste) {
+            // Nur numerische IDs akzeptieren
+            if (!qid.equals("-1") && Utils.safeNumeric(qid)) {
+                orConditions.add("quelle.ID=" + qid);
+                einzelbeleg = true;
+            }
+        }
     }
-    if (request.getParameter("Quellengattung") != null && Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
+    if (Utils.safeNumeric(request.getParameter("Quellengattung")) && Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
         conditions.add("quelle.QuelleGattungID = '" + request.getParameter("Quellengattung") + "'");
         einzelbeleg = true;
     }
@@ -383,9 +411,10 @@
 
     String pageString = request.getParameter("Seite");
     if (pageString != null && !pageString.isEmpty()) {
-        conditions.add("einzelbeleg.EditionSeite = '" + request.getParameter("Seite") + "'");
+        conditions.add("einzelbeleg.EditionSeite = '" + DBtoDB(request.getParameter("Seite")) + "'");
         einzelbeleg = true;
     }
+
 
     // ######### SUCHANFRAGE ##########
     String sprache = Constants.DEFAULT_LANG;
@@ -1120,11 +1149,30 @@
 
         // Bedingungen
         String conditionsString = "";
+
+        String andPart = "";
         if (conditions.size() > 0) {
-            conditionsString += conditions.get(0);
+            andPart += conditions.get(0);
             for (int i = 1; i < conditions.size(); i++) {
-                conditionsString += " AND " + conditions.get(i);
+                andPart += " AND " + conditions.get(i);
             }
+        }
+
+        String orPart = "";
+        if (orConditions.size() > 0) {
+            orPart += orConditions.get(0);
+            for (int i = 1; i < orConditions.size(); i++) {
+                orPart += " OR " + orConditions.get(i);
+            }
+            orPart = "(" + orPart + ")";
+        }
+
+        if (!andPart.isEmpty() && !orPart.isEmpty()) {
+            conditionsString = andPart + " AND " + orPart;
+        } else if (!andPart.isEmpty()) {
+            conditionsString = andPart;
+        } else if (!orPart.isEmpty()) {
+            conditionsString = orPart;
         } else {
             conditionsString += "1";
         }
