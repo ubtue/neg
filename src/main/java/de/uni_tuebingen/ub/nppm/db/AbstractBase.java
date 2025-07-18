@@ -511,4 +511,8 @@ public class AbstractBase {
         }
         return s;
     }
+
+    public static String escapeSql(String s) {
+        return s == null ? null : s.replace("'", "''");
+    }
 }

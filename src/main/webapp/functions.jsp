@@ -21,7 +21,7 @@
     }
 
     String DBtoDB(String s) {
-        return AbstractBase.escape(s,'\'','"');
+        return AbstractBase.escapeSql(s);
     }
 
     String DBtoJS(String s) {

@@ -458,4 +458,25 @@ public class Utils {
 
         return href + "?v=" + timestamp;
     }
+
+    /**
+     * Prüft, ob alle Elemente eines String-Arrays gleich dem gesuchten Wert
+     * sind.
+     *
+     * @param arr Das zu prüfende Array
+     * @param value Der Wert, auf den geprüft werden soll
+     * @return true, wenn das Array nicht null ist, mindestens ein Element
+     * enthält und alle Werte gleich value sind.
+     */
+    public static boolean allValuesAre(String[] arr, String value) {
+        if (arr == null || arr.length == 0) {
+            return false;
+        }
+        for (String elem : arr) {
+            if (!value.equals(elem)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
