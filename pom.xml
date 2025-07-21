@@ -47,8 +47,13 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
+            <artifactId>hibernate-jcache</artifactId>
             <version>5.6.15.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.9.11</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
