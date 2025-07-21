@@ -39,6 +39,21 @@
         gndIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">";   // "GND Link"
     }
 
+    String wikidataIcon = "";
+
+    if (AuthHelper.isGastLogin(request)) {
+         wikidataIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/gast/layout/icons/wikidata.png\" border=\"0\" alt=\"Wikidata Link\" title=\"Wikidata suchen\">";
+    } else {
+         wikidataIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/wikidata.png\" border=\"0\" alt=\"Wikidata Link\" title=\"Wikidata suchen\">";
+    }
+
+    String geschichtsquellenIcon = "";
+    if (AuthHelper.isGastLogin(request)) {
+         geschichtsquellenIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/gast/layout/icons/geschichtsquellen.png\" border=\"0\" alt=\"Geschichtsquellen Link\" title=\"Geschichtsquellen suchen\">";
+    } else {
+         geschichtsquellenIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/geschichtsquellen.png\" border=\"0\" alt=\"Geschichtsquellen Link\" title=\"Geschichtsquellen suchen\">";
+    }
+
     String commentFolder_personenkommentar = "personenkommentar";
     String commentFolder_namenkommentar = "namenkommentar";
     String path = "neg";

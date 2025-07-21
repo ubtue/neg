@@ -501,4 +501,14 @@ public class AbstractBase {
     public static String getProvenanceSource(String id, String tabelle) throws Exception{
         return getSingleField("provenance_source", tabelle, Integer.valueOf(id));
     }
+
+    public static String escape(String s, char... delimiters) {
+        if (s != null) {
+            s = s.replace("\\", "\\\\");
+            for (char delimiter : delimiters) {
+                s = s.replace(String.valueOf(delimiter), "\\" + delimiter);
+            }
+        }
+        return s;
+    }
 }

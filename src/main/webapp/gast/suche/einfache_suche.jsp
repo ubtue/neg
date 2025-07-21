@@ -1,3 +1,6 @@
+<%@page import="java.net.URLEncoder"%>
+<%@page import="java.util.HashSet"%>
+<%@page import="java.util.Set"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.SucheDB"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
@@ -11,7 +14,9 @@
 <%@ page import="java.io.*" isThreadSafe="false" %>
 <%@ page import="java.awt.Color" isThreadSafe="false" %>
 
-
+<a href="<%= Utils.getBaseUrl(request) %>/gast/export_csv?query=<%= URLEncoder.encode(request.getParameter("query"), "UTF-8") %>" class="ut-btn">
+    <%=Language.getTextfield(session, "suche", "Export")%>
+</a>
 <%
     String query = request.getParameter("query");
 
@@ -22,56 +27,14 @@
         int orderSize = 0;
 
         String belegform = "";
-        boolean firstBeleg = true;
-
-        if (query.toUpperCase().matches("[BPNQ][0-9]+")) {
-            String newID = query;
-            String newForm = "";
-            if (newID.startsWith("B") || newID.startsWith("b")) {
-                newForm = "einzelbeleg";
-            } else if (newID.startsWith("P") || newID.startsWith("p")) {
-                newForm = "person";
-            } else if (newID.startsWith("N") || newID.startsWith("n")) {
-                newForm = "namenkommentar";
-            } else if (newID.startsWith("Q") || newID.startsWith("q")) {
-                newForm = "quelle";
-            }
-            out.println("<script type=\"text/javascript\">");
-            String url = request.getRequestURL().toString();
-
-            url = url.substring(0, url.lastIndexOf('/') + 1);
-            out.println("location.replace('" + url + newForm + "?ID='+" + newID.substring(1) + ");");
-            out.println("</script>");
-
-        }
 
         query = query.trim();
 
         if (query.length() < 3) {
-            throw new Exception("<b>Bitte geben Sie mindestens 3 Zeichen als Suchtext an.</b>");
+            throw new Exception("<b>" + Language.getTextfield(session, "suche", "Bitte3Zeichen") + "</b>");
         }
-
-        String query_like = query;
-        boolean is_exact_query = false;
-        // if query in double quotes, use verbatim, otherwise replace spaces with % wildcards
-        if (query_like.startsWith("\"") && query_like.endsWith("\"")) {
-            // remove quotes beginning and end
-            query_like = query_like.substring(1, query_like.length() - 1);
-            is_exact_query = true;
-        }
-
-        String subquery;
-        //query_like = query_like.replace("*", "%");  //Wenn du * als Wildcard zulassen willst
-        if (query_like.contains("%") || query_like.contains("_")) {
-            subquery = "SELECT * FROM einzelbeleg WHERE Belegform LIKE '" + query_like + "'";
-        } else {
-            subquery = "SELECT * FROM einzelbeleg WHERE Belegform = '" + query_like + "'";
-        }
-
-        out.println("<script>console.log('Using query term: " + query_like.replaceAll("'", "\\'") + "')</script>");
 
         String aufklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneAufklappen");
-
         String zuklappen = Language.getTextfield(session, "gast_freie_suche", "EbeneZuklappen");
 
         out.println("<div id=\"level-function\">");
@@ -82,35 +45,41 @@
         out.println("<ul class=\"mktree\" id=\"complete\">");
 
         headlines = new ArrayList<>();
-        headlines.add("MGHLemma");
-        headlines.add("Standardname");
-        headlines.add("Quelle");
-        headlines.add("Edition");
-        headlines.add("c.");
-        headlines.add("S.");
-        headlines.add("Q von J.");
-        headlines.add("Q von Jh.");
-        headlines.add("Q bis J.");
-        headlines.add("Q bis Jh.");
-        headlines.add("Belegform");
-        headlines.add("EB von J.");
-        headlines.add("EB von Jh.");
-        headlines.add("EB bis J.");
-        headlines.add("EB bis Jh.");
-        headlines.add("Q Jahr");
+        headlines.add("");
+        headlines.add("");
+        headlines.add(Language.getTextfield(session, "suche", "Belegform"));
+        headlines.add(Language.getTextfield(session, "freie_suche", "Quelle"));
+        headlines.add(Language.getTextfield(session, "suche", "NummerSeite"));
+        headlines.add(Language.getTextfield(session, "suche", "Raster"));
+        headlines.add(Language.getTextfield(session, "quelle", "Edition"));
+        headlines.add(Language.getTextfield(session, "suche", "Cap"));
+        headlines.add(Language.getTextfield(session, "suche", "Pag"));
+        headlines.add(Language.getTextfield(session, "suche", "QvJ"));
+        headlines.add(Language.getTextfield(session, "suche", "QvJh"));
+        headlines.add(Language.getTextfield(session, "suche", "QbJ"));
+        headlines.add(Language.getTextfield(session, "suche", "QbJh"));
+
+        headlines.add(Language.getTextfield(session, "suche", "EBvJ"));
+        headlines.add(Language.getTextfield(session, "suche", "EBvJh"));
+        headlines.add(Language.getTextfield(session, "suche", "EBbJ"));
+        headlines.add(Language.getTextfield(session, "suche", "EBbJh"));
+        headlines.add(Language.getTextfield(session, "suche", "QJahr"));
 
         fieldNames = new ArrayList<>();
         fieldNames.add("MGHLemma");
         fieldNames.add("Standardname");
+        fieldNames.add("Belegform");
         fieldNames.add("Bezeichnung");
-        fieldNames.add("editionTitel");
+        fieldNames.add("seite");
+        fieldNames.add("raster");
+        fieldNames.add("editionZitierweise");
         fieldNames.add("EditionKapitel");
         fieldNames.add("EditionSeite");
         fieldNames.add("quelleVonJahr");
         fieldNames.add("quelleVonJahrhundert");
         fieldNames.add("quelleBisJahr");
         fieldNames.add("quelleBisJahrhundert");
-        fieldNames.add("Belegform");
+
         fieldNames.add("VonJahr");
         fieldNames.add("VonJahrhundert");
         fieldNames.add("BisJahr");
@@ -120,45 +89,87 @@
         orderSize = 0;
         String order = "ORDER BY mgh_lemma.MGHLemma ASC, person.Standardname ASC, (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) DIV 25), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC ";
 
-        String orderV1[] = {"MGHLemma", "Standardname", "Belegform", "quelleBerJahr"};
-
-        String sql = "SELECT DISTINCT mgh_lemma.MGHLemma, mgh_lemma.ID as mgh_lemmaID, person.Standardname, person.ID as personID, "
-                + "quelle.Bezeichnung, "
-                + "quelle.ID as quelleID, edition.Titel as editionTitel, edition.ID as editionID, e2.EditionKapitel, e2.EditionSeite, quelle.VonTag as quelleVonTag, "
-                + "quelle.VonMonat as quelleVonMonat, quelle.VonJahr as quelleVonJahr, quelle.VonJahrhundert as quelleVonJahrhundert, quelle.BisTag as quelleBisTag, quelle.BisMonat as quelleBisMonat, quelle.BisJahr as quelleBisJahr, "
-                + "quelle.BisJahrhundert as quelleBisJahrhundert, e2.Belegform, e2.ID as e2ID, e2.VonTag, e2.VonMonat, "
-                + "e2.VonJahr, e2.VonJahrhundert, e2.BisTag, e2.BisMonat, e2.BisJahr, "
-                + "e2.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS "
-                + "quelleBerJahr FROM (" + subquery + ") as e1 LEFT OUTER JOIN einzelbeleg_hatmghlemma ehk1 ON "
-                + "ehk1.EinzelbelegID=e1.ID LEFT OUTER JOIN mgh_lemma ON "
-                + "mgh_lemma.ID=ehk1.MGHLemmaID LEFT OUTER JOIN einzelbeleg_hatmghlemma ehk2 "
-                + "ON mgh_lemma.ID=ehk2.MGHLemmaID "
-                + "LEFT OUTER JOIN einzelbeleg e2 ON ehk2.EinzelbelegID=e2.ID LEFT OUTER JOIN einzelbeleg_hatperson ON e2.ID=einzelbeleg_hatperson.EinzelbelegID "
-                + "LEFT OUTER JOIN person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN quelle ON "
-                + "e2.QuelleID=quelle.ID LEFT OUTER JOIN edition ON e2.EditionID=edition.ID WHERE "
-                + "(quelle.zuVeroeffentlichen='1') ORDER BY mgh_lemma.MGHLemma ASC, "
-                + "person.Standardname ASC, e2.Belegform ASC, (VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, "
-                + "quelle.BisJahrhundert) DIV 25), VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) ASC";
+        String orderV1[] = {"MGHLemma", "Standardname", "Belegform"};
 
         belegform = "";
-        firstBeleg = true;
 
-        java.util.List<Map> resultAsMap = SucheDB.getEinfacheSucheResult(sql);
+        java.util.List<Map> resultAsMap = SucheDB.getEinfacheSucheResult(query);
+
+        for (Map<String, Object> row : resultAsMap) {
+            Object val = row.get("quelleBerJahr");
+            if (val != null && val.toString().equals("99999")) {
+                row.put("quelleBerJahr", "-");
+            }
+        }
 
         boolean found = false;
+
+        Set<String> uniqueStandardnamen = new HashSet<>();
+        Set<String> uniqueBelegformen = new HashSet<>();
+
+        for (Map<String, Object> row : resultAsMap) {
+            Object sn = row.get("Standardname");
+            if (sn != null && !sn.toString().trim().isEmpty()) {
+                uniqueStandardnamen.add(sn.toString().trim());
+            }
+
+            Object bf = row.get("Belegform");
+            if (bf != null && !bf.toString().trim().isEmpty()) {
+                uniqueBelegformen.add(bf.toString().trim());
+            }
+        }
+
+        StringBuilder output = new StringBuilder();
+
+        int personCount = uniqueStandardnamen.size();
+        if (personCount >= 0) {
+            output.append(Language.getTextfield(session, "freie_suche", "Insgesamt")).append(" ");
+            output.append(personCount).append(" ");
+            if (personCount == 1) {
+                output.append(Language.getTextfield(session, "person", "Person"));
+            } else {
+                output.append(Language.getTextfield(session, "person", "Titel"));
+            }
+            output.append(", ");
+        }
+
+        int belegformCount = uniqueBelegformen.size();
+        if (belegformCount >= 0) {
+            output.append(Language.getTextfield(session, "freie_suche", "Insgesamt")).append(" ");
+            output.append(belegformCount).append(" ");
+            if (belegformCount == 1) {
+                output.append(Language.getTextfield(session, "einzelbeleg", "Einzelbeleg"));
+            } else {
+                output.append(Language.getTextfield(session, "einzelbeleg", "Titel"));
+            }
+            output.append(", ");
+        }
+
+        // Entferne letztes Komma + Leerzeichen
+        if (output.length() >= 2) {
+            output.setLength(output.length() - 2);
+        }
+
+        // Ausgabe
+        out.println("<p><strong>" + output.toString() + "</strong></p>");
 
         if (!resultAsMap.isEmpty()) {
             found = true;
             out.print("<li  style=\"width:45%;float:left;margin-left:1em\"  class=\"liOpen\" style=\"font-size:large\">Lemma <ul>");
 
-            Utils.simpleSearch(out, headlines, fieldNames, resultAsMap, orderV1, order, "", false);
+            Utils.simpleSearch(request,out, headlines, fieldNames, resultAsMap, orderV1, order, "", false);
             out.println("</ul></li>");
         }
 
         out.println("</ul>");
+
+        String entry = Language.getTextfield(session, "titel_inc", "Eintrag");
+        String entries = Language.getTextfield(session, "suche", "Eintraege");
 %>
 <script type="text/javascript">
     var array = document.getElementsByTagName("li");
+    var entry = "<%= entry%>";
+    var entries = "<%= entries%>";
     for (var j = 0; j < array.length; j++) {
         if (array[j].getElementsByTagName("ul").length == 0)
             continue;
@@ -171,15 +182,15 @@
             count = ul.nextSibling.childNodes.length;
         //     alert(ul.data);
         if (count == 1)
-            ul.data = ul.data + "(" + count + " Eintrag)";
+            ul.data = ul.data + "(" + count + " " + entry + ")";
         else
-            ul.data = ul.data + "(" + count + " Eintr\u00E4ge)";
+            ul.data = ul.data + "(" + count + " " + entries + ")";
     }
 </script>
 
 <%
         if (!found) {
-            out.println("<b>F&uuml;r Ihre Suchanfrage wurden keine Ergebnisse gefunden</b>");
+            out.println("<b>" + Language.getTextfield(session, "suche", "KeinErgebnis") + "</b>");
         }
 
     } catch (Exception e) {

@@ -7,7 +7,6 @@
     int filter = 0;
     String formular = "freie_suche";
 %>
-
 <div class="wrapper">
 
     <div class="container" >
@@ -173,6 +172,17 @@
                                     <jsp:include page="../inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="gast_freie_suche"/>
                                         <jsp:param name="Datenfeld" value="AmtWeiheEinzelbeleg"/>
+                                    </jsp:include>
+                                </td>
+                            </tr>
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item">
+                                    <% Language.printDatafield(out, session, "gast_freie_suche", "StandEinzelbeleg"); %>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
+                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                        <jsp:param name="Formular" value="gast_freie_suche"/>
+                                        <jsp:param name="Datenfeld" value="StandEinzelbeleg"/>
                                     </jsp:include>
                                 </td>
                             </tr>
@@ -369,6 +379,30 @@
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
                                     <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_Belegstelle"); %>
+                                </td>
+                            </tr>
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item">
+                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                        <jsp:param name="Formular" value="freie_suche"/>
+                                        <jsp:param name="Datenfeld" value="Ausgabe_Einzelbeleg_AmtWeihe"/>
+                                    </jsp:include>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
+                                    <% Language.printDatafield(out, session, formular, "Ausgabe_Einzelbeleg_AmtWeihe"); %>
+                                    <font color="blue"></font>
+                                </td>
+                            </tr>
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item">
+                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                        <jsp:param name="Formular" value="freie_suche"/>
+                                        <jsp:param name="Datenfeld" value="Ausgabe_Stand_Einzelbeleg"/>
+                                    </jsp:include>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
+                                    <% Language.printDatafield(out, session, formular, "Ausgabe_Stand_Einzelbeleg"); %>
+                                    <font color="blue"></font>
                                 </td>
                             </tr>
                             <tr class="ut-table__row">
@@ -606,7 +640,7 @@
         out.print("<select name=\"order'+i+'\">");
         out.print("  <option value=\"-1\">--</option>");
 
-        String sprache = "de";
+        String sprache = Constants.DEFAULT_LANG;
         if (session != null && session.getAttribute("Sprache") != null) {
             sprache = (String) session.getAttribute("Sprache");
         }
@@ -641,6 +675,12 @@
     });
 </script>
 
+<%
+   //global link for the css that is included in enableTooltips
+   String btCssHref = Utils.getVersionedHref(request, application, "/layout/bt.css");
+%>
 <script type="text/javascript">
+    // global machen
+    window.btCssHref = "<%= btCssHref %>";
     enableTooltips();
 </script>

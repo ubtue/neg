@@ -21,36 +21,39 @@
     MghLemma lemma = LemmaDB.getById(id);
 
     if (lemma == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " ist nicht vorhanden");
-        } else{
-            throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "IdNotFoundError",String.valueOf(id));
+        throw new IdNotFoundException(msg);
     } else {
 
         Set<Einzelbeleg> listEinzelbeleg = lemma.getEinzelbelege();
 
-        boolean throwException = true;
-
+        boolean throwIdNotPublicException = true;
+        boolean throwContainsInvalidStrException = true;
         for (Einzelbeleg eb : listEinzelbeleg) {
             if (eb.getQuelle() != null && eb.getQuelle().getZuVeroeffentlichen() == 1) {
-                throwException = false;
+                throwIdNotPublicException = false;
                 break;
             }
         }
 
-        if (throwException) {
-            if (session.getAttribute("Sprache").equals("de")) {
-                throw new IdNotPublicException("Lemma ID M" + id + " ist nicht zu veröffentlichen");
-            } else{
-                throw new IdNotFoundException("Lemma ID M" + String.valueOf(id) + " is not to be published");
-            }
+        if(!lemma.getMghLemma().contains(Constants.forbiddenLemmaSubstring)){
+            throwContainsInvalidStrException = false;
+        }
+
+        if (throwIdNotPublicException) {
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "NotPublicError",String.valueOf(id));
+            throw new IdNotPublicException(msg);
+        }
+
+        if (throwContainsInvalidStrException) {
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"mgh_lemma", "LemmaInvalidString",String.valueOf(id));
+            throw new ContainsInvalidStrException(msg);
         }
     }
 
     String formular ="mgh_lemma";
 
-    String tableString = "einzelbeleg LEFT OUTER JOIN einzelbeleg_hatnamenkommentar ON einzelbeleg.ID=einzelbeleg_hatnamenkommentar.EinzelbelegID LEFT OUTER JOIN namenkommentar ON einzelbeleg_hatnamenkommentar.NamenkommentarID=namenkommentar.ID LEFT OUTER JOIN einzelbeleg_hatperson ON einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID LEFT OUTER JOIN person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN einzelbeleg_hatmghlemma ON einzelbeleg_hatmghlemma.EinzelbelegID=einzelbeleg.ID LEFT OUTER JOIN mgh_lemma ON mgh_lemma.ID=einzelbeleg_hatmghlemma.MGHLemmaID INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID LEFT OUTER JOIN einzelbeleg_textkritik ON einzelbeleg.ID=einzelbeleg_textkritik.EinzelbelegID";
+    String tableString = "einzelbeleg LEFT OUTER JOIN einzelbeleg_hatnamenkommentar ON einzelbeleg.ID=einzelbeleg_hatnamenkommentar.EinzelbelegID LEFT OUTER JOIN namenkommentar ON einzelbeleg_hatnamenkommentar.NamenkommentarID=namenkommentar.ID LEFT OUTER JOIN einzelbeleg_hatperson ON einzelbeleg.ID=einzelbeleg_hatperson.EinzelbelegID LEFT OUTER JOIN person ON einzelbeleg_hatperson.PersonID=person.ID LEFT OUTER JOIN einzelbeleg_hatmghlemma ON einzelbeleg_hatmghlemma.EinzelbelegID=einzelbeleg.ID LEFT OUTER JOIN mgh_lemma ON mgh_lemma.ID=einzelbeleg_hatmghlemma.MGHLemmaID INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID LEFT OUTER JOIN person_hatamtstandweihe ON person.ID=person_hatamtstandweihe.PersonID LEFT OUTER JOIN selektion_amtweihe ON person_hatamtstandweihe.AmtWeiheID=selektion_amtweihe.ID LEFT OUTER JOIN person_hatethnie ON person.ID=person_hatethnie.PersonID LEFT OUTER JOIN selektion_ethnie ON person_hatethnie.EthnieID=selektion_ethnie.ID LEFT OUTER JOIN edition ON einzelbeleg.EditionID=edition.ID LEFT OUTER JOIN selektion_lebendverstorben ON einzelbeleg.LebendVerstorbenID=selektion_lebendverstorben.ID";
     String order = "";
     String export = "browse";
 
@@ -109,7 +112,7 @@
     tables.add("mghlemma");
     tables.add("person");
 
-   String sprache = "de";
+   String sprache = Constants.DEFAULT_LANG;
 
    //till now de is the only one witch gets transfered  --> sprache = (String)session.getAttribute("Sprache");
    if (session != null && session.getAttribute("Sprache") != null)
@@ -139,11 +142,21 @@
     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Lebend"));
 %>
 
+<h3 class="ut-heading ut-heading--h3">
+    <a class="ut-link" href="<%=Utils.getBaseUrl(request)%>/gast/lemma?page=stat">
+        <jsp:include page="../inc.erzeugeBeschriftung.jsp">
+            <jsp:param name="Formular" value="statlemma"/>
+            <jsp:param name="Textfeld" value="Titel"/>
+        </jsp:include>
+    </a>
+</h3>
+
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="mgh_lemma" />
     <jsp:param name="ID" value="<%= id%>" />
     <jsp:param name="size" value="" />
     <jsp:param name="Formular" value="mgh_lemma" />
+    <jsp:param name="excludeText" value= "<%= Constants.forbiddenLemmaSubstring%>" />
 </jsp:include>
 
 <!----------ID---------->
@@ -181,6 +194,7 @@
                     <jsp:param name="Formular" value="mgh_lemma" />
                     <jsp:param name="Datenfeld" value="EinzelbelegRODistinct" />
                     <jsp:param name="Readonly" value="yes" />
+                    <jsp:param name="Ausrichtung" value="horizontal" />
                 </jsp:include>
             </td>
         </tr>

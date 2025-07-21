@@ -16,6 +16,7 @@
     String sorted = request.getParameter("Sorted");
     String klarlemma = request.getParameter("Klarlemma");
     String typeFile = request.getParameter("type");
+    String valueAutomcomplete = request.getParameter("ValueAutomcomplete");
     String def = "";
     String disabled = "";
     String darstellung = request.getParameter("Darstellung") != null ? request.getParameter("Darstellung") : "";
@@ -61,7 +62,7 @@
     String sprache = (String) session.getAttribute("Sprache");
     //set standard language
     if (sprache == null) {
-        sprache = "de";
+        sprache = Constants.DEFAULT_LANG;
     }
     String beschriftung = "";
     String platzhalter = "";
@@ -155,7 +156,8 @@
 <%@ include file="forms/noarray.sqlselect.jsp" %>
 <%@ include file="forms/noarray.textarea.jsp" %>
 <%@ include file="forms/noarray.textfield.jsp" %>
-<%@ include file="forms/noarray.gndlink.jsp" %>
+<%@ include file="forms/array.selektion.multiselect.jsp" %>
+<%@ include file="forms/noarray.iconlink.jsp" %>
 
 <%    // Read the value from buffer & restore our default html writer
     out = out_html;

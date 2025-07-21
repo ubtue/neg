@@ -1,95 +1,28 @@
+<%@page import="de.uni_tuebingen.ub.nppm.util.suche.pagination.PrintPagination"%>
+<%@page import="java.io.IOException"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@ page import="java.util.*"%>
 
 <%!
-    public void printPageNavigation(JspWriter out, HttpServletRequest request, int pageoffset, int pageLimit, int linecount, String export) throws IOException {
-        if (!"liste".equals(export) && !"browse".equals(export)) {
-            return;
+    private static <T> void moveItem(List<T> list, T item, int newIndex) {
+        if (list.remove(item)) {
+            list.add(newIndex, item);
         }
-
-        out.println("<div class=\"resultlistnavigation\" align=\"center\">");
-
-        int pages = (linecount + pageLimit - 1) / pageLimit;
-
-        // Previous Button
-        if (pageoffset > 0) {
-            String prevUrl = "?pageoffset=" + (pageoffset - 1);
-            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                String paramName = e.nextElement();
-                if (!paramName.equals("pageoffset")) {
-                    prevUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                }
-            }
-            out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + prevUrl + "';\">Previous</button>&nbsp;");
-        }
-
-        // Page Number Buttons
-        for (int i = 0; i < pages; i++) {
-            if (i == 0 && i <= pageoffset - 10) {
-                String pageUrl = "?pageoffset=" + i;
-                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                    String paramName = e.nextElement();
-                    if (!paramName.equals("pageoffset")) {
-                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                    }
-                }
-                out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">1</button>&nbsp;...&nbsp;");
-            }
-
-            if (i < pageoffset + 10 && i > pageoffset - 10) {
-                if (i == pageoffset) {
-                    out.print("<button class=\"ut-btn ut-btn--color-primary-1 current-button\" disabled>");
-                    out.print((i + 1));
-                    out.print("</button>&nbsp;");
-                } else {
-                    String pageUrl = "?pageoffset=" + i;
-                    for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                        String paramName = e.nextElement();
-                        if (!paramName.equals("pageoffset")) {
-                            pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                        }
-                    }
-                    out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
-                    out.print((i + 1));
-                    out.print("</button>&nbsp;");
-                }
-            }
-
-            if (i == pages - 1 && i >= pageoffset + 10) {
-                String pageUrl = "?pageoffset=" + i;
-                for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                    String paramName = e.nextElement();
-                    if (!paramName.equals("pageoffset")) {
-                        pageUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                    }
-                }
-                out.print("...&nbsp;<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">");
-                out.print((i + 1));
-                out.print("</button>&nbsp;");
-            }
-        }
-
-        // Next Button
-        if (pageoffset < pages - 1) {
-            String nextUrl = "?pageoffset=" + (pageoffset + 1);
-            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
-                String paramName = e.nextElement();
-                if (!paramName.equals("pageoffset")) {
-                    nextUrl += "&" + paramName + "=" + urlEncode(request.getParameter(paramName));
-                }
-            }
-            out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + nextUrl + "';\">Next</button>");
-        }
-
-        out.println("</div>");
     }
-
 %>
 
-<%
 
+<%
     if (true) {
+
+        for (int i = 0; i < fields.size(); i++) {
+            if ("edition.Titel".equals(fields.get(i))) {
+                fields.set(i, "edition.Zitierweise");
+                break; // falls es nur einmal vorkommt
+            }
+        }
+
         conditions = removeDuplicates(conditions);
         fields = removeDuplicates(fields);
         tables = removeDuplicates(tables);
@@ -114,6 +47,61 @@
                 fieldsString += ", " + QueryHelper.getFieldAliasSelect(fields.get(i));
             }
         }
+
+        String[] fieldArray = fieldsString.split(",\\s*");  // Aufteilen an Komma + optionalen Leerzeichen
+        List<String> fieldList = new ArrayList<>(Arrays.asList(fieldArray));
+
+        int index = fieldNames.indexOf("edition.Titel");
+        if (index != -1) {
+            fieldNames.set(index, "edition.Zitierweise");
+        }
+
+        // Belegform ganz nach vorne
+        String feld = "einzelbeleg.Belegform AS einzelbeleg_Belegform";
+        moveItem(fieldList, feld, 0);
+        moveItem(fieldNames, "einzelbeleg.Belegform", 0);
+        moveItem(headlines, "Belegform", 0);
+
+        // Quelle an zweite Stelle (Index 1)
+        feld = "quelle.Bezeichnung AS quelle_Bezeichnung";
+        moveItem(fieldList, feld, 1);
+        moveItem(fieldNames, "quelle.Bezeichnung", 1);
+        moveItem(headlines, "Quelle", 1);
+
+        // Neues Feld an Position 3 einfügen (Index 2)
+        feld = "einzelbeleg.Seite AS einzelbeleg_Seite";
+        fieldList.add(2, feld);
+        fieldNames.add(2, "einzelbeleg.Seite");
+        headlines.add(2, "Nr./Seite");
+
+        // Neues Feld an Position 4 einfügen (Index 3)
+        feld = "einzelbeleg.Raster AS einzelbeleg_Raster";
+        fieldList.add(3, feld);
+        fieldNames.add(3, "einzelbeleg.Raster");
+        headlines.add(3, "Rast.");
+
+        feld = "edition.Zitierweise AS editionZitierweise";
+        moveItem(fieldList, feld, 4);
+        moveItem(fieldNames, "edition.Zitierweise", 4);
+        moveItem(headlines, "Edition", 4);
+
+        feld = "einzelbeleg.EditionKapitel AS einzelbeleg_EditionKapitel";
+        moveItem(fieldList, feld, 5);
+        moveItem(fieldNames, "einzelbeleg.EditionKapitel", 5);
+        moveItem(headlines, "Kapitel in der Edition", 5);
+
+        feld = "einzelbeleg.EditionSeite AS einzelbeleg_EditionSeite";
+        moveItem(fieldList, feld, 6);
+        moveItem(fieldNames, "einzelbeleg.EditionSeite", 6);
+        moveItem(headlines, "Seiten in der Edition", 6);
+
+        feld = "einzelbeleg.Kontext AS einzelbeleg_Kontext";
+        moveItem(fieldList, feld, 7);
+        moveItem(fieldNames, "einzelbeleg.Kontext", 7);
+        moveItem(headlines, "Kontext", 7);
+
+        // fieldsString wieder zusammensetzen
+        fieldsString = String.join(", ", fieldList);
 
         // Tabellen
         String tablesString = "";
@@ -140,15 +128,15 @@
         }
 
         if (fields.size() == 0) {
-            out.println("Bitte wählen Sie mind. ein Ausgabefeld aus (Schritt 2).");
+            out.println(Language.getTextfield(session, "suche", "schritt2"));
             return;
         }
 
         int linecount = SucheDB.getLinecount(tablesString, conditionsString);
 
-        out.println("<h3 class=\"ut-heading ut-heading--h3\">Gesamte Treffer: " + linecount + "</h3>");
+        out.println("<h3 class=\"ut-heading ut-heading--h3\">"+Language.getTextfield(session, "suche", "gesamteTreffer") +" "+ linecount + "</h3>");
         // ########## SEITENNAVIGATION #########
-        printPageNavigation(out, request, pageoffset, pageLimit, linecount, export);
+        PrintPagination.printPageNavigation(out, request, pageoffset, pageLimit, linecount, export);
 
         String sql = "SELECT " + fieldsString + " FROM " + tablesString + " WHERE (" + conditionsString + ") " + order; //GROUP BY "+fieldsString+"
         if (export.equals("liste") || export.equals("browse")) {
@@ -233,7 +221,7 @@
                             } else if (fieldName.contains("quelle.Bezeichnung") && row.get(QueryHelper.getFieldAliasResult("quelle.ID")) != null) {
                                 out.print("<a class=\"ut-link\" href=\"quelle?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("quelle.ID"))) + "\">");
                                 link = true;
-                            } else if (fieldName.contains("edition.Titel") && row.get(QueryHelper.getFieldAliasResult("edition.ID")) != null) {
+                            } else if (fieldName.contains("edition.Zitierweise") && row.get(QueryHelper.getFieldAliasResult("edition.ID")) != null) {
                                 try {
                                     out.print("<a class=\"ut-link\" href=\"edition?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("edition.ID"))) + "\">");
                                     link = true;
@@ -287,6 +275,6 @@
         // ########## EXCEL #########
 
         // ########## SEITENNAVIGATION #########
-        printPageNavigation(out, request, pageoffset, pageLimit, linecount, export);
+        PrintPagination.printPageNavigation(out, request, pageoffset, pageLimit, linecount, export);
     }
 %>

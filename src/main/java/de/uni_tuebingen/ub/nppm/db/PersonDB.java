@@ -125,4 +125,15 @@ public class PersonDB extends AbstractBase {
             return query.getResultList();
         }
     }
+
+    public static List<Integer> getAllPublicPersonIds() throws Exception {
+        try (Session session = getSession()) {
+            String sql = "SELECT DISTINCT p.ID FROM person p "
+                    + "JOIN einzelbeleg_hatperson ep ON p.ID = ep.PersonID "
+                    + "JOIN einzelbeleg e ON ep.EinzelbelegID = e.ID "
+                    + "JOIN quelle q ON e.QuelleID = q.ID "
+                    + "WHERE q.zuVeroeffentlichen = 1 ORDER BY p.ID";
+            return session.createNativeQuery(sql).getResultList();
+        }
+    }
 }

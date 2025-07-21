@@ -8,55 +8,15 @@
 
 <jsp:include page="../dofilter.jsp" />
 
-<style>
-    .myTable .ut-table {
-        table-layout: auto; /* Automatische Breitenanpassung */
-        width: 100%;
-    }
-
-    .myTable .ut-table__row td {
-        width: auto; /* Breite der Zellen soll sich anpassen */
-    }
-
-    .myTable .ut-table__row td:first-child {
-        white-space: nowrap; /* Verhindert das Umbruchverhalten */
-    }
-
-    .myTable .ut-table__row td:last-child {
-        width: 100%; /* Die zweite Spalte nimmt den verbleibenden Platz ein */
-    }
-
-    .flex-header {
-        position: relative;
-        display: flex; /* Optional, falls du Flexbox verwenden möchtest */
-        align-items: center; /* Stellt sicher, dass die Kinder (Button und h3) vertikal ausgerichtet sind */
-    }
-
-    #toggleButton {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        height: auto; /* Optional, wenn der Button eine flexible Höhe haben soll */
-    }
-
-    h3.ut-heading {
-        margin: 0;
-        line-height: 1.5;
-    }
-
-</style>
+<link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/person.css")%>" type="text/css">
 
 <%    int id = Integer.parseInt(request.getParameter("ID"));
     boolean buttonOnOff = "true".equals(request.getParameter("allfields"));
 
     Person person = PersonDB.getById(id);
     if (person == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " ist nicht vorhanden");
-        } else {
-            throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "IdNotFoundError",String.valueOf(id));
+        throw new IdNotFoundException(msg);
 
     } else {
         Set<Einzelbeleg> listEinzelbeleg = person.getEinzelbeleg();
@@ -71,11 +31,8 @@
         }
 
         if (throwException) {
-            if (session.getAttribute("Sprache").equals("de")) {
-                throw new IdNotPublicException("Person ID P" + String.valueOf(id) + " ist nicht zu veröffentlichen");
-            } else {
-                throw new IdNotFoundException("Person ID P" + String.valueOf(id) + " is not to be published");
-            }
+            String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"person", "NotPublicError",String.valueOf(id));
+            throw new IdNotPublicException(msg);
 
         }
     }
@@ -135,6 +92,12 @@
                         <jsp:param name="ID" value="<%=id%>" />
                         <jsp:param name="Formular" value="person" />
                         <jsp:param name="Datenfeld" value="GNDLink" />
+                    </jsp:include>
+                     &nbsp;
+                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                        <jsp:param name="ID" value="<%=id%>" />
+                        <jsp:param name="Formular" value="person" />
+                        <jsp:param name="Datenfeld" value="WikidataLink" />
                     </jsp:include>
                 </td>
             </tr>

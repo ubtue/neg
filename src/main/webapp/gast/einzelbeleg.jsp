@@ -1,50 +1,14 @@
+<%@page import="java.util.Set"%>
 <%@page import="de.uni_tuebingen.ub.nppm.exception.*"%>
 <%@page import="de.uni_tuebingen.ub.nppm.model.Einzelbeleg"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.MghLemma"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.Language" isThreadSafe="false" %>
 <%@ include file="../configuration.jsp" %>
 <%@ include file="../functions.jsp" %>
 
 <jsp:include page="../dofilter.jsp" />
 
-<style>
-    .myTable .ut-table {
-        table-layout: auto; /* Automatische Breitenanpassung */
-        width: 100%;
-    }
-
-    .myTable .ut-table__row td {
-        width: auto; /* Breite der Zellen soll sich anpassen */
-    }
-
-    .myTable .ut-table__row td:first-child {
-        white-space: nowrap; /* Verhindert das Umbruchverhalten */
-    }
-
-    .myTable .ut-table__row td:last-child {
-        width: 100%; /* Die zweite Spalte nimmt den verbleibenden Platz ein */
-    }
-
-    .flex-header {
-        position: relative;
-        display: flex; /* Optional, falls du Flexbox verwenden möchtest */
-        align-items: center; /* Stellt sicher, dass die Kinder (Button und h3) vertikal ausgerichtet sind */
-    }
-
-    #toggleButton {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        height: auto; /* Optional, wenn der Button eine flexible Höhe haben soll */
-    }
-
-    h3.ut-heading {
-        margin: 0;
-        line-height: 1.5;
-    }
-
-</style>
-
+<link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/einzelbeleg.css")%>" type="text/css">
 
 <%
     int id = Integer.parseInt(request.getParameter("ID"));
@@ -52,21 +16,30 @@
 
     Einzelbeleg einzelbeleg = EinzelbelegDB.getById(id);
 
-        if(einzelbeleg == null){
-            if (session.getAttribute("Sprache").equals("de")) {
-                throw new IdNotFoundException("Einzelbeleg ID B" + String.valueOf(id) + " ist nicht vorhanden");
-            } else{
-                throw new IdNotFoundException("Single Reference ID B" + String.valueOf(id) + " does not exist");
-            }
-        }
+    if (einzelbeleg == null) {
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(), "einzelbeleg", "IdNotFoundError", String.valueOf(id));
+        throw new IdNotFoundException(msg);
+    }
 
-        if(einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1){
-            if (session.getAttribute("Sprache").equals("de")) {
-                throw new IdNotPublicException("Einzelbeleg ID B" + id + " ist nicht zu veröffentlichen");
-            } else{
-                throw new IdNotPublicException("Single Reference ID B" + String.valueOf(id) + " is not to be published");
-            }
+    if (einzelbeleg.getQuelle() == null || einzelbeleg.getQuelle().getZuVeroeffentlichen() != 1) {
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(), "einzelbeleg", "NotPublicError", String.valueOf(id));
+        throw new IdNotPublicException(msg);
+    }
+
+    boolean throwContainsInvalidStrException = false;
+
+    for (MghLemma lemmaObj : einzelbeleg.getMghLemma()) {
+        String text = lemmaObj.getMghLemma();
+        if (text != null && text.contains(Constants.forbiddenLemmaSubstring)) {
+            throwContainsInvalidStrException = true;
+            break;
         }
+    }
+
+    if (throwContainsInvalidStrException) {
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"einzelbeleg","EinzelbelegInvalidLemmaString",String.valueOf(einzelbeleg.getId()));
+        throw new ContainsInvalidStrException(msg);
+    }
 %>
 
 <jsp:include page="layout/titel.inc.jsp">

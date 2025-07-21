@@ -39,6 +39,7 @@
                 <li><a href="administration?tab=tab1" <%= "tab1".equals(activeTab) ? "class='active'" : ""%>><%= Language.getTextfield(session, "administration", "TabBenutzerVerwalten")%></a></li>
                 <li><a href="administration?tab=tab2" <%= "tab2".equals(activeTab) ? "class='active'" : ""%>><%= Language.getTextfield(session, "administration", "TabBenutzerNeu")%></a></li>
                 <li><a href="administration?tab=tab3" <%= "tab3".equals(activeTab) ? "class='active'" : ""%>><%= Language.getTextfield(session, "administration", "TabAuswahlfelder")%></a></li>
+                <li><a href="administration?tab=tab4" <%= "tab4".equals(activeTab) ? "class='active'" : ""%>><%= Language.getTextfield(session, "administration", "TabLemmaKorrektur")%></a></li>
             </ul>
         </div>
 
@@ -164,10 +165,13 @@
                         }
                     }
                 %>
-            </table>
-            <%
-                }
-            %>
+            </table>            
+            <% } else if ("tab4".equals(activeTab)) { %>
+                <div id="lemmaKorr-container" class="container mt-2">
+                    <div id="lemmaKorr-initials" class=""><%= Language.getTextfield(session, "administration", "DBloading")%></div>
+                    <div id="lemmaKorr-list" class="fill-height"></div>
+                </div>
+            <% } %>
         </div>
         <%
             }

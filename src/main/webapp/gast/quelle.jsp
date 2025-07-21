@@ -8,26 +8,8 @@
 
 <jsp:include page="../dofilter.jsp" />
 
-<style>
-    .flex-header {
-        position: relative;
-        display: flex; /* Optional, falls du Flexbox verwenden möchtest */
-        align-items: center; /* Stellt sicher, dass die Kinder (Button und h3) vertikal ausgerichtet sind */
-    }
+<link rel="stylesheet" href="<%= Utils.getVersionedHref(request, application, "/gast/layout/quelle.css") %>">
 
-    #toggleButton {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        height: auto; /* Optional, wenn der Button eine flexible Höhe haben soll */
-    }
-
-    h3.ut-heading {
-        margin: 0;
-        line-height: 1.5;
-    }
-</style>
 
 <%    int id = 1;
     id = Integer.parseInt(request.getParameter("ID"));
@@ -35,19 +17,13 @@
 
     Quelle quelle = QuelleDB.getById(id);
     if (quelle == null) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotFoundException("Quellen ID Q" + String.valueOf(id) + " ist nicht vorhanden");
-        } else {
-            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " does not exist");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(),"quelle", "IdNotFoundError",String.valueOf(id));
+        throw new IdNotFoundException(msg);
     }
 
     if (quelle.getZuVeroeffentlichen() != 1) {
-        if (session.getAttribute("Sprache").equals("de")) {
-            throw new IdNotPublicException("Quellen ID Q" + id + " ist nicht zu veröffentlichen");
-        } else {
-            throw new IdNotFoundException("Source ID Q" + String.valueOf(id) + " is not to be published");
-        }
+        String msg = DatenbankDB.getLabel(session.getAttribute("Sprache").toString(), "quelle", "NotPublicError",String.valueOf(id));
+        throw new IdNotPublicException(msg);
     }
 
     String formular = "quelle";
@@ -90,12 +66,17 @@
     <h3 class="ut-heading ut-heading--h3">
         <% Language.printTextfield(out, session, "quelle", "Bezeichnung");%>
         <jsp:include page="../inc.erzeugeFormular.jsp">
-        <jsp:param name="ID" value="<%= id%>"/>
-        <jsp:param name="Formular" value="quelle"/>
-        <jsp:param name="Datenfeld" value="Bezeichnung"/>
-        <jsp:param name="size" value="50"/>
-        <jsp:param name="Readonly" value="yes"/>
-    </jsp:include>
+            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="Formular" value="quelle"/>
+            <jsp:param name="Datenfeld" value="Bezeichnung"/>
+            <jsp:param name="size" value="50"/>
+            <jsp:param name="Readonly" value="yes"/>
+        </jsp:include>
+        <jsp:include page="../inc.erzeugeFormular.jsp">
+            <jsp:param name="ID" value="<%=id%>" />
+            <jsp:param name="Formular" value="quelle" />
+            <jsp:param name="Datenfeld" value="GeschichtsquellenLink" />
+        </jsp:include>
     </h3>
     <button class="ut-btn ut-btn--color-primary-4" id="toggleButton" style="margin-top: -8px;" onclick="toggleAllFields()">
         <% Language.getTextfield(session, "fields", "On"); %>
@@ -154,7 +135,7 @@
 
 <!----------Einzelbelege---------->
 <h3 class="ut-heading ut-heading--h3">
-    <a class="ut-link" href="<%= Utils.getBaseUrl(request)%>/gast/suchergebnis?einzelbelegeVonQuelle=true&Quellenliste=<%= id%>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit="><% Language.printTextfield(out, session, "einzelbeleg", "Titel");%></a>
+    <a class="ut-link" href="<%= Utils.getBaseUrl(request)%>/gast/suchergebnis?einzelbelegeVonQuelle=true&Quellenliste=<%= id%>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&StandEinzelbeleg=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit="><% Language.printTextfield(out, session, "einzelbeleg", "Titel");%></a>
 </h3>
 <br>
 

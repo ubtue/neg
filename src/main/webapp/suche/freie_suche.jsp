@@ -306,9 +306,9 @@
                                        "(VON_JAHR_JHDT(quelle.vonJahr, quelle.vonJahrhundert, quelle.bisJahrhundert)<="+vonNum+" and BIS_JAHR_JHDT(quelle.bisJahr, quelle.bisJahrhundert, quelle.vonJahrhundert)>="+bisNum+"))");
     einzelbeleg = true;
   }
-  
+
     String provenanceEinzelbeleg = request.getParameter("ProvenanceEinzelbeleg");
-    
+
     if (provenanceEinzelbeleg != null && Integer.parseInt(provenanceEinzelbeleg) > -1) {
         if(Integer.parseInt(provenanceEinzelbeleg) == 0){
             conditions.add("einzelbeleg.provenance_source = 'NeG'");
@@ -320,7 +320,7 @@
 
   // ######### SUCHANFRAGE ##########
 
-    String sprache = "de";
+    String sprache = Constants.DEFAULT_LANG;
   if (session != null && session.getAttribute("Sprache") != null)
     sprache = (String)session.getAttribute("Sprache");
   /*
@@ -571,7 +571,7 @@
     fieldNames.add("einzelbeleg.EditionSeite");
    // headlines.add("Seite");
           headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "EditionSeite"));
-    einzelbeleg = true;    
+    einzelbeleg = true;
   }
   if (request.getParameter("Ausgabe_Provenance_Einzelbeleg") != null && request.getParameter("Ausgabe_Provenance_Einzelbeleg").equals("on")) {
         fields.add("einzelbeleg.provenance_source");
@@ -1382,7 +1382,7 @@
 
 
            if(orderV[z].startsWith("einzelbeleg.ID"))
-              out.print(format(DBtoHTML(text), "einzelbeleg.Belegform"));
+              out.print(format(text, "einzelbeleg.Belegform"));
            else if(orderV[z].endsWith("Jahr")){
               int ja = Integer.parseInt(oldValue[z]);
               out.print("" + (ja* zeitraum) + "-" + ((ja+1)* zeitraum -1));
@@ -1391,7 +1391,7 @@
 
                String format = orderV[z];
                if(orderV[z].equals("Erstglied") || orderV[z].equals("Zweitglied")) format = "PLemma";
-                    out.print(format(DBtoHTML(text), format));
+                    out.print(format(text, format));
                }
                if (link) {
                  out.print("</a>&nbsp;");
