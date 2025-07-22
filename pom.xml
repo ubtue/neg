@@ -99,13 +99,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.0</version>
+            <version>5.10.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.0</version>
+            <version>5.10.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -159,10 +159,15 @@
                     <include>*.*</include>
                 </includes>
             </resource>
-            <resource>
-                <directory>src/test/java/de/uni_tuebingen/ub/nppm/test/resources/</directory>
-            </resource>
         </resources>
+        <testResources>
+          <testResource>
+            <directory>src/test/java/de/uni_tuebingen/ub/nppm/test/resources</directory>
+            <includes>
+              <include>*.*</include>
+            </includes>
+          </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.bsc.maven</groupId>

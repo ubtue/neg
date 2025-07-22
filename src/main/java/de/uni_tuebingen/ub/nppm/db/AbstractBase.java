@@ -91,7 +91,7 @@ public class AbstractBase {
             settings.put("hibernate.cache.use_second_level_cache", "true");
             settings.put("hibernate.cache.region.factory_class", "jcache");
             settings.put("hibernate.javax.cache.provider", "org.ehcache.jsr107.EhcacheCachingProvider");
-            settings.put("hibernate.javax.cache.uri", "classpath:ehcache.xml");
+            settings.put("hibernate.javax.cache.uri", "ehcache.xml");
 
             // Avoid FetchType.EAGER, automatically create session with FetchType.LAZY if there is none
             // Note: This can lead to Performance problems (N+1)
