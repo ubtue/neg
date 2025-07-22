@@ -38,9 +38,9 @@ public class SucheDB extends AbstractBase {
         // in der auto completion->frontend->erweiterte suche keine einträge mit Constants.forbiddenLemmaSubstring zeigen
         if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
             if (addWhereStatement) {
-                sql += " AND " + field + " NOT LIKE '%"+AbstractBase.escapeSql(Constants.forbiddenLemmaSubstring)+"%'";
+                sql += " AND " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring)+"%'";
             } else {
-                sql += " WHERE " + field + " NOT LIKE '%"+AbstractBase.escapeSql(Constants.forbiddenLemmaSubstring)+"%'";
+                sql += " WHERE " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring)+"%'";
             }
         }
 
@@ -241,7 +241,7 @@ public class SucheDB extends AbstractBase {
                    + " LEFT JOIN quelle ON einzelbeleg.QuelleID=quelle.ID"
                    + " LEFT JOIN edition ON einzelbeleg.EditionID=edition.ID"
                    + " WHERE quelle.zuVeroeffentlichen='1'"
-                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escapeSql(Constants.forbiddenLemmaSubstring)+"%')"
+                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring)+"%')"
                    + " AND mgh_lemma.ID IN"
                    + " ("
                    + " SELECT DISTINCT mgh_lemma.ID FROM einzelbeleg"

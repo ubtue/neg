@@ -505,14 +505,11 @@ public class AbstractBase {
     public static String escape(String s, char... delimiters) {
         if (s != null) {
             s = s.replace("\\", "\\\\");
+            s = s.replace("'", "''");
             for (char delimiter : delimiters) {
                 s = s.replace(String.valueOf(delimiter), "\\" + delimiter);
             }
         }
         return s;
-    }
-
-    public static String escapeSql(String s) {
-        return s == null ? null : s.replace("'", "''");
     }
 }

@@ -145,7 +145,7 @@
     }
 
     if (mghlemma) {
-        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escapeSql(Constants.forbiddenLemmaSubstring)+"%'");
+        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring)+"%'");
     }
 
     // ### ZUR PERSON ###
@@ -1097,7 +1097,7 @@
         Keine Einzelbelege ausgeben die mit einem Lemma verküpft sind welches Constants.forbiddenLemmaSubstring enthält
         */
         if (einzelbeleg) {
-            conditions.add("(mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escapeSql(Constants.forbiddenLemmaSubstring)+"%')");
+            conditions.add("(mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring)+"%')");
             mghlemma = true;
         }
 
