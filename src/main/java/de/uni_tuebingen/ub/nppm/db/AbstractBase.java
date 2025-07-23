@@ -26,11 +26,11 @@ import javax.persistence.Table;
 import org.hibernate.type.StringType;
 
 public class AbstractBase {
-    public static Map<Character, String> sqlEscapes = new HashMap<>();
+    public static Map<Character, String> sqlEscapesSingleQuotes = new HashMap<>();
 
     static {
-        sqlEscapes.put('\'', "''");
-        sqlEscapes.put('\\', "\\\\");
+        sqlEscapesSingleQuotes.put('\'', "''");
+        sqlEscapesSingleQuotes.put('\\', "\\\\");
     }
     protected static SessionFactory sessionFactory;
 

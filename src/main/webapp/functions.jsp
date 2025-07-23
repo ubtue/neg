@@ -21,7 +21,7 @@
     }
 
     String DBtoDB(String s) {
-        return AbstractBase.escape(s,AbstractBase.sqlEscapes);
+        return AbstractBase.escape(s,AbstractBase.sqlEscapesSingleQuotes);
     }
 
     String DBtoJS(String s) {
