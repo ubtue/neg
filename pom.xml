@@ -15,6 +15,10 @@
     </properties>
 
     <dependencies>
+        <!--
+            Note: To check for updates, just run:
+            `mvn versions:display-dependency-updates`
+        -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -47,8 +51,18 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
+            <artifactId>hibernate-jcache</artifactId>
             <version>5.6.15.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.9.11</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -58,7 +72,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
+            <version>3.18.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -89,13 +103,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.0</version>
+            <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.0</version>
+            <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -131,7 +145,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
+            <version>4.5.14</version>
         </dependency>
         <dependency>
             <groupId>com.opencsv</groupId>
@@ -144,9 +158,20 @@
         <finalName>neg</finalName>
         <resources>
             <resource>
-                <directory>src/test/java/de/uni_tuebingen/ub/nppm/test/resources/</directory>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.*</include>
+                </includes>
             </resource>
         </resources>
+        <testResources>
+          <testResource>
+            <directory>src/test/java/de/uni_tuebingen/ub/nppm/test/resources</directory>
+            <includes>
+              <include>*.*</include>
+            </includes>
+          </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.bsc.maven</groupId>
