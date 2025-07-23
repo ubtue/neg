@@ -26,7 +26,12 @@ import javax.persistence.Table;
 import org.hibernate.type.StringType;
 
 public class AbstractBase {
+    public static Map<Character, String> sqlEscapes = new HashMap<>();
 
+    static {
+        sqlEscapes.put('\'', "''");
+        sqlEscapes.put('\\', "\\\\");
+    }
     protected static SessionFactory sessionFactory;
 
     protected static Properties cliProperties = null;
@@ -502,14 +507,19 @@ public class AbstractBase {
         return getSingleField("provenance_source", tabelle, Integer.valueOf(id));
     }
 
-    public static String escape(String s, char... delimiters) {
-        if (s != null) {
-            s = s.replace("\\", "\\\\");
-            s = s.replace("'", "''");
-            for (char delimiter : delimiters) {
-                s = s.replace(String.valueOf(delimiter), "\\" + delimiter);
+    public static String escape(String input, Map<Character, String> escapeMap) {
+        if (input == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (escapeMap.containsKey(c)) {
+                sb.append(escapeMap.get(c));
+            } else {
+                sb.append(c);
             }
         }
-        return s;
+        return sb.toString();
     }
 }
