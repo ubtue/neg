@@ -36,7 +36,7 @@ public class ExportCsvServlet extends HttpServlet {
                 "Belegform", "Bezeichnung", "seite",
                 "raster", "editionZitierweise", "EditionKapitel", "EditionSeite",
                 "quelleVonJahr", "quelleVonJahrhundert", "quelleBisJahr", "quelleBisJahrhundert",
-                "VonJahr", "VonJahrhundert", "BisJahr", "BisJahrhundert", "quelleBerJahr"
+                "VonJahr", "VonJahrhundert", "BisJahr", "BisJahrhundert", "quelleBerJahr", "Standardname"
         );
 
         List<String> headlines = new ArrayList<>();
@@ -58,6 +58,8 @@ public class ExportCsvServlet extends HttpServlet {
             headlines.add(Language.getTextfield(request.getSession(), "suche", "EBbJ"));
             headlines.add(Language.getTextfield(request.getSession(), "suche", "EBbJh"));
             headlines.add(Language.getTextfield(request.getSession(), "suche", "QJahr"));
+            headlines.add(Language.getTextfield(request.getSession(), "person", "Person"));
+
         } catch (Exception ex) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,ex.getLocalizedMessage());
         }
@@ -82,7 +84,24 @@ public class ExportCsvServlet extends HttpServlet {
                 String[] data = new String[fieldNames.size()];
                 for (int i = 0; i < fieldNames.size(); i++) {
                     Object val = row.get(fieldNames.get(i));
-                    data[i] = val == null ? "" : val.toString();
+                    // Spezialfall Standardname
+                    if (fieldNames.get(i).equals("Standardname")) {
+                        if (val == null || "".equals(String.valueOf(val).trim())) {
+                            try {
+                                data[i] = Language.getTextfield(request.getSession(), "suche", "pzuordnung");
+                            } catch (Exception ex) {
+                                data[i] = "-";
+                            }
+                        } else {
+                            data[i] = val.toString();
+                        }
+                    } // Spezialfall quelleBerJahr
+                    else if (fieldNames.get(i).equals("quelleBerJahr") && val != null && "99999".equals(String.valueOf(val))) {
+                        data[i] = "-";
+                    } // Standard-Fall
+                    else {
+                        data[i] = val == null ? "" : val.toString();
+                    }
                 }
                 csvWriter.writeNext(data);
             }
