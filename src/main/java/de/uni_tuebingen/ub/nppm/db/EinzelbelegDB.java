@@ -236,7 +236,7 @@ public class EinzelbelegDB extends AbstractBase {
                     + "FROM einzelbeleg e "
                     + "  JOIN quelle q ON e.QuelleID = q.ID AND q.zuVeroeffentlichen = 1 "
                     + "  LEFT JOIN einzelbeleg_hatmghlemma eh ON eh.EinzelbelegID = e.ID "
-                    + "  LEFT JOIN mgh_lemma m ON m.ID = eh.MGHLemmaID AND m.MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%' "
+                    + "  LEFT JOIN mgh_lemma m ON m.ID = eh.MGHLemmaID AND m.MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%' "
                     + "WHERE m.ID IS NULL "
                     + "ORDER BY e.ID";
             return session.createNativeQuery(sql).getResultList();

@@ -26,7 +26,11 @@ import javax.persistence.Table;
 import org.hibernate.type.StringType;
 
 public class AbstractBase {
+    public static Map<Character, String> sqlEscapesSingleQuotes = new HashMap<>();
 
+    static {
+        sqlEscapesSingleQuotes.put('\'', "''");
+    }
     protected static SessionFactory sessionFactory;
 
     protected static Properties cliProperties = null;
@@ -503,13 +507,47 @@ public class AbstractBase {
         return getSingleField("provenance_source", tabelle, Integer.valueOf(id));
     }
 
-    public static String escape(String s, char... delimiters) {
-        if (s != null) {
-            s = s.replace("\\", "\\\\");
-            for (char delimiter : delimiters) {
-                s = s.replace(String.valueOf(delimiter), "\\" + delimiter);
+    /**
+     * Escapes backslash always, plus any additional delimiters
+     */
+    public static String escape(String input, char... delimiters) {
+        if (input == null) {
+            return null;
+        }
+        //always escape backslash
+        Map<Character, String> escapeMap = new HashMap<>();
+        escapeMap.put('\\', "\\\\");
+        if (delimiters != null) {
+            for (char d : delimiters) {
+                escapeMap.put(d, "\\" + d);
             }
         }
-        return s;
+        return escape(input, escapeMap);
+    }
+
+    /**
+     * Escapes with a custom escapeMap, but always escapes backslash.
+     */
+    public static String escape(String input, Map<Character, String> escapeMap) {
+        if (input == null) {
+            return null;
+        }
+        Map<Character, String> mapToUse = new HashMap<>();
+        if (escapeMap != null) {
+            mapToUse.putAll(escapeMap);
+        }
+        
+        mapToUse.put('\\', "\\\\");
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (mapToUse.containsKey(c)) {
+                sb.append(mapToUse.get(c));
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }

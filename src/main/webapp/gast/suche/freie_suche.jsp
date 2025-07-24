@@ -145,7 +145,7 @@
     }
 
     if (mghlemma) {
-        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%'");
+        conditions.add("mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'");
     }
 
     // ### ZUR PERSON ###
@@ -308,12 +308,14 @@
     }
     conditions.add("quelle.zuVeroeffentlichen=1");
     einzelbeleg = true;
-    if (request.getParameter("Quelle") != null && !request.getParameter("Quelle").trim().equals("") && (request.getParameterValues("Quellenliste[]") == null)) {
+    String[] quellenliste;
+    quellenliste = request.getParameterValues("Quellenliste[]");
+    if (request.getParameter("Quelle") != null && !request.getParameter("Quelle").trim().equals("") && (quellenliste == null || quellenliste.length == 0 || Utils.allValuesAre(quellenliste, "-1"))) {
         conditions.add("quelle.Bezeichnung LIKE '" + DBtoDB(request.getParameter("Quelle").trim()) + "'");
         namenkommentar = true;
     }
-    String[] quellenliste;
-    if ((quellenliste = request.getParameterValues("Quellenliste[]")) != null) {
+    
+    if (quellenliste != null) {
         for (String qid : quellenliste) {
             // Nur numerische IDs akzeptieren
             if (!qid.equals("-1") && Utils.safeNumeric(qid)) {
@@ -1097,7 +1099,7 @@
         Keine Einzelbelege ausgeben die mit einem Lemma verküpft sind welches Constants.forbiddenLemmaSubstring enthält
         */
         if (einzelbeleg) {
-            conditions.add("(mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%')");
+            conditions.add("(mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%')");
             mghlemma = true;
         }
 
