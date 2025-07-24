@@ -30,7 +30,6 @@ public class AbstractBase {
 
     static {
         sqlEscapesSingleQuotes.put('\'', "''");
-        sqlEscapesSingleQuotes.put('\\', "\\\\");
     }
     protected static SessionFactory sessionFactory;
 
@@ -507,15 +506,44 @@ public class AbstractBase {
         return getSingleField("provenance_source", tabelle, Integer.valueOf(id));
     }
 
+    /**
+     * Escapes backslash always, plus any additional delimiters (each delimiter
+     * will be escaped with itself).
+     */
+    public static String escape(String input, char... delimiters) {
+        if (input == null) {
+            return null;
+        }
+        // Build escapeMap: always escape backslash, plus each delimiter
+        Map<Character, String> escapeMap = new HashMap<>();
+        escapeMap.put('\\', "\\\\");
+        if (delimiters != null) {
+            for (char d : delimiters) {
+                escapeMap.put(d, String.valueOf(d) + String.valueOf(d));
+            }
+        }
+        return escape(input, escapeMap);
+    }
+
+    /**
+     * Escapes with a custom escapeMap, but always escapes backslash.
+     */
     public static String escape(String input, Map<Character, String> escapeMap) {
         if (input == null) {
             return null;
         }
+        Map<Character, String> mapToUse = new HashMap<>();
+        if (escapeMap != null) {
+            mapToUse.putAll(escapeMap);
+        }
+        
+        mapToUse.put('\\', "\\\\");
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
-            if (escapeMap.containsKey(c)) {
-                sb.append(escapeMap.get(c));
+            if (mapToUse.containsKey(c)) {
+                sb.append(mapToUse.get(c));
             } else {
                 sb.append(c);
             }
