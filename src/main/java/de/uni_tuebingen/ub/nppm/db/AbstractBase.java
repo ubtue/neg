@@ -507,19 +507,18 @@ public class AbstractBase {
     }
 
     /**
-     * Escapes backslash always, plus any additional delimiters (each delimiter
-     * will be escaped with itself).
+     * Escapes backslash always, plus any additional delimiters
      */
     public static String escape(String input, char... delimiters) {
         if (input == null) {
             return null;
         }
-        // Build escapeMap: always escape backslash, plus each delimiter
+        //always escape backslash
         Map<Character, String> escapeMap = new HashMap<>();
         escapeMap.put('\\', "\\\\");
         if (delimiters != null) {
             for (char d : delimiters) {
-                escapeMap.put(d, String.valueOf(d) + String.valueOf(d));
+                escapeMap.put(d, "\\" + d);
             }
         }
         return escape(input, escapeMap);
