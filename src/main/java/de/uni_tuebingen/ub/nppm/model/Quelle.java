@@ -16,6 +16,10 @@ public class Quelle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
+    
+    @ManyToOne(targetEntity = SelektionQuellengattung.class)
+    @JoinColumn(name = "QuelleGattungID", referencedColumnName = "ID")
+    private SelektionQuellengattung quelleGattung;
 
     @Column(name = "Bezeichnung", length=255)
     private String bezeichnung;
@@ -139,6 +143,14 @@ public class Quelle {
 
     public String getQuellennummer() {
         return quellennummer;
+    }
+    
+    public SelektionQuellengattung getQuelleGattung() {
+        return quelleGattung;
+    }
+
+    public void setQuelleGattung(SelektionQuellengattung quelleGattung) {
+        this.quelleGattung = quelleGattung;
     }
 
     public void setQuellennummer(String quellennummer) {
@@ -402,7 +414,7 @@ public class Quelle {
         Utils.addIfValid(jsonObject, "quellennummer", Utils.sanitize(this.getQuellennummer()));
         Utils.addIfValid(jsonObject, "quellenKommentarDatei", Utils.sanitize(this.getQuellenKommentarDatei()));
         Utils.addIfValid(jsonObject, "ueberlieferungsKommentarDatei", Utils.sanitize(this.getUeberlieferungsKommentarDatei()));
-
+        Utils.addIfValid(jsonObject, "quelleGattung", this.getQuelleGattung() != null ? Utils.sanitize(this.getQuelleGattung().getBezeichnung()) : null);
         // Bearbeitungsstatus
         Utils.addIfValid(jsonObject, "bearbeitungsstatus", this.getBearbeitungsstatus() != null ? this.getBearbeitungsstatus().getId() : null);
 
