@@ -1,3 +1,5 @@
+START TRANSACTION;
+
 #Temp Table für Import
 DROP TABLE IF EXISTS bereinigung_csv;
 
@@ -39,5 +41,30 @@ JOIN (
 ) e ON q.ID = e.QuelleID
 SET q.QuelleGattungID = e.QuelleGattungID;
 
-#optional
+#cleanup
+ALTER TABLE einzelbeleg DROP FOREIGN KEY einzelbeleg_QuelleGattungID;
 ALTER TABLE einzelbeleg DROP COLUMN QuelleGattungID;
+#Adjust View
+ALTER VIEW gastselektion_quellengattung AS
+SELECT DISTINCT
+    selektion_quellengattung.ID AS ID,
+    selektion_quellengattung.Bezeichnung AS Bezeichnung,
+    selektion_quellengattung.parentId AS parentId
+FROM
+    einzelbeleg
+    LEFT JOIN quelle ON einzelbeleg.QuelleID = quelle.ID
+    LEFT JOIN selektion_quellengattung ON quelle.QuelleGattungID = selektion_quellengattung.ID
+WHERE
+    quelle.ZuVeroeffentlichen = 1
+UNION
+
+SELECT
+    selektion_quellengattung.ID,
+    selektion_quellengattung.Bezeichnung,
+    selektion_quellengattung.parentId
+FROM
+    selektion_quellengattung
+WHERE
+    selektion_quellengattung.ID IN (-1, 0);
+
+COMMIT;
