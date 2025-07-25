@@ -2,8 +2,10 @@ package de.uni_tuebingen.ub.nppm.cli;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
@@ -14,16 +16,17 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
+import java.time.LocalDateTime;
 
 public class Sitemap extends AbstractBase {
 
     private static DocumentBuilderFactory docFactory;
     private static DocumentBuilder docBuilder;
-    private static Document doc;
-    private static Element rootElement;
-    private static String outputPath;
+    private static String outputDirectory;
     private static boolean outputPretty = false;
-    private static String resolverBaseUrl = "https://nppm.ub.uni-tuebingen.de/id/";
+    private static String baseUrlResolver = "https://nppm.ub.uni-tuebingen.de/id/";
+    private static String baseUrlSitemaps = "https://nppm.ub.uni-tuebingen.de/sitemaps/";
+    private static List<String> sitemaps = new ArrayList<String>();
 
     /**
      * Generate XML Sitemap
@@ -35,100 +38,82 @@ public class Sitemap extends AbstractBase {
         // Process args
         switch (args.length) {
             case 1:
-                outputPath = args[0];
+                outputDirectory = args[0];
                 break;
             case 2:
                 if (!args[0].equals("--pretty"))
                     Usage("When 2 parameters are given, the first one must be \"--pretty\"!");
                 outputPretty = true;
-                outputPath = args[1];
+                outputDirectory = args[1];
                 break;
             default:
-                Usage("Usage: Sitemap [--pretty] xml_output_path");
+                Usage("Usage: Sitemap [--pretty] output_directory");
+        }
+
+        // create output directory if it does not exist
+        File dir = new File(outputDirectory);
+        if (!dir.exists()) {
+            dir.mkdir();
         }
 
         // Load Properties (DB access credentials, etc.)
         LoadProperties();
 
-        // Generate + write XML document
-        InitDocument();
-        AddQuellen();
-        AddPersons();
-        AddEinzelbelege();
-        WriteOutput();
+        // Generate + write XML documents
+        // Since bots will struggle with single files > 10MB, we need to generate an Index file and split into subfiles.
+        GenerateQuellen();
+        GeneratePersons();
+        GenerateNamen();
+        GenerateEinzelbelege();
+        GenerateIndex();
 
         // Exit successfully (we need this or the program will hang forever)
         System.exit(0);
     }
 
-    private static void InitDocument() throws ParserConfigurationException {
+    private static Document InitDocument(String rootElementName) throws ParserConfigurationException {
         docFactory = DocumentBuilderFactory.newInstance();
         docBuilder = docFactory.newDocumentBuilder();
-        doc = docBuilder.newDocument();
-        rootElement = doc.createElement("urlset");
+        Document document = docBuilder.newDocument();
+        Element rootElement = document.createElement(rootElementName);
         rootElement.setAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
-        doc.appendChild(rootElement);
+        document.appendChild(rootElement);
+        return document;
     }
 
-    private static void AddEntry(String persistentIdentifier, Date lastmodDate) throws Exception {
-        Element urlElement = doc.createElement("url");
-        Element locElement = doc.createElement("loc");
-        locElement.setTextContent(resolverBaseUrl + persistentIdentifier);
+    private static Document InitSitemapIndexDocument() throws ParserConfigurationException {
+        return InitDocument("sitemapindex");
+    }
+
+    private static Document InitSitemapDocument() throws ParserConfigurationException {
+        return InitDocument("urlset");
+    }
+
+    private static void AddEntry(Document document, String persistentIdentifier, Date lastmodDate) throws Exception {
+        Element urlElement = document.createElement("url");
+        Element locElement = document.createElement("loc");
+        locElement.setTextContent(baseUrlResolver + persistentIdentifier);
         urlElement.appendChild(locElement);
         if (lastmodDate != null) {
-            Element lastmodElement = doc.createElement("lastmod");
+            Element lastmodElement = document.createElement("lastmod");
             lastmodElement.setTextContent(lastmodDate.toString());
             urlElement.appendChild(lastmodElement);
         }
-        rootElement.appendChild(urlElement);
+        document.getDocumentElement().appendChild(urlElement);
     }
 
-    private static void AddEinzelbelege() throws Exception {
-        List list = EinzelbelegDB.getList();
-        for (Object object : list) {
-            Einzelbeleg einzelbeleg = (Einzelbeleg) object;
-            if (einzelbeleg.getQuelle() != null && einzelbeleg.getQuelle().getZuVeroeffentlichen() > 0) {
-                String persistentIdentifier = "B" + einzelbeleg.getId().toString();
-                Date lastmodDate = einzelbeleg.getLetzteAenderung();
-                AddEntry(persistentIdentifier, lastmodDate);
-            }
-        }
+    private static void AddSitemap(Document document, String filename) throws Exception {
+        Element sitemapElement = document.createElement("sitemap");
+        Element locElement = document.createElement("loc");
+        locElement.setTextContent(baseUrlSitemaps + filename);
+        sitemapElement.appendChild(locElement);
+        Element lastmodElement = document.createElement("lastmod");
+        lastmodElement.setTextContent(LocalDateTime.now().toString());
+        sitemapElement.appendChild(lastmodElement);
+        document.getDocumentElement().appendChild(sitemapElement);
     }
 
-    private static void AddNamen() throws Exception {
-        List list = LemmaDB.getList();
-        for (Object object: list) {
-            MghLemma lemma = (MghLemma)object;
-            String persistentIdentifier = "M" + lemma.getId();
-            Date lastmodDate = lemma.getLetzteAenderung();
-            AddEntry(persistentIdentifier, lastmodDate);
-        }
-    }
-
-    private static void AddPersons() throws Exception {
-        List list = PersonDB.getListPersonPublic();
-        for (Object object : list) {
-            Person person = (Person) object;
-
-            String persistentIdentifier = "P" + person.getId().toString();
-            Date lastmodDate = person.getLetzteAenderung();
-            AddEntry(persistentIdentifier, lastmodDate);
-        }
-    }
-
-    private static void AddQuellen() throws Exception {
-        List list = QuelleDB.getList();
-        for (Object object : list) {
-            Quelle quelle = (Quelle) object;
-            if (quelle.getZuVeroeffentlichen() > 0) {
-                String persistentIdentifier = "Q" + quelle.getId().toString();
-                Date lastmodDate = quelle.getLetzteAenderung();
-                AddEntry(persistentIdentifier, lastmodDate);
-            }
-        }
-    }
-
-    private static void WriteOutput() throws IOException, TransformerException {
+    private static void WriteDocument(Document document, String outputPath) throws IOException, TransformerException {
         try (FileOutputStream output = new FileOutputStream(outputPath)) {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -136,9 +121,75 @@ public class Sitemap extends AbstractBase {
             if (outputPretty)
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            DOMSource source = new DOMSource(doc);
+            DOMSource source = new DOMSource(document);
             StreamResult result = new StreamResult(output);
             transformer.transform(source, result);
         }
+    }
+
+    private static void GenerateAndRegisterSitemap(Document document, String filename) throws Exception {
+        sitemaps.add(filename);
+        WriteDocument(document, outputDirectory + "/" + filename);
+    }
+
+    private static void GenerateEinzelbelege() throws Exception {
+        Document document = InitSitemapDocument();
+        List list = EinzelbelegDB.getList();
+        for (Object object : list) {
+            Einzelbeleg einzelbeleg = (Einzelbeleg) object;
+            if (einzelbeleg.getQuelle() != null && einzelbeleg.getQuelle().getZuVeroeffentlichen() > 0) {
+                String persistentIdentifier = "B" + einzelbeleg.getId().toString();
+                Date lastmodDate = einzelbeleg.getLetzteAenderung();
+                AddEntry(document, persistentIdentifier, lastmodDate);
+            }
+        }
+        GenerateAndRegisterSitemap(document, "sitemap-einzelbelege.xml");
+    }
+
+    private static void GenerateNamen() throws Exception {
+        Document document = InitSitemapDocument();
+        List list = LemmaDB.getList();
+        for (Object object: list) {
+            MghLemma lemma = (MghLemma)object;
+            String persistentIdentifier = "M" + lemma.getId();
+            Date lastmodDate = lemma.getLetzteAenderung();
+            AddEntry(document, persistentIdentifier, lastmodDate);
+        }
+        GenerateAndRegisterSitemap(document, "sitemap-namen.xml");
+    }
+
+    private static void GeneratePersons() throws Exception {
+        Document document = InitSitemapDocument();
+        List list = PersonDB.getListPersonPublic();
+        for (Object object : list) {
+            Person person = (Person) object;
+
+            String persistentIdentifier = "P" + person.getId().toString();
+            Date lastmodDate = person.getLetzteAenderung();
+            AddEntry(document, persistentIdentifier, lastmodDate);
+        }
+        GenerateAndRegisterSitemap(document, "sitemap-personen.xml");
+    }
+
+    private static void GenerateQuellen() throws Exception {
+        Document document = InitSitemapDocument();
+        List list = QuelleDB.getList();
+        for (Object object : list) {
+            Quelle quelle = (Quelle) object;
+            if (quelle.getZuVeroeffentlichen() > 0) {
+                String persistentIdentifier = "Q" + quelle.getId().toString();
+                Date lastmodDate = quelle.getLetzteAenderung();
+                AddEntry(document, persistentIdentifier, lastmodDate);
+            }
+        }
+        GenerateAndRegisterSitemap(document, "sitemap-quellen.xml");
+    }
+
+    private static void GenerateIndex() throws Exception {
+        Document document = InitSitemapIndexDocument();
+        for (String sitemap : sitemaps) {
+            AddSitemap(document, sitemap);
+        }
+        WriteDocument(document, outputDirectory + "/sitemapIndex.xml");
     }
 }
