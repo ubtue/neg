@@ -66,6 +66,10 @@ For servers (ZDV):
             - Note that reloadable="true" can also be added for development machines, but it is not recommended in production
     - don't forget the SSL certificate
     - make sure you use the correct matomoSiteId
+- cronjobs
+    - See "cronjobs" file in the root directory, add entries to crontab
+    - DATA_DIR and LOG_DIR should be created manually
+    - Create /root/.neg.properties (see above)
 - Firewall
     - adjust firewall scripts, see /zdv-system/scripts/ipt
 - Backup

@@ -12,8 +12,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import de.uni_tuebingen.ub.nppm.db.PersonDB;
-import de.uni_tuebingen.ub.nppm.model.Person;
+import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.model.*;
 
 public class Sitemap extends AbstractBase {
 
@@ -23,6 +23,7 @@ public class Sitemap extends AbstractBase {
     private static Element rootElement;
     private static String outputPath;
     private static boolean outputPretty = false;
+    private static String resolverBaseUrl = "https://nppm.ub.uni-tuebingen.de/id/";
 
     /**
      * Generate XML Sitemap
@@ -50,10 +51,10 @@ public class Sitemap extends AbstractBase {
         LoadProperties();
 
         // Generate + write XML document
-        // So far we only add public persons since this is a first sample.
-        // Other public pages (Einzelbeleg, Namen, Quellen, News pages etc.) can be added later.
         InitDocument();
+        AddQuellen();
         AddPersons();
+        AddEinzelbelege();
         WriteOutput();
 
         // Exit successfully (we need this or the program will hang forever)
@@ -69,27 +70,61 @@ public class Sitemap extends AbstractBase {
         doc.appendChild(rootElement);
     }
 
+    private static void AddEntry(String persistentIdentifier, Date lastmodDate) throws Exception {
+        Element urlElement = doc.createElement("url");
+        Element locElement = doc.createElement("loc");
+        locElement.setTextContent(resolverBaseUrl + persistentIdentifier);
+        urlElement.appendChild(locElement);
+        if (lastmodDate != null) {
+            Element lastmodElement = doc.createElement("lastmod");
+            lastmodElement.setTextContent(lastmodDate.toString());
+            urlElement.appendChild(lastmodElement);
+        }
+        rootElement.appendChild(urlElement);
+    }
+
+    private static void AddEinzelbelege() throws Exception {
+        List list = EinzelbelegDB.getList();
+        for (Object object : list) {
+            Einzelbeleg einzelbeleg = (Einzelbeleg) object;
+            if (einzelbeleg.getQuelle() != null && einzelbeleg.getQuelle().getZuVeroeffentlichen() > 0) {
+                String persistentIdentifier = "B" + einzelbeleg.getId().toString();
+                Date lastmodDate = einzelbeleg.getLetzteAenderung();
+                AddEntry(persistentIdentifier, lastmodDate);
+            }
+        }
+    }
+
+    private static void AddNamen() throws Exception {
+        List list = LemmaDB.getList();
+        for (Object object: list) {
+            MghLemma lemma = (MghLemma)object;
+            String persistentIdentifier = "M" + lemma.getId();
+            Date lastmodDate = lemma.getLetzteAenderung();
+            AddEntry(persistentIdentifier, lastmodDate);
+        }
+    }
+
     private static void AddPersons() throws Exception {
         List list = PersonDB.getListPersonPublic();
         for (Object object : list) {
             Person person = (Person) object;
-            person.getStandardname();
 
-            Element urlElement = doc.createElement("url");
-            Element locElement = doc.createElement("loc");
-            // Note: The following URL should be changed as soon as we have
-            //       a redirect page for persistent identifiers
-            locElement.setTextContent("https://neg.ub.uni-tuebingen.de/gast/person?ID=" + person.getId().toString());
-            urlElement.appendChild(locElement);
-
+            String persistentIdentifier = "P" + person.getId().toString();
             Date lastmodDate = person.getLetzteAenderung();
-            if (lastmodDate != null) {
-                Element lastmodElement = doc.createElement("lastmod");
-                lastmodElement.setTextContent(lastmodDate.toString());
-                urlElement.appendChild(lastmodElement);
-            }
+            AddEntry(persistentIdentifier, lastmodDate);
+        }
+    }
 
-            rootElement.appendChild(urlElement);
+    private static void AddQuellen() throws Exception {
+        List list = QuelleDB.getList();
+        for (Object object : list) {
+            Quelle quelle = (Quelle) object;
+            if (quelle.getZuVeroeffentlichen() > 0) {
+                String persistentIdentifier = "Q" + quelle.getId().toString();
+                Date lastmodDate = quelle.getLetzteAenderung();
+                AddEntry(persistentIdentifier, lastmodDate);
+            }
         }
     }
 
