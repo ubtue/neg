@@ -52,10 +52,6 @@ public class Einzelbeleg {
     @Column(name = "EditionSeite", length = 255)
     private String editionSeite;
 
-    @ManyToOne(targetEntity = SelektionQuellengattung.class)
-    @JoinColumn(name = "QuelleGattungID", referencedColumnName = "ID")
-    private SelektionQuellengattung quelleGattung;
-
     @ManyToOne(targetEntity = SelektionEchtheit.class)
     @JoinColumn(name = "QuelleEchtheitID", referencedColumnName = "ID")
     private SelektionEchtheit quelleEchtheit;
@@ -395,10 +391,6 @@ public class Einzelbeleg {
         return editionSeite;
     }
 
-    public SelektionQuellengattung getQuelleGattung() {
-        return quelleGattung;
-    }
-
     public SelektionEchtheit getQuelleEchtheit() {
         return quelleEchtheit;
     }
@@ -685,10 +677,6 @@ public class Einzelbeleg {
 
     public void setEditionSeite(String editionSeite) {
         this.editionSeite = editionSeite;
-    }
-
-    public void setQuelleGattung(SelektionQuellengattung quelleGattung) {
-        this.quelleGattung = quelleGattung;
     }
 
     public void setQuelleEchtheit(SelektionEchtheit quelleEchtheit) {
@@ -1033,8 +1021,7 @@ public class Einzelbeleg {
         Utils.addIfValid(jsonObject, "genauigkeitVonJahr", Utils.sanitize(this.getGenauigkeitVonJahr() != null ? this.getGenauigkeitVonJahr().getBezeichnung() : null));
         Utils.addIfValid(jsonObject, "genauigkeitVonJahrhundert", Utils.sanitize(this.getGenauigkeitVonJahrhundert() != null ? this.getGenauigkeitVonJahrhundert().getBezeichnung() : null));
 
-        // Quelle Informationen
-        Utils.addIfValid(jsonObject, "quelleGattung", this.getQuelleGattung() != null ? Utils.sanitize(this.getQuelleGattung().getBezeichnung()) : null);
+        // Quelle Informationen        
         Utils.addIfValid(jsonObject, "quelleEchtheit", this.getQuelleEchtheit() != null ? Utils.sanitize(this.getQuelleEchtheit().getBezeichnung()) : null);
         Utils.addIfValid(jsonObject, "quelleDatierung", Utils.sanitize(this.getQuelleDatierung()));
         Utils.addIfValid(jsonObject, "quelleBisTag", this.getQuelleBisTag());

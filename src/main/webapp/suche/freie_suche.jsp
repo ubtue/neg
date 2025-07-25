@@ -227,11 +227,13 @@
   }
   if (Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
     List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("Quellengattung")), SelektionQuellengattung.class).getSubtreeIdsRecursive();
-    conditions.add("einzelbeleg.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
+    tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
+    conditions.add("quelle.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
     einzelbeleg = true;
   }
   else if (Integer.parseInt(request.getParameter("Quellengattung")) == -2) {
-    conditions.add("einzelbeleg.QuelleGattungID is null || einzelbeleg.QuelleGattungID=-1");
+    tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
+    conditions.add("quelle.QuelleGattungID is null || quelle.QuelleGattungID=-1");
     einzelbeleg = true;
   }
     if (!request.getParameter("QuelleZeitraum").trim().equals("")) {
@@ -614,7 +616,7 @@
     fields.add("selektion_quellengattung.Bezeichnung");
     fieldNames.add("selektion_quellengattung.Bezeichnung");
     if (!tableString.contains("selektion_quellengattung")) {
-      tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
+      tableString += " LEFT OUTER JOIN selektion_quellengattung ON quelle.QuelleGattungID=selektion_quellengattung.ID";
     }
     //headlines.add("Quellengattung");
            headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Quellengattung"));
@@ -950,7 +952,7 @@
     		fields.add("selektion_quellengattung.Bezeichnung");
     		fieldNames.add("selektion_quellengattung.Bezeichnung");
     		if (!tableString.contains("selektion_quellengattung")) {
-      			tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
+      			tableString += " LEFT OUTER JOIN selektion_quellengattung ON quelle.QuelleGattungID=selektion_quellengattung.ID";
     		}
     //		headlines.add("Quellengattung");
            	headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Quellengattung"));

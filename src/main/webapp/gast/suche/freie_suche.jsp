@@ -214,8 +214,10 @@
         einzelbeleg = true;
     }
     if (Utils.safeNumeric(request.getParameter("QuelleGattung")) && Integer.parseInt(request.getParameter("QuelleGattung")) > 0) {
+        tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
         List<Integer> hierarchyIds = SelektionDB.getById(Integer.parseInt(request.getParameter("QuelleGattung")), SelektionQuellengattung.class).getSubtreeIdsRecursive();
-        conditions.add("einzelbeleg.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
+        conditions.add("quelle.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
+        einzelbeleg = true;
     }
     if (!request.getParameter("PersonZeitraum").trim().equals("")) {
         int vonNum = 0;
@@ -323,7 +325,7 @@
         }
     }
     if (Utils.safeNumeric(request.getParameter("Quellengattung")) && Integer.parseInt(request.getParameter("Quellengattung")) > -1) {
-        conditions.add("einzelbeleg.QuelleGattungID = '" + request.getParameter("Quellengattung") + "'");
+        conditions.add("quelle.QuelleGattungID = '" + request.getParameter("Quellengattung") + "'");
         einzelbeleg = true;
     }
     if (!request.getParameter("QuelleZeitraum").trim().equals("")) {
@@ -648,7 +650,7 @@
         fields.add("selektion_quellengattung.Bezeichnung");
         fieldNames.add("selektion_quellengattung.Bezeichnung");
         if (!tableString.contains("selektion_quellengattung")) {
-            tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
+            tableString += " LEFT OUTER JOIN selektion_quellengattung ON quelle.QuelleGattungID=selektion_quellengattung.ID";
         }
 
         headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "QuelleGattung"));
@@ -1012,7 +1014,7 @@
                     fields.add("selektion_quellengattung.Bezeichnung");
                     fieldNames.add("selektion_quellengattung.Bezeichnung");
                     if (!tableString.contains("selektion_quellengattung")) {
-                        tableString += " LEFT OUTER JOIN selektion_quellengattung ON einzelbeleg.QuelleGattungID=selektion_quellengattung.ID";
+                        tableString += " LEFT OUTER JOIN selektion_quellengattung ON quelle.QuelleGattungID=selektion_quellengattung.ID";
                     }
                     //		headlines.add("Quellengattung");
                     headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Einzelbeleg_Quellengattung"));
@@ -1234,7 +1236,6 @@
         }
 
         String sql = "SELECT " + countString + " FROM " + tablesString + " WHERE (" + conditionsString + ")"; // GROUP BY "+fieldsString;
-
         if (!countString.equals("")) {
             java.util.List<Object[]> resultList = DatenbankDB.getListNative(sql);
 
