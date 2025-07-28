@@ -531,18 +531,6 @@
                         <tbody>
                             <tr>
                                 <td width="200">
-                                    <% Language.printDatafield(out, session, formular, "Quellengattung");%>
-                                </td>
-                                <td width="450">
-                                    <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
-                                        <jsp:param name="Formular" value="einzelbeleg" />
-                                        <jsp:param name="Datenfeld" value="Quellengattung" />
-                                    </jsp:include>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="200">
                                     <% Language.printDatafield(out, session, formular, "Echtheit");%>
                                 </td>
                                 <td width="450">

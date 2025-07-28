@@ -157,7 +157,7 @@
     <p>Sie haben gemäß Art. 18 DSGVO das Recht, von uns die Einschränkung der Verarbeitung Ihrer Daten in den in Art. 18 DSGVO festgelegten Fällen und Umfängen zu verlangen. Wir werden entsprechende Anfragen prüfen und in berechtigten Fällen die erforderlichen Maßnahmen ergreifen.</p>
 
     <h2>Recht auf Datenübertragbarkeit</h2>
-    <p>Sie haben gemäß Art. 20 DSGVO das Recht, Ihre von uns verarbeiteten Daten in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten. Auf Ihren ausdrücklichen Wunsch hin, werden wir Ihre Daten, an die von Ihnen eindeutig benannten Stellen übermitteln, soweit wir dies technisch leisten können und dies datenschutzrechtlich zulässig ist.</p>
+    <p>Sie haben gemäß Art. 20 DSGVO das Recht, Ihre von uns verarbeiteten Daten in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten. Auf Ihren ausdrücklichen Wunsch hin werden wir Ihre Daten an die von Ihnen eindeutig benannten Stellen übermitteln, soweit wir dies technisch leisten können und dies datenschutzrechtlich zulässig ist.</p>
 
     <h2>Widerrufs- und Widerspruchsrecht</h2>
     <p>Sie haben das Recht, jederzeit und ohne Angabe von Gründen kostenfrei die uns von Ihnen erteilte Einwilligung zur Erhebung, Verarbeitung und Nutzung Ihrer Daten für die Zukunft zu widerrufen bzw. gemäß Art. 21 DSGVO Widerspruch gegen die Verarbeitung Ihrer Daten einzulegen. Ihren Widerruf Ihrer Einwilligung bzw. Widerspruch richten Sie bitte via E-Mail an folgende Adresse (<a class="ut-link ut-link--email ut-link--context-icon" href="mailto:datenschutz@uni-tuebingen.de">datenschutz@uni-tuebingen.de</a>) oder per Post an folgende Adresse: Universität Tübingen, Datenschutzbeauftragter, Geschwister-Scholl-Platz, 72074 Tübingen.</p>

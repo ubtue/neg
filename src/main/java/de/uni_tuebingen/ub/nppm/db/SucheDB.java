@@ -38,9 +38,9 @@ public class SucheDB extends AbstractBase {
         // in der auto completion->frontend->erweiterte suche keine einträge mit Constants.forbiddenLemmaSubstring zeigen
         if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
             if (addWhereStatement) {
-                sql += " AND " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%'";
+                sql += " AND " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'";
             } else {
-                sql += " WHERE " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%'";
+                sql += " WHERE " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'";
             }
         }
 
@@ -232,7 +232,7 @@ public class SucheDB extends AbstractBase {
         }
         //searchTerm = searchTerm.replace("*", "%");  //Wenn du * als Wildcard zulassen willst
 
-        String sql = "SELECT DISTINCT mgh_lemma.MGHLemma, mgh_lemma.ID AS mgh_lemmaID, person.Standardname, person.ID AS personID, quelle.Bezeichnung, quelle.ID AS quelleID, edition.Zitierweise AS editionZitierweise, edition.ID AS editionID, einzelbeleg.EditionKapitel, einzelbeleg.EditionSeite, einzelbeleg.seite, einzelbeleg.raster AS raster, quelle.VonTag AS quelleVonTag, quelle.VonMonat AS quelleVonMonat, quelle.VonJahr AS quelleVonJahr, quelle.VonJahrhundert AS quelleVonJahrhundert, quelle.BisTag AS quelleBisTag, quelle.BisMonat AS quelleBisMonat, quelle.BisJahr AS quelleBisJahr, quelle.BisJahrhundert AS quelleBisJahrhundert, einzelbeleg.Belegform, einzelbeleg.ID AS e2ID, einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr, einzelbeleg.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr"
+        String sql = "SELECT DISTINCT mgh_lemma.MGHLemma, mgh_lemma.ID AS mgh_lemmaID, person.Standardname AS Standardname, person.ID AS personID, quelle.Bezeichnung, quelle.ID AS quelleID, edition.Zitierweise AS editionZitierweise, edition.ID AS editionID, einzelbeleg.EditionKapitel, einzelbeleg.EditionSeite, einzelbeleg.seite, einzelbeleg.raster AS raster, quelle.VonTag AS quelleVonTag, quelle.VonMonat AS quelleVonMonat, quelle.VonJahr AS quelleVonJahr, quelle.VonJahrhundert AS quelleVonJahrhundert, quelle.BisTag AS quelleBisTag, quelle.BisMonat AS quelleBisMonat, quelle.BisJahr AS quelleBisJahr, quelle.BisJahrhundert AS quelleBisJahrhundert, einzelbeleg.Belegform, einzelbeleg.ID AS e2ID, einzelbeleg.VonTag, einzelbeleg.VonMonat, einzelbeleg.VonJahr, einzelbeleg.VonJahrhundert, einzelbeleg.BisTag, einzelbeleg.BisMonat, einzelbeleg.BisJahr, einzelbeleg.BisJahrhundert, VON_JAHR_JHDT(quelle.VonJahr, quelle.VonJahrhundert, quelle.BisJahrhundert) AS quelleBerJahr"
                    + " FROM einzelbeleg"
                    + " LEFT JOIN einzelbeleg_hatmghlemma ehk1 ON ehk1.EinzelbelegID=einzelbeleg.ID"
                    + " LEFT JOIN mgh_lemma ON mgh_lemma.ID=ehk1.MGHLemmaID"
@@ -241,7 +241,7 @@ public class SucheDB extends AbstractBase {
                    + " LEFT JOIN quelle ON einzelbeleg.QuelleID=quelle.ID"
                    + " LEFT JOIN edition ON einzelbeleg.EditionID=edition.ID"
                    + " WHERE quelle.zuVeroeffentlichen='1'"
-                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,'\'')+"%')"
+                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%')"
                    + " AND mgh_lemma.ID IN"
                    + " ("
                    + " SELECT DISTINCT mgh_lemma.ID FROM einzelbeleg"
