@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +25,10 @@ public class Sitemap extends AbstractBase {
     private static DocumentBuilder docBuilder;
     private static String outputDirectory;
     private static boolean outputPretty = false;
-    private static String baseUrlResolver = "https://nppm.ub.uni-tuebingen.de/id/";
-    private static String baseUrlSitemaps = "https://nppm.ub.uni-tuebingen.de/sitemaps/";
-    private static List<String> sitemaps = new ArrayList<String>();
+    private static final String BASE_URL = "https://nppm.ub.uni-tuebingen.de/";
+    private static final String BASE_URL_RESOLVER = "id/";
+    private static final String BASE_URL_SITEMAPS = "sitemaps/";
+    private static List<String> sitemaps = new ArrayList<>();
 
     /**
      * Generate XML Sitemap
@@ -61,6 +63,7 @@ public class Sitemap extends AbstractBase {
 
         // Generate + write XML documents
         // Since bots will struggle with single files > 10MB, we need to generate an Index file and split into subfiles.
+        GenerateBase();
         GenerateQuellen();
         GeneratePersons();
         GenerateNamen();
@@ -89,10 +92,14 @@ public class Sitemap extends AbstractBase {
         return InitDocument("urlset");
     }
 
-    private static void AddEntry(Document document, String persistentIdentifier, Date lastmodDate) throws Exception {
+    private static void AddEntry(Document document, String url) throws Exception {
+        AddEntry(document, url, null);
+    }
+
+    private static void AddEntry(Document document, String url, Date lastmodDate) throws Exception {
         Element urlElement = document.createElement("url");
         Element locElement = document.createElement("loc");
-        locElement.setTextContent(baseUrlResolver + persistentIdentifier);
+        locElement.setTextContent(BASE_URL + url);
         urlElement.appendChild(locElement);
         if (lastmodDate != null) {
             Element lastmodElement = document.createElement("lastmod");
@@ -102,10 +109,14 @@ public class Sitemap extends AbstractBase {
         document.getDocumentElement().appendChild(urlElement);
     }
 
+    private static void AddEntryWithPersistentIdentifier(Document document, String persistentIdentifier, Date lastmodDate) throws Exception {
+        AddEntry(document, BASE_URL_RESOLVER + persistentIdentifier, lastmodDate);
+    }
+
     private static void AddSitemap(Document document, String filename) throws Exception {
         Element sitemapElement = document.createElement("sitemap");
         Element locElement = document.createElement("loc");
-        locElement.setTextContent(baseUrlSitemaps + filename);
+        locElement.setTextContent(BASE_URL + BASE_URL_SITEMAPS + filename);
         sitemapElement.appendChild(locElement);
         Element lastmodElement = document.createElement("lastmod");
         lastmodElement.setTextContent(LocalDateTime.now().toString());
@@ -132,6 +143,37 @@ public class Sitemap extends AbstractBase {
         WriteDocument(document, outputDirectory + "/" + filename);
     }
 
+    private static void GenerateBase() throws Exception {
+        Document document = InitSitemapDocument();
+
+        // The base sitemap should contain general static pages
+        List<String> pages = Arrays.asList(
+            // Startseite
+            "gast/infos?sharedHtml=start&current=start",
+
+            // Hilfe
+            "gast/infos?sharedHtml=hilfe",
+
+            // Footer-Einträge
+            "gast/infos?sharedHtml=ziele",
+            "gast/infos?sharedHtml=datenbank",
+            "gast/infos?sharedHtml=quellenliste",
+            "gast/infos?sharedHtml=tagungen",
+            "gast/infos?sharedHtml=mitglieder",
+            "gast/infos?sharedHtml=projekte",
+            "gast/infos?sharedHtml=publikationen"
+
+            // Intentionally ommitted pages:
+            // - Datenschutzerklärung
+            // - Impressum
+        );
+
+        for (String page : pages) {
+            AddEntry(document, page);
+        }
+        GenerateAndRegisterSitemap(document, "sitemap-base.xml");
+    }
+
     private static void GenerateEinzelbelege() throws Exception {
         Document document = InitSitemapDocument();
         List list = EinzelbelegDB.getList();
@@ -140,7 +182,7 @@ public class Sitemap extends AbstractBase {
             if (einzelbeleg.getQuelle() != null && einzelbeleg.getQuelle().getZuVeroeffentlichen() > 0) {
                 String persistentIdentifier = "B" + einzelbeleg.getId().toString();
                 Date lastmodDate = einzelbeleg.getLetzteAenderung();
-                AddEntry(document, persistentIdentifier, lastmodDate);
+                AddEntryWithPersistentIdentifier(document, persistentIdentifier, lastmodDate);
             }
         }
         GenerateAndRegisterSitemap(document, "sitemap-einzelbelege.xml");
@@ -153,7 +195,7 @@ public class Sitemap extends AbstractBase {
             MghLemma lemma = (MghLemma)object;
             String persistentIdentifier = "M" + lemma.getId();
             Date lastmodDate = lemma.getLetzteAenderung();
-            AddEntry(document, persistentIdentifier, lastmodDate);
+            AddEntryWithPersistentIdentifier(document, persistentIdentifier, lastmodDate);
         }
         GenerateAndRegisterSitemap(document, "sitemap-namen.xml");
     }
@@ -166,7 +208,7 @@ public class Sitemap extends AbstractBase {
 
             String persistentIdentifier = "P" + person.getId().toString();
             Date lastmodDate = person.getLetzteAenderung();
-            AddEntry(document, persistentIdentifier, lastmodDate);
+            AddEntryWithPersistentIdentifier(document, persistentIdentifier, lastmodDate);
         }
         GenerateAndRegisterSitemap(document, "sitemap-personen.xml");
     }
@@ -179,7 +221,7 @@ public class Sitemap extends AbstractBase {
             if (quelle.getZuVeroeffentlichen() > 0) {
                 String persistentIdentifier = "Q" + quelle.getId().toString();
                 Date lastmodDate = quelle.getLetzteAenderung();
-                AddEntry(document, persistentIdentifier, lastmodDate);
+                AddEntryWithPersistentIdentifier(document, persistentIdentifier, lastmodDate);
             }
         }
         GenerateAndRegisterSitemap(document, "sitemap-quellen.xml");
