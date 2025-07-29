@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 @Entity
 @Table(name = "person")
-public class Person implements PersistentIdentifier {
+public class Person implements PersistentIdentifier, LetzteAenderung {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -224,18 +224,22 @@ public class Person implements PersistentIdentifier {
         this.ort = ort;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }

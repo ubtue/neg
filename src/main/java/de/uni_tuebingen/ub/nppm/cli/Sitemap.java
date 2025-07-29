@@ -27,8 +27,8 @@ public class Sitemap extends AbstractBase {
     private static String outputDirectory;
     private static boolean outputPretty = false;
     private static final String BASE_URL = "https://nppm.ub.uni-tuebingen.de/";
-    private static final String BASE_URL_RESOLVER = "id/";
-    private static final String BASE_URL_SITEMAPS = "sitemaps/";
+    private static final String BASE_URL_RESOLVER = BASE_URL + "id/";
+    private static final String BASE_URL_SITEMAPS = BASE_URL + "sitemaps/";
     private static List<String> sitemaps = new ArrayList<>();
 
     /**
@@ -110,14 +110,14 @@ public class Sitemap extends AbstractBase {
         document.getDocumentElement().appendChild(urlElement);
     }
 
-    private static void AddEntryWithPersistentIdentifier(Document document, PersistentIdentifier persistentIdentifier, Date lastmodDate) throws Exception {
-        AddEntry(document, BASE_URL_RESOLVER + persistentIdentifier.getPersistentIdentifier(), lastmodDate);
+    private static void AddEntryByModelInterface(Document document, PersistentIdentifier persistentIdentifier, LetzteAenderung letzteAenderung) throws Exception {
+        AddEntry(document, BASE_URL_RESOLVER + persistentIdentifier.getPersistentIdentifier(), letzteAenderung.getLetzteAenderung());
     }
 
     private static void AddSitemap(Document document, String filename) throws Exception {
         Element sitemapElement = document.createElement("sitemap");
         Element locElement = document.createElement("loc");
-        locElement.setTextContent(BASE_URL + BASE_URL_SITEMAPS + filename);
+        locElement.setTextContent(BASE_URL_SITEMAPS + filename);
         sitemapElement.appendChild(locElement);
         Element lastmodElement = document.createElement("lastmod");
         lastmodElement.setTextContent(LocalDateTime.now().toString());
@@ -181,8 +181,7 @@ public class Sitemap extends AbstractBase {
         for (Object object : list) {
             Einzelbeleg einzelbeleg = (Einzelbeleg) object;
             if (einzelbeleg.getQuelle() != null && einzelbeleg.getQuelle().getZuVeroeffentlichen() > 0) {
-                Date lastmodDate = einzelbeleg.getLetzteAenderung();
-                AddEntryWithPersistentIdentifier(document, einzelbeleg, lastmodDate);
+                AddEntryByModelInterface(document, einzelbeleg, einzelbeleg);
             }
         }
         GenerateAndRegisterSitemap(document, "sitemap-einzelbelege.xml");
@@ -193,8 +192,7 @@ public class Sitemap extends AbstractBase {
         List list = LemmaDB.getList();
         for (Object object: list) {
             MghLemma lemma = (MghLemma)object;
-            Date lastmodDate = lemma.getLetzteAenderung();
-            AddEntryWithPersistentIdentifier(document, lemma, lastmodDate);
+            AddEntryByModelInterface(document, lemma, lemma);
         }
         GenerateAndRegisterSitemap(document, "sitemap-namen.xml");
     }
@@ -204,8 +202,7 @@ public class Sitemap extends AbstractBase {
         List list = PersonDB.getListPersonPublic();
         for (Object object : list) {
             Person person = (Person) object;
-            Date lastmodDate = person.getLetzteAenderung();
-            AddEntryWithPersistentIdentifier(document, person, lastmodDate);
+            AddEntryByModelInterface(document, person, person);
         }
         GenerateAndRegisterSitemap(document, "sitemap-personen.xml");
     }
@@ -216,8 +213,7 @@ public class Sitemap extends AbstractBase {
         for (Object object : list) {
             Quelle quelle = (Quelle) object;
             if (quelle.getZuVeroeffentlichen() > 0) {
-                Date lastmodDate = quelle.getLetzteAenderung();
-                AddEntryWithPersistentIdentifier(document, quelle, lastmodDate);
+                AddEntryByModelInterface(document, quelle, quelle);
             }
         }
         GenerateAndRegisterSitemap(document, "sitemap-quellen.xml");

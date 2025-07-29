@@ -1,11 +1,12 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table(name = "handschrift_ueberlieferung")
-public class HandschriftUeberlieferung {
+public class HandschriftUeberlieferung implements LetzteAenderung {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -266,18 +267,22 @@ public class HandschriftUeberlieferung {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }

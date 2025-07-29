@@ -1,7 +1,7 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import de.uni_tuebingen.ub.nppm.util.Utils;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 @Entity
 @Table(name = "namenkommentar")
-public class NamenKommentar {
+public class NamenKommentar implements LetzteAenderung {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -129,18 +129,22 @@ public class NamenKommentar {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
