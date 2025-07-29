@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,7 +16,6 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import de.uni_tuebingen.ub.nppm.db.*;
-import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import java.time.LocalDateTime;
 
@@ -66,10 +64,10 @@ public class Sitemap extends AbstractBase {
         // Generate + write XML documents
         // Since bots will struggle with single files > 10MB, we need to generate an Index file and split into subfiles.
         GenerateBase();
-        GenerateQuellen();
-        GeneratePersons();
-        GenerateNamen();
-        GenerateEinzelbelege();
+        GenerateEntitySitemap(QuelleDB.getListPublic(), "quellen");
+        GenerateEntitySitemap(PersonDB.getListPublic(), "personen");
+        GenerateEntitySitemap(LemmaDB.getListPublic(), "lemmas");
+        GenerateEntitySitemap(EinzelbelegDB.getListPublic(), "einzelbelege");
         GenerateIndex();
 
         // Exit successfully (we need this or the program will hang forever)
@@ -111,10 +109,6 @@ public class Sitemap extends AbstractBase {
         document.getDocumentElement().appendChild(urlElement);
     }
 
-    private static void AddEntryByModelInterface(Document document, PersistentIdentifier persistentIdentifier, LetzteAenderung letzteAenderung) throws Exception {
-        AddEntry(document, BASE_URL_RESOLVER + persistentIdentifier.getPersistentIdentifier(), letzteAenderung.getLetzteAenderung());
-    }
-
     private static void AddSitemap(Document document, String filename) throws Exception {
         Element sitemapElement = document.createElement("sitemap");
         Element locElement = document.createElement("loc");
@@ -148,7 +142,7 @@ public class Sitemap extends AbstractBase {
     private static void GenerateBase() throws Exception {
         Document document = InitSitemapDocument();
 
-        // The base sitemap should contain general static pages
+        // The base sitemap contains general static pages
         List<String> pages = Arrays.asList(
             // Startseite
             "gast/infos?sharedHtml=start&current=start",
@@ -176,46 +170,12 @@ public class Sitemap extends AbstractBase {
         GenerateAndRegisterSitemap(document, "sitemap-base.xml");
     }
 
-    private static void GenerateEinzelbelege() throws Exception {
+    private static <T extends PersistentIdentifier & LetzteAenderung> void GenerateEntitySitemap(List<T> entities, String name) throws Exception {
         Document document = InitSitemapDocument();
-        List<Einzelbeleg> einzelbelege = EinzelbelegDB.getListPublic();
-        for (Einzelbeleg einzelbeleg : einzelbelege) {
-            AddEntryByModelInterface(document, einzelbeleg, einzelbeleg);
+        for (T entity : entities) {
+            AddEntry(document, BASE_URL_RESOLVER + entity.getPersistentIdentifier(), entity.getLetzteAenderung());
         }
-        GenerateAndRegisterSitemap(document, "sitemap-einzelbelege.xml");
-    }
-
-    private static void GenerateNamen() throws Exception {
-        Document document = InitSitemapDocument();
-        List<MghLemma> lemmas = LemmaDB.getListPublic();
-        for (MghLemma lemma: lemmas) {
-            Set<Einzelbeleg> einzelbelege = lemma.getEinzelbelege();
-            for (Einzelbeleg einzelbeleg : einzelbelege) {
-                if (einzelbeleg.getQuelle().getZuVeroeffentlichen() > 0) {
-                    AddEntryByModelInterface(document, lemma, lemma);
-                    break;
-                }
-            }
-        }
-        GenerateAndRegisterSitemap(document, "sitemap-namen.xml");
-    }
-
-    private static void GeneratePersons() throws Exception {
-        Document document = InitSitemapDocument();
-        List<Person> persons = PersonDB.getListPersonPublic();
-        for (Person person : persons) {
-            AddEntryByModelInterface(document, person, person);
-        }
-        GenerateAndRegisterSitemap(document, "sitemap-personen.xml");
-    }
-
-    private static void GenerateQuellen() throws Exception {
-        Document document = InitSitemapDocument();
-        List<Quelle> quellen = QuelleDB.getListPublic();
-        for (Quelle quelle : quellen) {
-            AddEntryByModelInterface(document, quelle, quelle);
-        }
-        GenerateAndRegisterSitemap(document, "sitemap-quellen.xml");
+        GenerateAndRegisterSitemap(document, "sitemap-" + name +".xml");
     }
 
     private static void GenerateIndex() throws Exception {
