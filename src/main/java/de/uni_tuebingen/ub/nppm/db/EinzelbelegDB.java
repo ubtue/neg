@@ -27,6 +27,14 @@ public class EinzelbelegDB extends AbstractBase {
         return getList(Einzelbeleg.class);
     }
 
+    public static List<Einzelbeleg> getListPublic() throws Exception {
+        try (Session session = getSession()) {
+            String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
+            Query query = session.createQuery(HQL);
+            return query.getResultList();
+        }
+    }
+
     public static List<EinzelbelegHatFunktion_MM> getListFunktion() throws Exception {
         return getList(EinzelbelegHatFunktion_MM.class);
     }

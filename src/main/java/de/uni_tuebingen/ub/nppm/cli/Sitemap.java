@@ -178,18 +178,16 @@ public class Sitemap extends AbstractBase {
 
     private static void GenerateEinzelbelege() throws Exception {
         Document document = InitSitemapDocument();
-        List<Einzelbeleg> einzelbelege = EinzelbelegDB.getList();
+        List<Einzelbeleg> einzelbelege = EinzelbelegDB.getListPublic();
         for (Einzelbeleg einzelbeleg : einzelbelege) {
-            if (einzelbeleg.getQuelle() != null && einzelbeleg.getQuelle().getZuVeroeffentlichen() > 0) {
-                AddEntryByModelInterface(document, einzelbeleg, einzelbeleg);
-            }
+            AddEntryByModelInterface(document, einzelbeleg, einzelbeleg);
         }
         GenerateAndRegisterSitemap(document, "sitemap-einzelbelege.xml");
     }
 
     private static void GenerateNamen() throws Exception {
         Document document = InitSitemapDocument();
-        List<MghLemma> lemmas = LemmaDB.getList();
+        List<MghLemma> lemmas = LemmaDB.getListPublic();
         for (MghLemma lemma: lemmas) {
             Set<Einzelbeleg> einzelbelege = lemma.getEinzelbelege();
             for (Einzelbeleg einzelbeleg : einzelbelege) {
@@ -213,11 +211,9 @@ public class Sitemap extends AbstractBase {
 
     private static void GenerateQuellen() throws Exception {
         Document document = InitSitemapDocument();
-        List<Quelle> quellen = QuelleDB.getList();
+        List<Quelle> quellen = QuelleDB.getListPublic();
         for (Quelle quelle : quellen) {
-            if (quelle.getZuVeroeffentlichen() > 0) {
-                AddEntryByModelInterface(document, quelle, quelle);
-            }
+            AddEntryByModelInterface(document, quelle, quelle);
         }
         GenerateAndRegisterSitemap(document, "sitemap-quellen.xml");
     }

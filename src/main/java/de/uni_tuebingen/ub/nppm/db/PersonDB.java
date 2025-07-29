@@ -12,8 +12,29 @@ public class PersonDB extends AbstractBase {
         return AbstractBase.getById(id, Person.class);
     }
 
-    public static List<Person> getListPerson() throws Exception {
+    public static List<Person> getList() throws Exception {
         return getList(Person.class);
+    }
+
+
+    public static List<Person> getListPublic() throws Exception {
+        try (Session session = getSession()) {
+            String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";
+
+            NativeQuery query = session.createNativeQuery(SQL);
+            query.addEntity(Person.class);
+            return query.getResultList();
+        }
+    }
+
+    // Alias for backwards compatibility
+    public static List<Person> getListPerson() throws Exception {
+        return getList();
+    }
+
+    // Alias for backwards compatibility
+    public static List<Person> getListPersonPublic() throws Exception {
+        return getListPublic();
     }
 
     public static List<PersonAmtStandWeihe_MM> getListPersonAmtStandWeihe() throws Exception {
@@ -113,16 +134,6 @@ public class PersonDB extends AbstractBase {
 
             Object nextPublic = nextQuery.uniqueResult();
             return nextPublic != null ? ((Number) nextPublic).intValue() : maxId; // Falls keiner gefunden → größte ID
-        }
-    }
-
-    public static List<Person> getListPersonPublic() throws Exception {
-        try (Session session = getSession()) {
-            String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";
-
-            NativeQuery query = session.createNativeQuery(SQL);
-            query.addEntity(Person.class);
-            return query.getResultList();
         }
     }
 

@@ -18,6 +18,22 @@ public class LemmaDB extends AbstractBase {
         return getList(MghLemma.class);
     }
 
+    public static List<MghLemma> getListPublic() throws Exception {
+        try (Session session = getSession()) {
+            String sql = "SELECT mgh_lemma.* "
+                    + "FROM einzelbeleg_hatmghlemma ehm "
+                    + "JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID "
+                    + "JOIN quelle q ON q.ID = e.QuelleID "
+                    + "JOIN mgh_lemma l ON l.ID = ehm.MGHLemmaID "
+                    + "WHERE q.ZuVeroeffentlichen = 1 "
+                    + "ORDER BY ehm.MGHLemmaID";
+
+            NativeQuery query = session.createNativeQuery(sql);
+            query.addEntity(MghLemma.class);
+            return query.getResultList();
+        }
+    }
+
     public static List<MghLemmaBearbeiter> getListBearbeiter() throws Exception {
         return getList(MghLemmaBearbeiter.class);
     }
