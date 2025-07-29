@@ -6,7 +6,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "edition")
-public class Edition implements LetzteAenderung {
+public class Edition implements PersistentIdentifier, LetzteAenderung {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
@@ -111,6 +111,11 @@ public class Edition implements LetzteAenderung {
 
     public Integer getId() {
         return id;
+    }
+
+    @Override
+    public String getPersistentIdentifier() {
+        return "E" + getId();
     }
 
     public String getTitel() {

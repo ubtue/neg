@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 @Entity
 @Table(name = "namenkommentar")
-public class NamenKommentar implements LetzteAenderung {
+public class NamenKommentar implements PersistentIdentifier, LetzteAenderung {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,6 +71,11 @@ public class NamenKommentar implements LetzteAenderung {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String getPersistentIdentifier() {
+        return "N" + getId();
     }
 
     public String geteLemma() {
