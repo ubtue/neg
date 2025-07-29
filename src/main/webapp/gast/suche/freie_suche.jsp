@@ -155,7 +155,7 @@
         tableString += " LEFT OUTER JOIN person_variante ON person.ID=person_variante.personID";
         person = true;
     }
-    if (Utils.safeNumeric(request.getParameter("Geschlecht")) && Integer.parseInt(request.getParameter("Geschlecht")) > -1) {
+    if (request.getParameter("Geschlecht") != null && Utils.safeNumeric(request.getParameter("Geschlecht")) && Integer.parseInt(request.getParameter("Geschlecht")) > -1) {
         conditions.add("person.Geschlecht = '" + request.getParameter("Geschlecht") + "'");
         person = true;
     }
@@ -219,7 +219,7 @@
         conditions.add("quelle.QuelleGattungID IN (" + StringUtils.join(hierarchyIds, ",") + ")");
         einzelbeleg = true;
     }
-    if (!request.getParameter("PersonZeitraum").trim().equals("")) {
+    if (request.getParameter("PersonZeitraum") != null && !request.getParameter("PersonZeitraum").trim().equals("")) {
         int vonNum = 0;
         int bisNum = 0;
         if (request.getParameter("PersonZeitraum").contains("-")) {
@@ -311,7 +311,7 @@
     String[] quellenliste;
     quellenliste = request.getParameterValues("Quellenliste[]");
     if (request.getParameter("Quelle") != null && !request.getParameter("Quelle").trim().equals("") && (quellenliste == null || quellenliste.length == 0 || Utils.allValuesAre(quellenliste, "-1"))) {
-        conditions.add("quelle.Bezeichnung LIKE '" + DBtoDB(request.getParameter("Quelle").trim()) + "'");
+        conditions.add("quelle.Bezeichnung LIKE '%" + DBtoDB(request.getParameter("Quelle").trim()) + "%'");
         namenkommentar = true;
     }
     
@@ -328,7 +328,7 @@
         conditions.add("quelle.QuelleGattungID = '" + request.getParameter("Quellengattung") + "'");
         einzelbeleg = true;
     }
-    if (!request.getParameter("QuelleZeitraum").trim().equals("")) {
+    if (request.getParameter("QuelleZeitraum") != null && !request.getParameter("QuelleZeitraum").trim().equals("")) {
         int vonNum = 0;
         int bisNum = 0;
         if (request.getParameter("QuelleZeitraum").contains("-")) {

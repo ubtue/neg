@@ -134,8 +134,26 @@
 </table>
 
 <!----------Einzelbelege---------->
+<%
+    String paramName = URLEncoder.encode("Quellenliste[]", "UTF-8");
+    String baseUrl = Utils.getBaseUrl(request);
+    String idParam = String.valueOf(id);
+
+    String link = baseUrl + "/gast/suchergebnis"
+        + "?einzelbelegeVonQuelle=true"
+        + "&" + paramName + "=" + idParam
+        + "&form=freie_suche"
+        + "&Ausgabe_Einzelbeleg_Belegform=on"
+        + "&Ausgabe_Einzelbeleg_Belegstelle=on"
+        + "&Ausgabe_Einzelbeleg_Kontext=on"
+        + "&Ausgabe_Einzelbeleg_Datierung=on"
+        + "&Ausgabe_Einzelbeleg_lebend=on"
+        + "&Ausgabe_Einzelbeleg_Varianten=on";
+%>
 <h3 class="ut-heading ut-heading--h3">
-    <a class="ut-link" href="<%= Utils.getBaseUrl(request)%>/gast/suchergebnis?einzelbelegeVonQuelle=true&Quellenliste[]=<%= id%>&form=freie_suche&NeGID=&Belegform=&Kontext=&Namenkommentar=-1&Namenkommentar2=-1&MGHLemma=&Personenname=&Geschlecht=-1&PersonZeitraum=&AmtWeihePerson=-1&StandPerson=-1&StandEinzelbeleg=-1&EthniePerson=-1&AmtWeiheEinzelbeleg=-1&EthnieEinzelbeleg=-1&Quelle=&QuelleGattung=-1&QuelleZeitraum=&Seite=&Ausgabe_Einzelbeleg_Belegform=on&Ausgabe_Einzelbeleg_Belegstelle=on&Ausgabe_Einzelbeleg_Kontext=on&Ausgabe_Einzelbeleg_Datierung=on&Ausgabe_Einzelbeleg_lebend=on&Ausgabe_Einzelbeleg_Varianten=on&order1=-1&order1ASCDESC=ASC&order1zeit=&order2=-1&order2ASCDESC=ASC&order2zeit=&order3=-1&order3ASCDESC=ASC&order3zeit="><% Language.printTextfield(out, session, "einzelbeleg", "Titel");%></a>
+    <a class="ut-link" href="<%= link %>">
+        <% Language.printTextfield(out, session, "einzelbeleg", "Titel"); %>
+    </a>
 </h3>
 <br>
 
