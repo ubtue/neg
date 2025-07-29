@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.*;
 import java.util.*;
@@ -7,7 +8,7 @@ import org.json.JSONObject;
 
 @Entity
 @Table(name = "person")
-public class Person {
+public class Person implements PersistentIdentifier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -136,6 +137,11 @@ public class Person {
 
     public Integer getId() {
         return id;
+    }
+
+    @Override
+    public String getPersistentIdentifier() {
+        return "P" + getId();
     }
 
     public String getPkz() {

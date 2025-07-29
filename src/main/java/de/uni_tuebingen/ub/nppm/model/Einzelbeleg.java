@@ -1,19 +1,14 @@
 package de.uni_tuebingen.ub.nppm.model;
 
-
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
+import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.*;
 import java.util.*;
-import javax.persistence.criteria.*;
-import org.hibernate.Session;
-import de.uni_tuebingen.ub.nppm.model.*;
-import de.uni_tuebingen.ub.nppm.util.Utils;
-import java.text.SimpleDateFormat;
-import org.hibernate.query.NativeQuery;
 import org.json.JSONObject;
 
 @Entity
 @Table(name = "einzelbeleg")
-public class Einzelbeleg {
+public class Einzelbeleg implements PersistentIdentifier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -353,6 +348,11 @@ public class Einzelbeleg {
 
     public Integer getId() {
         return id;
+    }
+
+    @Override
+    public String getPersistentIdentifier() {
+        return "B" + getId();
     }
 
     public String getBelegnummer() {
@@ -1021,7 +1021,7 @@ public class Einzelbeleg {
         Utils.addIfValid(jsonObject, "genauigkeitVonJahr", Utils.sanitize(this.getGenauigkeitVonJahr() != null ? this.getGenauigkeitVonJahr().getBezeichnung() : null));
         Utils.addIfValid(jsonObject, "genauigkeitVonJahrhundert", Utils.sanitize(this.getGenauigkeitVonJahrhundert() != null ? this.getGenauigkeitVonJahrhundert().getBezeichnung() : null));
 
-        // Quelle Informationen        
+        // Quelle Informationen
         Utils.addIfValid(jsonObject, "quelleEchtheit", this.getQuelleEchtheit() != null ? Utils.sanitize(this.getQuelleEchtheit().getBezeichnung()) : null);
         Utils.addIfValid(jsonObject, "quelleDatierung", Utils.sanitize(this.getQuelleDatierung()));
         Utils.addIfValid(jsonObject, "quelleBisTag", this.getQuelleBisTag());

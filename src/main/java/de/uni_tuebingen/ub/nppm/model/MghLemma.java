@@ -1,7 +1,7 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import de.uni_tuebingen.ub.nppm.util.Utils;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -11,7 +11,7 @@ import org.json.JSONObject;
 @Table(name = "mgh_lemma")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class MghLemma {
+public class MghLemma implements PersistentIdentifier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +48,11 @@ public class MghLemma {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String getPersistentIdentifier() {
+        return "M" + getId();
     }
 
     public String getMghLemma() {
