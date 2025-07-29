@@ -5,19 +5,16 @@ import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
 import de.uni_tuebingen.ub.nppm.util.LemmaKorrBelegRow;
-import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import org.hibernate.Session;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 public class EinzelbelegDB extends AbstractBase {
@@ -26,15 +23,15 @@ public class EinzelbelegDB extends AbstractBase {
         return AbstractBase.getById(id, Einzelbeleg.class);
     }
 
-    public static List getList() throws Exception {
+    public static List<Einzelbeleg> getList() throws Exception {
         return getList(Einzelbeleg.class);
     }
 
-    public static List getListFunktion() throws Exception {
+    public static List<EinzelbelegHatFunktion_MM> getListFunktion() throws Exception {
         return getList(EinzelbelegHatFunktion_MM.class);
     }
 
-    public static List getListTextKritik() throws Exception {
+    public static List<EinzelbelegTextkritik> getListTextKritik() throws Exception {
         return getList(EinzelbelegTextkritik.class);
     }
 

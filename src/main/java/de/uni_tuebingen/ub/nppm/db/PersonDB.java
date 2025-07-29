@@ -12,19 +12,19 @@ public class PersonDB extends AbstractBase {
         return AbstractBase.getById(id, Person.class);
     }
 
-    public static List getListPerson() throws Exception {
+    public static List<Person> getListPerson() throws Exception {
         return getList(Person.class);
     }
 
-    public static List getListPersonAmtStandWeihe() throws Exception {
+    public static List<PersonAmtStandWeihe_MM> getListPersonAmtStandWeihe() throws Exception {
         return getList(PersonAmtStandWeihe_MM.class);
     }
 
-    public static List getListPersonQuiet() throws Exception {
+    public static List<PersonQuiet> getListPersonQuiet() throws Exception {
         return getList(PersonQuiet.class);
     }
 
-    public static List getListPersonVariante() throws Exception {
+    public static List<PersonVariante> getListPersonVariante() throws Exception {
         return getList(PersonVariante.class);
     }
 
@@ -116,7 +116,7 @@ public class PersonDB extends AbstractBase {
         }
     }
 
-    public static List getListPersonPublic() throws Exception {
+    public static List<Person> getListPersonPublic() throws Exception {
         try (Session session = getSession()) {
             String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";
 

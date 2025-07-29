@@ -3,10 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
-import de.uni_tuebingen.ub.nppm.util.Utils;
 import de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationParams;
-import java.util.HashMap;
-import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
@@ -17,15 +14,15 @@ public class LemmaDB extends AbstractBase {
         return AbstractBase.getById(id, MghLemma.class);
     }
 
-    public static List getList() throws Exception {
+    public static List<MghLemma> getList() throws Exception {
         return getList(MghLemma.class);
     }
 
-    public static List getListBearbeiter() throws Exception {
+    public static List<MghLemmaBearbeiter> getListBearbeiter() throws Exception {
         return getList(MghLemmaBearbeiter.class);
     }
 
-    public static List getListKorrektor() throws Exception {
+    public static List<MghLemmaKorrektor> getListKorrektor() throws Exception {
         return getList(MghLemmaKorrektor.class);
     }
 

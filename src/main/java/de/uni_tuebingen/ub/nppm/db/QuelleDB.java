@@ -15,11 +15,11 @@ import org.hibernate.query.Query;
 
 public class QuelleDB extends AbstractBase {
 
-    public static List getList() throws Exception {
+    public static List<Quelle> getList() throws Exception {
         return getList(Quelle.class);
     }
 
-    public static List getList(PaginationParams params) throws Exception {
+    public static List<Quelle> getList(PaginationParams params) throws Exception {
         String jumpToID = params.getJumpToID();
         String sort = params.getSort();
         String filterTitle = params.getFilters().get("filterTitle");

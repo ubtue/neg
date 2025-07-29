@@ -9,7 +9,7 @@ public class HandschriftDB extends AbstractBase {
         return AbstractBase.getById(id, Handschrift.class);
     }
 
-    public static List getList() throws Exception {
+    public static List<Handschrift> getList() throws Exception {
         return getList(Handschrift.class);
     }
 }

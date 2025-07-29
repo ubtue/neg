@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -177,9 +178,8 @@ public class Sitemap extends AbstractBase {
 
     private static void GenerateEinzelbelege() throws Exception {
         Document document = InitSitemapDocument();
-        List list = EinzelbelegDB.getList();
-        for (Object object : list) {
-            Einzelbeleg einzelbeleg = (Einzelbeleg) object;
+        List<Einzelbeleg> einzelbelege = EinzelbelegDB.getList();
+        for (Einzelbeleg einzelbeleg : einzelbelege) {
             if (einzelbeleg.getQuelle() != null && einzelbeleg.getQuelle().getZuVeroeffentlichen() > 0) {
                 AddEntryByModelInterface(document, einzelbeleg, einzelbeleg);
             }
@@ -189,19 +189,23 @@ public class Sitemap extends AbstractBase {
 
     private static void GenerateNamen() throws Exception {
         Document document = InitSitemapDocument();
-        List list = LemmaDB.getList();
-        for (Object object: list) {
-            MghLemma lemma = (MghLemma)object;
-            AddEntryByModelInterface(document, lemma, lemma);
+        List<MghLemma> lemmas = LemmaDB.getList();
+        for (MghLemma lemma: lemmas) {
+            Set<Einzelbeleg> einzelbelege = lemma.getEinzelbelege();
+            for (Einzelbeleg einzelbeleg : einzelbelege) {
+                if (einzelbeleg.getQuelle().getZuVeroeffentlichen() > 0) {
+                    AddEntryByModelInterface(document, lemma, lemma);
+                    break;
+                }
+            }
         }
         GenerateAndRegisterSitemap(document, "sitemap-namen.xml");
     }
 
     private static void GeneratePersons() throws Exception {
         Document document = InitSitemapDocument();
-        List list = PersonDB.getListPersonPublic();
-        for (Object object : list) {
-            Person person = (Person) object;
+        List<Person> persons = PersonDB.getListPersonPublic();
+        for (Person person : persons) {
             AddEntryByModelInterface(document, person, person);
         }
         GenerateAndRegisterSitemap(document, "sitemap-personen.xml");
@@ -209,9 +213,8 @@ public class Sitemap extends AbstractBase {
 
     private static void GenerateQuellen() throws Exception {
         Document document = InitSitemapDocument();
-        List list = QuelleDB.getList();
-        for (Object object : list) {
-            Quelle quelle = (Quelle) object;
+        List<Quelle> quellen = QuelleDB.getList();
+        for (Quelle quelle : quellen) {
             if (quelle.getZuVeroeffentlichen() > 0) {
                 AddEntryByModelInterface(document, quelle, quelle);
             }
