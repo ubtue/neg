@@ -20,13 +20,7 @@ public class LemmaDB extends AbstractBase {
 
     public static List<MghLemma> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT mgh_lemma.* "
-                    + "FROM einzelbeleg_hatmghlemma ehm "
-                    + "JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID "
-                    + "JOIN quelle q ON q.ID = e.QuelleID "
-                    + "JOIN mgh_lemma l ON l.ID = ehm.MGHLemmaID "
-                    + "WHERE q.ZuVeroeffentlichen = 1 "
-                    + "ORDER BY ehm.MGHLemmaID";
+            String sql = "SELECT * FROM mgh_lemma WHERE ID IN (SELECT MGHLemmaID FROM einzelbeleg_hatmghlemma ehm JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID JOIN quelle q ON q.ID = e.QuelleID WHERE q.ZuVeroeffentlichen = 1)";
 
             NativeQuery query = session.createNativeQuery(sql);
             query.addEntity(MghLemma.class);
