@@ -6,7 +6,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "handschrift_ueberlieferung")
-public class HandschriftUeberlieferung implements LetzteAenderung {
+public class HandschriftUeberlieferung implements History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -287,18 +287,22 @@ public class HandschriftUeberlieferung implements LetzteAenderung {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
+    @Override
     public Date getErstellt() {
         return erstellt;
     }
 
+    @Override
     public void setErstellt(Date erstellt) {
         this.erstellt = erstellt;
     }
 
+    @Override
     public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
+    @Override
     public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }

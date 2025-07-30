@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 @Entity
 @Table(name = "einzelbeleg")
-public class Einzelbeleg implements PersistentIdentifier, LetzteAenderung {
+public class Einzelbeleg implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

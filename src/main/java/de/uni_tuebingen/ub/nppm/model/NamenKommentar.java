@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 @Entity
 @Table(name = "namenkommentar")
-public class NamenKommentar implements PersistentIdentifier, LetzteAenderung {
+public class NamenKommentar implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -154,18 +154,22 @@ public class NamenKommentar implements PersistentIdentifier, LetzteAenderung {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
+    @Override
     public Date getErstellt() {
         return erstellt;
     }
 
+    @Override
     public void setErstellt(Date erstellt) {
         this.erstellt = erstellt;
     }
 
+    @Override
     public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
+    @Override
     public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }

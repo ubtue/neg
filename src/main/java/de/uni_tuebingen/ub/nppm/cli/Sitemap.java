@@ -204,7 +204,7 @@ public class Sitemap extends AbstractBase {
         GenerateAndRegisterSitemap(document, "base");
     }
 
-    private static <T extends PersistentIdentifier & LetzteAenderung> void GenerateEntitySitemap(List<T> entities, String name) throws Exception {
+    private static <T extends PersistentIdentifier & History> void GenerateEntitySitemap(List<T> entities, String name) throws Exception {
         Document document = InitSitemapDocument();
         for (T entity : entities) {
             AddEntry(document, BASE_URL_RESOLVER + entity.getPersistentIdentifier(), entity.getLetzteAenderung());

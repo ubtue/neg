@@ -6,7 +6,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "edition")
-public class Edition implements PersistentIdentifier, LetzteAenderung {
+public class Edition implements PersistentIdentifier, History {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
@@ -210,18 +210,22 @@ public class Edition implements PersistentIdentifier, LetzteAenderung {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
+    @Override
     public Date getErstellt() {
         return erstellt;
     }
 
+    @Override
     public void setErstellt(Date erstellt) {
         this.erstellt = erstellt;
     }
 
+    @Override
     public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
+    @Override
     public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }

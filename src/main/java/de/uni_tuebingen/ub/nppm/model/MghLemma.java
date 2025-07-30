@@ -11,7 +11,7 @@ import org.json.JSONObject;
 @Table(name = "mgh_lemma")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class MghLemma implements PersistentIdentifier, LetzteAenderung {
+public class MghLemma implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
