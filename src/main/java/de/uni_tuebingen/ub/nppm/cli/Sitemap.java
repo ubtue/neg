@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +19,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.interfaces.*;
-import java.time.LocalDateTime;
 
 public class Sitemap extends AbstractBase {
 
@@ -30,6 +30,7 @@ public class Sitemap extends AbstractBase {
     private static final String BASE_URL_RESOLVER = BASE_URL + "id/";
     private static final String BASE_URL_SITEMAPS = BASE_URL + "sitemaps/";
     private static List<String> sitemaps = new ArrayList<>();
+    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * Generate XML Sitemap
@@ -104,7 +105,7 @@ public class Sitemap extends AbstractBase {
         urlElement.appendChild(locElement);
         if (lastmodDate != null) {
             Element lastmodElement = document.createElement("lastmod");
-            lastmodElement.setTextContent(lastmodDate.toString());
+            lastmodElement.setTextContent(dateFormatter.format(lastmodDate));
             urlElement.appendChild(lastmodElement);
         }
         document.getDocumentElement().appendChild(urlElement);
@@ -116,7 +117,7 @@ public class Sitemap extends AbstractBase {
         locElement.setTextContent(BASE_URL_SITEMAPS + filename);
         sitemapElement.appendChild(locElement);
         Element lastmodElement = document.createElement("lastmod");
-        lastmodElement.setTextContent(LocalDateTime.now().toString());
+        lastmodElement.setTextContent(dateFormatter.format(new Date()));
         sitemapElement.appendChild(lastmodElement);
         document.getDocumentElement().appendChild(sitemapElement);
     }
@@ -221,6 +222,7 @@ public class Sitemap extends AbstractBase {
         for (String sitemap : sitemaps) {
             AddSitemapToIndex(document, sitemap);
         }
+        // If you ever rename this output, make sure to also change the reference in robots.txt!
         WriteDocument(document, outputDirectory + "/sitemapIndex.xml");
     }
 }
