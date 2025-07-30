@@ -106,6 +106,7 @@
 
         Set<String> uniqueStandardnamen = new HashSet<>();
         Set<String> uniqueBelegformen = new HashSet<>();
+        int belegformCount = 0; // We want this to be non-unique, so we can't count over the HashSet (special request ~07/2025)
 
         for (Map<String, Object> row : resultAsMap) {
             Object sn = row.get("Standardname");
@@ -116,6 +117,7 @@
             Object bf = row.get("Belegform");
             if (bf != null && !bf.toString().trim().isEmpty()) {
                 uniqueBelegformen.add(bf.toString().trim());
+                ++belegformCount;
             }
         }
 
@@ -133,7 +135,6 @@
             output.append(", ");
         }
 
-        int belegformCount = uniqueBelegformen.size();
         if (belegformCount >= 0) {
             output.append(Language.getTextfield(session, "freie_suche", "Insgesamt")).append(" ");
             output.append(belegformCount).append(" ");
