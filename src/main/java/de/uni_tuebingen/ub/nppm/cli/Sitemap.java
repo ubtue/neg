@@ -2,6 +2,7 @@ package de.uni_tuebingen.ub.nppm.cli;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -99,7 +100,7 @@ public class Sitemap extends AbstractBase {
     private static void AddEntry(Document document, String url, Date lastmodDate) throws Exception {
         Element urlElement = document.createElement("url");
         Element locElement = document.createElement("loc");
-        locElement.setTextContent(BASE_URL + url);
+        locElement.setTextContent(url);
         urlElement.appendChild(locElement);
         if (lastmodDate != null) {
             Element lastmodElement = document.createElement("lastmod");
@@ -109,7 +110,7 @@ public class Sitemap extends AbstractBase {
         document.getDocumentElement().appendChild(urlElement);
     }
 
-    private static void AddSitemap(Document document, String filename) throws Exception {
+    private static void AddSitemapToIndex(Document document, String filename) throws Exception {
         Element sitemapElement = document.createElement("sitemap");
         Element locElement = document.createElement("loc");
         locElement.setTextContent(BASE_URL_SITEMAPS + filename);
@@ -134,9 +135,42 @@ public class Sitemap extends AbstractBase {
         }
     }
 
-    private static void GenerateAndRegisterSitemap(Document document, String filename) throws Exception {
-        sitemaps.add(filename);
-        WriteDocument(document, outputDirectory + "/" + filename);
+    private static void GenerateAndRegisterSitemap(Document sitemap, String name) throws Exception {
+        int maxEntriesPerPart = 50000;
+        if (sitemap.getDocumentElement().getChildNodes().getLength() <= maxEntriesPerPart) {
+            // Generate single sitemap if possible
+            System.out.println("Generate " + name + " as single sitemap");
+            String filename = "sitemap-" + name + ".xml";
+            sitemaps.add(filename);
+            WriteDocument(sitemap, outputDirectory + "/" + filename);
+        } else {
+            // Split into parts if necessary
+            int partNumberMin = 1;
+            int partNumberMax = (sitemap.getDocumentElement().getChildNodes().getLength() / maxEntriesPerPart) + 1;
+
+            for (int partNumber = partNumberMin; partNumber <= partNumberMax; ++partNumber) {
+                int rangeStart = 1 + ((partNumber - 1) * maxEntriesPerPart);
+                int rangeEnd = rangeStart + maxEntriesPerPart - 1;
+                System.out.println("Generate " + name + " Part " + partNumber + " with entries " + rangeStart + " To " + rangeEnd);
+
+                Document part = InitSitemapDocument();
+                Node child = sitemap.getDocumentElement().getFirstChild();
+                int childNumber = 1;
+                while (child != null) {
+                    if (childNumber >= rangeStart && childNumber <= rangeEnd) {
+                        Node clone = child.cloneNode(outputPretty);
+                        clone = part.importNode(clone, outputPretty);
+                        part.getDocumentElement().appendChild(clone);
+                    }
+                    ++childNumber;
+                    child = child.getNextSibling();
+                }
+
+                String partName = "sitemap-" + name + "-" + partNumber + ".xml";
+                sitemaps.add(partName);
+                WriteDocument(part, outputDirectory + "/" + partName);
+            }
+        }
     }
 
     private static void GenerateBase() throws Exception {
@@ -165,9 +199,9 @@ public class Sitemap extends AbstractBase {
         );
 
         for (String page : pages) {
-            AddEntry(document, page);
+            AddEntry(document, BASE_URL + page);
         }
-        GenerateAndRegisterSitemap(document, "sitemap-base.xml");
+        GenerateAndRegisterSitemap(document, "base");
     }
 
     private static <T extends PersistentIdentifier & LetzteAenderung> void GenerateEntitySitemap(List<T> entities, String name) throws Exception {
@@ -175,13 +209,13 @@ public class Sitemap extends AbstractBase {
         for (T entity : entities) {
             AddEntry(document, BASE_URL_RESOLVER + entity.getPersistentIdentifier(), entity.getLetzteAenderung());
         }
-        GenerateAndRegisterSitemap(document, "sitemap-" + name +".xml");
+        GenerateAndRegisterSitemap(document, name);
     }
 
     private static void GenerateIndex() throws Exception {
         Document document = InitSitemapIndexDocument();
         for (String sitemap : sitemaps) {
-            AddSitemap(document, sitemap);
+            AddSitemapToIndex(document, sitemap);
         }
         WriteDocument(document, outputDirectory + "/sitemapIndex.xml");
     }
