@@ -30,26 +30,31 @@ public class SucheDB extends AbstractBase {
         verifyDynamicColumn(field);
 
         String sql = "SELECT DISTINCT " + field + " FROM " + form;
-        boolean addWhereStatement = !query.equals("?");
-        if (addWhereStatement) {
-            sql += " WHERE " + field + " LIKE CONCAT('%', ?1, '%') ";
+
+        List<String> andConditions = new ArrayList<>();
+        boolean addLikeStatement = !query.equals("?");
+        if (!query.equals("?")) {
+            andConditions.add(field + " LIKE CONCAT('%', ?1, '%')");
         }
 
         // in der auto completion->frontend->erweiterte suche keine einträge mit Constants.forbiddenLemmaSubstring zeigen
         if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
-            if (addWhereStatement) {
-                sql += " AND " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'";
-            } else {
-                sql += " WHERE " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'";
-            }
+            andConditions.add(field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'");
+        }
+
+        if (form.equals("quelle")) {
+            andConditions.add("quelle.ZuVeroeffentlichen = 1");
+        }
+
+        if (!andConditions.isEmpty()) {
+            sql += " WHERE " + String.join(" AND ", andConditions);
         }
 
         sql += " ORDER BY " + field;
 
         try (Session session = getSession()) {
-
             NativeQuery sqlQuery = session.createNativeQuery(sql);
-            if (addWhereStatement)
+            if (addLikeStatement)
                 sqlQuery.setParameter(1, query);
             List<String> rows = sqlQuery.getResultList();
             return rows;
