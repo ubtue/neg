@@ -1,0 +1,4 @@
+CLI_DIR=/var/lib/tomcat9/webapps/neg/WEB-INF
+DATA_DIR=/usr/local/var/lib/nppm
+LOG_DIR=/usr/local/var/log/nppm
+0 22 * * 0 cd "$CLI_DIR" && java -classpath "lib/*:classes/." de.uni_tuebingen.ub.nppm.cli.Sitemap --pretty "$DATA_DIR/sitemaps" > "$LOG_DIR/sitemap.log" 2>&1

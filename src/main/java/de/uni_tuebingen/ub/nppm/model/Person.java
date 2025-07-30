@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.*;
 import java.util.*;
@@ -7,7 +8,7 @@ import org.json.JSONObject;
 
 @Entity
 @Table(name = "person")
-public class Person {
+public class Person implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -138,6 +139,11 @@ public class Person {
         return id;
     }
 
+    @Override
+    public String getPersistentIdentifier() {
+        return "P" + getId();
+    }
+
     public String getPkz() {
         return pkz;
     }
@@ -218,34 +224,42 @@ public class Person {
         this.ort = ort;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
+    @Override
     public Date getErstellt() {
         return erstellt;
     }
 
+    @Override
     public void setErstellt(Date erstellt) {
         this.erstellt = erstellt;
     }
 
+    @Override
     public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
+    @Override
     public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }

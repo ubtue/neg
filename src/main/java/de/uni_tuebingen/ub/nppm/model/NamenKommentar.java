@@ -1,7 +1,7 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import de.uni_tuebingen.ub.nppm.util.Utils;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 @Entity
 @Table(name = "namenkommentar")
-public class NamenKommentar {
+public class NamenKommentar implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,6 +71,11 @@ public class NamenKommentar {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String getPersistentIdentifier() {
+        return "N" + getId();
     }
 
     public String geteLemma() {
@@ -129,34 +134,42 @@ public class NamenKommentar {
         this.bearbeitungsstatus = bearbeitungsstatus;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
+    @Override
     public Date getErstellt() {
         return erstellt;
     }
 
+    @Override
     public void setErstellt(Date erstellt) {
         this.erstellt = erstellt;
     }
 
+    @Override
     public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
+    @Override
     public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }

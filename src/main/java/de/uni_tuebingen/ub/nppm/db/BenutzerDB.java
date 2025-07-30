@@ -7,7 +7,7 @@ import javax.persistence.criteria.*;
 
 public class BenutzerDB extends AbstractBase {
 
-    public static List getList() throws Exception {
+    public static List<Benutzer> getList() throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
@@ -19,7 +19,7 @@ public class BenutzerDB extends AbstractBase {
         }
     }
 
-    public static List getListAktiv() throws Exception {
+    public static List<Benutzer> getListAktiv() throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);
@@ -32,7 +32,7 @@ public class BenutzerDB extends AbstractBase {
         }
     }
 
-    public static List getListInaktiv() throws Exception {
+    public static List<Benutzer> getListInaktiv() throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Benutzer> criteria = builder.createQuery(Benutzer.class);

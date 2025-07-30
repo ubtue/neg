@@ -21,7 +21,7 @@ import org.hibernate.Transaction;
 
 public class SucheDB extends AbstractBase {
 
-    public static List getFavoriten() throws Exception {
+    public static List<SucheFavoriten> getFavoriten() throws Exception {
         return getList(SucheFavoriten.class);
     }
 
