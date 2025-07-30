@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /
 Allow: /gast/
 Allow: /id/
-Sitemap: /sitemaps/sitemapIndex.xml
+Sitemap: https://nppm.ub.uni-tuebingen.de/sitemaps/sitemapIndex.xml
