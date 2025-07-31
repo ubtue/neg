@@ -53,6 +53,8 @@
                     <div class="ut-panel__collapse collapse" id="footerpanel-3-pc">
                         <div class="ut-panel__body">
                             <a href="//dfg.de" target="_blank"><img src="layout/dfg_logo_schriftzug.svg" alt="DFG Deutsche Forschungsgemeinschaft Logo" aria-label="DFG Deutsche Forschungsgemeinschaft" height="36"></a>
+                            <br><br>
+                            <a href="//www.greven-stiftung.de" target="_blank"><img src="layout/GS_Logo_214_rot.jpg" alt="Irene und Sigurd Greven Stiftung" aria-label="Irene und Sigurd Greven Stiftung" height="42"></a>
                         </div>
                     </div>
                 </div>
