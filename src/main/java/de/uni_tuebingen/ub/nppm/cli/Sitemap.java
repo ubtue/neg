@@ -186,12 +186,11 @@ public class Sitemap extends AbstractBase {
             "gast/infos?sharedHtml=hilfe",
 
             // Footer-Einträge
-            "gast/infos?sharedHtml=ziele",
+            "gast/infos?sharedHtml=aktuelles",
             "gast/infos?sharedHtml=datenbank",
             "gast/infos?sharedHtml=quellenliste",
-            "gast/infos?sharedHtml=tagungen",
             "gast/infos?sharedHtml=mitglieder",
-            "gast/infos?sharedHtml=projekte",
+            "gast/infos?sharedHtml=kooperationen",
             "gast/infos?sharedHtml=publikationen"
 
             // Intentionally ommitted pages:
