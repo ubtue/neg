@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,6 +30,7 @@ public class AjaxServlet extends HttpServlet {
             String query = request.getParameter("query");
             String form = request.getParameter("form");
             String field = request.getParameter("field");
+            boolean includeUnpublished = (request.getParameter("backend") != null);
 
             if (query == null || form == null || field == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -39,7 +39,7 @@ public class AjaxServlet extends HttpServlet {
 
                 JSONObject jsonObject = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
-                List<String> matches = SucheDB.getAutocompleteText(field, form, query);
+                List<String> matches = SucheDB.getAutocompleteText(field, form, query, includeUnpublished);
                 for (String match : matches) {
                     jsonArray.put(match);
                 }
