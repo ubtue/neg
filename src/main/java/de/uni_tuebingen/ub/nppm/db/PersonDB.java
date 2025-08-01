@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import org.hibernate.Session;
@@ -12,6 +11,11 @@ public class PersonDB extends AbstractBase {
 
     public static Person getById(int id) throws Exception {
         return AbstractBase.getById(id, Person.class);
+    }
+
+    public static Person getByGndPublic(String gnd) throws Exception {
+        String query = "SELECT * FROM person WHERE GND = \"" + escape(gnd, '"') + "\" AND ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ")";
+        return getSingleResult(query, Person.class);
     }
 
     public static List<Person> getList() throws Exception {

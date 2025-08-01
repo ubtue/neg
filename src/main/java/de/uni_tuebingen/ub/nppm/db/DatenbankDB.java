@@ -115,18 +115,6 @@ public class DatenbankDB extends AbstractBase {
         return null;
     }
 
-    public static Object getSingleResult(String sql) throws Exception {
-        try (Session session = getSession();) {
-            NativeQuery query = session.createNativeQuery(sql);
-            List<Object> rows = query.getResultList();
-            if (!rows.isEmpty()) {
-                return rows.get(0);
-            } else {
-                return null;
-            }
-        }
-    }
-
     public static List<Object[]> getResult(String sql) throws Exception {
         try (Session session = getSession()) {
             NativeQuery query = session.createNativeQuery(sql);
