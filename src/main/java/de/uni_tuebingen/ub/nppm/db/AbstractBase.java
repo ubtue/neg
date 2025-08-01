@@ -368,10 +368,35 @@ public class AbstractBase {
         }
     }
 
+    public static Object getSingleResult(String sql) throws Exception {
+        try (Session session = getSession()) {
+            NativeQuery query = session.createNativeQuery(sql);
+            List<Object> rows = query.getResultList();
+            if (!rows.isEmpty()) {
+                return rows.get(0);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public static <T> T getSingleResult(String sql, Class<T> type) throws Exception {
+        try (Session session = getSession()) {
+            NativeQuery query = session.createNativeQuery(sql);
+            query.addEntity(type);
+            List<T> rows = query.getResultList();
+            if (!rows.isEmpty()) {
+                return rows.get(0);
+            } else {
+                return null;
+            }
+        }
+    }
+
     public static String getSingleField(String zielAttribut, String zieltabelle, int id) throws Exception {
         String sql = "SELECT " + zielAttribut + " FROM " + zieltabelle + " WHERE ID='" + id + "';";
         try {
-            Object res = DatenbankDB.getSingleResult(sql);
+            Object res = getSingleResult(sql);
             if (res != null) {
                 return res.toString();
             }
