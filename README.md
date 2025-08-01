@@ -69,8 +69,8 @@ For servers (ZDV):
 - cronjobs
     - See "cronjobs" file in the root directory, add entries to crontab
     - DATA_DIR and LOG_DIR should be created manually
-        - Sitemaps: make sure DATA_DIR/sitemaps is symlinked in your tomcat/webapps directory
-        - Also please place copy beacon.template to DATA_DIR, it can be changed locally on the machine, and symlink the output path to tomcat/webapps as well
+        - Sitemap: make sure DATA_DIR/sitemaps is symlinked in your tomcat/webapps directory
+        - Beacon: symlink DATA_DIR/beacon.txt to tomcat/webapps as well
 
     - Create /root/.neg.properties (see above)
 - Firewall
