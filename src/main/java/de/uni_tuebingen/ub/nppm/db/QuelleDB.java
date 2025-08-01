@@ -13,6 +13,8 @@ import org.hibernate.query.Query;
 
 public class QuelleDB extends AbstractBase {
 
+    public static final String SUBSELECT_PUBLIC_QUELLE_IDS = "SELECT DISTINCT ID FROM quelle WHERE ZuVeroeffentlichen=1";
+
     public static List<Quelle> getList() throws Exception {
         return getList(Quelle.class);
     }
@@ -37,7 +39,7 @@ public class QuelleDB extends AbstractBase {
             String q = "";
             if (jumpToID != null && jumpToID.length() > 0) {
                 Query query;
-                q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.id = :id";
+                q = "FROM quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.id = :id";
                 query = session.createQuery(q);
                 query.setParameter("id", Integer.valueOf(jumpToID));
                 query.setParameter("zuV", 1);

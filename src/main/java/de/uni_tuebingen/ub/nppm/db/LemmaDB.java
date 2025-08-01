@@ -10,6 +10,8 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 public class LemmaDB extends AbstractBase {
+    public static final String SUBSELECT_PUBLIC_MGHLEMMA_IDS = "SELECT DISTINCT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ")";
+
     public static MghLemma getById(int id) throws Exception {
         return AbstractBase.getById(id, MghLemma.class);
     }

@@ -33,10 +33,16 @@ public class SucheDB extends AbstractBase {
 
         if (!includeUnpublished) {
             if (form.equals("quelle")) {
-                andConditions.add("quelle.ZuVeroeffentlichen = 1");
+                andConditions.add("quelle.ID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")");
+            }
+            if (form.equals("einzelbeleg")) {
+                andConditions.add("einzelbeleg.ID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ")");
             }
             if (form.equals("person")) {
-                andConditions.add("person.ID IN (" + PersonDB.SUBSELECT_PUBLIC_PERSONID + ")");
+                andConditions.add("person.ID IN (" + PersonDB.SUBSELECT_PUBLIC_PERSON_IDS + ")");
+            }
+            if (form.equals("mghlemma")) {
+                andConditions.add("mghlemma.ID IN (" + LemmaDB.SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")");
             }
         }
 
