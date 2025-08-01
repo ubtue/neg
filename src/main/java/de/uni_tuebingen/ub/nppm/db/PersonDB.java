@@ -8,6 +8,8 @@ import org.hibernate.query.NativeQuery;
 
 public class PersonDB extends AbstractBase {
 
+    public static final String SUBSELECT_PUBLIC_PERSON_IDS = "SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1)";
+
     public static Person getById(int id) throws Exception {
         return AbstractBase.getById(id, Person.class);
     }
@@ -19,7 +21,7 @@ public class PersonDB extends AbstractBase {
 
     public static List<Person> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";
+            String SQL = "SELECT * FROM person WHERE ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ") ORDER BY id ASC";
 
             NativeQuery query = session.createNativeQuery(SQL);
             query.addEntity(Person.class);
@@ -51,7 +53,7 @@ public class PersonDB extends AbstractBase {
 
     public static Person getFirstPublicPerson() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM person WHERE ID IN (SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1))ORDER BY id ASC";
+            String SQL = "SELECT * FROM person WHERE ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ") ORDER BY id ASC";
 
             NativeQuery query = session.createNativeQuery(SQL);
             query.addEntity(Person.class);
@@ -65,13 +67,7 @@ public class PersonDB extends AbstractBase {
             // 1. Kleinste und größte veröffentlichte Person ID holen
             String minMaxSQL = "SELECT MIN(p.ID), MAX(p.ID) "
                     + "FROM person p "
-                    + "WHERE p.ID IN ("
-                    + "  SELECT ep.PersonID "
-                    + "  FROM einzelbeleg_hatperson ep "
-                    + "  JOIN einzelbeleg e ON ep.EinzelbelegID = e.ID "
-                    + "  JOIN quelle q ON e.QuelleID = q.ID "
-                    + "  WHERE q.ZuVeroeffentlichen = 1"
-                    + ")";
+                    + "WHERE p.ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ")";
             Object[] minMaxResult = (Object[]) session.createNativeQuery(minMaxSQL).getSingleResult();
             Integer minId = minMaxResult[0] != null ? ((Number) minMaxResult[0]).intValue() : null;
             Integer maxId = minMaxResult[1] != null ? ((Number) minMaxResult[1]).intValue() : null;
@@ -98,13 +94,7 @@ public class PersonDB extends AbstractBase {
             String checkPublicSQL = "SELECT p.ID "
                     + "FROM person p "
                     + "WHERE p.ID = :id "
-                    + "AND p.ID IN ("
-                    + "  SELECT ep.PersonID "
-                    + "  FROM einzelbeleg_hatperson ep "
-                    + "  JOIN einzelbeleg e ON ep.EinzelbelegID = e.ID "
-                    + "  JOIN quelle q ON e.QuelleID = q.ID "
-                    + "  WHERE q.ZuVeroeffentlichen = 1"
-                    + ")";
+                    + "AND p.ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ")";
             NativeQuery checkQuery = session.createNativeQuery(checkPublicSQL);
             checkQuery.setParameter("id", id);
 
@@ -118,13 +108,7 @@ public class PersonDB extends AbstractBase {
             // Fall 4: ID existiert, aber nicht public → Suche die nächste höhere öffentliche ID
             String nextPublicSQL = "SELECT p.ID "
                     + "FROM person p "
-                    + "WHERE p.ID IN ("
-                    + "  SELECT ep.PersonID "
-                    + "  FROM einzelbeleg_hatperson ep "
-                    + "  JOIN einzelbeleg e ON ep.EinzelbelegID = e.ID "
-                    + "  JOIN quelle q ON e.QuelleID = q.ID "
-                    + "  WHERE q.ZuVeroeffentlichen = 1"
-                    + ") "
+                    + "WHERE p.ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ") "
                     + "AND p.ID > :id "
                     + "ORDER BY p.ID ASC";
 
@@ -140,10 +124,8 @@ public class PersonDB extends AbstractBase {
     public static List<Integer> getAllPublicPersonIds() throws Exception {
         try (Session session = getSession()) {
             String sql = "SELECT DISTINCT p.ID FROM person p "
-                    + "JOIN einzelbeleg_hatperson ep ON p.ID = ep.PersonID "
-                    + "JOIN einzelbeleg e ON ep.EinzelbelegID = e.ID "
-                    + "JOIN quelle q ON e.QuelleID = q.ID "
-                    + "WHERE q.zuVeroeffentlichen = 1 ORDER BY p.ID";
+                    + "WHERE p.ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ") "
+                    + "ORDER BY p.ID";
             return session.createNativeQuery(sql).getResultList();
         }
     }

@@ -2,7 +2,6 @@ package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
-import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,13 +24,28 @@ public class SucheDB extends AbstractBase {
         return getList(SucheFavoriten.class);
     }
 
-    public static List<String> getAutocompleteText(String field, String form, String query) throws Exception {
+    public static List<String> getAutocompleteText(String field, String form, String query, boolean includeUnpublished) throws Exception {
         verifyDynamicTable(form);
         verifyDynamicColumn(field);
 
         String sql = "SELECT DISTINCT " + field + " FROM " + form;
-
         List<String> andConditions = new ArrayList<>();
+
+        if (!includeUnpublished) {
+            if (form.equals("quelle")) {
+                andConditions.add("quelle.ID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")");
+            }
+            if (form.equals("einzelbeleg")) {
+                andConditions.add("einzelbeleg.ID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ")");
+            }
+            if (form.equals("person")) {
+                andConditions.add("person.ID IN (" + PersonDB.SUBSELECT_PUBLIC_PERSON_IDS + ")");
+            }
+            if (form.equals("mghlemma")) {
+                andConditions.add("mghlemma.ID IN (" + LemmaDB.SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")");
+            }
+        }
+
         boolean addLikeStatement = !query.equals("?");
         if (!query.equals("?")) {
             andConditions.add(field + " LIKE CONCAT('%', ?1, '%')");
@@ -40,10 +54,6 @@ public class SucheDB extends AbstractBase {
         // in der auto completion->frontend->erweiterte suche keine einträge mit Constants.forbiddenLemmaSubstring zeigen
         if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
             andConditions.add(field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'");
-        }
-
-        if (form.equals("quelle")) {
-            andConditions.add("quelle.ZuVeroeffentlichen = 1");
         }
 
         if (!andConditions.isEmpty()) {
