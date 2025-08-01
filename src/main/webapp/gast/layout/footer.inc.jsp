@@ -35,7 +35,7 @@
                                         <a class="ut-link ut-link--internal ut-link--block" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=datenbank"><% Language.printTextfield(out, session, "datenbank", "Titel"); %></a>
                                         <a class="ut-link ut-link--internal ut-link--block" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=quellenliste"><% Language.printTextfield(out, session, "quellenliste", "Titel"); %></a>
                                         <a class="ut-link ut-link--internal ut-link--block" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=mitglieder"><% Language.printTextfield(out, session, "mitglieder", "Titel"); %></a>
-                                        <a class="ut-link ut-link--internal ut-link--block" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=projekte"><% Language.printTextfield(out, session, "kooperationen", "Titel"); %></a>
+                                        <a class="ut-link ut-link--internal ut-link--block" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=kooperationen"><% Language.printTextfield(out, session, "kooperationen", "Titel"); %></a>
                                         <a class="ut-link ut-link--internal ut-link--block" href="<%=Utils.getBaseUrl(request)%>/gast/infos?sharedHtml=publikationen"><% Language.printTextfield(out, session, "publikationen", "Titel"); %></a>
                                     </div>
                                 </div>
