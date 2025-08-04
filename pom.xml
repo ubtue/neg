@@ -326,13 +326,13 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <executions>
                     <execution>
-                        <id>Restart Tomcat</id>
+                        <id>Restart Tomcat 10, Auto-Migrate from Java EE to Jakarta EE</id>
                         <phase>post-integration-test</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/restartTomcat10.sh</executable>
+                            <executable>${basedir}/postbuild.sh</executable>
                         </configuration>
                     </execution>
                 </executions>
