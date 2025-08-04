@@ -58,7 +58,7 @@
                         </tr>
                     </table>
                 </div>
-                <input type="submit" value="<%= DBtoHTML(Language.getTextfield(session, "login", "DatenSenden"))%>" style="margin:5px 0px 0px 50px"/>
+                <input type="submit" value='<%= DBtoHTML(Language.getTextfield(session, "login", "DatenSenden"))%>' style="margin:5px 0px 0px 50px"/>
 
 
 
@@ -69,8 +69,8 @@
     <center>
         <form method="POST">
             <jsp:include page="../forms/language.jsp">
-                <jsp:param name="ID" value="<%= request.getParameter("ID")%>"/>
-                <jsp:param name="title" value="<%= request.getParameter("title")%>"/>
+                <jsp:param name="ID" value='<%= request.getParameter("ID")%>'/>
+                <jsp:param name="title" value='<%= request.getParameter("title")%>'/>
             </jsp:include>
         </form>
     </center>

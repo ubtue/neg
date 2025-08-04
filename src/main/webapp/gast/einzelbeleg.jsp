@@ -44,13 +44,13 @@
 
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="Einzelbeleg" />
-    <jsp:param name="ID" value="<%= id%>" />
+    <jsp:param name="ID" value='<%= id%>' />
     <jsp:param name="size" value="" />
     <jsp:param name="Formular" value="einzelbeleg" />
 </jsp:include>
 
 <jsp:include page="../inc.erzeugeFormular.jsp">
-    <jsp:param name="ID" value="<%= id%>"/>
+    <jsp:param name="ID" value='<%= id%>'/>
     <jsp:param name="Formular" value="einzelbeleg"/>
     <jsp:param name="Datenfeld" value="ID"/>
     <jsp:param name="size" value="11"/>
@@ -59,7 +59,7 @@
 <!----------ID---------->
 <div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
-        <jsp:param name="ID" value="<%=id%>"/>
+        <jsp:param name="ID" value='<%=id%>'/>
         <jsp:param name="title" value="gast_einzelbeleg"/>
     </jsp:include>
 </div>
@@ -78,13 +78,13 @@
 <table class="ut-table ut-table--striped ut-table--striped--color-primary-3">
     <tbody class="ut-table__body ">
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="PersonRO"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "PersonRO")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "PersonRO")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <tr class="ut-table__row">
@@ -92,7 +92,7 @@
             <td class="ut-table__item ut-table__body__item">
                 <span style="display: inline-flex; align-items: center;">
                     <jsp:include page="../inc.erzeugeFormular.jsp">
-                        <jsp:param name="ID" value="<%= id%>"/>
+                        <jsp:param name="ID" value='<%= id%>'/>
                         <jsp:param name="Formular" value="einzelbeleg"/>
                         <jsp:param name="Datenfeld" value="Belegform"/>
                         <jsp:param name="size" value="50"/>
@@ -101,7 +101,7 @@
                 </span>
                 <div>
                     <jsp:include page="../inc.erzeugeFormular.jsp">
-                        <jsp:param name="ID" value="<%= id%>"/>
+                        <jsp:param name="ID" value='<%= id%>'/>
                         <jsp:param name="Formular" value="einzelbeleg"/>
                         <jsp:param name="Datenfeld" value="Griechisch"/>
                         <jsp:param name="size" value="50"/>
@@ -112,75 +112,75 @@
         </tr>
         <!--
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="LemmaRO"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "LemmaRO")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "LemmaRO")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
         -->
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="MGHLemmaRO"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "MGHLemmaRO")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "MGHLemmaRO")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="Kontext"/>
             <jsp:param name="cols" value="40"/>
             <jsp:param name="rows" value="5"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Kontext")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "Kontext")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="KontextSelektion"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "KontextSelektion")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "KontextSelektion")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="KritikSelektion"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "KritikSelektion")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "KritikSelektion")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="LebendVerstorben"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "LebendVerstorben")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "LebendVerstorben")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
             <jsp:param name="Formular" value="gast_einzelbeleg"/>
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Datenfeld" value="Datierung"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "gast_einzelbeleg", "Datierung")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "gast_einzelbeleg", "Datierung")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <%
@@ -190,13 +190,13 @@
         %>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="DatierungUngewiss"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "DatierungUngewiss")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "DatierungUngewiss")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <%
@@ -204,85 +204,85 @@
         %>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="KommentarDatierung"/>
             <jsp:param name="cols" value="40"/>
             <jsp:param name="rows" value="5"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "KommentarDatierung")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "KommentarDatierung")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="Konvent"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Konvent")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "Konvent")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="PalAbgrenzung"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "PalAbgrenzung")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "PalAbgrenzung")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="InhAbgrenzung"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "InhAbgrenzung")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "InhAbgrenzung")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="NrInStrukt"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "NrInStrukt")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "NrInStrukt")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="Seite"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Seite")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "Seite")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="Raster"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Raster")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "Raster")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
 
         <jsp:include page="../inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%= id%>"/>
+            <jsp:param name="ID" value='<%= id%>'/>
             <jsp:param name="Formular" value="einzelbeleg"/>
             <jsp:param name="Datenfeld" value="Schreiber"/>
             <jsp:param name="Readonly" value="yes"/>
             <jsp:param name="Darstellung" value="Tabellenzeile"/>
-            <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "Schreiber")%>"/>
-            <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "Schreiber")%>'/>
+            <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
         </jsp:include>
     </tbody>
 </table>
@@ -294,7 +294,7 @@
         <td class="ut-table__item ut-table__body__item"><%=Language.getDatafield(session, "einzelbeleg", "QuelleLink")%></td>
         <td class="ut-table__item ut-table__body__item">
             <jsp:include page="../inc.erzeugeFormular.jsp">
-                <jsp:param name="ID" value="<%= id%>"/>
+                <jsp:param name="ID" value='<%= id%>'/>
                 <jsp:param name="Formular" value="einzelbeleg"/>
                 <jsp:param name="Datenfeld" value="QuelleLink"/>
             </jsp:include>
@@ -302,45 +302,45 @@
     </tr>
 
     <jsp:include page="../inc.erzeugeFormular.jsp">
-        <jsp:param name="ID" value="<%= id%>"/>
+        <jsp:param name="ID" value='<%= id%>'/>
         <jsp:param name="Formular" value="gast_einzelbeleg"/>
         <jsp:param name="Datenfeld" value="Edition"/>
         <jsp:param name="Readonly" value="yes"/>
         <jsp:param name="Darstellung" value="Tabellenzeile"/>
-        <jsp:param name="Label" value="<%=Language.getDatafield(session, "gast_einzelbeleg", "Edition")%>"/>
-        <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+        <jsp:param name="Label" value='<%=Language.getDatafield(session, "gast_einzelbeleg", "Edition")%>'/>
+        <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
     </jsp:include>
 
     <jsp:include page="../inc.erzeugeFormular.jsp">
-        <jsp:param name="ID" value="<%= id%>"/>
+        <jsp:param name="ID" value='<%= id%>'/>
         <jsp:param name="Formular" value="gast_einzelbeleg"/>
         <jsp:param name="Datenfeld" value="EditionKapitel"/>
         <jsp:param name="size" value="20"/>
         <jsp:param name="Readonly" value="yes"/>
         <jsp:param name="Darstellung" value="Tabellenzeile"/>
-        <jsp:param name="Label" value="<%=Language.getDatafield(session, "gast_einzelbeleg", "EditionKapitel")%>"/>
-        <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+        <jsp:param name="Label" value='<%=Language.getDatafield(session, "gast_einzelbeleg", "EditionKapitel")%>'/>
+        <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
     </jsp:include>
 
     <jsp:include page="../inc.erzeugeFormular.jsp">
-        <jsp:param name="ID" value="<%= id%>"/>
+        <jsp:param name="ID" value='<%= id%>'/>
         <jsp:param name="Formular" value="gast_einzelbeleg"/>
         <jsp:param name="Datenfeld" value="EditionSeite"/>
         <jsp:param name="size" value="20"/>
         <jsp:param name="Readonly" value="yes"/>
         <jsp:param name="Darstellung" value="Tabellenzeile"/>
-        <jsp:param name="Label" value="<%=Language.getDatafield(session, "gast_einzelbeleg", "EditionSeite")%>"/>
-        <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+        <jsp:param name="Label" value='<%=Language.getDatafield(session, "gast_einzelbeleg", "EditionSeite")%>'/>
+        <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
     </jsp:include>
 
     <jsp:include page="../inc.erzeugeFormular.jsp">
         <jsp:param name="Formular" value="gast_einzelbeleg"/>
-        <jsp:param name="ID" value="<%= id%>"/>
+        <jsp:param name="ID" value='<%= id%>'/>
         <jsp:param name="Datenfeld" value="QuelleDatierung"/>
         <jsp:param name="Readonly" value="yes"/>
         <jsp:param name="Darstellung" value="Tabellenzeile"/>
-        <jsp:param name="Label" value="<%=Language.getDatafield(session, "einzelbeleg", "QuelleDatierung")%>"/>
-        <jsp:param name="allfields" value="<%= request.getParameter("allfields") %>"/>
+        <jsp:param name="Label" value='<%=Language.getDatafield(session, "einzelbeleg", "QuelleDatierung")%>'/>
+        <jsp:param name="allfields" value='<%= request.getParameter("allfields") %>'/>
     </jsp:include>
 </table>
 </div>
@@ -353,7 +353,7 @@
 <div class="container">
     <h3 class="ut-heading ut-heading--h3"><% Language.printTextfield(out, session, "einzelbeleg", "TabTextkritik");%></h3>
     <jsp:include page="../inc.modul.jsp">
-        <jsp:param name="ID" value="<%= id%>"/>
+        <jsp:param name="ID" value='<%= id%>'/>
         <jsp:param name="Formular" value="einzelbeleg"/>
         <jsp:param name="Modul" value="lesartenRO"/>
     </jsp:include>

@@ -65,10 +65,10 @@
                 <jsp:include page="../inc.erzeugeFormular.jsp">
                     <jsp:param name="Formular" value="statistik"/>
                     <jsp:param name="Datenfeld" value="filterTitle"/>
-                    <jsp:param name="ValueAutomcomplete" value="<%=params.getFilter("filterTitle")%>"/>
-                </jsp:include>                
+                    <jsp:param name="ValueAutomcomplete" value='<%=params.getFilter("filterTitle")%>'/>
+                </jsp:include>
                 <input name="page" type="hidden" value="stat"/>
-                <input name="sort" type="hidden" value="<%=params.getSort()%>"/>
+                <input name="sort" type="hidden" value='<%=params.getSort()%>'/>
                 <button class="ut-btn ut-btn--color-primary-2" type="submit" style="margin-left: 2px;">
                     <% Language.printTextfield(out, session, "jump", "Los");%>
                 </button>

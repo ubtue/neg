@@ -27,7 +27,7 @@
             <td align="left">
                 <h1 id="h1-titel">
                     <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-                        <jsp:param name="Formular" value="<%= request.getParameter("title")%>"/>
+                        <jsp:param name="Formular" value='<%= request.getParameter("title")%>'/>
                         <jsp:param name="Textfeld" value="Titel"/>
                     </jsp:include>
                     <%
@@ -47,8 +47,8 @@
             </td>
             <td align="right">
                 <jsp:include page="../forms/link.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
                     <jsp:param name="Command" value="new"/>
                 </jsp:include>
 
@@ -66,72 +66,72 @@
                     if (!disabled.equals(" disabled"))
                         out.println("    <script type=\"text/javascript\">shortcut.add(\"Ctrl+Shift+S\",function() {document.forms[0].speichern.click();	},{	'type':'keydown',	'propagate':false,	'target':document});</script>");
                 %>
-                <input id="speichernX" type="submit" name="speichern" value="<%= speichernText %>" <%= disabled %>>
-                <input type="reset" name="abbrechen" value="<%= reset %>" <%= disabled%>>
+                <input id="speichernX" type="submit" name="speichern" value='<%= speichernText %>' <%= disabled %>>
+                <input type="reset" name="abbrechen" value='<%= reset %>' <%= disabled%>>
                 <jsp:include page="../forms/link.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
                     <jsp:param name="Command" value="first"/>
-                    <jsp:param name="filter" value="<%= filter%>"/>
-                    <jsp:param name="filterParameter" value="<%= filterParameter%>"/>
-                    <jsp:param name="formular" value="<%= formular%>"/>
+                    <jsp:param name="filter" value='<%= filter%>'/>
+                    <jsp:param name="filterParameter" value='<%= filterParameter%>'/>
+                    <jsp:param name="formular" value='<%= formular%>'/>
                 </jsp:include>
 
                 <jsp:include page="../forms/link.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
                     <jsp:param name="Command" value="back"/>
-                    <jsp:param name="filter" value="<%= filter%>"/>
-                    <jsp:param name="filterParameter" value="<%= filterParameter%>"/>
-                    <jsp:param name="formular" value="<%= formular%>"/>
+                    <jsp:param name="filter" value='<%= filter%>'/>
+                    <jsp:param name="filterParameter" value='<%= filterParameter%>'/>
+                    <jsp:param name="formular" value='<%= formular%>'/>
                 </jsp:include>
 
                 <jsp:include page="../forms/link.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
                     <jsp:param name="Command" value="next"/>
-                    <jsp:param name="filter" value="<%= filter%>"/>
-                    <jsp:param name="filterParameter" value="<%= filterParameter%>"/>
-                    <jsp:param name="formular" value="<%= formular%>"/>
+                    <jsp:param name="filter" value='<%= filter%>'/>
+                    <jsp:param name="filterParameter" value='<%= filterParameter%>'/>
+                    <jsp:param name="formular" value='<%= formular%>'/>
                 </jsp:include>
 
                 <jsp:include page="../forms/link.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
                     <jsp:param name="Command" value="last"/>
-                    <jsp:param name="filter" value="<%= filter%>"/>
-                    <jsp:param name="filterParameter" value="<%= filterParameter%>"/>
-                    <jsp:param name="formular" value="<%= formular%>"/>
+                    <jsp:param name="filter" value='<%= filter%>'/>
+                    <jsp:param name="filterParameter" value='<%= filterParameter%>'/>
+                    <jsp:param name="formular" value='<%= formular%>'/>
                 </jsp:include>
 
                 <jsp:include page="../forms/duplicate.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
                 </jsp:include>
             </td>
         </tr>
         <tr>
             <td align="left">
                 <jsp:include page="../forms/jumpID.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
-                    <jsp:param name="filter" value="<%= filter%>"/>
-                    <jsp:param name="filterParameter" value="<%= filterParameter%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
+                    <jsp:param name="filter" value='<%= filter%>'/>
+                    <jsp:param name="filterParameter" value='<%= filterParameter%>'/>
                 </jsp:include>
                 <jsp:include page="../forms/jump.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
-                    <jsp:param name="filter" value="<%= filter%>"/>
-                    <jsp:param name="filterParameter" value="<%= filterParameter%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
+                    <jsp:param name="filter" value='<%= filter%>'/>
+                    <jsp:param name="filterParameter" value='<%= filterParameter%>'/>
                 </jsp:include>
             </td>
             <td align="right">
                 <jsp:include page="../forms/filter.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
-                    <jsp:param name="formular" value="<%= formular%>"/>
-                    <jsp:param name="filter" value="<%= filter%>"/>
-                    <jsp:param name="filterParameter" value="<%= filterParameter%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
+                    <jsp:param name="formular" value='<%= formular%>'/>
+                    <jsp:param name="filter" value='<%= filter%>'/>
+                    <jsp:param name="filterParameter" value='<%= filterParameter%>'/>
                 </jsp:include>
             </td>
         </tr>
@@ -141,20 +141,20 @@
         <tr>
             <td align="left" nowrap>
                 <jsp:include page="../forms/shortcut.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
-                    <jsp:param name="filter" value="<%= filter%>"/>
-                    <jsp:param name="filterParameter" value="<%= filterParameter%>"/>
-                    <jsp:param name="formular" value="<%= formular%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
+                    <jsp:param name="filter" value='<%= filter%>'/>
+                    <jsp:param name="filterParameter" value='<%= filterParameter%>'/>
+                    <jsp:param name="formular" value='<%= formular%>'/>
                 </jsp:include>
             </td>
             <td align="right" style="color:white;font-weight:bold;">
                 <% Language.printTextfield(out, session, "titel_inc", "Eintrag");%>
                 <jsp:include page="../forms/counter.jsp">
-                    <jsp:param name="ID" value="<%= id%>"/>
-                    <jsp:param name="title" value="<%= request.getParameter("title").toLowerCase()%>"/>
-                    <jsp:param name="filter" value="<%= filter%>"/>
-                    <jsp:param name="filterParameter" value="<%= filterParameter%>"/>
+                    <jsp:param name="ID" value='<%= id%>'/>
+                    <jsp:param name="title" value='<%= request.getParameter("title").toLowerCase()%>'/>
+                    <jsp:param name="filter" value='<%= filter%>'/>
+                    <jsp:param name="filterParameter" value='<%= filterParameter%>'/>
                 </jsp:include>
             </td>
         </tr>

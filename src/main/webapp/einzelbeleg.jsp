@@ -30,7 +30,7 @@
 
 <jsp:include page="dosave.jsp">
     <jsp:param name="form" value="einzelbeleg" />
-    <jsp:param name="ID" value="<%=id%>" />
+    <jsp:param name="ID" value='<%=id%>' />
 </jsp:include>
 
 <jsp:include page="dojump.jsp">
@@ -42,13 +42,13 @@
     <FORM method="POST">
         <jsp:include page="layout/titel.inc.jsp">
             <jsp:param name="title" value="Einzelbeleg" />
-            <jsp:param name="ID" value="<%=id%>" />
+            <jsp:param name="ID" value='<%=id%>' />
             <jsp:param name="size" value="" />
             <jsp:param name="Formular" value="einzelbeleg" />
         </jsp:include>
 
         <jsp:include page="inc.erzeugeFormular.jsp">
-            <jsp:param name="ID" value="<%=id%>" />
+            <jsp:param name="ID" value='<%=id%>' />
             <jsp:param name="Formular" value="einzelbeleg" />
             <jsp:param name="Datenfeld" value="ID" />
             <jsp:param name="size" value="11" />
@@ -66,13 +66,13 @@
                   </td>
                   <td width="450">
                     <jsp:include page="inc.erzeugeFormular.jsp">
-                        <jsp:param name="ID" value="<%=id%>"/>
+                        <jsp:param name="ID" value='<%=id%>'/>
                         <jsp:param name="Formular" value="einzelbeleg"/>
                         <jsp:param name="Datenfeld" value="Belegnummer"/>
                         <jsp:param name="size" value="25"/>
                     </jsp:include>
                     <jsp:include page="inc.erzeugeFormular.jsp">
-                        <jsp:param name="ID" value="<%=id%>"/>
+                        <jsp:param name="ID" value='<%=id%>'/>
                         <jsp:param name="Formular" value="einzelbeleg"/>
                         <jsp:param name="Datenfeld" value="generiereBelegnummer"/>
                     </jsp:include>
@@ -84,14 +84,14 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="Belegform" />
                                 <jsp:param name="size" value="50" />
                             </jsp:include>
                             <span style="float: right; display: block; font-weight: bold;">
                                 <jsp:include page="forms/id.jsp">
-                                    <jsp:param name="ID" value="<%=id%>" />
+                                    <jsp:param name="ID" value='<%=id%>' />
                                     <jsp:param name="title" value="einzelbeleg" />
                                 </jsp:include>
                             </span>
@@ -103,7 +103,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="PalAbgrenzung" />
                                 <jsp:param name="size" value="5" />
@@ -116,7 +116,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="InhAbgrenzung" />
                                 <jsp:param name="size" value="5" />
@@ -129,7 +129,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="NrInStrukt" />
                                 <jsp:param name="size" value="5" />
@@ -142,7 +142,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="Lemma" />
                             </jsp:include>
@@ -154,7 +154,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="MGHLemma" />
                             </jsp:include>
@@ -166,7 +166,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="KritikSelektion" />
                             </jsp:include>
@@ -178,7 +178,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="AngabenPerson" />
                             </jsp:include>
@@ -199,7 +199,7 @@
                     </td>
                     <td width="450">
                         <jsp:include page="inc.erzeugeFormular.jsp">
-                            <jsp:param name="ID" value="<%=id%>" />
+                            <jsp:param name="ID" value='<%=id%>' />
                             <jsp:param name="Formular" value="einzelbeleg" />
                             <jsp:param name="Datenfeld" value="Kontext_vor" />
                             <jsp:param name="cols" value="40" />
@@ -213,7 +213,7 @@
                     </td>
                     <td width="450">
                         <jsp:include page="inc.erzeugeFormular.jsp">
-                            <jsp:param name="ID" value="<%=id%>" />
+                            <jsp:param name="ID" value='<%=id%>' />
                             <jsp:param name="Formular" value="einzelbeleg" />
                             <jsp:param name="Datenfeld" value="Kontext" />
                             <jsp:param name="cols" value="40" />
@@ -227,7 +227,7 @@
                     </td>
                     <td width="450">
                         <jsp:include page="inc.erzeugeFormular.jsp">
-                            <jsp:param name="ID" value="<%=id%>" />
+                            <jsp:param name="ID" value='<%=id%>' />
                             <jsp:param name="Formular" value="einzelbeleg" />
                             <jsp:param name="Datenfeld" value="Kontext_nach" />
                             <jsp:param name="cols" value="40" />
@@ -241,7 +241,7 @@
                     </td>
                     <td width="450">
                         <jsp:include page="inc.erzeugeFormular.jsp">
-                            <jsp:param name="ID" value="<%=id%>" />
+                            <jsp:param name="ID" value='<%=id%>' />
                             <jsp:param name="Formular" value="einzelbeleg" />
                             <jsp:param name="Datenfeld" value="KontextSelektion" />
                         </jsp:include>
@@ -263,7 +263,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="Seite" />
                                 <jsp:param name="size" value="5" />
@@ -277,7 +277,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="Raster" />
                                 <jsp:param name="size" value="5" />
@@ -291,7 +291,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="Schreiber" />
                                 <jsp:param name="size" value="5" />
@@ -314,7 +314,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="DatumVon" />
                             </jsp:include>
@@ -326,7 +326,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="DatumBis" />
                             </jsp:include>
@@ -338,7 +338,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="DatierungUngewiss" />
                             </jsp:include>
@@ -350,7 +350,7 @@
                         </td>
                         <td width="450">
                             <jsp:include page="inc.erzeugeFormular.jsp">
-                                <jsp:param name="ID" value="<%=id%>" />
+                                <jsp:param name="ID" value='<%=id%>' />
                                 <jsp:param name="Formular" value="einzelbeleg" />
                                 <jsp:param name="Datenfeld" value="KommentarDatierung" />
                                 <jsp:param name="cols" value="40" />
@@ -400,18 +400,18 @@
                                 </td>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Quellennummer" />
                                         <jsp:param name="size" value="20" />
                                     </jsp:include>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="QuelleSuchen" />
                                     </jsp:include>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="QuelleLink" />
                                     </jsp:include>
@@ -423,13 +423,13 @@
                                 </td>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Edition" />
                                     </jsp:include>
 
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="EditionLink" />
                                     </jsp:include>
@@ -441,7 +441,7 @@
                                 </td>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="EditionKapitel" />
                                         <jsp:param name="size" value="20" />
@@ -454,7 +454,7 @@
                                 </td>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="EditionSeite" />
                                         <jsp:param name="size" value="20" />
@@ -468,16 +468,16 @@
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="einzelbeleg" />
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Datenfeld" value="QuelleDatumVon" />
                                     </jsp:include>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="einzelbeleg" />
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Datenfeld" value="QuelleDatumBis" />
                                     </jsp:include>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="QuelleDatierung" />
                                         <jsp:param name="Visibility" value="hidden" />
@@ -488,7 +488,7 @@
                             <tr>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="UeberlieferungDatierung" />
                                         <jsp:param name="Visibility" value="hidden" />
@@ -535,7 +535,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Echtheit" />
                                     </jsp:include>
@@ -547,7 +547,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Textkritik" />
                                     </jsp:include>
@@ -594,7 +594,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Griechisch" />
                                         <jsp:param name="size" value="50" />
@@ -607,7 +607,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Diakritisch" />
                                         <jsp:param name="size" value="50" />
@@ -620,7 +620,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="GrammatikGeschlecht" />
                                     </jsp:include>
@@ -633,7 +633,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Kasus" />
                                     </jsp:include>
@@ -672,7 +672,7 @@
 
                 <div id="main">
                     <jsp:include page="inc.erzeugeFormular.jsp">
-                        <jsp:param name="ID" value="<%=id%>" />
+                        <jsp:param name="ID" value='<%=id%>' />
                         <jsp:param name="Formular" value="einzelbeleg" />
                         <jsp:param name="Datenfeld" value="PersonID" />
                     </jsp:include>
@@ -685,7 +685,7 @@
                                 </th>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="LebendVerstorben" />
                                     </jsp:include>
@@ -697,7 +697,7 @@
                                 </th>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="AmtWeihe" />
                                     </jsp:include>
@@ -710,7 +710,7 @@
                                 </th>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Konvent" />
                                     </jsp:include>
@@ -723,7 +723,7 @@
                                 </th>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="BeziehungGemeinschaft" />
                                     </jsp:include>
@@ -736,7 +736,7 @@
                                 </th>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Ethnie" />
                                     </jsp:include>
@@ -748,7 +748,7 @@
                                 </th>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Stand" />
                                     </jsp:include>
@@ -760,7 +760,7 @@
                                 </th>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="TitelText" />
                                     </jsp:include>
@@ -772,7 +772,7 @@
                                 </th>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="TitelKritik" />
                                     </jsp:include>
@@ -785,7 +785,7 @@
                                 <td valign="top">
                                     <jsp:include
                                         page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Kommentar" />
                                         <jsp:param name="cols" value="40" />
@@ -797,14 +797,14 @@
                     </table>
                     <br />
                     <jsp:include page="inc.erzeugeFormular.jsp">
-                        <jsp:param name="ID" value="<%=id%>" />
+                        <jsp:param name="ID" value='<%=id%>' />
                         <jsp:param name="Formular" value="einzelbeleg" />
                         <jsp:param name="Datenfeld" value="Funktion" />
                     </jsp:include>
                     <br />
 
                     <jsp:include page="inc.erzeugeFormular.jsp">
-                        <jsp:param name="ID" value="<%=id%>" />
+                        <jsp:param name="ID" value='<%=id%>' />
                         <jsp:param name="Formular" value="einzelbeleg" />
                         <jsp:param name="Datenfeld" value="NewAreal" />
                     </jsp:include>
@@ -847,7 +847,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="BemerkungAlle" />
                                         <jsp:param name="cols" value="40" />
@@ -861,7 +861,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="BemerkungGruppe" />
                                         <jsp:param name="cols" value="40" />
@@ -875,7 +875,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="BemerkungPrivat" />
                                         <jsp:param name="cols" value="40" />
@@ -889,7 +889,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Bearbeitungsstatus" />
                                     </jsp:include>
@@ -901,7 +901,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="LetzteAenderung" />
                                     </jsp:include>
@@ -913,7 +913,7 @@
                                 </td>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="LetzteAenderungVon" />
                                     </jsp:include>
@@ -925,7 +925,7 @@
                                 </td>
                                 <td width="450">
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="Erstellt" />
                                     </jsp:include>
@@ -937,7 +937,7 @@
                                 </td>
                                 <td>
                                     <jsp:include page="inc.erzeugeFormular.jsp">
-                                        <jsp:param name="ID" value="<%=id%>" />
+                                        <jsp:param name="ID" value='<%=id%>' />
                                         <jsp:param name="Formular" value="einzelbeleg" />
                                         <jsp:param name="Datenfeld" value="ErstelltVon" />
                                     </jsp:include>
@@ -951,13 +951,13 @@
 
         <div style="visibility: hidden">
             <jsp:include page="inc.erzeugeFormular.jsp">
-                <jsp:param name="ID" value="<%=id%>" />
+                <jsp:param name="ID" value='<%=id%>' />
                 <jsp:param name="Formular" value="einzelbeleg" />
                 <jsp:param name="Datenfeld" value="Belegnummer" />
                 <jsp:param name="size" value="25" />
             </jsp:include>
             <jsp:include page="inc.erzeugeFormular.jsp">
-                <jsp:param name="ID" value="<%=id%>" />
+                <jsp:param name="ID" value='<%=id%>' />
                 <jsp:param name="Formular" value="einzelbeleg" />
                 <jsp:param name="Datenfeld" value="generiereBelegnummer" />
             </jsp:include>
