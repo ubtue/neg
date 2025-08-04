@@ -4,8 +4,6 @@ import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.model.Content.Context;
 import de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationParams;
-import java.util.Collections;
-import java.util.Comparator;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -15,11 +13,22 @@ import org.hibernate.query.Query;
 
 public class QuelleDB extends AbstractBase {
 
-    public static List getList() throws Exception {
+    public static final String SUBSELECT_PUBLIC_QUELLE_IDS = "SELECT DISTINCT ID FROM quelle WHERE ZuVeroeffentlichen=1";
+
+    public static List<Quelle> getList() throws Exception {
         return getList(Quelle.class);
     }
 
-    public static List getList(PaginationParams params) throws Exception {
+    public static List<Quelle> getListPublic() throws Exception {
+        try (Session session = getSession()) {
+            String SQL = "SELECT * FROM quelle WHERE ZuVeroeffentlichen = 1";
+            NativeQuery query = session.createNativeQuery(SQL);
+            query.addEntity(Quelle.class);
+            return query.getResultList();
+        }
+    }
+
+    public static List<Quelle> getList(PaginationParams params) throws Exception {
         String jumpToID = params.getJumpToID();
         String sort = params.getSort();
         String filterTitle = params.getFilters().get("filterTitle");
@@ -30,7 +39,7 @@ public class QuelleDB extends AbstractBase {
             String q = "";
             if (jumpToID != null && jumpToID.length() > 0) {
                 Query query;
-                q = "FROM Quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.id = :id";
+                q = "FROM quelle q WHERE q.zuVeroeffentlichen = :zuV AND q.id = :id";
                 query = session.createQuery(q);
                 query.setParameter("id", Integer.valueOf(jumpToID));
                 query.setParameter("zuV", 1);

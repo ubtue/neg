@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.model;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import javax.persistence.*;
 import java.util.*;
@@ -11,12 +12,12 @@ import org.json.JSONObject;
 @Table(name = "quelle")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Quelle {
+public class Quelle implements PersistentIdentifier, History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    
+
     @ManyToOne(targetEntity = SelektionQuellengattung.class)
     @JoinColumn(name = "QuelleGattungID", referencedColumnName = "ID")
     private SelektionQuellengattung quelleGattung;
@@ -133,6 +134,11 @@ public class Quelle {
         return id;
     }
 
+    @Override
+    public String getPersistentIdentifier() {
+        return "Q" + getId();
+    }
+
     public String getBezeichnung() {
         return bezeichnung;
     }
@@ -144,7 +150,7 @@ public class Quelle {
     public String getQuellennummer() {
         return quellennummer;
     }
-    
+
     public SelektionQuellengattung getQuelleGattung() {
         return quelleGattung;
     }
@@ -293,34 +299,42 @@ public class Quelle {
         this.kommentarDatierung = kommentarDatierung;
     }
 
+    @Override
     public Date getLetzteAenderung() {
         return letzteAenderung;
     }
 
+    @Override
     public void setLetzteAenderung(Date letzteAenderung) {
         this.letzteAenderung = letzteAenderung;
     }
 
+    @Override
     public Benutzer getLetzteAenderungVon() {
         return letzteAenderungVon;
     }
 
+    @Override
     public void setLetzteAenderungVon(Benutzer letzteAenderungVon) {
         this.letzteAenderungVon = letzteAenderungVon;
     }
 
+    @Override
     public Date getErstellt() {
         return erstellt;
     }
 
+    @Override
     public void setErstellt(Date erstellt) {
         this.erstellt = erstellt;
     }
 
+    @Override
     public Benutzer getErstelltVon() {
         return erstelltVon;
     }
 
+    @Override
     public void setErstelltVon(Benutzer erstelltVon) {
         this.erstelltVon = erstelltVon;
     }

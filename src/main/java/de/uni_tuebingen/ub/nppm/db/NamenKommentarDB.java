@@ -11,15 +11,15 @@ import org.hibernate.query.NativeQuery;
 
 public class NamenKommentarDB extends AbstractBase {
 
-    public static List getList() throws Exception {
+    public static List<NamenKommentar> getList() throws Exception {
         return getList(NamenKommentar.class);
     }
 
-    public static List getListBearbeiter() throws Exception {
+    public static List<NamenKommentarBearbeiter> getListBearbeiter() throws Exception {
         return getList(NamenKommentarBearbeiter.class);
     }
 
-    public static List getListKorrektor() throws Exception {
+    public static List<NamenKommentarKorrektor> getListKorrektor() throws Exception {
         return getList(NamenKommentarKorrektor.class);
     }
 
@@ -74,7 +74,7 @@ public class NamenKommentarDB extends AbstractBase {
             session.getTransaction().commit();
         }
     }
-    
+
     public static List<NamenKommentar> getByName(String name) throws Exception{
         String sql = "SELECT * FROM namenkommentar WHERE ELemma" + " LIKE '%" + name + "%' OR PLemma" + " LIKE '%" + name + "%' ";
         sql += " ORDER BY PLemma";

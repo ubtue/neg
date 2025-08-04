@@ -20,7 +20,12 @@
         out.println("/>");
 
         out.println("<script>");
-        out.println("$(\"#" + datenfeld + "\").devbridgeAutocomplete({serviceUrl: \""+ Utils.getBaseUrl(request) + "/ajax\", params: {action: \"autocomplete\", form:\"" + auswahlherkunft + "\", field:\"" + formularAttribut + "\"}});");
+        String autocompleteParams = "{action: \"autocomplete\", form:\"" + auswahlherkunft + "\", field:\"" + formularAttribut + "\"";
+        if (!Utils.isGastEnvironment(request)) {
+            autocompleteParams += ", backend: \"true\"";
+        }
+        autocompleteParams += "}";
+        out.println("$(\"#" + datenfeld + "\").devbridgeAutocomplete({serviceUrl: \""+ Utils.getBaseUrl(request) + "/ajax\", params: " + autocompleteParams + "});");
         out.println("</script>");
 
         if (!tooltip.equals("")) {

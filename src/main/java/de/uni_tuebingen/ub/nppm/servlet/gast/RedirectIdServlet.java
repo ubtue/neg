@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 // Note: due to the dynamic URL schema configured in web.xml, this may not extend our regular
 // abstract servlet classes.
-public class RedirectServlet extends HttpServlet {
+public class RedirectIdServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

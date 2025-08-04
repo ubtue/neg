@@ -43,12 +43,20 @@
         <url-pattern>/gast/dojumpid</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>RedirectServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.RedirectServlet</servlet-class>
+        <servlet-name>RedirectIdServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.RedirectIdServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RedirectServlet</servlet-name>
+        <servlet-name>RedirectIdServlet</servlet-name>
         <url-pattern>/id/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RedirectGndServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.gast.RedirectGndServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RedirectGndServlet</servlet-name>
+        <url-pattern>/gnd/*</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>SucheServlet</servlet-name>

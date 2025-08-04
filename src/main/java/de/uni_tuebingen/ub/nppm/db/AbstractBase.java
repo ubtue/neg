@@ -14,6 +14,7 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -185,9 +186,17 @@ public class AbstractBase {
         return getList(c, null);
     }
 
+    /*
+    protected static <T> List<T> getListTyped(T t, CriteriaQuery criteria) throws Exception {
+        List list = getList(t.getClass());
+        List<T> list2 = list
+                .stream()
+                .map(e -> (t)e)
+                .collect(Collectors.toList());
+    }
+    */
 
-
-     protected static void removeHelper(Class class_, int id, Session session) throws Exception {
+    protected static void removeHelper(Class class_, int id, Session session) throws Exception {
         Object obj = session.load(class_, id);
         session.remove(obj);
     }
@@ -359,10 +368,35 @@ public class AbstractBase {
         }
     }
 
+    public static Object getSingleResult(String sql) throws Exception {
+        try (Session session = getSession()) {
+            NativeQuery query = session.createNativeQuery(sql);
+            List<Object> rows = query.getResultList();
+            if (!rows.isEmpty()) {
+                return rows.get(0);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public static <T> T getSingleResult(String sql, Class<T> type) throws Exception {
+        try (Session session = getSession()) {
+            NativeQuery query = session.createNativeQuery(sql);
+            query.addEntity(type);
+            List<T> rows = query.getResultList();
+            if (!rows.isEmpty()) {
+                return rows.get(0);
+            } else {
+                return null;
+            }
+        }
+    }
+
     public static String getSingleField(String zielAttribut, String zieltabelle, int id) throws Exception {
         String sql = "SELECT " + zielAttribut + " FROM " + zieltabelle + " WHERE ID='" + id + "';";
         try {
-            Object res = DatenbankDB.getSingleResult(sql);
+            Object res = getSingleResult(sql);
             if (res != null) {
                 return res.toString();
             }
@@ -536,7 +570,7 @@ public class AbstractBase {
         if (escapeMap != null) {
             mapToUse.putAll(escapeMap);
         }
-        
+
         mapToUse.put('\\', "\\\\");
 
         StringBuilder sb = new StringBuilder();

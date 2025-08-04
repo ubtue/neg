@@ -2,7 +2,6 @@ package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
-import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,35 +20,51 @@ import org.hibernate.Transaction;
 
 public class SucheDB extends AbstractBase {
 
-    public static List getFavoriten() throws Exception {
+    public static List<SucheFavoriten> getFavoriten() throws Exception {
         return getList(SucheFavoriten.class);
     }
 
-    public static List<String> getAutocompleteText(String field, String form, String query) throws Exception {
+    public static List<String> getAutocompleteText(String field, String form, String query, boolean includeUnpublished) throws Exception {
         verifyDynamicTable(form);
         verifyDynamicColumn(field);
 
         String sql = "SELECT DISTINCT " + field + " FROM " + form;
-        boolean addWhereStatement = !query.equals("?");
-        if (addWhereStatement) {
-            sql += " WHERE " + field + " LIKE CONCAT('%', ?1, '%') ";
+        List<String> andConditions = new ArrayList<>();
+
+        if (!includeUnpublished) {
+            if (form.equals("quelle")) {
+                andConditions.add("quelle.ID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")");
+            }
+            if (form.equals("einzelbeleg")) {
+                andConditions.add("einzelbeleg.ID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ")");
+            }
+            if (form.equals("person")) {
+                andConditions.add("person.ID IN (" + PersonDB.SUBSELECT_PUBLIC_PERSON_IDS + ")");
+            }
+            if (form.equals("mghlemma")) {
+                andConditions.add("mghlemma.ID IN (" + LemmaDB.SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")");
+            }
+        }
+
+        boolean addLikeStatement = !query.equals("?");
+        if (!query.equals("?")) {
+            andConditions.add(field + " LIKE CONCAT('%', ?1, '%')");
         }
 
         // in der auto completion->frontend->erweiterte suche keine einträge mit Constants.forbiddenLemmaSubstring zeigen
         if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
-            if (addWhereStatement) {
-                sql += " AND " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'";
-            } else {
-                sql += " WHERE " + field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'";
-            }
+            andConditions.add(field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'");
+        }
+
+        if (!andConditions.isEmpty()) {
+            sql += " WHERE " + String.join(" AND ", andConditions);
         }
 
         sql += " ORDER BY " + field;
 
         try (Session session = getSession()) {
-
             NativeQuery sqlQuery = session.createNativeQuery(sql);
-            if (addWhereStatement)
+            if (addLikeStatement)
                 sqlQuery.setParameter(1, query);
             List<String> rows = sqlQuery.getResultList();
             return rows;

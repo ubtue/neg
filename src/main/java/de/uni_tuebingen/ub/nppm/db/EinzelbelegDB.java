@@ -5,36 +5,42 @@ import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
 import de.uni_tuebingen.ub.nppm.util.LemmaKorrBelegRow;
-import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import org.hibernate.Session;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 public class EinzelbelegDB extends AbstractBase {
+    public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT DISTINCT einzelbeleg.ID FROM einzelbeleg WHERE QuelleID IN (SELECT ID FROM quelle WHERE ZuVeroeffentlichen=1)";
 
     public static Einzelbeleg getById(int id) throws Exception {
         return AbstractBase.getById(id, Einzelbeleg.class);
     }
 
-    public static List getList() throws Exception {
+    public static List<Einzelbeleg> getList() throws Exception {
         return getList(Einzelbeleg.class);
     }
 
-    public static List getListFunktion() throws Exception {
+    public static List<Einzelbeleg> getListPublic() throws Exception {
+        try (Session session = getSession()) {
+            String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
+            Query query = session.createQuery(HQL);
+            return query.getResultList();
+        }
+    }
+
+    public static List<EinzelbelegHatFunktion_MM> getListFunktion() throws Exception {
         return getList(EinzelbelegHatFunktion_MM.class);
     }
 
-    public static List getListTextKritik() throws Exception {
+    public static List<EinzelbelegTextkritik> getListTextKritik() throws Exception {
         return getList(EinzelbelegTextkritik.class);
     }
 
