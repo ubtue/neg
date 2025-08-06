@@ -153,7 +153,7 @@
 
 <jsp:include page="layout/titel.inc.jsp">
     <jsp:param name="title" value="mgh_lemma" />
-    <jsp:param name="ID" value="<%= id%>" />
+    <jsp:param name="ID" value='<%= id%>' />
     <jsp:param name="size" value="" />
     <jsp:param name="Formular" value="mgh_lemma" />
     <jsp:param name="excludeText" value= "<%= Constants.forbiddenLemmaSubstring%>" />
@@ -162,7 +162,7 @@
 <!----------ID---------->
 <div class="container" id="id">
     <jsp:include page="../forms/id.jsp">
-        <jsp:param name="ID" value="<%=id%>"/>
+        <jsp:param name="ID" value='<%=id%>'/>
         <jsp:param name="title" value="gast_mghlemma"/>
     </jsp:include>
 </div>
@@ -175,7 +175,7 @@
             </td>
             <td class="ut-table__item" style="padding-left: 0px;">
                 <jsp:include page="../inc.erzeugeFormular.jsp">
-                    <jsp:param name="ID" value="<%= id%>" />
+                    <jsp:param name="ID" value='<%= id%>' />
                     <jsp:param name="Formular" value="mgh_lemma" />
                     <jsp:param name="Datenfeld" value="MGHLemma" />
                     <jsp:param name="Klarlemma" value="yes"/>
@@ -190,7 +190,7 @@
             </td>
             <td class="ut-table__item" style="padding-left: 0px;">
                 <jsp:include page="../inc.erzeugeFormular.jsp">
-                    <jsp:param name="ID" value="<%= id%>" />
+                    <jsp:param name="ID" value='<%= id%>' />
                     <jsp:param name="Formular" value="mgh_lemma" />
                     <jsp:param name="Datenfeld" value="EinzelbelegRODistinct" />
                     <jsp:param name="Readonly" value="yes" />
