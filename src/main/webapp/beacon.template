@@ -1,4 +1,4 @@
-#FORMAT: BEACON
+﻿#FORMAT: BEACON
 #PREFIX: http://d-nb.info/gnd/
 #TARGET: https://nppm.ub.uni-tuebingen.de/gnd/{ID}
 #NAME: Namen, Personen und Personengruppen des Mittelalters (NPPM)
