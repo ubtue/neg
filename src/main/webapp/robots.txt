@@ -3,4 +3,5 @@ Disallow: /
 Allow: /gast/
 Allow: /gnd/
 Allow: /id/
+Allow: /sitemaps/
 Sitemap: https://nppm.ub.uni-tuebingen.de/sitemaps/sitemapIndex.xml
