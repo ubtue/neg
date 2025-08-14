@@ -25,7 +25,8 @@ public class RedirectGndServlet extends HttpServlet {
                 if (person == null) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "GND Number not found");
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/id/P" + person.getId());
+                    // Use forward instead of redirect so the URL stays the same
+                    request.getRequestDispatcher("/id/" + person.getPersistentIdentifier()).forward(request, response);
                 }
             } catch (Exception e) {
                 throw new ServletException(e);
