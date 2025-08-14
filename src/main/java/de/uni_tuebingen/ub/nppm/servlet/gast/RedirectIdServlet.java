@@ -1,5 +1,7 @@
 package de.uni_tuebingen.ub.nppm.servlet.gast;
 
+import de.uni_tuebingen.ub.nppm.exception.*;
+import de.uni_tuebingen.ub.nppm.util.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,22 +21,12 @@ public class RedirectIdServlet extends HttpServlet {
         String type = PID.substring(0,1);                     // e.g. P
         String ID = PID.substring(1);                         // e.g. 7404
 
-        if (type.equals("B")) {
-            response.sendRedirect(request.getContextPath() + "/gast/einzelbeleg?ID=" + ID);
-        } else if (type.equals("P")) {
-            response.sendRedirect(request.getContextPath() + "/gast/person?ID=" + ID);
-        } else if (type.equals("N")) {
-            response.sendRedirect(request.getContextPath() + "/gast/namenkommentar?ID=" + ID);
-        } else if (type.equals("Q")) {
-            response.sendRedirect(request.getContextPath() + "/gast/quelle?ID=" + ID);
-        } else if (type.equals("E")) {
-            response.sendRedirect(request.getContextPath() + "/gast/edition?ID=" + ID);
-        } else if (type.equals("T")) {
-            response.sendRedirect(request.getContextPath() + "/gast/handschrift?ID=" + ID);
-        } else if (type.equals("M")) {
-            response.sendRedirect(request.getContextPath() + "/gast/lemma?ID=" + ID);
-        } else {
-            throw new ServletException("Invalid ID: " + PID);
+        try {
+            String form = IdentifierMapper.getFormByIdentifier(PID);
+            String target = "/gast/" + form + "?ID=" + ID;
+            response.sendRedirect(request.getContextPath() + target);
+        } catch (IdInvalidException e) {
+            throw new ServletException(e);
         }
     }
 }
