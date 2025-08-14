@@ -24,7 +24,9 @@ public class RedirectIdServlet extends HttpServlet {
         try {
             String form = IdentifierMapper.getFormByIdentifier(PID);
             String target = "/gast/" + form + "?ID=" + ID;
-            response.sendRedirect(request.getContextPath() + target);
+
+            // Use forward instead of redirect so the URL stays the same
+            request.getRequestDispatcher(target).forward(request, response);
         } catch (IdInvalidException e) {
             throw new ServletException(e);
         }
