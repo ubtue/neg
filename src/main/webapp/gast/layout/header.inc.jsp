@@ -196,10 +196,10 @@
         <div class="ut-page-header__banner">
             <div class="ut-page-header__logos">
                 <a href="https://www.uni-tuebingen.de" class="ut-logo-link ut-logo-link--main" aria-label="<% Language.printTextfield(out, session, "logo", "AriaLabelUniversitaetTuebingen");%>">
-                    <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen.svg" class="ut-img ut-img--logo ut-img--logo-main" alt="Logo of the University Tübingen">
+                    <img src="<%=Utils.getBaseUrl(request) + "/gast/vendor/ut-typo3/img/Logo_Universitaet_Tuebingen.svg"%>" class="ut-img ut-img--logo ut-img--logo-main" alt="Logo of the University Tübingen">
                 </a>
                 <a href="https://www.uni-tuebingen.de/exzellenzinitiative/" class="ut-logo-link ut-logo-link--excellence" aria-label="<% Language.printTextfield(out, session, "logo", "AriaLabelExcellence");%>">
-                    <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen_Exzellent_EN.svg" class="ut-img ut-img--logo ut-img--logo-excellence-###LANGUAGE_CODE_LOWER###" alt="Logo of the Excellence Strategy">
+                    <img src="<%=Utils.getBaseUrl(request) + "/gast/vendor/ut-typo3/img/Logo_Universitaet_Tuebingen_Exzellent_EN.svg"%>" class="ut-img ut-img--logo ut-img--logo-excellence-###LANGUAGE_CODE_LOWER###" alt="Logo of the Excellence Strategy">
                 </a>
             </div>
             <div class="ut-page-header__dropdowns"></div>
