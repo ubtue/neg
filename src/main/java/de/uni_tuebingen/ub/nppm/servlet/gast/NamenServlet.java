@@ -1,7 +1,7 @@
 package de.uni_tuebingen.ub.nppm.servlet.gast;
 
-import de.uni_tuebingen.ub.nppm.db.LemmaDB;
-import de.uni_tuebingen.ub.nppm.db.NamenKommentarDB;
+import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.util.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +27,7 @@ public class NamenServlet extends AbstractGastServlet {
             rd.include(request, response);
         }
         else if (request.getParameter("ID") == null) {
-            response.sendRedirect(request.getContextPath() + "/gast/lemma?ID=" + LemmaDB.getFirstPublicMGHLemma().getId());
+            response.sendRedirect(Utils.getPidUrl(request, LemmaDB.getFirstPublicMGHLemma().getPersistentIdentifier()));
         } else {
             RequestDispatcher rd = request.getRequestDispatcher("lemma.jsp");
             rd.include(request, response);

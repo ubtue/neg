@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.servlet.gast;
 
-import de.uni_tuebingen.ub.nppm.db.QuelleDB;
+import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.util.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ public class QuelleServlet extends AbstractGastServlet {
             rd.include(request, response);
         }
         else if (request.getParameter("ID") == null) {
-          response.sendRedirect(request.getContextPath() + "/gast/quelle?ID=" + QuelleDB.getFirstPublicQuelle().getId());
+          response.sendRedirect(Utils.getPidUrl(request, QuelleDB.getFirstPublicQuelle().getPersistentIdentifier()));
         }
         else {
             RequestDispatcher rd = request.getRequestDispatcher("quelle.jsp");

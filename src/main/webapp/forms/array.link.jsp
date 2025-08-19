@@ -73,7 +73,7 @@
                     String href = add + "?ID=" + String.valueOf(row.get(fields[1]));
                     String prefix = IdentifierMapper.getPrefixByForm(add);
                     if (prefix != null) {
-                        href = Utils.getBaseUrl(request) + "/id/" + prefix + String.valueOf(row.get(fields[1]));
+                        href = Utils.getPidUrl(request, prefix + String.valueOf(row.get(fields[1])));
                     }
                     String link = "<a class=\"ut-link\" href=\"" + href + "\">" + bez + "</a><br>";
                     links.add(link);
@@ -90,7 +90,7 @@
                 String href = add + "?ID=" + zielId;
                 String prefix = IdentifierMapper.getPrefixByForm(add);
                 if (prefix != null) {
-                    href = Utils.getBaseUrl(request) + "/id/" + prefix + zielId;
+                    href = Utils.getPidUrl(request, prefix + zielId);
                 }
                 String link = "<a class=\"ut-link\" href=\"" + href + "\">" + bez + "</a><br>";
                 links.add(link);

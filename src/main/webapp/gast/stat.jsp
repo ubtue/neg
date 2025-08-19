@@ -84,7 +84,7 @@
             <% for (Quelle q : lst) {%>
             <tr class="ut-table__row">
                 <td class="ut-table__item ut-table__body__item" width="80%">
-                    <a class="ut-link" href="<%= Utils.getBaseUrl(request) + "/gast/quelle?ID=" + q.getId()%>">
+                    <a class="ut-link" href="<%= Utils.getPidUrl(request, q.getPersistentIdentifier())%>">
                         <%= Utils.escapeHTML(q.getBezeichnung())%>
                     </a>
                 </td>

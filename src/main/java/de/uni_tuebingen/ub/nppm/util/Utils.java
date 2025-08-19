@@ -77,6 +77,15 @@ public class Utils {
         return getBaseUrl(request) + "/ajax";
     }
 
+    public static String getPersistentIdentifierUrl(HttpServletRequest request, String persistentIdentifier) {
+        return getBaseUrl(request) + "/id/" + urlEncode(persistentIdentifier);
+    }
+
+    // Just a shortcut to the real function, since this function will be used in many templates
+    public static String getPidUrl(HttpServletRequest request, String pid) {
+        return getPersistentIdentifierUrl(request, pid);
+    }
+
     public static int determineId(HttpServletRequest request, HttpServletResponse response, String formular, JspWriter out) throws Exception {
         int id = Constants.UNDEFINED_ID;
 
