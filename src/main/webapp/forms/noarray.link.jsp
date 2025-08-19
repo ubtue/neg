@@ -13,7 +13,7 @@
                 String href = fields[0] + "?ID=" + String.valueOf(row.get(fields[1]));
                 String prefix = IdentifierMapper.getPrefixByForm(fields[0]);
                 if (prefix != null) {
-                    href = Utils.getBaseUrl(request) + "/id/" + prefix + id;
+                    href = Utils.getBaseUrl(request) + "/id/" + prefix + String.valueOf(row.get(fields[1]));
                 }
                 out.println("<a class=\"ut-link\" href=\"" + href + "\">" + (row2.get(fields[2]) != null ? DBtoHTML(String.valueOf(row2.get(fields[2]))) : "Zum Datensatz") + "</a>");
             }
