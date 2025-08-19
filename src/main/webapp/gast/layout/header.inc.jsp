@@ -299,7 +299,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide jumpIDBoxWrapper" data-level-count="8">
                                     <div class="mobile-fix-menu-item-wrapper">
-                                    <form name="jumpForm" method="post" action="dojumpid" >
+                                        <form name="jumpForm" method="post" action="<%=Utils.getBaseUrl(request) + "/gast/dojumpid"%>" >
                                         <div style="display: flex; align-items: center; gap: 10px;">
                                             <a class="mobile-fix-menu-item ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
                                                href="#"

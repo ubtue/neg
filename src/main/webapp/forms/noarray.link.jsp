@@ -1,4 +1,6 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.exception.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
 <%
     if (feldtyp.startsWith("link") && !array) {
@@ -8,7 +10,12 @@
         if (row != null && row.get(fields[1]) != null) {
             Map row2 = AbstractBase.getMappedRow("SELECT " + fields[2] + " FROM " + fields[0] + " WHERE ID=" + String.valueOf(row.get(fields[1])));
             if (row2 != null) {
-                out.println("<a class=\"ut-link\" href=\"" + fields[0] + "?ID=" + String.valueOf(row.get(fields[1])) + "\">" + (row2.get(fields[2]) != null ? DBtoHTML(String.valueOf(row2.get(fields[2]))) : "Zum Datensatz") + "</a>");
+                String href = fields[0] + "?ID=" + String.valueOf(row.get(fields[1]));
+                String prefix = IdentifierMapper.getPrefixByForm(fields[0]);
+                if (prefix != null) {
+                    href = Utils.getBaseUrl(request) + "/id/" + prefix + id;
+                }
+                out.println("<a class=\"ut-link\" href=\"" + href + "\">" + (row2.get(fields[2]) != null ? DBtoHTML(String.valueOf(row2.get(fields[2]))) : "Zum Datensatz") + "</a>");
             }
         }
     }

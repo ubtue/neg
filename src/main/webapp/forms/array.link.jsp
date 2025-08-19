@@ -1,4 +1,5 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
 <%@ page import="java.util.*" isThreadSafe="false" %>
 
 <%
@@ -69,7 +70,12 @@
                     }
                 } else {
                     String add = fields[3];
-                    String link = "<a class=\"ut-link\" href=\"" + add + "?ID=" + String.valueOf(row.get(fields[1])) + "\">" + bez + "</a><br>";
+                    String href = add + "?ID=" + String.valueOf(row.get(fields[1]));
+                    String prefix = IdentifierMapper.getPrefixByForm(add);
+                    if (prefix != null) {
+                        href = Utils.getBaseUrl(request) + "/id/" + prefix + String.valueOf(row.get(fields[1]));
+                    }
+                    String link = "<a class=\"ut-link\" href=\"" + href + "\">" + bez + "</a><br>";
                     links.add(link);
                 }
             }
@@ -81,12 +87,17 @@
                 String bez = normalizedToOriginal.get(normalized);
                 String zielId = normalizedToId.get(normalized);
                 String add = fields[3];
-                String link = "<a class=\"ut-link\" href=\"" + add + "?ID=" + zielId + "\">" + bez + "</a><br>";
+                String href = add + "?ID=" + zielId;
+                String prefix = IdentifierMapper.getPrefixByForm(add);
+                if (prefix != null) {
+                    href = Utils.getBaseUrl(request) + "/id/" + prefix + zielId;
+                }
+                String link = "<a class=\"ut-link\" href=\"" + href + "\">" + bez + "</a><br>";
                 links.add(link);
             }
 
             // Nur sortieren wenn EinzelbelegRODistinct aktiv ist
-            Collections.sort(links, new Comparator<String>() {
+            Collections.sort(links, new Comparator<>() {
                 public int compare(String a, String b) {
                     return a.replaceAll("<[^>]+>", "").compareToIgnoreCase(b.replaceAll("<[^>]+>", ""));
                 }
