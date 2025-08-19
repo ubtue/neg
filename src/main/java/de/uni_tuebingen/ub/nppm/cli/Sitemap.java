@@ -30,7 +30,7 @@ public class Sitemap extends AbstractBase {
     private static final String BASE_URL_RESOLVER = BASE_URL + "id/";
     private static final String BASE_URL_SITEMAPS = BASE_URL + "sitemaps/";
     private static List<String> sitemaps = new ArrayList<>();
-    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
     /**
      * Generate XML Sitemap
