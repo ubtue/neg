@@ -133,7 +133,7 @@ public class PrintPagination {
                 out.print("<a href=\"" + Utils.getPidUrl(request, prefix + nextID) + "\"><button class=\"ut-btn ut-btn--color-primary-3 next-button\">" + next + "</button></a>");
             } else {
                 String nextUrl = buildPageUrl(request, currentIndex + 1);
-                out.print("<a href=\"" + nextUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-3 next-button\">" + next + "</button>");
+                out.print("<a href=\"" + nextUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-3 next-button\">" + next + "</button></a>");
             }
         }
 
