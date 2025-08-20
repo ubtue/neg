@@ -21,7 +21,6 @@
     vertical-align: middle; /* Verhindert, dass der Text vertikal nicht richtig ausgerichtet ist */
 }
 
-
 @media (max-width: 650px) {
     .ut-link.page-link {
         font-size: 20px;  /* Schriftgröße erhöhen */
@@ -30,5 +29,23 @@
 
     .ut-nav__list {
         gap: 14px;
+    }
+
+    .pagination-small {
+        display: inline-block !important;
+    }
+
+    .pagination-big {
+        display: none !important;
+    }
+}
+
+@media (min-width: 651px) {
+    .pagination-small {
+        display: none !important;
+    }
+
+    .pagination-big {
+        display: inline-block !important;
     }
 }
