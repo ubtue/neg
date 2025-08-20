@@ -2,17 +2,14 @@ package de.uni_tuebingen.ub.nppm.servlet.gast;
 
 import de.uni_tuebingen.ub.nppm.db.EinzelbelegDB;
 import de.uni_tuebingen.ub.nppm.db.LemmaDB;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import de.uni_tuebingen.ub.nppm.db.PersonDB;
 import de.uni_tuebingen.ub.nppm.db.QuelleDB;
 import de.uni_tuebingen.ub.nppm.exception.IdInvalidException;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class DoJumpServlet extends AbstractGastServlet {
 
@@ -114,7 +111,7 @@ public class DoJumpServlet extends AbstractGastServlet {
                     }
 
                     if (publicID != null) {
-                        response.sendRedirect(Utils.getBaseUrl(request) + "/id/" + publicID);
+                        response.sendRedirect(Utils.getPidUrl(request, publicID));
                     } else {
                         throw new IdInvalidException();
                     }
