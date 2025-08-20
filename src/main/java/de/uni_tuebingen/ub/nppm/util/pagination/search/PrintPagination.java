@@ -1,4 +1,4 @@
-package de.uni_tuebingen.ub.nppm.util.suche.pagination;
+package de.uni_tuebingen.ub.nppm.util.pagination.search;
 
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.util.*;

@@ -3,7 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
-import de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationParams;
+import de.uni_tuebingen.ub.nppm.util.pagination.statistics.PaginationParams;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;

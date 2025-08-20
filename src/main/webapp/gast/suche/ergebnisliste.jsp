@@ -1,4 +1,4 @@
-<%@page import="de.uni_tuebingen.ub.nppm.util.suche.pagination.PrintPagination"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.pagination.search.PrintPagination"%>
 <%@page import="java.io.IOException"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>

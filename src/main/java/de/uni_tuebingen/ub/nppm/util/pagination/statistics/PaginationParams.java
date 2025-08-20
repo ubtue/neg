@@ -1,4 +1,4 @@
-package de.uni_tuebingen.ub.nppm.util.statistic.pagination;
+package de.uni_tuebingen.ub.nppm.util.pagination.statistics;
 
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.util.HashMap;
