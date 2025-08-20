@@ -73,7 +73,7 @@ public class PrintPagination {
                 out.print("<a href=\"" + Utils.getPidUrl(request, prefix + prevID) + "\"><button class=\"ut-btn ut-btn--color-primary-3 prev-button\">" + prev + "</button></a>&nbsp;");
             } else {
                 String prevUrl = buildPageUrl(request, currentIndex - 1);
-                out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + prevUrl + "';\">" + prev + "</button>&nbsp;");
+                out.print("<a href=\"" + prevUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-3 prev-button\">" + prev + "</button></a>&nbsp;");
             }
         }
 
@@ -83,13 +83,18 @@ public class PrintPagination {
             boolean showLastDots = i == totalPages - 1 && i >= currentIndex + 10;
             boolean inWindow = i < currentIndex + 10 && i > currentIndex - 10;
 
+            // Note regarding rel="nofollow":
+            // This is added because we do not want bots like google etc. to crawl the whole pagination for each entity.
+            // In ID mode this is OK, because these lead to pages for single entities which are also listed in the sitemap.
+            // But it would not make sense for google to crawl the short view of all einzelbelege listed in a short form on other pages.
+
             if (showFirstDots) {
                 if (useIdMode) {
                     int pageID = publicIds.get(i);
                     out.print("<a href=\"" + Utils.getPidUrl(request, prefix + pageID) + "\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">1</button></a>&nbsp;...&nbsp;");
                 } else {
                     String pageUrl = buildPageUrl(request, i);
-                    out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">1</button>&nbsp;...&nbsp;");
+                    out.print("<a href=\"" + pageUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">1</button></a>&nbsp;...&nbsp;");
                 }
             }
 
@@ -104,7 +109,7 @@ public class PrintPagination {
                         out.print("<a href=\"" + Utils.getPidUrl(request, prefix + pageID) + "\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">" + (i + 1) + "</button></a>&nbsp;");
                     } else {
                         String pageUrl = buildPageUrl(request, i);
-                        out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">" + (i + 1) + "</button>&nbsp;");
+                        out.print("<a href=\"" + pageUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">" + (i + 1) + "</button></a>&nbsp;");
                     }
                 }
             }
@@ -115,7 +120,7 @@ public class PrintPagination {
                     out.print("...&nbsp;<a href=\"" + Utils.getPidUrl(request, prefix + pageID) + "\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">" + (i + 1) + "</button></a>&nbsp;");
                 } else {
                     String pageUrl = buildPageUrl(request, i);
-                    out.print("...&nbsp;<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">" + (i + 1) + "</button>&nbsp;");
+                    out.print("...&nbsp;<a href=\"" + pageUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">" + (i + 1) + "</button></a>&nbsp;");
                 }
             }
         }
@@ -128,7 +133,7 @@ public class PrintPagination {
                 out.print("<a href=\"" + Utils.getPidUrl(request, prefix + nextID) + "\"><button class=\"ut-btn ut-btn--color-primary-3 next-button\">" + next + "</button></a>");
             } else {
                 String nextUrl = buildPageUrl(request, currentIndex + 1);
-                out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + nextUrl + "';\">" + next + "</button>");
+                out.print("<a href=\"" + nextUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-3 next-button\">" + next + "</button>");
             }
         }
 
@@ -150,8 +155,6 @@ public class PrintPagination {
             String requestURL = request.getRequestURL().toString(); // Basis-URL (ohne Query)
             URIBuilder uriBuilder = new URIBuilder(requestURL);
 
-            uriBuilder.setParameter("pageoffset", String.valueOf(pageoffset));
-
             for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
                 String paramName = e.nextElement();
                 if (!paramName.equals("pageoffset")) {
@@ -163,6 +166,9 @@ public class PrintPagination {
                     }
                 }
             }
+
+            // Add pageoffset at the end
+            uriBuilder.setParameter("pageoffset", String.valueOf(pageoffset));
 
             return uriBuilder.build().toString();
         } catch (URISyntaxException ex) {
