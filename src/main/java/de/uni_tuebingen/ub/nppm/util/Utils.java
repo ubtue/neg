@@ -14,6 +14,7 @@ import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONObject;
@@ -58,7 +59,18 @@ public class Utils {
     }
 
     public static boolean isGastEnvironment(HttpServletRequest request) {
-        return request.getRequestURL().toString().contains("/gast/");
+        // checking for /gast/ url only might no longer be enough,
+        // since there are some shortcut urls, so we also check for a username.
+        if (request.getRequestURL().toString().contains("/gast/")) {
+            return true;
+        }
+
+        HttpSession session = request.getSession();
+        if (session == null || session.getAttribute("Benutzername") == null || ((String)session.getAttribute("Benutzername")).equals("gast")) {
+            return true;
+        }
+
+        return false;
     }
 
     public static String getBaseUrl(HttpServletRequest request) {
