@@ -85,6 +85,7 @@ public class IdentifierMapper {
             case "handschrift":
                 return "T";
             case "lemma":
+            case "mgh_lemma":
                 return "M";
         }
 
