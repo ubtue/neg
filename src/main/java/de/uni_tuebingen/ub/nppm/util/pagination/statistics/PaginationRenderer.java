@@ -68,7 +68,7 @@ public class PaginationRenderer {
         String prev = Language.getTextfield(request.getSession(), "pagination", "Prev");
         return "<li class=\"ut-nav__item\">"
                 + "<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + url + "';\">" + prev + "</button>"
-                + "<a class=\"ut-link page-link prev-link\" href=\"" + url + "\" style=\"display: none;\"><</a>"
+                + "<a class=\"ut-link page-link prev-link\" href=\"" + url + "\" style=\"display: none;\">&lt;</a>"
                 + "</li>"
                 + responsiveScript("prev");
     }
@@ -78,7 +78,7 @@ public class PaginationRenderer {
         String next = Language.getTextfield(request.getSession(), "pagination", "Next");
         return "<li class=\"ut-nav__item\">"
                 + "<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + url + "';\">" + next + "</button>"
-                + "<a class=\"ut-link page-link next-link\" href=\"" + url + "\" style=\"display: none;\">></a>"
+                + "<a class=\"ut-link page-link next-link\" href=\"" + url + "\" style=\"display: none;\">&gt;</a>"
                 + "</li>"
                 + responsiveScript("next");
     }
