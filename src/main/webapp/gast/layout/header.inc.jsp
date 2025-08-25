@@ -135,7 +135,7 @@
 
                     <!-- Login -->
                     <li class="ut-switchbar__item" id="switchbar-login">
-                        <a href="<%=Utils.getBaseUrl(request)%>/logout?go=intern" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-login"  aria-label="<% Language.printTextfield(out, session, "internerBereich", "Titel"); %>" role="button" aria-haspopup="false" aria-expanded="false">
+                        <a href="<%=Utils.getBaseUrl(request)%>/logout?go=intern" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-login"  aria-label="<% Language.printTextfield(out, session, "internerBereich", "Titel"); %>" role="button" aria-haspopup="false" aria-expanded="false" rel="nofollow">
                             <span class="ut-switchbar__icon ut-icon ut-icon-login"></span>
                             <span class="ut-switchbar__label"><% Language.printTextfield(out, session, "internerBereich", "Titel"); %></span>
                         </a>
@@ -144,7 +144,7 @@
                     <!-- Language -->
                     <li class="ut-switchbar__item" id="switchbar-language">
                         <a href="#" class="ut-switchbar__toggle" data-toggle="switchbar" data-target="#switchblock-language"
-                           title="Select Language" role="button" aria-label="Select Language" aria-haspopup="true" aria-expanded="false">
+                           title="Select Language" role="button" aria-label="Select Language" aria-haspopup="true" aria-expanded="false" rel="nofollow">
                             <span class="ut-switchbar__icon ut-icon ut-icon-globe"></span>
                             <span class="ut-switchbar__label">Language</span>
                         </a>
@@ -157,22 +157,22 @@
                                 <nav class="ut-nav ut-nav--language" aria-label="language">
                                     <ul class="ut-nav__list ">
                                         <li class="ut-nav__item " data-level-count="1">
-                                            <a class="ut-link ut-nav__link" href="?language=de&sharedHtml=<%= request.getParameter("sharedHtml")%>" title=" <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de");%>" tabindex="0">
+                                            <a class="ut-link ut-nav__link" href="?language=de&sharedHtml=<%= request.getParameter("sharedHtml")%>" title=" <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de");%>" tabindex="0" rel="nofollow">
                                                 <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_de");%>
                                             </a>
                                         </li>
                                         <li class="ut-nav__item " data-level-count="2">
-                                            <a class="ut-link ut-nav__link" href="?language=gb&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_en");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_en");%>" tabindex="0">
+                                            <a class="ut-link ut-nav__link" href="?language=gb&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_en");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_en");%>" tabindex="0" rel="nofollow">
                                                 <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_en");%>
                                             </a>
                                         </li>
                                         <li class="ut-nav__item " data-level-count="2">
-                                            <a class="ut-link ut-nav__link" href="?language=fr&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_fr");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_fr");%>" tabindex="0">
+                                            <a class="ut-link ut-nav__link" href="?language=fr&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_fr");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_fr");%>" tabindex="0" rel="nofollow">
                                                 <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_fr");%>
                                             </a>
                                         </li>
                                         <li class="ut-nav__item " data-level-count="2">
-                                            <a class="ut-link ut-nav__link" href="?language=la&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_la");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_la");%>" tabindex="0">
+                                            <a class="ut-link ut-nav__link" href="?language=la&sharedHtml=<%= request.getParameter("sharedHtml")%>" title="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_la");%>" aria-label="<% Language.printTextfield(out, session, "sprachauswahl", "Sprache_la");%>" tabindex="0" rel="nofollow">
                                                 <% Language.printTextfield(out, session, "sprachauswahl", "Sprache_la");%>
                                             </a>
                                         </li>
@@ -184,7 +184,7 @@
 
                     <!-- Switchbar Menu (for low resolutions) -->
                     <li class="ut-switchbar__item" id="switchbar-menu">
-                        <a href="#" class="ut-switchbar__toggle" id="ut-identifier--menu-toggle" data-toggle="switchbar" data-target="#switchblock-menu" title="###DT-language_chooser###" aria-label="Menu" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" class="ut-switchbar__toggle" id="ut-identifier--menu-toggle" data-toggle="switchbar" data-target="#switchblock-menu" title="###DT-language_chooser###" aria-label="Menu" role="button" aria-haspopup="true" aria-expanded="false" rel="nofollow">
                             <span class="ut-switchbar__icon ut-icon ut-icon-menu"></span>
                             <span class="ut-switchbar__label sr-only-focusable">Menu</span>
                         </a>
@@ -279,7 +279,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="6">
                                     ${param.current eq 'einfaches_ergebnis' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einfaches_ergebnis' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis?current=einfaches_ergebnis" aria-label="<% Language.printTextfield(out, session, "suche", "Titel");%>" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'einfaches_ergebnis' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/einfaches_ergebnis?current=einfaches_ergebnis" aria-label="<% Language.printTextfield(out, session, "suche", "Titel");%>" tabindex="0" rel="nofollow">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="gast_freie_suche"/>
                                             <jsp:param name="Textfeld" value="Suchen"/>
@@ -289,7 +289,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide" data-level-count="7">
                                     ${param.current eq 'freie_suche' ? '<div class="ut-nav__link-group ut-nav__link-group--is-current">' : ''}
-                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche?current=freie_suche" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Titel");%>" tabindex="0">
+                                    <a class="ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub" href="<%=Utils.getBaseUrl(request)%>/gast/freie_suche?current=freie_suche" aria-label="<% Language.printTextfield(out, session, "gast_freie_suche", "Titel");%>" tabindex="0" rel="nofollow">
                                         <jsp:include page="../../inc.erzeugeBeschriftung.jsp">
                                             <jsp:param name="Formular" value="gast_freie_suche"/>
                                             <jsp:param name="Textfeld" value="Titel"/>
@@ -304,7 +304,7 @@
                                             <a class="mobile-fix-menu-item ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
                                                href="#"
                                                onclick="document.querySelector('form[name=jumpForm]').submit(); return false;"
-                                               aria-label="ID Button" tabindex="0">
+                                               aria-label="ID Button" tabindex="0" rel="nofollow">
                                                 ID
                                             </a>
                                             <input class="ut-form__field" type="text" name="jumpValueID" placeholder="z.B. P7404" aria-labelledby="jumpLabel" aria-required="true" style="width: 120px;">
