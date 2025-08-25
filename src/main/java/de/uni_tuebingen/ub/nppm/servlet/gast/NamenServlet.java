@@ -21,6 +21,14 @@ public class NamenServlet extends AbstractGastServlet {
     }
 
     @Override
+    protected String getCanonicalUrl(HttpServletRequest request) {
+        if (request.getParameter("ID") != null) {
+            return Utils.getPidUrl(request, "M" + request.getParameter("ID"));
+        }
+        return null;
+    }
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
        if(request.getParameter("page") != null && request.getParameter("page").equals("stat")){
             RequestDispatcher rd = request.getRequestDispatcher("statistiklemma.jsp");

@@ -32,6 +32,11 @@
 
     ${additionalCss}
 
+    <% if (request.getAttribute("canonicalUrl") != null) { %>
+        <!-- Canonical URL for SEO -->
+        <link href="<%=request.getAttribute("canonicalUrl")%>" rel="canonical">
+    <% } %>
+
   </head>
   <body>
     <div class="ut-page">

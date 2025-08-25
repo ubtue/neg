@@ -18,6 +18,14 @@ public class EinzelbelegServlet extends AbstractGastServlet {
     }
 
     @Override
+    protected String getCanonicalUrl(HttpServletRequest request) {
+        if (request.getParameter("ID") != null) {
+            return Utils.getPidUrl(request, "B" + request.getParameter("ID"));
+        }
+        return null;
+    }
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (request.getParameter("ID") == null) {
             response.sendRedirect(Utils.getPidUrl(request, EinzelbelegDB.getFirstPublicEinzelbeleg().getPersistentIdentifier()));

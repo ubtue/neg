@@ -18,6 +18,14 @@ public class PersonServlet extends AbstractGastServlet {
     }
 
     @Override
+    protected String getCanonicalUrl(HttpServletRequest request) {
+        if (request.getParameter("ID") != null) {
+            return Utils.getPidUrl(request, "P" + request.getParameter("ID"));
+        }
+        return null;
+    }
+
+    @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (request.getParameter("ID") == null) {
             response.sendRedirect(Utils.getPidUrl(request, PersonDB.getFirstPublicPerson().getPersistentIdentifier()));
