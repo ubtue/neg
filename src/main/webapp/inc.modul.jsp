@@ -1,5 +1,5 @@
-<%@page import="de.uni_tuebingen.ub.nppm.model.EinzelbelegHatStand"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.EinzelbelegHatAmtWeihe_MM"%>
+<%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@ page import="java.sql.*" isThreadSafe="false"%>
 <%@ page import="java.sql.Date" isThreadSafe="false"%>
@@ -8,7 +8,9 @@
 <%@ include file="configuration.jsp"%>
 <%@ include file="functions.jsp"%>
 
-<%    String id = request.getParameter("ID");
+<%
+    boolean isGast = Utils.isGastEnvironment(request);
+    String id = request.getParameter("ID");
     String formular = request.getParameter("Formular");
     String modul = request.getParameter("Modul");
 
@@ -159,12 +161,11 @@
             try {
                 // Abfrage der Anzahl der Kommentare
                 int count = ModulIncDB.countNamenkommentar(id);
-
-
+                out.print("<label>");
                 if (count > 1) {
-                    out.print("<label>" + Language.getTextfield(session, "modul", "Namen"));
+                    out.print(Language.getTextfield(session, "modul", "Namen"));
                 }else{
-                    out.print("<label>" + Language.getTextfield(session, "modul", "Name"));
+                    out.print(Language.getTextfield(session, "modul", "Name"));
                 }
                 out.println("</label></td><td>");
 
@@ -178,7 +179,10 @@
                         String plemmaID = String.valueOf(row[1]);
 
                         if (plemma != null && !plemma.isEmpty() && !plemma.equalsIgnoreCase("null")) {
-                            out.println("<a href=\"namenkommentar?ID=" + plemmaID + "\">" + format(plemma, "PLemma") + "<br>");
+                            if (isGast)
+                                out.println("<a href=\"" + Utils.getPidUrl(request, "N" + plemmaID) + "\">" + format(plemma, "PLemma") + "<br>");
+                            else
+                                out.println("<a href=\"namenkommentar?ID=" + plemmaID + "\">" + format(plemma, "PLemma") + "<br>");
                         }
                     }
                 }
@@ -250,9 +254,12 @@
             String eId = String.valueOf(row[0]);
             String belegform = row[2] != null ? String.valueOf(row[2]) : "";
 
-            out.println("<td class=\"ut-table__item ut-table__body__item\">"
-                            + "<a class=\"ut-link\" href=\"einzelbeleg?ID=" + eId + "\">");
+            out.println("<td class=\"ut-table__item ut-table__body__item\">");
 
+            if (isGast)
+                out.println("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "B" + eId) + "\">");
+            else
+                out.println("<a class=\"ut-link\" href=\"einzelbeleg?ID=" + eId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="person" />
@@ -424,8 +431,13 @@
                     String bezeichnung = row[2] != null ? String.valueOf(row[2]) : "";
 
                     out.println("<tr class=\"ut-table__row\">");
-                    out.println("<td class=\"ut-table__item ut-table__body__item\"><a class=\"ut-link\" href=\"person?ID=" + pId + "\">" + standardname + "</a></td>");
-                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + bezeichnung + "</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">");
+                    if (isGast)
+                        out.println("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "P" + pId) + "\">" + Utils.escapeHTML(standardname) + "</a>");
+                    else
+                        out.println("<a class=\"ut-link\" href=\"person?ID=" + pId + "\">" + Utils.escapeHTML(standardname) + "</a>");
+                    out.println("</td>");
+                    out.println("<td class=\"ut-table__item ut-table__body__item\">" + Utils.escapeHTML(bezeichnung) + "</td>");
                     out.println("</tr>");
                     atLeastOne = true;
                 }//end for
@@ -507,7 +519,11 @@
                 String bezeichnungOrt = row_2[12] != null ? String.valueOf(row_2[12]) : "";
 
                 out.println("<tr>");
-                out.println("<td>&nbsp;</td><td><a href=\"handschrift?ID=" + handschriftId + "\">");
+                out.println("<td>&nbsp;</td><td>");
+                if (isGast)
+                    out.println("<a href=\"" + Utils.getPidUrl(request, "T" + handschriftId) + "\">");
+                else
+                    out.println("<a href=\"handschrift?ID=" + handschriftId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="quelle" />
@@ -592,7 +608,7 @@
         }
     }
 
-    //Backend: Quellen --> Tab: �berlieferung (Uberlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat)
+    //Backend: Quellen --> Tab: Überlieferung (Überlieferung, Signatur/Bezeichnung, Sigle, Datierung, Schriftheimat)
     if (formular.equals("quelle")) {
         if (modul.equals("ueberlieferung")) {
             out.println("<table>\n");
@@ -658,7 +674,11 @@
         String bezeichnung = row_2[12] != null ? String.valueOf(row_2[12]) : "";
 
         out.println("<tr>");
-        out.println("<td>&nbsp;</td><td><a href=\"handschrift?ID=" + handschriftId + "\">");
+        out.println("<td>&nbsp;</td><td>");
+        if (isGast)
+            out.println("<a href=\"" + Utils.getPidUrl(request, "T" + handschriftId) + "\">");
+        else
+            out.println("<a href=\"handschrift?ID=" + handschriftId + "\">");
 %>
 
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -1204,8 +1224,11 @@
             String bisJahr = row[12] != null ? String.valueOf(row[12]) : "";
             String bisJhdt = row[13] != null ? String.valueOf(row[13]) : "";
 
-            out.println("<tr>");
-            out.println("<td><a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
+            out.println("<tr><td>");
+            if (isGast)
+                out.println("<a href=\"" + Utils.getPidUrl(request, "B" + einzelbelegId) + "\">");
+            else
+                out.println("<a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="mgh_lemma" />
@@ -1225,7 +1248,10 @@
     if (personPkz.equals("")) {
         out.println("--");
     } else {
-        out.println("<a href=\"person?ID=" + personId + "\">");
+        if (isGast)
+            out.println("<a href=\"" + Utils.getPidUrl(request, "P" + personId) + "\">");
+        else
+            out.println("<a href=\"person?ID=" + personId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="mgh_lemma" />
@@ -1420,8 +1446,11 @@
         String bisJahr = row[12] != null ? String.valueOf(row[12]) : "";
         String bisJhdt = row[13] != null ? String.valueOf(row[13]) : "";
 
-        out.println("<tr>");
-        out.println("<td><a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
+        out.println("<tr><td>");
+        if (isGast)
+            out.println("<a href=\"" + Utils.getPidUrl(request, "B" + einzelbelegId) + "\">");
+        else
+            out.println("<a href=\"einzelbeleg?ID=" + einzelbelegId + "\">");
 
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
@@ -1441,7 +1470,10 @@
     if (personPkz.equals("")) {
         out.println("--");
     } else {
-        out.println("<a href=\"person?ID=" + personId + "\">");
+        if (isGast)
+            out.println("<a href=\"" + Utils.getPidUrl(request, "P" + personId) + "\">");
+        else
+            out.println("<a href=\"person?ID=" + personId + "\">");
 %>
 <jsp:include page="inc.erzeugeBeschriftung.jsp">
     <jsp:param name="Formular" value="namenkommentar" />

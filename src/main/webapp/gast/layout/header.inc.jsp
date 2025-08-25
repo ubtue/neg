@@ -196,10 +196,10 @@
         <div class="ut-page-header__banner">
             <div class="ut-page-header__logos">
                 <a href="https://www.uni-tuebingen.de" class="ut-logo-link ut-logo-link--main" aria-label="<% Language.printTextfield(out, session, "logo", "AriaLabelUniversitaetTuebingen");%>">
-                    <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen.svg" class="ut-img ut-img--logo ut-img--logo-main" alt="Logo of the University Tübingen">
+                    <img src="<%=Utils.getBaseUrl(request) + "/gast/vendor/ut-typo3/img/Logo_Universitaet_Tuebingen.svg"%>" class="ut-img ut-img--logo ut-img--logo-main" alt="Logo of the University Tübingen">
                 </a>
                 <a href="https://www.uni-tuebingen.de/exzellenzinitiative/" class="ut-logo-link ut-logo-link--excellence" aria-label="<% Language.printTextfield(out, session, "logo", "AriaLabelExcellence");%>">
-                    <img src="vendor/ut-typo3/img/Logo_Universitaet_Tuebingen_Exzellent_EN.svg" class="ut-img ut-img--logo ut-img--logo-excellence-###LANGUAGE_CODE_LOWER###" alt="Logo of the Excellence Strategy">
+                    <img src="<%=Utils.getBaseUrl(request) + "/gast/vendor/ut-typo3/img/Logo_Universitaet_Tuebingen_Exzellent_EN.svg"%>" class="ut-img ut-img--logo ut-img--logo-excellence-###LANGUAGE_CODE_LOWER###" alt="Logo of the Excellence Strategy">
                 </a>
             </div>
             <div class="ut-page-header__dropdowns"></div>
@@ -299,7 +299,7 @@
                                 </li>
                                 <li class="ut-nav__item ut-nav__item--level-1 lory-slides__item js-slide jumpIDBoxWrapper" data-level-count="8">
                                     <div class="mobile-fix-menu-item-wrapper">
-                                    <form name="jumpForm" method="post" action="dojumpid" >
+                                        <form name="jumpForm" method="post" action="<%=Utils.getBaseUrl(request) + "/gast/dojumpid"%>" >
                                         <div style="display: flex; align-items: center; gap: 10px;">
                                             <a class="mobile-fix-menu-item ut-link ut-nav__link ut-nav__link--level-1 ${param.current eq 'freie_suche' ? 'ut-nav__link--is-active' : ''} ut-nav__link--no-sub"
                                                href="#"

@@ -2,17 +2,14 @@ package de.uni_tuebingen.ub.nppm.servlet.gast;
 
 import de.uni_tuebingen.ub.nppm.db.EinzelbelegDB;
 import de.uni_tuebingen.ub.nppm.db.LemmaDB;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import de.uni_tuebingen.ub.nppm.db.PersonDB;
 import de.uni_tuebingen.ub.nppm.db.QuelleDB;
 import de.uni_tuebingen.ub.nppm.exception.IdInvalidException;
 import de.uni_tuebingen.ub.nppm.util.Utils;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class DoJumpServlet extends AbstractGastServlet {
 
@@ -58,10 +55,10 @@ public class DoJumpServlet extends AbstractGastServlet {
                 String newForm = "";
 
                 /*
-            // e.g. if the jump target is just 7404 (without P prefix) and we do not have a default form given
-            if (title.equals("") && !newID.matches("^[A-Z]")) {
-                throw new IdInvalidException();
-            }
+                // e.g. if the jump target is just 7404 (without P prefix) and we do not have a default form given
+                if (title.equals("") && !newID.matches("^[A-Z]")) {
+                    throw new IdInvalidException();
+                }
                  */
                 if (newID.startsWith("B") || newID.startsWith("b") || ("einzelbeleg".equals(jumpTable) && newID.matches("^[0-9].*")) || ("Einzelbelege".equals(jumpTable) && newID.matches("^[0-9].*"))) {
                     newForm = "einzelbeleg";
@@ -86,7 +83,7 @@ public class DoJumpServlet extends AbstractGastServlet {
                 session.setAttribute(title + "filter", 0);
                 session.setAttribute(title + "filterParameter", "");
                 url = url.substring(0, url.lastIndexOf('/') + 1);
-                int publicID = 0;
+                String publicID = null;
 
                 if (url.endsWith("gast/") && (newForm.equals("edition") || newForm.equals("handschrift"))) {
                     throw new IdInvalidException();
@@ -97,22 +94,27 @@ public class DoJumpServlet extends AbstractGastServlet {
 
                     switch (newForm) {
                         case "quelle":
-                            publicID = QuelleDB.getNextPublicQuelleID(Integer.parseInt(newID));
+                            publicID = "Q" + QuelleDB.getNextPublicQuelleID(Integer.parseInt(newID));
                             break;
 
                         case "einzelbeleg":
-                            publicID = EinzelbelegDB.getNextPublicEinzelbeleg(Integer.parseInt(newID));
+                            publicID = "B" + EinzelbelegDB.getNextPublicEinzelbeleg(Integer.parseInt(newID));
                             break;
 
                         case "lemma":
-                            publicID = LemmaDB.getNextPublicMGHLemmaID(Integer.parseInt(newID));
+                            publicID = "M" + LemmaDB.getNextPublicMGHLemmaID(Integer.parseInt(newID));
                             break;
 
                         case "person":
-                            publicID = PersonDB.getNextPublicPersonId(Integer.parseInt(newID));
+                            publicID = "P" + PersonDB.getNextPublicPersonId(Integer.parseInt(newID));
                             break;
                     }
-                    response.sendRedirect(Utils.getBaseUrl(request) + "/gast/" + newForm + "?ID=" + publicID);
+
+                    if (publicID != null) {
+                        response.sendRedirect(Utils.getPidUrl(request, publicID));
+                    } else {
+                        throw new IdInvalidException();
+                    }
                 }
             }
         }

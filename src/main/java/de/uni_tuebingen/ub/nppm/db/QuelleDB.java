@@ -3,7 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.model.Content.Context;
-import de.uni_tuebingen.ub.nppm.util.statistic.pagination.PaginationParams;
+import de.uni_tuebingen.ub.nppm.util.pagination.statistics.PaginationParams;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;

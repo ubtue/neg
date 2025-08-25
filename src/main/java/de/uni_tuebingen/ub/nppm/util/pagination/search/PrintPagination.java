@@ -1,14 +1,8 @@
-package de.uni_tuebingen.ub.nppm.util.suche.pagination;
+package de.uni_tuebingen.ub.nppm.util.pagination.search;
 
-import de.uni_tuebingen.ub.nppm.db.EinzelbelegDB;
-import de.uni_tuebingen.ub.nppm.db.LemmaDB;
-import de.uni_tuebingen.ub.nppm.db.PersonDB;
-import de.uni_tuebingen.ub.nppm.db.QuelleDB;
-import de.uni_tuebingen.ub.nppm.util.Language;
-import static de.uni_tuebingen.ub.nppm.util.Utils.urlEncode;
+import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.util.*;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +22,12 @@ public class PrintPagination {
         int totalPages = 0;
         int currentIndex = 0;
         boolean useIdMode = false;
+        String prefix = null;
 
         // Modus 1: Navigation nach IDs (title != null)
         if (title != null) {
             useIdMode = true;
+            prefix = IdentifierMapper.getPrefixByForm(title);
             switch (title) {
                 case "person":
                     publicIds = PersonDB.getAllPublicPersonIds();
@@ -43,6 +39,7 @@ public class PrintPagination {
                     publicIds = QuelleDB.getAllPublicQuellenIds();
                     break;
                 case "mgh_lemma":
+                case "lemma":
                     publicIds = LemmaDB.getAllPublicLemmaIds();
                     break;
                 default:
@@ -73,10 +70,10 @@ public class PrintPagination {
             String prev = Language.getTextfield(request.getSession(), "pagination", "Prev");
             if (useIdMode) {
                 int prevID = publicIds.get(currentIndex - 1);
-                out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='?ID=" + prevID + "';\">" + prev + "</button>&nbsp;");
+                out.print("<a href=\"" + Utils.getPidUrl(request, prefix + prevID) + "\"><button class=\"ut-btn ut-btn--color-primary-3 prev-button\">" + prev + "</button></a>&nbsp;");
             } else {
                 String prevUrl = buildPageUrl(request, currentIndex - 1);
-                out.print("<button class=\"ut-btn ut-btn--color-primary-3 prev-button\" onclick=\"window.location.href='" + prevUrl + "';\">" + prev + "</button>&nbsp;");
+                out.print("<a href=\"" + prevUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-3 prev-button\">" + prev + "</button></a>&nbsp;");
             }
         }
 
@@ -86,13 +83,18 @@ public class PrintPagination {
             boolean showLastDots = i == totalPages - 1 && i >= currentIndex + 10;
             boolean inWindow = i < currentIndex + 10 && i > currentIndex - 10;
 
+            // Note regarding rel="nofollow":
+            // This is added because we do not want bots like google etc. to crawl the whole pagination for each entity.
+            // In ID mode this is OK, because these lead to pages for single entities which are also listed in the sitemap.
+            // But it would not make sense for google to crawl the short view of all einzelbelege listed in a short form on other pages.
+
             if (showFirstDots) {
                 if (useIdMode) {
                     int pageID = publicIds.get(i);
-                    out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='?ID=" + pageID + "';\">1</button>&nbsp;...&nbsp;");
+                    out.print("<a href=\"" + Utils.getPidUrl(request, prefix + pageID) + "\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">1</button></a>&nbsp;...&nbsp;");
                 } else {
                     String pageUrl = buildPageUrl(request, i);
-                    out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">1</button>&nbsp;...&nbsp;");
+                    out.print("<a href=\"" + pageUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">1</button></a>&nbsp;...&nbsp;");
                 }
             }
 
@@ -104,10 +106,10 @@ public class PrintPagination {
                 } else {
                     if (useIdMode) {
                         int pageID = publicIds.get(i);
-                        out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='?ID=" + pageID + "';\">" + (i + 1) + "</button>&nbsp;");
+                        out.print("<a href=\"" + Utils.getPidUrl(request, prefix + pageID) + "\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">" + (i + 1) + "</button></a>&nbsp;");
                     } else {
                         String pageUrl = buildPageUrl(request, i);
-                        out.print("<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">" + (i + 1) + "</button>&nbsp;");
+                        out.print("<a href=\"" + pageUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">" + (i + 1) + "</button></a>&nbsp;");
                     }
                 }
             }
@@ -115,10 +117,10 @@ public class PrintPagination {
             if (showLastDots) {
                 if (useIdMode) {
                     int pageID = publicIds.get(i);
-                    out.print("...&nbsp;<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='?ID=" + pageID + "';\">" + (i + 1) + "</button>&nbsp;");
+                    out.print("...&nbsp;<a href=\"" + Utils.getPidUrl(request, prefix + pageID) + "\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">" + (i + 1) + "</button></a>&nbsp;");
                 } else {
                     String pageUrl = buildPageUrl(request, i);
-                    out.print("...&nbsp;<button class=\"ut-btn ut-btn--color-primary-2 page-button\" onclick=\"window.location.href='" + pageUrl + "';\">" + (i + 1) + "</button>&nbsp;");
+                    out.print("...&nbsp;<a href=\"" + pageUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-2 page-button\">" + (i + 1) + "</button></a>&nbsp;");
                 }
             }
         }
@@ -128,10 +130,10 @@ public class PrintPagination {
             String next = Language.getTextfield(request.getSession(), "pagination", "Next");
             if (useIdMode) {
                 int nextID = publicIds.get(currentIndex + 1);
-                out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='?ID=" + nextID + "';\">" + next + "</button>");
+                out.print("<a href=\"" + Utils.getPidUrl(request, prefix + nextID) + "\"><button class=\"ut-btn ut-btn--color-primary-3 next-button\">" + next + "</button></a>");
             } else {
                 String nextUrl = buildPageUrl(request, currentIndex + 1);
-                out.print("<button class=\"ut-btn ut-btn--color-primary-3 next-button\" onclick=\"window.location.href='" + nextUrl + "';\">" + next + "</button>");
+                out.print("<a href=\"" + nextUrl + "\" rel=\"nofollow\"><button class=\"ut-btn ut-btn--color-primary-3 next-button\">" + next + "</button></a>");
             }
         }
 
@@ -153,8 +155,6 @@ public class PrintPagination {
             String requestURL = request.getRequestURL().toString(); // Basis-URL (ohne Query)
             URIBuilder uriBuilder = new URIBuilder(requestURL);
 
-            uriBuilder.setParameter("pageoffset", String.valueOf(pageoffset));
-
             for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
                 String paramName = e.nextElement();
                 if (!paramName.equals("pageoffset")) {
@@ -166,6 +166,9 @@ public class PrintPagination {
                     }
                 }
             }
+
+            // Add pageoffset at the end
+            uriBuilder.setParameter("pageoffset", String.valueOf(pageoffset));
 
             return uriBuilder.build().toString();
         } catch (URISyntaxException ex) {

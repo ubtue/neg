@@ -1,4 +1,4 @@
-<%@page import="de.uni_tuebingen.ub.nppm.util.suche.pagination.PrintPagination"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.pagination.search.PrintPagination"%>
 <%@page import="java.math.BigInteger"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.model.*"%>
@@ -314,7 +314,7 @@
         conditions.add("quelle.Bezeichnung LIKE '%" + DBtoDB(request.getParameter("Quelle").trim()) + "%'");
         namenkommentar = true;
     }
-    
+
     if (quellenliste != null) {
         for (String qid : quellenliste) {
             // Nur numerische IDs akzeptieren
@@ -1532,26 +1532,26 @@
                         boolean link = false;
                         if (export.equals("browse") && !text.equals("-")) {
                             if (orderV[z].equals("einzelbeleg.ID")) {
-                                out.print("<a class=\"ut-link\" href=\"einzelbeleg?ID=" + row.get("einzelbelegID") + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "B" + row.get("einzelbelegID")) + "\">");
                                 link = true;
                             } else if ((orderV[z].equals("person.Standardname") || orderV[z].equals("person.ID")) && row.get("personID") != null) {
-                                out.print("<a class=\"ut-link\" href=\"person?ID=" + row.get("personID") + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "P" + row.get("personID")) + "\">");
                                 link = true;
                             } else if (orderV[z].equals("perszu.Standardname")) {
-                                out.print("<a class=\"ut-link\" href=\"person?ID=" + row.get("perszuID") + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "P" + row.get("perszuID")) + "\">");
                                 link = true;
                             } else if (orderV[z].equals("namenkommentar.PLemma")) {
-                                out.print("<a class=\"ut-link\" href=\"namenkommentar?ID=" + row.get("namenkommentarID") + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "N" + row.get("namenkommentarID")) + "\">");
                                 link = true;
                             } else if (orderV[z].equals("mgh_lemma.MGHLemma")) {
-                                out.print("<a class=\"ut-link\" href=\"lemma?ID=" + row.get("mgh_lemmaID") + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "M" + row.get("mgh_lemmaID")) + "\">");
                                 link = true;
                             } else if (orderV[z].equals("quelle.Bezeichnung")) {
-                                out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "Q" + row.get("quelleID")) + "\">");
                                 link = true;
                             } else if (orderV[z].equals("edition.Zitierweise")) {
                                 try {
-                                    out.print("<a class=\"ut-link\" href=\"edition?ID=" + row.get("edition.ID") + "\">");
+                                    out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "E" + row.get("edition.ID")) + "\">");
                                     link = true;
                                 } catch (Exception e) {
                                     link = false;
@@ -1607,22 +1607,22 @@
                             if (export.equals("browse")) {
                                 boolean link = false;
                                 if (fieldNames.get(i).contains("einzelbeleg.Belegform")) {
-                                    out.print("<a class=\"ut-link\" href=\"einzelbeleg?ID=" + row.get("einzelbelegID") + "\">");
+                                    out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "B" + row.get("einzelbelegID")) + "\">");
                                     link = true;
                                 } else if (fieldNames.get(i).contains("person.Standardname")) {
-                                    out.print("<a class=\"ut-link\" href=\"person?ID=" + row.get("personID") + "\">");
+                                    out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "P" + row.get("personID")) + "\">");
                                     link = true;
                                 } else if (fieldNames.get(i).contains("perszu.Standardname")) {
-                                    out.print("<a class=\"ut-link\" href=\"person?ID=" + row.get("perszuID") + "\">");
+                                    out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "P" + row.get("perszuID")) + "\">");
                                     link = true;
                                 } else if (fieldNames.get(i).contains("namenkommentar.PLemma")) {
-                                    out.print("<a class=\"ut-link\" href=\"namenkommentar?ID=" + row.get("namenkommentarID") + "\">");
+                                    out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "N" + row.get("namenkommentarID")) + "\">");
                                     link = true;
                                 } else if (fieldNames.get(i).contains("mgh_lemma.MGHLemma")) {
-                                    out.print("<a class=\"ut-link\" href=\"lemma?ID=" + row.get("mgh_lemmaID") + "\">");
+                                    out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "M" + row.get("mgh_lemmaID")) + "\">");
                                     link = true;
                                 } else if (fieldNames.get(i).contains("quelle.Bezeichnung")) {
-                                    out.print("<a class=\"ut-link\" href=\"quelle?ID=" + row.get("quelleID") + "\">");
+                                    out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "Q" + row.get("quelleID")) + "\">");
                                     link = true;
                                 } else if (fieldNames.get(i).contains("edition.Zitierweise")) {
                                     link = false;

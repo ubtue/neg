@@ -1,4 +1,4 @@
-<%@page import="de.uni_tuebingen.ub.nppm.util.suche.pagination.PrintPagination"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.pagination.search.PrintPagination"%>
 <%@page import="java.io.IOException"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*"%>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*"%>
@@ -207,23 +207,23 @@
                         if (export.equals("browse")) {
                             boolean link = false;
                             if (fieldName.contains("einzelbeleg.Belegform") && row.get(QueryHelper.getFieldAliasResult("einzelbeleg.ID")) != null) {
-                                out.print("<a class=\"ut-link\" href=\"einzelbeleg?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("einzelbeleg.ID"))) + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "B" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("einzelbeleg.ID")))) + "\">");
                                 link = true;
                             } else if (fieldName.contains("person.Standardname") && row.get(QueryHelper.getFieldAliasResult("person.ID")) != null) {
-                                out.print("<a class=\"ut-link\" href=\"person?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("person.ID"))) + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "P" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("person.ID")))) + "\">");
                                 link = true;
                             } else if (fieldName.contains("perszu.Standardname") && row.get(QueryHelper.getFieldAliasResult("perszu.ID")) != null) {
-                                out.print("<a class=\"ut-link\" href=\"person?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("perszu.ID"))) + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "P" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("perszu.ID")))) + "\">");
                                 link = true;
                             } else if (fieldName.contains("namenkommentar.PLemma") && row.get(QueryHelper.getFieldAliasResult("namenkommentar.ID")) != null) {
-                                out.print("<a class=\"ut-link\" href=\"namenkommentar?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("namenkommentar.ID"))) + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "N" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("namenkommentar.ID")))) + "\">");
                                 link = true;
                             } else if (fieldName.contains("quelle.Bezeichnung") && row.get(QueryHelper.getFieldAliasResult("quelle.ID")) != null) {
-                                out.print("<a class=\"ut-link\" href=\"quelle?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("quelle.ID"))) + "\">");
+                                out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "Q" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("quelle.ID")))) + "\">");
                                 link = true;
                             } else if (fieldName.contains("edition.Zitierweise") && row.get(QueryHelper.getFieldAliasResult("edition.ID")) != null) {
                                 try {
-                                    out.print("<a class=\"ut-link\" href=\"edition?ID=" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("edition.ID"))) + "\">");
+                                    out.print("<a class=\"ut-link\" href=\"" + Utils.getPidUrl(request, "E" + String.valueOf(row.get(QueryHelper.getFieldAliasResult("edition.ID")))) + "\">");
                                     link = true;
                                 } catch (Exception e) {
                                     link = false;

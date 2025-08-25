@@ -3,8 +3,6 @@ package de.uni_tuebingen.ub.nppm.util;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -16,6 +14,7 @@ import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONObject;
@@ -60,7 +59,18 @@ public class Utils {
     }
 
     public static boolean isGastEnvironment(HttpServletRequest request) {
-        return request.getRequestURL().toString().contains("/gast/");
+        // checking for /gast/ url only might no longer be enough,
+        // since there are some shortcut urls, so we also check for a username.
+        if (request.getRequestURL().toString().contains("/gast/")) {
+            return true;
+        }
+
+        HttpSession session = request.getSession();
+        if (session == null || session.getAttribute("Benutzername") == null || ((String)session.getAttribute("Benutzername")).equals("gast")) {
+            return true;
+        }
+
+        return false;
     }
 
     public static String getBaseUrl(HttpServletRequest request) {
@@ -75,6 +85,15 @@ public class Utils {
 
     public static String getAjaxUrl(HttpServletRequest request) {
         return getBaseUrl(request) + "/ajax";
+    }
+
+    public static String getPersistentIdentifierUrl(HttpServletRequest request, String persistentIdentifier) {
+        return getBaseUrl(request) + "/id/" + urlEncode(persistentIdentifier);
+    }
+
+    // Just a shortcut to the real function, since this function will be used in many templates
+    public static String getPidUrl(HttpServletRequest request, String pid) {
+        return getPersistentIdentifierUrl(request, pid);
     }
 
     public static int determineId(HttpServletRequest request, HttpServletResponse response, String formular, JspWriter out) throws Exception {
@@ -286,25 +305,25 @@ public class Utils {
 
                     if (!text.equals("-")) {
                         if (orderV[z].equals("einzelbelegID") && rs.get("einzelbelegID") != null) {
-                            out.print("<a href=\"einzelbeleg?ID=" + (int) rs.get("einzelbelegID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "B" + rs.get("einzelbelegID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("e2ID") && rs.get("e2ID") != null) {
-                            out.print("<a href=\"einzelbeleg?ID=" + (int) rs.get("e2ID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "B" + rs.get("e2ID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("Standardname") && rs.get("personID") != null) {
-                            out.print("<a href=\"person?ID=" + (int) rs.get("personID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "P" + rs.get("personID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("perszuStandardname") && rs.get("perszuID") != null) {
-                            out.print("<a href=\"person?ID=" + (int) rs.get("perszuID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "P" + rs.get("perszuID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("PLemma") && rs.get("namenkommentarID") != null) {
-                            out.print("<a href=\"namenkommentar?ID=" + (int) rs.get("namenkommentarID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "N" + rs.get("namenkommentarID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("MGHLemma") && rs.get("mgh_lemmaID") != null) {
-                            out.print("<a href=\"lemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "M" + rs.get("mgh_lemmaID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("Bezeichnung") && rs.get("quelleID") != null) {                              // ?
-                            out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "Q" + rs.get("quelleID")) + "\">");
                             link = true;
                         }
                     }
@@ -348,26 +367,26 @@ public class Utils {
                         boolean link = false;
 
                         if (fieldNames.get(i).contains("Belegform") && rs.get("einzelbelegID") != null) {
-                            out.print("<a href=\"einzelbeleg?ID=" + (int) rs.get("einzelbelegID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "B" + rs.get("einzelbelegID")) + "\">");
                             link = true;
                         }
                         if (fieldNames.get(i).contains("Belegform") && rs.get("e2ID") != null) {
-                            out.print("<a href=\"einzelbeleg?ID=" + (int) rs.get("e2ID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "B" + rs.get("e2ID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("Standardname") && rs.get("personID") != null) {
-                            out.print("<a href=\"person?ID=" + (int) rs.get("personID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "P" + rs.get("personID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("perszuStandardname") && rs.get("perszuID") != null) {
-                            out.print("<a href=\"person?ID=" + (int) rs.get("perszuID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "P" + rs.get("perszuID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("PLemma") && rs.get("namenkommentarID") != null) {
-                            out.print("<a href=\"namenkommentar?ID=" + (int) rs.get("namenkommentarID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "N" + rs.get("namenkommentarID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("MGHLemma") && rs.get("mgh_lemmaID") != null) {
-                            out.print("<a href=\"lemma?ID=" + (int) rs.get("mgh_lemmaID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "M" + rs.get("mgh_lemmaID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("Bezeichnung") && rs.get("quelleID") != null) {        //?
-                            out.print("<a href=\"quelle?ID=" + (int) rs.get("quelleID") + "\">");
+                            out.print("<a href=\"" + Utils.getPidUrl(req, "Q" + rs.get("quelleID")) + "\">");
                             link = true;
                         }
 
