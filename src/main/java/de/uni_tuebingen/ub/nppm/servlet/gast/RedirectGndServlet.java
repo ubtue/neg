@@ -2,6 +2,7 @@ package de.uni_tuebingen.ub.nppm.servlet.gast;
 
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,8 +26,11 @@ public class RedirectGndServlet extends HttpServlet {
                 if (person == null) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "GND Number not found");
                 } else {
-                    // Use forward instead of redirect so the URL stays the same
-                    request.getRequestDispatcher("/id/" + person.getPersistentIdentifier()).forward(request, response);
+                    // Redirect to the main entry point, including change of URL.
+                    // We don't want to keep the URL since that would mean that e.g.
+                    // the shown pagination refers to only GND entries, which is not true.
+                    // It's also better if bots dont manage seperate entries for /gnd/.
+                    response.sendRedirect(Utils.getPidUrl(request, person.getPersistentIdentifier()));
                 }
             } catch (Exception e) {
                 throw new ServletException(e);
