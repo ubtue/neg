@@ -71,9 +71,11 @@
                 } else {
                     String add = fields[3];
                     String href = add + "?ID=" + String.valueOf(row.get(fields[1]));
-                    String prefix = IdentifierMapper.getPrefixByForm(add);
-                    if (prefix != null) {
-                        href = Utils.getPidUrl(request, prefix + String.valueOf(row.get(fields[1])));
+                    if (Utils.isGastEnvironment(request)) {
+                        String prefix = IdentifierMapper.getPrefixByForm(add);
+                        if (prefix != null) {
+                            href = Utils.getPidUrl(request, prefix + String.valueOf(row.get(fields[1])));
+                        }
                     }
                     String link = "<a class=\"ut-link\" href=\"" + href + "\">" + bez + "</a><br>";
                     links.add(link);
@@ -88,9 +90,11 @@
                 String zielId = normalizedToId.get(normalized);
                 String add = fields[3];
                 String href = add + "?ID=" + zielId;
-                String prefix = IdentifierMapper.getPrefixByForm(add);
-                if (prefix != null) {
-                    href = Utils.getPidUrl(request, prefix + zielId);
+                if (Utils.isGastEnvironment(request)) {
+                    String prefix = IdentifierMapper.getPrefixByForm(add);
+                    if (prefix != null) {
+                        href = Utils.getPidUrl(request, prefix + zielId);
+                    }
                 }
                 String link = "<a class=\"ut-link\" href=\"" + href + "\">" + bez + "</a><br>";
                 links.add(link);

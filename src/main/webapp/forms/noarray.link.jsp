@@ -11,9 +11,11 @@
             Map row2 = AbstractBase.getMappedRow("SELECT " + fields[2] + " FROM " + fields[0] + " WHERE ID=" + String.valueOf(row.get(fields[1])));
             if (row2 != null) {
                 String href = fields[0] + "?ID=" + String.valueOf(row.get(fields[1]));
-                String prefix = IdentifierMapper.getPrefixByForm(fields[0]);
-                if (prefix != null) {
-                    href = Utils.getPidUrl(request, prefix + String.valueOf(row.get(fields[1])));
+                if (Utils.isGastEnvironment(request)) {
+                    String prefix = IdentifierMapper.getPrefixByForm(fields[0]);
+                    if (prefix != null) {
+                        href = Utils.getPidUrl(request, prefix + String.valueOf(row.get(fields[1])));
+                    }
                 }
                 out.println("<a class=\"ut-link\" href=\"" + href + "\">" + (row2.get(fields[2]) != null ? DBtoHTML(String.valueOf(row2.get(fields[2]))) : "Zum Datensatz") + "</a>");
             }
