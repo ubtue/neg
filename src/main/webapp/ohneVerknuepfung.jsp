@@ -51,8 +51,8 @@
                     out.println("<tr>");
                     out.println("<td><a href=\"einzelbeleg?ID=" + String.valueOf(row[0]) + "\">" + String.valueOf(row[0]) + "</a></td>");
                     out.println("<td>" + Utils.escapeHTML(String.valueOf(row[1])) + "</td>");
-                    out.println("<td>" + String.valueOf(row[2]) + "</td>");
-                    out.println("<td><a href=\"lemma?ID=" + String.valueOf(row[2]) + "\">" + Utils.escapeHTML(String.valueOf(row[3])) + "</a></td>");
+                    out.println("<td><a href=\"lemma?ID=" + String.valueOf(row[2]) + "\">" + String.valueOf(row[2]) + "</a></td>");
+                    out.println("<td>" + Utils.escapeHTML(String.valueOf(row[3])) + "</td>");
                     out.println("</tr>");
                 }
                 out.println("</table>");
