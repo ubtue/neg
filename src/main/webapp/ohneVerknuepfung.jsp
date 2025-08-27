@@ -46,6 +46,7 @@
                 out.println("<th>Belegform</th>");
                 out.println("<th>Lemma ID</th>");
                 out.println("<th>Lemma</th>");
+                out.println("<th>Provenienz</th>");
                 out.println("</tr>");
                 for (Object[] row : rows) {
                     out.println("<tr>");
@@ -53,6 +54,11 @@
                     out.println("<td>" + Utils.escapeHTML(String.valueOf(row[1])) + "</td>");
                     out.println("<td><a href=\"lemma?ID=" + String.valueOf(row[2]) + "\">" + String.valueOf(row[2]) + "</a></td>");
                     out.println("<td>" + Utils.escapeHTML(String.valueOf(row[3])) + "</td>");
+                    if (String.valueOf(row[4]).equals("DMP")) {
+                        out.println("<td><a href=\"https://dmp.ub.uni-tuebingen.de?table=namen&mode=view&g_index=" + String.valueOf(row[5]) + "\" target=\"_blank\">" + Utils.escapeHTML(String.valueOf(row[4])) + "</a></td>");
+                    } else {
+                        out.println("<td>" + Utils.escapeHTML(String.valueOf(row[4])) + "</td>");
+                    }
                     out.println("</tr>");
                 }
                 out.println("</table>");
