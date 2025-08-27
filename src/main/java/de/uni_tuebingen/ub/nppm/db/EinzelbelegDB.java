@@ -327,7 +327,8 @@ public class EinzelbelegDB extends AbstractBase {
         //String LemmaIDSubselect = "SELECT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (" + EinzelbelegIDSubselect + ")";
 
         // Zusammengesetztes SELECT mit JOINS etc. für die Ergebnisanzeige
-        String sql = "SELECT einzelbeleg_hatmghlemma.EinzelbelegID, einzelbeleg.Belegform, einzelbeleg_hatmghlemma.MGHLemmaId as mID, mgh_lemma.MGHLemma FROM einzelbeleg_hatmghlemma LEFT JOIN einzelbeleg ON einzelbeleg_hatmghlemma.EinzelbelegID = einzelbeleg.ID LEFT JOIN mgh_lemma ON mgh_lemma.ID = einzelbeleg_hatmghlemma.MGHLemmaID";
+        String sql = "SELECT einzelbeleg_hatmghlemma.EinzelbelegID, einzelbeleg.Belegform, einzelbeleg_hatmghlemma.MGHLemmaId as mID, mgh_lemma.MGHLemma, einzelbeleg_hatmghlemma.provenance_source, einzelbeleg.provenance_id";
+        sql += " FROM einzelbeleg_hatmghlemma LEFT JOIN einzelbeleg ON einzelbeleg_hatmghlemma.EinzelbelegID = einzelbeleg.ID LEFT JOIN mgh_lemma ON mgh_lemma.ID = einzelbeleg_hatmghlemma.MGHLemmaID";
         sql += " WHERE einzelbeleg_hatmghlemma.EinzelbelegID IN (" + EinzelbelegIDSubselect + ")";
         sql += " ORDER BY einzelbeleg.Belegform ASC, mgh_lemma.MGHLemma ASC";
 
