@@ -39,7 +39,7 @@
         String view = request.getParameter("view");
         if(view != null) {
             if (view.equals("BelegformMitMehrerenLemmata")) {
-                List<Object[]> rows = EinzelbelegDB.getBelegformenWithMultipleLemmas();
+                List<Map> rows = EinzelbelegDB.getBelegformenWithMultipleLemmas();
                 out.println("<table>");
                 out.println("<tr>");
                 out.println("<th>Einzelbeleg ID</th>");
@@ -48,16 +48,16 @@
                 out.println("<th>Lemma</th>");
                 out.println("<th>Provenienz</th>");
                 out.println("</tr>");
-                for (Object[] row : rows) {
+                for (Map row : rows) {
                     out.println("<tr>");
-                    out.println("<td><a href=\"einzelbeleg?ID=" + String.valueOf(row[0]) + "\">" + String.valueOf(row[0]) + "</a></td>");
-                    out.println("<td>" + Utils.escapeHTML(String.valueOf(row[1])) + "</td>");
-                    out.println("<td><a href=\"lemma?ID=" + String.valueOf(row[2]) + "\">" + String.valueOf(row[2]) + "</a></td>");
-                    out.println("<td>" + Utils.escapeHTML(String.valueOf(row[3])) + "</td>");
-                    if (String.valueOf(row[4]).equals("DMP")) {
-                        out.println("<td><a href=\"https://dmp.ub.uni-tuebingen.de?table=namen&mode=view&g_index=" + String.valueOf(row[5]) + "\" target=\"_blank\">" + Utils.escapeHTML(String.valueOf(row[4])) + "</a></td>");
+                    out.println("<td><a href=\"einzelbeleg?ID=" + String.valueOf(row.get("EinzelbelegID")) + "\">" + String.valueOf(row.get("EinzelbelegID")) + "</a></td>");
+                    out.println("<td>" + Utils.escapeHTML(String.valueOf(row.get("Belegform"))) + "</td>");
+                    out.println("<td><a href=\"lemma?ID=" + String.valueOf(row.get("MGHLemmaID")) + "\">" + String.valueOf(row.get("MGHLemmaID")) + "</a></td>");
+                    out.println("<td>" + Utils.escapeHTML(String.valueOf(row.get("MGHLemma"))) + "</td>");
+                    if (String.valueOf(row.get("provenance_source")).equals("DMP")) {
+                        out.println("<td><a href=\"https://dmp.ub.uni-tuebingen.de?table=namen&mode=view&g_index=" + String.valueOf(row.get("provenance_id")) + "\" target=\"_blank\">" + Utils.escapeHTML(String.valueOf(row.get("provenance_source"))) + "</a></td>");
                     } else {
-                        out.println("<td>" + Utils.escapeHTML(String.valueOf(row[4])) + "</td>");
+                        out.println("<td>" + Utils.escapeHTML(String.valueOf(row.get("provenance_source"))) + "</td>");
                     }
                     out.println("</tr>");
                 }
