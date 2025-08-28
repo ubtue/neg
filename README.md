@@ -4,7 +4,9 @@ You can also have a look at the installation example in the docker subdirectory.
 
 Prerequisites:
 - System
-  - Tomcat 10 / Ubuntu 24.04. WAR-file should work with Tomcat >= 9.
+  - Tomcat 10 / Ubuntu 24.04.
+    - Note that right now we use the official Jakarta EE Migration Tool to migrate from Java EE to Jakarta EE during the build process (see postbuild.sh).
+      We will hopefully be able to fully migrate the code during the next funding period ~2026-2028.
   - find /etc/tomcat10
   - conf/web.xml
     - Find this servlet <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
@@ -30,7 +32,7 @@ Prerequisites:
     <Environment name="smtpPassword" value="examplePassword" type="java.lang.String"/>
 </Context>
 ```
-- Java >= 1.11.0
+- JDK >= 11
 - MySQL >= 8.0
   - innodb_buffer_pool_size=1024M
   - collation-server = utf8_unicode_ci
@@ -42,6 +44,7 @@ Prerequisites:
   - If you use MariaDB, also use the following settings to avoid performance problems, especially in search queries (this works for MyISAM but should be tested again when migrating to InnoDB):
     - optimizer_switch="derived_merge=off,derived_with_keys=off"
     - see also: https://stackoverflow.com/questions/35889706/mariadb-running-a-left-join-query-100-times-slower-than-mysql
+    - Also, MariaDB is not 100% compatible to MySQL, so there is a certain risk that this will work flawlessly.
 
 For servers (ZDV):
 - MySQL
