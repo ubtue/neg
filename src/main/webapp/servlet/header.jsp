@@ -21,5 +21,7 @@
   </HEAD>
 
   <BODY>
-    <jsp:include page="../layout/navigation.inc.jsp" />
-    <jsp:include page="../layout/image.inc.html" />
+    <div id="sidebar">
+      <jsp:include page="../layout/image.inc.html" />
+      <jsp:include page="../layout/navigation.inc.jsp" />
+    </div>
