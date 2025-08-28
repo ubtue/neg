@@ -88,4 +88,16 @@ Development:
 
 Production:
 - https://wiki.owasp.org/index.php/Securing_tomcat
+- Make sure that your AccessLogValve also logs e.g. Referer and User-Agent
+    - pattern="%h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot;"
+- Make sure logs get removed after 90 days
+    - maxDays="90"
+    - Note: this should be monitored, maybe additional logrotate configuration is necessary
+- Make sure logs are rotated properly
+    - /etc/logrotate.d/tomcat10
+        - weekly => daily
+        - rotate 52 => 90
+- Make sure that logs from /var/log/tomcat10/catalina.out are not duplicated into /var/log/syslog
+    - Either by adjusting logging.properties
+    - Or by changing the systemd file
 
