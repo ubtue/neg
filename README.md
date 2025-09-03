@@ -32,7 +32,7 @@ Prerequisites:
     <Environment name="smtpPassword" value="examplePassword" type="java.lang.String"/>
 </Context>
 ```
-- JDK >= 11
+- JDK >= 21
 - MySQL >= 8.0
   - innodb_buffer_pool_size=1024M
   - collation-server = utf8_unicode_ci

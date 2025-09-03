@@ -71,8 +71,9 @@ public class Filter {
         //store filter settings from the request in the session
         try {
             if (filter != Integer.parseInt(request.getParameter("filter"))) {
-                filter = Integer.parseInt(request.getParameter("filter"));
-                session.setAttribute(form + "filter", new Integer(filter));
+                filter = Integer.valueOf(request.getParameter("filter"));
+                session.setAttribute(form + "filter", filter);
+
                 newFilter = true;
             }
             if (filterParameter == null && request.getParameter("filterParameter") != null
