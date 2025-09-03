@@ -19,6 +19,7 @@ import org.hibernate.query.Query;
 
 public class EinzelbelegDB extends AbstractBase {
     public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT DISTINCT einzelbeleg.ID FROM einzelbeleg WHERE QuelleID IN (SELECT ID FROM quelle WHERE ZuVeroeffentlichen=1)";
+    public static final String ORDER_BY_PUBLIC_EINZELBELEG = " ORDER BY einzelbeleg.Belegform ASC, einzelbeleg.ID ASC";
 
     public static Einzelbeleg getById(int id) throws Exception {
         return AbstractBase.getById(id, Einzelbeleg.class);
@@ -30,7 +31,7 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static List<Einzelbeleg> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
+            String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) " + ORDER_BY_PUBLIC_EINZELBELEG;
             Query query = session.createQuery(HQL);
             return query.getResultList();
         }
@@ -46,7 +47,7 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static Einzelbeleg getFirstPublicEinzelbeleg() throws Exception {
         try (Session session = getSession()) {
-            String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
+            String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) " + ORDER_BY_PUBLIC_EINZELBELEG;
             Query query = session.createQuery(HQL).setMaxResults(1);
             Einzelbeleg einzelbeleg = (Einzelbeleg) query.getSingleResult();
             return einzelbeleg;
@@ -238,13 +239,13 @@ public class EinzelbelegDB extends AbstractBase {
             /*
                 Exclude Einzelbelege that are linked to a MGHLemma which Constants.forbiddenLemmaSubstring in Frontend
             */
-            String sql = "SELECT e.ID "
-                    + "FROM einzelbeleg e "
-                    + "  JOIN quelle q ON e.QuelleID = q.ID AND q.zuVeroeffentlichen = 1 "
-                    + "  LEFT JOIN einzelbeleg_hatmghlemma eh ON eh.EinzelbelegID = e.ID "
-                    + "  LEFT JOIN mgh_lemma m ON m.ID = eh.MGHLemmaID AND m.MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%' "
-                    + "WHERE m.ID IS NULL "
-                    + "ORDER BY e.ID";
+            String sql = "SELECT einzelbeleg.ID "
+                    + "FROM einzelbeleg "
+                    + "  JOIN quelle ON einzelbeleg.QuelleID = quelle.ID AND quelle.zuVeroeffentlichen = 1 "
+                    + "  LEFT JOIN einzelbeleg_hatmghlemma ON einzelbeleg_hatmghlemma.EinzelbelegID = einzelbeleg.ID "
+                    + "  LEFT JOIN mgh_lemma ON mgh_lemma.ID = einzelbeleg_hatmghlemma.MGHLemmaID AND mgh_lemma.MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring, AbstractBase.sqlEscapesSingleQuotes)+"%' "
+                    + "WHERE mgh_lemma.ID IS NULL "
+                    + ORDER_BY_PUBLIC_EINZELBELEG;
             return session.createNativeQuery(sql).getResultList();
         }
     }
