@@ -153,7 +153,11 @@ public class Utils {
         return URLEncoder.encode(s);
     }
 
+    @Deprecated
     public static String format(String text, String feld) {
+        // This function is deprecated => we migrated all lemmas in the database,
+        // so it should no longer be necessary to format them.
+        // see issue #427
         if (!feld.endsWith("PLemma") && !feld.endsWith("MGHLemma") && !feld.endsWith("Klarlemma")) {
             return text;
         }
