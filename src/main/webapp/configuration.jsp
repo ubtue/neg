@@ -32,15 +32,20 @@
     String txt_newentry = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/newentry2.gif\" border=\"0\" alt=\"neuer Eintrag\" title=\"neuer Eintrag\">";  // "neuer Eintrag";
 
     String gndIcon = "";
-
     if (AuthHelper.isGastLogin(request)) {
-        gndIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/gast/layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">"; // "GND Link"
+        gndIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/gast/layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">";
     } else {
-        gndIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">";   // "GND Link"
+        gndIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/gnd.png\" border=\"0\" alt=\"GND Link\" title=\"GND suchen\">";
+    }
+
+    String prometheusIcon = "";
+    if (AuthHelper.isGastLogin(request)) {
+        prometheusIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/gast/layout/icons/lmu.ico\" height=\"36\" border=\"0\" alt=\"Prometheus Link\" title=\"Prometheus suchen\">";
+    } else {
+        prometheusIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/layout/icons/lmu.ico\" height=\"36\" border=\"0\" alt=\"Prometheus Link\" title=\"Prometheus suchen\">";
     }
 
     String wikidataIcon = "";
-
     if (AuthHelper.isGastLogin(request)) {
          wikidataIcon = "<img src=\"" + Utils.getBaseUrl(request) + "/gast/layout/icons/wikidata.png\" border=\"0\" alt=\"Wikidata Link\" title=\"Wikidata suchen\">";
     } else {

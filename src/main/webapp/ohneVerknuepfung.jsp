@@ -42,6 +42,7 @@
                 List<Map> rows = EinzelbelegDB.getBelegformenWithMultipleLemmas();
                 out.println("<table>");
                 out.println("<tr>");
+                out.println("<th>Gruppierung</th>");
                 out.println("<th>Einzelbeleg ID</th>");
                 out.println("<th>Belegform</th>");
                 out.println("<th>Lemma ID</th>");
@@ -50,6 +51,7 @@
                 out.println("</tr>");
                 for (Map row : rows) {
                     out.println("<tr>");
+                    out.println("<td><b>" + Utils.escapeHTML(Utils.removeDiacriticalMarks(String.valueOf(row.get("Belegform"))).toLowerCase()) + "</b></td>");
                     out.println("<td><a href=\"einzelbeleg?ID=" + String.valueOf(row.get("EinzelbelegID")) + "\">" + String.valueOf(row.get("EinzelbelegID")) + "</a></td>");
                     out.println("<td>" + Utils.escapeHTML(String.valueOf(row.get("Belegform"))) + "</td>");
                     out.println("<td><a href=\"lemma?ID=" + String.valueOf(row.get("MGHLemmaID")) + "\">" + String.valueOf(row.get("MGHLemmaID")) + "</a></td>");

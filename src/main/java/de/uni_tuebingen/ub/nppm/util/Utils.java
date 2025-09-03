@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
@@ -497,5 +499,21 @@ public class Utils {
             }
         }
         return true;
+    }
+
+    /**
+     * Remove diacritical marks from a string, e.g. "abię" => "abie"
+     */
+    public static String removeDiacriticalMarks(final String input)  {
+        // Note on implementation:
+        // - There is no function in MySQL to do this (in PostgreSQL there would be one)
+        // - In Java we could also use org.apache.commons.lang3, but we don't want to use a dependency if it's also possible to do it directly in java
+
+        // Normalize the input string to decompose characters
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+
+        // Remove diacritical marks using regex
+        Pattern pattern = Pattern.compile("\\p{M}");
+        return pattern.matcher(normalized).replaceAll("");
     }
 }
