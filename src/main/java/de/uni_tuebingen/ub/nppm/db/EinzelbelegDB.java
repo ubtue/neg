@@ -18,6 +18,9 @@ import org.hibernate.query.Query;
 import org.hibernate.query.NativeQuery;
 
 public class EinzelbelegDB extends AbstractBase {
+    /*
+        Exclude Einzelbelege that are linked to a MGHLemma with Constants.forbiddenLemmaSubstring in Frontend
+    */
     public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")";
     public static final String ORDER_BY_PUBLIC_EINZELBELEG = " ORDER BY einzelbeleg.Belegform ASC, einzelbeleg.ID ASC";
 
@@ -238,16 +241,7 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static List<Integer> getAllPublicEinzelbelegIds() throws Exception {
         try (Session session = getSession()) {
-            /*
-                Exclude Einzelbelege that are linked to a MGHLemma which Constants.forbiddenLemmaSubstring in Frontend
-            */
-            String sql = "SELECT einzelbeleg.ID "
-                    + "FROM einzelbeleg "
-                    + "  JOIN quelle ON einzelbeleg.QuelleID = quelle.ID AND quelle.zuVeroeffentlichen = 1 "
-                    + "  LEFT JOIN einzelbeleg_hatmghlemma ON einzelbeleg_hatmghlemma.EinzelbelegID = einzelbeleg.ID "
-                    + "  LEFT JOIN mgh_lemma ON mgh_lemma.ID = einzelbeleg_hatmghlemma.MGHLemmaID AND mgh_lemma.MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring, AbstractBase.sqlEscapesSingleQuotes)+"%' "
-                    + "WHERE mgh_lemma.ID IS NULL "
-                    + ORDER_BY_PUBLIC_EINZELBELEG;
+            String sql = SUBSELECT_PUBLIC_EINZELBELEG_IDS + ORDER_BY_PUBLIC_EINZELBELEG;
             return session.createNativeQuery(sql).getResultList();
         }
     }
