@@ -21,7 +21,8 @@ public class EinzelbelegDB extends AbstractBase {
     /*
         Exclude Einzelbelege that are linked to a MGHLemma with Constants.forbiddenLemmaSubstring in Frontend
     */
-    public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")";
+    public static final String SUBSELECT_HIDDEN_EINZELBELEG_IDS = "SELECT DISTINCT EinzelbelegID FROM einzelbeleg_hatmghlemma WHERE MGHLemmaID IN (" + LemmaDB.SUBSELECT_HIDDEN_MGHLEMMA_IDS + ")";
+    public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ") AND ID NOT IN (" + SUBSELECT_HIDDEN_EINZELBELEG_IDS + ")";
     public static final String ORDER_BY_PUBLIC_EINZELBELEG = " ORDER BY einzelbeleg.Belegform ASC, einzelbeleg.ID ASC";
 
     public static Einzelbeleg getById(int id) throws Exception {
