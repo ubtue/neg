@@ -14,7 +14,6 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +26,10 @@ import javax.persistence.Table;
 import org.hibernate.type.StringType;
 
 public class AbstractBase {
-    public static Map<Character, String> sqlEscapesSingleQuotes = new HashMap<>();
+    public final static Map<Character, String> sqlEscapesSingleQuotes = new HashMap<>() {{
+        put('\'', "''");
+    }};
 
-    static {
-        sqlEscapesSingleQuotes.put('\'', "''");
-    }
     protected static SessionFactory sessionFactory;
 
     protected static Properties cliProperties = null;

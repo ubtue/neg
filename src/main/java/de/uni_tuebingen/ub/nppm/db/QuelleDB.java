@@ -13,7 +13,8 @@ import org.hibernate.query.Query;
 
 public class QuelleDB extends AbstractBase {
 
-    public static final String SUBSELECT_PUBLIC_QUELLE_IDS = "SELECT DISTINCT ID FROM quelle WHERE ZuVeroeffentlichen=1";
+    public static final String SUBSELECT_PUBLIC_QUELLE_IDS = "SELECT ID FROM quelle WHERE ZuVeroeffentlichen=1";
+    public static final String ORDER_BY_PUBLIC_QUELLE = " ORDER BY quelle.Bezeichnung, quelle.ID ASC";
 
     public static List<Quelle> getList() throws Exception {
         return getList(Quelle.class);
@@ -21,7 +22,7 @@ public class QuelleDB extends AbstractBase {
 
     public static List<Quelle> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM quelle WHERE ZuVeroeffentlichen = 1";
+            String SQL = "SELECT * FROM quelle WHERE ID IN (" + SUBSELECT_PUBLIC_QUELLE_IDS + ") " + ORDER_BY_PUBLIC_QUELLE;
             NativeQuery query = session.createNativeQuery(SQL);
             query.addEntity(Quelle.class);
             return query.getResultList();
@@ -91,14 +92,11 @@ public class QuelleDB extends AbstractBase {
 
     public static Quelle getFirstPublicQuelle() throws Exception {
         try (Session session = getSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Quelle> criteria = criteriaBuilder.createQuery(Quelle.class);
-            Root<Quelle> quelle = criteria.from(Quelle.class);
-
-            criteria.select(quelle).where(criteriaBuilder.equal(quelle.get("zuVeroeffentlichen"), 1));
-
-            Query query = session.createQuery(criteria);
-            return (Quelle) query.setMaxResults(1).uniqueResult();
+            String SQL = "SELECT * FROM quelle WHERE ID IN (" + SUBSELECT_PUBLIC_QUELLE_IDS +") " + ORDER_BY_PUBLIC_QUELLE;
+            NativeQuery query = session.createNativeQuery(SQL);
+            query.addEntity(Quelle.class);
+            query.setMaxResults(1);
+            return (Quelle) query.getSingleResult();
         }
     }
 
@@ -163,7 +161,7 @@ public class QuelleDB extends AbstractBase {
 
     public static List<Integer> getAllPublicQuellenIds() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT DISTINCT q.ID FROM quelle q WHERE q.ZuVeroeffentlichen = 1 ORDER BY q.ID";
+            String sql = "SELECT ID FROM quelle WHERE ID IN (" + SUBSELECT_PUBLIC_QUELLE_IDS + ") " + ORDER_BY_PUBLIC_QUELLE;
             return session.createNativeQuery(sql).getResultList();
         }
     }

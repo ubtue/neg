@@ -10,7 +10,9 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 public class LemmaDB extends AbstractBase {
-    public static final String SUBSELECT_PUBLIC_MGHLEMMA_IDS = "SELECT DISTINCT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ")";
+    public static final String SUBSELECT_HIDDEN_MGHLEMMA_IDS = "SELECT ID FROM mgh_lemma WHERE MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring, sqlEscapesSingleQuotes)+"%' ";
+    public static final String SUBSELECT_PUBLIC_MGHLEMMA_IDS = "SELECT DISTINCT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ") AND MGHLemmaID NOT IN (" + SUBSELECT_HIDDEN_MGHLEMMA_IDS + ")";
+    public static final String ORDER_BY_PUBLIC_MGHLEMMA = " ORDER BY mgh_lemma.MGHLemma ASC, mgh_lemma.ID ASC";
 
     public static MghLemma getById(int id) throws Exception {
         return AbstractBase.getById(id, MghLemma.class);
@@ -22,7 +24,7 @@ public class LemmaDB extends AbstractBase {
 
     public static List<MghLemma> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT * FROM mgh_lemma WHERE ID IN (SELECT MGHLemmaID FROM einzelbeleg_hatmghlemma ehm JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID JOIN quelle q ON q.ID = e.QuelleID WHERE q.ZuVeroeffentlichen = 1)";
+            String sql = "SELECT * FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")" + ORDER_BY_PUBLIC_MGHLEMMA;
 
             NativeQuery query = session.createNativeQuery(sql);
             query.addEntity(MghLemma.class);
@@ -40,7 +42,7 @@ public class LemmaDB extends AbstractBase {
 
     public static MghLemma getFirstPublicMGHLemma() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM mgh_lemma WHERE mgh_lemma.ID in (SELECT n.ID FROM einzelbeleg e, quelle q, einzelbeleg_hatmghlemma h, mgh_lemma n WHERE e.ID=h.einzelbelegID and n.ID=h.MGHLemmaID and e.QuelleID=q.ID AND q.ZuVeroeffentlichen=1) ORDER BY id ASC";
+            String SQL = "SELECT * FROM mgh_lemma WHERE mgh_lemma.ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS +") " + ORDER_BY_PUBLIC_MGHLEMMA;
             NativeQuery query = session.createNativeQuery(SQL);
             query.addEntity(MghLemma.class);
             query.setMaxResults(1);
@@ -128,15 +130,7 @@ public class LemmaDB extends AbstractBase {
 
     public static List<Integer> getAllPublicLemmaIds() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT DISTINCT ehm.MGHLemmaID "
-                    + "FROM einzelbeleg_hatmghlemma ehm "
-                    + "JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID "
-                    + "JOIN quelle q ON q.ID = e.QuelleID "
-                    + "JOIN mgh_lemma l ON l.ID = ehm.MGHLemmaID "
-                    + // <- hier korrigiert
-                    "WHERE q.ZuVeroeffentlichen = 1 "
-                    + "ORDER BY ehm.MGHLemmaID";
-
+            String sql = "SELECT ID FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS + ") " + ORDER_BY_PUBLIC_MGHLEMMA;
             return session.createNativeQuery(sql).getResultList();
         }
     }
