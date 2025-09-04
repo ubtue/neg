@@ -10,8 +10,9 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 public class LemmaDB extends AbstractBase {
+    // Unfortunately we cannot reference SUBSELECTS from EinzelbelegDB here because it will reference back on LemmaDB, so we need to do some hardcoding here
     public static final String SUBSELECT_HIDDEN_MGHLEMMA_IDS = "SELECT ID FROM mgh_lemma WHERE MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring, sqlEscapesSingleQuotes)+"%' ";
-    public static final String SUBSELECT_PUBLIC_MGHLEMMA_IDS = "SELECT DISTINCT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ") AND MGHLemmaID NOT IN (" + SUBSELECT_HIDDEN_MGHLEMMA_IDS + ")";
+    public static final String SUBSELECT_PUBLIC_MGHLEMMA_IDS = "SELECT DISTINCT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (SELECT ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")) AND MGHLemmaID NOT IN (" + SUBSELECT_HIDDEN_MGHLEMMA_IDS + ")";
     public static final String ORDER_BY_PUBLIC_MGHLEMMA = " ORDER BY mgh_lemma.MGHLemma ASC, mgh_lemma.ID ASC";
 
     public static MghLemma getById(int id) throws Exception {
@@ -42,7 +43,7 @@ public class LemmaDB extends AbstractBase {
 
     public static MghLemma getFirstPublicMGHLemma() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM mgh_lemma WHERE mgh_lemma.ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS +") " + ORDER_BY_PUBLIC_MGHLEMMA;
+            String SQL = "SELECT * FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS +") " + ORDER_BY_PUBLIC_MGHLEMMA;
             NativeQuery query = session.createNativeQuery(SQL);
             query.addEntity(MghLemma.class);
             query.setMaxResults(1);
