@@ -128,7 +128,7 @@ public class PersonDB extends AbstractBase {
 
     public static List<Integer> getAllPublicPersonIds() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT DISTINCT person.ID FROM person "
+            String sql = "SELECT person.ID FROM person "
                     + "WHERE person.ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ") "
                     + ORDER_BY_PUBLIC_PERSON;
             return session.createNativeQuery(sql).getResultList();
