@@ -7,7 +7,7 @@ import org.hibernate.query.NativeQuery;
 
 public class PersonDB extends AbstractBase {
 
-    public static final String SUBSELECT_PUBLIC_PERSON_IDS = "SELECT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (SELECT einzelbeleg.id FROM einzelbeleg, quelle WHERE einzelbeleg.QuelleID=quelle.ID AND quelle.ZuVeroeffentlichen=1)";
+    public static final String SUBSELECT_PUBLIC_PERSON_IDS = "SELECT DISTINCT PersonID FROM einzelbeleg_hatperson WHERE EinzelbelegID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ")";
     public static final String ORDER_BY_PUBLIC_PERSON = " ORDER BY person.Standardname ASC, person.ID ASC";
 
     public static Person getById(int id) throws Exception {

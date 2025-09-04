@@ -13,7 +13,7 @@ import org.hibernate.query.Query;
 
 public class QuelleDB extends AbstractBase {
 
-    public static final String SUBSELECT_PUBLIC_QUELLE_IDS = "SELECT DISTINCT ID FROM quelle WHERE ZuVeroeffentlichen=1";
+    public static final String SUBSELECT_PUBLIC_QUELLE_IDS = "SELECT ID FROM quelle WHERE ZuVeroeffentlichen=1";
     public static final String ORDER_BY_PUBLIC_QUELLE = " ORDER BY quelle.Bezeichnung, quelle.ID ASC";
 
     public static List<Quelle> getList() throws Exception {

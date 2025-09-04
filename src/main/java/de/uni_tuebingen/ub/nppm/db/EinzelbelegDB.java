@@ -18,7 +18,7 @@ import org.hibernate.query.Query;
 import org.hibernate.query.NativeQuery;
 
 public class EinzelbelegDB extends AbstractBase {
-    public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT DISTINCT einzelbeleg.ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")";
+    public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")";
     public static final String ORDER_BY_PUBLIC_EINZELBELEG = " ORDER BY einzelbeleg.Belegform ASC, einzelbeleg.ID ASC";
 
     public static Einzelbeleg getById(int id) throws Exception {
