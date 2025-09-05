@@ -4,6 +4,10 @@ import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
 import de.uni_tuebingen.ub.nppm.util.pagination.statistics.PaginationParams;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
@@ -39,6 +43,15 @@ public class LemmaDB extends AbstractBase {
 
     public static List<MghLemmaKorrektor> getListKorrektor() throws Exception {
         return getList(MghLemmaKorrektor.class);
+    }
+
+    public static List<MghLemma> getListByPerson(Person person) throws Exception {
+        try (Session session = getSession()) {
+            String SQL = "SELECT * FROM mgh_lemma WHERE ID IN (SELECT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (SELECT EinzelbelegID FROM einzelbeleg_hatperson WHERE PersonID=" + person.getId() + ")) AND ID NOT IN (" + SUBSELECT_HIDDEN_MGHLEMMA_IDS + ") " + ORDER_BY_PUBLIC_MGHLEMMA;
+            NativeQuery query = session.createNativeQuery(SQL);
+            query.addEntity(MghLemma.class);
+            return query.getResultList();
+        }
     }
 
     public static MghLemma getFirstPublicMGHLemma() throws Exception {
