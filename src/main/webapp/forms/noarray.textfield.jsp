@@ -15,12 +15,11 @@
                 if (!isReadOnly) {
                     out.print("value=\"" + DBtoHTML(value_zielAttribut) + "\" ");
                 } else {
-                    String belegform = value_zielAttribut;
+                    String belegformHtml = DBtoHTML(value_zielAttribut);
                     if (formular.equals("einzelbeleg") && datenfeld.equals("Belegform")) {
-                        belegform = getBelegformExternalLinked(request, id, belegform);
+                        belegformHtml = getBelegformExternalLinked(request, id, belegformHtml);
                     }
 
-                    String belegformHtml = DBtoHTML(belegform);
                     if (schemaOrgProperty != null && !schemaOrgProperty.isEmpty())
                         belegformHtml = "<span property=\"" + schemaOrgProperty + "\">" + belegformHtml + "</span>";
 
