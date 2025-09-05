@@ -49,7 +49,15 @@ function groupCsvData(array $rows) : array {
 function generateSqlStatements(array $data): string {
     $sql = 'BEGIN;' . PHP_EOL;
     foreach ($data as $groupKey => $datasets) {
-        // first: detect the winner
+        // check for diacritical characters
+        foreach ($datasets as $dataset) {
+            if (!preg_match('"^[a-zA-Z\[\].]*$"', $dataset['einzelbelegBelegform'])) {
+                print 'WARNUNG: Diakritische Zeichen "' . $dataset['einzelbelegBelegform'] . '" in Gruppe: "' . $groupKey . '"' . PHP_EOL;
+                continue 2;
+            }
+        }
+
+        // detect the winner
         $winnerLemmaId = null;
         foreach ($datasets as $dataset) {
             if (!empty($dataset['winner']) && trim($dataset['winner']) != '') {
@@ -71,7 +79,7 @@ function generateSqlStatements(array $data): string {
             continue;
         }
 
-        // second: Generate SQL statements wherever necessary
+        // Generate SQL statements wherever necessary
         foreach ($datasets as $dataset) {
             if ($dataset['mghLemmaId'] != $winnerLemmaId) {
                 $sql .= 'UPDATE einzelbeleg_hatmghlemma SET MGHLemmaID=' . $winnerLemmaId . ' WHERE MGHLemmaID=' . $dataset['mghLemmaId'] . ' AND EinzelbelegID=' . $dataset['einzelbelegId'] . ';' . PHP_EOL;
