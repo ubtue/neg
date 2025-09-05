@@ -79,42 +79,28 @@
             }
 
             if (view.equals("LemmaNachGlied")) {
-                String mode = request.getParameter("mode");
+                // quick & dirty DataTables inject for now
+                out.println("<link rel=\"stylesheet\" href=\"//cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css\">");
+                out.println("<script src=\"//cdn.datatables.net/2.3.3/js/dataTables.min.js\"></script>");
 
-                // nav
-                out.println("<a href=\"?view=LemmaNachGlied&mode=erstglied\">Nach Erstglied</a>");
-                out.println("<a href=\"?view=LemmaNachGlied&mode=zweitglied\">Nach Zweitglied</a>");
+                out.println("<table id=\"table_LemmaNachGlied\" class=\"display\">");
+                out.println("<thead><tr><th>Lemma</th><th>Erstglied</th><th>Zweitglied</th></tr></thead><tbody>");
 
-                // select
-                if (mode != null) {
-                    String selectedGlied = request.getParameter("glied");
-                    if (selectedGlied == null) {
-                        List<String> glieder = new ArrayList<>();
-                        if (mode.equals("erstglied")) {
-                            glieder = LemmaDB.getListErstglied();
-                        } else if (mode.equals("zweitglied")) {
-                            glieder = LemmaDB.getListZweitglied();
+                for (MghLemma lemma : LemmaDB.getList()) {
+                    if (lemma.getMghLemma().contains("~")) {
+                        String[] parts = lemma.getMghLemma().split("~");
+                        if (parts.length == 2) {
+                            out.println("<tr>");
+                            out.println("<td><a href=\"lemma?ID=" + lemma.getId() + "\">" + Utils.escapeHTML(lemma.getMghLemma()) + "</a></td>");
+                            out.println("<td>" + Utils.escapeHTML(parts[0]) + "</td>");
+                            out.println("<td>" + Utils.escapeHTML(parts[1]) + "</td>");
+                            out.println("</tr>");
                         }
-
-                        out.println("<table>\n");
-                        for (String glied : glieder) {
-                            out.println("<tr><td><a href=\"?view=LemmaNachGlied&mode=" + Utils.urlEncode(mode) + "&glied=" + Utils.urlEncode(glied) + "\">" + Utils.escapeHTML(glied) + "</a></td></tr>\n");
-                        }
-                        out.println("</table>\n");
-                    } else {
-                        List<MghLemma> lemmas = new ArrayList<>();
-                        if (mode.equals("erstglied")) {
-                            lemmas = LemmaDB.getListByErstglied(selectedGlied);
-                        } else if (mode.equals("zweitglied")) {
-                            lemmas = LemmaDB.getListByZweitglied(selectedGlied);
-                        }
-                        out.println("<table>\n");
-                        for (MghLemma lemma : lemmas) {
-                            out.println("<tr><td><a href=\"lemma?ID=" + lemma.getId() + "\">" + Utils.escapeHTML(lemma.getMghLemma()) + "</a></td></tr>\n");
-                        }
-                        out.println("</table>\n");
                     }
                 }
+
+                out.println("</tbody></table>\n");
+                out.println("<script>let table = new DataTable('#table_LemmaNachGlied', {pageLength: 100});</script>");
             }
         }
     %>
