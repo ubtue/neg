@@ -1,4 +1,5 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
 <%@ page import="java.util.HashSet" isThreadSafe="false" %>
@@ -24,6 +25,7 @@
           <li><a href="ohneVerknuepfung?form=quelle&dbForm=quelle&zwischentabelle=handschrift_ueberlieferung&attribut=Bezeichnung&zwAttribut=QuelleID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "QuelleOhneUeberlieferung");%></a></li>
           <li><a href="ohneVerknuepfung?form=handschrift&dbForm=handschrift&zwischentabelle=handschrift_ueberlieferung&attribut=Bibliothekssignatur&zwAttribut=HandschriftID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "TextzeugenOhneUeberlieferung");%></a></li>
           <li><a href="ohneVerknuepfung?view=BelegformMitMehrerenLemmata">Belegformen mit mehreren Lemmata</a></li>
+          <li><a href="ohneVerknuepfung?view=LemmaNachGlied">Lemmata nach Erst/Zweitglied</a></li>
        </ul>
 
 
@@ -39,7 +41,7 @@
 
     <%
         String view = request.getParameter("view");
-        if(view != null) {
+        if (view != null) {
             if (view.equals("BelegformMitMehrerenLemmata")) {
                 Set<String> groupKeys = new HashSet<>();
                 List<Map> rows = EinzelbelegDB.getBelegformenWithMultipleLemmas();
@@ -54,7 +56,9 @@
                 out.println("<th>Provenienz</th>");
                 out.println("</tr>");
                 for (Map row : rows) {
+                    // TODO: Diacritical Marks must not be removed for grouping since they can lead to different Lemmas due to Mr. Geuenich
                     String groupKey = Utils.removeDiacriticalMarks(String.valueOf(row.get("Belegform"))).toLowerCase();
+                    //String groupKey = String.valueOf(row.get("Belegform")).toLowerCase();
                     groupKeys.add(groupKey);
                     out.println("<tr>");
                     out.println("<td><b>" + Utils.escapeHTML(groupKey) + "</b></td>");
@@ -72,6 +76,45 @@
                 out.println("</table>");
 
                 out.println("<p>Insgesamt " + rows.size() + " Einzelbelege in " + groupKeys.size() + " Gruppen</p>");
+            }
+
+            if (view.equals("LemmaNachGlied")) {
+                String mode = request.getParameter("mode");
+
+                // nav
+                out.println("<a href=\"?view=LemmaNachGlied&mode=erstglied\">Nach Erstglied</a>");
+                out.println("<a href=\"?view=LemmaNachGlied&mode=zweitglied\">Nach Zweitglied</a>");
+
+                // select
+                if (mode != null) {
+                    String selectedGlied = request.getParameter("glied");
+                    if (selectedGlied == null) {
+                        List<String> glieder = new ArrayList<>();
+                        if (mode.equals("erstglied")) {
+                            glieder = LemmaDB.getListErstglied();
+                        } else if (mode.equals("zweitglied")) {
+                            glieder = LemmaDB.getListZweitglied();
+                        }
+
+                        out.println("<table>\n");
+                        for (String glied : glieder) {
+                            out.println("<tr><td><a href=\"?view=LemmaNachGlied&mode=" + Utils.urlEncode(mode) + "&glied=" + Utils.urlEncode(glied) + "\">" + Utils.escapeHTML(glied) + "</a></td></tr>\n");
+                        }
+                        out.println("</table>\n");
+                    } else {
+                        List<MghLemma> lemmas = new ArrayList<>();
+                        if (mode.equals("erstglied")) {
+                            lemmas = LemmaDB.getListByErstglied(selectedGlied);
+                        } else if (mode.equals("zweitglied")) {
+                            lemmas = LemmaDB.getListByZweitglied(selectedGlied);
+                        }
+                        out.println("<table>\n");
+                        for (MghLemma lemma : lemmas) {
+                            out.println("<tr><td><a href=\"lemma?ID=" + lemma.getId() + "\">" + Utils.escapeHTML(lemma.getMghLemma()) + "</a></td></tr>\n");
+                        }
+                        out.println("</table>\n");
+                    }
+                }
             }
         }
     %>

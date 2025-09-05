@@ -120,11 +120,35 @@ public class LemmaDB extends AbstractBase {
     }
 
     public static List<String> getListErstglied() throws Exception {
-        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Erstglied ASC");
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Erstglied ASC");
+    }
+
+    public static List<MghLemma> getListByErstglied(String erstglied) throws Exception {
+        String sql = "SELECT * FROM mgh_lemma WHERE SUBSTRING_INDEX(MGHLemma, '~', 1) = '" + escape(erstglied, '\'') + "'";
+        sql += " ORDER BY MGHLemma";
+
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            sqlQuery.addEntity(MghLemma.class);
+            List<MghLemma> rows = sqlQuery.getResultList();
+            return rows;
+        }
     }
 
     public static List<String> getListZweitglied() throws Exception {
-        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Zweitglied ASC");
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Zweitglied ASC");
+    }
+
+    public static List<MghLemma> getListByZweitglied(String zweitglied) throws Exception {
+        String sql = "SELECT * FROM mgh_lemma WHERE SUBSTRING_INDEX(MGHLemma, '~', -1) = '" + escape(zweitglied, '\'') + "'";
+        sql += " ORDER BY MGHLemma";
+
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            sqlQuery.addEntity(MghLemma.class);
+            List<MghLemma> rows = sqlQuery.getResultList();
+            return rows;
+        }
     }
 
     public static List<MghLemma> getLemmaByBelegform(String belegform) throws Exception {
