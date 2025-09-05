@@ -11,6 +11,10 @@ import org.apache.http.client.utils.URIBuilder;
 
 public class PrintPagination {
 
+    // How many page entries should be shown before & after the current element?
+    // Note: if you are at the beginning or end of the list, the size will be increased
+    public static final int OFFSET_SIZE = 5;
+
     // Hauptfunktion: erkennt Modus anhand von Parametern
     public static void printPageNavigation(JspWriter out, HttpServletRequest request, Integer pageoffset, Integer pageLimit, Integer linecount, String export, String title) throws Exception {
         if (!"liste".equals(export) && !"browse".equals(export)) {
@@ -63,6 +67,18 @@ public class PrintPagination {
             return;
         }
 
+        // If we are either at the front or the end, show more pages
+        int minIndex = currentIndex - OFFSET_SIZE;
+        int maxIndex = currentIndex + OFFSET_SIZE;
+        if (minIndex < 0) {
+            maxIndex = maxIndex - minIndex - 1;
+            minIndex = 0;
+        }
+        if (maxIndex > totalPages) {
+            minIndex -= (maxIndex - totalPages);
+            maxIndex = totalPages;
+        }
+
         out.println("<div class=\"resultlistnavigation\" align=\"center\">");
 
         // Previous Button
@@ -79,9 +95,9 @@ public class PrintPagination {
 
         // Page Number Buttons
         for (int i = 0; i < totalPages; i++) {
-            boolean showFirstDots = i == 0 && i <= currentIndex - 10;
-            boolean showLastDots = i == totalPages - 1 && i >= currentIndex + 10;
-            boolean inWindow = i < currentIndex + 10 && i > currentIndex - 10;
+            boolean showFirstDots = i == 0 && i < minIndex;
+            boolean showLastDots = i == totalPages - 1 && i >= maxIndex;
+            boolean inWindow = i >= minIndex && i <= maxIndex;
 
             // Note regarding rel="nofollow":
             // This is added because we do not want bots like google etc. to crawl the whole pagination for each entity.

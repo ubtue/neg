@@ -70,7 +70,7 @@ public class PersonDB extends AbstractBase {
     public static Integer getNextPublicPersonId(int id) throws Exception {
         try (Session session = getSession()) {
             // 1. Kleinste und größte veröffentlichte Person ID holen
-            String minMaxSQL = "SELECT MIN(p.ID), MAX(p.ID) "
+            String minMaxSQL = "SELECT MIN(person.ID), MAX(person.ID) "
                     + "FROM person "
                     + "WHERE person.ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ")";
             Object[] minMaxResult = (Object[]) session.createNativeQuery(minMaxSQL).getSingleResult();

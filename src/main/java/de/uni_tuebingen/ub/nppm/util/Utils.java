@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.util;
 
+import de.uni_tuebingen.ub.nppm.model.interfaces.*;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -89,13 +90,21 @@ public class Utils {
         return getBaseUrl(request) + "/ajax";
     }
 
-    public static String getPersistentIdentifierUrl(HttpServletRequest request, String persistentIdentifier) {
+    // This function will be overloaded with shortcuts, since it will be used in many templates
+    public static String getPersistentIdentifierUrl(final HttpServletRequest request, final String persistentIdentifier) {
         return getBaseUrl(request) + "/id/" + urlEncode(persistentIdentifier);
     }
 
-    // Just a shortcut to the real function, since this function will be used in many templates
-    public static String getPidUrl(HttpServletRequest request, String pid) {
+    public static String getPersistentIdentifierUrl(final HttpServletRequest request, final PersistentIdentifier persistentIdentifier) {
+        return getPersistentIdentifierUrl(request, persistentIdentifier.getPersistentIdentifier());
+    }
+
+    public static String getPidUrl(final HttpServletRequest request, final String pid) {
         return getPersistentIdentifierUrl(request, pid);
+    }
+
+    public static String getPidUrl(final HttpServletRequest request, final PersistentIdentifier pid) {
+        return getPersistentIdentifierUrl(request, pid.getPersistentIdentifier());
     }
 
     public static int determineId(HttpServletRequest request, HttpServletResponse response, String formular, JspWriter out) throws Exception {
