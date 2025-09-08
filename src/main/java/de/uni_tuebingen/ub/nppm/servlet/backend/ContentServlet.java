@@ -11,14 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspWriter;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
@@ -53,7 +50,6 @@ public class ContentServlet extends AbstractBackendServlet {
                         ContentDB.updateHtmlFile(content, newHtmlContent);
                         // Redirect to the tinyMce.jsp page after saving
                         response.sendRedirect(Utils.getBaseUrl(request) + "/edit?loadFile=" + fileName);
-                        return;  // Important to return after redirect to stop further execution
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -62,7 +58,6 @@ public class ContentServlet extends AbstractBackendServlet {
                 //show fileManagement
 
                 HttpSession session = request.getSession();
-                String myLanguage = Language.getLanguage(request);
 
                 out.println("<div id=\"titel\">");
                 out.println("  <table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
@@ -194,104 +189,88 @@ public class ContentServlet extends AbstractBackendServlet {
     public void deleteFileByNameAndLanguage(String fileName, String selectedLanguage) throws IOException, Exception {
 
         if (!selectedLanguage.equals("dontDelete")) {
-
-            try {
-                Content content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
-                if (content != null) {
-                    ContentDB.deleteByNameAndLanguage(fileName, selectedLanguage);
-                }
-            } catch (javax.persistence.NoResultException e) {
-                // Kein Eintrag gefunden, nichts zu löschen
-
+            Content content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
+            if (content != null) {
+                ContentDB.deleteByNameAndLanguage(fileName, selectedLanguage);
             }
         }
     }//end function
 
     public void replaceFile(HttpServletRequest request, HttpServletResponse response) throws IOException, FileUploadException, Exception {
+        PrintWriter out = response.getWriter();
+        String oldfFile = ContentDB.getById(Integer.parseInt(request.getParameter("id"))).getName();
 
-        try {
-            PrintWriter out = response.getWriter();
+        // Create a new file upload handler
+        ServletFileUpload upload = new ServletFileUpload();
 
-            String oldfFile = ContentDB.getById(Integer.parseInt(request.getParameter("id"))).getName();
+        // Parse the request
+        FileItemIterator iter = upload.getItemIterator(request);
 
-            String context = request.getParameter("context");
+        String messageStart = "";
+        String messageEnd = "";
+        HttpSession session = request.getSession();
 
-            Content.Context contextEnum = Content.Context.valueOf(context);
+        while (iter.hasNext()) {
 
-            // Create a new file upload handler
-            ServletFileUpload upload = new ServletFileUpload();
+            FileItemStream item = iter.next();
+            String contentType = item.getContentType();
 
-            // Parse the request
-            FileItemIterator iter = upload.getItemIterator(request);
+            String errorFileName = item.getName();
 
-            String messageStart = "";
-            String messageEnd = "";
-            HttpSession session = request.getSession();
+            if (!item.isFormField()) {
 
-            while (iter.hasNext()) {
+                if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("")) {
+                    messageEnd = " " + Language.getTextfield(session, "contentServlet", "NoFile");
+                    out.println("<span style=\" color: red;\" >Error: </span>" + messageEnd);
+                } else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
+                        || item.getContentType().startsWith("image") || item.getContentType().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+                        || item.getContentType().startsWith("application/msword")) {
 
-                FileItemStream item = iter.next();
-                String contentType = item.getContentType();
+                    String fileName = item.getName();
 
-                String errorFileName = item.getName();
+                    boolean fileExists = ContentDB.searchName(fileName);
 
-                if (!item.isFormField()) {
+                    if (fileExists && oldfFile.equals(fileName)) {
 
-                    if (item.getName() == null || item.getName().isEmpty() || item.getName().equals("")) {
-                        messageEnd = " " + Language.getTextfield(session, "contentServlet", "NoFile");
-                        out.println("<span style=\" color: red;\" >Error: </span>" + messageEnd);
-                    } else if (item.getContentType().startsWith("text/html") || item.getContentType().startsWith("text/plain") || item.getContentType().startsWith("application/vnd.oasis.opendocument.text")
-                            || item.getContentType().startsWith("image") || item.getContentType().startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-                            || item.getContentType().startsWith("application/msword")) {
+                        Content content = null;
+                        String selectedLanguage = getCookieLanguage(request, response);
 
-                        String fileName = item.getName();
-
-                        boolean fileExists = ContentDB.searchName(fileName);
-
-                        if (fileExists && oldfFile.equals(fileName)) {
-
-                            Content content = null;
-                            String selectedLanguage = getCookieLanguage(request, response);
-
-                            if (contentType.equals("text/html")) {
-                                content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
-                            } else {
-                                content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
-                            }
-
-                            String pathname = writeItemToTempFile(item);
-
-                            byte[] bytes = ContentDB.readBytesFromFile(pathname);
-                            content.setContent(bytes);
-                            ContentDB.saveOrUpdate(content);
-
-                            messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
-                            messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileUpdate");
-                            if (contentType.equals("text/html")) {
-                                out.println(messageStart + fileName + " (" + selectedLanguage + ")" + messageEnd);
-                            } else {
-                                out.println(messageStart + fileName + messageEnd);
-                            }
-
-                            //Now delete the temporary file again
-                            File myObj = new File(pathname);
-                            myObj.delete();
+                        if (contentType.equals("text/html")) {
+                            content = ContentDB.getByNameAndLanguage(fileName, selectedLanguage);
                         } else {
-                            messageStart = Language.getTextfield(session, "contentServlet", "FilesDontMatch") + " ";
-                            messageEnd = " " + Language.getTextfield(session, "contentServlet", "Und") + " ";
-                            out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + oldfFile + messageEnd + fileName);
-                            out.println("<br>");
+                            content = ContentDB.getById(Integer.parseInt(request.getParameter("id")));
                         }
-                    } else {
+
+                        String pathname = writeItemToTempFile(item);
+
+                        byte[] bytes = ContentDB.readBytesFromFile(pathname);
+                        content.setContent(bytes);
+                        ContentDB.saveOrUpdate(content);
+
                         messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
-                        messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileNotAllowed");
-                        out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + errorFileName + ":" + messageEnd);
+                        messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileUpdate");
+                        if (contentType.equals("text/html")) {
+                            out.println(messageStart + fileName + " (" + selectedLanguage + ")" + messageEnd);
+                        } else {
+                            out.println(messageStart + fileName + messageEnd);
+                        }
+
+                        //Now delete the temporary file again
+                        File myObj = new File(pathname);
+                        myObj.delete();
+                    } else {
+                        messageStart = Language.getTextfield(session, "contentServlet", "FilesDontMatch") + " ";
+                        messageEnd = " " + Language.getTextfield(session, "contentServlet", "Und") + " ";
+                        out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + oldfFile + messageEnd + fileName);
                         out.println("<br>");
                     }
+                } else {
+                    messageStart = Language.getTextfield(session, "contentServlet", "Datei") + " ";
+                    messageEnd = " " + Language.getTextfield(session, "contentServlet", "FileNotAllowed");
+                    out.println("<span style=\" color: red;\" >Error: </span>" + messageStart + errorFileName + ":" + messageEnd);
+                    out.println("<br>");
                 }
             }
-        } catch (Exception e) {
-
         }
     }
 

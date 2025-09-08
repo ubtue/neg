@@ -25,10 +25,8 @@ public class IdentifierMapper {
             //check if einzelbeleg is zuVeröffentlichen
             if(ret != null){
                 Quelle q = ((Einzelbeleg)ret).getQuelle();
-                if(q != null){
-                    if(q.getZuVeroeffentlichen() == null || q.getZuVeroeffentlichen() != 1){
-                        throw new IdNotPublicException("Einzelbeleg ID " + identifier + " ist nicht zu veröffentlichen");
-                    }
+                if(q != null && (q.getZuVeroeffentlichen() == null || q.getZuVeroeffentlichen() != 1)) {
+                    throw new IdNotPublicException("Einzelbeleg ID " + identifier + " ist nicht zu veröffentlichen");
                 }
             }
         } else if (identifier.startsWith("P")) {
@@ -93,7 +91,7 @@ public class IdentifierMapper {
     }
 
     public static boolean isValidIdentifier(final String identifier) {
-        return (!identifier.isBlank() && identifier.matches("^[A-Z][0-9]+$"));
+        return !identifier.isBlank() && identifier.matches("^[A-Z][0-9]+$");
     }
 
     public static void validateIdentifier(final String identifier) throws IdInvalidException {

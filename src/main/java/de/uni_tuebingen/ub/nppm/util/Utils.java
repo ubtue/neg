@@ -26,7 +26,7 @@ public class Utils {
 
     // Hilfsfunktion für sichere Zahlenprüfung
     public static boolean safeNumeric(String s) {
-        return s != null && Utils.isNumeric(s);
+        return s != null && isNumeric(s);
     }
 
     public static String safeToString(Object o) {
@@ -52,7 +52,7 @@ public class Utils {
 
     public static boolean isDevelopmentEnvironment() {
         try {
-            InitialContext initialContext = new javax.naming.InitialContext();
+            InitialContext initialContext = new InitialContext();
             Object entry = initialContext.lookup("java:comp/env/development");
             return entry == null || ((String) entry).equals("true");
         } catch (NamingException ex) {
@@ -111,7 +111,7 @@ public class Utils {
         int id = Constants.UNDEFINED_ID;
 
         String reqID = request.getParameter("ID");
-        if (reqID != null && Utils.isNumeric(reqID)) {
+        if (reqID != null && isNumeric(reqID)) {
             id = Integer.parseInt(reqID);
         }
 
@@ -226,14 +226,10 @@ public class Utils {
     }
 
     public static void simpleSearch(HttpServletRequest req, JspWriter out, List<String> headlines, List<String> fieldNames, List<Map> rsMap, String orderV[], String order, String open, boolean countTables) throws IOException, Exception {
-
-        int topCount = 0;
-
         String header = "";
         int orderSize = orderV.length;
         boolean[] first = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};  //kann mann vielleicht löschen ?!
         String oldValue[] = new String[15];
-        String export = "browse";
         header += "<tr>";
         for (int i = 0; i < headlines.size(); i++) {
             if (fieldNames.get(i).endsWith("Jahrhundert") || fieldNames.get(i).endsWith("Jahr") || fieldNames.get(i).endsWith("Monat") || fieldNames.get(i).endsWith("Tag") || !order.contains(fieldNames.get(i))) {
@@ -320,25 +316,25 @@ public class Utils {
 
                     if (!text.equals("-")) {
                         if (orderV[z].equals("einzelbelegID") && rs.get("einzelbelegID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "B" + rs.get("einzelbelegID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "B" + rs.get("einzelbelegID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("e2ID") && rs.get("e2ID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "B" + rs.get("e2ID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "B" + rs.get("e2ID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("Standardname") && rs.get("personID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "P" + rs.get("personID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "P" + rs.get("personID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("perszuStandardname") && rs.get("perszuID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "P" + rs.get("perszuID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "P" + rs.get("perszuID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("PLemma") && rs.get("namenkommentarID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "N" + rs.get("namenkommentarID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "N" + rs.get("namenkommentarID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("MGHLemma") && rs.get("mgh_lemmaID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "M" + rs.get("mgh_lemmaID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "M" + rs.get("mgh_lemmaID")) + "\">");
                             link = true;
                         } else if (orderV[z].equals("Bezeichnung") && rs.get("quelleID") != null) {                              // ?
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "Q" + rs.get("quelleID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "Q" + rs.get("quelleID")) + "\">");
                             link = true;
                         }
                     }
@@ -382,26 +378,26 @@ public class Utils {
                         boolean link = false;
 
                         if (fieldNames.get(i).contains("Belegform") && rs.get("einzelbelegID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "B" + rs.get("einzelbelegID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "B" + rs.get("einzelbelegID")) + "\">");
                             link = true;
                         }
                         if (fieldNames.get(i).contains("Belegform") && rs.get("e2ID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "B" + rs.get("e2ID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "B" + rs.get("e2ID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("Standardname") && rs.get("personID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "P" + rs.get("personID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "P" + rs.get("personID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("perszuStandardname") && rs.get("perszuID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "P" + rs.get("perszuID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "P" + rs.get("perszuID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("PLemma") && rs.get("namenkommentarID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "N" + rs.get("namenkommentarID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "N" + rs.get("namenkommentarID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("MGHLemma") && rs.get("mgh_lemmaID") != null) {
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "M" + rs.get("mgh_lemmaID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "M" + rs.get("mgh_lemmaID")) + "\">");
                             link = true;
                         } else if (fieldNames.get(i).contains("Bezeichnung") && rs.get("quelleID") != null) {        //?
-                            out.print("<a href=\"" + Utils.getPidUrl(req, "Q" + rs.get("quelleID")) + "\">");
+                            out.print("<a href=\"" + getPidUrl(req, "Q" + rs.get("quelleID")) + "\">");
                             link = true;
                         }
 

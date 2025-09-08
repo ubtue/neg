@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 public class SucheDB extends AbstractBase {
 
@@ -53,7 +52,7 @@ public class SucheDB extends AbstractBase {
 
         // in der auto completion->frontend->erweiterte suche keine einträge mit Constants.forbiddenLemmaSubstring zeigen
         if ("mgh_lemma".equals(form) && "MGHLemma".equals(field)) {
-            andConditions.add(field + " NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%'");
+            andConditions.add(field + " NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring, sqlEscapesSingleQuotes)+"%'");
         }
 
         if (!andConditions.isEmpty()) {
@@ -84,7 +83,6 @@ public class SucheDB extends AbstractBase {
 
         Map<Integer, String> ret = new HashMap<Integer, String>();
         try (Session session = getSession()) {
-            Transaction tx = session.beginTransaction();
             String sql = "SELECT ID, " + attribut + " FROM " + dbForm + " e WHERE NOT EXISTS (SELECT * FROM " + tabelle + " eh WHERE e.ID=eh." + zwAttribut + ") ORDER BY " + attribut;
             NativeQuery query = session.createNativeQuery(sql);
             List<Object[]> rows = query.list();
@@ -256,7 +254,7 @@ public class SucheDB extends AbstractBase {
                    + " LEFT JOIN quelle ON einzelbeleg.QuelleID=quelle.ID"
                    + " LEFT JOIN edition ON einzelbeleg.EditionID=edition.ID"
                    + " WHERE quelle.zuVeroeffentlichen='1'"
-                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%')"
+                   + " AND (mgh_lemma.MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring, sqlEscapesSingleQuotes)+"%')"
                    + " AND mgh_lemma.ID IN"
                    + " ("
                    + " SELECT DISTINCT mgh_lemma.ID FROM einzelbeleg"

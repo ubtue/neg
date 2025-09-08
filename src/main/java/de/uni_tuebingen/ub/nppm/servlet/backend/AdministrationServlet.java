@@ -56,12 +56,9 @@ public class AdministrationServlet extends AbstractBackendServlet {
                 fehler = true;
             }
 
-            try {
-                if (BenutzerDB.getByMail(request.getParameter("EMail")) != null) {
-                    errorMessage = "<p><b>" + Language.getTextfield(session, "einstellungen", "Fehler") +":</b>" + Language.getTextfield(session, "einstellungen", "EmailBesetzt") +"</p>";
-                    fehler = true;
-                }
-            } catch (Exception e) {
+            if (BenutzerDB.hasEmail(request.getParameter("EMail"))) {
+                errorMessage = "<p><b>" + Language.getTextfield(session, "einstellungen", "Fehler") +":</b>" + Language.getTextfield(session, "einstellungen", "EmailBesetzt") +"</p>";
+                fehler = true;
             }
 
             if (fehler) {

@@ -1,4 +1,5 @@
 <%@ page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@ page import="de.uni_tuebingen.ub.nppm.model.*" isThreadSafe="false" %>
 <%@ page import="de.uni_tuebingen.ub.nppm.util.*" isThreadSafe="false" %>
 <%@ page import="java.util.Date" isThreadSafe="false" %>
 <%@ page import="java.util.HashSet" isThreadSafe="false" %>
@@ -24,6 +25,7 @@
           <li><a href="ohneVerknuepfung?form=quelle&dbForm=quelle&zwischentabelle=handschrift_ueberlieferung&attribut=Bezeichnung&zwAttribut=QuelleID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "QuelleOhneUeberlieferung");%></a></li>
           <li><a href="ohneVerknuepfung?form=handschrift&dbForm=handschrift&zwischentabelle=handschrift_ueberlieferung&attribut=Bibliothekssignatur&zwAttribut=HandschriftID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "TextzeugenOhneUeberlieferung");%></a></li>
           <li><a href="ohneVerknuepfung?view=BelegformMitMehrerenLemmata">Belegformen mit mehreren Lemmata</a></li>
+          <li><a href="ohneVerknuepfung?view=LemmaNachGlied">Lemmata nach Erst/Zweitglied</a></li>
        </ul>
 
 
@@ -39,7 +41,7 @@
 
     <%
         String view = request.getParameter("view");
-        if(view != null) {
+        if (view != null) {
             if (view.equals("BelegformMitMehrerenLemmata")) {
                 Set<String> groupKeys = new HashSet<>();
                 List<Map> rows = EinzelbelegDB.getBelegformenWithMultipleLemmas();
@@ -54,7 +56,9 @@
                 out.println("<th>Provenienz</th>");
                 out.println("</tr>");
                 for (Map row : rows) {
+                    // TODO: Diacritical Marks must not be removed for grouping since they can lead to different Lemmas due to Mr. Geuenich
                     String groupKey = Utils.removeDiacriticalMarks(String.valueOf(row.get("Belegform"))).toLowerCase();
+                    //String groupKey = String.valueOf(row.get("Belegform")).toLowerCase();
                     groupKeys.add(groupKey);
                     out.println("<tr>");
                     out.println("<td><b>" + Utils.escapeHTML(groupKey) + "</b></td>");
@@ -72,6 +76,31 @@
                 out.println("</table>");
 
                 out.println("<p>Insgesamt " + rows.size() + " Einzelbelege in " + groupKeys.size() + " Gruppen</p>");
+            }
+
+            if (view.equals("LemmaNachGlied")) {
+                // Note: we cache this into a variable and print this at the end, else we might get buffered intermediate output with a strange view
+                // before everything is finished
+                String html = "";
+                html += "<table id=\"table_LemmaNachGlied\" class=\"display\">";
+                html += "<thead><tr><th>Lemma</th><th>Erstglied</th><th>Zweitglied</th></tr></thead><tbody>";
+
+                for (MghLemma lemma : LemmaDB.getList()) {
+                    if (lemma.getMghLemma().contains("~")) {
+                        String[] parts = lemma.getMghLemma().split("~");
+                        if (parts.length == 2) {
+                            html += "<tr>";
+                            html += "<td><a href=\"lemma?ID=" + lemma.getId() + "\">" + Utils.escapeHTML(lemma.getMghLemma()) + "</a></td>";
+                            html += "<td>" + Utils.escapeHTML(parts[0]) + "</td>";
+                            html += "<td>" + Utils.escapeHTML(parts[1]) + "</td>";
+                            html += "</tr>\n";
+                        }
+                    }
+                }
+
+                html += "</tbody></table>\n";
+                html += "<script>let table = new DataTable('#table_LemmaNachGlied', {pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }});</script>";
+                out.println(html);
             }
         }
     %>
