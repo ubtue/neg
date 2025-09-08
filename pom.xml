@@ -132,6 +132,11 @@
             <version>3.3.16</version>
         </dependency>
         <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>datatables</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.13.1</version>
@@ -293,6 +298,25 @@
                                     <groupId>org.webjars</groupId>
                                     <artifactId>jstree</artifactId>
                                     <version>3.3.16</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack-datatables</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <silent>true</silent>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>datatables</artifactId>
+                                    <version>2.3.2</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>

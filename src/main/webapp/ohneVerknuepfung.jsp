@@ -79,28 +79,28 @@
             }
 
             if (view.equals("LemmaNachGlied")) {
-                // quick & dirty DataTables inject for now
-                out.println("<link rel=\"stylesheet\" href=\"//cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css\">");
-                out.println("<script src=\"//cdn.datatables.net/2.3.3/js/dataTables.min.js\"></script>");
-
-                out.println("<table id=\"table_LemmaNachGlied\" class=\"display\">");
-                out.println("<thead><tr><th>Lemma</th><th>Erstglied</th><th>Zweitglied</th></tr></thead><tbody>");
+                // Note: we cache this into a variable and print this at the end, else we might get buffered intermediate output with a strange view
+                // before everything is finished
+                String html = "";
+                html += "<table id=\"table_LemmaNachGlied\" class=\"display\">";
+                html += "<thead><tr><th>Lemma</th><th>Erstglied</th><th>Zweitglied</th></tr></thead><tbody>";
 
                 for (MghLemma lemma : LemmaDB.getList()) {
                     if (lemma.getMghLemma().contains("~")) {
                         String[] parts = lemma.getMghLemma().split("~");
                         if (parts.length == 2) {
-                            out.println("<tr>");
-                            out.println("<td><a href=\"lemma?ID=" + lemma.getId() + "\">" + Utils.escapeHTML(lemma.getMghLemma()) + "</a></td>");
-                            out.println("<td>" + Utils.escapeHTML(parts[0]) + "</td>");
-                            out.println("<td>" + Utils.escapeHTML(parts[1]) + "</td>");
-                            out.println("</tr>");
+                            html += "<tr>";
+                            html += "<td><a href=\"lemma?ID=" + lemma.getId() + "\">" + Utils.escapeHTML(lemma.getMghLemma()) + "</a></td>";
+                            html += "<td>" + Utils.escapeHTML(parts[0]) + "</td>";
+                            html += "<td>" + Utils.escapeHTML(parts[1]) + "</td>";
+                            html += "</tr>\n";
                         }
                     }
                 }
 
-                out.println("</tbody></table>\n");
-                out.println("<script>let table = new DataTable('#table_LemmaNachGlied', {pageLength: 100});</script>");
+                html += "</tbody></table>\n";
+                html += "<script>let table = new DataTable('#table_LemmaNachGlied', {pageLength: 100});</script>";
+                out.println(html);
             }
         }
     %>

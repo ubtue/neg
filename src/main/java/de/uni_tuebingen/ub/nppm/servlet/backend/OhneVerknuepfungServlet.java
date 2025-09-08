@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.servlet.backend;
 
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,5 +16,19 @@ public class OhneVerknuepfungServlet extends AbstractBackendServlet {
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher("ohneVerknuepfung.jsp");
         rd.include(request, response);
+    }
+
+    @Override
+    protected List<String> getAdditionalCss() {
+        List<String> css = super.getAdditionalCss();
+        css.add("webjars/datatables/2.3.2/css/dataTables.dataTables.min.css");
+        return css;
+    }
+
+    @Override
+    protected List<String> getAdditionalJavaScript() {
+        List<String> js = super.getAdditionalJavaScript();
+        js.add("webjars/datatables/2.3.2/js/dataTables.min.js");
+        return js;
     }
 }
