@@ -57,12 +57,15 @@ public class Filter {
         }
 
         //get filter setting from the session
-        filter = ((Integer) session.getAttribute(form + "filter")).intValue();
-        filterParameter = (String) session.getAttribute(form + "filterParameter");
+        if (session.getAttribute(form + "filter") != null)
+            filter = ((Integer)session.getAttribute(form + "filter")).intValue();
+
+        if (session.getAttribute(form + "filterParameter") != null)
+            filterParameter = (String) session.getAttribute(form + "filterParameter");
 
         boolean newFilter = false;
         //store filter settings from the request in the session
-        if (filter != Integer.parseInt(request.getParameter("filter"))) {
+        if (request.getParameter("filter") != null && filter != Integer.parseInt(request.getParameter("filter"))) {
             filter = Integer.parseInt(request.getParameter("filter"));
             session.setAttribute(form + "filter", Integer.valueOf(filter));
             newFilter = true;
