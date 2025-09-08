@@ -5,22 +5,16 @@ import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
-import de.uni_tuebingen.ub.nppm.model.Benutzer;
-import de.uni_tuebingen.ub.nppm.util.AuthHelper;
-import de.uni_tuebingen.ub.nppm.util.Language;
-import de.uni_tuebingen.ub.nppm.util.MailSender;
-import de.uni_tuebingen.ub.nppm.util.SaltHash;
-import de.uni_tuebingen.ub.nppm.util.Utils;
+import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.*;
 import javax.servlet.http.HttpSession;
 
 
@@ -43,8 +37,6 @@ public class NewPasswordServlet extends HttpServlet {
     }
 
     private void renewPassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        String URLuuid = request.getParameter("url_uuid"); //<input type hidden >---> form -->forgotPassword
         String URLemail = request.getParameter("url_email"); //<input type hidden >---> form -->forgotPassword
         String password = request.getParameter("newPassword");
         String repeatPassword = request.getParameter("repeatPassword");
@@ -87,7 +79,6 @@ public class NewPasswordServlet extends HttpServlet {
 
     private void sendLink(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, Exception {
         HttpSession session = request.getSession();
-        PrintWriter out = response.getWriter();
         LocalDateTime timeOfGeneratedUUID = LocalDateTime.now();
         //2. Generate UUID
         String uuid_content = String.valueOf(UUID.randomUUID());
@@ -192,7 +183,7 @@ public class NewPasswordServlet extends HttpServlet {
             processRequest(request, response);
 
         } catch (Exception ex) {
-            Logger.getLogger(de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet.class
+            Logger.getLogger(NewPasswordServlet.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }//end doGet()
@@ -212,7 +203,7 @@ public class NewPasswordServlet extends HttpServlet {
             processRequest(request, response);
 
         } catch (Exception ex) {
-            Logger.getLogger(de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet.class
+            Logger.getLogger(NewPasswordServlet.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }//end doPost()

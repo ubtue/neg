@@ -37,10 +37,8 @@ public class DoJumpServlet extends AbstractGastServlet {
 
     @Override
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception, IdInvalidException {
-        PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
 
-        int id = -1;
         String title = request.getParameter("form");
         String newID = request.getParameter("jumpValueID");
         if (newID != null) {

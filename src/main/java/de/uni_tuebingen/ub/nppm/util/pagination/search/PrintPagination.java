@@ -117,7 +117,7 @@ public class PrintPagination {
             if (inWindow) {
                 if (i == currentIndex) {
                     out.print("<button class=\"ut-btn ut-btn--color-primary-1 current-button\" disabled>");
-                    out.print((i + 1));
+                    out.print(i + 1);
                     out.print("</button>&nbsp;");
                 } else {
                     if (useIdMode) {

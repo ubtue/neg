@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import de.uni_tuebingen.ub.nppm.model.*;
 import java.math.BigInteger;
 import java.util.*;

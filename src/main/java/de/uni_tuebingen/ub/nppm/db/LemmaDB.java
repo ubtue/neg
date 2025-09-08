@@ -4,10 +4,6 @@ import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
 import de.uni_tuebingen.ub.nppm.util.pagination.statistics.PaginationParams;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
@@ -15,7 +11,7 @@ import org.hibernate.query.Query;
 
 public class LemmaDB extends AbstractBase {
     // Unfortunately we cannot reference SUBSELECTS from EinzelbelegDB here because it will reference back on LemmaDB, so we need to do some hardcoding here
-    public static final String SUBSELECT_HIDDEN_MGHLEMMA_IDS = "SELECT ID FROM mgh_lemma WHERE MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring, sqlEscapesSingleQuotes)+"%' ";
+    public static final String SUBSELECT_HIDDEN_MGHLEMMA_IDS = "SELECT ID FROM mgh_lemma WHERE MGHLemma LIKE '%"+escape(Constants.forbiddenLemmaSubstring, sqlEscapesSingleQuotes)+"%' ";
     public static final String SUBSELECT_PUBLIC_MGHLEMMA_IDS = "SELECT DISTINCT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (SELECT ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")) AND MGHLemmaID NOT IN (" + SUBSELECT_HIDDEN_MGHLEMMA_IDS + ")";
     public static final String ORDER_BY_PUBLIC_MGHLEMMA = " ORDER BY mgh_lemma.MGHLemma ASC, mgh_lemma.ID ASC";
 
@@ -77,7 +73,7 @@ public class LemmaDB extends AbstractBase {
                     + "      JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "      JOIN quelle q ON e.QuelleID = q.ID "
                     + "      WHERE q.ZuVeroeffentlichen = 1 AND mgh_lemma.ID = :id "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
                     + "    ) THEN :id "
                     + "    ELSE ( "
                     + "      SELECT MIN(mgh_lemma.ID) "
@@ -86,7 +82,7 @@ public class LemmaDB extends AbstractBase {
                     + "      JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "      JOIN quelle q ON e.QuelleID = q.ID "
                     + "      WHERE q.ZuVeroeffentlichen = 1 AND mgh_lemma.ID > :id "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
                     + "    ) "
                     + "  END AS resultId "
                     + "FROM ( "
@@ -96,7 +92,7 @@ public class LemmaDB extends AbstractBase {
                     + "  JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "  JOIN quelle q ON e.QuelleID = q.ID "
                     + "  WHERE q.ZuVeroeffentlichen = 1 "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
                     + ") AS ids";
 
             NativeQuery query = session.createNativeQuery(sql);
@@ -120,7 +116,7 @@ public class LemmaDB extends AbstractBase {
     }
 
     public static List<String> getListErstglied() throws Exception {
-        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Erstglied ASC");
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Erstglied ASC");
     }
 
     public static List<MghLemma> getListByErstglied(String erstglied) throws Exception {
@@ -136,7 +132,7 @@ public class LemmaDB extends AbstractBase {
     }
 
     public static List<String> getListZweitglied() throws Exception {
-        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Zweitglied ASC");
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Zweitglied ASC");
     }
 
     public static List<MghLemma> getListByZweitglied(String zweitglied) throws Exception {

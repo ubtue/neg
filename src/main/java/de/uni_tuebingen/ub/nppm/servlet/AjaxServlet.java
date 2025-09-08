@@ -30,7 +30,7 @@ public class AjaxServlet extends HttpServlet {
             String query = request.getParameter("query");
             String form = request.getParameter("form");
             String field = request.getParameter("field");
-            boolean includeUnpublished = (request.getParameter("backend") != null);
+            boolean includeUnpublished = request.getParameter("backend") != null;
 
             if (query == null || form == null || field == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

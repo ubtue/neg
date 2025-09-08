@@ -8,8 +8,6 @@ import java.util.*;
 import com.opencsv.CSVWriter;
 import de.uni_tuebingen.ub.nppm.db.SucheDB;
 import de.uni_tuebingen.ub.nppm.util.Language;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

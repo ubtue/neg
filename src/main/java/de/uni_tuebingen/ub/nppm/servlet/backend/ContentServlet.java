@@ -11,14 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspWriter;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
@@ -53,7 +50,6 @@ public class ContentServlet extends AbstractBackendServlet {
                         ContentDB.updateHtmlFile(content, newHtmlContent);
                         // Redirect to the tinyMce.jsp page after saving
                         response.sendRedirect(Utils.getBaseUrl(request) + "/edit?loadFile=" + fileName);
-                        return;  // Important to return after redirect to stop further execution
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -62,7 +58,6 @@ public class ContentServlet extends AbstractBackendServlet {
                 //show fileManagement
 
                 HttpSession session = request.getSession();
-                String myLanguage = Language.getLanguage(request);
 
                 out.println("<div id=\"titel\">");
                 out.println("  <table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");

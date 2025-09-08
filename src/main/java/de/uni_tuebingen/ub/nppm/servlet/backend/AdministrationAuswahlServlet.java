@@ -143,7 +143,7 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
         try {
 
             String selectionTag = SelektionDB.getBezeichnungByID(request.getParameter("Feld_selektionFunktion"), request.getParameter("Tabelle"));
-            if (("-".equals(selectionTag))) {
+            if ("-".equals(selectionTag)) {
                 funktionSelektionBezeichnung = "cannotDivideDash";
                 request.setAttribute("funktionSelektionBezeichnung", funktionSelektionBezeichnung);
             } else {

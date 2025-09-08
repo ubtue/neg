@@ -18,7 +18,7 @@ public class Filter {
         HttpSession session = request.getSession();
         String filterSql = null;
         //Try to get id from request
-        if(Utils.isNumeric(request.getParameter("ID")))
+        if (Utils.isNumeric(request.getParameter("ID")))
             id = Integer.parseInt(request.getParameter("ID"));
 
         //Try to get filter number from request
@@ -72,7 +72,7 @@ public class Filter {
         try {
             if (filter != Integer.parseInt(request.getParameter("filter"))) {
                 filter = Integer.parseInt(request.getParameter("filter"));
-                session.setAttribute(form + "filter", new Integer(filter));
+                session.setAttribute(form + "filter", Integer.valueOf(filter));
                 newFilter = true;
             }
             if (filterParameter == null && request.getParameter("filterParameter") != null

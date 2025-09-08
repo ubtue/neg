@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

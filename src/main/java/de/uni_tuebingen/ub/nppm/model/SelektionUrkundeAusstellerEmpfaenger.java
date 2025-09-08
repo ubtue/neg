@@ -13,7 +13,7 @@ public class SelektionUrkundeAusstellerEmpfaenger extends SelektionAbstractProve
     private Set<Urkunde> urkundeEmpfaenger = new HashSet<Urkunde>();
 
     @ManyToMany(mappedBy = "aussteller")
-    private Set<Urkunde> urkundeAussteller = new HashSet<Urkunde>();;
+    private Set<Urkunde> urkundeAussteller = new HashSet<Urkunde>();
 
     public Set<Urkunde> getUrkundeEmpfaenger() {
         return this.urkundeEmpfaenger;
