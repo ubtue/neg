@@ -12,10 +12,10 @@ public class SharedHtmlServlet extends AbstractGastServlet {
 
     @Override
     protected String getTitle() {
-        return setTitel(currentRequest, currentResponse);
+        return setTitel(currentRequest);
     }
 
-    private String setTitel(HttpServletRequest request, HttpServletResponse response) {
+    private String setTitel(HttpServletRequest request) {
         if (request != null) {
             String myFile = request.getParameter("sharedHtml");
             return myFile != null ? myFile : "";
@@ -92,7 +92,7 @@ public class SharedHtmlServlet extends AbstractGastServlet {
         if(current != null && current.equals("start")){
             return "start";
         }
-    
+
         return "";
     }
 }

@@ -91,7 +91,7 @@ public class IdentifierMapper {
     }
 
     public static boolean isValidIdentifier(final String identifier) {
-        return (!identifier.isBlank() && identifier.matches("^[A-Z][0-9]+$"));
+        return !identifier.isBlank() && identifier.matches("^[A-Z][0-9]+$");
     }
 
     public static void validateIdentifier(final String identifier) throws IdInvalidException {

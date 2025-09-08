@@ -41,10 +41,8 @@ public abstract class AbstractBackendServlet extends AbstractServlet {
         }
 
         // Überprüfen, ob die Seite eine Admin-Seite ist
-        if (isAdminRequired()) {
-            if (benutzer == null || !benutzer.isAdmin()) {
-                throw new BenutzerNotAdminException();
-            }
+        if (isAdminRequired() && (benutzer == null || !benutzer.isAdmin())) {
+            throw new BenutzerNotAdminException();
         }
     }
 

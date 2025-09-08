@@ -25,12 +25,12 @@ public class EinstellungenServlet extends AbstractBackendServlet {
     protected void generatePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("BenutzerID") != null && ((Integer) session.getAttribute("BenutzerID")).intValue() > 0) {
+        if (session.getAttribute("BenutzerID") != null && ((Integer)session.getAttribute("BenutzerID")).intValue() > 0) {
 
             if (request.getParameter("save") != null && request.getParameter("save").equals(DatenbankDB.getLabel((String) session.getAttribute("Sprache"), "navigation", "Speichern"))) {
-                settings(request, response, session);
+                settings(request, session);
             } else if (request.getParameter("password") != null && request.getParameter("password").equals(DatenbankDB.getLabel((String) session.getAttribute("Sprache"), "navigation", "Speichern"))) {
-                changePassword(request, response, session);
+                changePassword(request, session);
             }
 
             request.setAttribute("errorMessage", errorMessage);
@@ -45,7 +45,7 @@ public class EinstellungenServlet extends AbstractBackendServlet {
         rd.include(request, response);
     }
 
-    private void settings(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+    private void settings(HttpServletRequest request, HttpSession session) throws Exception {
 
         if (request.getParameter("action") != null) {
             errorMessage = "wrongCall";
@@ -94,7 +94,7 @@ public class EinstellungenServlet extends AbstractBackendServlet {
         }
     }
 
-    private void changePassword(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+    private void changePassword(HttpServletRequest request, HttpSession session) throws Exception {
 
         if (request.getParameter("action") != null) {
 

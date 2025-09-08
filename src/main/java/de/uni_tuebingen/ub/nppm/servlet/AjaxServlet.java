@@ -455,7 +455,7 @@ public class AjaxServlet extends HttpServlet {
         }
         //Lemmakorr Funktionen
         else if ("Lemmakorr_getAllInitials".equals(action)) {
-            Lemmakorr_getAllInitials(request, response);
+            Lemmakorr_getAllInitials(response);
         } else if ("Lemmakorr_getFromInitial".equals(action)) {
             Lemmakorr_getFromInitial(request, response);
         } else if ("Lemmakorr_updateLemma".equals(action)) {
@@ -463,7 +463,7 @@ public class AjaxServlet extends HttpServlet {
         } else if ("Lemmakorr_setLemmaKorr".equals(action)) {
             Lemmakorr_setLemmaKorr(request, response);
         } else if ("Lemmakorr_keepAlive".equals(action)) {
-            Lemmakorr_keepAlive(request, response);
+            Lemmakorr_keepAlive(response);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("{\"error\":\"Falsche Methode\"}");
@@ -491,7 +491,7 @@ public class AjaxServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
     }
 
-    private void Lemmakorr_getAllInitials(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void Lemmakorr_getAllInitials(HttpServletResponse response) throws IOException {
         try {
             // Holt die echten Initials aus der DB
             Map<String, Integer> initials = EinzelbelegDB.getAllBelegInitials();
@@ -601,7 +601,7 @@ public class AjaxServlet extends HttpServlet {
         writeJson(response, result);
     }
 
-    private void Lemmakorr_keepAlive(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void Lemmakorr_keepAlive(HttpServletResponse response) throws IOException {
         JSONObject result = new JSONObject().put("result", true);
         writeJson(response, result);
     }

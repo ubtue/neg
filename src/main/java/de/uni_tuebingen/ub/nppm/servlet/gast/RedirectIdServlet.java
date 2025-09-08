@@ -18,7 +18,6 @@ public class RedirectIdServlet extends HttpServlet {
 
         String URI = request.getRequestURI();                 // e.g. /neg/id/P7404
         String PID = URI.substring(URI.lastIndexOf("/") + 1); // e.g. P7404
-        String type = PID.substring(0,1);                     // e.g. P
         String ID = PID.substring(1);                         // e.g. 7404
 
         try {

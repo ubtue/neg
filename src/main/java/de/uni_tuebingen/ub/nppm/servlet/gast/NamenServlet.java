@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class NamenServlet extends AbstractGastServlet {
 
-    private int count = 1;
-
     @Override
     protected String getTitle() {
         return "namenkommentar";
