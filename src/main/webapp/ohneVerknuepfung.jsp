@@ -99,7 +99,7 @@
                 }
 
                 html += "</tbody></table>\n";
-                html += "<script>let table = new DataTable('#table_LemmaNachGlied', {pageLength: 100});</script>";
+                html += "<script>let table = new DataTable('#table_LemmaNachGlied', {pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }});</script>";
                 out.println(html);
             }
         }
