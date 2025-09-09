@@ -158,15 +158,28 @@ public class Utils {
         return StringEscapeUtils.unescapeHtml4(s);
     }
 
+    /**
+     * @deprecated
+     * Use {@link Utils#escapeURL(String)} instead.
+     */
+    @Deprecated
     public static String urlEncode(String s) {
+        return escapeURL(s);
+    }
+
+    // Alias for urlEncode(), so that we have multiple functions with the same naming schema (escape...)
+    public static String escapeURL(String s) {
         return URLEncoder.encode(s);
     }
 
+    /**
+     * @deprecated
+     *  This function is deprecated => we migrated all lemmas in the database,
+     * so it should no longer be necessary to format them.
+     * see issue #427
+     */
     @Deprecated
     public static String format(String text, String feld) {
-        // This function is deprecated => we migrated all lemmas in the database,
-        // so it should no longer be necessary to format them.
-        // see issue #427
         if (!feld.endsWith("PLemma") && !feld.endsWith("MGHLemma") && !feld.endsWith("Klarlemma")) {
             return text;
         }

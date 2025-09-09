@@ -25,6 +25,7 @@
           <li><a href="ohneVerknuepfung?form=quelle&dbForm=quelle&zwischentabelle=handschrift_ueberlieferung&attribut=Bezeichnung&zwAttribut=QuelleID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "QuelleOhneUeberlieferung");%></a></li>
           <li><a href="ohneVerknuepfung?form=handschrift&dbForm=handschrift&zwischentabelle=handschrift_ueberlieferung&attribut=Bibliothekssignatur&zwAttribut=HandschriftID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "TextzeugenOhneUeberlieferung");%></a></li>
           <li><a href="ohneVerknuepfung?view=BelegformMitMehrerenLemmata">Belegformen mit mehreren Lemmata</a></li>
+          <li><a href="ohneVerknuepfung?view=BelegformGeschlecht">Belegformen mit Geschlecht</a></li>
           <li><a href="ohneVerknuepfung?view=LemmaNachGlied">Lemmata nach Erst/Zweitglied</a></li>
        </ul>
 
@@ -82,8 +83,8 @@
                 // Note: we cache this into a variable and print this at the end, else we might get buffered intermediate output with a strange view
                 // before everything is finished
                 String html = "";
-                html += "<table id=\"table_LemmaNachGlied\" class=\"display\">";
-                html += "<thead><tr><th>Lemma</th><th>Erstglied</th><th>Zweitglied</th></tr></thead><tbody>";
+                html += "<table id=\"table_LemmaNachGlied\">\n";
+                html += "<thead><tr><th>Lemma</th><th>Erstglied</th><th>Zweitglied</th></tr></thead><tbody>\n";
 
                 for (MghLemma lemma : LemmaDB.getList()) {
                     if (lemma.getMghLemma().contains("~")) {
@@ -100,6 +101,26 @@
 
                 html += "</tbody></table>\n";
                 html += "<script>let table = new DataTable('#table_LemmaNachGlied', {pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }});</script>";
+                out.println(html);
+            }
+
+            if (view.equals("BelegformGeschlecht")) {
+                List<Object[]> rows = MaintenanceDB.getBelegformByGeschlecht();
+
+                String html = "";
+                html += "<table id=\"table_BelegformGeschlecht\">\n";
+                html += "<thead><tr><th>Belegform</th><th>Geschlechter</th><th>Grammatikgeschlechter</th></tr></thead><tbody>\n";
+
+                for (Object[] row : rows) {
+                    html += "<tr>";
+                    html += "<td>" + Utils.escapeHTML(row[0].toString()) + "</td>";
+                    html += "<td>" + Utils.escapeHTML(row[1] != null ? row[1].toString() : "") + "</td>";
+                    html += "<td>" + Utils.escapeHTML(row[2] != null ? row[2].toString() : "") + "</td>";
+                    html += "</tr>\n";
+                }
+
+                html += "</tbody></table>\n";
+                html += "<script>let table = new DataTable('#table_BelegformGeschlecht', {pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }});</script>";
                 out.println(html);
             }
         }
