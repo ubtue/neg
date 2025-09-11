@@ -47,7 +47,7 @@
     <%
         String view = request.getParameter("view");
         if (view != null) {
-            String dataTablesOptions = "{pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }, layout: {top2start: {'buttons': ['copyHtml5', 'csvHtml5', 'excelHtml5']}}}";
+            String dataTablesOptions = "{pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: {search: \"Suche:\", lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\"}, layout: {top2start: {'buttons': ['copyHtml5', 'csvHtml5', 'excelHtml5']}}}";
 
             if (view.equals("BelegformMitMehrerenLemmata")) {
                 Set<String> groupKeys = new HashSet<>();
@@ -116,11 +116,11 @@
                     NativeQuery query = hibernateSession.createNativeQuery(MaintenanceDB.getBelegformByGeschlechtSql());
                     Stream<Object[]> rows = query.getResultStream();
 
-                    String html = "";
-                    html += "<table id=\"table_BelegformGeschlecht\">\n";
-                    html += "<thead><tr><th>Lemma</th><th>Belegform</th><th>Geschlechter</th><th>Grammatikgeschlechter</th></tr></thead><tbody>\n";
+                    StringBuilder html = new StringBuilder();
+                    html.append("<table id=\"table_BelegformGeschlecht\">\n");
+                    html.append("<thead><tr><th>Lemma</th><th>Belegform</th><th>Geschlechter</th><th>Grammatikgeschlechter</th></tr></thead><tbody>\n");
 
-                    AtomicReference<StringBuilder> htmlLambda = new AtomicReference<>(new StringBuilder());
+                    AtomicReference<StringBuilder> htmlLambda = new AtomicReference<>(html);
                     rows.forEach(row -> {
                         htmlLambda.get().append("<tr>");
                         htmlLambda.get().append("<td>" + Utils.escapeHTML(row[3] != null ? row[3].toString() : "") + "</td>");
@@ -130,9 +130,8 @@
                         htmlLambda.get().append("</tr>\n");
                     });
 
-                    html += htmlLambda.get().toString();
-                    html += "</tbody></table>\n";
-                    html += "<script>let table = new DataTable('#table_BelegformGeschlecht', " + dataTablesOptions + ");</script>";
+                    html.append("</tbody></table>\n");
+                    html.append("<script>let table = new DataTable('#table_BelegformGeschlecht', " + dataTablesOptions + ");</script>");
                     out.println(html);
                 }
             }
