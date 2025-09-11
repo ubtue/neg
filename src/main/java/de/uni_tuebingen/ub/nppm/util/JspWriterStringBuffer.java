@@ -9,14 +9,14 @@ import javax.servlet.jsp.JspWriter;
  * which can be queried using getBuffer().
  */
 public class JspWriterStringBuffer extends JspWriter {
-    String buffer = "";
+    StringBuilder buffer = new StringBuilder();
 
     public JspWriterStringBuffer() {
         super(12345678, false);
     }
 
     public String getBuffer() {
-        return buffer;
+        return buffer.toString();
     }
 
     @Override
@@ -26,12 +26,12 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void clear() {
-        buffer = "";
+        buffer = new StringBuilder();
     }
 
     @Override
     public void clearBuffer() {
-        buffer = "";
+        buffer = new StringBuilder();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void print(Object x) {
-        buffer += x.toString();
+        print(x.toString());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void print(String x) {
-        buffer += x;
+        buffer.append(x);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void print(char x) {
-        buffer += x;
+        buffer.append(x);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void print(char[] x) {
-        buffer += x;
+        buffer.append(x);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void print(double x) {
-        buffer += x;
+        buffer.append(x);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void print(float x) {
-        buffer += x;
+        buffer.append(x);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void print(long x) {
-        buffer += x;
+        buffer.append(x);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void print(int x) {
-        buffer += x;
+        buffer.append(x);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void print(boolean x) {
-        buffer += Boolean.toString(x);
+        buffer.append(Boolean.toString(x));
     }
 
     @Override
@@ -145,7 +145,7 @@ public class JspWriterStringBuffer extends JspWriter {
 
     @Override
     public void println() {
-        buffer += System.lineSeparator();
+        buffer.append(System.lineSeparator());
     }
 
     @Override
