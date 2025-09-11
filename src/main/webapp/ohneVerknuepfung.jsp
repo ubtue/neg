@@ -137,7 +137,6 @@
 
             out.println("<script>");
             out.println("let dataTableOptions = {pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: {search: \"Suche:\", lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\"}, layout: {top2start: {'buttons': ['copyHtml5', 'csvHtml5', 'excelHtml5']}}};");
-            //out.println("<script>let table = new DataTable('#table_BelegformGeschlecht', dataTableOptions);</script>");
             out.println("$('.dataTable').each(function() { let table = new DataTable($(this), dataTableOptions); });");
             out.println("</script>");
         }
