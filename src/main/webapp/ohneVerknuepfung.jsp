@@ -47,13 +47,11 @@
     <%
         String view = request.getParameter("view");
         if (view != null) {
-            String dataTablesOptions = "{pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: {search: \"Suche:\", lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\"}, layout: {top2start: {'buttons': ['copyHtml5', 'csvHtml5', 'excelHtml5']}}}";
-
             if (view.equals("BelegformMitMehrerenLemmata")) {
                 Set<String> groupKeys = new HashSet<>();
                 List<Map> rows = EinzelbelegDB.getBelegformenWithMultipleLemmas();
 
-                out.println("<table id=\"table_BelegformMitMehrerenLemmata\">");
+                out.println("<table class=\"dataTable\">");
                 out.println("<thead>");
                 out.println("<tr>");
                 out.println("<th>Gruppierung</th>");
@@ -85,14 +83,13 @@
                 }
                 out.println("</tbody>");
                 out.println("</table>");
-                out.println("<script>let table = new DataTable('#table_BelegformMitMehrerenLemmata', " + dataTablesOptions + ");</script>");
             }
 
             if (view.equals("LemmaNachGlied")) {
                 // Note: we cache this into a variable and print this at the end, else we might get buffered intermediate output with a strange view
                 // before everything is finished
                 StringBuilder html = new StringBuilder();
-                html.append("<table id=\"table_LemmaNachGlied\">\n");
+                html.append("<table class=\"dataTable\">\n");
                 html.append("<thead><tr><th>Lemma</th><th>Erstglied</th><th>Zweitglied</th></tr></thead><tbody>\n");
 
                 for (MghLemma lemma : LemmaDB.getList()) {
@@ -109,7 +106,6 @@
                 }
 
                 html.append("</tbody></table>\n");
-                html.append("<script>let table = new DataTable('#table_LemmaNachGlied', " + dataTablesOptions + ");</script>");
                 out.println(html);
             }
 
@@ -120,7 +116,7 @@
                     Stream<Object[]> rows = query.getResultStream();
 
                     StringBuilder html = new StringBuilder();
-                    html.append("<table id=\"table_BelegformGeschlecht\">\n");
+                    html.append("<table class=\"dataTable\">\n");
                     html.append("<thead><tr><th>Lemma</th><th>Belegform</th><th>Geschlechter</th><th>Grammatikgeschlechter</th></tr></thead><tbody>\n");
 
                     AtomicReference<StringBuilder> htmlLambda = new AtomicReference<>(html);
@@ -134,10 +130,16 @@
                     });
 
                     html.append("</tbody></table>\n");
-                    html.append("<script>let table = new DataTable('#table_BelegformGeschlecht', " + dataTablesOptions + ");</script>");
                     out.println(html);
                 }
             }
+
+
+            out.println("<script>");
+            out.println("let dataTableOptions = {pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: {search: \"Suche:\", lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\"}, layout: {top2start: {'buttons': ['copyHtml5', 'csvHtml5', 'excelHtml5']}}};");
+            //out.println("<script>let table = new DataTable('#table_BelegformGeschlecht', dataTableOptions);</script>");
+            out.println("$('.dataTable').each(function() { let table = new DataTable($(this), dataTableOptions); });");
+            out.println("</script>");
         }
     %>
     </div>
