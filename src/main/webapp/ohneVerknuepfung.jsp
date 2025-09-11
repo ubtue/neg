@@ -53,7 +53,8 @@
                 Set<String> groupKeys = new HashSet<>();
                 List<Map> rows = EinzelbelegDB.getBelegformenWithMultipleLemmas();
 
-                out.println("<table>");
+                out.println("<table id=\"table_BelegformMitMehrerenLemmata\">");
+                out.println("<thead>");
                 out.println("<tr>");
                 out.println("<th>Gruppierung</th>");
                 out.println("<th>Einzelbeleg ID</th>");
@@ -62,6 +63,8 @@
                 out.println("<th>Lemma</th>");
                 out.println("<th>Provenienz</th>");
                 out.println("</tr>");
+                out.println("</thead>");
+                out.println("<tbody>");
                 for (Map row : rows) {
                     // TODO: Diacritical Marks must not be removed for grouping since they can lead to different Lemmas due to Mr. Geuenich
                     //String groupKey = Utils.removeDiacriticalMarks(String.valueOf(row.get("Belegform"))).toLowerCase();
@@ -80,9 +83,9 @@
                     }
                     out.println("</tr>");
                 }
+                out.println("</tbody>");
                 out.println("</table>");
-
-                out.println("<p>Insgesamt " + rows.size() + " Einzelbelege in " + groupKeys.size() + " Gruppen</p>");
+                out.println("<script>let table = new DataTable('#table_BelegformMitMehrerenLemmata', " + dataTablesOptions + ");</script>");
             }
 
             if (view.equals("LemmaNachGlied")) {
