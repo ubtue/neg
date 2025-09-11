@@ -5,6 +5,10 @@
 <%@ page import="java.util.HashSet" isThreadSafe="false" %>
 <%@ page import="java.util.Map" isThreadSafe="false" %>
 <%@ page import="java.util.Set" isThreadSafe="false" %>
+<%@ page import="java.util.stream.Stream" isThreadSafe="false" %>
+<%@ page import="java.util.concurrent.atomic.AtomicReference" isThreadSafe="false" %>
+<%@ page import="org.hibernate.query.NativeQuery" isThreadSafe="false" %>
+<%@ page import="org.hibernate.Session" isThreadSafe="false" %>
 <%@ include file="configuration.jsp" %>
 <%@ include file="functions.jsp" %>
 <%
@@ -43,6 +47,8 @@
     <%
         String view = request.getParameter("view");
         if (view != null) {
+            String dataTablesOptions = "{pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }, buttons:['excel']}";
+
             if (view.equals("BelegformMitMehrerenLemmata")) {
                 Set<String> groupKeys = new HashSet<>();
                 List<Map> rows = EinzelbelegDB.getBelegformenWithMultipleLemmas();
@@ -82,46 +88,53 @@
             if (view.equals("LemmaNachGlied")) {
                 // Note: we cache this into a variable and print this at the end, else we might get buffered intermediate output with a strange view
                 // before everything is finished
-                String html = "";
-                html += "<table id=\"table_LemmaNachGlied\">\n";
-                html += "<thead><tr><th>Lemma</th><th>Erstglied</th><th>Zweitglied</th></tr></thead><tbody>\n";
+                StringBuilder html = new StringBuilder();
+                html.append("<table id=\"table_LemmaNachGlied\">\n");
+                html.append("<thead><tr><th>Lemma</th><th>Erstglied</th><th>Zweitglied</th></tr></thead><tbody>\n");
 
                 for (MghLemma lemma : LemmaDB.getList()) {
                     if (lemma.getMghLemma().contains("~")) {
                         String[] parts = lemma.getMghLemma().split("~");
                         if (parts.length == 2) {
-                            html += "<tr>";
-                            html += "<td><a href=\"lemma?ID=" + lemma.getId() + "\">" + Utils.escapeHTML(lemma.getMghLemma()) + "</a></td>";
-                            html += "<td>" + Utils.escapeHTML(parts[0]) + "</td>";
-                            html += "<td>" + Utils.escapeHTML(parts[1]) + "</td>";
-                            html += "</tr>\n";
+                            html.append("<tr>");
+                            html.append("<td><a href=\"lemma?ID=" + lemma.getId() + "\">" + Utils.escapeHTML(lemma.getMghLemma()) + "</a></td>");
+                            html.append("<td>" + Utils.escapeHTML(parts[0]) + "</td>");
+                            html.append("<td>" + Utils.escapeHTML(parts[1]) + "</td>");
+                            html.append("</tr>\n");
                         }
                     }
                 }
 
-                html += "</tbody></table>\n";
-                html += "<script>let table = new DataTable('#table_LemmaNachGlied', {pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }});</script>";
+                html.append("</tbody></table>\n");
+                html.append("<script>let table = new DataTable('#table_LemmaNachGlied', " + dataTablesOptions + ");</script>");
                 out.println(html);
             }
 
             if (view.equals("BelegformGeschlecht")) {
-                List<Object[]> rows = MaintenanceDB.getBelegformByGeschlecht();
+                // This query is very slow, so we manage our session directly & use getResultStream()
+                try (Session hibernateSession = MaintenanceDB.getSession()) {
+                    NativeQuery query = hibernateSession.createNativeQuery(MaintenanceDB.getBelegformByGeschlechtSql());
+                    Stream<Object[]> rows = query.getResultStream();
 
-                String html = "";
-                html += "<table id=\"table_BelegformGeschlecht\">\n";
-                html += "<thead><tr><th>Belegform</th><th>Geschlechter</th><th>Grammatikgeschlechter</th></tr></thead><tbody>\n";
+                    String html = "";
+                    html += "<table id=\"table_BelegformGeschlecht\">\n";
+                    html += "<thead><tr><th>Lemma</th><th>Belegform</th><th>Geschlechter</th><th>Grammatikgeschlechter</th></tr></thead><tbody>\n";
 
-                for (Object[] row : rows) {
-                    html += "<tr>";
-                    html += "<td>" + Utils.escapeHTML(row[0].toString()) + "</td>";
-                    html += "<td>" + Utils.escapeHTML(row[1] != null ? row[1].toString() : "") + "</td>";
-                    html += "<td>" + Utils.escapeHTML(row[2] != null ? row[2].toString() : "") + "</td>";
-                    html += "</tr>\n";
+                    AtomicReference<StringBuilder> htmlLambda = new AtomicReference<>(new StringBuilder());
+                    rows.forEach(row -> {
+                        htmlLambda.get().append("<tr>");
+                        htmlLambda.get().append("<td>" + Utils.escapeHTML(row[3] != null ? row[3].toString() : "") + "</td>");
+                        htmlLambda.get().append("<td>" + Utils.escapeHTML(row[0].toString()) + "</td>");
+                        htmlLambda.get().append("<td>" + Utils.escapeHTML(row[1] != null ? row[1].toString() : "") + "</td>");
+                        htmlLambda.get().append("<td>" + Utils.escapeHTML(row[2] != null ? row[2].toString() : "") + "</td>");
+                        htmlLambda.get().append("</tr>\n");
+                    });
+
+                    html += htmlLambda.get().toString();
+                    html += "</tbody></table>\n";
+                    html += "<script>let table = new DataTable('#table_BelegformGeschlecht', " + dataTablesOptions + ");</script>";
+                    out.println(html);
                 }
-
-                html += "</tbody></table>\n";
-                html += "<script>let table = new DataTable('#table_BelegformGeschlecht', {pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }});</script>";
-                out.println(html);
             }
         }
     %>
