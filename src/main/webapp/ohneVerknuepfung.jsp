@@ -64,8 +64,8 @@
                 out.println("</tr>");
                 for (Map row : rows) {
                     // TODO: Diacritical Marks must not be removed for grouping since they can lead to different Lemmas due to Mr. Geuenich
-                    String groupKey = Utils.removeDiacriticalMarks(String.valueOf(row.get("Belegform"))).toLowerCase();
-                    //String groupKey = String.valueOf(row.get("Belegform")).toLowerCase();
+                    //String groupKey = Utils.removeDiacriticalMarks(String.valueOf(row.get("Belegform"))).toLowerCase();
+                    String groupKey = String.valueOf(row.get("Belegform")).toLowerCase();
                     groupKeys.add(groupKey);
                     out.println("<tr>");
                     out.println("<td><b>" + Utils.escapeHTML(groupKey) + "</b></td>");
