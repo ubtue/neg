@@ -47,7 +47,7 @@
     <%
         String view = request.getParameter("view");
         if (view != null) {
-            String dataTablesOptions = "{pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }, buttons:['excel']}";
+            String dataTablesOptions = "{pageLength: 100, lengthMenu: [10, 50, 100, 500, 1000], language: { search: \"Suche:\",lengthMenu: \" _MENU_ Einträge pro Seite\", info: \"Zeige _START_ bis _END_ von _TOTAL_ Einträgen\" }, layout: {top2start: {'buttons': ['copyHtml5', 'csvHtml5', 'excelHtml5']}}}";
 
             if (view.equals("BelegformMitMehrerenLemmata")) {
                 Set<String> groupKeys = new HashSet<>();
