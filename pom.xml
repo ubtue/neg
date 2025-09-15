@@ -160,7 +160,7 @@
           </testResource>
         </testResources>
         <plugins>
-            <!-- Use PMD to check code quality -->
+            <!-- Use PMD to check code quality (JAVA) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
@@ -174,13 +174,37 @@
                     </excludes>
                 </configuration>
                 <executions>
-                  <execution>
-                    <goals>
-                      <goal>check</goal>
-                    </goals>
-                  </execution>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
+            <!-- Experimental: Also use PMD to check code quality (JSP) -->
+            <!--
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.27.0</version>
+                <configuration>
+                    <language>jsp</language>
+                    <rulesets>
+                        <ruleset>/category/jsp/bestpractices.xml</ruleset>
+                        <ruleset>/category/jsp/codestyle.xml</ruleset>
+                        <ruleset>/category/jsp/design.xml</ruleset>
+                        <ruleset>/category/jsp/errorprone.xml</ruleset>
+                        <ruleset>/category/jsp/security.xml</ruleset>
+                    </rulesets>
+                    <includes>
+                        <include>**/*.jsp</include>
+                    </includes>
+                    <compileSourceRoots>
+                        <compileSourceRoot>${basedir}/src/main/webapp</compileSourceRoot>
+                    </compileSourceRoots>
+                </configuration>
+            </plugin>
+            -->
             <!-- Auto-generate JPA Metamodel Classes -->
             <plugin>
                 <groupId>org.bsc.maven</groupId>
@@ -420,4 +444,15 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <!-- Improve reporting of code errors by using jxr (used by PMD) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.6.0</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
