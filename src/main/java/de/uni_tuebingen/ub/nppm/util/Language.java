@@ -35,25 +35,25 @@ public class Language {
     }
 
     public static String getDatafield(HttpSession session, String formular, String datenfeld) throws Exception {
-        String html = "";
+        StringBuilder html = new StringBuilder();
 
         String lang = getLanguage(session);
         String[] langArray = {lang, Constants.DEFAULT_LANG};
         boolean isSet = false;
-        html += "<label for=\""+datenfeld+"\">";
+        html.append("<label for=\"").append(datenfeld).append("\">");
         for(String l : langArray){
             String print = DatenbankDB.getMapping(l, formular, datenfeld);
             if(print != null){
-                html += print;
+                html.append(print);
                 isSet = true;
                 break;
             }
         }
-        html += "</label>";
+        html.append("</label>");
         if(!isSet)
-            html += "no datafield available: " + formular + " " + datenfeld;
+            html.append("no datafield available: ").append(formular).append(" ").append(datenfeld);
 
-        return html;
+        return html.toString();
     }
 
     public static void printDatafield(JspWriter out, HttpSession session, String formular, String datenfeld) throws Exception{

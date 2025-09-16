@@ -95,6 +95,11 @@ public class AbstractBase {
             settings.put("hibernate.cache.region.factory_class", "jcache");
             settings.put("hibernate.javax.cache.provider", "org.ehcache.jsr107.EhcacheCachingProvider");
             settings.put("hibernate.javax.cache.uri", "ehcache.xml");
+            settings.put("hibernate.javax.cache.missing_cache_strategy", "create");
+
+            // For performance debugging:
+            //settings.put("hibernate.generate_statistics", "true");
+            //settings.put("logging.level.org.hibernate.stat", "DEBUG");
 
             // Avoid FetchType.EAGER, automatically create session with FetchType.LAZY if there is none
             // Note: This can lead to Performance problems (N+1)
@@ -168,7 +173,7 @@ public class AbstractBase {
         return getSessionFactory().openSession();
     }
 
-    protected static List getList(Class c, CriteriaQuery criteria) throws Exception {
+    protected static List getList(Class c, CriteriaQuery criteria, Boolean cacheable) throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             if (criteria == null) {
@@ -176,12 +181,23 @@ public class AbstractBase {
             }
             Root root = criteria.from(c);
             criteria.select(root);
-            return session.createQuery(criteria).getResultList();
+            Query query = session.createQuery(criteria);
+            if (cacheable != null && cacheable.equals(true))
+                query.setCacheable(true);
+            return query.getResultList();
         }
     }
 
     protected static List getList(Class c) throws Exception {
-        return getList(c, null);
+        return getList(c, null, false);
+    }
+
+    protected static List getList(Class c, Boolean cacheable) throws Exception {
+        return getList(c, null, cacheable);
+    }
+
+    protected static List getList(Class c, CriteriaQuery criteria) throws Exception {
+        return getList(c, criteria, false);
     }
 
     /*
