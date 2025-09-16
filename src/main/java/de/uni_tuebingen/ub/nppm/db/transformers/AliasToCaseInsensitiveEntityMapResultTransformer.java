@@ -1,4 +1,4 @@
-package de.uni_tuebingen.ub.nppm.db;
+package de.uni_tuebingen.ub.nppm.db.transformers;
 
 import org.hibernate.transform.AliasedTupleSubsetResultTransformer;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;

@@ -5,7 +5,7 @@
  * Some minor adjustments were made to avoid errors on edge cases,
  * especially for COUNT(*) operations with JOINs.
  */
-package de.uni_tuebingen.ub.nppm.db;
+package de.uni_tuebingen.ub.nppm.db.transformers;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
