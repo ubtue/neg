@@ -15,11 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 
 public abstract class AbstractServlet extends HttpServlet {
 
+    protected long startTimeMillis;
+    protected long endTimeMillis;
+    protected long renderTimeMillis;
+
     protected HttpServletRequest currentRequest;
     protected HttpServletResponse currentResponse;
 
     protected void initRequest(HttpServletRequest request) throws Exception {
         Language.setLanguage(request);
+
     }
     protected void addResponseHeader(HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestDispatcher rd = request.getRequestDispatcher(getHeaderTemplate());
@@ -124,7 +129,7 @@ public abstract class AbstractServlet extends HttpServlet {
     abstract protected String getFooterTemplate();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception, IdInvalidException {
-
+        startTimeMillis = System.currentTimeMillis();
         this.currentRequest = request;
         this.currentResponse = response;
         // Since the header is very large using the UB navigation,
@@ -139,6 +144,9 @@ public abstract class AbstractServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         addResponseHeader(request, response);
         generatePage(request, response);
+        endTimeMillis = System.currentTimeMillis();
+        renderTimeMillis = endTimeMillis - startTimeMillis;
+        request.setAttribute("renderTimeMillis", renderTimeMillis);
         addResponseFooter(request, response);
     }
 
