@@ -31,7 +31,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void putToDatabase(Content dataContent) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             session.beginTransaction();
             session.save(dataContent);
             session.getTransaction().commit();
@@ -39,20 +39,16 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void saveFile(String path, String name, String content_Type, Context context) throws Exception {
-        try ( Session session = getSession()) {
-            byte[] contentBytes = readBytesFromFile(path);
-            Content content = new Content(name, content_Type, contentBytes, context);
-            putToDatabase(content);
-        }
+        byte[] contentBytes = readBytesFromFile(path);
+        Content content = new Content(name, content_Type, contentBytes, context);
+        putToDatabase(content);
     }
 
     //überladet nur zur zeit
     public static void saveFile(String path, String name, String content_Type, Context context, String language) throws Exception {
-        try ( Session session = getSession()) {
-            byte[] contentBytes = readBytesFromFile(path);
-            Content content = new Content(name, content_Type, contentBytes, context, language);
-            putToDatabase(content);
-        }
+        byte[] contentBytes = readBytesFromFile(path);
+        Content content = new Content(name, content_Type, contentBytes, context, language);
+        putToDatabase(content);
     }
 
     public static byte[] readBytesFromFile(String filePath) throws Exception {
@@ -120,7 +116,6 @@ public class ContentDB extends AbstractBase {
         try ( Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
-            Root<Content> myContent = criteria.from(Content.class);
             criteria.getOrderList();
             List<Content> contents = (List<Content>) session.createQuery(criteria).list();
             return contents;

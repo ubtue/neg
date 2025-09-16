@@ -278,7 +278,7 @@
                         <td width="200"><%= Language.getTextfield(session, "admin", "Auswahl")%></td>
                         <td width="450">
                             <jsp:include page="administration/select.jsp">
-                                <jsp:param name="Tabelle" value="<%= request.getParameter("Tabelle")%>" />
+                                <jsp:param name="Tabelle" value='<%= request.getParameter("Tabelle")%>' />
                                 <jsp:param name="Feldname" value="Feld_selektionFunktion" />
                             </jsp:include>
                         </td>
@@ -287,7 +287,7 @@
                         <td width="200"><%= Language.getTextfield(session, "admin", "AufteilenGross")%></td>
                         <td width="450">
                             <jsp:include page="administration/select.jsp">
-                                <jsp:param name="Tabelle" value="<%= request.getParameter("Tabelle")%>" />
+                                <jsp:param name="Tabelle" value='<%= request.getParameter("Tabelle")%>' />
                                 <jsp:param name="Feldname" value="Split[0]" />
                             </jsp:include>
                         </td>

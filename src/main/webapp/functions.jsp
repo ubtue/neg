@@ -130,6 +130,7 @@
         return "";
     }
 
+    @Deprecated
     String format(String text, String feld) {
         return Utils.format(text, feld);
     }

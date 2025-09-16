@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import org.hibernate.*;
@@ -51,7 +50,7 @@ public class DatenbankDB extends AbstractBase {
     }
 
     public static String getLabel(String language, String formular, String textfeld, Object... args) throws Exception  {
-        String template = DatenbankDB.getLabel(language, formular, textfeld);
+        String template = getLabel(language, formular, textfeld);
         return String.format(template, args);
     }
 
@@ -132,7 +131,7 @@ public class DatenbankDB extends AbstractBase {
         }
     }
 
-    public static void updateAuswahlfelder(String tabelle, String feldAlt, String feldNeu) throws Exception {;
+    public static void updateAuswahlfelder(String tabelle, String feldAlt, String feldNeu) throws Exception {
         try (Session session = getSession()) {
             String SQL = "SELECT tabelle, spalte FROM datenbank_selektion WHERE selektion ='" + tabelle + "';";
             NativeQuery query = session.createNativeQuery(SQL);

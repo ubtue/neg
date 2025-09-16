@@ -2,7 +2,6 @@ package de.uni_tuebingen.ub.nppm.cli;
 
 import de.uni_tuebingen.ub.nppm.db.*;
 import de.uni_tuebingen.ub.nppm.model.*;
-import java.io.File;
 import java.nio.file.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;

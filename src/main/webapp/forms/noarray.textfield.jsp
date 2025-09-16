@@ -15,7 +15,7 @@
                 if (!isReadOnly) {
                     out.print("value=\"" + DBtoHTML(value_zielAttribut) + "\" ");
                 } else {
-                    String belegformHtml = DBtoHTML(format(value_zielAttribut, isKlarlemma ? "Klarlemma" : ""));
+                    String belegformHtml = DBtoHTML(value_zielAttribut);
                     if (formular.equals("einzelbeleg") && datenfeld.equals("Belegform")) {
                         belegformHtml = getBelegformExternalLinked(request, id, belegformHtml);
                     }

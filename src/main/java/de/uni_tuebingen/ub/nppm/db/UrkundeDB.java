@@ -15,7 +15,7 @@ public class UrkundeDB extends AbstractBase {
 
         String sqlId = "SELECT ID FROM urkunde WHERE QuelleID ="+ quelleId + ";";
 
-        Object urkundeId = DatenbankDB.getSingleResult(sqlId);
+        Object urkundeId = getSingleResult(sqlId);
         //check if urkunde exist
         if(urkundeId != null)
             return (int)urkundeId;
@@ -29,6 +29,6 @@ public class UrkundeDB extends AbstractBase {
             session.getTransaction().commit();
         }
 
-        return (int)DatenbankDB.getSingleResult(sqlId);
+        return (int)getSingleResult(sqlId);
     }
 }

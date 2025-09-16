@@ -1,6 +1,5 @@
 package de.uni_tuebingen.ub.nppm.db;
 
-import static de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
@@ -16,9 +15,15 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.query.NativeQuery;
 
 public class EinzelbelegDB extends AbstractBase {
-    public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT DISTINCT einzelbeleg.ID FROM einzelbeleg WHERE QuelleID IN (SELECT ID FROM quelle WHERE ZuVeroeffentlichen=1)";
+    /*
+        Exclude Einzelbelege that are linked to a MGHLemma with Constants.forbiddenLemmaSubstring in Frontend
+    */
+    public static final String SUBSELECT_HIDDEN_EINZELBELEG_IDS = "SELECT DISTINCT EinzelbelegID FROM einzelbeleg_hatmghlemma WHERE MGHLemmaID IN (" + LemmaDB.SUBSELECT_HIDDEN_MGHLEMMA_IDS + ")";
+    public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ") AND ID NOT IN (" + SUBSELECT_HIDDEN_EINZELBELEG_IDS + ")";
+    public static final String ORDER_BY_PUBLIC_EINZELBELEG = " ORDER BY einzelbeleg.Belegform ASC, einzelbeleg.ID ASC";
 
     public static Einzelbeleg getById(int id) throws Exception {
         return AbstractBase.getById(id, Einzelbeleg.class);
@@ -30,8 +35,9 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static List<Einzelbeleg> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
-            Query query = session.createQuery(HQL);
+            String SQL = "SELECT * FROM einzelbeleg WHERE ID IN (" + SUBSELECT_PUBLIC_EINZELBELEG_IDS + ") " + ORDER_BY_PUBLIC_EINZELBELEG;
+            NativeQuery query = session.createNativeQuery(SQL);
+            query.addEntity(Einzelbeleg.class);
             return query.getResultList();
         }
     }
@@ -46,10 +52,11 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static Einzelbeleg getFirstPublicEinzelbeleg() throws Exception {
         try (Session session = getSession()) {
-            String HQL = "FROM Einzelbeleg WHERE QuelleID IN (SELECT id FROM Quelle WHERE ZuVeroeffentlichen=1) ORDER BY id ASC";
-            Query query = session.createQuery(HQL).setMaxResults(1);
-            Einzelbeleg einzelbeleg = (Einzelbeleg) query.getSingleResult();
-            return einzelbeleg;
+            String SQL = "SELECT * FROM einzelbeleg WHERE ID IN (" + SUBSELECT_PUBLIC_EINZELBELEG_IDS +") " + ORDER_BY_PUBLIC_EINZELBELEG;
+            NativeQuery query = session.createNativeQuery(SQL);
+            query.addEntity(Einzelbeleg.class);
+            query.setMaxResults(1);
+            return (Einzelbeleg) query.getSingleResult();
         }
     }
 
@@ -235,16 +242,7 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static List<Integer> getAllPublicEinzelbelegIds() throws Exception {
         try (Session session = getSession()) {
-            /*
-                Exclude Einzelbelege that are linked to a MGHLemma which Constants.forbiddenLemmaSubstring in Frontend
-            */
-            String sql = "SELECT e.ID "
-                    + "FROM einzelbeleg e "
-                    + "  JOIN quelle q ON e.QuelleID = q.ID AND q.zuVeroeffentlichen = 1 "
-                    + "  LEFT JOIN einzelbeleg_hatmghlemma eh ON eh.EinzelbelegID = e.ID "
-                    + "  LEFT JOIN mgh_lemma m ON m.ID = eh.MGHLemmaID AND m.MGHLemma LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,AbstractBase.sqlEscapesSingleQuotes)+"%' "
-                    + "WHERE m.ID IS NULL "
-                    + "ORDER BY e.ID";
+            String sql = SUBSELECT_PUBLIC_EINZELBELEG_IDS + ORDER_BY_PUBLIC_EINZELBELEG;
             return session.createNativeQuery(sql).getResultList();
         }
     }

@@ -47,31 +47,46 @@ function groupCsvData(array $rows) : array {
 
 // Generate SQL statements
 function generateSqlStatements(array $data): string {
-    $sql = 'BEGIN;' . PHP_EOL . PHP_EOL;
+    $sql = 'BEGIN;' . PHP_EOL;
     foreach ($data as $groupKey => $datasets) {
-        // first: detect the winner
+        // check for diacritical characters
+        foreach ($datasets as $dataset) {
+            if (!preg_match('"^[a-zA-Z\[\].]*$"', $dataset['einzelbelegBelegform'])) {
+                print 'WARNUNG: Diakritische Zeichen "' . $dataset['einzelbelegBelegform'] . '" in Gruppe: "' . $groupKey . '"' . PHP_EOL;
+                continue 2;
+            }
+        }
+
+        // detect the winner
         $winnerLemmaId = null;
         foreach ($datasets as $dataset) {
-            if (!empty($dataset['winner']) && $dataset['winner'] == 'x') {
-                if ($winnerLemmaId != null) {
-                    die('Multiple Winners defined for group: ' . $groupKey . PHP_EOL);
+            if (!empty($dataset['winner']) && trim($dataset['winner']) != '') {
+                if (trim($dataset['winner']) == 'x') {
+                    if ($winnerLemmaId != null) {
+                        echo 'WARNUNG: Mehrere Gewinner für Gruppe: "' . $groupKey . '"' . PHP_EOL;
+                        continue 2;
+                    }
+                    $winnerLemmaId = $dataset['mghLemmaId'];
+                } else {
+                    print 'WARNUNG: Unbekannte Gewinner-Markierung "' . $dataset['winner'] . '" für Gruppe: "' . $groupKey . '"' . PHP_EOL;
+                    continue 2;
                 }
-                $winnerLemmaId = $dataset['mghLemmaId'];
             }
         }
 
         if ($winnerLemmaId == null) {
-            die('No winner defined for group: ' . $groupKey . PHP_EOL . $sql);
+            echo 'WARNUNG: Kein Gewinner für Gruppe: "' . $groupKey . '"' . PHP_EOL;
+            continue;
         }
 
-        // second: Generate SQL statements wherever necessary
+        // Generate SQL statements wherever necessary
         foreach ($datasets as $dataset) {
             if ($dataset['mghLemmaId'] != $winnerLemmaId) {
                 $sql .= 'UPDATE einzelbeleg_hatmghlemma SET MGHLemmaID=' . $winnerLemmaId . ' WHERE MGHLemmaID=' . $dataset['mghLemmaId'] . ' AND EinzelbelegID=' . $dataset['einzelbelegId'] . ';' . PHP_EOL;
             }
         }
     }
-    $sql = 'COMMIT;' . PHP_EOL;
+    $sql .= 'COMMIT;' . PHP_EOL;
     return $sql;
 }
 

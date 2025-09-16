@@ -56,11 +56,11 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
         HttpSession session = request.getSession();
 
         if (request.getParameter("action") != null && request.getParameter("action").equals(Language.getTextfield(session, "navigation", "Neu"))) {
-            newFunction(request, response);
+            newFunction(request);
         } else if (request.getParameter("action") != null && request.getParameter("action").equals(Language.getTextfield(session, "admin", "Umbenennen"))) {
-            renameFunction(request, response);
+            renameFunction(request);
         } else if (request.getParameter("action") != null && request.getParameter("action").equals(Language.getTextfield(session, "admin", "Verschieben"))) {
-            moveFunction(request, response);
+            moveFunction(request);
         } else if (request.getParameter("action") != null && request.getParameter("action").equals(Language.getTextfield(session, "admin", "Aufteilen"))) {
             divideFunction(request, response);
         }
@@ -75,11 +75,10 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
 
     }
 
-    private void newFunction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private void newFunction(HttpServletRequest request) throws Exception {
         if (request.getParameter(request.getParameter("Tabelle") + "_Bezeichnung").equals("")) {
             editMessage = "blankLabel";
         } else {
-            int id = 1;
             if (SelektionDB.hasBezeichnung(request.getParameter("Tabelle"), request.getParameter(request.getParameter("Tabelle") + "_Bezeichnung"))) {
                 editMessage = "alreadyExists";
 
@@ -87,7 +86,6 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
                 SelektionDB.insertBezeichnung(request.getParameter("Tabelle"), request.getParameter(request.getParameter("Tabelle") + "_Bezeichnung"));
                 Integer maxId = DatenbankDB.getMaxId(request.getParameter("Tabelle"));
                 if (maxId != null) {
-                    id = maxId;
                     editMessage = "success";
                 }
             }
@@ -95,7 +93,7 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
         request.setAttribute("editMessage", editMessage);
     }
 
-    private void renameFunction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private void renameFunction(HttpServletRequest request) throws Exception {
         String tableName = request.getParameter("Tabelle");
         String newName = request.getParameter(tableName + "_Bezeichnung");
         String oldName = request.getParameter("selectedBezeichnung");
@@ -118,7 +116,7 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
         request.setAttribute("oldName", oldName != null ? oldName : "");
     }
 
-    private void moveFunction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private void moveFunction(HttpServletRequest request) throws Exception {
 
         if (request.getParameter("Feld_neu").equals(request.getParameter("Feld_alt"))) {
             moveMessage = "sameSelection";
@@ -143,7 +141,7 @@ public class AdministrationAuswahlServlet extends AbstractBackendServlet {
         try {
 
             String selectionTag = SelektionDB.getBezeichnungByID(request.getParameter("Feld_selektionFunktion"), request.getParameter("Tabelle"));
-            if (("-".equals(selectionTag))) {
+            if ("-".equals(selectionTag)) {
                 funktionSelektionBezeichnung = "cannotDivideDash";
                 request.setAttribute("funktionSelektionBezeichnung", funktionSelektionBezeichnung);
             } else {

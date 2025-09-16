@@ -5,29 +5,21 @@ import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import de.uni_tuebingen.ub.nppm.db.BenutzerDB;
-import de.uni_tuebingen.ub.nppm.model.Benutzer;
-import de.uni_tuebingen.ub.nppm.util.AuthHelper;
-import de.uni_tuebingen.ub.nppm.util.Language;
-import de.uni_tuebingen.ub.nppm.util.MailSender;
-import de.uni_tuebingen.ub.nppm.util.SaltHash;
-import de.uni_tuebingen.ub.nppm.util.Utils;
+import de.uni_tuebingen.ub.nppm.db.*;
+import de.uni_tuebingen.ub.nppm.model.*;
+import de.uni_tuebingen.ub.nppm.util.*;
 import javax.servlet.http.HttpSession;
-
-
 
 public class NewPasswordServlet extends HttpServlet {
 
-    private void writeHTMLMessage(HttpServletRequest request, HttpServletResponse response, String[] messages) throws IOException {
+    private void writeHTMLMessage(HttpServletResponse response, String[] messages) throws IOException {
         PrintWriter pw = response.getWriter();
         pw.println("<!DOCTYPE html>");
         pw.println("<html>");
@@ -43,8 +35,6 @@ public class NewPasswordServlet extends HttpServlet {
     }
 
     private void renewPassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        String URLuuid = request.getParameter("url_uuid"); //<input type hidden >---> form -->forgotPassword
         String URLemail = request.getParameter("url_email"); //<input type hidden >---> form -->forgotPassword
         String password = request.getParameter("newPassword");
         String repeatPassword = request.getParameter("repeatPassword");
@@ -52,7 +42,7 @@ public class NewPasswordServlet extends HttpServlet {
 
         Benutzer benutzer = BenutzerDB.getByMail(URLemail);
 
-        if (password != null && password.length() >= 6 && repeatPassword.equals(password)) {
+        if (password != null && password.length() >= 6 && password.equals(repeatPassword)) {
 
             byte[] salt = SaltHash.GenerateRandomSalt(AuthHelper.getPasswordSaltLength());
             String passHash = SaltHash.GenerateHash(password, AuthHelper.getPasswordHashingAlgorithm(), salt);
@@ -66,28 +56,27 @@ public class NewPasswordServlet extends HttpServlet {
             String[] message = new String[2];
             message[0] = "<h1 style=\"text-align: center;\"> " + Language.getTextfield(session, "login", "PasswortGesetzt") + "</h1>";
             message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/logout?go=intern\">" + Language.getTextfield(session, "login", "ZumLogin") + "</a></h1>";
-            writeHTMLMessage(request, response, message);
+            writeHTMLMessage(response, message);
 
         } else if (password != null && password.length() < 6) {
             String[] message = new String[1];
             message[0] = "<h1 style=\"text-align: center;\">" + Language.getTextfield(session, "login", "ZuKurz") + "</h1>";
-            writeHTMLMessage(request, response, message);
+            writeHTMLMessage(response, message);
 
         } else if (!repeatPassword.equals(password)) {
             String[] message = new String[1];
             message[0] = "<h1 style=\"text-align: center;\">" + Language.getTextfield(session, "login", "ErrorPasswortWiederholung") + "</h1>";
-            writeHTMLMessage(request, response, message);
+            writeHTMLMessage(response, message);
         } else { //User should generate a new Link
             String[] message = new String[2];
             message[0] = "<h1 style=\"text-align: center;\">" + Language.getTextfield(session, "login", "LinkUngueltig") + "</h1>";
             message[1] = "<h1 style=\"text-align: center;\"><a href=\"" + Utils.getBaseUrl(request) + "/forgotPassword\">" + Language.getTextfield(session, "login", "NeuerLink") + "</a></h1>";
-            writeHTMLMessage(request, response, message);
+            writeHTMLMessage(response, message);
         }
     }
 
     private void sendLink(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, Exception {
         HttpSession session = request.getSession();
-        PrintWriter out = response.getWriter();
         LocalDateTime timeOfGeneratedUUID = LocalDateTime.now();
         //2. Generate UUID
         String uuid_content = String.valueOf(UUID.randomUUID());
@@ -101,13 +90,13 @@ public class NewPasswordServlet extends HttpServlet {
         if (email == null || email.equals("")) {
             String[] message = new String[1];
             message[0] = "<h1 style=\"text-align: center;\">" + Language.getTextfield(session, "login", "KeineEmailEingegeben") + "</h1>";
-            writeHTMLMessage(request, response, message);
+            writeHTMLMessage(response, message);
         } else {
             boolean emailIsRegistered = BenutzerDB.hasEmail(email);
             if (emailIsRegistered == false) {
                 String[] message = new String[1];
                 message[0] = "<h1 style=\"text-align: center;\">" + errorEmail + "</h1>";
-                writeHTMLMessage(request, response, message);
+                writeHTMLMessage(response, message);
             } else {
                 response.setContentType("text/html");
 
@@ -140,13 +129,13 @@ public class NewPasswordServlet extends HttpServlet {
                     //write in Servlet Succesfull created for the user
                     String[] message = new String[1];
                     message[0] = "<h1 style=\"text-align: center;\">" + Language.getTextfield(session, "login", "ErfolgGeheZuEmail") + "</h1>";
-                    writeHTMLMessage(request, response, message);
+                    writeHTMLMessage(response, message);
                     MailSender.Send("no-reply@ub.uni-tuebingen.de", "NeG Mailer", email, Language.getTextfield(session, "login", "EmailBetreff"), htmlMessage);
                 } catch (Exception ex) {
                     String errorMessage = ex.toString();
                     String[] message = new String[1];
                     message[0] = "<h1" + errorMessage + "  </h1>";
-                    writeHTMLMessage(request, response, message);
+                    writeHTMLMessage(response, message);
                     Logger
                             .getLogger(NewPasswordServlet.class
                                     .getName()).log(Level.SEVERE, null, ex);
@@ -192,7 +181,7 @@ public class NewPasswordServlet extends HttpServlet {
             processRequest(request, response);
 
         } catch (Exception ex) {
-            Logger.getLogger(de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet.class
+            Logger.getLogger(NewPasswordServlet.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }//end doGet()
@@ -212,7 +201,7 @@ public class NewPasswordServlet extends HttpServlet {
             processRequest(request, response);
 
         } catch (Exception ex) {
-            Logger.getLogger(de.uni_tuebingen.ub.nppm.servlet.NewPasswordServlet.class
+            Logger.getLogger(NewPasswordServlet.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }//end doPost()

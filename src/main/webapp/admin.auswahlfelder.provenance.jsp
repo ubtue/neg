@@ -1,14 +1,10 @@
-<%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.SelektionProvenance"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.SelektionBezeichnung"%>
-<%@page import="de.uni_tuebingen.ub.nppm.model.Selektion"%>
-<%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
-<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
-<%@ page import="java.util.*" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.SelektionDB" isThreadSafe="false" %>
-<%@ include file="configuration.jsp" %>
+<%@page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@page import="de.uni_tuebingen.ub.nppm.model.*"%>
+<%@page import="de.uni_tuebingen.ub.nppm.util.*"%>
+<%@page import="java.math.BigInteger" isThreadSafe="false" %>
+<%@page import="java.util.*" isThreadSafe="false" %>
+<%@page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@include file="configuration.jsp" %>
 
 <div>
     <jsp:include page="layout/titel.administration.jsp" />

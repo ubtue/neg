@@ -10,7 +10,10 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 public class LemmaDB extends AbstractBase {
-    public static final String SUBSELECT_PUBLIC_MGHLEMMA_IDS = "SELECT DISTINCT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (" + EinzelbelegDB.SUBSELECT_PUBLIC_EINZELBELEG_IDS + ")";
+    // Unfortunately we cannot reference SUBSELECTS from EinzelbelegDB here because it will reference back on LemmaDB, so we need to do some hardcoding here
+    public static final String SUBSELECT_HIDDEN_MGHLEMMA_IDS = "SELECT ID FROM mgh_lemma WHERE MGHLemma LIKE '%"+escape(Constants.forbiddenLemmaSubstring, sqlEscapesSingleQuotes)+"%' ";
+    public static final String SUBSELECT_PUBLIC_MGHLEMMA_IDS = "SELECT DISTINCT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (SELECT ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ")) AND MGHLemmaID NOT IN (" + SUBSELECT_HIDDEN_MGHLEMMA_IDS + ")";
+    public static final String ORDER_BY_PUBLIC_MGHLEMMA = " ORDER BY mgh_lemma.MGHLemma ASC, mgh_lemma.ID ASC";
 
     public static MghLemma getById(int id) throws Exception {
         return AbstractBase.getById(id, MghLemma.class);
@@ -22,7 +25,7 @@ public class LemmaDB extends AbstractBase {
 
     public static List<MghLemma> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT * FROM mgh_lemma WHERE ID IN (SELECT MGHLemmaID FROM einzelbeleg_hatmghlemma ehm JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID JOIN quelle q ON q.ID = e.QuelleID WHERE q.ZuVeroeffentlichen = 1)";
+            String sql = "SELECT * FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")" + ORDER_BY_PUBLIC_MGHLEMMA;
 
             NativeQuery query = session.createNativeQuery(sql);
             query.addEntity(MghLemma.class);
@@ -38,9 +41,18 @@ public class LemmaDB extends AbstractBase {
         return getList(MghLemmaKorrektor.class);
     }
 
+    public static List<MghLemma> getListByPerson(Person person) throws Exception {
+        try (Session session = getSession()) {
+            String SQL = "SELECT * FROM mgh_lemma WHERE ID IN (SELECT MGHLemmaID FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID IN (SELECT EinzelbelegID FROM einzelbeleg_hatperson WHERE PersonID=" + person.getId() + ")) AND ID NOT IN (" + SUBSELECT_HIDDEN_MGHLEMMA_IDS + ") " + ORDER_BY_PUBLIC_MGHLEMMA;
+            NativeQuery query = session.createNativeQuery(SQL);
+            query.addEntity(MghLemma.class);
+            return query.getResultList();
+        }
+    }
+
     public static MghLemma getFirstPublicMGHLemma() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM mgh_lemma WHERE mgh_lemma.ID in (SELECT n.ID FROM einzelbeleg e, quelle q, einzelbeleg_hatmghlemma h, mgh_lemma n WHERE e.ID=h.einzelbelegID and n.ID=h.MGHLemmaID and e.QuelleID=q.ID AND q.ZuVeroeffentlichen=1) ORDER BY id ASC";
+            String SQL = "SELECT * FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS +") " + ORDER_BY_PUBLIC_MGHLEMMA;
             NativeQuery query = session.createNativeQuery(SQL);
             query.addEntity(MghLemma.class);
             query.setMaxResults(1);
@@ -61,7 +73,7 @@ public class LemmaDB extends AbstractBase {
                     + "      JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "      JOIN quelle q ON e.QuelleID = q.ID "
                     + "      WHERE q.ZuVeroeffentlichen = 1 AND mgh_lemma.ID = :id "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
                     + "    ) THEN :id "
                     + "    ELSE ( "
                     + "      SELECT MIN(mgh_lemma.ID) "
@@ -70,7 +82,7 @@ public class LemmaDB extends AbstractBase {
                     + "      JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "      JOIN quelle q ON e.QuelleID = q.ID "
                     + "      WHERE q.ZuVeroeffentlichen = 1 AND mgh_lemma.ID > :id "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
                     + "    ) "
                     + "  END AS resultId "
                     + "FROM ( "
@@ -80,7 +92,7 @@ public class LemmaDB extends AbstractBase {
                     + "  JOIN einzelbeleg e ON e.ID = h.EinzelbelegID "
                     + "  JOIN quelle q ON e.QuelleID = q.ID "
                     + "  WHERE q.ZuVeroeffentlichen = 1 "
-                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
+                    + "        AND mgh_lemma.MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' "
                     + ") AS ids";
 
             NativeQuery query = session.createNativeQuery(sql);
@@ -104,11 +116,35 @@ public class LemmaDB extends AbstractBase {
     }
 
     public static List<String> getListErstglied() throws Exception {
-        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Erstglied ASC");
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', 1) AS Erstglied  FROM mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Erstglied ASC");
+    }
+
+    public static List<MghLemma> getListByErstglied(String erstglied) throws Exception {
+        String sql = "SELECT * FROM mgh_lemma WHERE SUBSTRING_INDEX(MGHLemma, '~', 1) = '" + escape(erstglied, '\'') + "'";
+        sql += " ORDER BY MGHLemma";
+
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            sqlQuery.addEntity(MghLemma.class);
+            List<MghLemma> rows = sqlQuery.getResultList();
+            return rows;
+        }
     }
 
     public static List<String> getListZweitglied() throws Exception {
-        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM neg.mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+AbstractBase.escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Zweitglied ASC");
+        return getStringListNative("SELECT DISTINCT SUBSTRING_INDEX(MGHLemma, '~', -1) AS Zweitglied  FROM mgh_lemma WHERE MGHLemma LIKE '%~%' AND MGHLemma NOT LIKE '%"+escape(Constants.forbiddenLemmaSubstring,sqlEscapesSingleQuotes)+"%' ORDER BY Zweitglied ASC");
+    }
+
+    public static List<MghLemma> getListByZweitglied(String zweitglied) throws Exception {
+        String sql = "SELECT * FROM mgh_lemma WHERE SUBSTRING_INDEX(MGHLemma, '~', -1) = '" + escape(zweitglied, '\'') + "'";
+        sql += " ORDER BY MGHLemma";
+
+        try (Session session = getSession()) {
+            NativeQuery sqlQuery = session.createNativeQuery(sql);
+            sqlQuery.addEntity(MghLemma.class);
+            List<MghLemma> rows = sqlQuery.getResultList();
+            return rows;
+        }
     }
 
     public static List<MghLemma> getLemmaByBelegform(String belegform) throws Exception {
@@ -128,15 +164,7 @@ public class LemmaDB extends AbstractBase {
 
     public static List<Integer> getAllPublicLemmaIds() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT DISTINCT ehm.MGHLemmaID "
-                    + "FROM einzelbeleg_hatmghlemma ehm "
-                    + "JOIN einzelbeleg e ON e.ID = ehm.EinzelbelegID "
-                    + "JOIN quelle q ON q.ID = e.QuelleID "
-                    + "JOIN mgh_lemma l ON l.ID = ehm.MGHLemmaID "
-                    + // <- hier korrigiert
-                    "WHERE q.ZuVeroeffentlichen = 1 "
-                    + "ORDER BY ehm.MGHLemmaID";
-
+            String sql = "SELECT ID FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS + ") " + ORDER_BY_PUBLIC_MGHLEMMA;
             return session.createNativeQuery(sql).getResultList();
         }
     }
