@@ -253,16 +253,6 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.8.1</version>
                 <executions>
-                    <!-- Download javadoc for all dependencies -->
-                    <execution>
-                        <goals>
-                            <goal>sources</goal>
-                            <goal>resolve</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>javadoc</classifier>
-                        </configuration>
-                    </execution>
                     <!-- Unpack JQuery -->
                     <execution>
                         <id>unpack-jquery</id>
