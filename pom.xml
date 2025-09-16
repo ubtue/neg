@@ -244,6 +244,7 @@
                     <compilerArgs>
                         <arg>-Djava.endorsed.dirs=${endorsed.dir}</arg>
                     </compilerArgs>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
             <!-- Handle dependencies (Download Javadoc, Unpack JS, ...) -->

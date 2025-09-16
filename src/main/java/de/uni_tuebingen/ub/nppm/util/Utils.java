@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,7 +93,7 @@ public class Utils {
 
     // This function will be overloaded with shortcuts, since it will be used in many templates
     public static String getPersistentIdentifierUrl(final HttpServletRequest request, final String persistentIdentifier) {
-        return getBaseUrl(request) + "/id/" + urlEncode(persistentIdentifier);
+        return getBaseUrl(request) + "/id/" + escapeURL(persistentIdentifier);
     }
 
     public static String getPersistentIdentifierUrl(final HttpServletRequest request, final PersistentIdentifier persistentIdentifier) {
@@ -169,7 +170,7 @@ public class Utils {
 
     // Alias for urlEncode(), so that we have multiple functions with the same naming schema (escape...)
     public static String escapeURL(String s) {
-        return URLEncoder.encode(s);
+        return URLEncoder.encode(s, StandardCharsets.UTF_8);
     }
 
     /**

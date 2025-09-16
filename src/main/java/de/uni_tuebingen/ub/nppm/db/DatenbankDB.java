@@ -3,6 +3,7 @@ package de.uni_tuebingen.ub.nppm.db;
 import java.util.List;
 import de.uni_tuebingen.ub.nppm.model.*;
 import org.hibernate.*;
+import org.hibernate.query.Query;
 import javax.persistence.criteria.*;
 import org.hibernate.query.NativeQuery;
 
