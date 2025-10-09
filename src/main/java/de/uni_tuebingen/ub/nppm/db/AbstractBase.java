@@ -1,5 +1,6 @@
 package de.uni_tuebingen.ub.nppm.db;
 
+import de.uni_tuebingen.ub.nppm.db.transformers.*;
 import de.uni_tuebingen.ub.nppm.util.NamespaceHelper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -429,6 +430,8 @@ public class AbstractBase {
         }
     }
 
+    // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
+    @SuppressWarnings("deprecation")
     protected static List<Map> getMappedListString(Query query) throws Exception {
 
         query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
@@ -459,8 +462,9 @@ public class AbstractBase {
         }
     }
 
+    // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
+    @SuppressWarnings("deprecation")
     protected static List<Map> getMappedList(Query query) throws Exception {
-        // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
         query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);
         return query.list();
     }
@@ -480,6 +484,8 @@ public class AbstractBase {
         }
     }
 
+    // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
+    @SuppressWarnings("deprecation")
     protected static Map getMappedRow(Query query) throws Exception {
         // Result transformers are deprecated in Hibernate 5 but Hibernate 6 is not available yet with a proper replacement, so we can still use them.
         query.setResultTransformer(AliasToCaseInsensitiveEntityMapResultTransformer.INSTANCE);

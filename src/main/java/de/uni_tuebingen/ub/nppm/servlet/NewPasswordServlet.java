@@ -2,7 +2,6 @@ package de.uni_tuebingen.ub.nppm.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -100,7 +99,7 @@ public class NewPasswordServlet extends HttpServlet {
             } else {
                 response.setContentType("text/html");
 
-                String myLinkString = Utils.getBaseUrl(request) + "/forgotPassword?varURLUUID=" + URLEncoder.encode(uuid_content) + "&varURLEmail=" + URLEncoder.encode(email) + "&varURLTime=" + URLEncoder.encode(timeOfGeneratedUUID.toString());
+                String myLinkString = Utils.getBaseUrl(request) + "/forgotPassword?varURLUUID=" + Utils.escapeURL(uuid_content) + "&varURLEmail=" + Utils.escapeURL(email) + "&varURLTime=" + Utils.escapeURL(timeOfGeneratedUUID.toString());
 
                 //Message in usesers email
                 String htmlMessage = "<html>";
