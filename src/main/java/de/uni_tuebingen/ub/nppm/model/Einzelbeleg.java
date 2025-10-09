@@ -355,6 +355,10 @@ public class Einzelbeleg implements PersistentIdentifier, History {
         return "B" + getId();
     }
 
+    public String getDebugString() {
+        return getPersistentIdentifier() + " (" + getBelegform() + ")";
+    }
+
     public String getBelegnummer() {
         return belegnummer;
     }

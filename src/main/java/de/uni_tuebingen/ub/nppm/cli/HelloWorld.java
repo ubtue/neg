@@ -11,7 +11,7 @@ import de.uni_tuebingen.ub.nppm.util.Constants;
  * can be run via command line.
  *
  * To call the main function via CLI, execute the following shell commands:
- * - `cd /var/lib/tomcat9/webapps/neg/WEB-INF`
+ * - `cd /var/lib/tomcat10/webapps/neg/WEB-INF`
  * - `java -classpath "lib/*:classes/." de.uni_tuebingen.ub.nppm.cli.HelloWorld`
  *
  * Be aware that everytime you rebuild / redeploy the project, your tomcat

@@ -185,6 +185,11 @@ public class EinzelbelegDB extends AbstractBase {
         insertOrUpdate(sql);
     }
 
+    public static void deleteLemma(String einzelbelegId, String mghLemmaId) throws Exception {
+        String sql = "DELETE FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID = \"" + einzelbelegId + "\" AND mghLemmaId = \"" + mghLemmaId + "\"";
+        insertOrUpdate(sql);
+    }
+
     public static void insertNamenkommentar(String einzelbelegId, String namenkommentarId) throws Exception {
         String sql = "INSERT INTO einzelbeleg_hatnamenkommentar(EinzelbelegID, NamenkommentarID) VALUES(" + einzelbelegId + ", " + namenkommentarId + ")";
         insertOrUpdate(sql);
