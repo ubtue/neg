@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 @Entity
 @Table(name = "person")
-public class Person implements PersistentIdentifier, History {
+public class Person extends AbstractModel implements PersistentIdentifier, History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,9 @@ public class Person implements PersistentIdentifier, History {
 
     @Column(name = "GND", length = 255)
     private String gnd;
+
+    @Column(name = "Wikidata", length = 255)
+    private String wikidata;
 
     @Column(name = "Standardname", length = 255)
     private String standardname;
@@ -144,6 +147,10 @@ public class Person implements PersistentIdentifier, History {
         return "P" + getId();
     }
 
+    public String getDebugString() {
+        return getPersistentIdentifier() + " (" + getStandardname() + ")";
+    }
+
     public String getPkz() {
         return pkz;
     }
@@ -158,6 +165,14 @@ public class Person implements PersistentIdentifier, History {
 
     public void setGnd(String gnd) {
         this.gnd = gnd;
+    }
+
+    public String getWikidata() {
+        return wikidata;
+    }
+
+    public void setWikidata(String wikidata) {
+        this.wikidata = wikidata;
     }
 
     public String getStandardname() {

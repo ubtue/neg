@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import de.uni_tuebingen.ub.nppm.db.transformers.*;
+import de.uni_tuebingen.ub.nppm.model.AbstractModel;
 import de.uni_tuebingen.ub.nppm.util.NamespaceHelper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -379,6 +380,18 @@ public class AbstractBase {
             registerParameters(andConditions, query);
 
             query.executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
+    /**
+     * This function will save the changes to a model object.
+     * It must be used instead of persist() if the object was created in a different session.
+     */
+    public static void merge(AbstractModel obj) throws Exception {
+        try (Session session = getSession()) {
+            session.getTransaction().begin();
+            session.merge(obj);
             session.getTransaction().commit();
         }
     }
