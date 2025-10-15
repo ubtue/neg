@@ -8,7 +8,7 @@ import java.util.Map;
  * This transformer was implemented as a workaround
  * to allow case insensitivity within hibernate results.
  *
- * This is necessary because the original NeG code was not exact about case sensitivity.
+ * This is necessary because the original NeG (pre-NPPM) code was not exact about case sensitivity.
  * Since they used DB connections with result sets, accessing fields has been case insensitive.
  * (e.g. when trying to access the field personID instead of PersonID).
  *

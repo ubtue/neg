@@ -129,7 +129,7 @@ public class NewPasswordServlet extends HttpServlet {
                     String[] message = new String[1];
                     message[0] = "<h1 style=\"text-align: center;\">" + Language.getTextfield(session, "login", "ErfolgGeheZuEmail") + "</h1>";
                     writeHTMLMessage(response, message);
-                    MailSender.Send("no-reply@ub.uni-tuebingen.de", "NeG Mailer", email, Language.getTextfield(session, "login", "EmailBetreff"), htmlMessage);
+                    MailSender.Send("no-reply@ub.uni-tuebingen.de", "NPPM Mailer", email, Language.getTextfield(session, "login", "EmailBetreff"), htmlMessage);
                 } catch (Exception ex) {
                     String errorMessage = ex.toString();
                     String[] message = new String[1];

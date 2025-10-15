@@ -124,7 +124,7 @@
                     <% Language.printTextfield(out, session, "jump", "JumpTo");%>
                   </th>
                   <td width="450">
-                    <span></span><input type="text"  title="NeG-ID" placeholder="NeG-ID" name="jumpValueID" size="5">
+                    <span></span><input type="text" title="NPPM-ID" placeholder="NPPM-ID" name="jumpValueID" size="5">
      <input type="submit" name="jumpID" value="&gt;">
                   </td>
                 </tr>

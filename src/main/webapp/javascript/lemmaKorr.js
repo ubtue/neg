@@ -149,7 +149,7 @@ function updateLemma(row, callback) {
         console.error('ERROR when updating lemma: Request failed');
         callback(false);
     });
-}    
+}
 
 // ----------------------------------------------------------------------------
 function hideLemmasDone() {
@@ -213,7 +213,7 @@ function setLemmaDone(a, callback) {
         console.log('...DONE');
         a.parents('.lemmaKorr-entry').removeClass('open').addClass('lemmaKorr-done');
         a.parents('span').text(a.text());
-        callback && callback(); 
+        callback && callback();
         updateCountAfterKorrektur();
         updateEntryFromRow(row);
     }).fail(() => {
@@ -256,8 +256,8 @@ function _renderListInternal(listContainer, list) {
         }
     });
     Global.groupedEntries.forEach((entry, key) => {
-        let korr = entry.korr 
-            ? '✓' 
+        let korr = entry.korr
+            ? '✓'
             : "<a href='javascript:void(0)'>✓</a>";
         let korrCss = entry.korr ? 'lemmaKorr-done' : 'open';
         if(!entry.korr)
@@ -267,7 +267,7 @@ function _renderListInternal(listContainer, list) {
         e.className = `lemmaKorr-entry ${korrCss}`;
         if(entry.korr && !allKorr)
             e.style.display = 'none';
-        e.innerHTML = 
+        e.innerHTML =
             `<span class="lemmaKorr-korr">${korr}</span>
             <span class="lemmaKorr-clip">
                 <a>K</a>
@@ -314,7 +314,7 @@ function renderList(btn) {
         action: 'Lemmakorr_getFromInitial',
         initial: btn.data('initial')
     }, (response) => {
-        _renderListInternal(listContainer, response.result);    
+        _renderListInternal(listContainer, response.result);
     });
 }
 
@@ -355,7 +355,7 @@ function renderErledigteToggle(totalCount, todoCount) {
 function renderInitials() {
 // ----------------------------------------------------------------------------
     let div = $('#lemmaKorr-initials').empty();
-    
+
     Object.keys(Global.initials).forEach(i => {
         div.append(
             $('<button/>')
@@ -373,9 +373,9 @@ function renderInitials() {
 function windowResized() {
 // ----------------------------------------------------------------------------
     let div = $('#lemmaKorr-list');
-    div.css({ 
+    div.css({
         height: Math.max(100, window.innerHeight - div.offset().top - 28)
-    });    
+    });
 }
 
 // ----------------------------------------------------------------------------
@@ -432,7 +432,7 @@ function documentKeyDown(e) {
                 if(curEntry.css('display') === 'none')
                     continue;
                 win = curEntry;
-                break;   
+                break;
             }
         }
         else if(e.keyCode === 40) {// DOWN
@@ -441,7 +441,7 @@ function documentKeyDown(e) {
                 if(curEntry.css('display') === 'none')
                     continue;
                 win = curEntry;
-                break;   
+                break;
             }
         }
         if(win && win.length === 1) {
@@ -486,7 +486,7 @@ function initUi() {
 // ----------------------------------------------------------------------------
 $(document).ready(() => {
 // ----------------------------------------------------------------------------
-//Auth is provided by neg backend
+//Auth is provided by backend
     //if($('form').length > 0) {
         // auth form displayed
     //    return;

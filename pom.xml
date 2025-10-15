@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.uni_tuebingen.ub</groupId>
-    <artifactId>neg</artifactId>
+    <artifactId>nppm</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>neg</name>
+    <name>nppm</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -147,7 +147,7 @@
     </dependencies>
 
     <build>
-        <finalName>neg</finalName>
+        <finalName>nppm</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

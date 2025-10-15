@@ -10,7 +10,7 @@ public class AbstractBase {
      *       existing tomcat configuration file,
      *       or merge both files together somehow.
      */
-    protected static String propertiesPath = "/root/.neg.properties";
+    protected static String propertiesPath = "/root/.nppm.properties";
 
     /**
      * Load Properties File (e.g. DB access credentials)

@@ -1,1 +1,1 @@
-../db/cleanup/quelle_with_multiple_gattungen.sql
+../cleanup/quelle_with_multiple_gattungen.sql

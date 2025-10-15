@@ -18,15 +18,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.*;
 /*
     Example of REST implementation with json output
-    Call URL -> http://localhost:8080/neg/rest/item/M1
-                http://localhost:8080/neg/rest/item/N1
-                http://localhost:8080/neg/rest/item/B1
-             -> http://localhost:8080/neg/rest/items/M1,M2,M3
-                http://localhost:8080/neg/rest/items/N1,N2,N3
-                http://localhost:8080/neg/rest/items/B1,N2,N3
+    Call URL -> http://localhost:8080/nppm/rest/item/M1
+                http://localhost:8080/nppm/rest/item/N1
+                http://localhost:8080/nppm/rest/item/B1
+             -> http://localhost:8080/nppm/rest/items/M1,M2,M3
+                http://localhost:8080/nppm/rest/items/N1,N2,N3
+                http://localhost:8080/nppm/rest/items/B1,N2,N3
              Show Help Page
-             -> http://localhost:8080/neg/rest
-                http://localhost:8080/neg/rest/
+             -> http://localhost:8080/nppm/rest
+                http://localhost:8080/nppm/rest/
  */
 public class RESTServlet extends HttpServlet {
 
