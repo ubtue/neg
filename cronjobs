@@ -1,4 +1,4 @@
-CLI_DIR=/var/lib/tomcat9/webapps/neg/WEB-INF
+CLI_DIR=/var/lib/tomcat10/webapps/neg/WEB-INF
 DATA_DIR=/usr/local/var/lib/nppm
 LOG_DIR=/usr/local/var/log/nppm
 0 21 * * * cd "$CLI_DIR" && java -classpath "lib/*:classes/." de.uni_tuebingen.ub.nppm.cli.SyncWikidata > "$LOG_DIR/sync_wikidata.log" 2>&1
