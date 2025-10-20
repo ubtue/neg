@@ -53,11 +53,11 @@ public class ShowContentServlet extends HttpServlet {
                     resp.setHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
                 }
 
-                OutputStream os = resp.getOutputStream();
-                byte[] photoBytes = content.getContent();
-                os.write(photoBytes);
-                os.flush();
-                os.close();
+                try (OutputStream os = resp.getOutputStream()) {
+                    byte[] photoBytes = content.getContent();
+                    os.write(photoBytes);
+                    os.flush();
+                }
             } else {
                 resp.sendRedirect(Utils.getBaseUrl(req) + "/file?context=CMS");
             }

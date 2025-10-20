@@ -176,7 +176,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void deleteById(Integer id) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -186,12 +186,11 @@ public class ContentDB extends AbstractBase {
             session.beginTransaction();
             session.delete(content);
             session.getTransaction().commit();
-            session.close();
         }
     }
 
     public static void deleteByName(String name) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
@@ -205,7 +204,7 @@ public class ContentDB extends AbstractBase {
     }
 
     public static void deleteByNameAndLanguage(String name, String language) throws Exception {
-        try ( Session session = getSession()) {
+        try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Content> criteria = builder.createQuery(Content.class);
             Root<Content> myContent = criteria.from(Content.class);
