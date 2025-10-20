@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import java.util.List;
+import java.util.stream.Stream;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.model.Content.Context;
 import de.uni_tuebingen.ub.nppm.util.pagination.statistics.PaginationParams;
@@ -20,13 +21,21 @@ public class QuelleDB extends AbstractBase {
         return getList(Quelle.class);
     }
 
+    private static Query getQueryPublic(final Session session) throws Exception {
+        String SQL = "SELECT * FROM quelle WHERE ID IN (" + SUBSELECT_PUBLIC_QUELLE_IDS + ") " + ORDER_BY_PUBLIC_QUELLE;
+        NativeQuery query = session.createNativeQuery(SQL);
+        query.addEntity(Quelle.class);
+        return query;
+    }
+
     public static List<Quelle> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM quelle WHERE ID IN (" + SUBSELECT_PUBLIC_QUELLE_IDS + ") " + ORDER_BY_PUBLIC_QUELLE;
-            NativeQuery query = session.createNativeQuery(SQL);
-            query.addEntity(Quelle.class);
-            return query.getResultList();
+            return getQueryPublic(session).getResultList();
         }
+    }
+
+    public static Stream<Quelle> getStreamPublic(final Session session) throws Exception {
+        return getQueryPublic(session).getResultStream();
     }
 
     public static List<Quelle> getList(PaginationParams params) throws Exception {

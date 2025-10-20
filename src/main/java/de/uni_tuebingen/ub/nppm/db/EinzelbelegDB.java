@@ -7,6 +7,7 @@ import de.uni_tuebingen.ub.nppm.util.LemmaKorrBelegRow;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -33,13 +34,21 @@ public class EinzelbelegDB extends AbstractBase {
         return getList(Einzelbeleg.class);
     }
 
+    private static Query getQueryPublic(final Session session) throws Exception {
+        String SQL = "SELECT * FROM einzelbeleg WHERE ID IN (" + SUBSELECT_PUBLIC_EINZELBELEG_IDS + ") " + ORDER_BY_PUBLIC_EINZELBELEG;
+        NativeQuery query = session.createNativeQuery(SQL);
+        query.addEntity(Einzelbeleg.class);
+        return query;
+    }
+
     public static List<Einzelbeleg> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM einzelbeleg WHERE ID IN (" + SUBSELECT_PUBLIC_EINZELBELEG_IDS + ") " + ORDER_BY_PUBLIC_EINZELBELEG;
-            NativeQuery query = session.createNativeQuery(SQL);
-            query.addEntity(Einzelbeleg.class);
-            return query.getResultList();
+            return getQueryPublic(session).getResultList();
         }
+    }
+
+    public static Stream<Einzelbeleg> getStreamPublic(final Session session) throws Exception {
+        return getQueryPublic(session).getResultStream();
     }
 
     public static List<EinzelbelegHatFunktion_MM> getListFunktion() throws Exception {

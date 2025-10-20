@@ -1,9 +1,11 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import java.util.List;
+import java.util.stream.Stream;
 import de.uni_tuebingen.ub.nppm.model.*;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 public class PersonDB extends AbstractBase {
 
@@ -23,15 +25,21 @@ public class PersonDB extends AbstractBase {
         return getList(Person.class);
     }
 
+    private static Query getQueryPublic(final Session session) throws Exception {
+        String SQL = "SELECT * FROM person WHERE ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ") " + ORDER_BY_PUBLIC_PERSON;
+        NativeQuery query = session.createNativeQuery(SQL);
+        query.addEntity(Person.class);
+        return query;
+    }
 
     public static List<Person> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM person WHERE ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ") " + ORDER_BY_PUBLIC_PERSON;
-
-            NativeQuery query = session.createNativeQuery(SQL);
-            query.addEntity(Person.class);
-            return query.getResultList();
+            return getQueryPublic(session).getResultList();
         }
+    }
+
+    public static Stream<Person> getStreamPublic(final Session session) throws Exception {
+        return getQueryPublic(session).getResultStream();
     }
 
     // Alias for backwards compatibility
