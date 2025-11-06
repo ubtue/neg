@@ -169,7 +169,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.27.0</version>
+                <version>3.28.0</version>
                 <configuration>
                     <failOnViolation>true</failOnViolation>
                     <printFailingErrors>true</printFailingErrors>
@@ -242,7 +242,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.14.0</version>
+                <version>3.14.1</version>
                 <configuration>
                     <source>11</source>
                     <target>11</target>
@@ -256,7 +256,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.9.0</version>
                 <executions>
                     <!-- Unpack JQuery -->
                     <execution>
@@ -267,7 +267,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -286,7 +285,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -305,7 +303,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -324,7 +321,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -343,7 +339,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -363,7 +358,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
+
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -383,7 +378,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -400,7 +394,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.5.0</version>
                 <configuration>
                     <webResources>
                         <resource>
@@ -413,9 +407,9 @@
             </plugin>
             <!-- Deploy & Restart tomcat 10 -->
             <plugin>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.2.0</version>
                 <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.6.2</version>
                 <executions>
                     <execution>
                         <id>Restart Tomcat 10, Auto-Migrate from Java EE to Jakarta EE</id>
@@ -429,14 +423,14 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Configure the maven-surefire-plugin and maven-failsafe-plugin to be at version 2.22.2 so that they can run JUnit5 -->
+            <!-- Configure the maven-surefire-plugin and maven-failsafe-plugin for JUnit -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>3.5.4</version>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>3.5.4</version>
             </plugin>
         </plugins>
     </build>
