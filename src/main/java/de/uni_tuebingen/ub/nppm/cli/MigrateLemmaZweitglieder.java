@@ -24,18 +24,18 @@ public class MigrateLemmaZweitglieder extends AbstractBase {
         switch (args.length) {
             case 2:
                 csvPath = Path.of(args[0]);
-                mode = MigrationMode.valueOf(args[1]);
+                mode = MigrationMode.valueOf(args[1].toUpperCase());
                 break;
             default:
-                Usage("Usage: MigrateLemmaZweitglieder csv_path test|live");
+                Usage("Usage: MigrateLemmaZweitglieder csv_path TEST|LIVE");
         }
 
         switch (mode) {
             case TEST:
-                System.out.println("Running in TEST mode: DB will not be updated!");
+                System.err.println("Running in TEST mode: DB will not be updated!");
                 break;
             case LIVE:
-                System.out.println("Running in LIVE mode: DB WILL be updated!!!");
+                System.err.println("Running in LIVE mode: DB WILL be updated!!!");
                 break;
         }
 
@@ -49,25 +49,27 @@ public class MigrateLemmaZweitglieder extends AbstractBase {
                 String zweitgliedNeu = row.get("ZweitgliedNeu");
 
                 if (zweitgliedAlt == null || zweitgliedNeu == null) {
-                    System.out.println("Skipping line due to missing columns: " + row.toString());
+                    System.err.println("Skipping line due to missing columns: " + row.toString());
                 } else {
-                    System.out.println("Processing " + zweitgliedAlt + " => " + zweitgliedNeu);
+                    System.err.println("Processing " + zweitgliedAlt + " => " + zweitgliedNeu);
 
                     // Get all existing lemmas to this Zweitglied (e.g. "berht" => "hroth~berth", "adal~berht" etc.)
                     for (var lemmaAlt : LemmaDB.getListByZweitglied(zweitgliedAlt)) {
+                        System.err.println("Processing " + lemmaAlt.getDebugString() );
+
                         // Check whether target lemma already exists
                         String erstglied = lemmaAlt.getErstglied();
                         String lemmaNeuString = erstglied + "~" + zweitgliedNeu;
 
                         var lemmaNeu = LemmaDB.getByLemma(lemmaNeuString);
                         if (lemmaNeu == null) {
-                            System.out.println("Target lemma does not exist: " + lemmaAlt.getDebugString() + " => " + lemmaNeuString);
+                            System.err.println("Target lemma does not exist: " + lemmaNeuString);
                             continue;
                         }
 
                         // Replace all relations from lemmaAlt to lemmaNeu
                         for (var einzelbeleg : lemmaAlt.getEinzelbelege()) {
-                            System.out.println("Change lemma reference for einzelbeleg " + einzelbeleg.getDebugString() + " from " + lemmaAlt.getDebugString() + " to " + lemmaNeu.getDebugString());
+                            System.err.println("Change lemma reference for einzelbeleg " + einzelbeleg.getDebugString() + " to " + lemmaNeu.getDebugString());
 
                             if (mode == MigrationMode.LIVE) {
                                 EinzelbelegDB.deleteLemma(Integer.toString(einzelbeleg.getId()), Integer.toString(lemmaAlt.getId()));
@@ -76,9 +78,9 @@ public class MigrateLemmaZweitglieder extends AbstractBase {
                         }
 
                         // Delete lemmaAlt
-                        System.out.println("Deleting Lemma " + lemmaAlt.getDebugString());
+                        System.err.println("Deleting lemma " + lemmaAlt.getDebugString());
                         if (mode == MigrationMode.LIVE && !LemmaDB.deleteLemma(lemmaAlt.getId())) {
-                            throw new Exception("Deleting Lemma failed: " + lemmaAlt.getDebugString());
+                            throw new Exception("Deleting lemma failed: " + lemmaAlt.getDebugString());
                         }
                     }
                 }
