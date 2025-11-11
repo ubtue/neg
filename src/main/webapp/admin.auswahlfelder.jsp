@@ -1,22 +1,22 @@
 <%@page import="de.uni_tuebingen.ub.nppm.util.Language"%>
 <%@page import="de.uni_tuebingen.ub.nppm.util.Utils"%>
-<%@ page import="java.math.BigInteger" isThreadSafe="false" %>
-<%@ page import="java.util.*" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.DatenbankDB" isThreadSafe="false" %>
-<%@ page import="de.uni_tuebingen.ub.nppm.db.SelektionDB" isThreadSafe="false" %>
-<%@ include file="configuration.jsp" %>
-<%@ include file="functions.jsp" %>
+<%@page import="de.uni_tuebingen.ub.nppm.util.AuthHelper" isThreadSafe="false" %>
+<%@page import="de.uni_tuebingen.ub.nppm.db.*" isThreadSafe="false" %>
+<%@page import="java.math.BigInteger" isThreadSafe="false" %>
+<%@page import="java.util.*" isThreadSafe="false" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@include file="configuration.jsp" %>
+<%@include file="functions.jsp" %>
 
 <div>
     <jsp:include page="layout/titel.administration.jsp" />
     <div id="form">
 
-        <%            if (request.getParameter("Formular") != null && request.getParameter("Formular").equals("baumstruktur")) {
-
+        <%
+            if (request.getParameter("Formular") != null && request.getParameter("Formular").equals("baumstruktur")) {
         %>
         <h1><%= Language.getTextfield(session, "admin", "BaumstrukturBearbeiten")%></h1>
-        <h2><%= Language.getTextfield(session, "admin", "Tabelle")%>: ${param.Tabelle}</h2>
+        <h2><%= Language.getTextfield(session, "admin", "Tabelle")%>: ${fn:escapeXml(param.Tabelle)}</h2>
         <p><%=  DBtoHTML(Language.getTextfield(session, "admin", "DragAndDrop"))%></p>
 
         <!-- Buttons to Expand and Collapse Tree -->

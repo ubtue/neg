@@ -1,6 +1,7 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import java.util.List;
+import java.util.stream.Stream;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
 import de.uni_tuebingen.ub.nppm.util.pagination.statistics.PaginationParams;
@@ -41,14 +42,21 @@ public class LemmaDB extends AbstractBase {
         return getList(MghLemma.class);
     }
 
+    public static Query getQueryPublic(final Session session) throws Exception {
+        String sql = "SELECT * FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")" + ORDER_BY_PUBLIC_MGHLEMMA;
+        NativeQuery query = session.createNativeQuery(sql);
+        query.addEntity(MghLemma.class);
+        return query;
+    }
+
     public static List<MghLemma> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT * FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")" + ORDER_BY_PUBLIC_MGHLEMMA;
-
-            NativeQuery query = session.createNativeQuery(sql);
-            query.addEntity(MghLemma.class);
-            return query.getResultList();
+            return getQueryPublic(session).getResultList();
         }
+    }
+
+    public static Stream<MghLemma> getStreamPublic(final Session session) throws Exception {
+        return getQueryPublic(session).getResultStream();
     }
 
     public static List<MghLemmaBearbeiter> getListBearbeiter() throws Exception {

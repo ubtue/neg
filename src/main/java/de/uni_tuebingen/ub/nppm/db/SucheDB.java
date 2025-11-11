@@ -81,7 +81,7 @@ public class SucheDB extends AbstractBase {
         verifyDynamicColumn(attribut);
         verifyDynamicColumn(zwAttribut);
 
-        Map<Integer, String> ret = new HashMap<Integer, String>();
+        Map<Integer, String> ret = new HashMap<>();
         try (Session session = getSession()) {
             String sql = "SELECT ID, " + attribut + " FROM " + dbForm + " e WHERE NOT EXISTS (SELECT * FROM " + tabelle + " eh WHERE e.ID=eh." + zwAttribut + ") ORDER BY " + attribut;
             NativeQuery query = session.createNativeQuery(sql);

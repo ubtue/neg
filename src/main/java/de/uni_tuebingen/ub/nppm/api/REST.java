@@ -25,7 +25,6 @@ abstract public class REST {
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
-            in.close();
             return response.toString();
         }
     }
