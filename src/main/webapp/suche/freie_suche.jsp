@@ -312,10 +312,12 @@
     String provenanceEinzelbeleg = request.getParameter("ProvenanceEinzelbeleg");
 
     if (provenanceEinzelbeleg != null && Integer.parseInt(provenanceEinzelbeleg) > -1) {
-        if(Integer.parseInt(provenanceEinzelbeleg) == 0){
-            conditions.add("einzelbeleg.provenance_source IN ('NeG','NPPM')");
-        }else if(Integer.parseInt(provenanceEinzelbeleg) == 1){
+        if (Integer.parseInt(provenanceEinzelbeleg) == 0) {
+            conditions.add("einzelbeleg.provenance_source = 'NeG'");
+        } else if(Integer.parseInt(provenanceEinzelbeleg) == 1) {
             conditions.add("einzelbeleg.provenance_source = 'DMP'");
+        } else if(Integer.parseInt(provenanceEinzelbeleg) == 2) {
+            conditions.add("einzelbeleg.provenance_source = 'NPPM'");
         }
         einzelbeleg = true;
     }
