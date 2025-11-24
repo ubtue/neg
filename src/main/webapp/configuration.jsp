@@ -61,5 +61,5 @@
 
     String commentFolder_personenkommentar = "personenkommentar";
     String commentFolder_namenkommentar = "namenkommentar";
-    String path = "neg";
+    String path = "nppm";
 %>

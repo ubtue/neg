@@ -4,7 +4,7 @@ DELETE FROM datenbank_mapping WHERE Formular = "quelle" AND Datenfeld = "CMLink"
 DELETE FROM datenbank_mapping WHERE Formular = "person" AND Datenfeld = "CMRef";
 DELETE FROM datenbank_mapping WHERE Formular = "person" AND Datenfeld = "CMLink";
 
-CREATE TABLE IF NOT EXISTS `neg`.`selektion_konvent` (
+CREATE TABLE IF NOT EXISTS `selektion_konvent` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Bezeichnung` VARCHAR(50) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci' NOT NULL,
   PRIMARY KEY (`ID`),
@@ -15,7 +15,7 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 /*Insert a default value*/
-INSERT INTO `neg`.`selektion_konvent` (ID,Bezeichnung) VALUES (-1,'-');
+INSERT INTO `selektion_konvent` (ID,Bezeichnung) VALUES (-1,'-');
 
 /*Create the datamapping for the konvent attribute of the einzelbeleg form*/
 INSERT INTO datenbank_mapping (Formular, Datenfeld, de_Beschriftung, Feldtyp, Array, ZielTabelle, ZielAttribut, Auswahlherkunft, Seite, gb_beschriftung, fr_beschriftung, la_beschriftung)

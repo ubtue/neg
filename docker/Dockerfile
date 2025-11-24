@@ -19,10 +19,10 @@ RUN echo "sql_mode = STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_
 
 # MySQL DB + user
 COPY resources/schema.sql /schema.sql
-RUN mysqld --daemonize && echo "CREATE DATABASE neg;" | mysql
-RUN mysqld --daemonize && cat /schema.sql | mysql neg
-RUN mysqld --daemonize && echo "CREATE USER 'neg'@'localhost' IDENTIFIED BY 'neg';" | mysql
-RUN mysqld --daemonize && echo "GRANT ALL PRIVILEGES ON neg.* TO 'neg'@'localhost';" | mysql
+RUN mysqld --daemonize && echo "CREATE DATABASE nppm;" | mysql
+RUN mysqld --daemonize && cat /schema.sql | mysql nppm
+RUN mysqld --daemonize && echo "CREATE USER 'nppm'@'localhost' IDENTIFIED BY 'nppm';" | mysql
+RUN mysqld --daemonize && echo "GRANT ALL PRIVILEGES ON nppm.* TO 'nppm'@'localhost';" | mysql
 RUN mysqld --daemonize && echo "FLUSH PRIVILEGES;" | mysql
 
 # tomcat configuration & app
@@ -30,8 +30,8 @@ ENV CATALINA_HOME=/usr/share/tomcat10
 ENV CATALINA_BASE=/var/lib/tomcat10
 ENV CATALINA_TMPDIR=/tmp
 RUN sed -i 's/<servlet-class>org.apache.jasper.servlet.JspServlet<\/servlet-class>/<servlet-class>org.apache.jasper.servlet.JspServlet<\/servlet-class><init-param><param-name>strictQuoteEscaping<\/param-name><param-value>false<\/param-value><\/init-param>/g' /etc/tomcat10/web.xml
-COPY resources/neg.xml /etc/tomcat10/Catalina/localhost/neg.xml
-COPY resources/neg.war /var/lib/tomcat10/webapps/neg.war
+COPY resources/nppm.xml /etc/tomcat10/Catalina/localhost/nppm.xml
+COPY resources/nppm.war /var/lib/tomcat10/webapps/nppm.war
 EXPOSE 8080
 
 # start services when container is run
