@@ -1,4 +1,6 @@
 INSERT INTO selektion_provenienz (ID, Bezeichnung) VALUES (2, 'NPPM');
+UPDATE datenbank_mapping SET Datenfeld = 'NPPMID' WHERE Datenfeld='NeGID';
+UPDATE datenbank_mapping SET Datenfeld = 'NPPMIDjump', de_Beschriftung = 'Springe zu NPPM-ID', gb_Beschriftung = 'go to NPPM-ID' WHERE Datenfeld='NeGIDjump';
 ALTER TABLE bemerkung ALTER COLUMN provenance_source SET DEFAULT 'NPPM';
 ALTER TABLE edition ALTER COLUMN provenance_source SET DEFAULT 'NPPM';
 ALTER TABLE edition_band ALTER COLUMN provenance_source SET DEFAULT 'NPPM';
