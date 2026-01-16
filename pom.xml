@@ -148,6 +148,11 @@
             <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>jakartaee-migration</artifactId>
+            <version>1.0.10</version>
+        </dependency>
         <!-- END BLOCK 3: BUILD/TEST-RELATED (special "scope") -->
     </dependencies>
 
@@ -412,23 +417,58 @@
                         </resource>
                     </webResources>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <outputDirectory>/var/lib/tomcat10/webapps</outputDirectory>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
                 </configuration>
             </plugin>
-            <!-- Deploy & Restart tomcat 10 -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.6.2</version>
                 <executions>
                     <execution>
-                        <id>Restart Tomcat 10, Auto-Migrate from Java EE to Jakarta EE</id>
+                        <!-- Auto-Migrate WAR file to Jakarta EE -->
+                        <id>jakarta-migration</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>org.apache.tomcat.jakartaee.MigrationCLI</mainClass>
+                            <classpathScope>runtime</classpathScope>
+                            <arguments>
+                                <argument>${project.build.directory}/${project.build.finalName}.war</argument>
+                                <argument>${project.build.directory}/${project.build.finalName}-jakarta.war</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <!-- Deploy WAR file to local tomcat folder -->
+                    <execution>
+                        <id>deploy-war</id>
                         <phase>install</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/postbuild.sh</executable>
+                            <executable>bash</executable>
+                            <arguments>
+                                <argument>-c</argument>
+                                <argument>cp ${project.build.directory}/${project.build.finalName}-jakarta.war /var/lib/tomcat10/webapps/${project.build.finalName}.war</argument>
+                          </arguments>
+                        </configuration>
+                    </execution>
+                    <!-- Restart tomcat -->
+                    <execution>
+                        <id>tomcat-restart</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>systemctl</executable>
+                            <arguments>
+                                <argument>restart</argument>
+                                <argument>tomcat10</argument>
+                          </arguments>
                         </configuration>
                     </execution>
                 </executions>
