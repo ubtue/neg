@@ -25,7 +25,11 @@ public class AbstractBase {
      * Print usage information & exit with error code
      */
     protected static void Usage(String usage) {
-        System.out.println(usage);
+        System.err.println(usage);
         System.exit(1);
+    }
+
+    protected static void Log(final String message) {
+        System.err.println(message);
     }
 }
