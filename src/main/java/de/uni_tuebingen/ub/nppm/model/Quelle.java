@@ -124,7 +124,7 @@ public class Quelle implements PersistentIdentifier, History {
     @ManyToMany(mappedBy = "quellen")
     private Set<Edition> editions = new HashSet<>();
 
-    @ManyToMany(mappedBy = "quelle")
+    @OneToMany(mappedBy = "quelle")
     private Set<Einzelbeleg> einzelbelege = new HashSet<>();
 
     @OneToOne(mappedBy = "quelle")
