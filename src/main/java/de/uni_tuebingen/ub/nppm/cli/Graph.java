@@ -18,7 +18,7 @@ public class Graph extends AbstractBase {
     // CLI Arguments
     private static Path outputPath;
 
-    private static org.jgrapht.Graph<String, DefaultWeightedEdge> graph;
+    private static org.jgrapht.Graph<String, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
     /**
      * Generate Graph-related data, e.g. for Gephi or Graphviz
@@ -36,7 +36,8 @@ public class Graph extends AbstractBase {
                 Usage("Usage: Graph <outputPath(.csv|.dot|.gexf)> ");
         }
 
-        export();
+        generateGraph();
+        exportGraph();
 
         // Exit successfully (we need this or the program will hang forever)
         System.exit(0);
@@ -68,36 +69,33 @@ public class Graph extends AbstractBase {
         }
     }
 
-    private static void export() throws Exception {
+
+    private static void generateGraph() throws Exception {
+        // select all public quellen as starting point
         Log("Baue Graph...");
-        graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        for (var quelle : QuelleDB.getListPublic()) {
+            Log("Verarbeite Quelle " + quelle.getPersistentIdentifier());
+            var belege = quelle.getEinzelbelege();
+            for (var beleg : belege) {
+                var personen = beleg.getPerson();
+                for (var person : personen) {
+                    // Unclear / always add person even if there are no relations?
+                    // Makes graph a lot bigger, but is this really useful?
+                    // addVertex(person, 1);
 
-        // Note: We need to execute multi-pass, else vertices will not be found when creating edges
-        // first: create all nodes (vertices)
-        Log("Ermittle Knoten...");
-        for (var person : PersonDB.getListPersonPublic()) {
-            addVertex(person);
-        }
-
-        // - second: create all edges
-        Log("Ermittle Kanten...");
-        for (var person : PersonDB.getListPersonPublic()) {
-            for (var beleg : person.getEinzelbeleg()) {
-                var quelle = beleg.getQuelle();
-                if (quelle.getZuVeroeffentlichen().equals(1)) {
-                    // Highest weight: Only relate personen within same einzelbeleg
-                    for (var person2 : beleg.getPerson()) {
+                    // Add persons who are directly related within the same Einzelbeleg
+                    for (var person2 : personen) {
                         if (!person.getPersistentIdentifier().equals(person2.getPersistentIdentifier())) {
-                            addEdge(person, person2, 1);
+                            addEdge(person, person2, 10);
                         }
                     }
 
-                    // Lower weight: Add personen from other einzelbelege on the same page (depending on raster if available)
+                    // Add persons from other einzelbelege on the same page (depending on raster if available)
                     if (beleg.getSeite() != null) {
-                        for (var beleg2 : quelle.getEinzelbelege()) {
+                        for (var beleg2 : belege) {
                             if (!beleg.getPersistentIdentifier().equals(beleg2.getPersistentIdentifier())) {
                                 double weight = 1;
-                                if (beleg2.getSeite().equals(beleg.getSeite())) {
+                                if (beleg.getSeite().equals(beleg2.getSeite())) {
                                     ++weight;
 
                                     if (beleg.getRaster() != null && beleg.getRaster().equals(beleg2.getRaster()))  {
@@ -107,7 +105,7 @@ public class Graph extends AbstractBase {
                                         ++weight;
                                     }
                                 }
-                                for (var person2 : beleg.getPerson()) {
+                                for (var person2 : beleg2.getPerson()) {
                                     if (!person2.getPersistentIdentifier().equals(person.getPersistentIdentifier())) {
                                         addEdge(person, person2, weight);
                                     }
@@ -118,7 +116,9 @@ public class Graph extends AbstractBase {
                 }
             }
         }
+    }
 
+    private static void exportGraph() throws Exception {
         if (outputPath.toString().endsWith(".csv")) {
             Log("Exportiere als CSV");
 
@@ -141,7 +141,6 @@ public class Graph extends AbstractBase {
             exporter.setVertexAttributeProvider((v) -> {
                 Map<String, Attribute> map = new LinkedHashMap<>();
                 map.put("label", DefaultAttribute.createAttribute(v));
-                map.put("label", DefaultAttribute.createAttribute(v));
                 return map;
             });
             exporter.setEdgeAttributeProvider(e -> {
@@ -157,6 +156,14 @@ public class Graph extends AbstractBase {
         } else if (outputPath.toString().endsWith(".gexf")) {
             Log("Exportiere als GEXF");
             GEXFExporter<String, DefaultWeightedEdge> exporter = new GEXFExporter<>();
+            exporter.setVertexIdProvider(v -> v);
+            exporter.setEdgeAttributeProvider(e -> {
+                Map<String, Attribute> map = new LinkedHashMap<>();
+                double weight = graph.getEdgeWeight(e);
+                map.put("label", DefaultAttribute.createAttribute(weight));
+                map.put("weight", DefaultAttribute.createAttribute(weight));
+                return map;
+            });
             try (Writer writer = new FileWriter(outputPath.toString())) {
                 exporter.exportGraph(graph, writer);
             }
