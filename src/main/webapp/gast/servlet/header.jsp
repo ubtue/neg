@@ -23,7 +23,7 @@
 
 
     <!-- CSS includes (local) -->
-    <link rel="icon" href="layout/images/nppm.ico" type="image/gif">
+    <link rel="icon" href="<%=Utils.getBaseUrl(request) + "/gast/layout/images/nppm.ico"%>" type="image/gif">
     <link rel="stylesheet" href="<%=Utils.getVersionedHref(request, application, "/gast/layout/layout.css")%>" type="text/css">
 
     <!-- ut dependencies (rest of JS dependencies is behind navigation, needs to stay there or navigation cannot be rendered correctly -->

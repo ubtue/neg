@@ -51,8 +51,18 @@ public class AbstractBase {
         cliProperties = newCliProperties;
     }
 
-    // Example taken from: https://www.javaguides.net/2019/08/hibernate-5-one-to-many-mapping-annotation-example.html
     protected static SessionFactory getSessionFactory() throws Exception {
+        if (sessionFactory == null) {
+            initSessionFactory();
+        }
+        return sessionFactory;
+    }
+
+    // This will be called by util.ContextListener so that all tomcat sessions
+    // share the same SessionFactory:
+    // - SessionFactory seems to be very slow on initialization
+    // - Using shared connection pooling might fail if every HTTP client connection uses a different SessionFactory
+    public static void initSessionFactory() throws Exception {
         if (sessionFactory == null) {
             // Hibernate settings equivalent to hibernate.cfg.xml's properties
             Configuration configuration = new Configuration();
@@ -84,13 +94,14 @@ public class AbstractBase {
             settings.put("hibernate.connection.CharSet", "utf8mb4");
             settings.put("hibernate.connection.useUnicode", true);
             settings.put("hibernate.connection.characterEncoding", "utf-8");
-            settings.put("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
+            settings.put("hibernate.connection.provider_class", "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
 
-            settings.put("hibernate.c3p0.min_size", "5");
-            settings.put("hibernate.c3p0.max_size", "150");
-            settings.put("hibernate.c3p0.timeout", "30");
-            settings.put("hibernate.c3p0.idle_test_period", "10");
-            settings.put("hibernate.c3p0.preferredTestQuery", "SELECT 1");
+            settings.put("hibernate.hikari.jdbcUrl", settings.get(Environment.URL));
+            settings.put("hibernate.hikari.username", settings.get(Environment.USER));
+            settings.put("hibernate.hikari.password", settings.get(Environment.PASS));
+            settings.put("hibernate.hikari.maximumPoolSize", "20");
+            settings.put("hibernate.hikari.minimumIdle", "5");
+            settings.put("hibernate.hikari.idleTimeout", "30000");
 
             settings.put("hibernate.cache.use_query_cache", "true");
             settings.put("hibernate.cache.use_second_level_cache", "true");
@@ -121,7 +132,12 @@ public class AbstractBase {
             System.out.println("Hibernate Java Config serviceRegistry created");
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
-        return sessionFactory;
+    }
+
+    public static void shutdownSessionFactory() {
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
     }
 
     protected static Map<String, Class> initTableNameToEntityMap() throws RuntimeException {

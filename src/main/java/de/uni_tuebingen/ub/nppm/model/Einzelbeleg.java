@@ -244,6 +244,15 @@ public class Einzelbeleg implements PersistentIdentifier, History {
     @Column(name = "TitelText", length = 255)
     private String titelText;
 
+    @Column(name = "seite", length = 255)
+    private String seite;
+
+    @Column(name = "raster", length = 255)
+    private String raster;
+
+    @Column(name = "schreiber", length = 255)
+    private String schreiber;
+
     @ManyToOne(targetEntity = SelektionBeziehungGemeinschaft.class)
     @JoinColumn(name = "BeziehungGemeinschaftID", referencedColumnName = "ID")
     private SelektionBeziehungGemeinschaft beziehungGemeinschaft;
@@ -983,6 +992,30 @@ public class Einzelbeleg implements PersistentIdentifier, History {
 
     public void setKritikId(Integer kritikId) {
         this.kritikId = kritikId;
+    }
+
+    public String getSeite() {
+        return seite;
+    }
+
+    public void setSeite(String seite) {
+        this.seite = seite;
+    }
+
+    public String getRaster() {
+        return raster;
+    }
+
+    public void setRaster(String raster) {
+        this.raster = raster;
+    }
+
+    public String getSchreiber() {
+        return schreiber;
+    }
+
+    public void setSchreiber(String schreiber) {
+        this.schreiber = schreiber;
     }
 
     public JSONObject getJSON() {
