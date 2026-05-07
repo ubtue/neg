@@ -38,7 +38,6 @@ public class EinzelbelegDB extends AbstractBase {
         String SQL = "SELECT * FROM einzelbeleg WHERE ID IN (" + SUBSELECT_PUBLIC_EINZELBELEG_IDS + ") " + ORDER_BY_PUBLIC_EINZELBELEG;
         NativeQuery query = session.createNativeQuery(SQL);
         query.addEntity(Einzelbeleg.class);
-        query.setCacheable(true);
         return query;
     }
 
@@ -66,7 +65,6 @@ public class EinzelbelegDB extends AbstractBase {
             NativeQuery query = session.createNativeQuery(SQL);
             query.addEntity(Einzelbeleg.class);
             query.setMaxResults(1);
-            query.setCacheable(true);
             return (Einzelbeleg) query.getSingleResult();
         }
     }
@@ -259,7 +257,7 @@ public class EinzelbelegDB extends AbstractBase {
     public static List<Integer> getAllPublicEinzelbelegIds() throws Exception {
         try (Session session = getSession()) {
             String sql = SUBSELECT_PUBLIC_EINZELBELEG_IDS + ORDER_BY_PUBLIC_EINZELBELEG;
-            return session.createNativeQuery(sql).setCacheable(true).getResultList();
+            return session.createNativeQuery(sql).getResultList();
         }
     }
 
