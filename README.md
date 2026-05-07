@@ -14,6 +14,7 @@ Prerequisites:
   - Catalina/localhost/nppm.xml (needs to be created with correct user credentials)
     - Note: If you also want to run CLI programs out of the tomcat context, you must create /root/.nppm.properties and store sqlURL, sqlUser and sqlPassword in there.
 
+```
 <Context>
     <!-- Mandatory -->
     <Environment name="sqlURL" value="jdbc:mysql://localhost:3306/nppm?characterEncoding=utf8" type="java.lang.String"/>
@@ -32,6 +33,7 @@ Prerequisites:
     <Environment name="smtpPassword" value="examplePassword" type="java.lang.String"/>
 </Context>
 ```
+
 - JDK >= 11
 - MySQL >= 8.0
   - innodb_buffer_pool_size=1024M
@@ -93,6 +95,8 @@ Production:
 - https://wiki.owasp.org/index.php/Securing_tomcat
 - Make sure that your AccessLogValve also logs e.g. Referer and User-Agent
     - pattern="%h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot;"
+- Make sure that your connector uses a proper connectionTimeout for resilience against Slowloris-type DDOS attacks
+    - connectionTimeout="20000" (default 60000)
 - Make sure logs get removed after 90 days
     - maxDays="90"
     - Note: this should be monitored, maybe additional logrotate configuration is necessary
