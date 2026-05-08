@@ -120,6 +120,9 @@
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
+            <!--
+                Note: Version 3.0.0 is available, but this needs Java 17 as minimum
+            -->
             <version>2.10.0</version>
         </dependency>
         <dependency>
@@ -159,7 +162,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.11.4</version>
+            <version>5.14.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
