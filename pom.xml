@@ -96,6 +96,10 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
+            <!--
+                Note: Increasing this version might lead to conflicts until the Hibernate + Jakarta EE Migration is completely finished
+                      (we technically need <classifier>jakarta</classifier>, but that will conflict with javax.cache.cache-api and the jakartaee migration tool)
+            -->
             <version>3.9.11</version>
         </dependency>
         <dependency>
