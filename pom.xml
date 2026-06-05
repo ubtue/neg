@@ -288,7 +288,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.10.0</version>
+                <version>3.11.0</version>
                 <executions>
                     <!-- Unpack JQuery -->
                     <execution>
@@ -493,7 +493,7 @@
             <!-- Configure the maven-surefire-plugin and maven-failsafe-plugin for JUnit -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.5</version>
+                <version>3.5.6</version>
                 <configuration>
                     <!-- Skip tests by default, since execution takes very long. Only disable this for specific testing on your local machine if necessary. -->
                     <skipTests>true</skipTests>
@@ -501,7 +501,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.5</version>
+                <version>3.5.6</version>
             </plugin>
         </plugins>
     </build>
