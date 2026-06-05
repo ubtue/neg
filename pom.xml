@@ -168,7 +168,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>jakartaee-migration</artifactId>
-            <version>1.0.10</version>
+            <version>1.0.12</version>
         </dependency>
         <!-- END BLOCK 3: BUILD/TEST-RELATED (special "scope") -->
     </dependencies>
