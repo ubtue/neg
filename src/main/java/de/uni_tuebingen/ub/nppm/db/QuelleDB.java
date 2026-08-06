@@ -16,14 +16,14 @@ public class QuelleDB extends AbstractBase {
 
     public static final String SUBSELECT_PUBLIC_QUELLE_IDS = "SELECT ID FROM quelle WHERE ZuVeroeffentlichen=1";
     public static final String ORDER_BY_PUBLIC_QUELLE = " ORDER BY quelle.Bezeichnung, quelle.ID ASC";
+    public static final String SELECT_PUBLIC_QUELLEN = "SELECT * FROM quelle WHERE ZuVeroeffentlichen=1 " + ORDER_BY_PUBLIC_QUELLE;
 
     public static List<Quelle> getList() throws Exception {
         return getList(Quelle.class);
     }
 
     private static Query getQueryPublic(final Session session) throws Exception {
-        String SQL = "SELECT * FROM quelle WHERE ID IN (" + SUBSELECT_PUBLIC_QUELLE_IDS + ") " + ORDER_BY_PUBLIC_QUELLE;
-        NativeQuery query = session.createNativeQuery(SQL);
+        NativeQuery query = session.createNativeQuery(SELECT_PUBLIC_QUELLEN);
         query.addEntity(Quelle.class);
         return query;
     }
@@ -101,9 +101,7 @@ public class QuelleDB extends AbstractBase {
 
     public static Quelle getFirstPublicQuelle() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM quelle WHERE ID IN (" + SUBSELECT_PUBLIC_QUELLE_IDS +") " + ORDER_BY_PUBLIC_QUELLE;
-            NativeQuery query = session.createNativeQuery(SQL);
-            query.addEntity(Quelle.class);
+            Query query = getQueryPublic(session);
             query.setMaxResults(1);
             return (Quelle) query.getSingleResult();
         }

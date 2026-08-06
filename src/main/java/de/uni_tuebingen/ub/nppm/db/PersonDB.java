@@ -66,10 +66,7 @@ public class PersonDB extends AbstractBase {
 
     public static Person getFirstPublicPerson() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM person WHERE ID IN (" + SUBSELECT_PUBLIC_PERSON_IDS + ") " + ORDER_BY_PUBLIC_PERSON;
-
-            NativeQuery query = session.createNativeQuery(SQL);
-            query.addEntity(Person.class);
+            Query query = getQueryPublic(session);
             query.setMaxResults(1);
             return (Person) query.getSingleResult();
         }

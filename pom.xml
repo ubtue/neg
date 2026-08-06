@@ -47,7 +47,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>7.0.2</version>
+            <version>7.1.0</version>
         </dependency>
         <dependency>
             <groupId>javax.cache</groupId>
@@ -115,7 +115,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20260522</version>
+            <version>20260719</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
@@ -168,7 +168,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>jakartaee-migration</artifactId>
-            <version>1.0.10</version>
+            <version>1.0.12</version>
         </dependency>
         <!-- END BLOCK 3: BUILD/TEST-RELATED (special "scope") -->
     </dependencies>
@@ -288,7 +288,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.10.0</version>
+                <version>3.11.0</version>
                 <executions>
                     <!-- Unpack JQuery -->
                     <execution>
@@ -493,7 +493,7 @@
             <!-- Configure the maven-surefire-plugin and maven-failsafe-plugin for JUnit -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.5</version>
+                <version>3.5.6</version>
                 <configuration>
                     <!-- Skip tests by default, since execution takes very long. Only disable this for specific testing on your local machine if necessary. -->
                     <skipTests>true</skipTests>
@@ -501,7 +501,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.5</version>
+                <version>3.5.6</version>
             </plugin>
         </plugins>
     </build>
