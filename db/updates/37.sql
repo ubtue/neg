@@ -5,4 +5,4 @@ ALTER TABLE einzelbeleg
 ADD CONSTRAINT einzelbeleg_BeziehungGemeinschaftID FOREIGN KEY (`BeziehungGemeinschaftID`) REFERENCES `selektion_beziehung_gemeinschaft` (`ID`);
 
 
-UPDATE `neg`.`datenbank_mapping` SET `Feldtyp` = 'select' WHERE `Formular` = 'person' and `Datenfeld` = 'GruppeHerkunft';
+UPDATE `datenbank_mapping` SET `Feldtyp` = 'select' WHERE `Formular` = 'person' and `Datenfeld` = 'GruppeHerkunft';

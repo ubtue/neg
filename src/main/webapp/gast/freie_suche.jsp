@@ -36,12 +36,12 @@
                         <tbody>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">
-                                    <% Language.printDatafield(out, session, formular, "NeGID"); %>
+                                    <% Language.printDatafield(out, session, formular, "NPPMID"); %>
                                 </td>
                                 <td class="ut-table__item ut-table__body__item">
                                     <jsp:include page="../inc.erzeugeFormular.jsp">
                                         <jsp:param name="Formular" value="freie_suche"/>
-                                        <jsp:param name="Datenfeld" value="NeGID"/>
+                                        <jsp:param name="Datenfeld" value="NPPMID"/>
                                         <jsp:param name="size" value="75"/>
                                     </jsp:include>
                                 </td>

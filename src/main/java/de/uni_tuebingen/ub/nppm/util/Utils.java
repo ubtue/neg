@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -77,13 +78,27 @@ public class Utils {
     }
 
     public static String getBaseUrl(HttpServletRequest request) {
-        String scheme = request.getScheme();
-        String host = request.getServerName();
-        int port = request.getServerPort();
-        String contextPath = request.getContextPath();
-
-        String baseUrl = scheme + "://" + host + ((("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)) ? "" : ":" + port) + contextPath;
-        return baseUrl;
+        // Check whether we're behind a proxy
+        String xHost = request.getHeader("Host");
+        String xScheme = request.getHeader("X-Forwarded-Proto");
+        String xPort = request.getHeader("X-Forwarded-Port");
+        String xPrefix = request.getHeader("X-Forwarded-Prefix");
+        if (xScheme != null && xHost != null && xPort != null) {
+            // Use proxy configuration
+            String baseUrl = xScheme + "://" + xHost + ((("http".equals(xScheme) && xPort.equals("80")) || ("https".equals(xScheme) && xPort.equals("443"))) ? "" : ":" + xPort);
+            if (xPrefix != null) {
+                baseUrl += xPrefix;
+            }
+            return baseUrl;
+        } else {
+            // If not, use the default
+            String scheme = request.getScheme();
+            String host = request.getServerName();
+            int port = request.getServerPort();
+            String contextPath = request.getContextPath();
+            String baseUrl = scheme + "://" + host + ((("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)) ? "" : ":" + port) + contextPath;
+            return baseUrl;
+        }
     }
 
     public static String getAjaxUrl(HttpServletRequest request) {
@@ -92,7 +107,7 @@ public class Utils {
 
     // This function will be overloaded with shortcuts, since it will be used in many templates
     public static String getPersistentIdentifierUrl(final HttpServletRequest request, final String persistentIdentifier) {
-        return getBaseUrl(request) + "/id/" + urlEncode(persistentIdentifier);
+        return getBaseUrl(request) + "/id/" + escapeURL(persistentIdentifier);
     }
 
     public static String getPersistentIdentifierUrl(final HttpServletRequest request, final PersistentIdentifier persistentIdentifier) {
@@ -169,7 +184,7 @@ public class Utils {
 
     // Alias for urlEncode(), so that we have multiple functions with the same naming schema (escape...)
     public static String escapeURL(String s) {
-        return URLEncoder.encode(s);
+        return URLEncoder.encode(s, StandardCharsets.UTF_8);
     }
 
     /**

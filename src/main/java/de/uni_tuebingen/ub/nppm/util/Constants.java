@@ -1,6 +1,8 @@
 package de.uni_tuebingen.ub.nppm.util;
 
 public class Constants {
+    public static final String USER_AGENT = "NPPMBot (https://nppm.ub.uni-tuebingen.de)";
+
     public static final Integer UNDEFINED_ID = -2;
     public static final Integer NEW_ITEM = -1;
     //Fallback language if no translation is found

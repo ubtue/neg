@@ -50,6 +50,10 @@ public class MghLemma implements PersistentIdentifier, History {
         return id;
     }
 
+    public String getDebugString() {
+        return getPersistentIdentifier() + " (" + getMghLemma() + ")";
+    }
+
     @Override
     public String getPersistentIdentifier() {
         return "M" + getId();
@@ -61,6 +65,24 @@ public class MghLemma implements PersistentIdentifier, History {
 
     public void setMghLemma(String mghLemma) {
         this.mghLemma = mghLemma;
+    }
+
+    protected String[] getGlieder() {
+        return getMghLemma().split("~");
+    }
+
+    public String getErstglied() {
+        String[] glieder = getGlieder();
+        if (glieder.length >= 1)
+            return glieder[0];
+        return null;
+    }
+
+    public String getZweitglied() {
+        String[] glieder = getGlieder();
+        if (glieder.length >= 2)
+            return glieder[1];
+        return null;
     }
 
     public SelektionBearbeitungsstatus getBearbeitungsstatus() {

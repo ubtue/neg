@@ -15,7 +15,7 @@ public class RedirectGndServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String URI = request.getRequestURI();                 // e.g. /neg/gnd/118560034 (equals P7404)
+        String URI = request.getRequestURI();                 // e.g. /nppm/gnd/118560034 (equals P7404)
         String GND = URI.substring(URI.lastIndexOf("/") + 1); // e.g. 118560034
 
         if (GND == null) {

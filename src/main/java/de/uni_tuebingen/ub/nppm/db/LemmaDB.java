@@ -1,9 +1,13 @@
 package de.uni_tuebingen.ub.nppm.db;
 
 import java.util.List;
+import java.util.stream.Stream;
 import de.uni_tuebingen.ub.nppm.model.*;
 import de.uni_tuebingen.ub.nppm.util.Constants;
 import de.uni_tuebingen.ub.nppm.util.pagination.statistics.PaginationParams;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
@@ -19,18 +23,40 @@ public class LemmaDB extends AbstractBase {
         return AbstractBase.getById(id, MghLemma.class);
     }
 
+    public static MghLemma getByLemma(final String lemma) throws Exception {
+        try (Session session = getSession()) {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<MghLemma> criteria = builder.createQuery(MghLemma.class);
+            Root lemmaRoot = criteria.from(MghLemma.class);
+            criteria.select(lemmaRoot);
+            criteria.where(builder.equal(lemmaRoot.get(MghLemma_.MGH_LEMMA), lemma));
+            Query query = session.createQuery(criteria);
+            List<MghLemma> rows = query.getResultList();
+            if (rows.isEmpty())
+                return null;
+            return (MghLemma)rows.get(0);
+        }
+    }
+
     public static List<MghLemma> getList() throws Exception {
         return getList(MghLemma.class);
     }
 
+    public static Query getQueryPublic(final Session session) throws Exception {
+        String sql = "SELECT * FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")" + ORDER_BY_PUBLIC_MGHLEMMA;
+        NativeQuery query = session.createNativeQuery(sql);
+        query.addEntity(MghLemma.class);
+        return query;
+    }
+
     public static List<MghLemma> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String sql = "SELECT * FROM mgh_lemma WHERE ID IN (" + SUBSELECT_PUBLIC_MGHLEMMA_IDS + ")" + ORDER_BY_PUBLIC_MGHLEMMA;
-
-            NativeQuery query = session.createNativeQuery(sql);
-            query.addEntity(MghLemma.class);
-            return query.getResultList();
+            return getQueryPublic(session).getResultList();
         }
+    }
+
+    public static Stream<MghLemma> getStreamPublic(final Session session) throws Exception {
+        return getQueryPublic(session).getResultStream();
     }
 
     public static List<MghLemmaBearbeiter> getListBearbeiter() throws Exception {
@@ -374,6 +400,23 @@ public class LemmaDB extends AbstractBase {
                     throw new Exception("Update fehlgeschlagen für ID: " + belegId);
                 }
             }
+            tx.commit();
+            return true;
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return false;
+        }
+    }
+
+    public static boolean deleteLemma(int lemmaId) throws Exception {
+        Transaction tx = null;
+        try (Session session = getSession()) {
+            tx = session.beginTransaction();
+            session.createNativeQuery("DELETE FROM mgh_lemma_korrektor WHERE ID = \"" + String.valueOf(lemmaId) + "\"").executeUpdate();
+            session.createNativeQuery("DELETE FROM mgh_lemma_bearbeiter WHERE ID = \"" + String.valueOf(lemmaId) + "\"").executeUpdate();
+            session.createNativeQuery("DELETE FROM mgh_lemma WHERE ID = \"" + String.valueOf(lemmaId) + "\"").executeUpdate();
             tx.commit();
             return true;
         } catch (Exception ex) {

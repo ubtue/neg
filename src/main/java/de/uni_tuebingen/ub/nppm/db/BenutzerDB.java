@@ -99,7 +99,6 @@ public class BenutzerDB extends AbstractBase {
             criteria.select(benutzer);
             criteria.where(builder.equal(benutzer.get(Benutzer_.EMail), email));
             boolean inDatabase = !session.createQuery(criteria).getResultList().isEmpty();
-            session.close();
             return inDatabase;
         }
     }

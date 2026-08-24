@@ -21,18 +21,18 @@ public class OhneVerknuepfungServlet extends AbstractBackendServlet {
     @Override
     protected List<String> getAdditionalCss() {
         List<String> css = super.getAdditionalCss();
-        css.add("webjars/datatables/2.3.2/css/dataTables.dataTables.min.css");
-        css.add("webjars/datatables-buttons/3.1.2/css/buttons.dataTables.min.css");
+        css.add("webjars/datatables/2.3.7/css/dataTables.dataTables.min.css");
+        css.add("webjars/datatables-buttons/3.2.6/css/buttons.dataTables.min.css");
         return css;
     }
 
     @Override
     protected List<String> getAdditionalJavaScript() {
         List<String> js = super.getAdditionalJavaScript();
-        js.add("webjars/datatables/2.3.2/js/dataTables.min.js");
-        js.add("webjars/datatables-buttons/3.1.2/js/dataTables.buttons.min.js");
-        js.add("webjars/datatables-buttons/3.1.2/js/buttons.dataTables.min.js");
-        js.add("webjars/datatables-buttons/3.1.2/js/buttons.html5.min.js");
+        js.add("webjars/datatables/2.3.7/js/dataTables.min.js");
+        js.add("webjars/datatables-buttons/3.2.6/js/dataTables.buttons.min.js");
+        js.add("webjars/datatables-buttons/3.2.6/js/buttons.dataTables.min.js");
+        js.add("webjars/datatables-buttons/3.2.6/js/buttons.html5.min.js");
         js.add("webjars/jszip/3.10.1/jszip.js");
         return js;
     }

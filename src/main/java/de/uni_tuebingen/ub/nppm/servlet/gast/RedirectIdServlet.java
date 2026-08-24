@@ -16,7 +16,7 @@ public class RedirectIdServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String URI = request.getRequestURI();                 // e.g. /neg/id/P7404
+        String URI = request.getRequestURI();                 // e.g. /nppm/id/P7404
         String PID = URI.substring(URI.lastIndexOf("/") + 1); // e.g. P7404
         String ID = PID.substring(1);                         // e.g. 7404
 

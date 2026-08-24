@@ -7,6 +7,7 @@ import de.uni_tuebingen.ub.nppm.util.LemmaKorrBelegRow;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -24,6 +25,7 @@ public class EinzelbelegDB extends AbstractBase {
     public static final String SUBSELECT_HIDDEN_EINZELBELEG_IDS = "SELECT DISTINCT EinzelbelegID FROM einzelbeleg_hatmghlemma WHERE MGHLemmaID IN (" + LemmaDB.SUBSELECT_HIDDEN_MGHLEMMA_IDS + ")";
     public static final String SUBSELECT_PUBLIC_EINZELBELEG_IDS = "SELECT ID FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ") AND ID NOT IN (" + SUBSELECT_HIDDEN_EINZELBELEG_IDS + ")";
     public static final String ORDER_BY_PUBLIC_EINZELBELEG = " ORDER BY einzelbeleg.Belegform ASC, einzelbeleg.ID ASC";
+    public static final String SELECT_PUBLIC_EINZELBELEGE = "SELECT * FROM einzelbeleg WHERE QuelleID IN (" + QuelleDB.SUBSELECT_PUBLIC_QUELLE_IDS + ") AND ID NOT IN (" + SUBSELECT_HIDDEN_EINZELBELEG_IDS + ") " + ORDER_BY_PUBLIC_EINZELBELEG;
 
     public static Einzelbeleg getById(int id) throws Exception {
         return AbstractBase.getById(id, Einzelbeleg.class);
@@ -33,13 +35,20 @@ public class EinzelbelegDB extends AbstractBase {
         return getList(Einzelbeleg.class);
     }
 
+    private static Query getQueryPublic(final Session session) throws Exception {
+        NativeQuery query = session.createNativeQuery(SELECT_PUBLIC_EINZELBELEGE);
+        query.addEntity(Einzelbeleg.class);
+        return query;
+    }
+
     public static List<Einzelbeleg> getListPublic() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM einzelbeleg WHERE ID IN (" + SUBSELECT_PUBLIC_EINZELBELEG_IDS + ") " + ORDER_BY_PUBLIC_EINZELBELEG;
-            NativeQuery query = session.createNativeQuery(SQL);
-            query.addEntity(Einzelbeleg.class);
-            return query.getResultList();
+            return getQueryPublic(session).getResultList();
         }
+    }
+
+    public static Stream<Einzelbeleg> getStreamPublic(final Session session) throws Exception {
+        return getQueryPublic(session).getResultStream();
     }
 
     public static List<EinzelbelegHatFunktion_MM> getListFunktion() throws Exception {
@@ -52,9 +61,7 @@ public class EinzelbelegDB extends AbstractBase {
 
     public static Einzelbeleg getFirstPublicEinzelbeleg() throws Exception {
         try (Session session = getSession()) {
-            String SQL = "SELECT * FROM einzelbeleg WHERE ID IN (" + SUBSELECT_PUBLIC_EINZELBELEG_IDS +") " + ORDER_BY_PUBLIC_EINZELBELEG;
-            NativeQuery query = session.createNativeQuery(SQL);
-            query.addEntity(Einzelbeleg.class);
+            Query query = getQueryPublic(session);
             query.setMaxResults(1);
             return (Einzelbeleg) query.getSingleResult();
         }
@@ -181,17 +188,22 @@ public class EinzelbelegDB extends AbstractBase {
     }
 
     public static void insertLemma(String einzelbelegId, String mghLemmaId) throws Exception {
-        String sql = "INSERT INTO einzelbeleg_hatmghlemma(EinzelbelegID, MGHLemmaID) VALUES(" + einzelbelegId + ", " + mghLemmaId + ")";
+        String sql = "INSERT INTO einzelbeleg_hatmghlemma (EinzelbelegID, MGHLemmaID) VALUES (" + einzelbelegId + ", " + mghLemmaId + ")";
+        insertOrUpdate(sql);
+    }
+
+    public static void deleteLemma(String einzelbelegId, String mghLemmaId) throws Exception {
+        String sql = "DELETE FROM einzelbeleg_hatmghlemma WHERE EinzelbelegID = \"" + einzelbelegId + "\" AND mghLemmaId = \"" + mghLemmaId + "\"";
         insertOrUpdate(sql);
     }
 
     public static void insertNamenkommentar(String einzelbelegId, String namenkommentarId) throws Exception {
-        String sql = "INSERT INTO einzelbeleg_hatnamenkommentar(EinzelbelegID, NamenkommentarID) VALUES(" + einzelbelegId + ", " + namenkommentarId + ")";
+        String sql = "INSERT INTO einzelbeleg_hatnamenkommentar (EinzelbelegID, NamenkommentarID) VALUES (" + einzelbelegId + ", " + namenkommentarId + ")";
         insertOrUpdate(sql);
     }
 
     public static void insertFunktion(String einzelbelegId, String funktionID) throws Exception {
-        String sql = "INSERT INTO einzelbeleg_hatfunktion(EinzelbelegID, FunktionID) VALUES(" + einzelbelegId + ", " + funktionID + ")";
+        String sql = "INSERT INTO einzelbeleg_hatfunktion (EinzelbelegID, FunktionID) VALUES (" + einzelbelegId + ", " + funktionID + ")";
         insertOrUpdate(sql);
     }
 

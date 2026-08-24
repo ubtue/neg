@@ -73,42 +73,41 @@
     boolean namenkommentar = false;
     boolean mghlemma = false;
 
-//NeG-ID
-    String neGID = request.getParameter("NeGID");
-    if (neGID != null && !neGID.trim().equals("")) {
-        String newID = request.getParameter("NeGID");
-        String newForm = newID.substring(1);
+    //NPPM-ID
+    String NPPM_ID = request.getParameter("NPPMID");
+    if (NPPM_ID != null && !NPPM_ID.trim().equals("")) {
+        String newForm = NPPM_ID.substring(1);
         String sqlEscapedForm = DBtoDB(newForm);
-        if (newID.startsWith("B") || newID.startsWith("b")) {
+        if (NPPM_ID.startsWith("B") || NPPM_ID.startsWith("b")) {
             if (Utils.safeNumeric(newForm)) {
                 conditions.add("einzelbeleg.ID='" + sqlEscapedForm + "'");
                 einzelbeleg = true;
             }
-        } else if (newID.startsWith("P") || newID.startsWith("p")) {
+        } else if (NPPM_ID.startsWith("P") || NPPM_ID.startsWith("p")) {
             if (Utils.safeNumeric(newForm)) {
                 conditions.add("person.ID='" + sqlEscapedForm + "'");
                 person = true;
             }
-        } else if (newID.startsWith("N") || newID.startsWith("n")) {
+        } else if (NPPM_ID.startsWith("N") || NPPM_ID.startsWith("n")) {
             if (Utils.safeNumeric(newForm)) {
                 conditions.add("namenkommentar.ID='" + sqlEscapedForm + "'");
                 namenkommentar = true;
             }
-        } else if (newID.startsWith("Q") || newID.startsWith("q")) {
+        } else if (NPPM_ID.startsWith("Q") || NPPM_ID.startsWith("q")) {
             if (Utils.safeNumeric(newForm)) {
                 conditions.add("quelle.ID='" + sqlEscapedForm + "'");
                 if (!tableString.contains("quelle")) {
                     tableString += " INNER JOIN quelle ON einzelbeleg.QuelleID=quelle.ID";
                 }
             }
-        } else if (newID.startsWith("E") || newID.startsWith("e")) {
+        } else if (NPPM_ID.startsWith("E") || NPPM_ID.startsWith("e")) {
             if (Utils.safeNumeric(newForm)) {
                 conditions.add("edition.ID='" + sqlEscapedForm + "'");
                 if (!tableString.contains("edition")) {
                     tableString += " INNER JOIN edition ON einzelbeleg.EditionID = edition.ID";
                 }
             }
-        } else if (newID.startsWith("M") || newID.startsWith("m")) {
+        } else if (NPPM_ID.startsWith("M") || NPPM_ID.startsWith("m")) {
             if (Utils.safeNumeric(newForm)) {
                 conditions.add("mgh_lemma.ID='" + sqlEscapedForm + "'");
                 mghlemma = true;

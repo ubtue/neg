@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -66,10 +67,13 @@ public class Sitemap extends AbstractBase {
         // Generate + write XML documents
         // Since bots will struggle with single files > 10MB, we need to generate an Index file and split into subfiles.
         GenerateBase();
-        GenerateEntitySitemap(QuelleDB.getListPublic(), "quellen");
-        GenerateEntitySitemap(PersonDB.getListPublic(), "personen");
-        GenerateEntitySitemap(LemmaDB.getListPublic(), "lemmas");
-        GenerateEntitySitemap(EinzelbelegDB.getListPublic(), "einzelbelege");
+
+        try (var session = de.uni_tuebingen.ub.nppm.db.AbstractBase.getSession()) {
+            GenerateEntitySitemap(QuelleDB.getStreamPublic(session), "quellen");
+            GenerateEntitySitemap(PersonDB.getStreamPublic(session), "personen");
+            GenerateEntitySitemap(LemmaDB.getStreamPublic(session), "lemmas");
+            GenerateEntitySitemap(EinzelbelegDB.getStreamPublic(session), "einzelbelege");
+        }
         GenerateIndex();
 
         // Exit successfully (we need this or the program will hang forever)
@@ -204,15 +208,19 @@ public class Sitemap extends AbstractBase {
         GenerateAndRegisterSitemap(document, "base");
     }
 
-    private static <T extends PersistentIdentifier & History> void GenerateEntitySitemap(List<T> entities, String name) throws Exception {
+    private static <T extends PersistentIdentifier & History> void GenerateEntitySitemap(Stream<T> entities, String name) throws Exception {
         Document document = InitSitemapDocument();
-        for (T entity : entities) {
+        entities.forEach(entity -> {
             Date lastmodDate = entity.getLetzteAenderung();
             if (lastmodDate == null) {
                 lastmodDate = entity.getErstellt();
             }
-            AddEntry(document, BASE_URL_RESOLVER + entity.getPersistentIdentifier(), lastmodDate);
-        }
+            try {
+                AddEntry(document, BASE_URL_RESOLVER + entity.getPersistentIdentifier(), lastmodDate);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
         GenerateAndRegisterSitemap(document, name);
     }
 

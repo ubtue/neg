@@ -5,17 +5,17 @@ UNIQUE KEY `Bezeichnung` (`Bezeichnung`)
 
 
 /* Insert default values */
-INSERT INTO `neg`.`selektion_beziehung_gemeinschaft` (ID,Bezeichnung) VALUES (-1,'-');
-INSERT INTO `neg`.`selektion_beziehung_gemeinschaft` (ID,Bezeichnung) VALUES (1,'?');
+INSERT INTO `selektion_beziehung_gemeinschaft` (ID,Bezeichnung) VALUES (-1,'-');
+INSERT INTO `selektion_beziehung_gemeinschaft` (ID,Bezeichnung) VALUES (1,'?');
 
 ALTER TABLE einzelbeleg ADD COLUMN BeziehungGemeinschaftID INT NOT NULL DEFAULT -1 AFTER KonventID,
 ADD INDEX `BeziehungGemeinschaftID` (`BeziehungGemeinschaftID`),
 ADD CONSTRAINT `einzelbeleg_BeziehungGemeinschaftID` FOREIGN KEY (`BeziehungGemeinschaftID`) REFERENCES `selektion_beziehung_gemeinschaft` (`ID`);
 
 /* Administration Auswahlfelder */
-INSERT INTO `neg`.`datenbank_selektion` (`selektion`, `tabelle`, `spalte`) VALUES ('selektion_beziehung_gemeinschaft', 'einzelbeleg', 'BeziehungGemeinschaftID');
+INSERT INTO `datenbank_selektion` (`selektion`, `tabelle`, `spalte`) VALUES ('selektion_beziehung_gemeinschaft', 'einzelbeleg', 'BeziehungGemeinschaftID');
 
-INSERT INTO `neg`.`datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Auswahlherkunft`, `Seite`, `gb_beschriftung`, `fr_beschriftung`) VALUES ('einzelbeleg', 'BeziehungGemeinschaft', 'Beziehung zur Gemeinschaft', 'select', '0', 'einzelbeleg', 'BeziehungGemeinschaftID', 'selektion_beziehung_gemeinschaft', 'einzelbeleg', 'Relationship with the community', 'Relation avec la communauté');
+INSERT INTO `datenbank_mapping` (`Formular`, `Datenfeld`, `de_Beschriftung`, `Feldtyp`, `Array`, `ZielTabelle`, `ZielAttribut`, `Auswahlherkunft`, `Seite`, `gb_beschriftung`, `fr_beschriftung`) VALUES ('einzelbeleg', 'BeziehungGemeinschaft', 'Beziehung zur Gemeinschaft', 'select', '0', 'einzelbeleg', 'BeziehungGemeinschaftID', 'selektion_beziehung_gemeinschaft', 'einzelbeleg', 'Relationship with the community', 'Relation avec la communauté');
 
 ALTER TABLE selektion_amtstandweihe MODIFY Bezeichnung varchar(255);   
 
