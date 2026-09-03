@@ -27,6 +27,7 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
+            <!-- The next MySQL version after 9 is actually 26, which is no longer backwards compatible with 8.0 server (default in ubuntu 24.04) so we cannot use it yet. -->
             <version>9.7.0</version>
         </dependency>
         <dependency>
