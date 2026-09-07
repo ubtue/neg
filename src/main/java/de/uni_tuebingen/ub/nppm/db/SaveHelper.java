@@ -135,9 +135,9 @@ public class SaveHelper extends AbstractBase {
             CriteriaQuery<DatenbankMapping> criteria = criteriaBuilder.createQuery(DatenbankMapping.class);
             Root<DatenbankMapping> root = criteria.from(DatenbankMapping.class);
             criteria.select(root).where(
-                    criteriaBuilder.and(
-                            criteriaBuilder.equal(root.get("formular"), formular)
-                    )
+                criteriaBuilder.and(
+                    criteriaBuilder.equal(root.get("formular"), formular)
+                )
             );
             org.hibernate.query.Query query = session.createQuery(criteria);
             List<DatenbankMapping> rows = query.getResultList();
