@@ -129,6 +129,10 @@
         conditions.add("mgh_lemma.MGHLemma LIKE '" + DBtoDB(request.getParameter("MGHLemma").trim()) + "'");
         mghlemma = true;
     }
+    if (Utils.safeNumeric(request.getParameter("Sprachherkunft")) && Integer.parseInt(request.getParameter("Sprachherkunft")) > -1) {
+        conditions.add("mgh_lemma.SprachherkunftID = '" + request.getParameter("Sprachherkunft") + "'");
+        mghlemma = true;
+    }
 
     String erstgliedParam = request.getParameter("ErstGliedSelect");
     String zweitgliedParam = request.getParameter("ZweitGliedSelect");
