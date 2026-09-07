@@ -22,8 +22,6 @@ ALTER TABLE mgh_lemma ADD CONSTRAINT `mgh_lemma_SprachherkunftID` FOREIGN KEY (`
 
 INSERT INTO datenbank_selektion (selektion, tabelle, spalte) VALUES ('selektion_sprachherkunft', 'mgh_lemma', 'SprachherkunftID');
 
-# TODO: datenbank_filter, datenbank_mapping (erweiterte suche), datenbank_texte,  ggf. schon experimentell vorbereitet in DB?
-
 INSERT INTO datenbank_mapping (Formular, Datenfeld, Feldtyp, Array, Auswahlherkunft, Seite, ZielTabelle, ZielAttribut, de_Beschriftung, gb_Beschriftung, fr_beschriftung, la_beschriftung)
 VALUES ('mgh_lemma', 'Sprachherkunft', 'select', 0, 'selektion_sprachherkunft', 'mghlemma', 'mgh_lemma', 'SprachherkunftID', 'Sprachherkunft', 'Linguistic origin', 'Origine linguistique', 'Origo linguistica');
 

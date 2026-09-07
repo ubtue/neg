@@ -507,6 +507,15 @@
         headlines.add(DatenbankDB.getMapping(sprache, "mgh_lemma", "MGHLemma"));
         mghlemma = true;
     }
+    if (request.getParameter("Ausgabe_Sprachherkunft") != null && request.getParameter("Ausgabe_Sprachherkunft").equals("on")) {
+        fields.add("selektion_sprachherkunft.Bezeichnung");
+        fieldNames.add("selektion_sprachherkunft.Bezeichnung");
+        if (!tableString.contains("selektion_sprachherkunft")) {
+            tableString += " LEFT OUTER JOIN selektion_sprachherkunft ON mgh_lemma.SprachherkunftID=selektion_sprachherkunft.ID";
+        }
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Sprachherkunft"));
+        mghlemma = true;
+    }
     // ### Zur Person ###
     if (request.getParameter("Ausgabe_Person_Standardname") != null && request.getParameter("Ausgabe_Person_Standardname").equals("on")) {
         fields.add("person.Standardname");
