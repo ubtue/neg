@@ -244,6 +244,9 @@ public class Einzelbeleg implements PersistentIdentifier, History {
     @Column(name = "TitelText", length = 255)
     private String titelText;
 
+    @Column(name = "nr_in_strukt", length = 255)
+    private String nummerInStruktur;
+
     @Column(name = "seite", length = 255)
     private String seite;
 
@@ -992,6 +995,14 @@ public class Einzelbeleg implements PersistentIdentifier, History {
 
     public void setKritikId(Integer kritikId) {
         this.kritikId = kritikId;
+    }
+
+    public String getNummerInStruktur() {
+        return nummerInStruktur;
+    }
+
+    public void setNummerInStruktur(String nummerInStruktur) {
+        this.nummerInStruktur = nummerInStruktur;
     }
 
     public String getSeite() {
