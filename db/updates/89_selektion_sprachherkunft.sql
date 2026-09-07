@@ -8,7 +8,6 @@ CREATE TABLE `selektion_sprachherkunft` (
   UNIQUE KEY `unique_provenance_id` (`provenance_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-# TODO: Lieber als z.B. Bezeichnung 'germanisch' und provenance_id 'germ' zur Zuordnung beim Import?
 INSERT INTO selektion_sprachherkunft (ID, Bezeichnung) VALUES (-1, '-');
 INSERT INTO selektion_sprachherkunft (ID, Bezeichnung) VALUES (0, '?');
 INSERT INTO selektion_sprachherkunft (ID, Bezeichnung, provenance_id) VALUES (1, 'germanisch', 'germ');
