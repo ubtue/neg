@@ -96,6 +96,17 @@
                                     </jsp:include>
                                 </td>
                             </tr>
+                            <tr class="ut-table__row">
+                                <td class="ut-table__item ut-table__body__item" >
+                                    <% Language.printDatafield(out, session, formular, "Sprachherkunft"); %>
+                                </td>
+                                <td class="ut-table__item ut-table__body__item">
+                                    <jsp:include page="../inc.erzeugeFormular.jsp">
+                                        <jsp:param name="Formular" value="freie_suche"/>
+                                        <jsp:param name="Datenfeld" value="Sprachherkunft"/>
+                                    </jsp:include>
+                                </td>
+                            </tr>
                             <tr class="ut-table__row"><td class="ut-table__item ut-table__body__item" colspan="2">&nbsp;</td></tr>
                             <tr class="ut-table__row">
                                 <td class="ut-table__item ut-table__body__item">

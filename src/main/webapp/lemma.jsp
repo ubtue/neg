@@ -65,6 +65,19 @@
                             </span>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <% Language.printDatafield(out, session, formular, "Sprachherkunft");%>
+                        </td>
+                        <td>
+                            <jsp:include page="inc.erzeugeFormular.jsp">
+                                <jsp:param name="ID" value="<%= id%>" />
+                                <jsp:param name="Formular" value="mgh_lemma" />
+                                <jsp:param name="Datenfeld" value="Sprachherkunft" />
+                                <jsp:param name="size" value="25" />
+                            </jsp:include>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
