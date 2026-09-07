@@ -184,6 +184,16 @@
                 </jsp:include>
             </td>
         </tr>
+
+        <jsp:include page="../inc.erzeugeFormular.jsp">
+            <jsp:param name="ID" value='<%= id%>' />
+            <jsp:param name="Formular" value="mgh_lemma" />
+            <jsp:param name="Datenfeld" value="Sprachherkunft" />
+            <jsp:param name="Readonly" value="yes" />
+            <jsp:param name="Darstellung" value="Tabellenzeile"/>
+            <jsp:param name="Label" value='<%=Language.getDatafield(session, "mgh_lemma", "Sprachherkunft")%>'/>
+        </jsp:include>
+
         <tr class="ut-table__row">
             <td class="ut-table__item" style="padding-right: 0px; text-align: left; white-space: nowrap;">
                 <% Language.printDatafield(out, session, "mgh_lemma", "EinzelbelegRO");%>
