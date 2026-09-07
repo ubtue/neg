@@ -21,6 +21,10 @@ public class MghLemma implements PersistentIdentifier, History {
     @Column(name = "MGHLemma", length = 255)
     private String mghLemma;
 
+    @ManyToOne(targetEntity = SelektionSprachherkunft.class)
+    @JoinColumn(name = "SprachherkunftID", referencedColumnName = "ID")
+    private SelektionSprachherkunft sprachherkunft;
+
     @ManyToOne(targetEntity = SelektionBearbeitungsstatus.class)
     @JoinColumn(name = "BearbeitungsstatusID", referencedColumnName = "ID")
     private SelektionBearbeitungsstatus bearbeitungsstatus;
@@ -83,6 +87,14 @@ public class MghLemma implements PersistentIdentifier, History {
         if (glieder.length >= 2)
             return glieder[1];
         return null;
+    }
+
+    public SelektionSprachherkunft getSprachherkunft() {
+        return sprachherkunft;
+    }
+
+    public void setSprachherkunft(SelektionSprachherkunft sprachherkunft) {
+        this.sprachherkunft = sprachherkunft;
     }
 
     public SelektionBearbeitungsstatus getBearbeitungsstatus() {

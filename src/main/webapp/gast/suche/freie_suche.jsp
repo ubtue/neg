@@ -129,6 +129,10 @@
         conditions.add("mgh_lemma.MGHLemma LIKE '" + DBtoDB(request.getParameter("MGHLemma").trim()) + "'");
         mghlemma = true;
     }
+    if (Utils.safeNumeric(request.getParameter("Sprachherkunft")) && Integer.parseInt(request.getParameter("Sprachherkunft")) > -1) {
+        conditions.add("mgh_lemma.SprachherkunftID = '" + request.getParameter("Sprachherkunft") + "'");
+        mghlemma = true;
+    }
 
     String erstgliedParam = request.getParameter("ErstGliedSelect");
     String zweitgliedParam = request.getParameter("ZweitGliedSelect");
@@ -503,6 +507,15 @@
         headlines.add(DatenbankDB.getMapping(sprache, "mgh_lemma", "MGHLemma"));
         mghlemma = true;
     }
+    if (request.getParameter("Ausgabe_Sprachherkunft") != null && request.getParameter("Ausgabe_Sprachherkunft").equals("on")) {
+        fields.add("selektion_sprachherkunft.Bezeichnung");
+        fieldNames.add("selektion_sprachherkunft.Bezeichnung");
+        if (!tableString.contains("selektion_sprachherkunft")) {
+            tableString += " LEFT OUTER JOIN selektion_sprachherkunft ON mgh_lemma.SprachherkunftID=selektion_sprachherkunft.ID";
+        }
+        headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Sprachherkunft"));
+        mghlemma = true;
+    }
     // ### Zur Person ###
     if (request.getParameter("Ausgabe_Person_Standardname") != null && request.getParameter("Ausgabe_Person_Standardname").equals("on")) {
         fields.add("person.Standardname");
@@ -839,6 +852,20 @@
                     fieldNames.add("Zweitglied");
                     tables.add("mgh_lemma");
                     headlines.add("Zweitglied");
+                    mghlemma = true;
+                }
+            } else if (request.getParameter("order" + i).equals("OrderSprachherkunft")) {
+                order += " selektion_sprachherkunft.Bezeichnung";
+                orderV[i - 1] = "selektion_sprachherkunft.Bezeichnung";
+                mghlemma = true;
+
+                if (request.getParameter("Ausgabe_Sprachherkunft") == null || !request.getParameter("Ausgabe_Sprachherkunft").equals("on")) {
+                    fields.add("selektion_sprachherkunft.Bezeichnung");
+                    fieldNames.add("selektion_sprachherkunft.Bezeichnung");
+                    if (!tableString.contains("selektion_sprachherkunft")) {
+                        tableString += " LEFT OUTER JOIN selektion_sprachherkunft ON mgh_lemma.SprachherkunftID=selektion_sprachherkunft.ID";
+                    }
+                    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Sprachherkunft"));
                     mghlemma = true;
                 }
             } else if (request.getParameter("order" + i).equals("OrderPersonen")) {
