@@ -168,7 +168,7 @@
 
     if (display) {
         if (darstellung.equals("Tabellenzeile")) {
-            out.print("<tr class=\"ut-table__row\"><td class=\"ut-table__item ut-table__body__item\">" + label + "</td><td class=\"ut-table__item ut-table__body__item\">");
+            out.print("<tr class=\"ut-table__row\"><td class=\"ut-table__item ut-table__body__item\" style=\"padding-right: 0px; text-align: left; white-space: nowrap;\">" + label + "</td><td class=\"ut-table__item ut-table__body__item\" style=\"padding-left: 0px;\">");
         }
 %>
 <script type="text/javascript">
