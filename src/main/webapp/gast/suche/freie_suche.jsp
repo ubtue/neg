@@ -845,6 +845,20 @@
                     headlines.add("Zweitglied");
                     mghlemma = true;
                 }
+            } else if (request.getParameter("order" + i).equals("OrderSprachherkunft")) {
+                order += " selektion_sprachherkunft.Bezeichnung";
+                orderV[i - 1] = "selektion_sprachherkunft.Bezeichnung";
+                mghlemma = true;
+
+                if (request.getParameter("Ausgabe_Sprachherkunft") == null || !request.getParameter("Ausgabe_Sprachherkunft").equals("on")) {
+                    fields.add("selektion_sprachherkunft.Bezeichnung");
+                    fieldNames.add("selektion_sprachherkunft.Bezeichnung");
+                    if (!tableString.contains("selektion_sprachherkunft")) {
+                        tableString += " LEFT OUTER JOIN selektion_sprachherkunft ON mgh_lemma.SprachherkunftID=selektion_sprachherkunft.ID";
+                    }
+                    headlines.add(DatenbankDB.getMapping(sprache, "freie_suche", "Ausgabe_Sprachherkunft"));
+                    mghlemma = true;
+                }
             } else if (request.getParameter("order" + i).equals("OrderPersonen")) {
                 order += " person.Standardname";
                 orderV[i - 1] = "person.Standardname";
