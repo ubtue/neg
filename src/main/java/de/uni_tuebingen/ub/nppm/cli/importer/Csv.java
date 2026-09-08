@@ -30,6 +30,9 @@ public class Csv extends AbstractBase {
 
     protected static String selektionProvenanceIdDelimiter = " ";
 
+    protected static char CSV_SEPARATOR = ';';
+    protected static char CSV_QUOTE_CHAR = '"';
+
 
     public static void main (String[] args) throws Exception
     {
@@ -62,7 +65,8 @@ public class Csv extends AbstractBase {
 
     protected static void LoadCsv() throws Exception
     {
-        try (CSVReader reader = new CSVReader(new FileReader(csvPath.toString()))) {
+        var csvParser = new CSVParserBuilder().withSeparator(CSV_SEPARATOR).withQuoteChar(CSV_QUOTE_CHAR).build();
+        try (var reader = new CSVReaderBuilder(new FileReader(csvPath.toString())).withCSVParser(csvParser).build()) {
             String[] headers = reader.readNext();
             if (headers == null) {
                 throw new IllegalArgumentException("CSV file contains no headers!");
