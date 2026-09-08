@@ -218,7 +218,7 @@ public class Csv extends AbstractBase {
                 for (String provenanceId : amtWeiheFields.get("provenance_id").split(SELEKTION_PROVENANCE_ID_SPLIT_PATTERN)) {
                     var ehaw = new EinzelbelegHatAmtWeihe_MM();
                     ehaw.setEinzelbeleg(eb);
-                    ehaw.setAmtWeihe((SelektionAmtWeihe)SelektionDB.getByProvenance("selektion_amtweihe", provenanceId, "NPPM"));
+                    ehaw.setAmtWeihe((SelektionAmtWeihe)SelektionDB.getByProvenance("selektion_amtweihe", provenanceId));
                     session.persist(ehaw);
                 }
             }
@@ -248,7 +248,7 @@ public class Csv extends AbstractBase {
                         var sprachherkunftFields = entities.get("selektion_sprachherkunft");
                         if (sprachherkunftFields.containsKey("provenance_id")) {
                             lemma.setSprachherkunft(
-                                (SelektionSprachherkunft)SelektionDB.getByProvenance("selektion_sprachherkunft", sprachherkunftFields.get("provenance_id"), "NPPM")
+                                (SelektionSprachherkunft)SelektionDB.getByProvenance("selektion_sprachherkunft", sprachherkunftFields.get("provenance_id"))
                             );
                         }
                     }
@@ -262,7 +262,8 @@ public class Csv extends AbstractBase {
         // First, check whether we can find it via Provenance, if given
         if (entityFields.containsKey("provenance_id")) {
             for (var provenance_id : entityFields.get("provenance_id").split(SELEKTION_PROVENANCE_ID_SPLIT_PATTERN)) {
-                var selektion = SelektionDB.getByProvenance(entityName, provenance_id, "NPPM");
+                // Omit provenance_source on purpose! (Some might still be from DMP!)
+                var selektion = SelektionDB.getByProvenance(entityName, provenance_id);
                 if (selektion == null) {
                     throw new Exception(entityName + " with provenance_id " + provenance_id + " does not exist!");
                 }
