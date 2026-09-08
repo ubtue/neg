@@ -143,7 +143,7 @@ public class QuelleDB extends AbstractBase {
 
     public static Quelle getByProvenance(String provenance_id, String provenance_source) throws Exception {
         try (Session session = getSession()) {
-            Query query = session.createQuery("SELECT * FROM Quelle q WHERE q.provenance_id = :provenance_id AND q.provenance_source = :provenance_source");
+            Query query = session.createNativeQuery("SELECT * FROM quelle q WHERE q.provenance_id = :provenance_id AND q.provenance_source = :provenance_source", Quelle.class);
             query.setParameter("provenance_id", provenance_id);
             query.setParameter("provenance_source", provenance_source);
             return (Quelle)query.getSingleResult();

@@ -8,10 +8,13 @@ import com.opencsv.*;
 import java.io.FileReader;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Csv extends AbstractBase {
     protected static Path csvPath;
     protected static ImportMode mode = ImportMode.TEST;
+
+    protected static List<Map<String,Map<String,String>>> csvRows = new ArrayList<>();
 
     // Custom Quelle to be overridden by child class
     protected static Quelle quelleDefault = null;
@@ -28,7 +31,8 @@ public class Csv extends AbstractBase {
 
     protected static boolean createMissingLemma = false;
 
-    protected static String selektionProvenanceIdDelimiter = " ";
+    protected static String SELEKTION_PROVENANCE_ID_SPLIT_PATTERN = Pattern.quote(" ");
+    protected static String ENTITY_PROPERTY_SPLIT_PATTERN = Pattern.quote(".");
 
     protected static char CSV_SEPARATOR = ';';
     protected static char CSV_QUOTE_CHAR = '"';
@@ -39,6 +43,7 @@ public class Csv extends AbstractBase {
         LoadArgs(args);
         LoadProperties();
         LoadCsv();
+        ProcessCsv();
     }
 
     protected static void LoadArgs(String[] args)
@@ -88,17 +93,18 @@ public class Csv extends AbstractBase {
                     String value = i < row.length ? row[i] : null;
                     values.put(actualHeaders.get(i), value);
                 }
+                csvRows.add(LoadCsvRow(values));
             }
         }
     }
 
-    protected static void LoadCsvRow(final Map<String,String> values) throws Exception
+    protected static Map<String,Map<String,String>> LoadCsvRow(final Map<String,String> values) throws Exception
     {
         // Group all fields together that belong to the same entity in the database
         // e.g. all "einzelbeleg.Belegform", "einzelbeleg.provenance_id", etc.
         Map<String,Map<String,String>> groups = new LinkedHashMap<>();
         for (var entry : values.entrySet()) {
-            String[] parts = entry.getKey().split(".");
+            String[] parts = entry.getKey().split(ENTITY_PROPERTY_SPLIT_PATTERN);
             if (parts.length != 2) {
                 throw new Exception("Unknown table.column in CSV header: " + entry.getKey());
             }
@@ -115,6 +121,19 @@ public class Csv extends AbstractBase {
                     groups.get(entity).put(field, value);
                 }
             }
+        }
+
+        // Remove empty groups
+        groups.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+
+        return groups;
+    }
+
+    protected static void ProcessCsv() throws Exception {
+        Log("Processing " + csvRows.size() + " CSV rows...");
+        for (var csvRow : csvRows) {
+            Log(csvRow.toString());
+            ProcessCsvRow(csvRow);
         }
     }
 
@@ -178,6 +197,9 @@ public class Csv extends AbstractBase {
             if (einzelbelegFields.containsKey("nr_in_strukt")) {
                 eb.setNummerInStruktur(einzelbelegFields.get("nr_in_strukt"));
             }
+            if (einzelbelegFields.containsKey("pal_abgrenzung")) {
+                eb.setPalaeografischeAbgrenzung(einzelbelegFields.get("pal_abgrenzung"));
+            }
 
             Log("Inserting Einzelbeleg: " + eb.getJSON());
             switch (mode) {
@@ -193,10 +215,10 @@ public class Csv extends AbstractBase {
             // relations (optional)
             var amtWeiheFields = entities.get("selektion_amtweihe");
             if (amtWeiheFields != null && amtWeiheFields.containsKey("provenance_id")) {
-                for (String provenanceId : amtWeiheFields.get("provenance_id").split(selektionProvenanceIdDelimiter)) {
+                for (String provenanceId : amtWeiheFields.get("provenance_id").split(SELEKTION_PROVENANCE_ID_SPLIT_PATTERN)) {
                     var ehaw = new EinzelbelegHatAmtWeihe_MM();
                     ehaw.setEinzelbeleg(eb);
-                    ehaw.setAmtWeihe((SelektionAmtWeihe)SelektionDB.getByProvenance("selektion_amtweihe", foreignKeyIDs.get("selektion_amtweihe").get(provenanceId).toString(), "NPPM"));
+                    ehaw.setAmtWeihe((SelektionAmtWeihe)SelektionDB.getByProvenance("selektion_amtweihe", provenanceId, "NPPM"));
                     session.persist(ehaw);
                 }
             }
@@ -226,7 +248,7 @@ public class Csv extends AbstractBase {
                         var sprachherkunftFields = entities.get("selektion_sprachherkunft");
                         if (sprachherkunftFields.containsKey("provenance_id")) {
                             lemma.setSprachherkunft(
-                                SelektionDB.getById(Integer.parseInt(sprachherkunftFields.get("provenance_id")), SelektionSprachherkunft.class)
+                                (SelektionSprachherkunft)SelektionDB.getByProvenance("selektion_sprachherkunft", sprachherkunftFields.get("provenance_id"), "NPPM")
                             );
                         }
                     }
@@ -239,7 +261,7 @@ public class Csv extends AbstractBase {
     protected static void ProcessEntitySelektion(final String entityName, final Map<String,String> entityFields) throws Exception {
         // First, check whether we can find it via Provenance, if given
         if (entityFields.containsKey("provenance_id")) {
-            for (var provenance_id : entityFields.get("provenance_id").split(selektionProvenanceIdDelimiter)) {
+            for (var provenance_id : entityFields.get("provenance_id").split(SELEKTION_PROVENANCE_ID_SPLIT_PATTERN)) {
                 var selektion = SelektionDB.getByProvenance(entityName, provenance_id, "NPPM");
                 if (selektion == null) {
                     throw new Exception(entityName + " with provenance_id " + provenance_id + " does not exist!");

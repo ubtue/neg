@@ -244,6 +244,12 @@ public class Einzelbeleg implements PersistentIdentifier, History {
     @Column(name = "TitelText", length = 255)
     private String titelText;
 
+    @Column(name = "pal_abgrenzung", length = 255)
+    private String palaeografischeAbgrenzung;
+
+    @Column(name = "inh_abgrenzung", length = 255)
+    private String inhaltlicheAbgrenzung;
+
     @Column(name = "nr_in_strukt", length = 255)
     private String nummerInStruktur;
 
@@ -995,6 +1001,22 @@ public class Einzelbeleg implements PersistentIdentifier, History {
 
     public void setKritikId(Integer kritikId) {
         this.kritikId = kritikId;
+    }
+
+    public String getPalaeografischeAbrenzung() {
+        return palaeografischeAbgrenzung;
+    }
+
+    public void setPalaeografischeAbgrenzung(String palAbgrenzung) {
+        this.palaeografischeAbgrenzung = palAbgrenzung;
+    }
+
+    public String getInhaltlicheAbrenzung() {
+        return inhaltlicheAbgrenzung;
+    }
+
+    public void setInhaltlicheAbgrenzung(String inhaltlicheAbgrenzung) {
+        this.inhaltlicheAbgrenzung = inhaltlicheAbgrenzung;
     }
 
     public String getNummerInStruktur() {
