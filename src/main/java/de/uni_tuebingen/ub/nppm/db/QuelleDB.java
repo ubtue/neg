@@ -141,6 +141,15 @@ public class QuelleDB extends AbstractBase {
         return AbstractBase.getById(id, Quelle.class);
     }
 
+    public static Quelle getByProvenance(String provenance_id, String provenance_source) throws Exception {
+        try (Session session = getSession()) {
+            Query query = session.createNativeQuery("SELECT * FROM quelle q WHERE q.provenance_id = :provenance_id AND q.provenance_source = :provenance_source", Quelle.class);
+            query.setParameter("provenance_id", provenance_id);
+            query.setParameter("provenance_source", provenance_source);
+            return (Quelle)query.getSingleResult();
+        }
+    }
+
     public static List<Quelle> searchByFileName(String filename, Context fileType) throws Exception {
         try (Session session = getSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();

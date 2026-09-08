@@ -137,6 +137,27 @@ public class SelektionDB extends AbstractBase {
         }
     }
 
+    static public Selektion getByProvenance(String selektion, String provenance_id, String provenance_source) throws Exception {
+        try (Session session = getSession()) {
+            Class<? extends Selektion> entityClass = getEntityClassByTableName(selektion);
+            String sql = "SELECT * FROM " + selektion + " WHERE provenance_id= :provenance_id AND provenance_source= :provenance_source";
+            NativeQuery<? extends Selektion> query = session.createNativeQuery(sql, entityClass);
+            query.setParameter("provenance_id", provenance_id);
+            query.setParameter("provenance_source", provenance_source);
+            return query.getSingleResult();
+        }
+    }
+
+    static public Selektion getByProvenance(String selektion, String provenance_id) throws Exception {
+        try (Session session = getSession()) {
+            Class<? extends Selektion> entityClass = getEntityClassByTableName(selektion);
+            String sql = "SELECT * FROM " + selektion + " WHERE provenance_id= :provenance_id";
+            NativeQuery<? extends Selektion> query = session.createNativeQuery(sql, entityClass);
+            query.setParameter("provenance_id", provenance_id);
+            return query.getSingleResult();
+        }
+    }
+
     static public boolean isHierarchy(String selektion) {
         try {
             Class c = getEntityClassByTableName(selektion);
