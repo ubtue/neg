@@ -16,21 +16,21 @@
 %>
   <div>
 
-    <jsp:include page="layout/title.openLink.jsp" />
+    <jsp:include page="layout/title.datenpflege.jsp" />
 
        <div id="form">
        <ul>
-          <li><a href="ohneVerknuepfung?form=einzelbeleg&dbForm=einzelbeleg&zwischentabelle=einzelbeleg_hatnamenkommentar&attribut=Belegform&zwAttribut=einzelbelegID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "EinzelbelegOhneLemma");%></a></li>
-          <li><a href="ohneVerknuepfung?form=einzelbeleg&dbForm=einzelbeleg&zwischentabelle=einzelbeleg_textkritik&attribut=Belegform&zwAttribut=einzelbelegID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "EinzelbelegOhneTextkritik");%></a></li>
-          <li><a href="ohneVerknuepfung?form=einzelbeleg&dbForm=einzelbeleg&zwischentabelle=einzelbeleg_hatperson&attribut=Belegform&zwAttribut=einzelbelegID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "EinzelbelegOhnePerson");%></a></li>
-          <li><a href="ohneVerknuepfung?form=namenkommentar&dbForm=namenkommentar&zwischentabelle=einzelbeleg_hatnamenkommentar&attribut=PLemma&zwAttribut=namenkommentarID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "NamenOhneBelege");%></a></li>
-          <li><a href="ohneVerknuepfung?form=person&dbForm=person&zwischentabelle=einzelbeleg_hatperson&attribut=Standardname&zwAttribut=personID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "PersonOhneBelege");%></a></li>
-          <li><a href="ohneVerknuepfung?form=quelle&dbForm=quelle&zwischentabelle=quelle_inedition&attribut=Bezeichnung&zwAttribut=QuelleID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "QuelleOhneEdition");%></a></li>
-          <li><a href="ohneVerknuepfung?form=quelle&dbForm=quelle&zwischentabelle=handschrift_ueberlieferung&attribut=Bezeichnung&zwAttribut=QuelleID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "QuelleOhneUeberlieferung");%></a></li>
-          <li><a href="ohneVerknuepfung?form=handschrift&dbForm=handschrift&zwischentabelle=handschrift_ueberlieferung&attribut=Bibliothekssignatur&zwAttribut=HandschriftID"><% Language.printTextfield(out, session, "ohneVerknuepfung", "TextzeugenOhneUeberlieferung");%></a></li>
-          <li><a href="ohneVerknuepfung?view=BelegformMitMehrerenLemmata">Belegformen mit mehreren Lemmata</a></li>
-          <li><a href="ohneVerknuepfung?view=BelegformGeschlecht">Belegformen mit Geschlecht</a></li>
-          <li><a href="ohneVerknuepfung?view=LemmaNachGlied">Lemmata nach Erst/Zweitglied</a></li>
+          <li><a href="datenpflege?form=einzelbeleg&dbForm=einzelbeleg&zwischentabelle=einzelbeleg_hatnamenkommentar&attribut=Belegform&zwAttribut=einzelbelegID"><% Language.printTextfield(out, session, "datenpflege", "EinzelbelegOhneLemma");%></a></li>
+          <li><a href="datenpflege?form=einzelbeleg&dbForm=einzelbeleg&zwischentabelle=einzelbeleg_textkritik&attribut=Belegform&zwAttribut=einzelbelegID"><% Language.printTextfield(out, session, "datenpflege", "EinzelbelegOhneTextkritik");%></a></li>
+          <li><a href="datenpflege?form=einzelbeleg&dbForm=einzelbeleg&zwischentabelle=einzelbeleg_hatperson&attribut=Belegform&zwAttribut=einzelbelegID"><% Language.printTextfield(out, session, "datenpflege", "EinzelbelegOhnePerson");%></a></li>
+          <li><a href="datenpflege?form=namenkommentar&dbForm=namenkommentar&zwischentabelle=einzelbeleg_hatnamenkommentar&attribut=PLemma&zwAttribut=namenkommentarID"><% Language.printTextfield(out, session, "datenpflege", "NamenOhneBelege");%></a></li>
+          <li><a href="datenpflege?form=person&dbForm=person&zwischentabelle=einzelbeleg_hatperson&attribut=Standardname&zwAttribut=personID"><% Language.printTextfield(out, session, "datenpflege", "PersonOhneBelege");%></a></li>
+          <li><a href="datenpflege?form=quelle&dbForm=quelle&zwischentabelle=quelle_inedition&attribut=Bezeichnung&zwAttribut=QuelleID"><% Language.printTextfield(out, session, "datenpflege", "QuelleOhneEdition");%></a></li>
+          <li><a href="datenpflege?form=quelle&dbForm=quelle&zwischentabelle=handschrift_ueberlieferung&attribut=Bezeichnung&zwAttribut=QuelleID"><% Language.printTextfield(out, session, "datenpflege", "QuelleOhneUeberlieferung");%></a></li>
+          <li><a href="datenpflege?form=handschrift&dbForm=handschrift&zwischentabelle=handschrift_ueberlieferung&attribut=Bibliothekssignatur&zwAttribut=HandschriftID"><% Language.printTextfield(out, session, "datenpflege", "TextzeugenOhneUeberlieferung");%></a></li>
+          <li><a href="datenpflege?view=BelegformMitMehrerenLemmata">Belegformen mit mehreren Lemmata</a></li>
+          <li><a href="datenpflege?view=BelegformGeschlecht">Belegformen mit Geschlecht</a></li>
+          <li><a href="datenpflege?view=LemmaNachGlied">Lemmata nach Erst/Zweitglied</a></li>
        </ul>
 
 

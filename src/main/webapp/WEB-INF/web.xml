@@ -182,12 +182,12 @@
         <url-pattern>/admin-auswahlfelder</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>BackendOhneVerknuepfungServlet</servlet-name>
-        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.OhneVerknuepfungServlet</servlet-class>
+        <servlet-name>BackendDatenpflegeServlet</servlet-name>
+        <servlet-class>de.uni_tuebingen.ub.nppm.servlet.backend.DatenpflegeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>BackendOhneVerknuepfungServlet</servlet-name>
-        <url-pattern>/ohneVerknuepfung</url-pattern>
+        <servlet-name>BackendDatenpflegeServlet</servlet-name>
+        <url-pattern>/datenpflege</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>BackendHandschriftServlet</servlet-name>
