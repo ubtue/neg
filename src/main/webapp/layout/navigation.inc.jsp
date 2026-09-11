@@ -69,9 +69,9 @@
     </a>
     <br>
     <hr>
-    <a href="<%=Utils.getBaseUrl(request)%>/ohneVerknuepfung">
+    <a href="<%=Utils.getBaseUrl(request)%>/datenpflege">
         <jsp:include page="../inc.erzeugeBeschriftung.jsp">
-            <jsp:param name="Formular" value="openLink"/>
+            <jsp:param name="Formular" value="datenpflege"/>
             <jsp:param name="Textfeld" value="Titel"/>
         </jsp:include>
     </a>
